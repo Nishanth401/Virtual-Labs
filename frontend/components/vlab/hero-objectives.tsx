@@ -1,186 +1,196 @@
 "use client";
 
-import { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ConstellationBackground } from "@/components/vlab/constellation-background";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FlaskConical, Sparkles, BookOpen, Compass, CheckCircle2, ArrowRight } from "lucide-react";
+import {
+  Code2,
+  BrainCircuit,
+  Database,
+  Network,
+  ArrowRight,
+  Sparkles,
+  PlayCircle,
+  CheckCircle2,
+  ExternalLink,
+  Award,
+  BookOpen,
+  Layers
+} from "lucide-react";
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.05,
-    },
+const ROLLING_CARDS = [
+  {
+    title: "Data Structures Lab (Java)",
+    tag: "DSL • AD8381",
+    desc: "Interactive sorting step visualizers, Java recursion call stack & LeetCode practice.",
+    icon: Code2,
+    color: "from-blue-500/10 to-indigo-500/10 text-blue-500 border-blue-500/30",
+    url: "/labs/data-structures",
   },
-};
+  {
+    title: "Machine Learning & Deep Learning",
+    tag: "MLDL • AD8481",
+    desc: "12-module NumPy master series, Pandas pipelines & Gradient Descent models.",
+    icon: BrainCircuit,
+    color: "from-purple-500/10 to-pink-500/10 text-purple-500 border-purple-500/30",
+    url: "/labs/ai-machine-learning",
+  },
+  {
+    title: "Database Management Systems",
+    tag: "DBMS • AD8382",
+    desc: "SQL relational execution engine, B+ Tree indexing & ACID transaction verification.",
+    icon: Database,
+    color: "from-emerald-500/10 to-teal-500/10 text-emerald-500 border-emerald-500/30",
+    url: "/labs/dbms-lab",
+  },
+  {
+    title: "Computer Networks & Protocols",
+    tag: "CEN • AD8581",
+    desc: "Sliding window ARQ simulators, Dijkstra shortest path routing & Java sockets.",
+    icon: Network,
+    color: "from-amber-500/10 to-orange-500/10 text-amber-500 border-amber-500/30",
+    url: "/labs/computer-networks",
+  },
+  {
+    title: "DSA Visualizer Studio",
+    tag: "SIMULATION SANDBOX",
+    desc: "11+ interactive algorithm visualizers with speed scrubbers & sound synthesis.",
+    icon: Layers,
+    color: "from-rose-500/10 to-red-500/10 text-rose-500 border-rose-500/30",
+    url: "/visualizer",
+  },
+  {
+    title: "Verified Student Certificates",
+    tag: "STUDENT PORTAL",
+    desc: "Track completed laboratory experiments and generate verified certificates.",
+    icon: Award,
+    color: "from-yellow-500/10 to-amber-500/10 text-yellow-500 border-yellow-500/30",
+    url: "/dashboard",
+  },
+];
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 260,
-      damping: 22,
-    },
-  },
-};
+import Image from "next/image";
 
 export function HeroObjectives() {
   return (
-    <section className="py-12 md:py-16 border-b border-border/40 relative overflow-hidden">
-      {/* Background Subtle Animated Blobs */}
-      <motion.div 
-        animate={{
-          scale: [1, 1.15, 1],
-          opacity: [0.1, 0.18, 0.1],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute -top-24 -right-24 w-96 h-96 bg-primary/15 rounded-full blur-3xl pointer-events-none" 
-      />
-      <motion.div 
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.15, 0.25, 0.15],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 2
-        }}
-        className="absolute -bottom-24 -left-24 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" 
-      />
+    <section className="relative min-h-[85vh] flex flex-col justify-between pt-4 pb-16 px-4 sm:px-6 bg-grid-pattern border-b border-border/40 overflow-hidden">
+      {/* Interactive Constellation Particle Canvas Mesh */}
+      <ConstellationBackground />
 
-      <motion.div 
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="container max-w-7xl mx-auto px-4 sm:px-6 relative z-10"
-      >
-        {/* Main Banner Heading */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
-          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 text-xs font-bold mb-4 shadow-xs">
-            <FlaskConical className="h-3.5 w-3.5 text-yellow-400 animate-subtle-breath" />
-            <span>Official Department Virtual Laboratory Platform</span>
-          </motion.div>
-
-          <motion.h1 variants={itemVariants} className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground font-heading">
-            Department of <span className="text-yellow-400 bg-yellow-400/10 px-2 py-0.5 rounded-xl border border-yellow-400/30 inline-block shadow-[0_0_15px_rgba(250,204,21,0.2)]">Artificial Intelligence & Data Science</span> Virtual Labs
-          </motion.h1>
-          
-          <motion.p variants={itemVariants} className="mt-4 text-muted-foreground text-sm sm:text-base leading-relaxed">
-            An interactive, simulation-based digital laboratory curriculum aligned with the National Virtual Labs initiative. Practice data structure algorithms, run experiments, take assessments, and master core engineering concepts remotely.
-          </motion.p>
-
-          <motion.div variants={itemVariants} className="flex flex-wrap items-center justify-center gap-3 mt-6">
-            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
-              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-white gap-2 font-semibold shadow-md group">
-                <Link href="/labs" target="_blank" rel="noopener noreferrer">
-                  Explore Virtual Labs <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
-              <Button asChild variant="outline" size="lg" className="gap-2">
-                <Link href="/visualizer" target="_blank" rel="noopener noreferrer">
-                  <Sparkles className="h-4 w-4 text-primary" /> DSA Visualizers
-                </Link>
-              </Button>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
-              <Button asChild variant="secondary" size="lg" className="gap-2">
-                <Link href="/dashboard" target="_blank" rel="noopener noreferrer">
-                  <BookOpen className="h-4 w-4" /> Student Portal
-                </Link>
-              </Button>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* National Virtual Labs Inspired Tabs: OBJECTIVES & THE PHILOSOPHY */}
-        <motion.div variants={itemVariants} className="max-w-4xl mx-auto bg-card/60 backdrop-blur-md rounded-2xl border border-secondary/40 p-6 sm:p-8 shadow-sm">
-          <Tabs defaultValue="objectives" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6 max-w-md mx-auto">
-              <TabsTrigger value="objectives" className="text-xs sm:text-sm font-bold uppercase tracking-wider transition-all">
-                Objectives
-              </TabsTrigger>
-              <TabsTrigger value="philosophy" className="text-xs sm:text-sm font-bold uppercase tracking-wider transition-all">
-                The Philosophy
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="objectives" className="space-y-4 text-sm text-muted-foreground leading-relaxed">
-              <h3 className="text-xl font-bold text-foreground font-heading text-center mb-4">
-                Core Objectives of the Virtual Laboratory
-              </h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-                <motion.div 
-                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                  className="p-4 rounded-xl bg-muted/40 border border-border/50 space-y-2 cursor-pointer shadow-xs hover:shadow-md hover:border-primary/40 transition-colors"
-                >
-                  <div className="flex items-center gap-2 text-primary font-bold text-sm">
-                    <CheckCircle2 className="h-4 w-4 shrink-0" />
-                    <span>1. Remote Access</span>
-                  </div>
-                  <p className="text-xs leading-relaxed">
-                    To provide 24/7 remote-access to simulation-based computing and data science laboratories for autonomous, self-paced student learning.
-                  </p>
-                </motion.div>
-
-                <motion.div 
-                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                  className="p-4 rounded-xl bg-muted/40 border border-border/50 space-y-2 cursor-pointer shadow-xs hover:shadow-md hover:border-primary/40 transition-colors"
-                >
-                  <div className="flex items-center gap-2 text-primary font-bold text-sm">
-                    <CheckCircle2 className="h-4 w-4 shrink-0" />
-                    <span>2. Inquiry Learning</span>
-                  </div>
-                  <p className="text-xs leading-relaxed">
-                    To enthuse engineering students to conduct experiments by arousing curiosity through interactive step-by-step visualizers and algorithmic simulators.
-                  </p>
-                </motion.div>
-
-                <motion.div 
-                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                  className="p-4 rounded-xl bg-muted/40 border border-border/50 space-y-2 cursor-pointer shadow-xs hover:shadow-md hover:border-primary/40 transition-colors"
-                >
-                  <div className="flex items-center gap-2 text-primary font-bold text-sm">
-                    <CheckCircle2 className="h-4 w-4 shrink-0" />
-                    <span>3. Complete LMS Hub</span>
-                  </div>
-                  <p className="text-xs leading-relaxed">
-                    To provide a full Learning Management System around Virtual Labs with procedures, code scripts, self-evaluation quizzes, and verified progress tracking.
-                  </p>
-                </motion.div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="philosophy" className="space-y-3 text-sm text-muted-foreground leading-relaxed">
-              <h3 className="text-xl font-bold text-foreground font-heading text-center mb-4">
-                The Educational Philosophy
-              </h3>
-              <p>
-                Physical laboratory sessions are often constrained by fixed time slots, limited hardware setups, and lack of visual intuition for internal algorithmic states.
-              </p>
-              <p>
-                Virtual Labs bridge this critical gap by transforming abstract computer science concepts—such as pointer manipulation, recursion call frames, array partitions, and memory allocation—into tangible visual experiments that students can interact with repeatedly at zero cost.
-              </p>
-            </TabsContent>
-          </Tabs>
+      <div className="container max-w-5xl mx-auto text-center relative z-10 space-y-6 pt-2">
+        {/* Sleek Pill Badge matching Screenshot 1 */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#111113] text-white text-[11px] font-bold tracking-wider uppercase border border-white/10 shadow-md"
+        >
+          <span className="h-2 w-2 rounded-full bg-[#e11d48] animate-pulse" />
+          <span>Department of Artificial Intelligence &amp; Data Science • VSB Engineering College</span>
         </motion.div>
-      </motion.div>
+
+        {/* High-Impact Headline with Mixed Typography matching Screenshot 1 */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="text-4xl sm:text-6xl md:text-7xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.08] font-heading max-w-4xl mx-auto"
+        >
+          Simulate faster. <span className="font-serif-italic font-normal text-slate-600 dark:text-slate-400">Learn smarter.</span><br />
+          Grow with<br />
+          <span className="text-[#e11d48] dark:text-[#f43f5e] font-black">
+            interactive virtual labs.
+          </span>
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed"
+        >
+          We design, build, and simulate high-performance data structures in pure Java, machine learning models with NumPy/Pandas pipelines, relational SQL databases, and network protocols for ambitious engineers.
+        </motion.p>
+
+        {/* Dual Capsule CTA Buttons matching Screenshot 1 */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="flex flex-wrap items-center justify-center gap-3 pt-2"
+        >
+          <Button
+            asChild
+            size="lg"
+            className="bg-gradient-to-r from-[#e11d48] to-[#dc2626] hover:from-[#be123c] hover:to-[#b91c1c] text-white rounded-full px-8 py-6 font-bold shadow-xl shadow-rose-500/25 hover:scale-105 transition-all text-sm gap-2"
+          >
+            <Link href="/labs">
+              <span>Let&apos;s explore &amp; simulate</span>
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </Button>
+
+          <Button
+            asChild
+            variant="outline"
+            size="lg"
+            className="rounded-full px-7 py-6 text-sm font-semibold border-border bg-white/90 dark:bg-card/80 backdrop-blur-md hover:bg-muted transition-all gap-1.5 shadow-xs"
+          >
+            <Link href="/visualizer">
+              <span>DSA Visualizer Studio</span>
+              <ExternalLink className="h-3.5 w-3.5" />
+            </Link>
+          </Button>
+        </motion.div>
+      </div>
+
+      {/* CONTINUOUS ROLLING / MARQUEE ANIMATED TITLE CARDS SHOWCASE (Replacing 5th Image) */}
+      <div className="w-full mt-14 overflow-hidden relative select-none">
+        {/* Subtle Fade Gradients on left and right */}
+        <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
+        <div className="flex gap-4 w-max animate-marquee hover:[animation-play-state:paused] py-2">
+          {[...ROLLING_CARDS, ...ROLLING_CARDS].map((card, idx) => {
+            const Icon = card.icon;
+            return (
+              <Link
+                key={idx}
+                href={card.url}
+                className="w-72 sm:w-80 p-5 rounded-2xl bg-white/95 dark:bg-card/90 backdrop-blur-md border border-border/80 shadow-md hover:border-[#e11d48] hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+              >
+                <div className="space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <div className={`p-2.5 rounded-xl bg-gradient-to-br ${card.color} border shadow-xs group-hover:scale-110 transition-transform`}>
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <Badge variant="outline" className="text-[10px] font-mono font-bold">
+                      {card.tag}
+                    </Badge>
+                  </div>
+
+                  <h4 className="font-bold text-sm text-foreground group-hover:text-[#e11d48] transition-colors line-clamp-1">
+                    {card.title}
+                  </h4>
+
+                  <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
+                    {card.desc}
+                  </p>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-between text-xs font-semibold text-foreground group-hover:text-[#e11d48] transition-colors">
+                  <span>Enter Module</span>
+                  <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
     </section>
   );
 }

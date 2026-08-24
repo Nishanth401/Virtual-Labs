@@ -1,219 +1,312 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
-  FlaskConical,
-  Sparkles,
-  BookOpen,
-  Menu,
-  Award,
-  GraduationCap,
-  FolderOpen,
-  Calendar,
-  Users,
   Search,
-  ExternalLink,
-  ShieldCheck,
-  ChevronDown
+  FlaskConical,
+  Award,
+  Sparkles,
+  ChevronDown,
+  Menu,
+  X,
+  Code2,
+  BrainCircuit,
+  Database,
+  Network,
+  BookOpen,
+  ArrowRight,
+  MessageSquare
 } from "lucide-react";
 import {
-  Sheet,
-  SheetContent,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/global/mode-toggle";
-import { RoleSwitcherDialog } from "@/components/navigation/role-switcher-dialog";
 import { Badge } from "@/components/ui/badge";
+import { ModeToggle } from "@/components/global/mode-toggle";
+import { useAuth } from "@/context/auth-context";
+import { StudentAuthDialog } from "@/components/auth/student-auth-dialog";
 
-const DSA_VISUALIZERS_LIST = [
-  { title: "Bubble Sort", desc: "Adjacent comparisons & bubbling passes", url: "/visualizer/bubble-sort" },
-  { title: "Selection Sort", desc: "Minimum index scanning & swaps", url: "/visualizer/selection-sort" },
-  { title: "Insertion Sort", desc: "Key extraction & backward shifts", url: "/visualizer/insertion-sort" },
-  { title: "Stack Visualizer", desc: "LIFO operations, push/pop/peek", url: "/visualizer/stack" },
-  { title: "Queue Visualizer", desc: "FIFO operations, enqueue/dequeue", url: "/visualizer/queue" },
-  { title: "Linked List", desc: "Singly, Doubly, Circular node links", url: "/visualizer/linked-list" },
-  { title: "Binary Search Tree", desc: "Dynamic BST insert & traversals", url: "/visualizer/binary-tree" },
-  { title: "AVL Tree", desc: "Self-balancing rotations (LL/RR/LR/RL)", url: "/visualizer/avl-tree" },
-  { title: "Dijkstra's Algorithm", desc: "Shortest path finding on graphs", url: "/visualizer/dijkstra" },
+const SEARCH_ITEMS = [
+  { title: "Bubble Sort Algorithm", category: "Data Structures", url: "/experiments/bubble-sort", desc: "Adjacent comparisons and bubbling passes in Java" },
+  { title: "Selection Sort Algorithm", category: "Data Structures", url: "/experiments/selection-sort", desc: "Minimum index scanning and in-place swapping" },
+  { title: "Insertion Sort Algorithm", category: "Data Structures", url: "/experiments/insertion-sort", desc: "Key extraction and adaptive backward shifting" },
+  { title: "Stack Operations & LIFO", category: "Data Structures", url: "/experiments/stack-operations", desc: "Push, pop, peek, overflow & underflow in Java" },
+  { title: "Queue & Circular Queue", category: "Data Structures", url: "/experiments/queue-operations", desc: "FIFO operations, modulo wrap & buffer management" },
+  { title: "Singly Linked List", category: "Data Structures", url: "/experiments/singly-linked-list", desc: "Dynamic node allocations, head/tail insert & reversal" },
+  { title: "Linear Regression & Gradient Descent", category: "Machine Learning", url: "/experiments/linear-regression", desc: "Vectorized MSE loss minimization with NumPy" },
+  { title: "K-Nearest Neighbors (KNN)", category: "Machine Learning", url: "/experiments/knn-classification", desc: "Euclidean distance classification & decision boundary" },
+  { title: "12-Module NumPy Master Track", category: "ML Prerequisites", url: "/labs/ai-machine-learning", desc: "Array creation, slicing, broadcasting & linear algebra" },
+  { title: "Master Coding Practice Sheets", category: "Practice", url: "/practice", desc: "LeetCode 150, LeetCode 75, SQL 50 with company tags & notes" },
+  { title: "DSA Visualizer Studio", category: "Simulators", url: "/visualizer", desc: "Interactive sandbox for 11+ algorithms and trees" },
+  { title: "Student Progress & Certificate", category: "Dashboard", url: "/dashboard", desc: "Track completed labs and download verified certificate" },
+  { title: "Student Login & Registration", category: "Auth", url: "/auth/login", desc: "Sign in with Register Number or Continue with Google" },
 ];
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const { studentProfile } = useAuth();
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
+
+  // Keyboard shortcut Ctrl+K to open search
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+        e.preventDefault();
+        setSearchOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const filteredSearch = SEARCH_ITEMS.filter((item) =>
+    item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.desc.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/95 backdrop-blur-md shadow-xs">
-      {/* Top Subtle Department Yellow Accent Bar */}
-      <div className="h-1 w-full bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 shadow-xs" />
-
-      <div className="container max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-        {/* Brand Logo & Name */}
-        <Link href="/" className="flex items-center gap-3 font-bold text-base sm:text-lg text-foreground hover:opacity-90 transition-opacity shrink-0">
-          <div className="relative w-11 h-11 rounded-full overflow-hidden border-2 border-yellow-400 ring-2 ring-yellow-400/50 shadow-[0_0_12px_rgba(250,204,21,0.5)] shrink-0 bg-white flex items-center justify-center p-0.5">
-            <Image 
-              src="/vsb-logo.png" 
-              alt="Official V.S.B. Engineering College Emblem Logo" 
-              width={44}
-              height={44}
-              className="object-contain rounded-full"
-            />
-          </div>
-          <div className="flex flex-col min-w-0">
-            <div className="flex items-center gap-1.5">
-              <span className="font-heading font-black tracking-tight leading-tight text-lg whitespace-nowrap">Virtual Labs</span>
-              <span className="h-2.5 w-2.5 rounded-full bg-yellow-400 inline-block shrink-0 shadow-[0_0_8px_rgba(250,204,21,0.8)] animate-pulse" title="Department Official Color (Yellow)" />
+    <>
+      <header className="sticky top-3 z-50 w-full px-4 sm:px-6 pointer-events-none">
+        <div className="container max-w-7xl mx-auto flex items-center justify-between gap-3 pointer-events-auto relative">
+          {/* Left Brand Capsule Pill matching 'Rohith Digital X' styling */}
+          <Link
+            href="/"
+            className="flex items-center px-4 py-1.5 rounded-full bg-white/95 dark:bg-card/90 backdrop-blur-md border border-[#e11d48]/80 dark:border-[#e11d48]/60 shadow-xs hover:shadow-md hover:scale-[1.02] transition-all group shrink-0"
+          >
+            <div className="flex items-center text-sm font-sans tracking-tight">
+              <span className="font-extrabold text-slate-950 dark:text-white font-heading text-base">
+                Rohith
+              </span>
+              <span className="font-normal text-slate-500 dark:text-slate-400 ml-1.5 text-base">
+                Digital
+              </span>
+              <span className="text-[#e11d48] font-black text-base ml-1.5 leading-none">X</span>
             </div>
-            <span className="text-[10px] text-amber-500 font-bold tracking-wide uppercase whitespace-nowrap">Department of Artificial Intelligence & Data Science</span>
-          </div>
-        </Link>
+          </Link>
 
-        {/* Desktop Navigation Links */}
-        <div className="hidden lg:flex items-center gap-1 xl:gap-1.5">
-          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold px-2.5 py-1 h-8">
-            <Link href="/">Home</Link>
-          </Button>
-
-          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold px-2.5 py-1 h-8">
-            <Link href="/labs">Broad Areas & Labs</Link>
-          </Button>
-
-          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold px-2.5 py-1 h-8">
-            <Link href="/labs/data-structures">Data Structures Lab</Link>
-          </Button>
-
-          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold px-2.5 py-1 h-8">
-            <Link href="/courses">Curriculum</Link>
-          </Button>
-
-          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold px-2.5 py-1 h-8">
-            <Link href="/resources">Resource Vault</Link>
-          </Button>
-
-          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold px-2.5 py-1 h-8">
-            <Link href="/faculty">Faculty</Link>
-          </Button>
-
-          {/* DSA Visualizers Dropdown */}
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-transparent text-xs font-semibold h-8 px-2.5 py-1">
-                  DSA Visualizers
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="w-[420px] p-3.5 bg-popover/95 backdrop-blur-md rounded-xl border border-border shadow-xl">
-                    <div className="flex items-center justify-between pb-2 mb-2 border-b border-border/50">
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                        Interactive Algorithm Simulators
-                      </span>
-                      <Link href="/visualizer" target="_blank" rel="noopener noreferrer" className="text-xs text-primary font-bold hover:underline">
-                        View All (11) →
-                      </Link>
-                    </div>
-                    <div className="grid grid-cols-2 gap-1.5">
-                      {DSA_VISUALIZERS_LIST.slice(0, 6).map((item) => (
-                        <NavigationMenuLink key={item.title} asChild>
-                          <Link
-                            href={item.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-lg hover:bg-muted/70 transition-colors block text-left"
-                          >
-                            <div className="font-bold text-xs text-foreground">{item.title}</div>
-                            <div className="text-[10px] text-muted-foreground line-clamp-1">{item.desc}</div>
-                          </Link>
-                        </NavigationMenuLink>
-                      ))}
-                    </div>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-        </div>
-
-        {/* Right Side Actions Toolbar (Perfect Alignment) */}
-        <div className="flex items-center gap-2 shrink-0">
-          <Button asChild variant="default" size="sm" className="text-xs font-bold bg-primary text-white hover:bg-primary/90 px-3 h-8 shadow-xs">
-            <Link href="/dashboard" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
-              <Award className="h-3.5 w-3.5" />
-              <span>Student Portal</span>
+          {/* Center Floating Dark Capsule Navbar - Mathematically & Visually Centered */}
+          <nav className="hidden md:flex items-center gap-1 bg-[#121214] text-white rounded-full px-3.5 py-1.5 shadow-2xl border border-white/10 backdrop-blur-md absolute left-1/2 -translate-x-1/2 z-20">
+            <Link
+              href="/"
+              className="px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-colors"
+            >
+              Home
             </Link>
-          </Button>
+            <Link
+              href="/labs"
+              className="px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-colors"
+            >
+              Labs
+            </Link>
+            <Link
+              href="/visualizer"
+              className="px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-colors"
+            >
+              Visualizer
+            </Link>
+            <Link
+              href="/practice"
+              className="px-3.5 py-1.5 rounded-full text-xs font-bold text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/10 transition-colors"
+            >
+              DSA Sheets
+            </Link>
+            <Link
+              href="/labs/ai-machine-learning"
+              className="px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-colors"
+            >
+              ML Track
+            </Link>
+            <Link
+              href="/courses"
+              className="px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-colors"
+            >
+              Curriculum
+            </Link>
 
-          <ModeToggle />
+            {/* Red Accent CTA Pill Button (Student Portal / Login) */}
+            <button
+              type="button"
+              onClick={() => setAuthOpen(true)}
+              className="ml-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-[#e11d48] to-[#dc2626] text-white shadow-md shadow-red-500/30 hover:scale-105 transition-transform flex items-center gap-1 cursor-pointer"
+            >
+              <span>{studentProfile ? `Student: ${studentProfile.name.split(' ')[0]}` : "Student Login"}</span>
+              <ArrowRight className="h-3 w-3" />
+            </button>
+          </nav>
 
-          {/* Mobile Sheet Trigger */}
-          <div className="lg:hidden">
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="sm" className="p-2">
-                  <Menu className="h-5 w-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="flex flex-col justify-between">
-                <div>
-                  <SheetHeader className="mb-4">
-                    <SheetTitle className="flex items-center gap-2 text-left">
-                      <FlaskConical className="h-5 w-5 text-primary" />
-                      <span>Virtual Labs</span>
-                    </SheetTitle>
-                  </SheetHeader>
+          {/* Right Action Icons: Circular Search Button & Mode Toggle */}
+          <div className="flex items-center gap-2 shrink-0">
+            {/* Circular Search Button */}
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              className="w-9 h-9 rounded-full bg-[#121214] text-white flex items-center justify-center border border-white/10 hover:border-red-500/50 hover:scale-105 transition-all shadow-md cursor-pointer"
+              title="Search labs & algorithms (Ctrl+K)"
+            >
+              <Search className="h-4 w-4" />
+            </button>
 
-                  <div className="flex flex-col gap-1.5">
-                    <Button asChild variant="ghost" className="justify-start text-sm" onClick={() => setIsOpen(false)}>
-                      <Link href="/">Home Portal</Link>
-                    </Button>
-                    <Button asChild variant="ghost" className="justify-start text-sm" onClick={() => setIsOpen(false)}>
-                      <Link href="/labs">Broad Areas & Labs Catalogue</Link>
-                    </Button>
-                    <Button asChild variant="ghost" className="justify-start text-sm" onClick={() => setIsOpen(false)}>
-                      <Link href="/labs/data-structures">Data Structures Virtual Lab</Link>
-                    </Button>
-                    <Button asChild variant="ghost" className="justify-start text-sm" onClick={() => setIsOpen(false)}>
-                      <Link href="/courses">Semester Curriculum (Sem 1-8)</Link>
-                    </Button>
-                    <Button asChild variant="ghost" className="justify-start text-sm" onClick={() => setIsOpen(false)}>
-                      <Link href="/resources">Resource Vault</Link>
-                    </Button>
-                    <Button asChild variant="ghost" className="justify-start text-sm" onClick={() => setIsOpen(false)}>
-                      <Link href="/events">Department Events & Bootcamps</Link>
-                    </Button>
-                    <Button asChild variant="ghost" className="justify-start text-sm" onClick={() => setIsOpen(false)}>
-                      <Link href="/faculty">Faculty Profiles</Link>
-                    </Button>
-                    <Button asChild variant="ghost" className="justify-start text-sm" onClick={() => setIsOpen(false)}>
-                      <Link href="/visualizer">DSA Visualizers Studio</Link>
-                    </Button>
-                    <Button asChild variant="default" className="justify-start text-sm bg-primary text-white mt-2" onClick={() => setIsOpen(false)}>
-                      <Link href="/dashboard">Student Progress & Verified Certificate</Link>
-                    </Button>
-                  </div>
-                </div>
+            {/* Student Auth Avatar / Trigger Button */}
+            <button
+              type="button"
+              onClick={() => setAuthOpen(true)}
+              className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/95 dark:bg-card/90 backdrop-blur-md border border-slate-200 dark:border-border shadow-xs text-xs font-medium text-slate-800 dark:text-slate-200 hover:border-primary transition-colors cursor-pointer"
+            >
+              <span className={`h-2 w-2 rounded-full ${studentProfile ? "bg-emerald-500" : "bg-amber-500"} animate-pulse`} />
+              <span>{studentProfile ? studentProfile.registerNumber || "Student Active" : "Sign In"}</span>
+            </button>
 
-                <SheetFooter className="flex-col items-start gap-2 pt-4 border-t">
-                  <div className="text-xs text-muted-foreground">
-                    National Mission on Education through ICT • VSB Engineering College
-                  </div>
-                </SheetFooter>
-              </SheetContent>
-            </Sheet>
+            <ModeToggle />
+
+            {/* Mobile Menu Trigger */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center text-foreground"
+            >
+              {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
           </div>
         </div>
-      </div>
-    </header>
+
+        {/* Mobile Dropdown Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden mt-2 p-4 bg-[#121214] text-white rounded-2xl border border-white/10 shadow-2xl space-y-2 pointer-events-auto">
+            <Link
+              href="/"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block px-3 py-2 rounded-lg text-xs font-semibold hover:bg-white/10"
+            >
+              Home Portal
+            </Link>
+            <Link
+              href="/labs"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block px-3 py-2 rounded-lg text-xs font-semibold hover:bg-white/10"
+            >
+              Virtual Labs Catalogue (4 Labs)
+            </Link>
+            <Link
+              href="/labs/data-structures"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block px-3 py-2 rounded-lg text-xs font-semibold hover:bg-white/10"
+            >
+              Data Structures Lab (Java)
+            </Link>
+            <Link
+              href="/labs/ai-machine-learning"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block px-3 py-2 rounded-lg text-xs font-semibold hover:bg-white/10"
+            >
+              Machine Learning Lab &amp; NumPy Track
+            </Link>
+            <Link
+              href="/practice"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block px-3 py-2 rounded-lg text-xs font-bold text-yellow-400 hover:bg-white/10"
+            >
+              DSA Sheets (Practice)
+            </Link>
+            <Link
+              href="/visualizer"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block px-3 py-2 rounded-lg text-xs font-semibold hover:bg-white/10"
+            >
+              DSA Visualizer Studio
+            </Link>
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setAuthOpen(true);
+              }}
+              className="w-full px-3 py-2 rounded-lg text-xs font-bold bg-[#e11d48] text-white text-center cursor-pointer"
+            >
+              {studentProfile ? "Student Portal & Profile" : "Student Login & Register"}
+            </button>
+          </div>
+        )}
+      </header>
+
+      {/* Student Auth Dialog Modal */}
+      <StudentAuthDialog open={authOpen} onOpenChange={setAuthOpen} />
+
+      {/* Global Interactive Search Modal Dialog */}
+      <Dialog open={searchOpen} onOpenChange={setSearchOpen}>
+        <DialogContent className="max-w-xl p-0 overflow-hidden bg-white dark:bg-card/95 backdrop-blur-xl border border-border shadow-2xl rounded-2xl">
+          <DialogHeader className="p-4 pb-0">
+            <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-muted/50 border border-border/60">
+              <Search className="h-4 w-4 text-muted-foreground" />
+              <input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Type an algorithm, data structure, or lab keyword (e.g. Bubble, Stack, NumPy, LeetCode)..."
+                className="w-full bg-transparent text-xs text-foreground placeholder:text-muted-foreground outline-none font-sans"
+                autoFocus
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="text-xs text-muted-foreground hover:text-foreground"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              )}
+            </div>
+          </DialogHeader>
+
+          <div className="max-h-80 overflow-y-auto p-4 space-y-1.5 divide-y divide-border/30">
+            {filteredSearch.map((item, idx) => (
+              <div
+                key={idx}
+                onClick={() => {
+                  setSearchOpen(false);
+                  router.push(item.url);
+                }}
+                className="p-2.5 rounded-xl hover:bg-muted/60 transition-colors cursor-pointer flex items-start justify-between gap-3 group"
+              >
+                <div className="space-y-0.5 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-foreground group-hover:text-[#e11d48] transition-colors">
+                      {item.title}
+                    </span>
+                    <Badge variant="outline" className="text-[10px] font-mono">
+                      {item.category}
+                    </Badge>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground line-clamp-1">
+                    {item.desc}
+                  </p>
+                </div>
+                <ArrowRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-[#e11d48] group-hover:translate-x-1 transition-all mt-1 shrink-0" />
+              </div>
+            ))}
+
+            {filteredSearch.length === 0 && (
+              <div className="p-6 text-center text-xs text-muted-foreground">
+                No matching experiments or modules found for &ldquo;{searchQuery}&rdquo;.
+              </div>
+            )}
+          </div>
+
+          <div className="p-3 bg-muted/40 border-t border-border/40 flex items-center justify-between text-[10px] text-muted-foreground font-mono">
+            <span>Press ESC or click outside to close</span>
+            <span>Shortcut: Ctrl + K</span>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

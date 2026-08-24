@@ -5,16 +5,26 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { SortingStep } from "@/hooks/use-sorting";
 import { soundFx } from "@/lib/sound-fx";
-import { Volume2, VolumeX, Activity, ArrowLeftRight, CheckCircle, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Volume2, VolumeX, BarChart3, Clock, Database, Layers, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface SortingDisplayProps {
   currentStep: SortingStep;
   algorithmName: string;
+  timeComplexity?: string;
+  spaceComplexity?: string;
+  currentStepIndex?: number;
+  totalSteps?: number;
 }
 
-export function SortingDisplay({ currentStep, algorithmName }: SortingDisplayProps) {
+export function SortingDisplay({
+  currentStep,
+  algorithmName,
+  timeComplexity = "O(n²)",
+  spaceComplexity = "O(1)",
+  currentStepIndex = 0,
+  totalSteps = 20,
+}: SortingDisplayProps) {
   const { array, comparingIndices, swappedIndices, sortedIndices, specialIndices, message } = currentStep;
   const maxValue = Math.max(...array, 100);
   const [soundEnabled, setSoundEnabled] = useState(true);
@@ -34,156 +44,191 @@ export function SortingDisplay({ currentStep, algorithmName }: SortingDisplayPro
     }
   }, [comparingIndices, swappedIndices, sortedIndices, array, maxValue, soundEnabled]);
 
+  // Y-axis grid levels matching image.png
+  const yAxisLevels = [100, 75, 50, 25, 0];
+
   return (
-    <div className="space-y-4">
-      {/* HUD Metrics Header Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="p-3 rounded-xl bg-card/80 backdrop-blur-md border border-border/60 shadow-xs flex items-center justify-between">
-          <div className="space-y-0.5">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">Comparisons</span>
-            <span className="text-lg font-black font-mono text-amber-500">{currentStep.comparisons}</span>
-          </div>
-          <Activity className="h-5 w-5 text-amber-500/60 shrink-0" />
-        </div>
+    <div className="space-y-5">
+      {/* ============================================================== */}
+      {/* TOP CANVAS & LEGEND GRID MATCHING IMAGE.PNG                    */}
+      {/* ============================================================== */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        {/* Main Bar Chart Canvas (Left 9 Cols) */}
+        <div className="lg:col-span-9 space-y-3">
+          {/* Top Metric Cards (Size & Step) */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="px-4 py-2 rounded-xl bg-card border border-border/80 shadow-xs flex items-center gap-3">
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-muted-foreground block font-mono">Size</span>
+                  <span className="text-base font-black text-foreground font-mono">{array.length}</span>
+                </div>
+                <div className="h-6 w-[1px] bg-border/60" />
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-muted-foreground block font-mono">Step</span>
+                  <span className="text-base font-black text-[#1e88e5] font-mono">
+                    {currentStepIndex + 1} / {totalSteps || 20}
+                  </span>
+                </div>
+              </div>
+            </div>
 
-        <div className="p-3 rounded-xl bg-card/80 backdrop-blur-md border border-border/60 shadow-xs flex items-center justify-between">
-          <div className="space-y-0.5">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">Swaps / Shifts</span>
-            <span className="text-lg font-black font-mono text-orange-500">{currentStep.swaps}</span>
-          </div>
-          <ArrowLeftRight className="h-5 w-5 text-orange-500/60 shrink-0" />
-        </div>
-
-        <div className="p-3 rounded-xl bg-card/80 backdrop-blur-md border border-border/60 shadow-xs flex items-center justify-between">
-          <div className="space-y-0.5">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">Sorted Items</span>
-            <span className="text-lg font-black font-mono text-emerald-500">{sortedIndices.length} / {array.length}</span>
-          </div>
-          <CheckCircle className="h-5 w-5 text-emerald-500/60 shrink-0" />
-        </div>
-
-        <div className="p-3 rounded-xl bg-card/80 backdrop-blur-md border border-border/60 shadow-xs flex items-center justify-between">
-          <div className="space-y-0.5">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">Audio FX</span>
+            {/* Audio Toggle */}
             <button
               type="button"
               onClick={() => setSoundEnabled(!soundEnabled)}
-              className="text-xs font-bold flex items-center gap-1 text-primary hover:underline"
+              className="px-3 py-1.5 rounded-lg border border-border/70 text-xs font-semibold flex items-center gap-1.5 text-muted-foreground hover:text-foreground bg-card shadow-xs"
             >
-              {soundEnabled ? <Volume2 className="h-4 w-4 text-emerald-500" /> : <VolumeX className="h-4 w-4 text-muted-foreground" />}
-              <span>{soundEnabled ? "On" : "Muted"}</span>
+              {soundEnabled ? <Volume2 className="h-3.5 w-3.5 text-emerald-500" /> : <VolumeX className="h-3.5 w-3.5" />}
+              <span>{soundEnabled ? "Audio On" : "Muted"}</span>
             </button>
           </div>
-          <Sparkles className="h-5 w-5 text-primary/60 shrink-0" />
+
+          {/* Canvas with Y-Axis Grids and Vibrant Pillars matching image.png */}
+          <Card className="border-border/80 bg-card shadow-md relative overflow-hidden rounded-2xl">
+            <CardContent className="p-6 pt-4">
+              <div className="h-72 sm:h-80 relative flex flex-col justify-between">
+                {/* Horizontal Dashed Y-Axis Grid Lines matching image.png */}
+                <div className="absolute inset-x-0 inset-y-0 flex flex-col justify-between pointer-events-none pb-6">
+                  {yAxisLevels.map((lvl) => (
+                    <div key={lvl} className="flex items-center gap-3 w-full">
+                      <span className="text-[11px] font-mono text-muted-foreground w-6 text-right select-none font-semibold">
+                        {lvl}
+                      </span>
+                      <div className="flex-1 border-b border-dashed border-border/60" />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Bars Container */}
+                <div className="h-full flex items-end justify-center gap-3 sm:gap-5 pl-10 pr-4 pb-6 pt-6 z-10">
+                  {array.map((value, idx) => {
+                    const isComparing = comparingIndices.includes(idx);
+                    const isSwapped = swappedIndices.includes(idx);
+                    const isSorted = sortedIndices.includes(idx);
+
+                    // Colors strictly adhering to image.png
+                    let barBg = "bg-[#1e88e5]"; // Vibrant Blue for unsorted
+                    if (isSorted) {
+                      barBg = "bg-[#10b981]"; // Emerald Green for sorted
+                    } else if (isSwapped) {
+                      barBg = "bg-[#ef4444]"; // Coral Red for swap
+                    } else if (isComparing) {
+                      barBg = "bg-[#f59e0b]"; // Warm Amber for comparing
+                    }
+
+                    const heightPercentage = Math.max((value / maxValue) * 100, 10);
+
+                    return (
+                      <div key={idx} className="flex-1 max-w-[56px] flex flex-col items-center justify-end h-full relative group">
+                        {/* Number Value On Top of Bar matching image.png */}
+                        <span className="text-xs sm:text-sm font-black font-mono text-foreground mb-1 drop-shadow-xs">
+                          {value}
+                        </span>
+
+                        {/* Pillar Bar with Rounded Corners matching image.png */}
+                        <motion.div
+                          layout
+                          initial={{ height: 0 }}
+                          animate={{ height: `${heightPercentage}%` }}
+                          transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                          className={`w-full rounded-t-xl transition-colors duration-200 shadow-sm ${barBg}`}
+                        />
+
+                        {/* Index Label Underneath Bar matching image.png */}
+                        <span className="text-xs font-bold font-mono text-foreground pt-1.5 select-none">
+                          {idx}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Solid Baseline Divider matching image.png */}
+                <div className="absolute inset-x-0 bottom-6 pl-9 border-b-2 border-foreground/80 z-20 pointer-events-none" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Right Column: Legend Card & Current Array matching image.png (Right 3 Cols) */}
+        <div className="lg:col-span-3 space-y-4 flex flex-col justify-start">
+          {/* Legend Card */}
+          <Card className="border-border/80 bg-card p-4 rounded-2xl shadow-sm space-y-3">
+            <h4 className="font-black text-xs uppercase tracking-wider text-foreground font-heading">
+              Legend
+            </h4>
+            <div className="space-y-2.5 text-xs font-medium">
+              <div className="flex items-center gap-2.5">
+                <span className="h-4 w-4 rounded-md bg-[#1e88e5] shrink-0 shadow-xs" />
+                <span className="text-foreground font-semibold">Unsorted Element</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <span className="h-4 w-4 rounded-md bg-[#f59e0b] shrink-0 shadow-xs" />
+                <span className="text-foreground font-semibold">Comparing</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <span className="h-4 w-4 rounded-md bg-[#ef4444] shrink-0 shadow-xs" />
+                <span className="text-foreground font-semibold">Swap</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <span className="h-4 w-4 rounded-md bg-[#10b981] shrink-0 shadow-xs" />
+                <span className="text-foreground font-semibold">Sorted / Locked</span>
+              </div>
+            </div>
+          </Card>
+
+          {/* Current Array Card */}
+          <Card className="border-border/80 bg-card p-4 rounded-2xl shadow-sm space-y-2">
+            <h4 className="font-black text-xs uppercase tracking-wider text-foreground font-heading">
+              Current Array
+            </h4>
+            <div className="p-2.5 bg-muted/60 rounded-xl font-mono text-xs text-foreground font-bold border border-border/50 break-all">
+              [{array.join(", ")}]
+            </div>
+          </Card>
         </div>
       </div>
 
-      {/* ULTRA-PREMIUM GLASSMORPHIC CANVAS */}
-      <Card className="border-secondary/40 overflow-hidden bg-gradient-to-b from-stone-950 via-stone-900 to-black text-white shadow-2xl relative">
-        {/* Subtle LED Grid Background */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808010_1px,transparent_1px),linear-gradient(to_bottom,#80808010_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
-
-        <CardContent className="p-6 relative z-10">
-          <div className="h-72 sm:h-96 flex items-end justify-center gap-2 sm:gap-4 px-2 pt-10 pb-6 border-b border-white/10 relative">
-            {array.map((value, idx) => {
-              const isComparing = comparingIndices.includes(idx);
-              const isSwapped = swappedIndices.includes(idx);
-              const isSorted = sortedIndices.includes(idx);
-              const isMin = specialIndices?.min === idx;
-              const isKey = specialIndices?.key === idx;
-
-              // Premium Gradient Styling
-              let pillarStyle = "bg-gradient-to-t from-stone-800 to-amber-700/60 border-t-2 border-amber-400/80 text-amber-100 shadow-[0_0_15px_rgba(217,119,6,0.15)]";
-              let labelBadge = null;
-
-              if (isSorted) {
-                pillarStyle = "bg-gradient-to-t from-emerald-950 via-emerald-800 to-emerald-400 border-t-2 border-emerald-200 text-white shadow-[0_0_25px_rgba(16,185,129,0.5)]";
-                labelBadge = "Sorted";
-              } else if (isSwapped) {
-                pillarStyle = "bg-gradient-to-t from-red-950 via-red-700 to-amber-400 border-t-2 border-amber-200 ring-2 ring-red-400 shadow-[0_0_35px_rgba(239,68,68,0.7)] animate-pulse";
-                labelBadge = "Swap";
-              } else if (isComparing) {
-                pillarStyle = "bg-gradient-to-t from-amber-950 via-orange-600 to-yellow-300 border-t-2 border-yellow-100 ring-2 ring-amber-400 shadow-[0_0_30px_rgba(245,158,11,0.7)] scale-[1.03]";
-                labelBadge = "Compare";
-              } else if (isMin) {
-                pillarStyle = "bg-gradient-to-t from-rose-950 via-rose-700 to-rose-400 border-t-2 border-rose-200 ring-2 ring-rose-400 shadow-[0_0_25px_rgba(244,63,94,0.6)]";
-                labelBadge = "Min";
-              } else if (isKey) {
-                pillarStyle = "bg-gradient-to-t from-amber-950 via-amber-800 to-yellow-500 border-t-2 border-yellow-300 ring-2 ring-yellow-400 shadow-[0_0_25px_rgba(234,179,8,0.6)]";
-                labelBadge = "Key";
-              }
-
-              const heightPercentage = Math.max((value / maxValue) * 100, 14);
-
-              return (
-                <div key={idx} className="flex-1 max-w-[56px] flex flex-col items-center justify-end h-full group relative">
-                  {/* Floating Action Badge */}
-                  <AnimatePresence>
-                    {labelBadge && (
-                      <motion.span
-                        initial={{ opacity: 0, y: 5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -5 }}
-                        className="absolute -top-8 text-[10px] font-black px-2 py-0.5 rounded-full bg-black/90 border border-white/20 shadow-lg text-amber-400 uppercase tracking-widest z-20 whitespace-nowrap"
-                      >
-                        {labelBadge}
-                      </motion.span>
-                    )}
-                  </AnimatePresence>
-
-                  {/* 3D Gradient Pillar Bar */}
-                  <motion.div
-                    layout
-                    initial={{ height: 0 }}
-                    animate={{ height: `${heightPercentage}%` }}
-                    transition={{ type: "spring", stiffness: 350, damping: 25 }}
-                    className={`w-full rounded-t-xl flex flex-col items-center justify-between p-1.5 transition-all duration-200 relative overflow-hidden ${pillarStyle}`}
-                  >
-                    {/* Top Inner Light Specular Highlight */}
-                    <div className="absolute top-0 inset-x-0 h-1 bg-white/40 blur-[1px]" />
-
-                    <span className="text-[11px] sm:text-xs font-black font-mono pt-1 text-white tracking-tight drop-shadow-md">
-                      {value}
-                    </span>
-
-                    <span className="text-[9px] font-mono opacity-80 pb-0.5 text-white/80">
-                      [{idx}]
-                    </span>
-                  </motion.div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Color Legend Footer */}
-          <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-stone-400 pt-5">
-            <div className="flex items-center gap-2">
-              <span className="h-3 w-3 rounded-full bg-amber-700/60 border border-amber-400/80 shadow-xs" />
-              <span className="text-stone-300">Unsorted Array</span>
+      {/* ============================================================== */}
+      {/* BOTTOM STATUS BAR WITH TC & SC PILLS MATCHING IMAGE.PNG        */}
+      {/* ============================================================== */}
+      <Card className="border-border/80 bg-card p-4 rounded-2xl shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          {/* Running Status & Narrative */}
+          <div className="flex items-start gap-3">
+            <div className="h-9 w-9 rounded-full bg-[#1e88e5] text-white flex items-center justify-center shrink-0 shadow-sm">
+              <BarChart3 className="h-5 w-5" />
             </div>
-            <div className="flex items-center gap-2">
-              <span className="h-3 w-3 rounded-full bg-amber-400 border border-yellow-100 ring-1 ring-amber-400 shadow-xs" />
-              <span className="text-amber-400 font-semibold">Active Compare</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="h-3 w-3 rounded-full bg-red-500 border border-amber-200 ring-1 ring-red-400 shadow-xs" />
-              <span className="text-red-400 font-semibold">Swap Step</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="h-3 w-3 rounded-full bg-emerald-400 border border-emerald-200 shadow-xs" />
-              <span className="text-emerald-400 font-semibold">Sorted Lock</span>
+            <div className="space-y-0.5">
+              <h5 className="text-xs font-black text-foreground font-heading">
+                {algorithmName} is active...
+              </h5>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                {message || "Comparing adjacent elements and swapping if they are in wrong order."}
+              </p>
             </div>
           </div>
-        </CardContent>
+
+          {/* Time Complexity & Space Complexity Badges matching image.png */}
+          <div className="flex items-center gap-3 shrink-0 self-end md:self-center">
+            <div className="flex items-center gap-1.5 text-xs font-semibold">
+              <span className="text-muted-foreground text-[11px]">Time Complexity</span>
+              <Badge className="bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30 font-mono text-xs font-bold px-2.5 py-0.5">
+                {timeComplexity}
+              </Badge>
+            </div>
+
+            <div className="flex items-center gap-1.5 text-xs font-semibold">
+              <span className="text-muted-foreground text-[11px]">Space Complexity</span>
+              <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 font-mono text-xs font-bold px-2.5 py-0.5">
+                {spaceComplexity}
+              </Badge>
+            </div>
+          </div>
+        </div>
       </Card>
-
-      {/* Step Explanation Narration */}
-      <div className="bg-card/80 backdrop-blur-md border border-primary/20 p-4 rounded-xl flex items-start gap-3 shadow-sm">
-        <div className="h-2.5 w-2.5 rounded-full bg-amber-500 mt-1 shrink-0 animate-ping" />
-        <p className="text-sm font-semibold text-foreground leading-relaxed">
-          {message}
-        </p>
-      </div>
     </div>
   );
 }
+

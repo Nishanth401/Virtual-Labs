@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { Experiment, EXPERIMENTS_DATA } from "@/data/experiments";
 import { QUIZZES_DATA } from "@/data/quizzes";
@@ -11,6 +11,8 @@ import { StackVisualizer } from "@/components/visualizer/stack/stack-visualizer"
 import { QueueVisualizer } from "@/components/visualizer/queue/queue-visualizer";
 import { LinkedListVisualizer } from "@/components/visualizer/linked-list/linked-list-visualizer";
 import { SortingVisualizer } from "@/components/visualizer/sorting/sorting-visualizer";
+import { RecursionVisualizerPanel } from "@/components/visualizer/recursion/recursion-visualizer-panel";
+import { LeetCodePracticeCard } from "@/components/vlab/leetcode-practice-card";
 import { QuizEngine } from "@/components/quiz/quiz-engine";
 
 // UI Components
@@ -19,13 +21,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import {
-  BookOpen,
-  Target,
-  FileText,
+  Video,
   PlayCircle,
-  Award,
+  Code2,
+  Trophy,
   MessageSquareHeart,
   ChevronLeft,
   ChevronRight,
@@ -34,8 +34,9 @@ import {
   CheckCircle2,
   Cpu,
   Layers,
-  Sparkles,
-  Send
+  BookOpen,
+  Send,
+  Sparkles
 } from "lucide-react";
 
 interface ExperimentWorkspaceProps {
@@ -44,14 +45,13 @@ interface ExperimentWorkspaceProps {
 
 export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
   const { progress, saveFeedback } = useStudentProgress();
-  const [activeTab, setActiveTab] = useState<string>("introduction");
+  const [activeTab, setActiveTab] = useState<string>("video-concept");
   const [userRating, setUserRating] = useState<number>(5);
   const [feedbackComment, setFeedbackComment] = useState<string>("");
   const [feedbackSubmitted, setFeedbackSubmitted] = useState<boolean>(false);
 
   const quiz = QUIZZES_DATA[experiment.quizId];
   const isCompleted = progress.completedExperiments.includes(experiment.id);
-  const pastScore = progress.quizAttempts[experiment.id];
 
   // Find prev and next experiments
   const currentIndex = EXPERIMENTS_DATA.findIndex((e) => e.id === experiment.id);
@@ -71,14 +71,16 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
   return (
     <div className="container max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
       {/* Top Header & Breadcrumbs */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-border/50 pb-5">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-border/60 pb-5">
         <div>
           <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground mb-2">
             <Link href="/" className="hover:text-primary transition-colors">Home</Link>
             <span>/</span>
-            <Link href="/labs" className="hover:text-primary transition-colors">Labs</Link>
+            <Link href="/labs" className="hover:text-primary transition-colors">Virtual Labs</Link>
             <span>/</span>
-            <Link href="/labs/data-structures" className="hover:text-primary transition-colors">Data Structures</Link>
+            <Link href={`/labs/${experiment.labId}`} className="hover:text-primary transition-colors">
+              {experiment.labId === "data-structures" ? "Data Structures Lab (Java)" : "AI & ML Lab"}
+            </Link>
             <span>/</span>
             <span className="text-foreground font-semibold">{experiment.title}</span>
           </div>
@@ -95,6 +97,10 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
           </div>
 
           <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-muted-foreground">
+            <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/30 font-semibold font-mono">
+              Java DSA
+            </Badge>
+            <span>•</span>
             <span className="flex items-center gap-1">
               <Clock className="h-3.5 w-3.5" /> {experiment.estimatedMinutes} mins
             </span>
@@ -104,7 +110,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             </Badge>
             <span>•</span>
             <span className="flex items-center gap-1 text-amber-500 font-semibold">
-              <Star className="h-3.5 w-3.5 fill-current" /> {experiment.rating} ({experiment.ratingsCount} reviews)
+              <Star className="h-3.5 w-3.5 fill-current" /> {experiment.rating} ({experiment.ratingsCount} verified reviews)
             </span>
           </div>
         </div>
@@ -128,137 +134,105 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
         </div>
       </div>
 
-      {/* Main Educational Multi-Tab Layout */}
+      {/* 4 CORE PART WORKSPACE TABS */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
-        <TabsList className="grid grid-cols-3 sm:grid-cols-7 w-full p-1 bg-muted/60 backdrop-blur-md rounded-xl border border-border/50 h-auto">
-          <TabsTrigger value="introduction" className="text-xs py-2 gap-1.5">
-            <BookOpen className="h-3.5 w-3.5" /> Introduction
+        <TabsList className="grid grid-cols-2 md:grid-cols-5 w-full p-1 bg-muted/60 backdrop-blur-md rounded-xl border border-border h-auto gap-1">
+          <TabsTrigger value="video-concept" className="text-xs py-2.5 gap-1.5 font-bold">
+            <Video className="h-4 w-4 text-blue-500" /> Part 1: Video Tutorial &amp; Theory
           </TabsTrigger>
-          <TabsTrigger value="objective" className="text-xs py-2 gap-1.5">
-            <Target className="h-3.5 w-3.5" /> Objective
+          <TabsTrigger value="simulation" className="text-xs py-2.5 gap-1.5 font-bold text-primary">
+            <PlayCircle className="h-4 w-4 text-primary" /> Part 2: Interactive Simulator
           </TabsTrigger>
-          <TabsTrigger value="theory" className="text-xs py-2 gap-1.5">
-            <FileText className="h-3.5 w-3.5" /> Theory
+          <TabsTrigger value="recursion-trace" className="text-xs py-2.5 gap-1.5 font-bold text-indigo-400">
+            <Code2 className="h-4 w-4 text-indigo-400" /> Part 3: Java Code &amp; Call Stack
           </TabsTrigger>
-          <TabsTrigger value="procedure" className="text-xs py-2 gap-1.5">
-            <Layers className="h-3.5 w-3.5" /> Procedure
+          <TabsTrigger value="leetcode-quiz" className="text-xs py-2.5 gap-1.5 font-bold text-amber-500">
+            <Trophy className="h-4 w-4 text-amber-500" /> Part 4: LeetCode &amp; Quiz
           </TabsTrigger>
-          <TabsTrigger value="simulation" className="text-xs py-2 gap-1.5 font-bold text-primary">
-            <PlayCircle className="h-3.5 w-3.5" /> Simulation
-          </TabsTrigger>
-          <TabsTrigger value="quiz" className="text-xs py-2 gap-1.5">
-            <Award className="h-3.5 w-3.5" /> Self-Assessment
-          </TabsTrigger>
-          <TabsTrigger value="feedback" className="text-xs py-2 gap-1.5">
-            <MessageSquareHeart className="h-3.5 w-3.5" /> Feedback
+          <TabsTrigger value="feedback" className="text-xs py-2.5 gap-1.5 font-semibold">
+            <MessageSquareHeart className="h-4 w-4 text-rose-400" /> Lab Feedback
           </TabsTrigger>
         </TabsList>
 
-        {/* TAB 1: INTRODUCTION */}
-        <TabsContent value="introduction" className="space-y-6">
-          <Card className="border-secondary/40 bg-card/60 backdrop-blur-xs shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-xl font-bold font-heading">Experiment Introduction & Background</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6 text-sm leading-relaxed text-muted-foreground">
-              <p className="text-base text-foreground font-medium">
-                {experiment.sections.introduction}
-              </p>
-
-              {/* Prerequisites Card */}
-              <div className="p-4 rounded-xl bg-muted/40 border border-border/50 space-y-2">
-                <h4 className="font-bold text-xs uppercase tracking-wider text-primary">
-                  Required Prerequisites
-                </h4>
-                <ul className="space-y-1 text-xs">
-                  {experiment.sections.prerequisites.map((p, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <span>{p}</span>
-                    </li>
-                  ))}
-                </ul>
+        {/* ============================================================== */}
+        {/* PART 1: VIDEO TUTORIAL & TECHNICAL THEORY */}
+        {/* ============================================================== */}
+        <TabsContent value="video-concept" className="space-y-6">
+          {/* Targeted YouTube Video Embed Frame */}
+          <Card className="border-border bg-card/90 overflow-hidden shadow-sm">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-6">
+              {/* Left 7 Cols: Video Player */}
+              <div className="lg:col-span-7 space-y-3">
+                <div className="aspect-video w-full rounded-xl bg-slate-950 border border-border overflow-hidden shadow-md">
+                  <iframe
+                    src={experiment.sections.videoUrl || "https://www.youtube-nocookie.com/embed/zWg7U0OEAoE"}
+                    title={experiment.sections.videoTitle}
+                    className="w-full h-full border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <span className="font-semibold text-foreground">{experiment.sections.videoTitle}</span>
+                  <Badge variant="outline" className="text-[10px]">{experiment.sections.videoChannel}</Badge>
+                </div>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-border/40">
-                <Button onClick={() => setActiveTab("objective")} className="text-xs gap-1.5">
-                  Proceed to Learning Objectives <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+              {/* Right 5 Cols: Overview & Objectives */}
+              <div className="lg:col-span-5 space-y-4 flex flex-col justify-between">
+                <div className="space-y-3">
+                  <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/30">
+                    Concept &amp; Objectives
+                  </Badge>
+                  <h3 className="text-xl font-bold text-foreground font-heading">
+                    {experiment.title} Overview
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {experiment.sections.introduction}
+                  </p>
 
-        {/* TAB 2: OBJECTIVE */}
-        <TabsContent value="objective" className="space-y-6">
-          <Card className="border-secondary/40 bg-card/60 backdrop-blur-xs shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-xl font-bold font-heading">Learning Objectives & Target Audience</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6 text-sm leading-relaxed text-muted-foreground">
-              <div className="p-4 rounded-xl bg-primary/5 border border-primary/20 text-foreground">
-                <strong className="text-primary block text-xs uppercase tracking-wider mb-1">Primary Objective</strong>
-                <p className="text-sm font-medium">{experiment.sections.objective}</p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl border border-border/60 bg-muted/20 space-y-2">
-                  <h4 className="font-bold text-xs uppercase tracking-wider text-foreground">
-                    Undergraduate (UG) Alignment
-                  </h4>
-                  <ul className="space-y-1 text-xs">
-                    {experiment.sections.targetAudience.ug.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-2">
-                        <span className="text-primary font-bold">•</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="p-3 bg-primary/5 border border-primary/20 rounded-xl space-y-1">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-primary block">
+                      Learning Objective
+                    </span>
+                    <p className="text-xs text-foreground font-medium leading-relaxed">
+                      {experiment.sections.objective}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="p-4 rounded-xl border border-border/60 bg-muted/20 space-y-2">
-                  <h4 className="font-bold text-xs uppercase tracking-wider text-foreground">
-                    Postgraduate & Competitive Alignment
-                  </h4>
-                  <ul className="space-y-1 text-xs">
-                    {experiment.sections.targetAudience.pg.map((item, idx) => (
-                      <li key={idx} className="flex items-start gap-2">
-                        <span className="text-primary font-bold">•</span>
-                        <span>{item}</span>
+                <div className="p-3 bg-muted/40 rounded-xl border border-border/50 space-y-1.5">
+                  <span className="text-[10px] font-mono uppercase font-bold text-muted-foreground">
+                    Required Prerequisites
+                  </span>
+                  <ul className="space-y-1 text-xs text-muted-foreground">
+                    {experiment.sections.prerequisites.map((p, idx) => (
+                      <li key={idx} className="flex items-start gap-1.5">
+                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                        <span>{p}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
               </div>
-
-              <div className="flex items-center justify-between pt-4 border-t border-border/40">
-                <Button variant="outline" onClick={() => setActiveTab("introduction")} className="text-xs gap-1.5">
-                  <ChevronLeft className="h-4 w-4" /> Back to Introduction
-                </Button>
-                <Button onClick={() => setActiveTab("theory")} className="text-xs gap-1.5">
-                  Explore Theory & Formulas <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardContent>
+            </div>
           </Card>
-        </TabsContent>
 
-        {/* TAB 3: THEORY */}
-        <TabsContent value="theory" className="space-y-6">
-          <Card className="border-secondary/40 bg-card/60 backdrop-blur-xs shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-xl font-bold font-heading">Technical Theory & Core Principles</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6 text-sm leading-relaxed text-muted-foreground">
-              <p className="text-foreground text-sm font-medium">
+          {/* Theory, Complexities & Applications */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card className="md:col-span-2 border-border bg-card/80 p-6 space-y-4">
+              <CardTitle className="text-lg font-bold font-heading">
+                Technical Principles &amp; Asymptotic Complexity
+              </CardTitle>
+              <p className="text-xs text-muted-foreground leading-relaxed">
                 {experiment.sections.theory.overview}
               </p>
 
               {/* Key Concept Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                 {experiment.sections.theory.keyConcepts.map((concept, idx) => (
-                  <div key={idx} className="p-4 rounded-xl border border-border/60 bg-muted/20 space-y-1.5">
-                    <h5 className="font-bold text-foreground text-xs uppercase tracking-wider text-primary">
+                  <div key={idx} className="p-3 rounded-xl border border-border bg-muted/20 space-y-1">
+                    <h5 className="font-bold text-xs uppercase tracking-wider text-primary">
                       {concept.title}
                     </h5>
                     <p className="text-xs text-muted-foreground leading-relaxed">{concept.desc}</p>
@@ -266,45 +240,51 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 ))}
               </div>
 
-              {/* Asymptotic Complexities Table */}
+              {/* Complexity Table */}
               <div className="space-y-2 pt-2">
-                <h4 className="font-bold text-xs uppercase tracking-wider text-foreground">
-                  Asymptotic Time & Space Complexity Summary
-                </h4>
-                <div className="border border-border/60 rounded-xl overflow-hidden">
-                  <table className="w-full text-xs text-left">
-                    <thead className="bg-muted/60 text-muted-foreground border-b border-border/60">
+                <span className="text-xs font-bold uppercase text-foreground">
+                  Asymptotic Runtime Complexity Summary
+                </span>
+                <div className="border border-border rounded-xl overflow-hidden text-xs">
+                  <table className="w-full text-left">
+                    <thead className="bg-muted/60 text-muted-foreground border-b border-border">
                       <tr>
-                        <th className="p-3 font-semibold">Operation / Case</th>
-                        <th className="p-3 font-semibold">Best Case</th>
-                        <th className="p-3 font-semibold">Average Case</th>
-                        <th className="p-3 font-semibold">Worst Case</th>
-                        <th className="p-3 font-semibold">Auxiliary Space</th>
+                        <th className="p-2.5 font-semibold">Case / Operation</th>
+                        <th className="p-2.5 font-semibold">Best</th>
+                        <th className="p-2.5 font-semibold">Average</th>
+                        <th className="p-2.5 font-semibold">Worst</th>
+                        <th className="p-2.5 font-semibold">Space</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-border/40 font-mono">
-                      {experiment.sections.theory.complexities.map((comp, idx) => (
+                    <tbody className="divide-y divide-border/50 font-mono">
+                      {experiment.sections.theory.complexities.map((c, idx) => (
                         <tr key={idx} className="hover:bg-muted/20">
-                          <td className="p-3 font-sans font-medium text-foreground">{comp.operation}</td>
-                          <td className="p-3 text-emerald-500 font-bold">{comp.best}</td>
-                          <td className="p-3 text-amber-500 font-bold">{comp.avg}</td>
-                          <td className="p-3 text-rose-500 font-bold">{comp.worst}</td>
-                          <td className="p-3 text-teal-600">{comp.space}</td>
+                          <td className="p-2.5 font-sans font-medium text-foreground">{c.operation}</td>
+                          <td className="p-2.5 text-emerald-500 font-bold">{c.best}</td>
+                          <td className="p-2.5 text-amber-500 font-bold">{c.avg}</td>
+                          <td className="p-2.5 text-rose-500 font-bold">{c.worst}</td>
+                          <td className="p-2.5 text-teal-500">{c.space}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
               </div>
+            </Card>
 
-              {/* Real World Applications */}
-              <div className="p-4 rounded-xl bg-muted/30 border border-border/50 space-y-2">
-                <h4 className="font-bold text-xs uppercase tracking-wider text-foreground flex items-center gap-2">
-                  <Cpu className="h-4 w-4 text-primary" /> Real-World Engineering Applications
-                </h4>
-                <ul className="space-y-1 text-xs">
+            {/* Real World Applications */}
+            <Card className="border-border bg-card/80 p-6 space-y-4 flex flex-col justify-between">
+              <div className="space-y-3">
+                <CardTitle className="text-lg font-bold font-heading flex items-center gap-2">
+                  <Cpu className="h-5 w-5 text-primary" />
+                  <span>Engineering Impact</span>
+                </CardTitle>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Real-world software engineering domains where this data structure or algorithm is utilized:
+                </p>
+                <ul className="space-y-2 text-xs text-muted-foreground">
                   {experiment.sections.theory.realWorldApplications.map((app, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
+                    <li key={idx} className="flex items-start gap-2 p-2 rounded-lg bg-muted/30 border border-border/50">
                       <span className="text-primary font-bold">•</span>
                       <span>{app}</span>
                     </li>
@@ -312,146 +292,132 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 </ul>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-border/40">
-                <Button variant="outline" onClick={() => setActiveTab("objective")} className="text-xs gap-1.5">
-                  <ChevronLeft className="h-4 w-4" /> Back to Objective
-                </Button>
-                <Button onClick={() => setActiveTab("procedure")} className="text-xs gap-1.5">
-                  View Experiment Procedure <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+              <Button onClick={() => setActiveTab("simulation")} className="w-full bg-primary hover:bg-primary/90 text-white text-xs font-bold gap-1.5 mt-4">
+                <PlayCircle className="h-4 w-4" /> Open Interactive Simulator
+              </Button>
+            </Card>
+          </div>
         </TabsContent>
 
-        {/* TAB 4: PROCEDURE & SAMPLE CODE */}
-        <TabsContent value="procedure" className="space-y-6">
-          <Card className="border-secondary/40 bg-card/60 backdrop-blur-xs shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-xl font-bold font-heading">Step-by-Step Procedure & Code Implementation</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6 text-sm leading-relaxed">
-              {/* Step list */}
-              <div className="space-y-2">
-                <h4 className="font-bold text-xs uppercase tracking-wider text-primary">
-                  Laboratory Execution Procedure
-                </h4>
-                <div className="space-y-2 bg-muted/30 p-4 rounded-xl border border-border/50 text-xs text-muted-foreground">
-                  {experiment.sections.procedure.map((step, sIdx) => (
-                    <p key={sIdx} className="leading-relaxed">{step}</p>
-                  ))}
-                </div>
-              </div>
-
-              {/* Sample Code Script */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <h4 className="font-bold text-xs uppercase tracking-wider text-foreground">
-                    C++ Reference Implementation
-                  </h4>
-                  <Badge variant="outline" className="text-[10px] font-mono">
-                    {experiment.sections.sampleCode.language.toUpperCase()}
-                  </Badge>
-                </div>
-                <pre className="p-4 bg-slate-950 text-slate-100 rounded-xl overflow-x-auto text-xs font-mono border border-border leading-relaxed">
-                  <code>{experiment.sections.sampleCode.code}</code>
-                </pre>
-              </div>
-
-              {/* Expected Output */}
-              <div className="space-y-2">
-                <h4 className="font-bold text-xs uppercase tracking-wider text-foreground">
-                  Expected Console Output
-                </h4>
-                <pre className="p-4 bg-slate-950 text-emerald-400 rounded-xl overflow-x-auto text-xs font-mono border border-border">
-                  <code>{experiment.sections.expectedOutput}</code>
-                </pre>
-              </div>
-
-              <div className="flex items-center justify-between pt-4 border-t border-border/40">
-                <Button variant="outline" onClick={() => setActiveTab("theory")} className="text-xs gap-1.5">
-                  <ChevronLeft className="h-4 w-4" /> Back to Theory
-                </Button>
-                <Button onClick={() => setActiveTab("simulation")} className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 font-bold shadow-md">
-                  <PlayCircle className="h-4 w-4" /> Open Simulation Sandbox
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* TAB 5: SIMULATION SANDBOX */}
+        {/* ============================================================== */}
+        {/* PART 2: INTERACTIVE JAVA DSA SIMULATOR */}
+        {/* ============================================================== */}
         <TabsContent value="simulation" className="space-y-6">
-          <div className="p-4 rounded-2xl bg-card/60 backdrop-blur-md border border-secondary/40 shadow-sm">
+          <div className="p-4 rounded-2xl bg-card/80 backdrop-blur-md border border-border shadow-sm">
             {experiment.simulator === "stack" && (
-              <StackVisualizer content={<p>Stack LIFO simulation sandbox.</p>} />
+              <StackVisualizer content={<p>Java Stack LIFO simulation sandbox.</p>} />
             )}
             {experiment.simulator === "queue" && (
-              <QueueVisualizer content={<p>Queue FIFO simulation sandbox.</p>} />
+              <QueueVisualizer content={<p>Java Queue FIFO simulation sandbox.</p>} />
             )}
             {experiment.simulator === "linked-list" && (
-              <LinkedListVisualizer content={<p>Singly Linked List dynamic node pointer visualizer.</p>} />
+              <LinkedListVisualizer content={<p>Java Singly Linked List dynamic pointer visualizer.</p>} />
             )}
             {experiment.simulator === "bubble-sort" && (
               <SortingVisualizer
                 algorithm="bubble"
-                title="Bubble Sort Simulation"
+                title="Bubble Sort Simulation (Java)"
                 description="Observe adjacent comparison passes and bubbling of maximum unsorted values."
               />
             )}
             {experiment.simulator === "selection-sort" && (
               <SortingVisualizer
                 algorithm="selection"
-                title="Selection Sort Simulation"
+                title="Selection Sort Simulation (Java)"
                 description="Observe minimum index scanning across unsorted partition and minimal memory swaps."
               />
             )}
             {experiment.simulator === "insertion-sort" && (
               <SortingVisualizer
                 algorithm="insertion"
-                title="Insertion Sort Simulation"
+                title="Insertion Sort Simulation (Java)"
                 description="Observe element extraction, backward shifting, and adaptive linear performance."
               />
             )}
           </div>
 
-          <div className="flex items-center justify-between pt-4 border-t border-border/40">
-            <Button variant="outline" onClick={() => setActiveTab("procedure")} className="text-xs gap-1.5">
-              <ChevronLeft className="h-4 w-4" /> Back to Procedure
+          <div className="flex items-center justify-between pt-4 border-t border-border/60">
+            <Button variant="outline" onClick={() => setActiveTab("video-concept")} className="text-xs gap-1.5">
+              <ChevronLeft className="h-4 w-4" /> Back to Video &amp; Theory
             </Button>
-            <Button onClick={() => setActiveTab("quiz")} className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 font-bold">
-              Take Self-Assessment Quiz <ChevronRight className="h-4 w-4" />
+            <Button onClick={() => setActiveTab("recursion-trace")} className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 font-bold">
+              <Code2 className="h-4 w-4" /> Next: Java Code &amp; Call Stack Trace <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
         </TabsContent>
 
-        {/* TAB 6: SELF-ASSESSMENT (QUIZ) */}
-        <TabsContent value="quiz" className="space-y-6">
-          {quiz ? (
-            <QuizEngine quiz={quiz} />
-          ) : (
-            <Card className="border-secondary/40 p-6 text-center text-muted-foreground">
-              Quiz questions loading for this experiment...
-            </Card>
-          )}
+        {/* ============================================================== */}
+        {/* PART 3: JAVA CODE & RECURSION CALL STACK TRACE */}
+        {/* ============================================================== */}
+        <TabsContent value="recursion-trace" className="space-y-6">
+          <RecursionVisualizerPanel
+            initialCode={experiment.sections.sampleCode.code}
+            functionName={experiment.sections.recursionPreset?.functionName}
+            sampleCall={experiment.sections.recursionPreset?.sampleCall}
+            description={experiment.sections.recursionPreset?.description}
+          />
 
-          <div className="flex items-center justify-between pt-4 border-t border-border/40">
+          <div className="flex items-center justify-between pt-4 border-t border-border/60">
             <Button variant="outline" onClick={() => setActiveTab("simulation")} className="text-xs gap-1.5">
-              <ChevronLeft className="h-4 w-4" /> Back to Simulation
+              <ChevronLeft className="h-4 w-4" /> Back to Simulator
+            </Button>
+            <Button onClick={() => setActiveTab("leetcode-quiz")} className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 font-bold">
+              <Trophy className="h-4 w-4" /> Next: LeetCode &amp; Self-Assessment <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </TabsContent>
+
+        {/* ============================================================== */}
+        {/* PART 4: LEETCODE CHALLENGES & SELF-ASSESSMENT QUIZ */}
+        {/* ============================================================== */}
+        <TabsContent value="leetcode-quiz" className="space-y-8">
+          {/* Top: Curated LeetCode Problem Cards */}
+          <LeetCodePracticeCard problems={experiment.sections.leetcodeProblems} />
+
+          {/* Bottom: Interactive Quiz Engine */}
+          <div className="space-y-4 pt-4 border-t border-border/60">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-bold text-foreground font-heading">
+                  Self-Assessment Evaluation Quiz
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  Verify your comprehension with instant scoring and rationale explanations.
+                </p>
+              </div>
+              <Badge variant="outline" className="text-xs bg-emerald-500/10 text-emerald-500 border-emerald-500/30">
+                Passing Score: 75%
+              </Badge>
+            </div>
+
+            {quiz ? (
+              <QuizEngine quiz={quiz} />
+            ) : (
+              <Card className="border-border p-6 text-center text-muted-foreground text-xs">
+                Quiz questions loading for this experiment...
+              </Card>
+            )}
+          </div>
+
+          <div className="flex items-center justify-between pt-4 border-t border-border/60">
+            <Button variant="outline" onClick={() => setActiveTab("recursion-trace")} className="text-xs gap-1.5">
+              <ChevronLeft className="h-4 w-4" /> Back to Java Code &amp; Call Stack
             </Button>
             <Button onClick={() => setActiveTab("feedback")} className="text-xs gap-1.5">
-              Leave Feedback & Rating <ChevronRight className="h-4 w-4" />
+              Share Laboratory Feedback <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
         </TabsContent>
 
-        {/* TAB 7: FEEDBACK */}
+        {/* ============================================================== */}
+        {/* LAB FEEDBACK TAB */}
+        {/* ============================================================== */}
         <TabsContent value="feedback" className="space-y-6 max-w-2xl mx-auto">
-          <Card className="border-secondary/40 bg-card/60 backdrop-blur-xs shadow-sm">
+          <Card className="border-border bg-card/90 backdrop-blur-xs shadow-sm">
             <CardHeader>
-              <CardTitle className="text-xl font-bold font-heading">Experiment Feedback & Review</CardTitle>
+              <CardTitle className="text-xl font-bold font-heading">Laboratory Evaluation &amp; Review</CardTitle>
               <CardDescription className="text-xs">
-                Your feedback helps improve our laboratory demonstrations and instructional clarity.
+                Your feedback helps our faculty refine virtual laboratory animations and instructional notes.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -460,7 +426,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                   <CheckCircle2 className="h-8 w-8 mx-auto" />
                   <h4 className="font-bold text-base">Thank You for Your Feedback!</h4>
                   <p className="text-xs text-muted-foreground">
-                    Your rating of {userRating}/5 stars and review has been saved to your local learning record.
+                    Your rating of {userRating}/5 stars and review has been saved to your student learning record.
                   </p>
                   <Button variant="outline" size="sm" onClick={() => setFeedbackSubmitted(false)} className="text-xs mt-2">
                     Submit Another Response
@@ -468,9 +434,8 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 </div>
               ) : (
                 <form onSubmit={handleFeedbackSubmit} className="space-y-4">
-                  {/* Star Rating */}
                   <div className="space-y-1.5">
-                    <Label className="text-xs font-semibold">How would you rate this experiment simulation?</Label>
+                    <label className="text-xs font-semibold">How would you rate this experiment simulation?</label>
                     <div className="flex items-center gap-2 pt-1">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <button
@@ -481,7 +446,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                         >
                           <Star
                             className={`h-6 w-6 ${
-                              star <= userRating ? "text-amber-500 fill-amber-500" : "text-muted border-border"
+                              star <= userRating ? "text-amber-500 fill-amber-500" : "text-muted"
                             }`}
                           />
                         </button>
@@ -490,20 +455,19 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                     </div>
                   </div>
 
-                  {/* Comment */}
                   <div className="space-y-1.5">
-                    <Label className="text-xs font-semibold">Your Review / Suggestions</Label>
+                    <label className="text-xs font-semibold">Your Comments / Suggestions</label>
                     <Textarea
                       value={feedbackComment}
                       onChange={(e) => setFeedbackComment(e.target.value)}
-                      placeholder="Share what you learned or suggest improvements for this virtual experiment..."
+                      placeholder="Share your experience with the Java visualizer, call stack frames, or theory explanations..."
                       rows={4}
                       className="text-xs"
                     />
                   </div>
 
                   <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white text-xs font-bold gap-1.5">
-                    <Send className="h-3.5 w-3.5" /> Submit Feedback
+                    <Send className="h-3.5 w-3.5" /> Submit Evaluation
                   </Button>
                 </form>
               )}

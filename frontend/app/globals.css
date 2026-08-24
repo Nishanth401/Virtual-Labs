@@ -3,101 +3,130 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Cafespro Weekend';
-  src: url('/fonts/CafesproWeekend-Regular.ttf') format('truetype'),
-       url('/fonts/CafesproWeekend-Regular.otf') format('opentype');
-  font-weight: normal;
+  font-family: 'General Sans';
+  src: url('/fonts/GeneralSans-Regular.woff2') format('woff2'),
+       url('/fonts/GeneralSans-Regular.ttf') format('truetype');
+  font-weight: 400 900;
   font-style: normal;
   font-display: swap;
 }
 
-.font-heading, h1, h2, h3 {
-  font-family: 'Cafespro Weekend', Georgia, serif;
+@font-face {
+  font-family: 'Pilcrow Rounded';
+  src: url('/fonts/PilcrowRounded-Regular.woff2') format('woff2'),
+       url('/fonts/PilcrowRounded-Regular.ttf') format('truetype');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
 }
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
+@font-face {
+  font-family: 'Bonny';
+  src: url('/fonts/Bonny-Medium.woff2') format('woff2'),
+       url('/fonts/Bonny-Medium.ttf') format('truetype');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Trench Slab';
+  src: url('/fonts/TrenchSlab-Medium.woff2') format('woff2'),
+       url('/fonts/TrenchSlab-Medium.ttf') format('truetype');
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Boska';
+  src: url('/fonts/Boska-Light.woff2') format('woff2'),
+       url('/fonts/Boska-Light.ttf') format('truetype');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Melodrama';
+  src: url('/fonts/Melodrama-Medium.woff2') format('woff2'),
+       url('/fonts/Melodrama-Medium.ttf') format('truetype');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Khand';
+  src: url('/fonts/Khand-Bold.woff2') format('woff2'),
+       url('/fonts/Khand-Bold.ttf') format('truetype');
+  font-weight: 600 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 @layer base {
   :root {
-    --background: 36 20% 98%;
-    --foreground: 20 14% 10%;
-    --card: 36 20% 98%;
-    --card-foreground: 20 14% 10%;
-    --popover: 36 20% 98%;
-    --popover-foreground: 20 14% 10%;
-    --primary: 22 78% 32%;
-    --primary-foreground: 36 20% 98%;
-    --secondary: 30 12% 92%;
-    --secondary-foreground: 20 14% 18%;
-    --muted: 30 10% 93%;
-    --muted-foreground: 20 8% 44%;
-    --accent: 30 12% 92%;
-    --accent-foreground: 20 14% 18%;
-    --destructive: 0 72% 48%;
-    --destructive-foreground: 36 20% 98%;
-    --border: 30 10% 86%;
-    --input: 30 10% 86%;
-    --ring: 22 78% 32%;
-    --chart-1: 22 78% 40%;
-    --chart-2: 160 48% 36%;
-    --chart-3: 36 64% 50%;
-    --chart-4: 12 72% 52%;
-    --chart-5: 46 82% 48%;
-    --radius: 0.5rem;
-    --color-1: 22 78% 48%;
-    --color-2: 36 72% 52%;
-    --color-3: 160 48% 40%;
-    --color-4: 12 68% 48%;
-    --color-5: 46 80% 48%;
-    --sidebar-background: 30 12% 96%;
-    --sidebar-foreground: 20 12% 26%;
-    --sidebar-primary: 22 78% 32%;
-    --sidebar-primary-foreground: 36 20% 98%;
-    --sidebar-accent: 30 10% 90%;
-    --sidebar-accent-foreground: 20 14% 18%;
-    --sidebar-border: 30 10% 88%;
-    --sidebar-ring: 22 78% 32%;
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 346.8 77.2% 49.8%; /* Vibrant Crimson Red #e11d48 */
+    --primary-foreground: 355.7 100% 97.3%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 346.8 77.2% 49.8%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 346.8 77.2% 49.8%;
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 346.8 77.2% 49.8%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 346.8 77.2% 49.8%;
   }
+
   .dark {
-    --background: 20 10% 8%;
-    --foreground: 30 8% 94%;
-    --card: 20 10% 10%;
-    --card-foreground: 30 8% 94%;
-    --popover: 20 10% 10%;
-    --popover-foreground: 30 8% 94%;
-    --primary: 30 72% 58%;
-    --primary-foreground: 20 14% 8%;
-    --secondary: 20 8% 16%;
-    --secondary-foreground: 30 8% 90%;
-    --muted: 20 8% 16%;
-    --muted-foreground: 30 6% 58%;
-    --accent: 20 8% 16%;
-    --accent-foreground: 30 8% 90%;
-    --destructive: 0 56% 36%;
-    --destructive-foreground: 30 8% 94%;
-    --border: 20 8% 18%;
-    --input: 20 8% 18%;
-    --ring: 30 72% 58%;
-    --chart-1: 30 72% 58%;
-    --chart-2: 160 52% 44%;
-    --chart-3: 36 68% 52%;
-    --chart-4: 12 64% 52%;
-    --chart-5: 46 76% 50%;
-    --color-1: 22 78% 52%;
-    --color-2: 36 72% 56%;
-    --color-3: 160 52% 44%;
-    --color-4: 12 68% 52%;
-    --color-5: 46 80% 52%;
-    --sidebar-background: 20 10% 10%;
-    --sidebar-foreground: 30 6% 88%;
-    --sidebar-primary: 30 72% 58%;
-    --sidebar-primary-foreground: 20 14% 8%;
-    --sidebar-accent: 20 8% 16%;
-    --sidebar-accent-foreground: 30 6% 88%;
-    --sidebar-border: 20 8% 18%;
-    --sidebar-ring: 30 72% 58%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 5.5%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 5.5%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 346.8 77.2% 49.8%;
+    --primary-foreground: 355.7 100% 97.3%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 346.8 77.2% 49.8%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 346.8 77.2% 49.8%;
+
+    --sidebar-background: 240 10% 3.9%;
+    --sidebar-foreground: 240 4.8% 90%;
+    --sidebar-primary: 346.8 77.2% 49.8%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 90%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 346.8 77.2% 49.8%;
   }
 }
 
@@ -106,74 +135,111 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 }
 
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
+.font-serif-italic {
+  font-family: 'Boska', 'Melodrama', Georgia, serif;
+  font-style: italic;
+}
+
+.font-heading {
+  font-family: 'General Sans', 'Pilcrow Rounded', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 800;
+}
+
+.font-display {
+  font-family: 'Khand', 'General Sans', sans-serif;
+}
+
+.font-pilcrow {
+  font-family: 'Pilcrow Rounded', 'General Sans', sans-serif;
+}
+
+/* Background Grid Pattern */
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+}
+
+.dark .bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+.glow-red {
+  box-shadow: 0 0 30px -5px rgba(225, 29, 72, 0.4);
+}
+
+/* Big Silhouette Watermark */
+.watermark-text {
+  font-family: 'General Sans', 'Pilcrow Rounded', sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.04) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  user-select: none;
+}
+
+.dark .watermark-text {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.05) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Giant Bottom Fade Mask Text matching thick bold typography in 5th image */
+.bottom-brand-mask {
+  font-family: 'Pilcrow Rounded', 'General Sans', 'Outfit', -apple-system, sans-serif;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  background: linear-gradient(180deg, #ffffff 15%, rgba(220, 225, 240, 0.65) 50%, rgba(140, 150, 175, 0.2) 80%, rgba(255, 255, 255, 0.02) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  user-select: none;
+  display: inline-block;
+  width: 100%;
+}
+
+/* Infinite Marquee Animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  100% {
+    transform: translateX(-50%);
   }
 }
 
-@keyframes gentle-float {
-  0%, 100% {
-    transform: translateY(0px);
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-50%);
   }
-  50% {
-    transform: translateY(-4px);
-  }
-}
-
-@keyframes subtle-breath {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.65;
+  100% {
+    transform: translateX(0%);
   }
 }
 
-.animate-fade-in {
-  animation: fade-in-up 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 32s linear infinite;
 }
 
-.animate-gentle-float {
-  animation: gentle-float 4s ease-in-out infinite;
+.animate-marquee-reverse {
+  display: flex;
+  width: max-content;
+  animation: marquee-reverse 32s linear infinite;
 }
 
-.animate-subtle-breath {
-  animation: subtle-breath 3s ease-in-out infinite;
+.animate-marquee:hover,
+.animate-marquee-reverse:hover {
+  animation-play-state: paused;
 }
-
-/* Organic Micro-Interactions */
-.hover-card-interactive {
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
-              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.2s ease;
-}
-
-.hover-card-interactive:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.08);
-}
-
-.dark .hover-card-interactive:hover {
-  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.4);
-}
-
-.button-interactive {
-  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), 
-              background-color 0.15s ease,
-              box-shadow 0.15s ease;
-}
-
-.button-interactive:active {
-  transform: scale(0.97);
-}
-

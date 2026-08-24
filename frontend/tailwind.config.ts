@@ -43,18 +43,6 @@ export default {
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
-  			chart: {
-  				'1': 'hsl(var(--chart-1))',
-  				'2': 'hsl(var(--chart-2))',
-  				'3': 'hsl(var(--chart-3))',
-  				'4': 'hsl(var(--chart-4))',
-  				'5': 'hsl(var(--chart-5))'
-  			},
-  			'color-1': 'hsl(var(--color-1))',
-  			'color-2': 'hsl(var(--color-2))',
-  			'color-3': 'hsl(var(--color-3))',
-  			'color-4': 'hsl(var(--color-4))',
-  			'color-5': 'hsl(var(--color-5))',
   			sidebar: {
   				DEFAULT: 'hsl(var(--sidebar-background))',
   				foreground: 'hsl(var(--sidebar-foreground))',
@@ -72,20 +60,19 @@ export default {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		fontFamily: {
-  			heading: ["'Cafespro Weekend'", "var(--font-heading)", "serif"],
+  			sans: ["'General Sans'", "Inter", "-apple-system", "sans-serif"],
+  			heading: ["'General Sans'", "'Pilcrow Rounded'", "'Trench Slab'", "'Melodrama'", "sans-serif"],
+  			display: ["'Khand'", "'General Sans'", "sans-serif"],
+  			pilcrow: ["'Pilcrow Rounded'", "'General Sans'", "sans-serif"],
+  			serif: ["'Melodrama'", "'Boska'", "serif"],
+  			mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
   		},
   		animation: {
-  			rainbow: 'rainbow var(--speed, 2s) infinite linear'
-  		},
-  		keyframes: {
-  			rainbow: {
-  				'0%': {
-  					'background-position': '0%'
-  				},
-  				'100%': {
-  					'background-position': '200%'
-  				}
-  			}
+  			'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+  			'marquee': 'marquee 30s linear infinite',
+  			'marquee-reverse': 'marquee-reverse 30s linear infinite',
+  			'accordion-down': 'accordion-down 0.2s ease-out',
+  			'accordion-up': 'accordion-up 0.2s ease-out'
   		}
   	}
   },
