@@ -23,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={cafesproWeekend.variable}>
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning className={`${cafesproWeekend.variable} overflow-x-hidden`}>
+      <body className={`${inter.className} overflow-x-hidden`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"

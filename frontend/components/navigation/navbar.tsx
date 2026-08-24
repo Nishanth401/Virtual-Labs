@@ -81,53 +81,49 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Navigation Links */}
-        <div className="hidden xl:flex items-center gap-1">
-          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold">
+        <div className="hidden lg:flex items-center gap-1 xl:gap-1.5">
+          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold px-2.5 py-1 h-8">
             <Link href="/">Home</Link>
           </Button>
 
-          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold">
+          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold px-2.5 py-1 h-8">
             <Link href="/labs">Broad Areas & Labs</Link>
           </Button>
 
-          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold">
+          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold px-2.5 py-1 h-8">
             <Link href="/labs/data-structures">Data Structures Lab</Link>
           </Button>
 
-          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold">
+          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold px-2.5 py-1 h-8">
             <Link href="/courses">Curriculum</Link>
           </Button>
 
-          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold">
+          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold px-2.5 py-1 h-8">
             <Link href="/resources">Resource Vault</Link>
           </Button>
 
-          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold">
-            <Link href="/events">Events</Link>
-          </Button>
-
-          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold">
+          <Button asChild variant="ghost" size="sm" className="text-xs font-semibold px-2.5 py-1 h-8">
             <Link href="/faculty">Faculty</Link>
           </Button>
 
-          {/* DSA Visualizer Dropdown */}
+          {/* DSA Visualizers Dropdown */}
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-transparent text-xs font-semibold h-8">
+                <NavigationMenuTrigger className="bg-transparent text-xs font-semibold h-8 px-2.5 py-1">
                   DSA Visualizers
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[450px] p-4 bg-popover/95 backdrop-blur-md rounded-xl border border-border shadow-xl">
+                  <div className="w-[420px] p-3.5 bg-popover/95 backdrop-blur-md rounded-xl border border-border shadow-xl">
                     <div className="flex items-center justify-between pb-2 mb-2 border-b border-border/50">
-                      <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
                         Interactive Algorithm Simulators
                       </span>
                       <Link href="/visualizer" target="_blank" rel="noopener noreferrer" className="text-xs text-primary font-bold hover:underline">
                         View All (11) →
                       </Link>
                     </div>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-2 gap-1.5">
                       {DSA_VISUALIZERS_LIST.slice(0, 6).map((item) => (
                         <NavigationMenuLink key={item.title} asChild>
                           <Link
@@ -137,7 +133,7 @@ export function Navbar() {
                             className="p-2 rounded-lg hover:bg-muted/70 transition-colors block text-left"
                           >
                             <div className="font-bold text-xs text-foreground">{item.title}</div>
-                            <div className="text-[11px] text-muted-foreground line-clamp-1">{item.desc}</div>
+                            <div className="text-[10px] text-muted-foreground line-clamp-1">{item.desc}</div>
                           </Link>
                         </NavigationMenuLink>
                       ))}
@@ -147,21 +143,21 @@ export function Navbar() {
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
-
-          <Button asChild variant="default" size="sm" className="text-xs font-bold bg-primary text-white hover:bg-primary/90 ml-1">
-            <Link href="/dashboard" target="_blank" rel="noopener noreferrer">
-              <Award className="h-3.5 w-3.5 mr-1" /> Student Portal
-            </Link>
-          </Button>
         </div>
 
-        {/* Right Side Actions */}
-        <div className="flex items-center gap-2">
-          <RoleSwitcherDialog />
+        {/* Right Side Actions Toolbar (Perfect Alignment) */}
+        <div className="flex items-center gap-2 shrink-0">
+          <Button asChild variant="default" size="sm" className="text-xs font-bold bg-primary text-white hover:bg-primary/90 px-3 h-8 shadow-xs">
+            <Link href="/dashboard" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5">
+              <Award className="h-3.5 w-3.5" />
+              <span>Student Portal</span>
+            </Link>
+          </Button>
+
           <ModeToggle />
 
           {/* Mobile Sheet Trigger */}
-          <div className="xl:hidden">
+          <div className="lg:hidden">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="sm" className="p-2">
