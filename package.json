@@ -1,0 +1,20 @@
+{
+  "name": "virtual-labs-workspace",
+  "version": "1.0.0",
+  "description": "Full-Stack Department Virtual Labs Platform & Learning Hub",
+  "scripts": {
+    "dev": "npm run dev --prefix frontend",
+    "build": "npm run build --prefix frontend",
+    "start": "npm run start --prefix frontend",
+    "lint": "npm run lint --prefix frontend"
+  },
+  "keywords": [
+    "virtual-labs",
+    "nextjs",
+    "spring-boot",
+    "dsa-visualizer",
+    "learning-management-system"
+  ],
+  "author": "Department of AI & Data Science, VSB Engineering College",
+  "license": "AGPL-3.0"
+}
