@@ -1317,11 +1317,11 @@ Selection Sort Result: [11, 12, 22, 25, 34, 64] -> Comparisons: 15, Swaps: 4`,
     net_profit = total_revenue - marketing_budget
     
     print(f"--- Business KPIs ---")
-    print(f"Customer Acquisition Cost (CAC): ${cac:.2f}")
-    print(f"Customer Lifetime Value (LTV): ${ltv:.2f}")
+    print(f"Customer Acquisition Cost (CAC): \${cac:.2f}")
+    print(f"Customer Lifetime Value (LTV): \${ltv:.2f}")
     print(f"LTV:CAC Ratio: {ratio:.1f}x")
-    print(f"Projected Revenue: ${total_revenue:.2f}")
-    print(f"Projected Net Profit: ${net_profit:.2f}")
+    print(f"Projected Revenue: \${total_revenue:.2f}")
+    print(f"Projected Net Profit: \${net_profit:.2f}")
     
     if ratio >= 3.0:
         print("Decision: Viable Business Model")
@@ -1845,16 +1845,9 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
     // ────────────────────────────────────────────────────────
     // PAGE: HOME
     // ────────────────────────────────────────────────────────
-    function HomePage({ setPage, handleGlobalSearch, selectLab }) {
-      const [searchVal, setSearchVal] = useState('');
-
-      const onSearchSubmit = (e) => {
-        e.preventDefault();
-        handleGlobalSearch(searchVal);
-      };
-
+    function HomePage({ setPage }) {
       return (
-        <div>
+        <div className="space-y-16 pb-16">
           {/* Hero Banner */}
           <section className="relative overflow-hidden bg-slate-900 dark:bg-slate-955 text-white py-24 px-4 sm:px-6 lg:px-8">
             <div className="absolute inset-0 z-0 opacity-20">
@@ -1862,179 +1855,151 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
               <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary-600 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
             </div>
 
-            <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
-              {/* Left Column */}
-              <div className="max-w-xl space-y-6 text-center md:text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-sm text-primary-300 font-medium">
-                  <span className="w-2.5 h-2.5 rounded-full bg-primary-500 animate-ping"></span>
-                  Department of AI & Data Science
-                </div>
-                <h1 className="text-4xl sm:text-5xl font-heading font-extrabold leading-tight tracking-tight">
-                  Learn. <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-secondary-400">Explore.</span> Build.
-                </h1>
-                <p className="text-lg text-slate-300 font-light">
-                  Your official digital resource gateway for syllabus files, textbooks, virtual lab simulators, and academic opportunities.
+            <div className="max-w-7xl mx-auto relative z-10 text-center space-y-8">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 text-sm text-primary-300 font-medium">
+                <span className="w-2.5 h-2.5 rounded-full bg-primary-500 animate-ping"></span>
+                VSB Engineering College, Karur
+              </div>
+              
+              <h1 className="text-4xl sm:text-6xl font-heading font-extrabold leading-tight tracking-tight max-w-4xl mx-auto">
+                Empowering Minds, <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-secondary-400">Engineering the Future</span>
+              </h1>
+              
+              <p className="text-lg sm:text-xl text-slate-300 font-light max-w-3xl mx-auto leading-relaxed">
+                A premier technical institution dedicated to academic excellence, state-of-the-art research, and career-focused placement records. Ranked among top tier colleges in Tamil Nadu.
+              </p>
+
+              <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+                <a 
+                  href="#overview" 
+                  className="px-6 py-3 bg-gradient-to-r from-primary-600 to-secondary-500 hover:from-primary-700 hover:to-secondary-600 text-sm font-semibold rounded-lg shadow-lg shadow-primary-500/20 hover:scale-[1.02] transition-all"
+                >
+                  Explore VSB
+                </a>
+                <button 
+                  onClick={() => setPage('about')} 
+                  className="px-6 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-sm font-semibold rounded-lg transition-all"
+                >
+                  About the Institution
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* VSB Core Highlights */}
+          <section id="overview" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+            <div className="text-center space-y-3 mb-16">
+              <span className="text-xs font-extrabold text-primary-600 dark:text-primary-400 uppercase tracking-widest block">Institution Profile</span>
+              <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-slate-800 dark:text-slate-100">Why VSB Engineering College?</h2>
+              <p className="text-slate-500 dark:text-slate-400 max-w-xl mx-auto text-sm">Discover the cornerstones of education, values, and careers that define our campus.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Card 1 */}
+              <div className="p-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-md transition-all space-y-4">
+                <div className="w-12 h-12 bg-primary-50 dark:bg-primary-955 rounded-xl flex items-center justify-center text-2xl">🏛️</div>
+                <h3 className="font-heading font-bold text-xl text-slate-800 dark:text-slate-100">Accreditations & Quality</h3>
+                <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                  NAAC accredited with 'A' Grade, ISO 9001:2015 Certified, and courses approved by AICTE. Affiliated to Anna University, Chennai.
                 </p>
-
-                {/* Global Search Input */}
-                <form onSubmit={onSearchSubmit} className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto md:mx-0">
-                  <input
-                    type="text"
-                    placeholder="Search courses, simulators, resource notes..."
-                    value={searchVal}
-                    onChange={(e) => setSearchVal(e.target.value)}
-                    className="flex-grow px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
-                  />
-                  <button type="submit" className="px-6 py-3 bg-gradient-to-r from-primary-600 to-secondary-500 rounded-lg hover:from-primary-700 hover:to-secondary-600 text-sm font-semibold shadow-md flex items-center justify-center gap-2">
-                    <Icons.Search /> Search
-                  </button>
-                </form>
-
-                <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
-                  <button onClick={() => setPage('courses')} className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-md text-xs font-semibold flex items-center gap-2">
-                    <Icons.BookOpen /> Explore Courses
-                  </button>
-                  <button onClick={() => setPage('labs')} className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-md text-xs font-semibold flex items-center gap-2">
-                    <Icons.FlaskConical /> Virtual Labs
-                  </button>
-                </div>
               </div>
 
-              {/* Right Column: Visual Deck */}
-              <div className="grid grid-cols-2 gap-4 w-full max-w-md relative">
-                <div className="p-5 bg-gradient-to-br from-primary-900/30 to-slate-800/50 border border-slate-800 rounded-xl space-y-3">
-                  <div className="text-3xl">🧠</div>
-                  <h3 className="font-heading font-semibold text-slate-200">Machine Learning</h3>
-                  <p className="text-xs text-slate-400">Train regression and K-Means clusters interactively.</p>
-                  <button onClick={() => selectLab(VIRTUAL_LABS[0], VIRTUAL_LABS[0].experiments[0])} className="text-xs text-primary-400 hover:text-primary-300 font-semibold flex items-center gap-1">Open Simulator <Icons.ArrowRight /></button>
-                </div>
-                <div className="p-5 bg-gradient-to-br from-secondary-900/30 to-slate-800/50 border border-slate-800 rounded-xl space-y-3 translate-y-4">
-                  <div className="text-3xl">🗄️</div>
-                  <h3 className="font-heading font-semibold text-slate-200">DBMS SQL Console</h3>
-                  <p className="text-xs text-slate-400">Write SQL queries and see immediate table records.</p>
-                  <button onClick={() => selectLab(VIRTUAL_LABS[1], VIRTUAL_LABS[1].experiments[0])} className="text-xs text-secondary-400 hover:text-secondary-300 font-semibold flex items-center gap-1">Open Playground <Icons.ArrowRight /></button>
-                </div>
-                <div className="p-5 bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-800 rounded-xl space-y-3">
-                  <div className="text-3xl">💻</div>
-                  <h3 className="font-heading font-semibold text-slate-200">CPU Scheduler</h3>
-                  <p className="text-xs text-slate-400">Gantt scheduling calculator for FCFS, SJF, & RR.</p>
-                  <button onClick={() => selectLab(VIRTUAL_LABS[2], VIRTUAL_LABS[2].experiments[0])} className="text-xs text-primary-400 hover:text-primary-300 font-semibold flex items-center gap-1">Simulate Scheduler <Icons.ArrowRight /></button>
-                </div>
-                <div className="p-5 bg-gradient-to-br from-primary-900/20 to-slate-800/40 border border-slate-800 rounded-xl space-y-3 translate-y-4">
-                  <div className="text-3xl">📁</div>
-                  <h3 className="font-heading font-semibold text-slate-200">Study Materials</h3>
-                  <p className="text-xs text-slate-400">500+ study files categorized for easy access.</p>
-                  <button onClick={() => setPage('resources')} className="text-xs text-primary-400 hover:text-primary-300 font-semibold flex items-center gap-1">View Library <Icons.ArrowRight /></button>
-                </div>
+              {/* Card 2 */}
+              <div className="p-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-md transition-all space-y-4">
+                <div className="w-12 h-12 bg-secondary-50 dark:bg-secondary-955 rounded-xl flex items-center justify-center text-2xl">💼</div>
+                <h3 className="font-heading font-bold text-xl text-slate-800 dark:text-slate-100">Placement Leadership</h3>
+                <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                  Consistently recognized for top placements with 1000+ job offers annually from leading multinational corporations and tech giants.
+                </p>
+              </div>
+
+              {/* Card 3 */}
+              <div className="p-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-md transition-all space-y-4">
+                <div className="w-12 h-12 bg-primary-50 dark:bg-primary-955 rounded-xl flex items-center justify-center text-2xl">🔬</div>
+                <h3 className="font-heading font-bold text-xl text-slate-800 dark:text-slate-100">Modern Research Infrastructure</h3>
+                <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                  Equipped with advanced GPU-accelerated computing labs, modern centers of excellence, smart learning classrooms, and high-speed Wi-Fi.
+                </p>
               </div>
             </div>
           </section>
 
-          {/* Quick Access Menu */}
-          <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center space-y-2 mb-12">
-              <h2 className="text-3xl font-heading font-extrabold text-slate-800 dark:text-slate-100">Everything in One Place</h2>
-              <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto">Explore all academic systems designed for the AI & Data Science programs.</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div onClick={() => setPage('courses')} className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm hover:shadow-md hover:scale-[1.01] transition-all cursor-pointer">
-                <div className="text-3xl mb-4">📚</div>
-                <h3 className="font-heading font-bold text-lg text-slate-800 dark:text-slate-100 mb-2">Syllabus & Courses</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-sm">Review full lists of subjects from Semester 1 to 8, along with standard credit counts and details.</p>
-              </div>
-              <div onClick={() => setPage('labs')} className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm hover:shadow-md hover:scale-[1.01] transition-all cursor-pointer">
-                <div className="text-3xl mb-4">🧪</div>
-                <h3 className="font-heading font-bold text-lg text-slate-800 dark:text-slate-100 mb-2">Interactive Virtual Labs</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-sm">Step-by-step algorithms, live mathematical execution models, and dynamic self-assessment quizzes.</p>
-              </div>
-              <div onClick={() => setPage('resources')} className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm hover:shadow-md hover:scale-[1.01] transition-all cursor-pointer">
-                <div className="text-3xl mb-4">📁</div>
-                <h3 className="font-heading font-bold text-lg text-slate-800 dark:text-slate-100 mb-2">Resource Library</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-sm">Searchable index of PDFs, lecture notes, textbook references, and sample university question papers.</p>
-              </div>
-            </div>
-          </section>
-
-          {/* Academic Statistics Section */}
-          <section className="bg-slate-100 dark:bg-slate-900/50 py-12 transition-colors">
+          {/* Statistics Deck */}
+          <section className="bg-slate-100 dark:bg-slate-900/50 py-16 transition-colors border-t border-b border-slate-200/50 dark:border-slate-800">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-lg">
-                  <div className="text-3xl font-heading font-extrabold text-primary-600 dark:text-primary-400">24+</div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 uppercase font-semibold">Core Courses</div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl shadow-sm">
+                  <div className="text-4xl font-heading font-extrabold text-primary-600 dark:text-primary-400">20+</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-2 uppercase font-bold tracking-wider">Years of Excellence</div>
                 </div>
-                <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-lg">
-                  <div className="text-3xl font-heading font-extrabold text-secondary-500">6+</div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 uppercase font-semibold">Virtual Labs</div>
+                <div className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl shadow-sm">
+                  <div className="text-4xl font-heading font-extrabold text-secondary-500">4500+</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-2 uppercase font-bold tracking-wider">Active Students</div>
                 </div>
-                <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-lg">
-                  <div className="text-3xl font-heading font-extrabold text-primary-600 dark:text-primary-400">500+</div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 uppercase font-semibold">Study Notes</div>
+                <div className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl shadow-sm">
+                  <div className="text-4xl font-heading font-extrabold text-primary-600 dark:text-primary-400">350+</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-2 uppercase font-bold tracking-wider">Expert Faculty</div>
                 </div>
-                <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-lg">
-                  <div className="text-3xl font-heading font-extrabold text-secondary-500">40+</div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 uppercase font-semibold">Student Projects</div>
+                <div className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl shadow-sm">
+                  <div className="text-4xl font-heading font-extrabold text-secondary-500">95%</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-2 uppercase font-bold tracking-wider">Placement Success</div>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Selected Labs Preview */}
-          <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
-              <div>
-                <span className="text-xs font-extrabold text-primary-600 dark:text-primary-400 uppercase tracking-widest block mb-2">Hands-on Sandbox</span>
-                <h2 className="text-3xl font-heading font-extrabold text-slate-800 dark:text-slate-100">Featured Laboratories</h2>
-              </div>
-              <button onClick={() => setPage('labs')} className="text-sm font-semibold text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1">
-                View All Labs <Icons.ArrowRight />
-              </button>
+          {/* VSB Campus Experience */}
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+            {/* Header */}
+            <div className="text-center space-y-3">
+              <span className="text-xs font-extrabold text-primary-600 dark:text-primary-400 uppercase tracking-widest block">Campus Experience</span>
+              <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-slate-800 dark:text-slate-100">Learning & Growth Environment</h2>
+              <p className="text-slate-500 dark:text-slate-400 max-w-xl mx-auto text-sm">Providing holistic ecosystems designed for student wellness and practical skills development.</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {VIRTUAL_LABS.slice(0, 2).map((lab) => (
-                <div key={lab.id} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-                  <div className="p-6 space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="px-3 py-1 rounded bg-primary-100 dark:bg-primary-950 text-xs font-semibold text-primary-600 dark:text-primary-400">{lab.difficulty}</span>
-                      <span className="text-xs text-slate-500 dark:text-slate-400">{lab.experimentsCount} Experiments</span>
-                    </div>
-                    <h3 className="text-xl font-heading font-bold text-slate-800 dark:text-slate-100">{lab.name}</h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3">{lab.desc}</p>
-                    <div className="flex flex-wrap gap-2 pt-2">
-                      {lab.tags.map(t => (
-                        <span key={t} className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-xs text-slate-600 dark:text-slate-300">{t}</span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="px-6 py-4 bg-slate-50 dark:bg-slate-800/40 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
-                    <span className="text-xs text-slate-500 dark:text-slate-400">Est. Time: {lab.hours} Hrs</span>
-                    <button
-                      onClick={() => selectLab(lab, lab.experiments[0])}
-                      className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded text-xs font-bold transition-all"
-                    >
-                      Enter Lab →
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Quick Announcement Deck */}
-          <section className="py-12 bg-slate-100 dark:bg-slate-900/30 transition-colors border-t border-b border-slate-200/50 dark:border-slate-800">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="flex items-center gap-4 text-center md:text-left flex-col md:flex-row">
-                <div className="w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-950 flex items-center justify-center text-2xl">📢</div>
-                <div>
-                  <h4 className="font-heading font-bold text-slate-800 dark:text-slate-100 text-base">New deep learning materials available</h4>
-                  <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">50+ new code notebooks, sample models, and references added to CS701 course resources.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div className="space-y-6 leading-relaxed text-sm text-slate-600 dark:text-slate-300">
+                <h3 className="text-2xl font-heading font-bold text-slate-800 dark:text-slate-100">Academic Overview & Standards</h3>
+                <p>
+                  At VSB Engineering College, our educational standard focuses on quality teaching, rigorous conceptual evaluation, practical laboratory experiments, and value-based professional ethics.
+                </p>
+                <p>
+                  Through centers of excellence in AI, Cloud Computing, and Robotics, we align our programs with industry requirements, giving students opportunities to work on live research projects and professional internships.
+                </p>
+                <div className="pt-2">
+                  <button onClick={() => setPage('about')} className="px-5 py-2.5 bg-slate-850 hover:bg-slate-755 text-white rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow">
+                    <span>Learn About Accreditations</span>
+                    <Icons.ArrowRight />
+                  </button>
                 </div>
               </div>
-              <button onClick={() => setPage('resources')} className="px-5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg text-xs font-semibold text-slate-800 dark:text-slate-200 transition-all">
-                Browse Library
-              </button>
+
+              {/* Features List */}
+              <div className="space-y-4">
+                <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-xl flex items-start gap-4 shadow-sm">
+                  <div className="text-xl p-2 bg-slate-100 dark:bg-slate-800 rounded-lg">📚</div>
+                  <div>
+                    <h4 className="font-heading font-bold text-slate-800 dark:text-slate-100 text-sm">Central Digital Library</h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Access to thousands of volumes, print journals, e-books, and global research databases.</p>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-xl flex items-start gap-4 shadow-sm">
+                  <div className="text-xl p-2 bg-slate-100 dark:bg-slate-800 rounded-lg">🏟️</div>
+                  <div>
+                    <h4 className="font-heading font-bold text-slate-800 dark:text-slate-100 text-sm">Sports & Fitness Complex</h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Encouraging physical wellness with dedicated playgrounds, indoor facilities, and professional training.</p>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-xl flex items-start gap-4 shadow-sm">
+                  <div className="text-xl p-2 bg-slate-100 dark:bg-slate-800 rounded-lg">🚌</div>
+                  <div>
+                    <h4 className="font-heading font-bold text-slate-800 dark:text-slate-100 text-sm">Secure Connectivity & Transit</h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Extensive transport fleets connecting the college to major residential centers with top-tier security standards.</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
         </div>
