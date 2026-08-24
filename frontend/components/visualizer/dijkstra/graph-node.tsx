@@ -41,14 +41,14 @@ export default function GraphNode({ data }: { data: GraphNodeData }) {
           flex flex-col items-center justify-center 
           border-2 font-medium
           ${data.isCurrent 
-            ? 'bg-purple-500 border-purple-300' 
-            : data.isPath
-            ? 'bg-green-500 border-green-300'
+            ? 'bg-rose-500 border-rose-300' 
             : data.isVisited
-            ? 'bg-blue-500 border-blue-300'
-            : 'bg-slate-600 border-slate-400'
+            ? 'bg-teal-500 border-teal-300'
+            : data.isCurrent
+            ? 'bg-amber-500 border-amber-300'
+            : 'bg-card border-border'
           }
-          ${data.isCurrent && 'shadow-lg shadow-purple-500/50'}
+          ${data.isCurrent && 'shadow-lg shadow-amber-500/50'}
           ${data.isPath && 'shadow-lg shadow-green-500/50'}
         `}
         animate={{

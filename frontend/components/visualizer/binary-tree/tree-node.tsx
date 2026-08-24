@@ -13,7 +13,7 @@ export default function TreeNode({ data }: { data: { id: string, value: number, 
           rounded-full flex items-center justify-center 
           border-2 border-white
           font-medium text-white
-          ${data.highlighted ? 'bg-purple-500 shadow-lg shadow-purple-500/50' : 'bg-slate-600'}
+          ${data.highlighted ? 'bg-amber-500 shadow-lg shadow-amber-500/50' : 'bg-stone-600'}
         `}
         animate={{
           scale: data.highlighted ? 1.1 : 1,

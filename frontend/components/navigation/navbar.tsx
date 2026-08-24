@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   FlaskConical,
   Sparkles,
@@ -55,42 +56,27 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/95 backdrop-blur-md shadow-xs">
-      {/* Top National Virtual Labs (MoE / NMEICT) Ribbon */}
-      <div className="bg-gradient-to-r from-amber-600 via-primary-700 to-emerald-700 text-white py-1 px-4 text-center text-[11px] font-medium flex items-center justify-between gap-2 overflow-x-auto">
-        <div className="flex items-center gap-2 shrink-0">
-          <span className="bg-white/20 px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase">
-            Govt. of India Initiative
-          </span>
-          <span className="hidden sm:inline">Ministry of Education • NMEICT Mission • Sakshat Portal</span>
-        </div>
-        <div className="flex items-center gap-3 shrink-0 text-[10px]">
-          <span className="font-semibold">Nodal Center: VSB Engineering College, Karur</span>
-          <a
-            href="https://www.vlab.co.in"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-white/90 hover:text-white underline underline-offset-2"
-          >
-            <span>vlab.co.in</span>
-            <ExternalLink className="h-2.5 w-2.5" />
-          </a>
-        </div>
-      </div>
+      {/* Top Subtle Department Yellow Accent Bar */}
+      <div className="h-1 w-full bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 shadow-xs" />
 
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
         {/* Brand Logo & Name */}
-        <Link href="/" className="flex items-center gap-3 font-bold text-base sm:text-lg text-foreground hover:opacity-90 transition-opacity">
-          <div className="p-2 rounded-xl bg-gradient-to-br from-primary to-cyan-600 text-white shadow-md shadow-primary/20">
-            <FlaskConical className="h-5 w-5" />
+        <Link href="/" className="flex items-center gap-3 font-bold text-base sm:text-lg text-foreground hover:opacity-90 transition-opacity shrink-0">
+          <div className="relative w-11 h-11 rounded-full overflow-hidden border-2 border-yellow-400 ring-2 ring-yellow-400/50 shadow-[0_0_12px_rgba(250,204,21,0.5)] shrink-0 bg-white flex items-center justify-center p-0.5">
+            <Image 
+              src="/vsb-logo.png" 
+              alt="Official V.S.B. Engineering College Emblem Logo" 
+              width={44}
+              height={44}
+              className="object-contain rounded-full"
+            />
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col min-w-0">
             <div className="flex items-center gap-1.5">
-              <span className="font-heading font-black tracking-tight leading-tight text-lg">Virtual Labs</span>
-              <Badge variant="outline" className="text-[9px] px-1 py-0 border-primary/40 text-primary font-bold">
-                vlab.co.in
-              </Badge>
+              <span className="font-heading font-black tracking-tight leading-tight text-lg whitespace-nowrap">Virtual Labs</span>
+              <span className="h-2.5 w-2.5 rounded-full bg-yellow-400 inline-block shrink-0 shadow-[0_0_8px_rgba(250,204,21,0.8)] animate-pulse" title="Department Official Color (Yellow)" />
             </div>
-            <span className="text-[10px] text-muted-foreground font-normal">Department of AI & Data Science</span>
+            <span className="text-[10px] text-amber-500 font-bold tracking-wide uppercase whitespace-nowrap">Department of Artificial Intelligence & Data Science</span>
           </div>
         </Link>
 
@@ -137,7 +123,7 @@ export function Navbar() {
                       <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                         Interactive Algorithm Simulators
                       </span>
-                      <Link href="/visualizer" className="text-xs text-primary font-bold hover:underline">
+                      <Link href="/visualizer" target="_blank" rel="noopener noreferrer" className="text-xs text-primary font-bold hover:underline">
                         View All (11) →
                       </Link>
                     </div>
@@ -146,6 +132,8 @@ export function Navbar() {
                         <NavigationMenuLink key={item.title} asChild>
                           <Link
                             href={item.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="p-2 rounded-lg hover:bg-muted/70 transition-colors block text-left"
                           >
                             <div className="font-bold text-xs text-foreground">{item.title}</div>
@@ -161,7 +149,7 @@ export function Navbar() {
           </NavigationMenu>
 
           <Button asChild variant="default" size="sm" className="text-xs font-bold bg-primary text-white hover:bg-primary/90 ml-1">
-            <Link href="/dashboard">
+            <Link href="/dashboard" target="_blank" rel="noopener noreferrer">
               <Award className="h-3.5 w-3.5 mr-1" /> Student Portal
             </Link>
           </Button>

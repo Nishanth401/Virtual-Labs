@@ -77,6 +77,7 @@ export function SortingVisualizer({ algorithm, title, description }: SortingVisu
     pause,
     stepNext,
     stepPrev,
+    goToStep,
     reset,
     setCustomArray,
     randomize
@@ -90,10 +91,13 @@ export function SortingVisualizer({ algorithm, title, description }: SortingVisu
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-2">
           <Badge variant="outline" className="text-xs uppercase tracking-wider bg-primary/10 text-primary border-primary/30">
-            Sorting Visualizer
+            Advanced Interactive Visualizer
           </Badge>
           <Badge variant="secondary" className="text-xs">
             {complexity.stable ? "Stable Sort" : "Unstable Sort"}
+          </Badge>
+          <Badge variant="outline" className="text-xs bg-amber-500/10 text-amber-500 border-amber-500/30">
+            🔊 Web Audio Synthesizer Enabled
           </Badge>
         </div>
         <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
@@ -102,11 +106,34 @@ export function SortingVisualizer({ algorithm, title, description }: SortingVisu
 
       <Tabs defaultValue="visualization" className="w-full space-y-6">
         <TabsList className="grid w-full grid-cols-2 max-w-md">
-          <TabsTrigger value="visualization">Visualizer</TabsTrigger>
-          <TabsTrigger value="pseudocode">Pseudocode & Complexities</TabsTrigger>
+          <TabsTrigger value="visualization">Visualizer & Timeline</TabsTrigger>
+          <TabsTrigger value="pseudocode">Pseudocode & Analysis</TabsTrigger>
         </TabsList>
 
         <TabsContent value="visualization" className="space-y-6">
+          {/* TIMELINE REWIND SCRUBBER BAR */}
+          <Card className="border-secondary/40 bg-card/60 backdrop-blur-xs p-4 shadow-sm">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs font-semibold">
+                <span className="text-foreground flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-amber-500 animate-ping" />
+                  Execution Timeline Scrubber (Step {currentStepIndex + 1} of {totalSteps})
+                </span>
+                <span className="font-mono text-muted-foreground">
+                  {Math.round(((currentStepIndex + 1) / Math.max(totalSteps, 1)) * 100)}% Progress
+                </span>
+              </div>
+              <input
+                type="range"
+                min={0}
+                max={Math.max(totalSteps - 1, 0)}
+                value={currentStepIndex}
+                onChange={(e) => goToStep(Number(e.target.value))}
+                className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
+              />
+            </div>
+          </Card>
+
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
             <div className="xl:col-span-1 space-y-6">
               <SortingControls
@@ -125,6 +152,36 @@ export function SortingVisualizer({ algorithm, title, description }: SortingVisu
                 currentStepIndex={currentStepIndex}
                 totalSteps={totalSteps}
               />
+
+              {/* Live Pseudocode Line Sync */}
+              <Card className="border-secondary/40 bg-card/70">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-xs uppercase tracking-wider text-muted-foreground flex items-center justify-between">
+                    <span>Live Code Execution Pointer</span>
+                    <span className="font-mono text-primary font-bold">Line {currentStep.codeLine || 1}</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="p-3 bg-muted/80 rounded-xl font-mono text-[11px] space-y-1 border border-border/60 overflow-x-auto">
+                    {pseudocode.map((line, idx) => {
+                      const isCurrentLine = (currentStep.codeLine || 1) === idx + 1;
+                      return (
+                        <div
+                          key={idx}
+                          className={`px-2 py-0.5 rounded transition-colors ${
+                            isCurrentLine
+                              ? "bg-primary text-primary-foreground font-bold shadow-xs"
+                              : "text-muted-foreground opacity-80"
+                          }`}
+                        >
+                          <span className="inline-block w-5 opacity-50 text-[9px] select-none">{idx + 1}</span>
+                          <span>{line}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
 
               {/* Complexity Mini Card */}
               <Card className="border-secondary/40">
@@ -148,7 +205,7 @@ export function SortingVisualizer({ algorithm, title, description }: SortingVisu
                   </div>
                   <div className="p-2 rounded bg-muted/40 border border-border/40">
                     <span className="text-muted-foreground block text-[11px]">Auxiliary Space</span>
-                    <span className="font-mono font-bold text-blue-500">{complexity.space}</span>
+                    <span className="font-mono font-bold text-teal-600">{complexity.space}</span>
                   </div>
                 </CardContent>
               </Card>

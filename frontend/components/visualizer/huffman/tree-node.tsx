@@ -22,8 +22,8 @@ export default function TreeNode({ data }: { data: HuffmanTreeNodeData }) {
           rounded-lg flex flex-col items-center justify-center 
           border-2 font-medium
           ${data.highlighted 
-            ? 'bg-purple-500 border-purple-300 shadow-lg shadow-purple-500/50' 
-            : 'bg-slate-600 border-slate-400'
+            ? 'bg-amber-500 border-amber-300 shadow-lg shadow-amber-500/50' 
+            : 'bg-stone-600 border-stone-400'
           }
         `}
         animate={{

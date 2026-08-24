@@ -138,7 +138,7 @@ export default function LabsCataloguePage() {
                       </div>
 
                       <Button asChild size="sm" className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 font-bold shadow-xs">
-                        <Link href={`/labs/${lab.id}`}>
+                        <Link href={`/labs/${lab.id}`} target="_blank" rel="noopener noreferrer">
                           <span>Enter Lab</span>
                           <ArrowRight className="h-3.5 w-3.5" />
                         </Link>

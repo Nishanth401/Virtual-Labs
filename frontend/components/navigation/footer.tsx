@@ -62,10 +62,7 @@ export function Footer() {
               <li>
                 <Link href="/dashboard" className="hover:text-white transition-colors">Student Portal &amp; Certificate</Link>
               </li>
-              <li className="flex items-center gap-1 hover:text-white transition-colors pt-1">
-                <ExternalLink className="h-3 w-3" />
-                <a href="https://www.vlab.co.in" target="_blank" rel="noopener noreferrer">National Virtual Labs (vlab.co.in)</a>
-              </li>
+
             </ul>
           </div>
 
