@@ -192,28 +192,6 @@
     // ────────────────────────────────────────────────────────
     // PRELOADED DATA SETS
     // ────────────────────────────────────────────────────────
-    const COURSES_DATA = [
-      { code: 'CS101', name: 'Problem Solving & Python Programming', sem: 1, credits: 4, type: 'Foundation', desc: 'Introduction to programming concepts, algorithmic thinking and Python basics with practical lab sessions.', resources: 36, icon: '🐍' },
-      { code: 'MA201', name: 'Statistics & Probability', sem: 2, credits: 4, type: 'Foundation', desc: 'Core statistical and probability concepts essential for machine learning and data science applications.', resources: 28, icon: '📐' },
-      { code: 'CS301', name: 'Data Structures', sem: 3, credits: 4, type: 'Core', desc: 'Master fundamental data structures and algorithms including trees, graphs, sorting and dynamic programming.', resources: 46, icon: '🧮' },
-      { code: 'CS302L', name: 'Fundamentals of Data Science and Analytics Lab', sem: 3, credits: 1.5, type: 'Foundation', desc: 'Practical exposure to data wrangling, cleaning, statistical analysis, and visual summaries.', resources: 18, icon: '📊' },
-      { code: 'CS401', name: 'Database Management Systems', sem: 4, credits: 4, type: 'Core', desc: 'Master relational database systems, SQL, normalization, concurrency control and NoSQL concepts.', resources: 38, icon: '🗄️' },
-      { code: 'CS401L', name: 'Design and Database Management System Lab', sem: 4, credits: 1.5, type: 'Core', desc: 'Practical database design, normalization, complex SQL querying, and database schema implementation.', resources: 25, icon: '🗄️' },
-      { code: 'CS402L', name: 'Design and Analysis of Algorithms Lab', sem: 4, credits: 1.5, type: 'Core', desc: 'Lab sessions for writing and analyzing time complexities of sorting, searching, and optimization algorithms.', resources: 26, icon: '🧮' },
-      { code: 'CS501', name: 'Computer Networks', sem: 5, credits: 3, type: 'Core', desc: 'Understand OSI layers, routing, TCP/IP, network security and modern cloud networking protocols.', resources: 34, icon: '🌐' },
-      { code: 'CS501L', name: 'Computer Networks Lab', sem: 5, credits: 1.5, type: 'Core', desc: 'Practical networking laboratory for socket programming, packet capturing, routing and switching configurations.', resources: 20, icon: '🌐' },
-      { code: 'CS502L', name: 'Data Exploration and Visualization Lab', sem: 5, credits: 1.5, type: 'Core', desc: 'Lab sessions focused on exploratory data analysis, plotting libraries, and creating visual layouts.', resources: 22, icon: '📈' },
-      { code: 'CS601', name: 'Machine Learning', sem: 6, credits: 4, type: 'Advanced', desc: 'Learn supervised, unsupervised and reinforcement learning algorithms with real-world applications.', resources: 42, icon: '🧠' },
-      { code: 'CS601L', name: 'Machine Learning Lab', sem: 6, credits: 1.5, type: 'Advanced', desc: 'Practical lab for implementing supervised and unsupervised machine learning models in Python.', resources: 28, icon: '🧠' },
-      { code: 'CS602L', name: 'Business Analytics Lab', sem: 6, credits: 1.5, type: 'Elective', desc: 'Hands-on business KPI forecasting, financial modeling, and descriptive analytics reports.', resources: 16, icon: '💼' },
-      { code: 'CS701', name: 'Deep Learning', sem: 7, credits: 4, type: 'Advanced', desc: 'Explore deep neural networks, CNNs, RNNs, transformers, and large language models.', resources: 50, icon: '🤖' },
-      { code: 'CS701L', name: 'Deep Learning Lab', sem: 7, credits: 1.5, type: 'Advanced', desc: 'Practical lab for implementing deep neural networks, CNNs, RNNs, and transformer models.', resources: 24, icon: '🤖' },
-      { code: 'CS702', name: 'Computer Vision', sem: 7, credits: 3, type: 'Elective', desc: 'Image processing, object detection, segmentation and visual tracking using OpenCV & deep nets.', resources: 44, icon: '👁️' },
-      { code: 'CS703L', name: 'Big Data Analysis Lab', sem: 7, credits: 1.5, type: 'Advanced', desc: 'Distributed computing lab implementing MapReduce, HDFS queries, Apache Spark, and NoSQL clusters.', resources: 18, icon: '🐘' },
-      { code: 'CS801', name: 'Natural Language Processing', sem: 8, credits: 4, type: 'Elective', desc: 'Text modeling, sentiment analysis, word embeddings, transformers, and prompt engineering.', resources: 48, icon: '💬' },
-      { code: 'CS802L', name: 'Cloud Service Management Lab', sem: 8, credits: 1.5, type: 'Elective', desc: 'Configuring cloud instances, serverless functions, VPCs, network routing, and bucket storage pipelines.', resources: 15, icon: '☁️' }
-    ];
-
     const RESOURCES_DATA = [
       { subject: 'Machine Learning', title: 'Unit 1 — Introduction to ML & Types', unit: 1, type: 'Notes', format: 'PDF', file: '#' },
       { subject: 'Machine Learning', title: 'Unit 3 — Supervised Learning Notes', unit: 3, type: 'Notes', format: 'PDF', file: '#' },
@@ -236,6 +214,111 @@
     ];
 
     const VIRTUAL_LABS = [
+      {
+        id: 'sys-design-lab',
+        isAvailable: true,
+        name: 'System Design Lab',
+        syllabusCode: 'CS402L',
+        desc: 'Learn high-level and low-level system design concepts for building scalable, fault-tolerant distributed systems. Explore load balancing, caching, database sharding, and real-world architectures.',
+        experimentsCount: 2,
+        hours: 10,
+        difficulty: 'Advanced',
+        tags: ['System Design', 'HLD', 'Scalability', 'Load Balancing'],
+        experiments: [
+          {
+            id: 'cloud-architect',
+            name: 'Load Balancing & Horizontal Scaling Simulator',
+            objective: 'Design a highly available web service and simulate traffic distribution across multi-node server clusters using an Application Load Balancer.',
+            prerequisites: 'Concepts of client-server architecture, HTTP requests, DNS, and IP routing.',
+            theory: 'System design requires horizontal scalability. A Load Balancer distributes user requests across multiple server instances to prevent individual bottlenecks and ensure high availability.',
+            procedure: '1. Click "Add Load Balancer" and "Add EC2 Instance" to build your system.\n2. Connect the Load Balancer to the servers.\n3. Run a traffic load test and monitor CPU usage and request counts.',
+            quiz: [
+              { q: 'What is the primary purpose of horizontal scaling?', o: ['Increase CPU capacity of a single server', 'Add more servers to run in parallel', 'Store more data in local cache', 'Encrypt database transactions'], a: 1, exp: 'Horizontal scaling means adding more machines (nodes) to the resource pool, whereas vertical scaling means adding power (CPU/RAM) to an existing machine.' },
+              { q: 'Which algorithm is commonly used to distribute traffic equally in round-robin fashion?', o: ['Dijkstra\'s algorithm', 'Round Robin', 'K-Means clustering', 'FIFO queuing'], a: 1, exp: 'Round Robin is the most basic load balancing algorithm, distributing requests cyclically to all healthy servers.' }
+            ],
+            references: [
+              'System Design Interview by Alex Xu',
+              'Designing Data-Intensive Applications by Martin Kleppmann'
+            ]
+          },
+          {
+            id: 'sql-query',
+            name: 'Database Sharding & Replication Console',
+            objective: 'Write SQL statements to simulate partitioning student record tables across multiple simulated database shards.',
+            prerequisites: 'Basic SQL queries, relational tables, and foreign keys.',
+            theory: 'When a database grows too large for a single machine, we partition it. Database Sharding splits table rows horizontally across separate database engines. Replication copies the database to multiple machines for fault tolerance and read scaling.',
+            procedure: '1. View the Students database schema.\n2. Write SQL SELECT queries to retrieve records.\n3. Model how query partitioning divides students based on StudentID ranges.',
+            quiz: [
+              { q: 'What is database sharding?', o: ['Copying the entire database to a backup disk', 'Splitting a database table horizontally across separate machines', 'Adding more indexes to speed up queries', 'Converting SQL queries to NoSQL format'], a: 1, exp: 'Sharding is a database partitioning method that separates very large databases into smaller, faster, more easily managed parts called shards.' }
+            ],
+            references: [
+              'High Performance MySQL by Baron Schwartz',
+              'Database System Concepts by Silberschatz'
+            ]
+          }
+        ]
+      },
+      {
+        id: 'dsa-lab',
+        isAvailable: true,
+        name: 'Data Structures, Algorithms & System Design (DSA) Lab',
+        syllabusCode: 'CS301L',
+        desc: 'Learn and implement core data structures and sorting/searching algorithms from basic to intermediate levels. Analyze time complexity and execute interactive simulations.',
+        experimentsCount: 3,
+        hours: 12,
+        difficulty: 'Basic to Intermediate',
+        tags: ['DSA', 'Algorithms', 'Data Structures', 'Python'],
+        experiments: [
+          {
+            id: 'sorting-visualizer',
+            name: 'Sorting Algorithms Visualizer',
+            objective: 'Implement and analyze sorting algorithms (Bubble Sort, Selection Sort, Quick Sort) to understand order operations and comparison complexities.',
+            prerequisites: 'Knowledge of arrays/lists, loops, nested iterations, and conditional swapping.',
+            theory: 'Sorting is the process of arranging data in a specific order (ascending or descending). Bubble Sort repeatedly swaps adjacent out-of-order items (O(N^2)). Selection Sort finds the minimum item and places it at the correct index (O(N^2)). Quick Sort uses divide-and-conquer to partition arrays around a pivot element (O(N log N) average).',
+            procedure: '1. Click "Generate Random List" to create a fresh set of values.\n2. Choose a sorting algorithm from the dropdown.\n3. Click "Run Sort" to see comparisons and swaps animate.\n4. Observe step counters and compare complexity results.',
+            quiz: [
+              { q: 'What is the worst-case time complexity of Bubble Sort?', o: ['O(N log N)', 'O(N)', 'O(N^2)', 'O(1)'], a: 2, exp: 'Bubble Sort uses nested loops that compare all pairs, resulting in O(N^2) worst-case time complexity.' },
+              { q: 'Which sorting algorithm uses a divide-and-conquer approach?', o: ['Bubble Sort', 'Selection Sort', 'Quick Sort', 'Insertion Sort'], a: 2, exp: 'Quick Sort divides the array into sub-arrays based on a pivot and solves them recursively, using divide-and-conquer.' }
+            ],
+            references: [
+              'Introduction to Algorithms by Thomas H. Cormen et al.',
+              'Data Structures and Algorithms in Python by Michael T. Goodrich'
+            ]
+          },
+          {
+            id: 'packet-route',
+            name: 'Graph Traversal & Dijkstra\'s Algorithm',
+            objective: 'Visualize packet routing and graph pathfinding using Dijkstra\'s shortest path algorithm inside a network topology.',
+            prerequisites: 'Concepts of graphs (nodes and edges), adjacency matrices, and weights.',
+            theory: 'Graphs are mathematical structures representing networks of nodes connected by edges. Dijkstra\'s algorithm finds the shortest path between a source node and all other nodes in a weighted graph. It works by maintaining a set of visited nodes and iteratively updating the minimum distance to neighboring nodes.',
+            procedure: '1. Inspect the visual graph in the sandbox panel.\n2. Select a starting node (Source) and an ending node (Destination).\n3. Click "Find Shortest Path" to see the active route highlight in green.\n4. Analyze how shortest-path calculations map to routing decisions.',
+            quiz: [
+              { q: 'What is the primary objective of Dijkstra\'s algorithm?', o: ['Find the longest path in a graph', 'Find the shortest path from a source node to other nodes', 'Detect cycles in a graph', 'Find the minimum spanning tree'], a: 1, exp: 'Dijkstra\'s algorithm calculates the shortest path from a single source node to all other nodes in a weighted graph.' },
+              { q: 'What type of graph is Dijkstra\'s algorithm suited for?', o: ['Graphs with negative edge weights', 'Graphs with only positive edge weights', 'Unweighted graphs only', 'Acyclic graphs only'], a: 1, exp: 'Dijkstra\'s algorithm requires all edge weights to be non-negative. For negative weights, Bellman-Ford must be used.' }
+            ],
+            references: [
+              'Algorithms by Robert Sedgewick and Kevin Wayne',
+              'GeeksforGeeks Graph Algorithms references'
+            ]
+          },
+          {
+            id: 'cpu-sched',
+            name: 'Queue Scheduling (FCFS, SJF, Round Robin)',
+            objective: 'Understand and analyze queue execution and scheduling algorithms (FCFS, SJF, Round Robin) using Gantt charts.',
+            prerequisites: 'Basic concepts of queues (FIFO), process states, and scheduling metrics.',
+            theory: 'A Queue is a linear data structure following the First-In-First-Out (FIFO) principle. CPU scheduling algorithms manage queues of processes waiting for execution. FCFS schedules processes in arrival order. SJF selects the process with the shortest burst time. Round Robin allocates CPU slices (quanta) in a cyclic queue.',
+            procedure: '1. Add processes to the table with Burst and Arrival times.\n2. Choose FCFS, SJF, or Round Robin algorithm.\n3. Click "Simulate Scheduling" to view the Gantt chart queue timeline.\n4. Review calculated average waiting and turnaround times.',
+            quiz: [
+              { q: 'Which queue scheduling algorithm yields the minimum average waiting time?', o: ['FCFS', 'SJF', 'Round Robin', 'Priority'], a: 1, exp: 'Shortest Job First (SJF) is mathematically proven to minimize average waiting times.' },
+              { q: 'What is the scheduling queue ordering policy of FCFS?', o: ['Last In First Out', 'First In First Out', 'Priority based', 'Random selection'], a: 1, exp: 'First Come First Served (FCFS) follows the standard FIFO queue structure.' }
+            ],
+            references: [
+              'Operating System Concepts by Abraham Silberschatz',
+              'Modern Operating Systems by Andrew S. Tanenbaum'
+            ]
+          }
+        ]
+      },
       {
         id: 'ml-lab',
         isAvailable: true,
@@ -565,10 +648,318 @@
       }
     ];
 
-    // ────────────────────────────────────────────────────────
-    // DATA SET: LAB COURSES LEARNING CONTENT
-    // ────────────────────────────────────────────────────────
     const LAB_COURSES_CONTENT = {
+      'sys-design-lab': {
+        title: 'System Design and Scalability Learning Module',
+        desc: 'System Design deals with planning and architecting large-scale, distributed software systems that process millions of requests. This module covers HLD, caching, load balancing, and database sharding.',
+        icon: '☁️',
+        topics: [
+          {
+            id: 'cloud-architect',
+            title: 'Topic 1: Load Balancers & Scalability (HLD)',
+            videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            concept: {
+              title: 'Understanding Load Balancing & Scaling',
+              intro: 'Load balancers are the entry gate of distributed architectures, directing user requests to healthy server nodes.',
+              whatIs: 'A **Load Balancer** acts as a traffic cop sitting in front of your servers and routing client requests across all servers capable of fulfilling those requests. This distributes user load and prevents any single server from becoming a single point of failure.',
+              whyImportant: 'High traffic spikes (like Black Friday or news events) can easily crash single-instance setups. Load balancing enables seamless horizontal scaling by distributing request volumes dynamically.',
+              howItWorks: '1. Users query your domain which routes to the load balancer.\n2. The load balancer monitors server CPU and connection limits.\n3. It uses a routing algorithm (like Round Robin or Least Connections) to forward requests to healthy machines.',
+              components: [
+                'Round Robin: Rotates requests sequentially through the server pool.',
+                'Least Connections: Sends requests to the server with the lowest active load.',
+                'IP Hash: Maps client IP address to a specific server to ensure session persistence.',
+                'Health Probe: Automatic checks to remove failed servers from the pool.'
+              ],
+              examples: 'Netflix routing video streaming requests to nearest AWS microservices, or Google distributing search queries across worldwide clusters.',
+              relevance: 'In this experiment, we provision EC2 nodes, S3 buckets, and load balancers inside our cloud sandbox panel to stress-test traffic thresholds.',
+              keyPoints: [
+                'Load balancing is the foundation of high availability.',
+                'Health checks automatically isolate crashed or degraded servers.',
+                'Session persistence (sticky sessions) ensures users stay connected to the same node if required.'
+              ]
+            },
+            lab: {
+              objective: 'Configure server groups and simulate a Round Robin load balancer routing traffic to healthy compute nodes.',
+              requirements: 'Modern web browser with cloud sandbox canvas support, Python 3.8+.',
+              procedure: [
+                'Step 1: In the simulator, add 3 EC2 nodes (2 Healthy, 1 Unhealthy).',
+                'Step 2: Connect them to the Load Balancer.',
+                'Step 3: Run the stress test traffic simulation.',
+                'Step 4: Check if the load balancer correctly bypasses the unhealthy node.'
+              ],
+              code: `class LoadBalancer:
+    def __init__(self, servers):
+        self.servers = servers
+        self.index = 0
+        
+    def route_request(self):
+        # Round Robin routing to healthy servers only
+        healthy_servers = [s for s in self.servers if s['status'] == 'Healthy']
+        if not healthy_servers:
+            return "503 Service Unavailable"
+            
+        target = healthy_servers[self.index % len(healthy_servers)]
+        self.index += 1
+        target['requests'] += 1
+        return f"Routed to {target['id']}"
+
+# Cluster Setup
+cluster = [
+    {'id': 'Server-1', 'status': 'Healthy', 'requests': 0},
+    {'id': 'Server-2', 'status': 'Unhealthy', 'requests': 0},
+    {'id': 'Server-3', 'status': 'Healthy', 'requests': 0}
+]
+
+lb = LoadBalancer(cluster)
+print(lb.route_request())
+print(lb.route_request())
+print(lb.route_request())`,
+              expectedOutput: `Routed to Server-1
+Routed to Server-3
+Routed to Server-1`,
+              result: 'The load balancer correctly distributed traffic between the healthy Server-1 and Server-3 while isolating Server-2.'
+            }
+          },
+          {
+            id: 'sql-query',
+            title: 'Topic 2: Database Sharding & Partitioning',
+            videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            concept: {
+              title: 'Understanding Database Sharding & Indexes',
+              intro: 'Database sharding divides massive databases horizontally, allocating rows across separate server engines.',
+              whatIs: 'When database read/write volume exceeds a single machine\'s disk I/O, **sharding** partitions table records horizontally. Each partition is called a **shard** and is hosted on a separate server instance.',
+              whyImportant: 'A single database server can quickly become a bottleneck for web apps like Twitter or Facebook. Sharding scales write throughput linearly across clusters.',
+              howItWorks: '1. Define a "Shard Key" (an attribute like UserID or StudentID).\n2. Apply a hashing function: ShardID = Hash(ShardKey) % TotalShards.\n3. Direct database writes to the designated server shard.',
+              components: [
+                'Shard Key: The column value determining where a row is stored.',
+                'Horizontal Partitioning: Splitting a single table by rows instead of columns.',
+                'Replication: Copying database shards to backup nodes for fault tolerance.'
+              ],
+              examples: 'Partitioning a global banking database so that US customers are stored on US database servers and European customers on European servers.',
+              relevance: 'In this lab, we execute SQL query statements inside the SQL console playground to model database queries.',
+              keyPoints: [
+                'Sharding key selection is critical to prevent data hotspots.',
+                'Cross-shard joins are extremely slow and should be avoided in design.',
+                'Replication is used alongside sharding to secure data backups.'
+              ]
+            },
+            lab: {
+              objective: 'Write SQL statements to simulate sharding student records across separate database instances using a hash-routing function.',
+              requirements: 'Modern web browser, Python 3.8+.',
+              procedure: [
+                'Step 1: Write a routing script in Python to partition database records.',
+                'Step 2: Map user IDs using Hash(UserID) % ShardCount.',
+                'Step 3: Route queries dynamically to Shard-A or Shard-B.'
+              ],
+              code: `def get_shard_id(student_id, shard_count=3):
+    # Simple hash-based sharding key router
+    return (student_id * 17) % shard_count
+
+# Simulated Shards
+shards = {0: 'Shard-A', 1: 'Shard-B', 2: 'Shard-C'}
+
+students = [101, 102, 103, 104, 105]
+for s_id in students:
+    shard_num = get_shard_id(s_id)
+    print(f"Student ID {s_id} -> routed to database node: {shards[shard_num]}")`,
+              expectedOutput: `Student ID 101 -> routed to database node: Shard-C
+Student ID 102 -> routed to database node: Shard-B
+Student ID 103 -> routed to database node: Shard-A
+Student ID 104 -> routed to database node: Shard-C
+Student ID 105 -> routed to database node: Shard-B`,
+              result: 'The sharding router successfully distributed database queries across three distinct database shards.'
+            }
+          }
+        ]
+      },
+      'dsa-lab': {
+        title: 'Data Structures and Algorithms (DSA) Learning Module',
+        desc: 'Data Structures and Algorithms form the foundation of computer science. This module covers core data structures (Arrays, Stacks, Queues, Graphs) and algorithms (Sorting, Searching, Shortest Path) from basic to intermediate levels.',
+        icon: '🧮',
+        topics: [
+          {
+            id: 'sorting-visualizer',
+            title: 'Topic 1: Sorting Algorithms (Bubble, Selection, Quick)',
+            videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            concept: {
+              title: 'Understanding Sorting Algorithms',
+              intro: 'Sorting algorithms arrange elements in a list or array in a specific order. This is a fundamental concept in DSA used to optimize searching and other operations.',
+              whatIs: 'Sorting algorithms reorder elements. **Bubble Sort** repeatedly swaps adjacent elements if they are in the wrong order. **Selection Sort** repeatedly finds the minimum element and moves it to the front. **Quick Sort** selects a "pivot" element and partitions the array into elements smaller and larger than the pivot, solving them recursively.',
+              whyImportant: 'Sorted data is much faster to search (e.g., using Binary Search in O(log N) time instead of Linear Search in O(N)). Efficient sorting is critical for database indexing, search engines, and overall software performance.',
+              howItWorks: '1. **Bubble Sort**: Compares `arr[i]` and `arr[i+1]`. Swaps if `arr[i] > arr[i+1]`. Repeats N times.\n2. **Selection Sort**: Iterates through the array to find the minimum element. Swaps it with the first unsorted element. Repeats.\n3. **Quick Sort**: Chooses pivot. Puts smaller elements to the left, larger to the right. Recursively applies same logic to sub-arrays.',
+              components: [
+                'Pivot element (in Quick Sort): The element around which partitioning is done.',
+                'Swapping: The core operation of changing positions of two array elements.',
+                'Time Complexity: Bubble and Selection sort are O(N^2), whereas Quick Sort is O(N log N) on average.'
+              ],
+              examples: 'Sorting a list of numbers: Input: [5, 2, 9, 1, 5, 6] -> Output: [1, 2, 5, 5, 6, 9]. Real-world examples include ordering high scores in a game, sorting contacts by name, or prioritizing search engine results.',
+              relevance: 'In this lab session, we visualize how comparisons and swaps happen dynamically during execution to understand sorting efficiency.',
+              keyPoints: [
+                'Bubble sort is simple but inefficient for large datasets.',
+                'Quick sort is highly efficient and widely used in system libraries.',
+                'Selection sort minimizes the number of swap operations.'
+              ]
+            },
+            lab: {
+              objective: 'Compare Bubble Sort, Selection Sort, and Quick Sort algorithms visually and count total comparison and swap operations.',
+              requirements: 'Modern web browser with JS console support, Python 3.8+ for command-line execution.',
+              procedure: [
+                'Step 1: In the simulator, click "Generate Random List".',
+                'Step 2: Select "Bubble Sort" and click "Run Sort". Observe the step animations.',
+                'Step 3: Reset and select "Selection Sort", then "Run Sort". Compare the number of swaps.',
+                'Step 4: Reset and select "Quick Sort", then "Run Sort". Compare total operations.'
+              ],
+              code: `def bubble_sort(arr):
+    n = len(arr)
+    comparisons = 0
+    swaps = 0
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            comparisons += 1
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swaps += 1
+    print(f"Comparisons: {comparisons}, Swaps: {swaps}")
+    return arr
+
+# Test array
+test_arr = [5, 2, 9, 1, 6]
+print("Sorted array:", bubble_sort(test_arr))`,
+              expectedOutput: `Comparisons: 10, Swaps: 4
+Sorted array: [1, 2, 5, 6, 9]`,
+              result: 'The sorting visualizer successfully tracked comparisons and sorted the list in ascending order.'
+            }
+          },
+          {
+            id: 'packet-route',
+            title: 'Topic 2: Graph Theory & Shortest Path (Dijkstra\'s Algorithm)',
+            videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            concept: {
+              title: 'Understanding Graphs & Shortest Path',
+              intro: 'Graphs are mathematical structures used to model relationships between objects, represented as nodes and edges. Dijkstra\'s algorithm finds the shortest path in a weighted graph.',
+              whatIs: 'A **Graph** consists of **Vertices (Nodes)** connected by **Edges**. Edges can be weighted (representing distance, cost, or time) and directed or undirected. **Dijkstra\'s Algorithm** is a greedy algorithm that finds the shortest path from a single source vertex to all other vertices in a weighted graph.',
+              whyImportant: 'Shortest path algorithms are critical for network routing protocols (like OSPF), GPS mapping services (like Google Maps), and pathfinding in game development.',
+              howItWorks: '1. Set the distance of the source node to 0, and all other nodes to infinity.\n2. Mark all nodes as unvisited. Set the source node as current.\n3. For the current node, calculate the distance to all unvisited neighbors. If the calculated distance is less than the current distance, update it.\n4. Once all neighbors of the current node are considered, mark it as visited. Select the unvisited node with the smallest distance as the new current node and repeat.',
+              components: [
+                'Vertices (Nodes): The intersection points in the network.',
+                'Edges: The connection lines with associated weights.',
+                'Visited Set: List of vertices whose shortest distance is finalized.'
+              ],
+              examples: 'Finding the quickest route between cities A and B, or routing computer packets through the internet with the lowest latency.',
+              relevance: 'In this lab, we visualize Dijkstra\'s algorithm dynamically highlighting the shortest path in a node network.',
+              keyPoints: [
+                'Dijkstra\'s algorithm uses a greedy approach.',
+                'It does not support negative edge weights (Bellman-Ford is needed for that).',
+                'Time complexity is O(V^2) or O(E log V) with a priority queue/min-heap.'
+              ]
+            },
+            lab: {
+              objective: 'Configure start and destination nodes and visualize Dijkstra\'s pathfinding algorithm.',
+              requirements: 'Modern web browser with SVG rendering, Python 3.8+.',
+              procedure: [
+                'Step 1: Look at the graph nodes in the simulator.',
+                'Step 2: Click on any node to select it as the Source.',
+                'Step 3: Click on another node to select it as the Destination.',
+                'Step 4: Click "Find Shortest Path" to animate and calculate the shortest path.'
+              ],
+              code: `import sys
+
+def dijkstra(graph, src):
+    nodes = len(graph)
+    dist = [sys.maxsize] * nodes
+    dist[src] = 0
+    visited = [False] * nodes
+    
+    for _ in range(nodes):
+        u = -1
+        min_dist = sys.maxsize
+        for i in range(nodes):
+            if not visited[i] and dist[i] < min_dist:
+                min_dist = dist[i]
+                u = i
+                
+        visited[u] = True
+        
+        for v in range(nodes):
+            if graph[u][v] > 0 and not visited[v]:
+                if dist[u] + graph[u][v] < dist[v]:
+                    dist[v] = dist[u] + graph[u][v]
+                    
+    return dist
+
+# Adjacency Matrix representing weighted connections
+graph = [
+    [0, 4, 0, 0, 8],
+    [4, 0, 8, 0, 0],
+    [0, 8, 0, 7, 0],
+    [0, 0, 7, 0, 9],
+    [8, 0, 0, 9, 0]
+]
+print("Shortest distances from node 0:", dijkstra(graph, 0))`,
+              expectedOutput: `Shortest distances from node 0: [0, 4, 12, 19, 8]`,
+              result: 'The pathfinder successfully highlighted the shortest path with the minimum overall delay/cost.'
+            }
+          },
+          {
+            id: 'cpu-sched',
+            title: 'Topic 3: Queues & FIFO Scheduling Algorithms',
+            videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            concept: {
+              title: 'Understanding Queues & Scheduling',
+              intro: 'A Queue is a linear data structure that elements enter at the rear and exit at the front. Queues are fundamental to operating systems for resource allocation.',
+              whatIs: 'A **Queue** follows the **First-In-First-Out (FIFO)** policy. Scheduling algorithms manage how processes in a queue are allocated to the CPU. **First Come First Served (FCFS)** executes processes in their arrival order. **Shortest Job First (SJF)** prioritizes processes with the shortest burst time. **Round Robin (RR)** gives each process a cyclic time slice.',
+              whyImportant: 'Queue data structures ensure fair sharing of resources. They are used in printer jobs, keyboard input buffers, web server request handling, and OS thread scheduling.',
+              howItWorks: '1. Processes arrive and enter the "Ready Queue".\n2. The scheduler selects a process based on the active policy (FCFS, SJF, or RR).\n3. FCFS runs it to completion. SJF picks the smallest burst. RR runs it for a fixed quantum, then moves it to the back of the queue.',
+              components: [
+                'Enqueue: Operation to add an element to the rear of the queue.',
+                'Dequeue: Operation to remove an element from the front of the queue.',
+                'Gantt Chart: Visual timeline representation of queue scheduling.'
+              ],
+              examples: 'Customers standing in line at a grocery store checkout, or computer tasks waiting for processor execution time.',
+              relevance: 'In this lab session, we simulate FCFS, SJF, and Round Robin scheduling queues and compute performance metrics.',
+              keyPoints: [
+                'Queues operate on First-In-First-Out principles.',
+                'Round Robin ensures all tasks get equal share of resources, avoiding starvation.',
+                'FCFS can suffer from the convoy effect (long tasks blocking short ones).'
+              ]
+            },
+            lab: {
+              objective: 'Implement queue execution and compare scheduling waiting times dynamically.',
+              requirements: 'Modern web browser, Python 3.8+.',
+              procedure: [
+                'Step 1: Input process parameters in the scheduler simulator table.',
+                'Step 2: Select "First Come First Served" and run simulation. Check the Gantt timeline.',
+                'Step 3: Select "Shortest Job First" and run simulation. Observe changes in waiting times.',
+                'Step 4: Select "Round Robin" with a quantum of 2. Compare average queue delays.',
+              ],
+              code: `class ProcessQueue:
+    def __init__(self):
+        self.queue = []
+        
+    def enqueue(self, item):
+        self.queue.append(item)
+        
+    def dequeue(self):
+        if not self.is_empty():
+            return self.queue.pop(0)
+        return None
+        
+    def is_empty(self):
+        return len(self.queue) == 0
+
+# Test queue operations
+pq = ProcessQueue()
+pq.enqueue("Process A")
+pq.enqueue("Process B")
+print("Dequeued:", pq.dequeue())
+print("Dequeued:", pq.dequeue())`,
+              expectedOutput: `Dequeued: Process A
+Dequeued: Process B`,
+              result: 'The process queue successfully executed tasks in order of their insertion (First-In-First-Out).'
+            }
+          }
+        ]
+      },
       'dl-lab': {
         title: 'Deep Learning Lab Learning Module',
         desc: 'Deep learning is a subset of machine learning based on artificial neural networks. You will learn to construct, train, and optimize deep neural models.',
@@ -1317,11 +1708,11 @@ Selection Sort Result: [11, 12, 22, 25, 34, 64] -> Comparisons: 15, Swaps: 4`,
     net_profit = total_revenue - marketing_budget
     
     print(f"--- Business KPIs ---")
-    print(f"Customer Acquisition Cost (CAC): ${cac:.2f}")
-    print(f"Customer Lifetime Value (LTV): ${ltv:.2f}")
+    print(f"Customer Acquisition Cost (CAC): \${cac:.2f}")
+    print(f"Customer Lifetime Value (LTV): \${ltv:.2f}")
     print(f"LTV:CAC Ratio: {ratio:.1f}x")
-    print(f"Projected Revenue: ${total_revenue:.2f}")
-    print(f"Projected Net Profit: ${net_profit:.2f}")
+    print(f"Projected Revenue: \${total_revenue:.2f}")
+    print(f"Projected Net Profit: \${net_profit:.2f}")
     
     if ratio >= 3.0:
         print("Decision: Viable Business Model")
@@ -1549,10 +1940,6 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
       }
     };
 
-
-    // ────────────────────────────────────────────────────────
-    // MAIN APP COMPONENT
-    // ────────────────────────────────────────────────────────
     function App() {
       const [page, setPage] = useState('home');
       const [theme, setTheme] = useState(() => localStorage.getItem('aids-theme') || 'light');
@@ -1564,7 +1951,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
       const [activeTab, setActiveTab] = useState('intro'); // intro, theory, procedure, simulation, quiz, references
 
       // Dedicated Lab Course Learning Module States
-      const [activeLabCourse, setActiveLabCourse] = useState('dl-lab');
+      const [activeLabCourse, setActiveLabCourse] = useState('dsa-lab');
       const [activeTopicIndex, setActiveTopicIndex] = useState(0);
 
       // Mobile Menu State
@@ -1577,7 +1964,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
         if (q.includes('lab') || q.includes('experiment') || q.includes('simulation')) {
           setPage('labs');
         } else if (q.includes('course') || q.includes('syllabus') || q.includes('subject')) {
-          setPage('courses');
+          setPage('labs');
         } else if (q.includes('resource') || q.includes('note') || q.includes('paper') || q.includes('pdf')) {
           setPage('resources');
         } else if (q.includes('event') || q.includes('workshop') || q.includes('seminar')) {
@@ -1585,7 +1972,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
         } else if (q.includes('about') || q.includes('vision') || q.includes('contact')) {
           setPage('about');
         } else {
-          setPage('courses');
+          setPage('labs');
         }
       };
 
@@ -1663,7 +2050,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
 
                 {/* Desktop Nav Links */}
                 <div className="hidden md:flex items-center space-x-6">
-                  {['home', 'courses', 'labs', 'resources', 'events', 'about'].map((p) => (
+                  {['home', 'labs', 'resources', 'events', 'about'].map((p) => (
                     <button
                       key={p}
                       onClick={() => navigateTo(p)}
@@ -1716,7 +2103,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
             {mobileMenuOpen && (
               <div className="md:hidden bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 transition-colors">
                 <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                  {['home', 'courses', 'labs', 'resources', 'events', 'about'].map((p) => (
+                  {['home', 'labs', 'resources', 'events', 'about'].map((p) => (
                     <button
                       key={p}
                       onClick={() => navigateTo(p)}
@@ -1739,7 +2126,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
           ═══════════════════════════════════════════════════════ */}
           <main className="flex-grow">
             {page === 'home' && <HomePage setPage={setPage} handleGlobalSearch={handleGlobalSearch} selectLab={selectLab} />}
-            {page === 'courses' && <CoursesPage />}
+
             {page === 'resources' && <ResourcesPage />}
             {page === 'labs' && <LabsDashboardPage navigateToLabCourse={navigateToLabCourse} />}
             {page === 'lab-course-detail' && (
@@ -1793,7 +2180,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
                 <div>
                   <h3 className="text-white font-heading font-semibold text-sm mb-4">Academic Portal</h3>
                   <ul className="space-y-2 text-sm text-slate-400">
-                    <li><button onClick={() => navigateTo('courses')} className="hover:text-white">→ Explore Courses</button></li>
+
                     <li><button onClick={() => navigateTo('labs')} className="hover:text-white">→ Lab Courses</button></li>
                     <li><button onClick={() => navigateTo('resources')} className="hover:text-white">→ Question & Notes Library</button></li>
                     <li><a href="#" className="hover:text-white">→ Student Handbook</a></li>
@@ -1845,16 +2232,9 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
     // ────────────────────────────────────────────────────────
     // PAGE: HOME
     // ────────────────────────────────────────────────────────
-    function HomePage({ setPage, handleGlobalSearch, selectLab }) {
-      const [searchVal, setSearchVal] = useState('');
-
-      const onSearchSubmit = (e) => {
-        e.preventDefault();
-        handleGlobalSearch(searchVal);
-      };
-
+    function HomePage({ setPage }) {
       return (
-        <div>
+        <div className="space-y-16 pb-16">
           {/* Hero Banner */}
           <section className="relative overflow-hidden bg-slate-900 dark:bg-slate-955 text-white py-24 px-4 sm:px-6 lg:px-8">
             <div className="absolute inset-0 z-0 opacity-20">
@@ -1862,285 +2242,153 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
               <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary-600 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
             </div>
 
-            <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
-              {/* Left Column */}
-              <div className="max-w-xl space-y-6 text-center md:text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-sm text-primary-300 font-medium">
-                  <span className="w-2.5 h-2.5 rounded-full bg-primary-500 animate-ping"></span>
-                  Department of AI & Data Science
-                </div>
-                <h1 className="text-4xl sm:text-5xl font-heading font-extrabold leading-tight tracking-tight">
-                  Learn. <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-secondary-400">Explore.</span> Build.
-                </h1>
-                <p className="text-lg text-slate-300 font-light">
-                  Your official digital resource gateway for syllabus files, textbooks, virtual lab simulators, and academic opportunities.
+            <div className="max-w-7xl mx-auto relative z-10 text-center space-y-8">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 text-sm text-primary-300 font-medium">
+                <span className="w-2.5 h-2.5 rounded-full bg-primary-500 animate-ping"></span>
+                VSB Engineering College, Karur
+              </div>
+
+              <h1 className="text-4xl sm:text-6xl font-heading font-extrabold leading-tight tracking-tight max-w-4xl mx-auto">
+                Empowering Minds, <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-secondary-400">Engineering the Future</span>
+              </h1>
+
+              <p className="text-lg sm:text-xl text-slate-300 font-light max-w-3xl mx-auto leading-relaxed">
+                A premier technical institution dedicated to academic excellence, state-of-the-art research, and career-focused placement records. Ranked among top tier colleges in Tamil Nadu.
+              </p>
+
+              <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+                <a
+                  href="#overview"
+                  className="px-6 py-3 bg-gradient-to-r from-primary-600 to-secondary-500 hover:from-primary-700 hover:to-secondary-600 text-sm font-semibold rounded-lg shadow-lg shadow-primary-500/20 hover:scale-[1.02] transition-all"
+                >
+                  Explore VSB
+                </a>
+                <button
+                  onClick={() => setPage('about')}
+                  className="px-6 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-sm font-semibold rounded-lg transition-all"
+                >
+                  About the Institution
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* VSB Core Highlights */}
+          <section id="overview" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+            <div className="text-center space-y-3 mb-16">
+              <span className="text-xs font-extrabold text-primary-600 dark:text-primary-400 uppercase tracking-widest block">Institution Profile</span>
+              <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-slate-800 dark:text-slate-100">Why VSB Engineering College?</h2>
+              <p className="text-slate-500 dark:text-slate-400 max-w-xl mx-auto text-sm">Discover the cornerstones of education, values, and careers that define our campus.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Card 1 */}
+              <div className="p-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-md transition-all space-y-4">
+                <div className="w-12 h-12 bg-primary-50 dark:bg-primary-955 rounded-xl flex items-center justify-center text-2xl">🏛️</div>
+                <h3 className="font-heading font-bold text-xl text-slate-800 dark:text-slate-100">Accreditations & Quality</h3>
+                <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                  NAAC accredited with 'A' Grade, ISO 9001:2015 Certified, and courses approved by AICTE. Affiliated to Anna University, Chennai.
                 </p>
-
-                {/* Global Search Input */}
-                <form onSubmit={onSearchSubmit} className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto md:mx-0">
-                  <input
-                    type="text"
-                    placeholder="Search courses, simulators, resource notes..."
-                    value={searchVal}
-                    onChange={(e) => setSearchVal(e.target.value)}
-                    className="flex-grow px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
-                  />
-                  <button type="submit" className="px-6 py-3 bg-gradient-to-r from-primary-600 to-secondary-500 rounded-lg hover:from-primary-700 hover:to-secondary-600 text-sm font-semibold shadow-md flex items-center justify-center gap-2">
-                    <Icons.Search /> Search
-                  </button>
-                </form>
-
-                <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
-                  <button onClick={() => setPage('courses')} className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-md text-xs font-semibold flex items-center gap-2">
-                    <Icons.BookOpen /> Explore Courses
-                  </button>
-                  <button onClick={() => setPage('labs')} className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-md text-xs font-semibold flex items-center gap-2">
-                    <Icons.FlaskConical /> Virtual Labs
-                  </button>
-                </div>
               </div>
 
-              {/* Right Column: Visual Deck */}
-              <div className="grid grid-cols-2 gap-4 w-full max-w-md relative">
-                <div className="p-5 bg-gradient-to-br from-primary-900/30 to-slate-800/50 border border-slate-800 rounded-xl space-y-3">
-                  <div className="text-3xl">🧠</div>
-                  <h3 className="font-heading font-semibold text-slate-200">Machine Learning</h3>
-                  <p className="text-xs text-slate-400">Train regression and K-Means clusters interactively.</p>
-                  <button onClick={() => selectLab(VIRTUAL_LABS[0], VIRTUAL_LABS[0].experiments[0])} className="text-xs text-primary-400 hover:text-primary-300 font-semibold flex items-center gap-1">Open Simulator <Icons.ArrowRight /></button>
-                </div>
-                <div className="p-5 bg-gradient-to-br from-secondary-900/30 to-slate-800/50 border border-slate-800 rounded-xl space-y-3 translate-y-4">
-                  <div className="text-3xl">🗄️</div>
-                  <h3 className="font-heading font-semibold text-slate-200">DBMS SQL Console</h3>
-                  <p className="text-xs text-slate-400">Write SQL queries and see immediate table records.</p>
-                  <button onClick={() => selectLab(VIRTUAL_LABS[1], VIRTUAL_LABS[1].experiments[0])} className="text-xs text-secondary-400 hover:text-secondary-300 font-semibold flex items-center gap-1">Open Playground <Icons.ArrowRight /></button>
-                </div>
-                <div className="p-5 bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-800 rounded-xl space-y-3">
-                  <div className="text-3xl">💻</div>
-                  <h3 className="font-heading font-semibold text-slate-200">CPU Scheduler</h3>
-                  <p className="text-xs text-slate-400">Gantt scheduling calculator for FCFS, SJF, & RR.</p>
-                  <button onClick={() => selectLab(VIRTUAL_LABS[2], VIRTUAL_LABS[2].experiments[0])} className="text-xs text-primary-400 hover:text-primary-300 font-semibold flex items-center gap-1">Simulate Scheduler <Icons.ArrowRight /></button>
-                </div>
-                <div className="p-5 bg-gradient-to-br from-primary-900/20 to-slate-800/40 border border-slate-800 rounded-xl space-y-3 translate-y-4">
-                  <div className="text-3xl">📁</div>
-                  <h3 className="font-heading font-semibold text-slate-200">Study Materials</h3>
-                  <p className="text-xs text-slate-400">500+ study files categorized for easy access.</p>
-                  <button onClick={() => setPage('resources')} className="text-xs text-primary-400 hover:text-primary-300 font-semibold flex items-center gap-1">View Library <Icons.ArrowRight /></button>
-                </div>
+              {/* Card 2 */}
+              <div className="p-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-md transition-all space-y-4">
+                <div className="w-12 h-12 bg-secondary-50 dark:bg-secondary-955 rounded-xl flex items-center justify-center text-2xl">💼</div>
+                <h3 className="font-heading font-bold text-xl text-slate-800 dark:text-slate-100">Placement Leadership</h3>
+                <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                  Consistently recognized for top placements with 1000+ job offers annually from leading multinational corporations and tech giants.
+                </p>
+              </div>
+
+              {/* Card 3 */}
+              <div className="p-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-md transition-all space-y-4">
+                <div className="w-12 h-12 bg-primary-50 dark:bg-primary-955 rounded-xl flex items-center justify-center text-2xl">🔬</div>
+                <h3 className="font-heading font-bold text-xl text-slate-800 dark:text-slate-100">Modern Research Infrastructure</h3>
+                <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                  Equipped with advanced GPU-accelerated computing labs, modern centers of excellence, smart learning classrooms, and high-speed Wi-Fi.
+                </p>
               </div>
             </div>
           </section>
 
-          {/* Quick Access Menu */}
-          <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center space-y-2 mb-12">
-              <h2 className="text-3xl font-heading font-extrabold text-slate-800 dark:text-slate-100">Everything in One Place</h2>
-              <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto">Explore all academic systems designed for the AI & Data Science programs.</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div onClick={() => setPage('courses')} className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm hover:shadow-md hover:scale-[1.01] transition-all cursor-pointer">
-                <div className="text-3xl mb-4">📚</div>
-                <h3 className="font-heading font-bold text-lg text-slate-800 dark:text-slate-100 mb-2">Syllabus & Courses</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-sm">Review full lists of subjects from Semester 1 to 8, along with standard credit counts and details.</p>
-              </div>
-              <div onClick={() => setPage('labs')} className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm hover:shadow-md hover:scale-[1.01] transition-all cursor-pointer">
-                <div className="text-3xl mb-4">🧪</div>
-                <h3 className="font-heading font-bold text-lg text-slate-800 dark:text-slate-100 mb-2">Interactive Virtual Labs</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-sm">Step-by-step algorithms, live mathematical execution models, and dynamic self-assessment quizzes.</p>
-              </div>
-              <div onClick={() => setPage('resources')} className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm hover:shadow-md hover:scale-[1.01] transition-all cursor-pointer">
-                <div className="text-3xl mb-4">📁</div>
-                <h3 className="font-heading font-bold text-lg text-slate-800 dark:text-slate-100 mb-2">Resource Library</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-sm">Searchable index of PDFs, lecture notes, textbook references, and sample university question papers.</p>
-              </div>
-            </div>
-          </section>
-
-          {/* Academic Statistics Section */}
-          <section className="bg-slate-100 dark:bg-slate-900/50 py-12 transition-colors">
+          {/* Statistics Deck */}
+          <section className="bg-slate-100 dark:bg-slate-900/50 py-16 transition-colors border-t border-b border-slate-200/50 dark:border-slate-800">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-lg">
-                  <div className="text-3xl font-heading font-extrabold text-primary-600 dark:text-primary-400">24+</div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 uppercase font-semibold">Core Courses</div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl shadow-sm">
+                  <div className="text-4xl font-heading font-extrabold text-primary-600 dark:text-primary-400">20+</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-2 uppercase font-bold tracking-wider">Years of Excellence</div>
                 </div>
-                <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-lg">
-                  <div className="text-3xl font-heading font-extrabold text-secondary-500">6+</div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 uppercase font-semibold">Virtual Labs</div>
+                <div className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl shadow-sm">
+                  <div className="text-4xl font-heading font-extrabold text-secondary-500">4500+</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-2 uppercase font-bold tracking-wider">Active Students</div>
                 </div>
-                <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-lg">
-                  <div className="text-3xl font-heading font-extrabold text-primary-600 dark:text-primary-400">500+</div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 uppercase font-semibold">Study Notes</div>
+                <div className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl shadow-sm">
+                  <div className="text-4xl font-heading font-extrabold text-primary-600 dark:text-primary-400">350+</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-2 uppercase font-bold tracking-wider">Expert Faculty</div>
                 </div>
-                <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-lg">
-                  <div className="text-3xl font-heading font-extrabold text-secondary-500">40+</div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-1 uppercase font-semibold">Student Projects</div>
+                <div className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl shadow-sm">
+                  <div className="text-4xl font-heading font-extrabold text-secondary-500">95%</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-2 uppercase font-bold tracking-wider">Placement Success</div>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Selected Labs Preview */}
-          <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
-              <div>
-                <span className="text-xs font-extrabold text-primary-600 dark:text-primary-400 uppercase tracking-widest block mb-2">Hands-on Sandbox</span>
-                <h2 className="text-3xl font-heading font-extrabold text-slate-800 dark:text-slate-100">Featured Laboratories</h2>
-              </div>
-              <button onClick={() => setPage('labs')} className="text-sm font-semibold text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1">
-                View All Labs <Icons.ArrowRight />
-              </button>
+          {/* VSB Campus Experience */}
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+            {/* Header */}
+            <div className="text-center space-y-3">
+              <span className="text-xs font-extrabold text-primary-600 dark:text-primary-400 uppercase tracking-widest block">Campus Experience</span>
+              <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-slate-800 dark:text-slate-100">Learning & Growth Environment</h2>
+              <p className="text-slate-500 dark:text-slate-400 max-w-xl mx-auto text-sm">Providing holistic ecosystems designed for student wellness and practical skills development.</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {VIRTUAL_LABS.slice(0, 2).map((lab) => (
-                <div key={lab.id} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-                  <div className="p-6 space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="px-3 py-1 rounded bg-primary-100 dark:bg-primary-950 text-xs font-semibold text-primary-600 dark:text-primary-400">{lab.difficulty}</span>
-                      <span className="text-xs text-slate-500 dark:text-slate-400">{lab.experimentsCount} Experiments</span>
-                    </div>
-                    <h3 className="text-xl font-heading font-bold text-slate-800 dark:text-slate-100">{lab.name}</h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-3">{lab.desc}</p>
-                    <div className="flex flex-wrap gap-2 pt-2">
-                      {lab.tags.map(t => (
-                        <span key={t} className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-xs text-slate-600 dark:text-slate-300">{t}</span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="px-6 py-4 bg-slate-50 dark:bg-slate-800/40 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
-                    <span className="text-xs text-slate-500 dark:text-slate-400">Est. Time: {lab.hours} Hrs</span>
-                    <button
-                      onClick={() => selectLab(lab, lab.experiments[0])}
-                      className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded text-xs font-bold transition-all"
-                    >
-                      Enter Lab →
-                    </button>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div className="space-y-6 leading-relaxed text-sm text-slate-600 dark:text-slate-300">
+                <h3 className="text-2xl font-heading font-bold text-slate-800 dark:text-slate-100">Academic Overview & Standards</h3>
+                <p>
+                  At VSB Engineering College, our educational standard focuses on quality teaching, rigorous conceptual evaluation, practical laboratory experiments, and value-based professional ethics.
+                </p>
+                <p>
+                  Through centers of excellence in AI, Cloud Computing, and Robotics, we align our programs with industry requirements, giving students opportunities to work on live research projects and professional internships.
+                </p>
+                <div className="pt-2">
+                  <button onClick={() => setPage('about')} className="px-5 py-2.5 bg-slate-850 hover:bg-slate-755 text-white rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow">
+                    <span>Learn About Accreditations</span>
+                    <Icons.ArrowRight />
+                  </button>
+                </div>
+              </div>
+
+              {/* Features List */}
+              <div className="space-y-4">
+                <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-xl flex items-start gap-4 shadow-sm">
+                  <div className="text-xl p-2 bg-slate-100 dark:bg-slate-800 rounded-lg">📚</div>
+                  <div>
+                    <h4 className="font-heading font-bold text-slate-800 dark:text-slate-100 text-sm">Central Digital Library</h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Access to thousands of volumes, print journals, e-books, and global research databases.</p>
                   </div>
                 </div>
-              ))}
+
+                <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-xl flex items-start gap-4 shadow-sm">
+                  <div className="text-xl p-2 bg-slate-100 dark:bg-slate-800 rounded-lg">🏟️</div>
+                  <div>
+                    <h4 className="font-heading font-bold text-slate-800 dark:text-slate-100 text-sm">Sports & Fitness Complex</h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Encouraging physical wellness with dedicated playgrounds, indoor facilities, and professional training.</p>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-xl flex items-start gap-4 shadow-sm">
+                  <div className="text-xl p-2 bg-slate-100 dark:bg-slate-800 rounded-lg">🚌</div>
+                  <div>
+                    <h4 className="font-heading font-bold text-slate-800 dark:text-slate-100 text-sm">Secure Connectivity & Transit</h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Extensive transport fleets connecting the college to major residential centers with top-tier security standards.</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
-
-          {/* Quick Announcement Deck */}
-          <section className="py-12 bg-slate-100 dark:bg-slate-900/30 transition-colors border-t border-b border-slate-200/50 dark:border-slate-800">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="flex items-center gap-4 text-center md:text-left flex-col md:flex-row">
-                <div className="w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-950 flex items-center justify-center text-2xl">📢</div>
-                <div>
-                  <h4 className="font-heading font-bold text-slate-800 dark:text-slate-100 text-base">New deep learning materials available</h4>
-                  <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">50+ new code notebooks, sample models, and references added to CS701 course resources.</p>
-                </div>
-              </div>
-              <button onClick={() => setPage('resources')} className="px-5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg text-xs font-semibold text-slate-800 dark:text-slate-200 transition-all">
-                Browse Library
-              </button>
-            </div>
-          </section>
-        </div>
-      );
-    }
-
-    // ────────────────────────────────────────────────────────
-    // PAGE: COURSES
-    // ────────────────────────────────────────────────────────
-    function CoursesPage() {
-      const [semFilter, setSemFilter] = useState('all');
-      const [typeFilter, setTypeFilter] = useState('all');
-      const [searchQuery, setSearchQuery] = useState('');
-
-      const filteredCourses = COURSES_DATA.filter((course) => {
-        const matchesSem = semFilter === 'all' || course.sem === parseInt(semFilter);
-        const matchesType = typeFilter === 'all' || course.type === typeFilter;
-        const matchesSearch =
-          course.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          course.name.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchesSem && matchesType && matchesSearch;
-      });
-
-      return (
-        <div className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
-          <div className="space-y-4 text-center mb-12">
-            <span className="px-3 py-1 rounded-full bg-primary-100 dark:bg-primary-950 text-xs font-semibold text-primary-600 dark:text-primary-400">Academics</span>
-            <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-slate-800 dark:text-slate-100">Course Syllabus Index</h2>
-            <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto">Explore credits, course definitions, and structures across all academic terms.</p>
-          </div>
-
-          {/* Filters Panel */}
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-xl flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm mb-8 transition-colors">
-
-            {/* Search Input */}
-            <div className="relative w-full md:max-w-xs">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                <Icons.Search />
-              </span>
-              <input
-                type="text"
-                placeholder="Search subject code or name..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors"
-              />
-            </div>
-
-            {/* Filter select inputs */}
-            <div className="flex flex-wrap items-center gap-4 w-full md:w-auto justify-end">
-              <div className="flex items-center gap-2">
-                <label className="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold">Semester</label>
-                <select
-                  value={semFilter}
-                  onChange={(e) => setSemFilter(e.target.value)}
-                  className="px-3 py-2 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 rounded-lg text-sm focus:outline-none"
-                >
-                  <option value="all">All Semesters</option>
-                  {[1, 2, 3, 4, 5, 6, 7, 8].map(s => <option key={s} value={s}>Semester {s}</option>)}
-                </select>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <label className="text-xs text-slate-500 dark:text-slate-400 uppercase font-bold">Type</label>
-                <select
-                  value={typeFilter}
-                  onChange={(e) => setTypeFilter(e.target.value)}
-                  className="px-3 py-2 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 rounded-lg text-sm focus:outline-none"
-                >
-                  <option value="all">All Types</option>
-                  <option value="Foundation">Foundation</option>
-                  <option value="Core">Core</option>
-                  <option value="Advanced">Advanced</option>
-                  <option value="Elective">Elective</option>
-                </select>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Courses grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {filteredCourses.length > 0 ? (
-              filteredCourses.map((course) => (
-                <div key={course.code} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-lg font-bold text-slate-800 dark:text-slate-100">{course.code}</span>
-                      <span className="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400">{course.type}</span>
-                    </div>
-                    <h3 className="font-heading font-bold text-base text-slate-800 dark:text-slate-100 leading-snug">{course.name}</h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-3 leading-relaxed">{course.desc}</p>
-                  </div>
-                  <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
-                    <span>Sem {course.sem} · {course.credits} Credits</span>
-                    <span className="text-primary-500 font-semibold">{course.resources} files</span>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="col-span-full text-center py-12 text-slate-500">
-                No courses found matching criteria.
-              </div>
-            )}
-          </div>
         </div>
       );
     }
@@ -2259,7 +2507,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
                   {/* Course Icon and Name */}
                   <div className="flex items-center gap-3">
                     <span className="text-3xl p-2 bg-slate-50 dark:bg-slate-800 rounded-lg">
-                      {lab.id === 'dl-lab' ? '🤖' : '🧪'}
+                      {LAB_COURSES_CONTENT[lab.id]?.icon || '🧪'}
                     </span>
                     <h3 className="text-xl font-heading font-bold text-slate-800 dark:text-slate-100 leading-snug">{lab.name}</h3>
                   </div>
@@ -2524,7 +2772,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
               {/* Lab Stats Card */}
               <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 text-xs text-slate-500 dark:text-slate-400 shadow-sm transition-colors space-y-2">
                 <p><strong>Department:</strong> AI & Data Science</p>
-                <p><strong>Syllabus Code:</strong> {lab.id === 'ml-lab' ? 'CS601L' : lab.id === 'dbms-lab' ? 'CS401L' : 'CS501L'}</p>
+                <p><strong>Syllabus Code:</strong> {lab.syllabusCode || 'CS301L'}</p>
                 <p><strong>Est. Credits:</strong> 1.5</p>
               </div>
             </div>
@@ -3716,7 +3964,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50 dark:bg-slate-800/30 p-5 border border-slate-200 dark:border-slate-800 rounded-xl text-xs">
           <div className="md:col-span-1 space-y-4">
             <h5 className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b pb-2">DL Hyperparameters</h5>
-            
+
             <div className="space-y-1">
               <label className="block text-slate-500 font-semibold">Learning Rate (η): {lr}</label>
               <select value={lr} onChange={(e) => setLr(parseFloat(e.target.value))} className="w-full px-2 py-1.5 border dark:border-slate-700 bg-white dark:bg-slate-800 rounded">
@@ -3897,7 +4145,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50 dark:bg-slate-800/30 p-5 border border-slate-200 dark:border-slate-800 rounded-xl text-xs">
           <div className="md:col-span-1 space-y-4">
             <h5 className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b pb-2">Dijkstra Routing Settings</h5>
-            
+
             <div className="space-y-1">
               <label className="block text-slate-500 font-semibold">Source Node</label>
               <select value={source} onChange={(e) => { setSource(e.target.value); setActivePath([]); setTotalCost(0); }} className="w-full px-2 py-1.5 border dark:border-slate-700 bg-white dark:bg-slate-800 rounded">
@@ -4030,7 +4278,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50 dark:bg-slate-800/30 p-5 border border-slate-200 dark:border-slate-800 rounded-xl text-xs">
           <div className="md:col-span-1 space-y-4">
             <h5 className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b pb-2">Data Processing Operations</h5>
-            
+
             <button onClick={runImputation} disabled={imputed} className="w-full px-4 py-2 bg-primary-600 hover:bg-primary-700 disabled:bg-slate-350 text-white rounded font-bold transition-all shadow">
               Clean & Impute Missing Data
             </button>
@@ -4123,7 +4371,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50 dark:bg-slate-800/30 p-5 border border-slate-200 dark:border-slate-800 rounded-xl text-xs">
           <div className="md:col-span-1 space-y-4">
             <h5 className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b pb-2">Plot Parameters</h5>
-            
+
             <div className="space-y-1">
               <label className="block text-slate-500 font-semibold">X-Axis Variable</label>
               <select value={xAxis} onChange={(e) => setXAxis(e.target.value)} className="w-full px-2 py-1.5 border dark:border-slate-700 bg-white dark:bg-slate-800 rounded">
@@ -4296,7 +4544,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50 dark:bg-slate-800/30 p-5 border border-slate-200 dark:border-slate-800 rounded-xl text-xs">
           <div className="md:col-span-1 space-y-4">
             <h5 className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b pb-2">Sorting Config</h5>
-            
+
             <div className="space-y-1">
               <label className="block text-slate-500 font-semibold">Algorithm Choice</label>
               <select value={algo} onChange={(e) => setAlgo(e.target.value)} disabled={isSorting} className="w-full px-2 py-1.5 border dark:border-slate-700 bg-white dark:bg-slate-800 rounded">
@@ -4359,7 +4607,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50 dark:bg-slate-800/30 p-5 border border-slate-200 dark:border-slate-800 rounded-xl text-xs">
           <div className="md:col-span-1 space-y-4">
             <h5 className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b pb-2">Business Inputs</h5>
-            
+
             <div className="space-y-1">
               <label className="block text-slate-500 font-semibold">Unit Retail Price ($): {price}</label>
               <input type="range" min="10" max="50" value={price} onChange={(e) => setPrice(parseInt(e.target.value))} className="w-full" />
@@ -4458,7 +4706,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50 dark:bg-slate-800/30 p-5 border border-slate-200 dark:border-slate-800 rounded-xl text-xs">
           <div className="md:col-span-1 space-y-4">
             <h5 className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b pb-2">MapReduce Input</h5>
-            
+
             <div className="space-y-1">
               <label className="block text-slate-500 font-semibold">Source Sentences</label>
               <textarea value={inputLines} onChange={(e) => setInputLines(e.target.value)} rows="3" disabled={step > 0} className="w-full px-2 py-1.5 border dark:border-slate-700 bg-white dark:bg-slate-800 rounded font-mono text-[11px]" />
@@ -4485,7 +4733,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
 
             <div className="space-y-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-xl shadow-inner min-h-[160px] max-h-[220px] overflow-y-auto font-mono text-[10px]">
               {step === 0 && <div className="text-slate-400 text-center py-8">Enter text and start cluster simulation</div>}
-              
+
               {step >= 1 && (
                 <div className="space-y-1">
                   <h6 className="font-sans font-bold text-slate-400 uppercase tracking-widest text-[9px]">Stage 1: Mapper Output</h6>
@@ -4573,7 +4821,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50 dark:bg-slate-800/30 p-5 border border-slate-200 dark:border-slate-800 rounded-xl text-xs">
           <div className="md:col-span-1 space-y-4">
             <h5 className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b pb-2">Infrastructure Panel</h5>
-            
+
             <div className="grid grid-cols-2 gap-2">
               <button onClick={() => addNode('EC2')} className="px-2 py-1.5 bg-slate-800 text-white rounded font-bold hover:bg-slate-750">
                 + EC2 VM
@@ -4688,7 +4936,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
                 <h1 className="text-2xl sm:text-3xl font-heading font-extrabold text-slate-800 dark:text-slate-100">{lab.name} Portal</h1>
                 <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-3xl">{content.desc}</p>
               </div>
-              <button 
+              <button
                 onClick={() => navigateTo('labs')}
                 className="shrink-0 self-start md:self-center px-4 py-2 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-350 rounded-lg text-xs font-bold transition-all"
               >
@@ -4720,20 +4968,20 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
 
           {/* Main learning layout */}
           <div className="grid grid-cols-1 gap-8">
-            
+
             {/* Topic Details Content Card */}
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm space-y-8 transition-colors">
-              
+
               {/* YouTube Video Section */}
               <div className="space-y-4">
                 <h3 className="text-xs uppercase font-extrabold text-slate-400 tracking-wider">Video Lecture & Guide</h3>
                 <div className="relative pb-[56.25%] h-0 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 shadow-inner">
-                  <iframe 
+                  <iframe
                     className="absolute top-0 left-0 w-full h-full"
-                    src={currentTopic.videoUrl} 
+                    src={currentTopic.videoUrl}
                     title={currentTopic.title}
-                    frameBorder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
                   ></iframe>
                 </div>
@@ -4742,7 +4990,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
               {/* Concept Explanation Section */}
               <div className="space-y-6 border-t border-slate-100 dark:border-slate-800 pt-8">
                 <h3 className="text-xs uppercase font-extrabold text-slate-400 tracking-wider">Concept Explanation</h3>
-                
+
                 <div className="space-y-5 text-slate-600 dark:text-slate-350 leading-relaxed text-sm">
                   <h4 className="text-xl font-heading font-bold text-slate-850 dark:text-slate-100">{currentTopic.concept.title}</h4>
                   <p className="italic bg-slate-50 dark:bg-slate-950 p-4 border-l-4 border-primary-500 rounded-r-lg font-light text-slate-500 dark:text-slate-400">{currentTopic.concept.intro}</p>
@@ -4796,11 +5044,11 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
               <div className="space-y-6 border-t border-slate-100 dark:border-slate-800 pt-8">
                 <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                   <h3 className="text-xs uppercase font-extrabold text-slate-400 tracking-wider">Lab Session & Experiment</h3>
-                  
+
                   {/* Link button to interactive simulation */}
-                  <button 
+                  <button
                     onClick={() => {
-                      const targetExp = lab.experiments[0];
+                      const targetExp = lab.experiments.find(e => e.id === currentTopic.id) || lab.experiments[0];
                       if (targetExp) {
                         selectLab(lab, targetExp, 'simulation');
                       }
@@ -4812,7 +5060,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
                 </div>
 
                 <div className="space-y-5 text-slate-600 dark:text-slate-300 text-sm">
-                  
+
                   <div className="space-y-1">
                     <h5 className="font-bold text-slate-800 dark:text-slate-200 text-base">Objective</h5>
                     <p>{currentTopic.lab.objective}</p>
@@ -4857,24 +5105,24 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
 
             {/* Bottom Navigation Row */}
             <div className="flex items-center justify-between bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm text-xs font-semibold">
-              <button 
+              <button
                 onClick={() => navigateTo('labs')}
                 className="px-4 py-2 border dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-all"
               >
                 ← Back to Courses List
               </button>
-              
+
               <div className="flex gap-2">
-                <button 
-                  onClick={prevTopic} 
-                  disabled={topicIndex === 0} 
+                <button
+                  onClick={prevTopic}
+                  disabled={topicIndex === 0}
                   className="px-4 py-2 border dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg disabled:opacity-50 transition-all"
                 >
                   Previous Topic
                 </button>
-                <button 
-                  onClick={nextTopic} 
-                  disabled={topicIndex === totalTopics - 1} 
+                <button
+                  onClick={nextTopic}
+                  disabled={topicIndex === totalTopics - 1}
                   className="px-4 py-2 bg-primary-600 hover:bg-primary-750 text-white rounded-lg disabled:opacity-50 transition-all shadow-sm"
                 >
                   Next Topic
