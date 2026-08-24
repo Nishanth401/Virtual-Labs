@@ -319,7 +319,7 @@
           }
         ]
       },
-{
+      {
         id: 'ml-lab',
         isAvailable: true,
         name: 'Machine Learning Lab',
@@ -960,7 +960,7 @@ Dequeued: Process B`,
           }
         ]
       },
-'dl-lab': {
+      'dl-lab': {
         title: 'Deep Learning Lab Learning Module',
         desc: 'Deep learning is a subset of machine learning based on artificial neural networks. You will learn to construct, train, and optimize deep neural models.',
         icon: '🤖',
@@ -2126,7 +2126,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
           ═══════════════════════════════════════════════════════ */}
           <main className="flex-grow">
             {page === 'home' && <HomePage setPage={setPage} handleGlobalSearch={handleGlobalSearch} selectLab={selectLab} />}
-            
+
             {page === 'resources' && <ResourcesPage />}
             {page === 'labs' && <LabsDashboardPage navigateToLabCourse={navigateToLabCourse} />}
             {page === 'lab-course-detail' && (
@@ -2180,7 +2180,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
                 <div>
                   <h3 className="text-white font-heading font-semibold text-sm mb-4">Academic Portal</h3>
                   <ul className="space-y-2 text-sm text-slate-400">
-                    
+
                     <li><button onClick={() => navigateTo('labs')} className="hover:text-white">→ Lab Courses</button></li>
                     <li><button onClick={() => navigateTo('resources')} className="hover:text-white">→ Question & Notes Library</button></li>
                     <li><a href="#" className="hover:text-white">→ Student Handbook</a></li>
@@ -2247,24 +2247,24 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
                 <span className="w-2.5 h-2.5 rounded-full bg-primary-500 animate-ping"></span>
                 VSB Engineering College, Karur
               </div>
-              
+
               <h1 className="text-4xl sm:text-6xl font-heading font-extrabold leading-tight tracking-tight max-w-4xl mx-auto">
                 Empowering Minds, <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-secondary-400">Engineering the Future</span>
               </h1>
-              
+
               <p className="text-lg sm:text-xl text-slate-300 font-light max-w-3xl mx-auto leading-relaxed">
                 A premier technical institution dedicated to academic excellence, state-of-the-art research, and career-focused placement records. Ranked among top tier colleges in Tamil Nadu.
               </p>
 
               <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-                <a 
-                  href="#overview" 
+                <a
+                  href="#overview"
                   className="px-6 py-3 bg-gradient-to-r from-primary-600 to-secondary-500 hover:from-primary-700 hover:to-secondary-600 text-sm font-semibold rounded-lg shadow-lg shadow-primary-500/20 hover:scale-[1.02] transition-all"
                 >
                   Explore VSB
                 </a>
-                <button 
-                  onClick={() => setPage('about')} 
+                <button
+                  onClick={() => setPage('about')}
                   className="px-6 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-sm font-semibold rounded-lg transition-all"
                 >
                   About the Institution
@@ -3964,7 +3964,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50 dark:bg-slate-800/30 p-5 border border-slate-200 dark:border-slate-800 rounded-xl text-xs">
           <div className="md:col-span-1 space-y-4">
             <h5 className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b pb-2">DL Hyperparameters</h5>
-            
+
             <div className="space-y-1">
               <label className="block text-slate-500 font-semibold">Learning Rate (η): {lr}</label>
               <select value={lr} onChange={(e) => setLr(parseFloat(e.target.value))} className="w-full px-2 py-1.5 border dark:border-slate-700 bg-white dark:bg-slate-800 rounded">
@@ -4145,7 +4145,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50 dark:bg-slate-800/30 p-5 border border-slate-200 dark:border-slate-800 rounded-xl text-xs">
           <div className="md:col-span-1 space-y-4">
             <h5 className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b pb-2">Dijkstra Routing Settings</h5>
-            
+
             <div className="space-y-1">
               <label className="block text-slate-500 font-semibold">Source Node</label>
               <select value={source} onChange={(e) => { setSource(e.target.value); setActivePath([]); setTotalCost(0); }} className="w-full px-2 py-1.5 border dark:border-slate-700 bg-white dark:bg-slate-800 rounded">
@@ -4278,7 +4278,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50 dark:bg-slate-800/30 p-5 border border-slate-200 dark:border-slate-800 rounded-xl text-xs">
           <div className="md:col-span-1 space-y-4">
             <h5 className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b pb-2">Data Processing Operations</h5>
-            
+
             <button onClick={runImputation} disabled={imputed} className="w-full px-4 py-2 bg-primary-600 hover:bg-primary-700 disabled:bg-slate-350 text-white rounded font-bold transition-all shadow">
               Clean & Impute Missing Data
             </button>
@@ -4371,7 +4371,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50 dark:bg-slate-800/30 p-5 border border-slate-200 dark:border-slate-800 rounded-xl text-xs">
           <div className="md:col-span-1 space-y-4">
             <h5 className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b pb-2">Plot Parameters</h5>
-            
+
             <div className="space-y-1">
               <label className="block text-slate-500 font-semibold">X-Axis Variable</label>
               <select value={xAxis} onChange={(e) => setXAxis(e.target.value)} className="w-full px-2 py-1.5 border dark:border-slate-700 bg-white dark:bg-slate-800 rounded">
@@ -4544,7 +4544,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50 dark:bg-slate-800/30 p-5 border border-slate-200 dark:border-slate-800 rounded-xl text-xs">
           <div className="md:col-span-1 space-y-4">
             <h5 className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b pb-2">Sorting Config</h5>
-            
+
             <div className="space-y-1">
               <label className="block text-slate-500 font-semibold">Algorithm Choice</label>
               <select value={algo} onChange={(e) => setAlgo(e.target.value)} disabled={isSorting} className="w-full px-2 py-1.5 border dark:border-slate-700 bg-white dark:bg-slate-800 rounded">
@@ -4607,7 +4607,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50 dark:bg-slate-800/30 p-5 border border-slate-200 dark:border-slate-800 rounded-xl text-xs">
           <div className="md:col-span-1 space-y-4">
             <h5 className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b pb-2">Business Inputs</h5>
-            
+
             <div className="space-y-1">
               <label className="block text-slate-500 font-semibold">Unit Retail Price ($): {price}</label>
               <input type="range" min="10" max="50" value={price} onChange={(e) => setPrice(parseInt(e.target.value))} className="w-full" />
@@ -4706,7 +4706,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50 dark:bg-slate-800/30 p-5 border border-slate-200 dark:border-slate-800 rounded-xl text-xs">
           <div className="md:col-span-1 space-y-4">
             <h5 className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b pb-2">MapReduce Input</h5>
-            
+
             <div className="space-y-1">
               <label className="block text-slate-500 font-semibold">Source Sentences</label>
               <textarea value={inputLines} onChange={(e) => setInputLines(e.target.value)} rows="3" disabled={step > 0} className="w-full px-2 py-1.5 border dark:border-slate-700 bg-white dark:bg-slate-800 rounded font-mono text-[11px]" />
@@ -4733,7 +4733,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
 
             <div className="space-y-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-xl shadow-inner min-h-[160px] max-h-[220px] overflow-y-auto font-mono text-[10px]">
               {step === 0 && <div className="text-slate-400 text-center py-8">Enter text and start cluster simulation</div>}
-              
+
               {step >= 1 && (
                 <div className="space-y-1">
                   <h6 className="font-sans font-bold text-slate-400 uppercase tracking-widest text-[9px]">Stage 1: Mapper Output</h6>
@@ -4821,7 +4821,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-50 dark:bg-slate-800/30 p-5 border border-slate-200 dark:border-slate-800 rounded-xl text-xs">
           <div className="md:col-span-1 space-y-4">
             <h5 className="font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b pb-2">Infrastructure Panel</h5>
-            
+
             <div className="grid grid-cols-2 gap-2">
               <button onClick={() => addNode('EC2')} className="px-2 py-1.5 bg-slate-800 text-white rounded font-bold hover:bg-slate-750">
                 + EC2 VM
@@ -4936,7 +4936,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
                 <h1 className="text-2xl sm:text-3xl font-heading font-extrabold text-slate-800 dark:text-slate-100">{lab.name} Portal</h1>
                 <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-3xl">{content.desc}</p>
               </div>
-              <button 
+              <button
                 onClick={() => navigateTo('labs')}
                 className="shrink-0 self-start md:self-center px-4 py-2 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-350 rounded-lg text-xs font-bold transition-all"
               >
@@ -4968,20 +4968,20 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
 
           {/* Main learning layout */}
           <div className="grid grid-cols-1 gap-8">
-            
+
             {/* Topic Details Content Card */}
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm space-y-8 transition-colors">
-              
+
               {/* YouTube Video Section */}
               <div className="space-y-4">
                 <h3 className="text-xs uppercase font-extrabold text-slate-400 tracking-wider">Video Lecture & Guide</h3>
                 <div className="relative pb-[56.25%] h-0 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 shadow-inner">
-                  <iframe 
+                  <iframe
                     className="absolute top-0 left-0 w-full h-full"
-                    src={currentTopic.videoUrl} 
+                    src={currentTopic.videoUrl}
                     title={currentTopic.title}
-                    frameBorder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
                   ></iframe>
                 </div>
@@ -4990,7 +4990,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
               {/* Concept Explanation Section */}
               <div className="space-y-6 border-t border-slate-100 dark:border-slate-800 pt-8">
                 <h3 className="text-xs uppercase font-extrabold text-slate-400 tracking-wider">Concept Explanation</h3>
-                
+
                 <div className="space-y-5 text-slate-600 dark:text-slate-350 leading-relaxed text-sm">
                   <h4 className="text-xl font-heading font-bold text-slate-850 dark:text-slate-100">{currentTopic.concept.title}</h4>
                   <p className="italic bg-slate-50 dark:bg-slate-950 p-4 border-l-4 border-primary-500 rounded-r-lg font-light text-slate-500 dark:text-slate-400">{currentTopic.concept.intro}</p>
@@ -5044,9 +5044,9 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
               <div className="space-y-6 border-t border-slate-100 dark:border-slate-800 pt-8">
                 <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                   <h3 className="text-xs uppercase font-extrabold text-slate-400 tracking-wider">Lab Session & Experiment</h3>
-                  
+
                   {/* Link button to interactive simulation */}
-                  <button 
+                  <button
                     onClick={() => {
                       const targetExp = lab.experiments.find(e => e.id === currentTopic.id) || lab.experiments[0];
                       if (targetExp) {
@@ -5060,7 +5060,7 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
                 </div>
 
                 <div className="space-y-5 text-slate-600 dark:text-slate-300 text-sm">
-                  
+
                   <div className="space-y-1">
                     <h5 className="font-bold text-slate-800 dark:text-slate-200 text-base">Objective</h5>
                     <p>{currentTopic.lab.objective}</p>
@@ -5105,24 +5105,24 @@ Server EC2-Node-3 (Healthy) -> Handled: 2 requests`,
 
             {/* Bottom Navigation Row */}
             <div className="flex items-center justify-between bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm text-xs font-semibold">
-              <button 
+              <button
                 onClick={() => navigateTo('labs')}
                 className="px-4 py-2 border dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-all"
               >
                 ← Back to Courses List
               </button>
-              
+
               <div className="flex gap-2">
-                <button 
-                  onClick={prevTopic} 
-                  disabled={topicIndex === 0} 
+                <button
+                  onClick={prevTopic}
+                  disabled={topicIndex === 0}
                   className="px-4 py-2 border dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg disabled:opacity-50 transition-all"
                 >
                   Previous Topic
                 </button>
-                <button 
-                  onClick={nextTopic} 
-                  disabled={topicIndex === totalTopics - 1} 
+                <button
+                  onClick={nextTopic}
+                  disabled={topicIndex === totalTopics - 1}
                   className="px-4 py-2 bg-primary-600 hover:bg-primary-750 text-white rounded-lg disabled:opacity-50 transition-all shadow-sm"
                 >
                   Next Topic
