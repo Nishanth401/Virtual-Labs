@@ -12,7 +12,7 @@ interface ConversionStepsProps {
 function TokenDisplay({ token, highlighted = false }: { token: Token; highlighted?: boolean }) {
   const getColor = () => {
     switch (token.type) {
-      case 'operator': return 'bg-blue-500/20 text-blue-500'
+      case 'operator': return 'bg-orange-500/20 text-orange-600'
       case 'operand': return 'bg-green-500/20 text-green-500'
       case 'parenthesis': return 'bg-orange-500/20 text-orange-500'
       default: return 'bg-muted'

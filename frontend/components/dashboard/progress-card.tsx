@@ -49,7 +49,7 @@ export function ProgressCard({ progress, totalExperiments = 6 }: ProgressCardPro
           </div>
           <div className="h-3 w-full bg-muted/60 rounded-full overflow-hidden p-0.5 border border-border/50">
             <div
-              className="h-full bg-gradient-to-r from-primary to-cyan-500 rounded-full transition-all duration-500"
+              className="h-full bg-gradient-to-r from-primary to-amber-500 rounded-full transition-all duration-500"
               style={{ width: `${percentage}%` }}
             />
           </div>
@@ -76,7 +76,7 @@ export function ProgressCard({ progress, totalExperiments = 6 }: ProgressCardPro
           </div>
 
           <div className="p-3.5 rounded-xl bg-muted/30 border border-border/50 space-y-1">
-            <Award className="h-5 w-5 text-purple-500 mx-auto" />
+            <Award className="h-5 w-5 text-amber-500 mx-auto" />
             <div className="text-lg font-bold font-mono text-foreground">
               {completedCount >= 3 ? "Unlocked" : "In Progress"}
             </div>

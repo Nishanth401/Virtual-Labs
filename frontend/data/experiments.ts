@@ -685,5 +685,181 @@ Sorted:      [5, 6, 11, 12, 13]`,
         pg: ["Core Algorithms students"]
       }
     }
+  },
+  {
+    id: "linear-regression-exp",
+    labId: "ai-machine-learning",
+    title: "Linear Regression & Gradient Descent Cost Minimization",
+    slug: "linear-regression",
+    difficulty: "Beginner",
+    category: "Linear Structures",
+    estimatedMinutes: 35,
+    rating: 4.8,
+    ratingsCount: 195,
+    simulator: "stack",
+    quizId: "ai-ml-quiz",
+    sections: {
+      introduction: "Linear Regression is the foundational supervised learning model used to predict continuous quantitative outcome variables based on input feature vectors. This lab demonstrates fitting a linear regression model y = mx + c by iteratively minimizing the Mean Squared Error (MSE) loss function using Gradient Descent.",
+      objective: "To understand feature scaling, weight initialization, slope/bias optimization, derivative computation of MSE loss, learning rate hyperparameter tuning, and convergence detection.",
+      prerequisites: [
+        "Multivariate Calculus (Partial Derivatives & Gradients)",
+        "Linear Algebra (Vectors and Matrices)",
+        "Python Programming (NumPy and Pandas basics)"
+      ],
+      theory: {
+        overview: "In simple linear regression, the model hypothesis h(x) = θ₀ + θ₁x predicts target y. Loss is measured using Mean Squared Error (MSE): J(θ₀, θ₁) = (1 / 2m) Σ (h(x⁽ⁱ⁾) - y⁽ⁱ⁾)². Gradient Descent iteratively updates parameters: θⱼ := θⱼ - α ∂J/∂θⱼ until convergence.",
+        keyConcepts: [
+          {
+            title: "Supervised Learning",
+            desc: "Learning algorithm trained on labeled pairs of inputs (x) and known target labels (y)."
+          },
+          {
+            title: "Mean Squared Error (MSE)",
+            desc: "Convex loss function measuring average squared difference between predictions and actual targets."
+          },
+          {
+            title: "Learning Rate (α)",
+            desc: "Hyperparameter controlling the step size toward global minimum. Too large leads to divergence; too small leads to slow training."
+          },
+          {
+            title: "Gradient Descent Step",
+            desc: "Partial derivatives: ∂J/∂θ₀ = (1/m)Σ(h(x)-y), ∂J/∂θ₁ = (1/m)Σ((h(x)-y)*x)."
+          }
+        ],
+        complexities: [
+          { operation: "Batch Gradient Descent", best: "O(n · m)", avg: "O(n · m · iter)", worst: "O(n · m · iter)", space: "O(m)" },
+          { operation: "Stochastic Gradient Descent", best: "O(n)", avg: "O(n · iter)", worst: "O(n · iter)", space: "O(1)" }
+        ],
+        realWorldApplications: [
+          "Real Estate property valuation and price trend prediction",
+          "Financial stock price regression and economic forecasting",
+          "Medical dosage efficacy and patient recovery rate modeling"
+        ]
+      },
+      procedure: [
+        "1. Launch the Linear Regression interactive workspace.",
+        "2. Load sample dataset or add custom 2D data points.",
+        "3. Adjust initial weight (slope m) and bias (c) parameters.",
+        "4. Set learning rate alpha (e.g., 0.01) and max iterations.",
+        "5. Click 'Run Gradient Descent' to observe regression line fitting step-by-step.",
+        "6. Check cost curve plot for convergence towards zero MSE loss.",
+        "7. Complete the self-evaluation quiz."
+      ],
+      sampleCode: {
+        language: "python",
+        code: `import numpy as np
+
+def train_linear_regression(X, y, lr=0.01, epochs=1000):
+    m, n = X.shape
+    weights = np.zeros(n)
+    bias = 0.0
+    
+    for epoch in range(epochs):
+        predictions = np.dot(X, weights) + bias
+        error = predictions - y
+        
+        # Calculate Gradients
+        dw = (1 / m) * np.dot(X.T, error)
+        db = (1 / m) * np.sum(error)
+        
+        # Update Parameters
+        weights -= lr * dw
+        bias -= lr * db
+        
+    return weights, bias`
+      },
+      expectedOutput: `Epoch 100: MSE Loss = 0.421
+Epoch 500: MSE Loss = 0.048
+Epoch 1000: MSE Loss = 0.002
+Optimal Weights: [2.031], Bias: 1.014`,
+      targetAudience: {
+        ug: ["B.Tech (AIDS, CSE, ECE) 2nd & 3rd Year"],
+        pg: ["M.Tech / M.Sc Artificial Intelligence students"]
+      }
+    }
+  },
+  {
+    id: "knn-classifier-exp",
+    labId: "ai-machine-learning",
+    title: "K-Nearest Neighbors (KNN) Non-Parametric Classifier",
+    slug: "knn-classification",
+    difficulty: "Intermediate",
+    category: "Linear Structures",
+    estimatedMinutes: 40,
+    rating: 4.9,
+    ratingsCount: 210,
+    simulator: "queue",
+    quizId: "ai-ml-quiz",
+    sections: {
+      introduction: "K-Nearest Neighbors (KNN) is a memory-based, non-parametric supervised learning algorithm used for classification and regression. Given an unclassified sample, KNN computes geometric distance metrics to all training points and assigns the majority class label among its 'K' nearest neighbors.",
+      objective: "To implement Euclidean and Manhattan distance metrics, understand the effect of odd vs even choice of hyperparameter K, observe decision boundary transitions, and analyze computational bottlenecks on high-dimensional data.",
+      prerequisites: [
+        "Coordinate Geometry & Vector Distances",
+        "Data Normalization (Min-Max and Z-Score Standardization)",
+        "Priority Queues and Sorting"
+      ],
+      theory: {
+        overview: "KNN stores all training instances. Given test point x*, it calculates distance d(x*, x⁽ⁱ⁾) = √Σ(x*ⱼ - x⁽ⁱ⁾ⱼ)², sorts distances in ascending order, retrieves the top K neighbors, and predicts target class y = mode(y⁽¹⁾, ..., y⁽ᴷ⁾).",
+        keyConcepts: [
+          {
+            title: "Euclidean Distance",
+            desc: "d(p, q) = √[(p₁ - q₁)² + (p₂ - q₂)² + ... + (pₙ - qₙ)²]."
+          },
+          {
+            title: "Hyperparameter K",
+            desc: "Small K (e.g. K=1) leads to high variance and noise sensitivity (overfitting); large K leads to high bias and smooth decision boundaries."
+          },
+          {
+            title: "Distance Weighting",
+            desc: "Assigning weights wᵢ = 1 / d(x*, x⁽ⁱ⁾) so closer neighbors exert higher influence on class voting."
+          }
+        ],
+        complexities: [
+          { operation: "Training Phase", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(n · d)" },
+          { operation: "Query Phase (Brute Force)", best: "O(n · d)", avg: "O(n · d)", worst: "O(n · d)", space: "O(n)" },
+          { operation: "Query Phase (KD-Tree)", best: "O(log n)", avg: "O(log n)", worst: "O(n)", space: "O(n)" }
+        ],
+        realWorldApplications: [
+          "Handwritten digit and character recognition (MNIST)",
+          "Medical diagnostic classification (Benign vs Malignant tumors)",
+          "Recommender engines matching user preference vectors"
+        ]
+      },
+      procedure: [
+        "1. Open the KNN Classifier interactive visualizer.",
+        "2. Select dataset (e.g., Iris Dataset or 2D Cluster Points).",
+        "3. Adjust hyperparameter K (e.g., K = 3, 5, 7).",
+        "4. Click on the canvas to place a new query test point.",
+        "5. Observe highlighted Euclidean distance radii linking to nearest K items.",
+        "6. Review class vote tally pie-chart and assigned class label.",
+        "7. Take the self-assessment quiz."
+      ],
+      sampleCode: {
+        language: "python",
+        code: `import numpy as np
+
+def knn_predict(X_train, y_train, x_query, k=3):
+    # Calculate Euclidean distances
+    distances = np.sqrt(np.sum((X_train - x_query)**2, axis=1))
+    
+    # Get indices of K smallest distances
+    k_indices = np.argsort(distances)[:k]
+    
+    # Gather labels of K nearest neighbors
+    k_nearest_labels = [y_train[i] for i in k_indices]
+    
+    # Majority vote
+    counts = np.bincount(k_nearest_labels)
+    return np.argmax(counts)`
+      },
+      expectedOutput: `Query Point: [5.1, 3.5]
+Distances to nearest 3 items: [0.14, 0.22, 0.31]
+Neighbor Classes: ['Setosa', 'Setosa', 'Versicolor']
+Predicted Class: Setosa (Confidence: 66.7%)`,
+      targetAudience: {
+        ug: ["B.Tech (AIDS, CSE)"],
+        pg: ["Data Science specialization students"]
+      }
+    }
   }
 ];

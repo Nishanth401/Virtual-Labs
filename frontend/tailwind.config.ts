@@ -71,6 +71,9 @@ export default {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
+  		fontFamily: {
+  			heading: ["'Cafespro Weekend'", "var(--font-heading)", "serif"],
+  		},
   		animation: {
   			rainbow: 'rainbow var(--speed, 2s) infinite linear'
   		},

@@ -289,7 +289,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                           <td className="p-3 text-emerald-500 font-bold">{comp.best}</td>
                           <td className="p-3 text-amber-500 font-bold">{comp.avg}</td>
                           <td className="p-3 text-rose-500 font-bold">{comp.worst}</td>
-                          <td className="p-3 text-blue-500">{comp.space}</td>
+                          <td className="p-3 text-teal-600">{comp.space}</td>
                         </tr>
                       ))}
                     </tbody>

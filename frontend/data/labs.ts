@@ -14,6 +14,7 @@ export interface Lab {
   iconName: string;
   tags: string[];
   bannerGradient: string;
+  videoUrl?: string;
 }
 
 export interface Discipline {
@@ -32,7 +33,7 @@ export const DISCIPLINES_DATA: Discipline[] = [
     description: "Core algorithms, operating systems, compiler design, and software engineering simulations.",
     icon: "Code2",
     labsCount: 8,
-    color: "from-blue-500/20 to-cyan-500/20 text-blue-500",
+    color: "from-stone-500/20 to-stone-400/20 text-stone-600",
   },
   {
     id: "aids",
@@ -40,7 +41,7 @@ export const DISCIPLINES_DATA: Discipline[] = [
     description: "Machine learning models, neural networks, predictive analytics, and big data computing.",
     icon: "BrainCircuit",
     labsCount: 6,
-    color: "from-purple-500/20 to-indigo-500/20 text-purple-500",
+    color: "from-amber-500/20 to-orange-400/20 text-amber-700",
   },
   {
     id: "ece",
@@ -56,7 +57,7 @@ export const DISCIPLINES_DATA: Discipline[] = [
     description: "Virtualization, distributed storage, load balancing, and container orchestration.",
     icon: "Cloud",
     labsCount: 4,
-    color: "from-sky-500/20 to-blue-500/20 text-sky-500",
+    color: "from-teal-500/20 to-teal-400/20 text-teal-700",
   },
   {
     id: "cyber",
@@ -92,7 +93,8 @@ export const LABS_DATA: Lab[] = [
     ratingsCount: 342,
     iconName: "Network",
     tags: ["Stacks", "Queues", "Linked Lists", "Sorting", "Algorithms"],
-    bannerGradient: "from-blue-600 to-indigo-700",
+    bannerGradient: "from-stone-700 to-stone-900",
+    videoUrl: "https://www.youtube-nocookie.com/embed/zWg7U0OEAoE",
   },
   {
     id: "ai-machine-learning",
@@ -109,7 +111,8 @@ export const LABS_DATA: Lab[] = [
     ratingsCount: 215,
     iconName: "Brain",
     tags: ["Regression", "Classification", "KNN", "Decision Trees"],
-    bannerGradient: "from-purple-600 to-pink-700",
+    bannerGradient: "from-amber-700 to-orange-900",
+    videoUrl: "https://www.youtube-nocookie.com/embed/aircAruvnKk",
   },
   {
     id: "deep-learning",
@@ -126,7 +129,8 @@ export const LABS_DATA: Lab[] = [
     ratingsCount: 180,
     iconName: "Cpu",
     tags: ["ANN", "Backpropagation", "CNN", "Optimization"],
-    bannerGradient: "from-violet-600 to-purple-800",
+    bannerGradient: "from-amber-800 to-stone-900",
+    videoUrl: "https://www.youtube-nocookie.com/embed/aircAruvnKk",
   },
   {
     id: "dbms-lab",
@@ -144,6 +148,7 @@ export const LABS_DATA: Lab[] = [
     iconName: "Database",
     tags: ["SQL", "Normalization", "B+ Trees", "Transactions"],
     bannerGradient: "from-rose-600 to-orange-700",
+    videoUrl: "https://www.youtube-nocookie.com/embed/zWg7U0OEAoE",
   },
   {
     id: "cloud-computing",
@@ -160,7 +165,8 @@ export const LABS_DATA: Lab[] = [
     ratingsCount: 145,
     iconName: "CloudLightning",
     tags: ["AWS", "Load Balancing", "Virtualization", "S3 Storage"],
-    bannerGradient: "from-sky-600 to-blue-800",
+    bannerGradient: "from-teal-700 to-teal-900",
+    videoUrl: "https://www.youtube-nocookie.com/embed/zWg7U0OEAoE",
   },
   {
     id: "computer-networks",
@@ -178,5 +184,6 @@ export const LABS_DATA: Lab[] = [
     iconName: "Share2",
     tags: ["TCP/IP", "Routing", "Dijkstra", "ARQ Protocols"],
     bannerGradient: "from-emerald-600 to-teal-800",
+    videoUrl: "https://www.youtube-nocookie.com/embed/zWg7U0OEAoE",
   },
 ];

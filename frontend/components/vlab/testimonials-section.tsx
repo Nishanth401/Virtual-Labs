@@ -8,7 +8,7 @@ const TESTIMONIALS = [
   {
     quote: "One of the primary advantages associated with the utilization of Virtual Laboratory is the ability for students to engage in self-paced learning. This technology facilitates students in studying, preparing for, and conducting laboratory experiments at their own convenience.",
     author: "Dr. K. Senthil Kumar",
-    designation: "Professor & Head, Department of AI & Data Science",
+    designation: "Professor & Head, Department of Artificial Intelligence & Data Science",
     institute: "VSB Engineering College"
   },
   {

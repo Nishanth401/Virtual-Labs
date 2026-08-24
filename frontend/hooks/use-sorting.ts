@@ -408,6 +408,11 @@ export function useSorting(
     swaps: 0
   };
 
+  const goToStep = (index: number) => {
+    setIsPlaying(false);
+    setCurrentStepIndex(Math.max(0, Math.min(index, steps.length - 1)));
+  };
+
   return {
     algorithm,
     arrayInput,
@@ -421,6 +426,7 @@ export function useSorting(
     pause,
     stepNext,
     stepPrev,
+    goToStep,
     reset,
     setCustomArray,
     randomize

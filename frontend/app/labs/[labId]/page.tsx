@@ -40,8 +40,17 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
   const [feedbackText, setFeedbackText] = useState<string>("");
   const [feedbackSent, setFeedbackSent] = useState<boolean>(false);
 
+  // Quiz State
+  const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
+  const [quizSubmitted, setQuizSubmitted] = useState<boolean>(false);
+
   // Filter experiments for this lab
-  const experiments = EXPERIMENTS_DATA.filter((e) => e.labId === "data-structures");
+  const experiments = EXPERIMENTS_DATA.filter((e) => e.labId === lab.id || (lab.id === "data-structures" && e.labId === "data-structures"));
+
+  const handleQuizOptionSelect = (questionId: string, optionIndex: number) => {
+    if (quizSubmitted) return;
+    setQuizAnswers((prev) => ({ ...prev, [questionId]: optionIndex }));
+  };
 
   const handleSendFeedback = (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,12 +115,26 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                       {lab.description}
                     </p>
 
-                    <p>
-                      Data Structures (also called Data Structures and Algorithms in some places) is a core course in all computer science undergraduate curricula. The course is the basis for understanding several data structures and also algorithms that operate on them. The course forms the foundation for almost all computer science subjects: compilers, operating systems, databases, AI and software engineering.
-                    </p>
+                    {/* CENTERED VIDEO PLAYER FRAME */}
+                    <div className="py-2 my-4">
+                      <div className="max-w-3xl mx-auto">
+                        <div className="aspect-video w-full rounded-2xl bg-black/90 border border-primary/30 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl group">
+                          <iframe
+                            src={lab.videoUrl || "https://www.youtube-nocookie.com/embed/zWg7U0OEAoE"}
+                            title="Department Virtual Lab Interactive Demonstration"
+                            className="w-full h-full rounded-2xl border-0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          />
+                        </div>
+                      </div>
+                    </div>
 
                     <p>
-                      The course comes with a lab in most universities in India. The associated lab in university curricula focuses on implementation of algorithms operating on the data structures, i.e., coding programs on the data structures and algorithms.
+                      {lab.id === "ai-machine-learning" 
+                        ? "Artificial Intelligence and Machine Learning form the computational backbone of modern data science, autonomous systems, predictive analytics, and deep learning neural architectures. This virtual laboratory provides interactive visual simulations, model training parameter tuning, loss function minimization, and self-assessment evaluations."
+                        : "Data Structures (also called Data Structures and Algorithms in some places) is a core course in all computer science undergraduate curricula. The course is the basis for understanding several data structures and also algorithms that operate on them. The course forms the foundation for almost all computer science subjects: compilers, operating systems, databases, AI and software engineering."
+                      }
                     </p>
 
                     <div className="p-4 rounded-xl bg-primary/5 border border-primary/20 space-y-2 text-foreground">
@@ -119,12 +142,12 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                         Why Virtual Laboratory Simulations?
                       </h4>
                       <p className="text-xs leading-relaxed text-muted-foreground">
-                        Students embarking on the task of writing programs often have difficulty visualizing how operations and algorithms modify a data structure. Furthermore, students are unable to visually reason about the time and space complexities associated with an algorithm running on a data structure. The interactive experiments in this lab give students an opportunity for learning and better understanding.
+                        Students embarking on writing algorithms often have difficulty visualizing internal state transformations. The interactive experiments in this lab give students an opportunity for hands-on self-paced learning.
                       </p>
                     </div>
 
                     <div className="pt-4 border-t border-border/40 flex justify-end">
-                      <Button onClick={() => setActiveTab("experiments")} className="text-xs gap-1.5">
+                      <Button onClick={() => setActiveTab("experiments")} className="text-xs gap-1.5 font-bold">
                         View List of Experiments <ChevronRight className="h-4 w-4" />
                       </Button>
                     </div>
@@ -221,7 +244,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             </div>
 
                             <Button asChild size="sm" className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 self-start sm:self-center">
-                              <Link href={`/experiments/${exp.slug}`}>
+                              <Link href={`/experiments/${exp.slug}`} target="_blank" rel="noopener noreferrer">
                                 <PlayCircle className="h-3.5 w-3.5" /> Start Experiment
                               </Link>
                             </Button>
@@ -262,12 +285,137 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             </div>
 
                             <Button asChild size="sm" className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 self-start sm:self-center">
-                              <Link href={`/experiments/${exp.slug}`}>
+                              <Link href={`/experiments/${exp.slug}`} target="_blank" rel="noopener noreferrer">
                                 <PlayCircle className="h-3.5 w-3.5" /> Start Experiment
                               </Link>
                             </Button>
                           </div>
                         ))}
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
+              {/* TAB: SELF-ASSESSMENT QUIZ */}
+              {activeTab === "quizzes" && (
+                <div className="space-y-6">
+                  <Card className="border-secondary/40 bg-card/70 backdrop-blur-xs shadow-sm">
+                    <CardHeader className="pb-3 border-b border-border/50">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <CardTitle className="text-xl font-bold text-primary font-heading">
+                            Self-Assessment Evaluation Quiz
+                          </CardTitle>
+                          <CardDescription className="text-xs mt-1">
+                            Test your theoretical and practical comprehension of {lab.name} concepts.
+                          </CardDescription>
+                        </div>
+                        <Badge variant="secondary" className="text-xs font-semibold">
+                          4 Questions • 5 Mins
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="p-6 space-y-6">
+                      {/* Questions List */}
+                      {[
+                        {
+                          id: "q1",
+                          question: "1. Which loss function is minimized during simple Linear Regression using Gradient Descent?",
+                          options: [
+                            "Cross-Entropy Loss",
+                            "Mean Squared Error (MSE)",
+                            "Hinge Loss",
+                            "Kullback-Leibler Divergence"
+                          ],
+                          correct: 1,
+                          explanation: "Linear regression optimizes Mean Squared Error (MSE), which calculates the average of squared differences between predictions and target labels."
+                        },
+                        {
+                          id: "q2",
+                          question: "2. In K-Nearest Neighbors (KNN) classification, what happens when hyperparameter K is set to 1?",
+                          options: [
+                            "High bias and smooth decision boundary",
+                            "High variance and sensitivity to training data noise (Overfitting)",
+                            "Zero training loss and zero generalization error",
+                            "The model becomes parametric"
+                          ],
+                          correct: 1,
+                          explanation: "Setting K=1 creates intricate decision boundaries that fit noisy individual training points, leading to high variance (overfitting)."
+                        },
+                        {
+                          id: "q3",
+                          question: "3. What is the effect of setting an excessively large learning rate (alpha) during Gradient Descent?",
+                          options: [
+                            "The model converges instantly to the global minimum",
+                            "The parameter updates overshoot the minimum and cost diverges to infinity",
+                            "The weights freeze at zero",
+                            "The memory space complexity increases to O(n²)"
+                          ],
+                          correct: 1,
+                          explanation: "An excessively large learning rate causes parameter updates to step over the convex trough, causing cost oscillations and divergence."
+                        },
+                        {
+                          id: "q4",
+                          question: "4. Which distance metric is commonly used to measure vector separation in K-Nearest Neighbors?",
+                          options: [
+                            "Euclidean Distance √Σ(xᵢ - yᵢ)²",
+                            "Cosine Similarity",
+                            "Manhattan Distance Σ|xᵢ - yᵢ|",
+                            "All of the above"
+                          ],
+                          correct: 3,
+                          explanation: "KNN supports Euclidean, Manhattan, and Cosine distance metrics based on problem domain continuous vs sparse spaces."
+                        }
+                      ].map((q) => (
+                        <div key={q.id} className="p-4 rounded-xl bg-muted/30 border border-border/50 space-y-3">
+                          <h4 className="font-bold text-sm text-foreground">{q.question}</h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {q.options.map((opt, idx) => {
+                              const isSelected = quizAnswers[q.id] === idx;
+                              const isCorrect = q.correct === idx;
+                              let btnClass = "border border-border/60 bg-card hover:bg-muted text-foreground";
+                              if (quizSubmitted) {
+                                if (isCorrect) btnClass = "bg-emerald-500/15 border-emerald-500/50 text-emerald-500 font-bold";
+                                else if (isSelected) btnClass = "bg-red-500/15 border-red-500/50 text-red-500 font-bold";
+                              } else if (isSelected) {
+                                btnClass = "bg-primary/15 border-primary text-primary font-bold";
+                              }
+
+                              return (
+                                <button
+                                  key={idx}
+                                  type="button"
+                                  onClick={() => handleQuizOptionSelect(q.id, idx)}
+                                  className={`p-3 rounded-lg text-left text-xs transition-all ${btnClass}`}
+                                >
+                                  {opt}
+                                </button>
+                              );
+                            })}
+                          </div>
+                          {quizSubmitted && (
+                            <p className="text-xs text-muted-foreground bg-muted/60 p-2.5 rounded-lg border border-border/40">
+                              💡 <strong>Explanation:</strong> {q.explanation}
+                            </p>
+                          )}
+                        </div>
+                      ))}
+
+                      {/* Submit Quiz Action */}
+                      <div className="pt-4 border-t border-border/50 flex items-center justify-between">
+                        <Button
+                          type="button"
+                          onClick={() => setQuizSubmitted(true)}
+                          className="bg-primary hover:bg-primary/90 text-white font-bold text-xs gap-1.5"
+                        >
+                          Submit Answers & Check Score
+                        </Button>
+                        {quizSubmitted && (
+                          <span className="text-xs font-bold text-emerald-500 bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/30">
+                            ✓ Self-Assessment Completed! Score: {Object.keys(quizAnswers).filter((qId) => quizAnswers[qId] === [1, 1, 1, 3][["q1","q2","q3","q4"].indexOf(qId)]).length} / 4
+                          </span>
+                        )}
+                      </div>
                     </CardContent>
                   </Card>
                 </div>
