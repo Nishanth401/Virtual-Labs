@@ -24,7 +24,8 @@ import {
   LogOut,
   ArrowRight,
   ShieldCheck,
-  MailCheck
+  MailCheck,
+  GraduationCap
 } from "lucide-react";
 
 interface StudentAuthDialogProps {
@@ -169,10 +170,10 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                 </Badge>
               </div>
               <DialogTitle className="text-xl font-bold font-heading text-foreground pt-1">
-                {studentProfile?.name || user?.displayName || user?.email?.split("@")[0] || "Student"}
+                {studentProfile?.name || user?.displayName || "Student"}
               </DialogTitle>
               <DialogDescription className="text-xs text-muted-foreground font-mono">
-                {user?.email}
+                Reg No: {studentProfile?.registerNumber || "Student Active"} • Artificial Intelligence &amp; Data Science
               </DialogDescription>
             </DialogHeader>
 
@@ -277,7 +278,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
 
             <div className="flex items-center gap-3 text-xs text-muted-foreground">
               <div className="h-[1px] flex-1 bg-border/60" />
-              <span className="font-mono text-[10px] uppercase">Or Email &amp; Password</span>
+              <span className="font-mono text-[10px] uppercase">Or Register Number &amp; Password</span>
               <div className="h-[1px] flex-1 bg-border/60" />
             </div>
 
@@ -296,15 +297,15 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
               <TabsContent value="login">
                 <form onSubmit={handleLogin} className="space-y-3">
                   <div className="space-y-1">
-                    <Label className="text-xs font-semibold">Email Address</Label>
+                    <Label className="text-xs font-semibold">Student Register Number</Label>
                     <div className="relative">
-                      <Mail className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
+                      <User className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
                       <Input
-                        type="email"
+                        type="text"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="student@example.com"
-                        className="pl-9 text-xs"
+                        placeholder="e.g. 922521104001"
+                        className="pl-9 text-xs font-mono"
                         required
                       />
                     </div>
@@ -339,28 +340,29 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
               <TabsContent value="register">
                 <form onSubmit={handleRegister} className="space-y-2.5">
                   <div className="space-y-1">
-                    <Label className="text-xs font-semibold">Full Name (Optional)</Label>
+                    <Label className="text-xs font-semibold">Full Student Name</Label>
                     <div className="relative">
                       <User className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
                       <Input
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        placeholder="e.g. Rohith E"
+                        placeholder="e.g. Praveen S"
                         className="pl-9 text-xs"
+                        required
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1">
-                    <Label className="text-xs font-semibold">Email Address</Label>
+                    <Label className="text-xs font-semibold">Student Register Number</Label>
                     <div className="relative">
-                      <Mail className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
+                      <GraduationCap className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
                       <Input
-                        type="email"
+                        type="text"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="student@example.com"
-                        className="pl-9 text-xs"
+                        placeholder="e.g. 922521104001"
+                        className="pl-9 text-xs font-mono"
                         required
                       />
                     </div>
