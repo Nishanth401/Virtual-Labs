@@ -47,8 +47,11 @@ export default function StudentDashboardPage() {
               <h1 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight font-heading">
                 Student Learning Dashboard
               </h1>
-              <p className="text-xs text-muted-foreground mt-1">
-                Department of Artificial Intelligence & Data Science • VSB Engineering College
+              <p className="text-sm font-bold text-[#e11d48] dark:text-[#f43f5e] flex items-center gap-1.5 mt-1 font-mono">
+                <span>Student: {progress.studentName} ({progress.studentRollNo})</span>
+              </p>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Department of Artificial Intelligence &amp; Data Science • VSB Engineering College
               </p>
             </div>
 

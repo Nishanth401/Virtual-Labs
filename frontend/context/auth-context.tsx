@@ -119,25 +119,56 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const email = `${regNo.toLowerCase().trim()}@vsb.ac.in`;
       try {
-        const res = await signInWithEmailAndPassword(auth, email, pass);
+        const res = await Promise.race([
+          signInWithEmailAndPassword(auth, email, pass),
+          new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error("Auth timeout")), 2000)
+          )
+        ]);
         setUser(res.user);
       } catch {
-        const profile: StudentProfile = {
-          uid: "student-" + regNo,
-          name: "Student " + regNo,
-          registerNumber: regNo,
-          email,
-          department: "Artificial Intelligence & Data Science",
-          yearSemester: "Year III / Semester VI",
-          completedExperiments: ["bubble-sort"],
-          completedProblems: [],
-          starredProblems: [],
-          problemNotes: {},
-          quizScores: {},
-          feedbacks: {},
-          createdAt: new Date().toISOString(),
-          lastActive: new Date().toISOString()
-        };
+        const local = typeof window !== "undefined" ? localStorage.getItem("vsb_student_profile_data") : null;
+        let profile: StudentProfile;
+        if (local) {
+          try {
+            profile = JSON.parse(local);
+            profile.registerNumber = regNo;
+          } catch {
+            profile = {
+              uid: "student-" + regNo,
+              name: "Student " + regNo,
+              registerNumber: regNo,
+              email,
+              department: "Artificial Intelligence & Data Science",
+              yearSemester: "Year III / Semester VI",
+              completedExperiments: ["bubble-sort"],
+              completedProblems: [],
+              starredProblems: [],
+              problemNotes: {},
+              quizScores: {},
+              feedbacks: {},
+              createdAt: new Date().toISOString(),
+              lastActive: new Date().toISOString()
+            };
+          }
+        } else {
+          profile = {
+            uid: "student-" + regNo,
+            name: "Student " + regNo,
+            registerNumber: regNo,
+            email,
+            department: "Artificial Intelligence & Data Science",
+            yearSemester: "Year III / Semester VI",
+            completedExperiments: ["bubble-sort"],
+            completedProblems: [],
+            starredProblems: [],
+            problemNotes: {},
+            quizScores: {},
+            feedbacks: {},
+            createdAt: new Date().toISOString(),
+            lastActive: new Date().toISOString()
+          };
+        }
         await saveStudentProfileToDb(profile);
         setStudentProfile(profile);
       }
@@ -158,7 +189,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const email = `${regNo.toLowerCase().trim()}@vsb.ac.in`;
       let uid = "student-" + regNo;
       try {
-        const res = await createUserWithEmailAndPassword(auth, email, pass);
+        const res = await Promise.race([
+          createUserWithEmailAndPassword(auth, email, pass),
+          new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error("Auth timeout")), 2000)
+          )
+        ]);
         uid = res.user.uid;
       } catch (e) {
         console.warn("Firebase Auth online create fallback:", e);
@@ -166,8 +202,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       const profile: StudentProfile = {
         uid,
-        name,
-        registerNumber: regNo,
+        name: name.trim(),
+        registerNumber: regNo.trim(),
         email,
         department,
         yearSemester,
@@ -190,10 +226,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const loginWithGoogle = async () => {
     setLoading(true);
     try {
-      const res = await signInWithPopup(auth, googleProvider);
+      const res = await Promise.race([
+        signInWithPopup(auth, googleProvider),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error("Google Auth timeout")), 3000)
+        )
+      ]);
       setUser(res.user);
     } catch (err) {
       console.warn("Google popup fallback:", err);
+      const profile: StudentProfile = {
+        uid: "google-student-guest",
+        name: "Google Student User",
+        registerNumber: "9225" + Math.floor(10000000 + Math.random() * 90000000),
+        email: "student.google@vsb.ac.in",
+        department: "Artificial Intelligence & Data Science",
+        yearSemester: "Year III / Semester VI",
+        completedExperiments: [],
+        completedProblems: [],
+        starredProblems: [],
+        problemNotes: {},
+        quizScores: {},
+        feedbacks: {},
+        createdAt: new Date().toISOString(),
+        lastActive: new Date().toISOString()
+      };
+      await saveStudentProfileToDb(profile);
+      setStudentProfile(profile);
     } finally {
       setLoading(false);
     }
@@ -251,7 +310,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       lastActive: new Date().toISOString()
     };
     setStudentProfile(updated);
-    await toggleProblemCompletedInDb(studentProfile.uid, problemId, !isCompleted);
+    await toggleProblemCompletedInDb(studentProfile.uid, problemId);
   };
 
   const toggleProblemStarred = async (problemId: string) => {
@@ -268,7 +327,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       lastActive: new Date().toISOString()
     };
     setStudentProfile(updated);
-    await toggleProblemStarredInDb(studentProfile.uid, problemId, !isStarred);
+    await toggleProblemStarredInDb(studentProfile.uid, problemId);
   };
 
   const saveProblemNote = async (problemId: string, note: string) => {

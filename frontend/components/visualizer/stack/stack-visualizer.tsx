@@ -8,7 +8,7 @@ import { MarkdownContent } from "@/components/shared/markdown-content"
 import { useStack } from "@/hooks/use-stack"
 
 interface StackVisualizerProps {
-  content: React.ReactNode
+  content?: React.ReactNode
 }
 
 export function StackVisualizer({ content }: StackVisualizerProps) {

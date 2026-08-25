@@ -72,15 +72,30 @@ const ROLLING_CARDS = [
   },
 ];
 
-import Image from "next/image";
+import { useAuth } from "@/context/auth-context";
 
 export function HeroObjectives() {
+  const { studentProfile } = useAuth();
+
   return (
     <section className="relative min-h-[85vh] flex flex-col justify-between pt-4 pb-16 px-4 sm:px-6 bg-grid-pattern border-b border-border/40 overflow-hidden">
       {/* Interactive Constellation Particle Canvas Mesh confined to this Hero Panel */}
       <ConstellationBackground />
 
       <div className="container max-w-5xl mx-auto text-center relative z-10 space-y-6 pt-2">
+        {/* Student Welcome Bar when Signed In */}
+        {studentProfile && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-bold shadow-xs"
+          >
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span>Welcome back, <strong className="text-foreground font-black">{studentProfile.name}</strong> ({studentProfile.registerNumber})</span>
+          </motion.div>
+        )}
+
         {/* Sleek Pill Badge matching Screenshot 1 */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}

@@ -19,7 +19,9 @@ import {
   Network,
   BookOpen,
   ArrowRight,
-  MessageSquare
+  MessageSquare,
+  User,
+  GraduationCap
 } from "lucide-react";
 import {
   Dialog,
@@ -164,9 +166,10 @@ export function Navbar() {
             <button
               type="button"
               onClick={() => setAuthOpen(true)}
-              className="ml-1 px-4 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-[#e11d48] to-[#dc2626] text-white shadow-md shadow-red-500/30 hover:scale-105 transition-transform flex items-center gap-1 cursor-pointer shrink-0"
+              className="ml-1 px-4 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-[#e11d48] to-[#dc2626] text-white shadow-md shadow-red-500/30 hover:scale-105 transition-transform flex items-center gap-1.5 cursor-pointer shrink-0"
             >
-              <span>{studentProfile ? `Student: ${studentProfile.name.split(' ')[0]}` : "Student Login"}</span>
+              <GraduationCap className="h-3.5 w-3.5" />
+              <span>{studentProfile ? `Student: ${studentProfile.name}` : "Student Login"}</span>
               <ArrowRight className="h-3 w-3" />
             </button>
           </nav>
@@ -183,13 +186,24 @@ export function Navbar() {
               <Search className="h-4 w-4" />
             </button>
 
-            {/* Student Auth Avatar / Trigger Button */}
+            {/* Student Auth Avatar / Name Display Trigger Button */}
             <button
               type="button"
               onClick={() => setAuthOpen(true)}
-              className="hidden sm:flex items-center px-3.5 py-1.5 rounded-full bg-white/95 dark:bg-card/90 backdrop-blur-md border border-slate-200 dark:border-border shadow-xs text-xs font-medium text-slate-800 dark:text-slate-200 hover:border-primary transition-colors cursor-pointer"
+              className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/95 dark:bg-card/90 backdrop-blur-md border border-slate-200 dark:border-border shadow-xs text-xs font-semibold text-slate-800 dark:text-slate-200 hover:border-[#e11d48] transition-colors cursor-pointer"
+              title={studentProfile ? `Signed in as ${studentProfile.name} (${studentProfile.registerNumber})` : "Sign In to Student Account"}
             >
-              <span>{studentProfile ? studentProfile.registerNumber || "Student Active" : "Sign In"}</span>
+              {studentProfile ? (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                  <span className="font-bold text-slate-900 dark:text-white max-w-[140px] truncate">{studentProfile.name}</span>
+                </>
+              ) : (
+                <>
+                  <User className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                  <span>Sign In</span>
+                </>
+              )}
             </button>
 
             <ModeToggle />

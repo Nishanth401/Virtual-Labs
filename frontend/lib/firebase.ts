@@ -64,12 +64,20 @@ export interface StudentProfile {
 const LOCAL_STORAGE_KEY = "vsb_student_profile_data";
 
 export async function saveStudentProfileToDb(profile: StudentProfile): Promise<void> {
-  try {
-    if (typeof window !== "undefined") {
+  if (typeof window !== "undefined") {
+    try {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(profile));
+    } catch (e) {
+      console.warn("LocalStorage write error:", e);
     }
+  }
+
+  try {
     const userRef = doc(db, "students", profile.uid);
-    await setDoc(userRef, profile, { merge: true });
+    await Promise.race([
+      setDoc(userRef, profile, { merge: true }),
+      new Promise((resolve) => setTimeout(resolve, 1500))
+    ]);
   } catch (err) {
     console.warn("Firestore sync fallback to localStorage:", err);
   }
@@ -78,8 +86,11 @@ export async function saveStudentProfileToDb(profile: StudentProfile): Promise<v
 export async function getStudentProfileFromDb(uid: string): Promise<StudentProfile | null> {
   try {
     const userRef = doc(db, "students", uid);
-    const docSnap = await getDoc(userRef);
-    if (docSnap.exists()) {
+    const docSnap = await Promise.race([
+      getDoc(userRef),
+      new Promise<null>((resolve) => setTimeout(() => resolve(null), 1500))
+    ]);
+    if (docSnap && docSnap.exists()) {
       return docSnap.data() as StudentProfile;
     }
   } catch (err) {
@@ -91,7 +102,7 @@ export async function getStudentProfileFromDb(uid: string): Promise<StudentProfi
     if (local) {
       try {
         const parsed = JSON.parse(local);
-        if (parsed.uid === uid) return parsed;
+        if (parsed.uid === uid || parsed.registerNumber) return parsed;
       } catch {}
     }
   }

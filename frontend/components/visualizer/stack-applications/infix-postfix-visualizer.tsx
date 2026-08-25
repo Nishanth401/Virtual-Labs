@@ -14,7 +14,7 @@ import { MarkdownContent } from "@/components/shared/markdown-content"
 const EXAMPLE_EXPRESSION = "K+L-M*N+(O^P)*W/U/V*T+Q"
 
 interface InfixPostfixVisualizerProps {
-  content: React.ReactNode
+  content?: React.ReactNode
 }
 
 export function InfixPostfixVisualizer({ content }: InfixPostfixVisualizerProps) {
