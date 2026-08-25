@@ -7,20 +7,8 @@ import { Quote } from "lucide-react";
 const TESTIMONIALS = [
   {
     quote: "One of the primary advantages associated with the utilization of Virtual Laboratory is the ability for students to engage in self-paced learning. This technology facilitates students in studying, preparing for, and conducting laboratory experiments at their own convenience.",
-    author: "Dr. K. Senthil Kumar",
+    author: "Dr. K. Manivannan",
     designation: "Professor & Head, Department of Artificial Intelligence & Data Science",
-    institute: "VSB Engineering College"
-  },
-  {
-    quote: "Virtual Labs are implemented to help students understand the theories and abstract concepts that cannot be fully appreciated through textbooks alone. The best progressive learning appears when virtual simulations precede physical laboratory coding sessions.",
-    author: "Prof. M. Rajesh",
-    designation: "Associate Professor, Department of CSE",
-    institute: "VSB Engineering College"
-  },
-  {
-    quote: "The interactive DSA step-by-step visualizers and instant quiz feedback enlightened my understanding of algorithmic pointer manipulation and recursion stack frames before writing complex code.",
-    author: "R. Anish",
-    designation: "B.Tech AIDS Final Year Student",
     institute: "VSB Engineering College"
   }
 ];
@@ -41,7 +29,7 @@ export function TestimonialsSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="max-w-2xl mx-auto">
           {TESTIMONIALS.map((t, idx) => (
             <Card key={idx} className="border-secondary/40 bg-card/60 backdrop-blur-xs flex flex-col justify-between p-6 shadow-sm">
               <CardContent className="p-0 space-y-4 flex-1 flex flex-col justify-between">

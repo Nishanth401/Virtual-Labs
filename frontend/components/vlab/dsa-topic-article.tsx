@@ -17,7 +17,7 @@ import {
   ChevronRight,
   Zap,
   Trophy,
-  Sparkles,
+  Layers,
   Copy,
   Check
 } from "lucide-react";
@@ -185,7 +185,7 @@ export function DSATopicArticle({
           {topic.diagram && (
             <Card className="border-border bg-card/90 shadow-sm p-5 space-y-3">
               <div className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-emerald-500" />
+                <Layers className="h-4 w-4 text-emerald-500" />
                 <span className="font-bold text-sm text-foreground font-heading">
                   {topic.diagramTitle || "Architecture Flowchart & Step-by-step Execution Diagram"}
                 </span>

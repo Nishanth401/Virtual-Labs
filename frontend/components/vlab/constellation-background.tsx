@@ -58,11 +58,18 @@ export function ConstellationBackground() {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
+<<<<<<< HEAD
         vx: (Math.random() - 0.5) * 0.45,
         vy: (Math.random() - 0.5) * 0.45,
         radius: isRed ? (Math.random() > 0.7 ? 3.5 : 2.5) : (Math.random() > 0.7 ? 2.5 : 1.8),
         isRed,
         baseAlpha: isRed ? 0.85 : 0.45,
+=======
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        radius: Math.random() > 0.7 ? 2.5 : 1.5,
+        isRed: false,
+>>>>>>> 6793de657858aa0294d8065a300663c734d70490
       });
     }
 
@@ -76,8 +83,13 @@ export function ConstellationBackground() {
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
+<<<<<<< HEAD
           if (dist < 130) {
             const alpha = (1 - dist / 130) * 0.22;
+=======
+          if (dist < 140) {
+            const alpha = (1 - dist / 140) * 0.15;
+>>>>>>> 6793de657858aa0294d8065a300663c734d70490
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -117,6 +129,7 @@ export function ConstellationBackground() {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+<<<<<<< HEAD
 
         if (p.isRed) {
           // Glowing Red Accent Node
@@ -130,6 +143,10 @@ export function ConstellationBackground() {
           ctx.fillStyle = "rgba(140, 140, 160, 0.5)";
           ctx.fill();
         }
+=======
+        ctx.fillStyle = "rgba(140, 140, 160, 0.4)";
+        ctx.fill();
+>>>>>>> 6793de657858aa0294d8065a300663c734d70490
       }
 
       animationFrameId = requestAnimationFrame(render);
