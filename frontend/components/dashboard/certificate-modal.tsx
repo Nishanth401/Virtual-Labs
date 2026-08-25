@@ -102,7 +102,7 @@ export function CertificateModal({ progress }: CertificateModalProps) {
             </div>
 
             <div className="space-y-1 text-center">
-              <div className="font-bold text-foreground">Dr. K. Senthil Kumar</div>
+              <div className="font-bold text-foreground">Dr. K. Manivannan</div>
               <div className="text-[10px] text-muted-foreground">Head of Department, AIDS</div>
             </div>
 

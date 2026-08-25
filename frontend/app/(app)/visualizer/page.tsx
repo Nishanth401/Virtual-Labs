@@ -17,7 +17,7 @@ import {
   Hash,
   ArrowRightLeft,
   ArrowDownUp,
-  Sparkles,
+  Layers,
   FlaskConical,
   Code2,
   GitBranch,
@@ -294,7 +294,7 @@ export default function VisualizerHubPage() {
       <section className="space-y-4">
         <div className="flex items-center justify-between border-b border-border/60 pb-2">
           <h2 className="text-xl font-bold font-heading text-foreground flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-[#1e88e5]" />
+            <Layers className="h-5 w-5 text-[#1e88e5]" />
             <span>Algorithmic Applications &amp; Graphs</span>
           </h2>
           <Badge variant="secondary" className="text-xs">5 Applications</Badge>

@@ -26,7 +26,7 @@ import {
   ArrowRight,
   BookOpen,
   Send,
-  Sparkles,
+  Trophy,
   ChevronRight,
   Code2,
   BrainCircuit,
@@ -292,7 +292,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <div>
                         <CardTitle className="text-xl font-bold text-primary font-heading flex items-center gap-2">
-                          <Sparkles className="h-5 w-5 text-amber-500" />
+                          <Trophy className="h-5 w-5 text-amber-500" />
                           <span>Topic-by-Topic LeetCode &amp; GFG Practice Problems</span>
                         </CardTitle>
                         <CardDescription className="text-xs mt-1">
@@ -340,7 +340,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             >
                               {prob.difficulty}
                             </Badge>
-                            <Sparkles className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
+                            <ExternalLink className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
                           </div>
                         </a>
                       ))}

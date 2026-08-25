@@ -6,7 +6,7 @@ import {
   ChevronsUpDown,
   CreditCard,
   LogOut,
-  Sparkles,
+  Award,
 } from "lucide-react"
 
 import {
@@ -82,7 +82,7 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <Sparkles />
+                <Award />
                 Upgrade to Pro
               </DropdownMenuItem>
             </DropdownMenuGroup>
