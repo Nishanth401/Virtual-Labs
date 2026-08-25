@@ -159,16 +159,6 @@ export function Navbar() {
                 </Link>
               );
             })}
-
-            {/* Red Accent CTA Pill Button (Student Portal / Login) */}
-            <button
-              type="button"
-              onClick={() => setAuthOpen(true)}
-              className="ml-1 px-4 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-[#e11d48] to-[#dc2626] text-white shadow-md shadow-red-500/30 hover:scale-105 transition-transform flex items-center gap-1 cursor-pointer shrink-0"
-            >
-              <span>{user ? `Student: ${user.displayName?.split(' ')[0] || user.email?.split('@')[0] || "Active"}` : "Student Login"}</span>
-              <ArrowRight className="h-3 w-3" />
-            </button>
           </nav>
 
           {/* Right Action Icons: Circular Search Button & Mode Toggle */}
