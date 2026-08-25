@@ -161,7 +161,6 @@ export function Navbar() {
                 </Link>
               );
             })}
-
             {/* Red Accent CTA Pill Button (Student Portal / Login) */}
             <button
               type="button"

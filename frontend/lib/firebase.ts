@@ -16,6 +16,7 @@ import {
   doc,
   addDoc,
   getDocs,
+  getDoc,
   deleteDoc,
   setDoc,
   query,
@@ -135,6 +136,10 @@ export async function getStudentProfileFromDb(uid: string): Promise<StudentProfi
   return null;
 }
 
+// ==========================================
+// FIRESTORE USER DATA SERVICES
+// ==========================================
+
 // Ensure User Document exists
 export async function syncUserDoc(user: User): Promise<void> {
   try {
@@ -147,6 +152,197 @@ export async function syncUserDoc(user: User): Promise<void> {
     }, { merge: true });
   } catch (e) {
     console.warn("Firestore syncUserDoc fallback:", e);
+  }
+}
+
+// Student Profile CRUD
+export async function saveStudentProfileToDb(profile: StudentProfile): Promise<void> {
+  try {
+    const userRef = doc(db, "users", profile.uid);
+    await setDoc(userRef, {
+      ...profile,
+      lastActive: new Date().toISOString()
+    }, { merge: true });
+  } catch (e) {
+    console.warn("Firestore saveStudentProfileToDb fallback:", e);
+  }
+
+  if (typeof window !== "undefined") {
+    try {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(profile));
+    } catch {}
+  }
+}
+
+export async function getStudentProfileFromDb(uid: string): Promise<StudentProfile | null> {
+  try {
+    const userRef = doc(db, "users", uid);
+    const snap = await getDoc(userRef);
+    if (snap.exists()) {
+      const data = snap.data() as Partial<StudentProfile>;
+      
+      // Also fetch problem notes subcollection if any
+      try {
+        const notesSnap = await getDocs(collection(db, "users", uid, "problemNotes"));
+        const problemNotes: Record<string, { note: string; timestamp: string }> = data.problemNotes || {};
+        notesSnap.forEach((docSnap) => {
+          const d = docSnap.data();
+          if (d?.note) {
+            problemNotes[docSnap.id] = { note: d.note, timestamp: d.timestamp || new Date().toISOString() };
+          }
+        });
+        data.problemNotes = problemNotes;
+      } catch {}
+
+      return {
+        uid,
+        name: data.name || data.email?.split("@")[0] || "Student",
+        registerNumber: data.registerNumber || "713521104001",
+        email: data.email || "",
+        department: data.department || "Artificial Intelligence & Data Science",
+        yearSemester: data.yearSemester || "III Year / VI Semester",
+        completedExperiments: data.completedExperiments || [],
+        completedProblems: data.completedProblems || [],
+        starredProblems: data.starredProblems || [],
+        problemNotes: data.problemNotes || {},
+        quizScores: data.quizScores || {},
+        feedbacks: data.feedbacks || {},
+        createdAt: data.createdAt || new Date().toISOString(),
+        lastActive: data.lastActive || new Date().toISOString()
+      };
+    }
+  } catch (e) {
+    console.warn("Firestore getStudentProfileFromDb fallback:", e);
+  }
+
+  if (typeof window !== "undefined") {
+    try {
+      const local = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (local) {
+        const parsed = JSON.parse(local);
+        if (parsed.uid === uid) return parsed;
+      }
+    } catch {}
+  }
+  return null;
+}
+
+export async function markExperimentCompletedInDb(uid: string, experimentId: string): Promise<void> {
+  try {
+    const docRef = doc(db, "users", uid, "completedExperiments", experimentId);
+    await setDoc(docRef, { experimentId, timestamp: new Date().toISOString() }, { merge: true });
+  } catch (e) {
+    console.warn("Firestore markExperimentCompletedInDb fallback:", e);
+  }
+
+  if (typeof window !== "undefined") {
+    try {
+      const local = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (local) {
+        const parsed: StudentProfile = JSON.parse(local);
+        if (!parsed.completedExperiments.includes(experimentId)) {
+          parsed.completedExperiments.push(experimentId);
+          parsed.lastActive = new Date().toISOString();
+          localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(parsed));
+        }
+      }
+    } catch {}
+  }
+}
+
+export async function toggleProblemCompletedInDb(uid: string, problemId: string, _completed?: boolean): Promise<void> {
+  try {
+    const docRef = doc(db, "users", uid, "completedProblems", problemId);
+    if (_completed === false) {
+      await deleteDoc(docRef);
+    } else {
+      await setDoc(docRef, { problemId, timestamp: new Date().toISOString() }, { merge: true });
+    }
+  } catch (e) {
+    console.warn("Firestore toggleProblemCompletedInDb fallback:", e);
+  }
+
+  if (typeof window !== "undefined") {
+    try {
+      const local = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (local) {
+        const parsed: StudentProfile = JSON.parse(local);
+        const existing = parsed.completedProblems || [];
+        if (existing.includes(problemId)) {
+          parsed.completedProblems = existing.filter((p) => p !== problemId);
+        } else {
+          parsed.completedProblems = [...existing, problemId];
+        }
+        parsed.lastActive = new Date().toISOString();
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(parsed));
+      }
+    } catch {}
+  }
+}
+
+export async function toggleProblemStarredInDb(uid: string, problemId: string, _starred?: boolean): Promise<void> {
+  try {
+    const docRef = doc(db, "users", uid, "starredProblems", problemId);
+    if (_starred === false) {
+      await deleteDoc(docRef);
+    } else {
+      await setDoc(docRef, { problemId, timestamp: new Date().toISOString() }, { merge: true });
+    }
+  } catch (e) {
+    console.warn("Firestore toggleProblemStarredInDb fallback:", e);
+  }
+
+  if (typeof window !== "undefined") {
+    try {
+      const local = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (local) {
+        const parsed: StudentProfile = JSON.parse(local);
+        const existing = parsed.starredProblems || [];
+        if (existing.includes(problemId)) {
+          parsed.starredProblems = existing.filter((p) => p !== problemId);
+        } else {
+          parsed.starredProblems = [...existing, problemId];
+        }
+        parsed.lastActive = new Date().toISOString();
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(parsed));
+      }
+    } catch {}
+  }
+}
+
+export async function saveProblemNoteInDb(uid: string, problemId: string, noteText: string): Promise<void> {
+  const timestamp = new Date().toISOString();
+  try {
+    const docRef = doc(db, "users", uid, "problemNotes", problemId);
+    if (!noteText.trim()) {
+      await deleteDoc(docRef);
+    } else {
+      await setDoc(docRef, {
+        problemId,
+        note: noteText.trim(),
+        timestamp
+      }, { merge: true });
+    }
+  } catch (e) {
+    console.warn("Firestore saveProblemNoteInDb fallback:", e);
+  }
+
+  if (typeof window !== "undefined") {
+    try {
+      const local = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (local) {
+        const parsed: StudentProfile = JSON.parse(local);
+        const existingNotes = parsed.problemNotes || {};
+        if (!noteText.trim()) {
+          delete existingNotes[problemId];
+        } else {
+          existingNotes[problemId] = { note: noteText.trim(), timestamp };
+        }
+        parsed.problemNotes = existingNotes;
+        parsed.lastActive = timestamp;
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(parsed));
+      }
+    } catch {}
   }
 }
 
