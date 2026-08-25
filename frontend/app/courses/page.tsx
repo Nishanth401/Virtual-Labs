@@ -14,18 +14,16 @@ import Link from "next/link";
 export default function CoursesPage() {
   const [selectedSem, setSelectedSem] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedType, setSelectedType] = useState<string>("all");
 
   const semesters = [1, 2, 3, 4, 5, 6, 7, 8];
 
   const filteredCourses = COURSES_DATA.filter((course) => {
     const matchesSem = selectedSem === "all" || course.sem.toString() === selectedSem;
-    const matchesType = selectedType === "all" || course.type === selectedType;
     const matchesSearch =
       course.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       course.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
       course.desc.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesSem && matchesType && matchesSearch;
+    return matchesSem && matchesSearch;
   });
 
   const totalCredits = COURSES_DATA.reduce((acc, curr) => acc + curr.credits, 0);
@@ -41,7 +39,7 @@ export default function CoursesPage() {
             <span>Anna University Approved Regulation 2021/2026</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground font-heading">
-            Curriculum & <span className="bg-gradient-to-r from-primary to-cyan-500 bg-clip-text text-transparent">Semester Courses</span>
+            Curriculum & <span className="bg-gradient-to-r from-[#e11d48] to-[#dc2626] bg-clip-text text-transparent">Semester Courses</span>
           </h1>
           <p className="mt-3 text-muted-foreground text-sm sm:text-base leading-relaxed">
             Explore all 8 semesters of foundational, core, and advanced Artificial Intelligence and Data Science courses. Review credits, laboratory sessions, and integrated digital learning resources.
@@ -100,7 +98,7 @@ export default function CoursesPage() {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 pt-2">
+          <div className="pt-2">
             {/* Search Input */}
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -111,21 +109,6 @@ export default function CoursesPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-9 pr-4 py-2 text-sm bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
               />
-            </div>
-
-            {/* Type Filter */}
-            <div className="flex gap-2">
-              {["all", "Foundation", "Core", "Advanced", "Elective"].map((type) => (
-                <Button
-                  key={type}
-                  variant={selectedType === type ? "secondary" : "ghost"}
-                  size="sm"
-                  onClick={() => setSelectedType(type)}
-                  className="text-xs capitalize"
-                >
-                  {type === "all" ? "All Types" : type}
-                </Button>
-              ))}
             </div>
           </div>
         </div>
@@ -206,7 +189,6 @@ export default function CoursesPage() {
               size="sm"
               onClick={() => {
                 setSelectedSem("all");
-                setSelectedType("all");
                 setSearchQuery("");
               }}
               className="mt-4"

@@ -77,7 +77,7 @@ import Image from "next/image";
 export function HeroObjectives() {
   return (
     <section className="relative min-h-[85vh] flex flex-col justify-between pt-4 pb-16 px-4 sm:px-6 bg-grid-pattern border-b border-border/40 overflow-hidden">
-      {/* Interactive Constellation Particle Canvas Mesh */}
+      {/* Interactive Constellation Particle Canvas Mesh confined to this Hero Panel */}
       <ConstellationBackground />
 
       <div className="container max-w-5xl mx-auto text-center relative z-10 space-y-6 pt-2">
@@ -88,7 +88,6 @@ export function HeroObjectives() {
           transition={{ duration: 0.4, delay: 0.1 }}
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#111113] text-white text-[11px] font-bold tracking-wider uppercase border border-white/10 shadow-md"
         >
-          <span className="h-2 w-2 rounded-full bg-[#e11d48] animate-pulse" />
           <span>Department of Artificial Intelligence &amp; Data Science • VSB Engineering College</span>
         </motion.div>
 
