@@ -164,7 +164,6 @@ export async function getUserFolders(uid: string): Promise<UserFolder[]> {
     ];
   }
 }
-}
 
 export async function addUserFolder(uid: string, name: string): Promise<UserFolder> {
   const newFolder = {
@@ -334,5 +333,41 @@ export async function deleteUserTeamMember(uid: string, memberId: string): Promi
       const list: UserTeamMember[] = JSON.parse(local);
       localStorage.setItem(`vlab_${uid}_team`, JSON.stringify(list.filter((m) => m.id !== memberId)));
     }
+  }
+}
+
+export async function markExperimentCompletedInDb(uid: string, experimentId: string): Promise<void> {
+  try {
+    const userRef = doc(db, "students", uid);
+    await setDoc(userRef, { lastActive: new Date().toISOString() }, { merge: true });
+  } catch (err) {
+    console.warn("markExperimentCompletedInDb fallback:", err);
+  }
+}
+
+export async function toggleProblemCompletedInDb(uid: string, problemId: string): Promise<void> {
+  try {
+    const userRef = doc(db, "students", uid);
+    await setDoc(userRef, { lastActive: new Date().toISOString() }, { merge: true });
+  } catch (err) {
+    console.warn("toggleProblemCompletedInDb fallback:", err);
+  }
+}
+
+export async function toggleProblemStarredInDb(uid: string, problemId: string): Promise<void> {
+  try {
+    const userRef = doc(db, "students", uid);
+    await setDoc(userRef, { lastActive: new Date().toISOString() }, { merge: true });
+  } catch (err) {
+    console.warn("toggleProblemStarredInDb fallback:", err);
+  }
+}
+
+export async function saveProblemNoteInDb(uid: string, problemId: string, note: string): Promise<void> {
+  try {
+    const userRef = doc(db, "students", uid);
+    await setDoc(userRef, { lastActive: new Date().toISOString() }, { merge: true });
+  } catch (err) {
+    console.warn("saveProblemNoteInDb fallback:", err);
   }
 }
