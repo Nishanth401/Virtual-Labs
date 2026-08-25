@@ -1,46 +1,30 @@
 /**
  * firebase.ts
  *
- * Client Firebase configuration with Auth & Firestore initialization.
- * Includes graceful offline / local persistence fallback if credentials are unconfigured.
+ * Client Firebase configuration with Firebase Authentication.
+ * Note: Firestore and Storage are intentionally disabled per configuration.
  */
 
 import { initializeApp, getApps, getApp } from "firebase/app";
 import {
   getAuth,
   GoogleAuthProvider,
-  signInWithPopup,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut as fbSignOut,
-  onAuthStateChanged,
   User
 } from "firebase/auth";
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  getDoc,
-  updateDoc,
-  arrayUnion,
-  collection,
-  query,
-  getDocs
-} from "firebase/firestore";
 
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyDemoKeyVirtualLabsVSBECollege2026",
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "vsb-virtual-labs.firebaseapp.com",
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "vsb-virtual-labs",
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "vsb-virtual-labs.appspot.com",
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "102938475610",
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:102938475610:web:abcdef123456789",
+// Web App Firebase configuration
+export const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyAYS8N8C25-VWYUfCDh1OrUq__DxgVBgXk",
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "virtual-lab-e7495.firebaseapp.com",
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "virtual-lab-e7495",
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "virtual-lab-e7495.firebasestorage.app",
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "341602998056",
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:341602998056:web:3e78ace74d2fd34680e21d"
 };
 
-// Initialize App safely
+// Initialize Firebase (Auth only)
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 export const auth = getAuth(app);
-export const db = getFirestore(app);
 export const googleProvider = new GoogleAuthProvider();
 
 export interface StudentProfile {
@@ -60,76 +44,51 @@ export interface StudentProfile {
   lastActive: string;
 }
 
-// Student Data Storage Helpers (Firestore with local fallback)
+// Local UI helpers (In-memory / localStorage only, NO Firestore)
 const LOCAL_STORAGE_KEY = "vsb_student_profile_data";
 
 export async function saveStudentProfileToDb(profile: StudentProfile): Promise<void> {
-  try {
-    if (typeof window !== "undefined") {
+  if (typeof window !== "undefined") {
+    try {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(profile));
-    }
-    const userRef = doc(db, "students", profile.uid);
-    await setDoc(userRef, profile, { merge: true });
-  } catch (err) {
-    console.warn("Firestore sync fallback to localStorage:", err);
+    } catch {}
   }
 }
 
 export async function getStudentProfileFromDb(uid: string): Promise<StudentProfile | null> {
-  try {
-    const userRef = doc(db, "students", uid);
-    const docSnap = await getDoc(userRef);
-    if (docSnap.exists()) {
-      return docSnap.data() as StudentProfile;
-    }
-  } catch (err) {
-    console.warn("Firestore fetch fallback to localStorage:", err);
-  }
-
   if (typeof window !== "undefined") {
-    const local = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (local) {
-      try {
+    try {
+      const local = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (local) {
         const parsed = JSON.parse(local);
         if (parsed.uid === uid) return parsed;
-      } catch {}
-    }
+      }
+    } catch {}
   }
-
   return null;
 }
 
 export async function markExperimentCompletedInDb(uid: string, experimentId: string): Promise<void> {
-  try {
-    const userRef = doc(db, "students", uid);
-    await updateDoc(userRef, {
-      completedExperiments: arrayUnion(experimentId),
-      lastActive: new Date().toISOString()
-    });
-  } catch (err) {
-    console.warn("Firestore update fallback to localStorage:", err);
-  }
-
   if (typeof window !== "undefined") {
-    const local = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (local) {
-      try {
+    try {
+      const local = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (local) {
         const parsed: StudentProfile = JSON.parse(local);
         if (!parsed.completedExperiments.includes(experimentId)) {
           parsed.completedExperiments.push(experimentId);
           parsed.lastActive = new Date().toISOString();
           localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(parsed));
         }
-      } catch {}
-    }
+      }
+    } catch {}
   }
 }
 
-export async function toggleProblemCompletedInDb(uid: string, problemId: string): Promise<void> {
+export async function toggleProblemCompletedInDb(uid: string, problemId: string, _completed?: boolean): Promise<void> {
   if (typeof window !== "undefined") {
-    const local = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (local) {
-      try {
+    try {
+      const local = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (local) {
         const parsed: StudentProfile = JSON.parse(local);
         const existing = parsed.completedProblems || [];
         if (existing.includes(problemId)) {
@@ -139,18 +98,16 @@ export async function toggleProblemCompletedInDb(uid: string, problemId: string)
         }
         parsed.lastActive = new Date().toISOString();
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(parsed));
-        const userRef = doc(db, "students", uid);
-        await setDoc(userRef, parsed, { merge: true });
-      } catch {}
-    }
+      }
+    } catch {}
   }
 }
 
-export async function toggleProblemStarredInDb(uid: string, problemId: string): Promise<void> {
+export async function toggleProblemStarredInDb(uid: string, problemId: string, _starred?: boolean): Promise<void> {
   if (typeof window !== "undefined") {
-    const local = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (local) {
-      try {
+    try {
+      const local = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (local) {
         const parsed: StudentProfile = JSON.parse(local);
         const existing = parsed.starredProblems || [];
         if (existing.includes(problemId)) {
@@ -160,18 +117,16 @@ export async function toggleProblemStarredInDb(uid: string, problemId: string): 
         }
         parsed.lastActive = new Date().toISOString();
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(parsed));
-        const userRef = doc(db, "students", uid);
-        await setDoc(userRef, parsed, { merge: true });
-      } catch {}
-    }
+      }
+    } catch {}
   }
 }
 
 export async function saveProblemNoteInDb(uid: string, problemId: string, noteText: string): Promise<void> {
   if (typeof window !== "undefined") {
-    const local = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (local) {
-      try {
+    try {
+      const local = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (local) {
         const parsed: StudentProfile = JSON.parse(local);
         parsed.problemNotes = {
           ...(parsed.problemNotes || {}),
@@ -179,9 +134,7 @@ export async function saveProblemNoteInDb(uid: string, problemId: string, noteTe
         };
         parsed.lastActive = new Date().toISOString();
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(parsed));
-        const userRef = doc(db, "students", uid);
-        await setDoc(userRef, parsed, { merge: true });
-      } catch {}
-    }
+      }
+    } catch {}
   }
 }
