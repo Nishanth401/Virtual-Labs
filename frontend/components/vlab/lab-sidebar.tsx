@@ -1,14 +1,14 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { BookOpen, Target, ListTree, Users, GraduationCap, MessageSquareHeart, FileQuestion } from "lucide-react";
+import { BookOpen, Target, ListTree, GraduationCap, MessageSquareHeart, FileQuestion, Sparkles } from "lucide-react";
 
 export type LabTab =
   | "introduction"
+  | "dsa-roadmap"
   | "objective"
   | "experiments"
   | "quizzes"
-  | "target-audience"
   | "course-alignment"
   | "feedback";
 
@@ -20,10 +20,10 @@ interface LabSidebarProps {
 
 const TABS: { id: LabTab; label: string; icon: React.ElementType }[] = [
   { id: "introduction", label: "Introduction", icon: BookOpen },
+  { id: "dsa-roadmap", label: "Roadmap & Practice", icon: Sparkles },
   { id: "objective", label: "Objective", icon: Target },
   { id: "experiments", label: "List of experiments", icon: ListTree },
   { id: "quizzes", label: "Self-Assessment Quiz", icon: FileQuestion },
-  { id: "target-audience", label: "Target Audience", icon: Users },
   { id: "course-alignment", label: "Course Alignment", icon: GraduationCap },
   { id: "feedback", label: "Feedback", icon: MessageSquareHeart },
 ];
