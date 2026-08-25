@@ -16,5 +16,8 @@
     "learning-management-system"
   ],
   "author": "Department of AI & Data Science, VSB Engineering College",
-  "license": "AGPL-3.0"
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "firebase": "^12.18.0"
+  }
 }
