@@ -46,7 +46,7 @@ export function DSACategorySidebar({
     topics: cat.topics.filter(
       (t) =>
         t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        t.summary.toLowerCase().includes(searchQuery.toLowerCase())
+        (t.quickSummary || "").toLowerCase().includes(searchQuery.toLowerCase())
     ),
   })).filter((cat) => cat.topics.length > 0);
 

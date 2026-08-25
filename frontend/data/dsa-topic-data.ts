@@ -32,6 +32,7 @@ export interface DSATopic {
   gfgSearchQuery: string;
   gfgUrl: string;
   quickSummary: string; // concise 1-2 lines theory
+  summary?: string;
   keyPoints: string[]; // 3 short bullet points max
   diagramTitle?: string; // e.g. "Pipeline Architecture Flowchart"
   diagram?: string; // Visual Flowchart / Diagram string
