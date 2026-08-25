@@ -1,9 +1,10 @@
 "use client";
 
+import { useAuth } from "@/context/auth-context";
 import { StudentProgressState } from "@/lib/storage";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Award, CheckCircle2, FileQuestion, Flame, BookOpen } from "lucide-react";
+import { Award, CheckCircle2, FileQuestion, Flame } from "lucide-react";
 import { CertificateModal } from "@/components/dashboard/certificate-modal";
 
 interface ProgressCardProps {
@@ -12,6 +13,23 @@ interface ProgressCardProps {
 }
 
 export function ProgressCard({ progress, totalExperiments = 6 }: ProgressCardProps) {
+  const { user, studentProfile } = useAuth();
+
+  // Dynamically resolve student name & roll number from the authenticated user
+  const studentName =
+    studentProfile?.name ||
+    user?.displayName ||
+    (user?.email ? user.email.split("@")[0] : progress.studentName);
+
+  const studentRollNo =
+    studentProfile?.registerNumber ||
+    (user?.email ? user.email.split("@")[0].toUpperCase() : progress.studentRollNo);
+
+  const department =
+    studentProfile?.department ||
+    progress.department ||
+    "Department of Artificial Intelligence & Data Science";
+
   const completedCount = progress.completedExperiments.length;
   const percentage = Math.round((completedCount / totalExperiments) * 100);
 
@@ -29,15 +47,22 @@ export function ProgressCard({ progress, totalExperiments = 6 }: ProgressCardPro
               <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/30">
                 Department Learner Profile
               </Badge>
-              <Badge variant="secondary" className="text-xs font-mono">
-                {progress.studentRollNo}
+              <Badge variant="secondary" className="text-xs font-mono font-bold">
+                {studentRollNo}
               </Badge>
             </div>
-            <CardTitle className="text-xl font-bold font-heading">{progress.studentName}</CardTitle>
-            <p className="text-xs text-muted-foreground mt-0.5">{progress.department}</p>
+            <CardTitle className="text-xl font-bold font-heading text-foreground">
+              {studentName}
+            </CardTitle>
+            <p className="text-xs text-muted-foreground mt-0.5">{department}</p>
           </div>
 
-          <CertificateModal progress={progress} />
+          <CertificateModal
+            progress={progress}
+            studentName={studentName}
+            studentRollNo={studentRollNo}
+            department={department}
+          />
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
