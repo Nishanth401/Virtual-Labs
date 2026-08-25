@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import {
   Dialog,
@@ -19,15 +20,11 @@ import {
   User,
   Lock,
   Mail,
-  GraduationCap,
-  Sparkles,
   CheckCircle2,
   LogOut,
-  Trophy,
   ArrowRight,
   ShieldCheck,
-  Building2,
-  BookOpen
+  MailCheck
 } from "lucide-react";
 
 interface StudentAuthDialogProps {
@@ -36,67 +33,128 @@ interface StudentAuthDialogProps {
 }
 
 export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps) {
+  const router = useRouter();
   const {
     user,
     studentProfile,
-    loginWithRegisterNumber,
-    registerWithRegisterNumber,
+    signInWithEmail,
+    signUpWithEmail,
     loginWithGoogle,
     logout,
     loading
   } = useAuth();
 
   const [authTab, setAuthTab] = useState<"login" | "register">("login");
-  const [regNo, setRegNo] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [department, setDepartment] = useState("Artificial Intelligence & Data Science");
-  const [yearSemester, setYearSemester] = useState("Year III / Semester VI");
   const [errorMsg, setErrorMsg] = useState("");
+  const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
-    if (!regNo.trim() || !password.trim()) {
-      setErrorMsg("Please enter your Register Number and Password.");
+    if (!email.trim() || !password.trim()) {
+      setErrorMsg("Please enter your email and password.");
       return;
     }
     try {
-      await loginWithRegisterNumber(regNo, password);
-      onOpenChange(false);
+      const res = await signInWithEmail(email, password);
+      if (res.emailVerified) {
+        onOpenChange(false);
+        router.push("/dashboard");
+      }
     } catch (err: any) {
-      setErrorMsg(err.message || "Failed to login. Please check your credentials.");
+      if (err.code === "auth/email-not-verified" || err.message === "EMAIL_NOT_VERIFIED") {
+        setUnverifiedEmail(err.email || email.trim());
+        setErrorMsg("");
+        return;
+      }
+      setErrorMsg(err.message || "Email or password is incorrect");
     }
   };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
-    if (!name.trim() || !regNo.trim() || !password.trim()) {
-      setErrorMsg("Please fill out all required fields.");
+    if (!email.trim() || !password.trim()) {
+      setErrorMsg("Please enter your email and password.");
       return;
     }
     try {
-      await registerWithRegisterNumber(name, regNo, password, department, yearSemester);
-      onOpenChange(false);
+      const res = await signUpWithEmail(email, password, name);
+      // Registration sent verification email and did not sign in automatically
+      setUnverifiedEmail(res.email);
     } catch (err: any) {
-      setErrorMsg(err.message || "Failed to create student account.");
+      setErrorMsg(err.message || "User already exists. Please sign in");
     }
   };
 
   const handleGoogleSignIn = async () => {
+    setErrorMsg("");
     try {
       await loginWithGoogle();
       onOpenChange(false);
+      router.push("/dashboard");
     } catch (err: any) {
-      setErrorMsg("Google Sign-In failed.");
+      setErrorMsg("Google Sign-In was cancelled or failed.");
     }
   };
 
+  const handleLogout = async () => {
+    await logout();
+    setUnverifiedEmail(null);
+    setAuthTab("login");
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={(val) => { onOpenChange(val); if (!val) setUnverifiedEmail(null); }}>
       <DialogContent className="max-w-md p-0 overflow-hidden bg-white dark:bg-card/95 backdrop-blur-xl border border-border shadow-2xl rounded-2xl">
-        {studentProfile ? (
+        {unverifiedEmail ? (
+          /* ============================================================== */
+          /* EMAIL VERIFICATION SCREEN                                      */
+          /* ============================================================== */
+          <div className="p-6 space-y-5">
+            <DialogHeader className="space-y-1.5 text-center">
+              <div className="mx-auto w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 mb-1">
+                <MailCheck className="h-6 w-6" />
+              </div>
+              <div className="flex justify-center">
+                <Badge variant="outline" className="text-[10px] font-mono uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30">
+                  Email Verification Required
+                </Badge>
+              </div>
+              <DialogTitle className="text-xl font-bold font-heading text-foreground">
+                Verify Your Email
+              </DialogTitle>
+              <DialogDescription className="text-xs text-foreground/90 font-medium leading-relaxed pt-1">
+                We have sent you a verification email to <span className="font-bold text-primary font-mono">{unverifiedEmail}</span>. Please verify it and log in.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="p-3.5 rounded-xl bg-muted/50 border border-border/60 text-left text-xs text-muted-foreground space-y-1 font-sans">
+              <p className="font-semibold text-foreground flex items-center gap-1.5">
+                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" /> Instructions:
+              </p>
+              <p className="pl-5">1. Check your email inbox (and spam folder).</p>
+              <p className="pl-5">2. Click the verification link from Firebase.</p>
+              <p className="pl-5">3. Click the Login button below to proceed.</p>
+            </div>
+
+            <Button
+              type="button"
+              onClick={() => {
+                setUnverifiedEmail(null);
+                setAuthTab("login");
+                setErrorMsg("");
+              }}
+              className="w-full bg-primary hover:bg-primary/90 text-white text-xs font-bold py-2.5 mt-2 cursor-pointer gap-2"
+            >
+              <span>Login</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Button>
+          </div>
+        ) : user || studentProfile ? (
           /* ============================================================== */
           /* LOGGED IN STUDENT PROFILE VIEW                                */
           /* ============================================================== */
@@ -111,10 +169,10 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                 </Badge>
               </div>
               <DialogTitle className="text-xl font-bold font-heading text-foreground pt-1">
-                {studentProfile.name}
+                {studentProfile?.name || user?.displayName || user?.email?.split("@")[0] || "Student"}
               </DialogTitle>
               <DialogDescription className="text-xs text-muted-foreground font-mono">
-                Reg No: {studentProfile.registerNumber} • {studentProfile.yearSemester}
+                {user?.email}
               </DialogDescription>
             </DialogHeader>
 
@@ -122,18 +180,18 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
             <div className="grid grid-cols-2 gap-3">
               <div className="p-3 rounded-xl bg-muted/50 border border-border/60">
                 <span className="text-[10px] uppercase font-bold text-muted-foreground block font-mono">
-                  Completed Labs
+                  Status
                 </span>
-                <span className="text-xl font-black text-primary font-mono">
-                  {studentProfile.completedExperiments.length}
+                <span className="text-sm font-black text-primary font-mono">
+                  Verified User
                 </span>
               </div>
               <div className="p-3 rounded-xl bg-muted/50 border border-border/60">
                 <span className="text-[10px] uppercase font-bold text-muted-foreground block font-mono">
-                  Quizzes Passed
+                  Auth Method
                 </span>
-                <span className="text-xl font-black text-amber-500 font-mono">
-                  {Object.keys(studentProfile.quizScores || {}).length}
+                <span className="text-sm font-black text-amber-500 font-mono">
+                  Firebase
                 </span>
               </div>
             </div>
@@ -146,17 +204,14 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                 onClick={() => onOpenChange(false)}
               >
                 <Link href="/dashboard">
-                  <span>Open Student Learning Dashboard &amp; Certificates</span>
+                  <span>Open Student Learning Dashboard</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               </Button>
 
               <Button
                 variant="outline"
-                onClick={async () => {
-                  await logout();
-                  onOpenChange(false);
-                }}
+                onClick={handleLogout}
                 className="w-full text-xs text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 gap-2 border-border"
               >
                 <LogOut className="h-3.5 w-3.5" /> Sign Out
@@ -181,7 +236,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                 VSB Virtual Labs Login
               </DialogTitle>
               <DialogDescription className="text-xs text-muted-foreground leading-relaxed">
-                Sign in to save your lab experiment completions, code runs, and self-assessment certificates.
+                Sign in to access your laboratory experiments, simulation studio, and progress.
               </DialogDescription>
             </DialogHeader>
 
@@ -222,18 +277,18 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
 
             <div className="flex items-center gap-3 text-xs text-muted-foreground">
               <div className="h-[1px] flex-1 bg-border/60" />
-              <span className="font-mono text-[10px] uppercase">Or Student Register No</span>
+              <span className="font-mono text-[10px] uppercase">Or Email &amp; Password</span>
               <div className="h-[1px] flex-1 bg-border/60" />
             </div>
 
             {/* Tabs for Login vs Register */}
-            <Tabs value={authTab} onValueChange={(v) => setAuthTab(v as any)} className="w-full">
+            <Tabs value={authTab} onValueChange={(v) => { setAuthTab(v as any); setErrorMsg(""); }} className="w-full">
               <TabsList className="grid grid-cols-2 w-full mb-3 bg-muted/60 p-1">
                 <TabsTrigger value="login" className="text-xs py-1.5 font-bold">
                   Sign In
                 </TabsTrigger>
                 <TabsTrigger value="register" className="text-xs py-1.5 font-bold">
-                  Register New
+                  Sign Up
                 </TabsTrigger>
               </TabsList>
 
@@ -241,14 +296,15 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
               <TabsContent value="login">
                 <form onSubmit={handleLogin} className="space-y-3">
                   <div className="space-y-1">
-                    <Label className="text-xs font-semibold">Student Register Number</Label>
+                    <Label className="text-xs font-semibold">Email Address</Label>
                     <div className="relative">
-                      <GraduationCap className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
+                      <Mail className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
                       <Input
-                        value={regNo}
-                        onChange={(e) => setRegNo(e.target.value)}
-                        placeholder="e.g. 922521104001"
-                        className="pl-9 text-xs font-mono"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="student@example.com"
+                        className="pl-9 text-xs"
                         required
                       />
                     </div>
@@ -272,9 +328,9 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                   <Button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-primary hover:bg-primary/90 text-white text-xs font-bold py-2 mt-2"
+                    className="w-full bg-primary hover:bg-primary/90 text-white text-xs font-bold py-2 mt-2 cursor-pointer"
                   >
-                    {loading ? "Authenticating..." : "Sign In to Laboratory"}
+                    {loading ? "Signing In..." : "Sign In"}
                   </Button>
                 </form>
               </TabsContent>
@@ -283,54 +339,44 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
               <TabsContent value="register">
                 <form onSubmit={handleRegister} className="space-y-2.5">
                   <div className="space-y-1">
-                    <Label className="text-xs font-semibold">Full Student Name</Label>
-                    <Input
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="e.g. Rohith E"
-                      className="text-xs"
-                      required
-                    />
+                    <Label className="text-xs font-semibold">Full Name (Optional)</Label>
+                    <div className="relative">
+                      <User className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
+                      <Input
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="e.g. Rohith E"
+                        className="pl-9 text-xs"
+                      />
+                    </div>
                   </div>
 
                   <div className="space-y-1">
-                    <Label className="text-xs font-semibold">Register Number</Label>
-                    <Input
-                      value={regNo}
-                      onChange={(e) => setRegNo(e.target.value)}
-                      placeholder="e.g. 922521104001"
-                      className="text-xs font-mono"
-                      required
-                    />
+                    <Label className="text-xs font-semibold">Email Address</Label>
+                    <div className="relative">
+                      <Mail className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
+                      <Input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="student@example.com"
+                        className="pl-9 text-xs"
+                        required
+                      />
+                    </div>
                   </div>
 
                   <div className="space-y-1">
                     <Label className="text-xs font-semibold">Password</Label>
-                    <Input
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••"
-                      className="text-xs"
-                      required
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="space-y-1">
-                      <Label className="text-[11px] font-semibold">Department</Label>
+                    <div className="relative">
+                      <Lock className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
                       <Input
-                        value={department}
-                        onChange={(e) => setDepartment(e.target.value)}
-                        className="text-[11px]"
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <Label className="text-[11px] font-semibold">Year / Sem</Label>
-                      <Input
-                        value={yearSemester}
-                        onChange={(e) => setYearSemester(e.target.value)}
-                        className="text-[11px]"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••"
+                        className="pl-9 text-xs"
+                        required
                       />
                     </div>
                   </div>
@@ -338,9 +384,9 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                   <Button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-primary hover:bg-primary/90 text-white text-xs font-bold py-2 mt-2"
+                    className="w-full bg-primary hover:bg-primary/90 text-white text-xs font-bold py-2 mt-2 cursor-pointer"
                   >
-                    {loading ? "Creating Profile..." : "Create Student Account"}
+                    {loading ? "Creating Account..." : "Sign Up"}
                   </Button>
                 </form>
               </TabsContent>

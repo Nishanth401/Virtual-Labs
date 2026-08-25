@@ -1,17 +1,29 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/auth-context";
 import { useStudentProgress } from "@/hooks/use-student-progress";
 import { Navbar } from "@/components/navigation/navbar";
 import { Footer } from "@/components/navigation/footer";
 import { ProgressCard } from "@/components/dashboard/progress-card";
 import { AttemptsTable } from "@/components/dashboard/attempts-table";
+import { UserFilesSection } from "@/components/dashboard/user-files-section";
+import { UserNotesSection } from "@/components/dashboard/user-notes-section";
+import { UserTeamSection } from "@/components/dashboard/user-team-section";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Award, RotateCcw, Sparkles, BookOpen, Layers, ArrowRight } from "lucide-react";
+import { Award, RotateCcw, Sparkles, BookOpen, Layers, ArrowRight, LogOut } from "lucide-react";
 import Link from "next/link";
 
 export default function StudentDashboardPage() {
+  const router = useRouter();
+  const { user, logout } = useAuth();
   const { progress, isLoaded, resetProgress } = useStudentProgress();
+
+  const handleLogout = async () => {
+    await logout();
+    router.push("/auth/login");
+  };
 
   if (!isLoaded) {
     return (
@@ -68,6 +80,15 @@ export default function StudentDashboardPage() {
               >
                 <RotateCcw className="h-3.5 w-3.5" /> Reset Demo Data
               </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleLogout}
+                className="text-xs gap-1.5 text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 border-border"
+              >
+                <LogOut className="h-3.5 w-3.5" /> Sign Out
+              </Button>
             </div>
           </div>
 
@@ -100,6 +121,15 @@ export default function StudentDashboardPage() {
               </Button>
             </div>
           </div>
+
+          {/* 1) My Files Section (PDFs, Manuals, Datasets) */}
+          <UserFilesSection />
+
+          {/* 2) My Notes Section (Viva Questions, Code Tips) */}
+          <UserNotesSection />
+
+          {/* 3) Team Members Section (Lab Batch & Mentors) */}
+          <UserTeamSection />
 
           {/* Experiments & Assessment Table */}
           <AttemptsTable progress={progress} />

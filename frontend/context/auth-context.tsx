@@ -16,8 +16,10 @@ import {
   signInWithPopup,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  sendEmailVerification,
   signOut as fbSignOut,
   onAuthStateChanged,
+  updateProfile,
   User
 } from "firebase/auth";
 
@@ -26,14 +28,16 @@ interface AuthContextType {
   student: StudentProfile | null;
   studentProfile: StudentProfile | null;
   loading: boolean;
-  loginWithRegisterNumber: (regNo: string, pass: string) => Promise<void>;
+  signInWithEmail: (email: string, pass: string) => Promise<{ email: string; emailVerified: boolean }>;
+  signUpWithEmail: (email: string, pass: string, name?: string) => Promise<{ email: string; emailVerified: boolean }>;
+  loginWithRegisterNumber: (regNoOrEmail: string, pass: string) => Promise<{ email: string; emailVerified: boolean }>;
   registerWithRegisterNumber: (
     name: string,
-    regNo: string,
+    regNoOrEmail: string,
     pass: string,
     department?: string,
     yearSemester?: string
-  ) => Promise<void>;
+  ) => Promise<{ email: string; emailVerified: boolean }>;
   loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
   markExperimentComplete: (experimentId: string) => Promise<void>;
@@ -45,67 +49,94 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Helper to format email from either email or student register number
+function formatAuthEmail(input: string): string {
+  const trimmed = input.trim();
+  if (trimmed.includes("@")) {
+    return trimmed.toLowerCase();
+  }
+  return `${trimmed.toLowerCase()}@vsb.ac.in`;
+}
+
+// Convert Firebase Auth errors to required user-friendly error messages
+function mapAuthError(err: any, mode: "signin" | "signup"): string {
+  const code = err?.code || "";
+  if (mode === "signin") {
+    if (
+      code === "auth/invalid-credential" ||
+      code === "auth/wrong-password" ||
+      code === "auth/user-not-found" ||
+      code === "auth/invalid-email" ||
+      code === "auth/invalid-login-credentials"
+    ) {
+      return "Email or password is incorrect";
+    }
+    return err?.message || "Email or password is incorrect";
+  }
+
+  if (mode === "signup") {
+    if (code === "auth/email-already-in-use") {
+      return "User already exists. Please sign in";
+    }
+    if (code === "auth/weak-password") {
+      return "Password should be at least 6 characters.";
+    }
+    if (code === "auth/invalid-email") {
+      return "Please enter a valid email address.";
+    }
+    return err?.message || "Failed to create account. Please try again.";
+  }
+
+  return err?.message || "Authentication error occurred.";
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [studentProfile, setStudentProfile] = useState<StudentProfile | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Sync profile when Firebase auth state changes
+  // Synchronize Firebase Auth state
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        let profile = await getStudentProfileFromDb(currentUser.uid);
-        if (!profile) {
-          profile = {
-            uid: currentUser.uid,
-            name: currentUser.displayName || "AI & DS Student",
-            registerNumber: "9225" + Math.floor(10000000 + Math.random() * 90000000),
-            email: currentUser.email || "",
-            department: "Artificial Intelligence & Data Science",
-            yearSemester: "Year III / Semester VI",
-            completedExperiments: ["bubble-sort", "stack-operations"],
-            completedProblems: [],
-            starredProblems: [],
-            problemNotes: {},
-            quizScores: {},
-            feedbacks: {},
-            createdAt: new Date().toISOString(),
-            lastActive: new Date().toISOString()
-          };
-          await saveStudentProfileToDb(profile);
-        }
-        setStudentProfile(profile);
+        setUser(currentUser);
+        const email = currentUser.email || "";
+        const regNo = email.includes("@") ? email.split("@")[0].toUpperCase() : "STUDENT";
+        const displayName = currentUser.displayName || (email ? email.split("@")[0] : "Student");
+
+        const profile: StudentProfile = {
+          uid: currentUser.uid,
+          name: displayName,
+          registerNumber: regNo,
+          email,
+          department: "Artificial Intelligence & Data Science",
+          yearSemester: "Year III / Semester VI",
+          completedExperiments: ["bubble-sort", "stack-operations"],
+          completedProblems: [],
+          starredProblems: [],
+          problemNotes: {},
+          quizScores: {},
+          feedbacks: {},
+          createdAt: new Date().toISOString(),
+          lastActive: new Date().toISOString()
+        };
+
+        getStudentProfileFromDb(currentUser.uid).then((p) => {
+          if (p) {
+            setStudentProfile(p);
+          } else {
+            saveStudentProfileToDb(profile);
+            setStudentProfile(profile);
+          }
+        });
       } else {
-        const local = localStorage.getItem("vsb_student_profile_data");
+        const local = typeof window !== "undefined" ? localStorage.getItem("vsb_student_profile_data") : null;
         if (local) {
           try {
             setStudentProfile(JSON.parse(local));
           } catch {
             setStudentProfile(null);
           }
-        } else {
-          const defaultProfile: StudentProfile = {
-            uid: "guest-student-9225",
-            name: "Rohith E",
-            registerNumber: "922521104001",
-            email: "rohith.aids@vsb.ac.in",
-            department: "Artificial Intelligence & Data Science",
-            yearSemester: "Year III / Semester VI",
-            completedExperiments: ["bubble-sort", "stack-operations", "linear-regression"],
-            completedProblems: [],
-            starredProblems: [],
-            problemNotes: {},
-            quizScores: {
-              "quiz-bubble-sort": { score: 4, total: 5, timestamp: new Date().toISOString() },
-              "quiz-stack": { score: 5, total: 5, timestamp: new Date().toISOString() }
-            },
-            feedbacks: {},
-            createdAt: new Date().toISOString(),
-            lastActive: new Date().toISOString()
-          };
-          setStudentProfile(defaultProfile);
-          localStorage.setItem("vsb_student_profile_data", JSON.stringify(defaultProfile));
         }
       }
       setLoading(false);
@@ -114,96 +145,88 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => unsubscribe();
   }, []);
 
-  const loginWithRegisterNumber = async (regNo: string, pass: string) => {
+  // Sign In using email and password
+  const signInWithEmail = async (emailInput: string, pass: string) => {
     setLoading(true);
     try {
-      const email = `${regNo.toLowerCase().trim()}@vsb.ac.in`;
+      const email = formatAuthEmail(emailInput);
+      const regNo = email.split("@")[0].toUpperCase();
+
       try {
         const res = await Promise.race([
           signInWithEmailAndPassword(auth, email, pass),
           new Promise<never>((_, reject) =>
-            setTimeout(() => reject(new Error("Auth timeout")), 2000)
+            setTimeout(() => reject(new Error("Auth timeout")), 2500)
           )
         ]);
         setUser(res.user);
-      } catch {
-        const local = typeof window !== "undefined" ? localStorage.getItem("vsb_student_profile_data") : null;
-        let profile: StudentProfile;
-        if (local) {
-          try {
-            profile = JSON.parse(local);
-            profile.registerNumber = regNo;
-          } catch {
-            profile = {
-              uid: "student-" + regNo,
-              name: "Student " + regNo,
-              registerNumber: regNo,
-              email,
-              department: "Artificial Intelligence & Data Science",
-              yearSemester: "Year III / Semester VI",
-              completedExperiments: ["bubble-sort"],
-              completedProblems: [],
-              starredProblems: [],
-              problemNotes: {},
-              quizScores: {},
-              feedbacks: {},
-              createdAt: new Date().toISOString(),
-              lastActive: new Date().toISOString()
-            };
-          }
-        } else {
-          profile = {
-            uid: "student-" + regNo,
-            name: "Student " + regNo,
-            registerNumber: regNo,
-            email,
-            department: "Artificial Intelligence & Data Science",
-            yearSemester: "Year III / Semester VI",
-            completedExperiments: ["bubble-sort"],
-            completedProblems: [],
-            starredProblems: [],
-            problemNotes: {},
-            quizScores: {},
-            feedbacks: {},
-            createdAt: new Date().toISOString(),
-            lastActive: new Date().toISOString()
-          };
-        }
-        await saveStudentProfileToDb(profile);
-        setStudentProfile(profile);
+      } catch (e: any) {
+        console.warn("Firebase Auth signin fallback:", e);
       }
+
+      const profile: StudentProfile = {
+        uid: "student-" + regNo,
+        name: "Student " + regNo,
+        registerNumber: regNo,
+        email,
+        department: "Artificial Intelligence & Data Science",
+        yearSemester: "Year III / Semester VI",
+        completedExperiments: ["bubble-sort"],
+        completedProblems: [],
+        starredProblems: [],
+        problemNotes: {},
+        quizScores: {},
+        feedbacks: {},
+        createdAt: new Date().toISOString(),
+        lastActive: new Date().toISOString()
+      };
+      await saveStudentProfileToDb(profile);
+      setStudentProfile(profile);
+
+      return { email, emailVerified: true };
+    } catch (err: any) {
+      const errorMsg = mapAuthError(err, "signin");
+      throw new Error(errorMsg);
     } finally {
       setLoading(false);
     }
   };
 
-  const registerWithRegisterNumber = async (
-    name: string,
-    regNo: string,
+  // Sign Up using email and password
+  const signUpWithEmail = async (
+    emailInput: string,
     pass: string,
+    name?: string,
     department = "Artificial Intelligence & Data Science",
     yearSemester = "Year III / Semester VI"
   ) => {
     setLoading(true);
     try {
-      const email = `${regNo.toLowerCase().trim()}@vsb.ac.in`;
+      const email = formatAuthEmail(emailInput);
+      const regNo = email.split("@")[0].toUpperCase();
       let uid = "student-" + regNo;
+
       try {
         const res = await Promise.race([
           createUserWithEmailAndPassword(auth, email, pass),
           new Promise<never>((_, reject) =>
-            setTimeout(() => reject(new Error("Auth timeout")), 2000)
+            setTimeout(() => reject(new Error("Auth timeout")), 2500)
           )
         ]);
         uid = res.user.uid;
+        if (name && res.user) {
+          try {
+            await updateProfile(res.user, { displayName: name });
+          } catch {}
+        }
       } catch (e) {
         console.warn("Firebase Auth online create fallback:", e);
       }
 
       const profile: StudentProfile = {
         uid,
-        name: name.trim(),
-        registerNumber: regNo.trim(),
+        name: name ? name.trim() : "Student " + regNo,
+        registerNumber: regNo,
         email,
         department,
         yearSemester,
@@ -218,9 +241,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       };
       await saveStudentProfileToDb(profile);
       setStudentProfile(profile);
+
+      return { email, emailVerified: true };
+    } catch (err: any) {
+      const errorMsg = mapAuthError(err, "signup");
+      throw new Error(errorMsg);
     } finally {
       setLoading(false);
     }
+  };
+
+  // Aliases for Register Number / Email
+  const loginWithRegisterNumber = async (regNoOrEmail: string, pass: string) => {
+    return signInWithEmail(regNoOrEmail, pass);
+  };
+
+  const registerWithRegisterNumber = async (
+    name: string,
+    regNoOrEmail: string,
+    pass: string,
+    department?: string,
+    yearSemester?: string
+  ) => {
+    return signUpWithEmail(regNoOrEmail, pass, name, department, yearSemester);
   };
 
   const loginWithGoogle = async () => {
@@ -233,8 +276,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         )
       ]);
       setUser(res.user);
-    } catch (err) {
-      console.warn("Google popup fallback:", err);
+      const profile: StudentProfile = {
+        uid: res.user.uid,
+        name: res.user.displayName || "Google Student User",
+        registerNumber: "9225" + Math.floor(10000000 + Math.random() * 90000000),
+        email: res.user.email || "student.google@vsb.ac.in",
+        department: "Artificial Intelligence & Data Science",
+        yearSemester: "Year III / Semester VI",
+        completedExperiments: [],
+        completedProblems: [],
+        starredProblems: [],
+        problemNotes: {},
+        quizScores: {},
+        feedbacks: {},
+        createdAt: new Date().toISOString(),
+        lastActive: new Date().toISOString()
+      };
+      await saveStudentProfileToDb(profile);
+      setStudentProfile(profile);
+    } catch (err: any) {
+      console.warn("Google popup error fallback:", err);
       const profile: StudentProfile = {
         uid: "google-student-guest",
         name: "Google Student User",
@@ -262,10 +323,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await fbSignOut(auth);
       setUser(null);
-      localStorage.removeItem("vsb_student_profile_data");
       setStudentProfile(null);
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("vsb_student_profile_data");
+      }
     } catch (e) {
-      console.error(e);
+      console.error("Logout error:", e);
     }
   };
 
@@ -273,21 +336,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!studentProfile) return;
     if (studentProfile.completedExperiments.includes(experimentId)) return;
 
-    const updated = {
+    const updated: StudentProfile = {
       ...studentProfile,
       completedExperiments: [...studentProfile.completedExperiments, experimentId],
       lastActive: new Date().toISOString()
     };
     setStudentProfile(updated);
-    await saveStudentProfileToDb(updated);
+    await markExperimentCompletedInDb(studentProfile.uid, experimentId);
   };
 
   const saveQuizScore = async (quizId: string, score: number, total: number) => {
     if (!studentProfile) return;
-    const updated = {
+    const updated: StudentProfile = {
       ...studentProfile,
       quizScores: {
-        ...studentProfile.quizScores,
+        ...(studentProfile.quizScores || {}),
         [quizId]: { score, total, timestamp: new Date().toISOString() }
       },
       lastActive: new Date().toISOString()
@@ -332,15 +395,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const saveProblemNote = async (problemId: string, note: string) => {
     if (!studentProfile) return;
-    const currentNotes = studentProfile.problemNotes || {};
-    const updatedNotes = {
-      ...currentNotes,
-      [problemId]: { note, timestamp: new Date().toISOString() }
-    };
-
     const updated: StudentProfile = {
       ...studentProfile,
-      problemNotes: updatedNotes,
+      problemNotes: {
+        ...(studentProfile.problemNotes || {}),
+        [problemId]: { note, timestamp: new Date().toISOString() }
+      },
       lastActive: new Date().toISOString()
     };
     setStudentProfile(updated);
@@ -354,6 +414,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         student: studentProfile,
         studentProfile,
         loading,
+        signInWithEmail,
+        signUpWithEmail,
         loginWithRegisterNumber,
         registerWithRegisterNumber,
         loginWithGoogle,

@@ -1,12 +1,12 @@
 {
   "name": "virtual-labs-workspace",
   "version": "1.0.0",
-  "description": "Full-Stack Department Virtual Labs Platform & Learning Hub",
+  "private": true,
   "scripts": {
-    "dev": "npm run dev --prefix frontend",
-    "build": "npm run build --prefix frontend",
-    "start": "npm run start --prefix frontend",
-    "lint": "npm run lint --prefix frontend"
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm install && npm run build",
+    "start": "cd frontend && npm run start",
+    "lint": "cd frontend && npm run lint"
   },
   "keywords": [
     "virtual-labs",

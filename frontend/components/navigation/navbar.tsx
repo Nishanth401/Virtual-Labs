@@ -64,7 +64,7 @@ const SEARCH_ITEMS = [
 export function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
-  const { studentProfile } = useAuth();
+  const { user, studentProfile } = useAuth();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -169,7 +169,7 @@ export function Navbar() {
               className="ml-1 px-4 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-[#e11d48] to-[#dc2626] text-white shadow-md shadow-red-500/30 hover:scale-105 transition-transform flex items-center gap-1.5 cursor-pointer shrink-0"
             >
               <GraduationCap className="h-3.5 w-3.5" />
-              <span>{studentProfile ? `Student: ${studentProfile.name}` : "Student Login"}</span>
+              <span>{studentProfile?.name ? `Student: ${studentProfile.name}` : (user?.displayName ? `Student: ${user.displayName.split(' ')[0]}` : "Student Login")}</span>
               <ArrowRight className="h-3 w-3" />
             </button>
           </nav>
@@ -193,10 +193,10 @@ export function Navbar() {
               className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/95 dark:bg-card/90 backdrop-blur-md border border-slate-200 dark:border-border shadow-xs text-xs font-semibold text-slate-800 dark:text-slate-200 hover:border-[#e11d48] transition-colors cursor-pointer"
               title={studentProfile ? `Signed in as ${studentProfile.name} (${studentProfile.registerNumber})` : "Sign In to Student Account"}
             >
-              {studentProfile ? (
+              {studentProfile || user ? (
                 <>
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                  <span className="font-bold text-slate-900 dark:text-white max-w-[140px] truncate">{studentProfile.name}</span>
+                  <span className="font-bold text-slate-900 dark:text-white max-w-[140px] truncate">{studentProfile?.name || user?.displayName || "Student Active"}</span>
                 </>
               ) : (
                 <>
@@ -248,7 +248,7 @@ export function Navbar() {
                 }}
                 className="w-full px-3.5 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-[#e11d48] to-[#dc2626] text-white text-center cursor-pointer shadow-md shadow-red-500/30 flex items-center justify-center gap-1.5"
               >
-                <span>{studentProfile ? `Student: ${studentProfile.name.split(' ')[0]}` : "Student Login & Register"}</span>
+                <span>{user ? `Student: ${user.displayName?.split(' ')[0] || user.email?.split('@')[0] || "Active"}` : "Student Login & Register"}</span>
                 <ArrowRight className="h-3 w-3" />
               </button>
             </div>
