@@ -99,9 +99,12 @@ export async function saveStudentProfileToDb(profile: StudentProfile): Promise<v
   }
 
   try {
-    const userRef = doc(db, "students", profile.uid);
+    const userRef = doc(db, "users", profile.uid);
     await Promise.race([
-      setDoc(userRef, profile, { merge: true }),
+      setDoc(userRef, {
+        ...profile,
+        lastActive: new Date().toISOString()
+      }, { merge: true }),
       new Promise((resolve) => setTimeout(resolve, 1500))
     ]);
   } catch (err) {
@@ -111,13 +114,29 @@ export async function saveStudentProfileToDb(profile: StudentProfile): Promise<v
 
 export async function getStudentProfileFromDb(uid: string): Promise<StudentProfile | null> {
   try {
-    const userRef = doc(db, "students", uid);
-    const docSnap = await Promise.race([
+    const userRef = doc(db, "users", uid);
+    const snap = await Promise.race([
       getDoc(userRef),
       new Promise<null>((resolve) => setTimeout(() => resolve(null), 1500))
     ]);
-    if (docSnap && docSnap.exists()) {
-      return docSnap.data() as StudentProfile;
+    if (snap && snap.exists()) {
+      const data = snap.data() as Partial<StudentProfile>;
+      return {
+        uid,
+        name: data.name || data.email?.split("@")[0] || "Student",
+        registerNumber: data.registerNumber || "922521104001",
+        email: data.email || "",
+        department: data.department || "Artificial Intelligence & Data Science",
+        yearSemester: data.yearSemester || "III Year / VI Semester",
+        completedExperiments: data.completedExperiments || [],
+        completedProblems: data.completedProblems || [],
+        starredProblems: data.starredProblems || [],
+        problemNotes: data.problemNotes || {},
+        quizScores: data.quizScores || {},
+        feedbacks: data.feedbacks || {},
+        createdAt: data.createdAt || new Date().toISOString(),
+        lastActive: data.lastActive || new Date().toISOString()
+      };
     }
   } catch (err) {
     console.warn("Firestore fetch fallback to localStorage:", err);
@@ -153,78 +172,6 @@ export async function syncUserDoc(user: User): Promise<void> {
   } catch (e) {
     console.warn("Firestore syncUserDoc fallback:", e);
   }
-}
-
-// Student Profile CRUD
-export async function saveStudentProfileToDb(profile: StudentProfile): Promise<void> {
-  try {
-    const userRef = doc(db, "users", profile.uid);
-    await setDoc(userRef, {
-      ...profile,
-      lastActive: new Date().toISOString()
-    }, { merge: true });
-  } catch (e) {
-    console.warn("Firestore saveStudentProfileToDb fallback:", e);
-  }
-
-  if (typeof window !== "undefined") {
-    try {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(profile));
-    } catch {}
-  }
-}
-
-export async function getStudentProfileFromDb(uid: string): Promise<StudentProfile | null> {
-  try {
-    const userRef = doc(db, "users", uid);
-    const snap = await getDoc(userRef);
-    if (snap.exists()) {
-      const data = snap.data() as Partial<StudentProfile>;
-      
-      // Also fetch problem notes subcollection if any
-      try {
-        const notesSnap = await getDocs(collection(db, "users", uid, "problemNotes"));
-        const problemNotes: Record<string, { note: string; timestamp: string }> = data.problemNotes || {};
-        notesSnap.forEach((docSnap) => {
-          const d = docSnap.data();
-          if (d?.note) {
-            problemNotes[docSnap.id] = { note: d.note, timestamp: d.timestamp || new Date().toISOString() };
-          }
-        });
-        data.problemNotes = problemNotes;
-      } catch {}
-
-      return {
-        uid,
-        name: data.name || data.email?.split("@")[0] || "Student",
-        registerNumber: data.registerNumber || "713521104001",
-        email: data.email || "",
-        department: data.department || "Artificial Intelligence & Data Science",
-        yearSemester: data.yearSemester || "III Year / VI Semester",
-        completedExperiments: data.completedExperiments || [],
-        completedProblems: data.completedProblems || [],
-        starredProblems: data.starredProblems || [],
-        problemNotes: data.problemNotes || {},
-        quizScores: data.quizScores || {},
-        feedbacks: data.feedbacks || {},
-        createdAt: data.createdAt || new Date().toISOString(),
-        lastActive: data.lastActive || new Date().toISOString()
-      };
-    }
-  } catch (e) {
-    console.warn("Firestore getStudentProfileFromDb fallback:", e);
-  }
-
-  if (typeof window !== "undefined") {
-    try {
-      const local = localStorage.getItem(LOCAL_STORAGE_KEY);
-      if (local) {
-        const parsed = JSON.parse(local);
-        if (parsed.uid === uid) return parsed;
-      }
-    } catch {}
-  }
-  return null;
 }
 
 export async function markExperimentCompletedInDb(uid: string, experimentId: string): Promise<void> {
@@ -529,41 +476,5 @@ export async function deleteUserTeamMember(uid: string, memberId: string): Promi
       const list: UserTeamMember[] = JSON.parse(local);
       localStorage.setItem(`vlab_${uid}_team`, JSON.stringify(list.filter((m) => m.id !== memberId)));
     }
-  }
-}
-
-export async function markExperimentCompletedInDb(uid: string, experimentId: string): Promise<void> {
-  try {
-    const userRef = doc(db, "students", uid);
-    await setDoc(userRef, { lastActive: new Date().toISOString() }, { merge: true });
-  } catch (err) {
-    console.warn("markExperimentCompletedInDb fallback:", err);
-  }
-}
-
-export async function toggleProblemCompletedInDb(uid: string, problemId: string): Promise<void> {
-  try {
-    const userRef = doc(db, "students", uid);
-    await setDoc(userRef, { lastActive: new Date().toISOString() }, { merge: true });
-  } catch (err) {
-    console.warn("toggleProblemCompletedInDb fallback:", err);
-  }
-}
-
-export async function toggleProblemStarredInDb(uid: string, problemId: string): Promise<void> {
-  try {
-    const userRef = doc(db, "students", uid);
-    await setDoc(userRef, { lastActive: new Date().toISOString() }, { merge: true });
-  } catch (err) {
-    console.warn("toggleProblemStarredInDb fallback:", err);
-  }
-}
-
-export async function saveProblemNoteInDb(uid: string, problemId: string, note: string): Promise<void> {
-  try {
-    const userRef = doc(db, "students", uid);
-    await setDoc(userRef, { lastActive: new Date().toISOString() }, { merge: true });
-  } catch (err) {
-    console.warn("saveProblemNoteInDb fallback:", err);
   }
 }
