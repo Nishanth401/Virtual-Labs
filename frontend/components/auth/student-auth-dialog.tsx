@@ -20,15 +20,11 @@ import {
   User,
   Lock,
   Mail,
-  GraduationCap,
-  Sparkles,
   CheckCircle2,
   LogOut,
-  Trophy,
   ArrowRight,
   ShieldCheck,
-  Building2,
-  BookOpen
+  MailCheck
 } from "lucide-react";
 
 interface StudentAuthDialogProps {
@@ -52,9 +48,8 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [department, setDepartment] = useState("Artificial Intelligence & Data Science");
-  const [yearSemester, setYearSemester] = useState("Year III / Semester VI");
   const [errorMsg, setErrorMsg] = useState("");
+  const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,10 +59,17 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
       return;
     }
     try {
-      await signInWithEmail(email, password);
-      onOpenChange(false);
-      router.push("/dashboard");
+      const res = await signInWithEmail(email, password);
+      if (res.emailVerified) {
+        onOpenChange(false);
+        router.push("/dashboard");
+      }
     } catch (err: any) {
+      if (err.code === "auth/email-not-verified" || err.message === "EMAIL_NOT_VERIFIED") {
+        setUnverifiedEmail(err.email || email.trim());
+        setErrorMsg("");
+        return;
+      }
       setErrorMsg(err.message || "Email or password is incorrect");
     }
   };
@@ -80,9 +82,9 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
       return;
     }
     try {
-      await signUpWithEmail(email, password, name);
-      onOpenChange(false);
-      router.push("/dashboard");
+      const res = await signUpWithEmail(email, password, name);
+      // Registration sent verification email and did not sign in automatically
+      setUnverifiedEmail(res.email);
     } catch (err: any) {
       setErrorMsg(err.message || "User already exists. Please sign in");
     }
@@ -101,13 +103,58 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
 
   const handleLogout = async () => {
     await logout();
+    setUnverifiedEmail(null);
     setAuthTab("login");
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={(val) => { onOpenChange(val); if (!val) setUnverifiedEmail(null); }}>
       <DialogContent className="max-w-md p-0 overflow-hidden bg-white dark:bg-card/95 backdrop-blur-xl border border-border shadow-2xl rounded-2xl">
-        {user || studentProfile ? (
+        {unverifiedEmail ? (
+          /* ============================================================== */
+          /* EMAIL VERIFICATION SCREEN                                      */
+          /* ============================================================== */
+          <div className="p-6 space-y-5">
+            <DialogHeader className="space-y-1.5 text-center">
+              <div className="mx-auto w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 mb-1">
+                <MailCheck className="h-6 w-6" />
+              </div>
+              <div className="flex justify-center">
+                <Badge variant="outline" className="text-[10px] font-mono uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30">
+                  Email Verification Required
+                </Badge>
+              </div>
+              <DialogTitle className="text-xl font-bold font-heading text-foreground">
+                Verify Your Email
+              </DialogTitle>
+              <DialogDescription className="text-xs text-foreground/90 font-medium leading-relaxed pt-1">
+                We have sent you a verification email to <span className="font-bold text-primary font-mono">{unverifiedEmail}</span>. Please verify it and log in.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="p-3.5 rounded-xl bg-muted/50 border border-border/60 text-left text-xs text-muted-foreground space-y-1 font-sans">
+              <p className="font-semibold text-foreground flex items-center gap-1.5">
+                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" /> Instructions:
+              </p>
+              <p className="pl-5">1. Check your email inbox (and spam folder).</p>
+              <p className="pl-5">2. Click the verification link from Firebase.</p>
+              <p className="pl-5">3. Click the Login button below to proceed.</p>
+            </div>
+
+            <Button
+              type="button"
+              onClick={() => {
+                setUnverifiedEmail(null);
+                setAuthTab("login");
+                setErrorMsg("");
+              }}
+              className="w-full bg-primary hover:bg-primary/90 text-white text-xs font-bold py-2.5 mt-2 cursor-pointer gap-2"
+            >
+              <span>Login</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Button>
+          </div>
+        ) : user || studentProfile ? (
           /* ============================================================== */
           /* LOGGED IN STUDENT PROFILE VIEW                                */
           /* ============================================================== */
@@ -136,7 +183,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                   Status
                 </span>
                 <span className="text-sm font-black text-primary font-mono">
-                  Active User
+                  Verified User
                 </span>
               </div>
               <div className="p-3 rounded-xl bg-muted/50 border border-border/60">

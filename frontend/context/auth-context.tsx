@@ -16,6 +16,7 @@ import {
   signInWithPopup,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  sendEmailVerification,
   signOut as fbSignOut,
   onAuthStateChanged,
   updateProfile,
@@ -27,16 +28,16 @@ interface AuthContextType {
   student: StudentProfile | null;
   studentProfile: StudentProfile | null;
   loading: boolean;
-  signInWithEmail: (email: string, pass: string) => Promise<void>;
-  signUpWithEmail: (email: string, pass: string, name?: string) => Promise<void>;
-  loginWithRegisterNumber: (regNoOrEmail: string, pass: string) => Promise<void>;
+  signInWithEmail: (email: string, pass: string) => Promise<{ email: string; emailVerified: boolean }>;
+  signUpWithEmail: (email: string, pass: string, name?: string) => Promise<{ email: string; emailVerified: boolean }>;
+  loginWithRegisterNumber: (regNoOrEmail: string, pass: string) => Promise<{ email: string; emailVerified: boolean }>;
   registerWithRegisterNumber: (
     name: string,
     regNoOrEmail: string,
     pass: string,
     department?: string,
     yearSemester?: string
-  ) => Promise<void>;
+  ) => Promise<{ email: string; emailVerified: boolean }>;
   loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
   markExperimentComplete: (experimentId: string) => Promise<void>;
@@ -70,7 +71,7 @@ function mapAuthError(err: any, mode: "signin" | "signup"): string {
     ) {
       return "Email or password is incorrect";
     }
-    return "Email or password is incorrect";
+    return err?.message || "Email or password is incorrect";
   }
 
   if (mode === "signup") {
@@ -97,8 +98,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Synchronize Firebase Auth state (Firebase Authentication only, No Firestore)
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      if (currentUser) {
+      // Only authenticate verified users
+      if (currentUser && currentUser.emailVerified) {
+        setUser(currentUser);
         const email = currentUser.email || "";
         const regNo = email.includes("@") ? email.split("@")[0].toUpperCase() : "STUDENT";
         const displayName = currentUser.displayName || (email ? email.split("@")[0] : "Student");
@@ -121,6 +123,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         };
         setStudentProfile(profile);
       } else {
+        setUser(null);
         setStudentProfile(null);
       }
       setLoading(false);
@@ -129,14 +132,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => unsubscribe();
   }, []);
 
-  // Sign In using email and password
+  // Sign In using email and password (blocks access if email not verified)
   const signInWithEmail = async (emailInput: string, pass: string) => {
     setLoading(true);
     try {
       const email = formatAuthEmail(emailInput);
       const res = await signInWithEmailAndPassword(auth, email, pass);
+      
+      // If email is not verified, block access, send verification email, and sign out
+      if (!res.user.emailVerified) {
+        try {
+          await sendEmailVerification(res.user);
+        } catch (e) {
+          console.warn("sendEmailVerification retry fallback:", e);
+        }
+        await fbSignOut(auth);
+        setUser(null);
+        setStudentProfile(null);
+        
+        const unverifiedError: any = new Error("EMAIL_NOT_VERIFIED");
+        unverifiedError.code = "auth/email-not-verified";
+        unverifiedError.email = res.user.email || email;
+        throw unverifiedError;
+      }
+
       setUser(res.user);
+      return { email, emailVerified: true };
     } catch (err: any) {
+      if (err.code === "auth/email-not-verified" || err.message === "EMAIL_NOT_VERIFIED") {
+        throw err;
+      }
       const errorMsg = mapAuthError(err, "signin");
       throw new Error(errorMsg);
     } finally {
@@ -144,18 +169,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Sign Up using email and password
+  // Sign Up using email and password (sends verification email and does not sign in automatically)
   const signUpWithEmail = async (emailInput: string, pass: string, name?: string) => {
     setLoading(true);
     try {
       const email = formatAuthEmail(emailInput);
       const res = await createUserWithEmailAndPassword(auth, email, pass);
+      
       if (name && res.user) {
         try {
           await updateProfile(res.user, { displayName: name });
         } catch {}
       }
-      setUser(res.user);
+
+      // Send verification email to user
+      await sendEmailVerification(res.user);
+
+      // Do NOT sign them in automatically
+      await fbSignOut(auth);
+      setUser(null);
+      setStudentProfile(null);
+
+      return { email, emailVerified: false };
     } catch (err: any) {
       const errorMsg = mapAuthError(err, "signup");
       throw new Error(errorMsg);
