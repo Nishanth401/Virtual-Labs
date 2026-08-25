@@ -6,7 +6,12 @@ import { ThemeProvider } from "@/components/global/theme-provider";
 import { AuthProvider } from "@/context/auth-context";
 import { ScrollSideController } from "@/components/navigation/scroll-side-controller";
 
-const inter = Inter({ subsets: ['latin'], variable: "--font-inter" });
+const inter = Inter({
+  subsets: ['latin'],
+  variable: "--font-inter",
+  display: "swap",
+  preload: true,
+});
 
 export const metadata: Metadata = {
   title: "Department Virtual Labs | AI & DS — VSB Engineering College",
@@ -20,6 +25,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="light overflow-x-hidden">
+      <head>
+        <link rel="preconnect" href="https://identitytoolkit.googleapis.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://firestore.googleapis.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://virtual-lab-e7495.firebaseapp.com" />
+      </head>
       <body className={`${inter.variable} font-sans min-h-screen bg-background text-foreground overflow-x-hidden antialiased`}>
         <ThemeProvider
           attribute="class"
