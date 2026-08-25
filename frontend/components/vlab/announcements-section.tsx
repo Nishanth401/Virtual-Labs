@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BellRing, PlayCircle, ExternalLink, Sparkles, Calendar } from "lucide-react";
+import { BellRing, PlayCircle, ExternalLink, Calendar, Compass } from "lucide-react";
 import Link from "next/link";
 
 const ANNOUNCEMENTS = [
@@ -83,24 +83,37 @@ export function AnnouncementsSection() {
             </CardContent>
           </Card>
 
-          {/* Right Column: Introductory Video Embed matching Screenshot 110041 */}
+          {/* Right Column: Platform Quick Start Guide */}
           <Card className="border-secondary/40 bg-card/60 backdrop-blur-xs flex flex-col overflow-hidden shadow-sm">
             <CardHeader className="pb-3">
               <CardTitle className="text-xl font-bold flex items-center gap-2">
-                <PlayCircle className="h-5 w-5 text-primary" />
-                <span>Virtual Labs Walkthrough & Orientation</span>
+                <Compass className="h-5 w-5 text-primary" />
+                <span>Virtual Labs Orientation & Features</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 flex-1 flex flex-col justify-between">
-              <div className="relative aspect-video rounded-xl overflow-hidden border border-border bg-slate-950 flex items-center justify-center group shadow-inner">
-                {/* Responsive Embedded Video */}
-                <iframe
-                  className="w-full h-full"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0"
-                  title="Virtual Labs Demonstration Video"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
+              <div className="grid grid-cols-1 gap-3 p-4 rounded-xl bg-muted/30 border border-border/50">
+                <div className="flex items-start gap-3">
+                  <div className="h-8 w-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold shrink-0">1</div>
+                  <div>
+                    <h4 className="text-xs font-semibold text-foreground">Explore Department Labs</h4>
+                    <p className="text-[11px] text-muted-foreground">Browse Data Structures, Operating Systems, Computer Networks, and Security modules.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 pt-2 border-t border-border/40">
+                  <div className="h-8 w-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold shrink-0">2</div>
+                  <div>
+                    <h4 className="text-xs font-semibold text-foreground">Interactive Simulators</h4>
+                    <p className="text-[11px] text-muted-foreground">Step through algorithm execution with real-time stack tracing and tree visualizers.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 pt-2 border-t border-border/40">
+                  <div className="h-8 w-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold shrink-0">3</div>
+                  <div>
+                    <h4 className="text-xs font-semibold text-foreground">Practice & Master</h4>
+                    <p className="text-[11px] text-muted-foreground">Solve curated LeetCode/GFG problems with live asymptotic complexity analysis.</p>
+                  </div>
+                </div>
               </div>
 
               <div className="p-3.5 rounded-xl bg-muted/40 border border-border/50 text-xs text-muted-foreground leading-relaxed">

@@ -11,7 +11,6 @@ import {
   Code2, 
   Layers, 
   Network,
-  Sparkles,
   Search
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -58,7 +57,7 @@ export function DSACategorySidebar({
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <h3 className="font-heading font-black text-sm text-foreground flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-emerald-500" />
+              <BookOpen className="h-4 w-4 text-emerald-500" />
               <span>DSA GFG Curriculum</span>
             </h3>
             <Badge variant="outline" className="text-[10px] font-mono bg-emerald-500/10 text-emerald-500 border-emerald-500/30">

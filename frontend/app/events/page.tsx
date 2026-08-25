@@ -7,7 +7,7 @@ import { EVENTS_DATA, DepartmentEvent } from "@/data/events";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Clock, Sparkles, Trophy, ArrowRight } from "lucide-react";
+import { Calendar, MapPin, Clock, Trophy, ArrowRight } from "lucide-react";
 
 export default function EventsPage() {
   const [activeTab, setActiveTab] = useState<"all" | "upcoming" | "past">("all");
@@ -24,7 +24,7 @@ export default function EventsPage() {
         {/* Header Banner */}
         <div className="mb-10 text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold mb-3">
-            <Sparkles className="h-4 w-4" />
+            <Trophy className="h-4 w-4" />
             <span>Workshops, Seminars, Hackathons &amp; Symposiums</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground font-heading">

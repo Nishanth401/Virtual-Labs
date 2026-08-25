@@ -39,8 +39,8 @@ export function ConstellationBackground() {
         y: Math.random() * height,
         vx: (Math.random() - 0.5) * 0.4,
         vy: (Math.random() - 0.5) * 0.4,
-        radius: Math.random() > 0.7 ? 3.5 : 2,
-        isRed: Math.random() > 0.6,
+        radius: Math.random() > 0.7 ? 2.5 : 1.5,
+        isRed: false,
       });
     }
 
@@ -55,7 +55,7 @@ export function ConstellationBackground() {
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < 140) {
-            const alpha = (1 - dist / 140) * 0.18;
+            const alpha = (1 - dist / 140) * 0.15;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -79,19 +79,8 @@ export function ConstellationBackground() {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-
-        if (p.isRed) {
-          // Glowing Red Accent Node
-          ctx.fillStyle = "#e11d48";
-          ctx.shadowColor = "rgba(225, 29, 72, 0.6)";
-          ctx.shadowBlur = 10;
-          ctx.fill();
-          ctx.shadowBlur = 0;
-        } else {
-          // Subtle Dark / Slate Node
-          ctx.fillStyle = "rgba(140, 140, 160, 0.4)";
-          ctx.fill();
-        }
+        ctx.fillStyle = "rgba(140, 140, 160, 0.4)";
+        ctx.fill();
       }
 
       animationFrameId = requestAnimationFrame(render);
