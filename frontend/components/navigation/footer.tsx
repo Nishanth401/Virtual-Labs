@@ -23,11 +23,9 @@ export function Footer() {
           <div className="flex items-center justify-center gap-3 sm:gap-4 text-[10px] sm:text-xs font-mono tracking-[0.22em] uppercase text-slate-400 font-semibold">
             <div className="h-[1px] w-8 sm:w-24 bg-gradient-to-r from-transparent via-rose-500/50 to-slate-700 animate-pulse" />
             <div className="flex items-center gap-1.5 sm:gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping inline-block" />
               <span className="bg-gradient-to-r from-slate-300 via-white to-slate-300 bg-clip-text text-transparent">
                 ENGINEERED FOR SCALE &amp; HIGH-CONVERTING DIGITAL EXPERIENCES
               </span>
-              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping inline-block" />
             </div>
             <div className="h-[1px] w-8 sm:w-24 bg-gradient-to-l from-transparent via-rose-500/50 to-slate-700 animate-pulse" />
           </div>
@@ -65,7 +63,6 @@ export function Footer() {
               I&apos;m Rohith — a full-stack engineer, product builder &amp; problem solver. Welcome to the official Department of Artificial Intelligence &amp; Data Science Virtual Laboratory Platform at V.S.B. Engineering College.
             </p>
             <div className="flex items-center gap-2 pt-2 text-xs text-slate-400 font-mono">
-              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>VSB Autonomous Institution • NAAC Accredited</span>
             </div>
           </div>

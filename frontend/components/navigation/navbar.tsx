@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import {
   Search,
   FlaskConical,
@@ -33,6 +34,15 @@ import { ModeToggle } from "@/components/global/mode-toggle";
 import { useAuth } from "@/context/auth-context";
 import { StudentAuthDialog } from "@/components/auth/student-auth-dialog";
 
+const NAV_ITEMS = [
+  { name: "Home", href: "/" },
+  { name: "Labs", href: "/labs" },
+  { name: "Visualizer", href: "/visualizer" },
+  { name: "DSA Sheets", href: "/practice" },
+  { name: "ML Track", href: "/labs/ai-machine-learning" },
+  { name: "Curriculum", href: "/courses" },
+];
+
 const SEARCH_ITEMS = [
   { title: "Bubble Sort Algorithm", category: "Data Structures", url: "/experiments/bubble-sort", desc: "Adjacent comparisons and bubbling passes in Java" },
   { title: "Selection Sort Algorithm", category: "Data Structures", url: "/experiments/selection-sort", desc: "Minimum index scanning and in-place swapping" },
@@ -51,11 +61,29 @@ const SEARCH_ITEMS = [
 
 export function Navbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const { studentProfile } = useAuth();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
+  const [hoveredHref, setHoveredHref] = useState<string | null>(null);
+
+  const isItemActive = (href: string) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+    if (href === "/labs/ai-machine-learning") {
+      return pathname === "/labs/ai-machine-learning" || pathname.startsWith("/labs/ai-machine-learning");
+    }
+    if (href === "/labs") {
+      return (
+        (pathname === "/labs" || (pathname.startsWith("/labs") && !pathname.startsWith("/labs/ai-machine-learning"))) ||
+        pathname.startsWith("/experiments")
+      );
+    }
+    return pathname === href || pathname.startsWith(href);
+  };
 
   // Keyboard shortcut Ctrl+K to open search
   useEffect(() => {
@@ -96,49 +124,47 @@ export function Navbar() {
           </Link>
 
           {/* Center Floating Dark Capsule Navbar - Mathematically & Visually Centered */}
-          <nav className="hidden md:flex items-center gap-1 bg-[#121214] text-white rounded-full px-3.5 py-1.5 shadow-2xl border border-white/10 backdrop-blur-md absolute left-1/2 -translate-x-1/2 z-20">
-            <Link
-              href="/"
-              className="px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-colors"
-            >
-              Home
-            </Link>
-            <Link
-              href="/labs"
-              className="px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-colors"
-            >
-              Labs
-            </Link>
-            <Link
-              href="/visualizer"
-              className="px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-colors"
-            >
-              Visualizer
-            </Link>
-            <Link
-              href="/practice"
-              className="px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-colors"
-            >
-              DSA Sheets
-            </Link>
-            <Link
-              href="/labs/ai-machine-learning"
-              className="px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-colors"
-            >
-              ML Track
-            </Link>
-            <Link
-              href="/courses"
-              className="px-3 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-colors"
-            >
-              Curriculum
-            </Link>
+          <nav
+            onMouseLeave={() => setHoveredHref(null)}
+            className="hidden md:flex items-center gap-1 bg-[#121214] text-white rounded-full p-1.5 shadow-2xl border border-white/10 backdrop-blur-md absolute left-1/2 -translate-x-1/2 z-20"
+          >
+            {NAV_ITEMS.map((item) => {
+              const active = isItemActive(item.href);
+              const isHovered = hoveredHref === item.href;
+              const isHighlighted = hoveredHref ? isHovered : active;
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onMouseEnter={() => setHoveredHref(item.href)}
+                  className={`relative px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors duration-150 z-10 select-none ${
+                    isHighlighted
+                      ? "text-white font-bold"
+                      : "text-slate-300 hover:text-white"
+                  }`}
+                >
+                  {isHighlighted && (
+                    <motion.div
+                      layoutId="navbar-hover-indicator"
+                      className="absolute inset-0 rounded-full bg-gradient-to-r from-[#e11d48] to-[#dc2626] shadow-md shadow-red-500/40 -z-10"
+                      transition={{
+                        type: "spring",
+                        stiffness: 450,
+                        damping: 35,
+                      }}
+                    />
+                  )}
+                  <span>{item.name}</span>
+                </Link>
+              );
+            })}
 
             {/* Red Accent CTA Pill Button (Student Portal / Login) */}
             <button
               type="button"
               onClick={() => setAuthOpen(true)}
-              className="ml-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-[#e11d48] to-[#dc2626] text-white shadow-md shadow-red-500/30 hover:scale-105 transition-transform flex items-center gap-1 cursor-pointer"
+              className="ml-1 px-4 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-[#e11d48] to-[#dc2626] text-white shadow-md shadow-red-500/30 hover:scale-105 transition-transform flex items-center gap-1 cursor-pointer shrink-0"
             >
               <span>{studentProfile ? `Student: ${studentProfile.name.split(' ')[0]}` : "Student Login"}</span>
               <ArrowRight className="h-3 w-3" />
@@ -161,9 +187,8 @@ export function Navbar() {
             <button
               type="button"
               onClick={() => setAuthOpen(true)}
-              className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/95 dark:bg-card/90 backdrop-blur-md border border-slate-200 dark:border-border shadow-xs text-xs font-medium text-slate-800 dark:text-slate-200 hover:border-primary transition-colors cursor-pointer"
+              className="hidden sm:flex items-center px-3.5 py-1.5 rounded-full bg-white/95 dark:bg-card/90 backdrop-blur-md border border-slate-200 dark:border-border shadow-xs text-xs font-medium text-slate-800 dark:text-slate-200 hover:border-primary transition-colors cursor-pointer"
             >
-              <span className={`h-2 w-2 rounded-full ${studentProfile ? "bg-emerald-500" : "bg-amber-500"} animate-pulse`} />
               <span>{studentProfile ? studentProfile.registerNumber || "Student Active" : "Sign In"}</span>
             </button>
 
@@ -182,59 +207,37 @@ export function Navbar() {
 
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden mt-2 p-4 bg-[#121214] text-white rounded-2xl border border-white/10 shadow-2xl space-y-2 pointer-events-auto">
-            <Link
-              href="/"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-lg text-xs font-semibold hover:bg-white/10"
-            >
-              Home Portal
-            </Link>
-            <Link
-              href="/labs"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-lg text-xs font-semibold hover:bg-white/10"
-            >
-              Virtual Labs Catalogue (4 Labs)
-            </Link>
-            <Link
-              href="/labs/data-structures"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-lg text-xs font-semibold hover:bg-white/10"
-            >
-              Data Structures Lab (Java)
-            </Link>
-            <Link
-              href="/labs/ai-machine-learning"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-lg text-xs font-semibold hover:bg-white/10"
-            >
-              Machine Learning Lab &amp; NumPy Track
-            </Link>
-            <Link
-              href="/practice"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/10"
-            >
-              DSA Sheets (Practice)
-            </Link>
-            <Link
-              href="/visualizer"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-lg text-xs font-semibold hover:bg-white/10"
-            >
-              DSA Visualizer Studio
-            </Link>
-            <button
-              type="button"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                setAuthOpen(true);
-              }}
-              className="w-full px-3 py-2 rounded-lg text-xs font-bold bg-[#e11d48] text-white text-center cursor-pointer"
-            >
-              {studentProfile ? "Student Portal & Profile" : "Student Login & Register"}
-            </button>
+          <div className="md:hidden mt-2 p-3 bg-[#121214] text-white rounded-2xl border border-white/10 shadow-2xl space-y-1.5 pointer-events-auto backdrop-blur-md">
+            {NAV_ITEMS.map((item) => {
+              const active = isItemActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${
+                    active
+                      ? "bg-gradient-to-r from-[#e11d48] to-[#dc2626] text-white shadow-md shadow-red-500/30 font-bold"
+                      : "text-slate-300 hover:text-white hover:bg-white/10"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
+            <div className="pt-1">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setAuthOpen(true);
+                }}
+                className="w-full px-3.5 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-[#e11d48] to-[#dc2626] text-white text-center cursor-pointer shadow-md shadow-red-500/30 flex items-center justify-center gap-1.5"
+              >
+                <span>{studentProfile ? `Student: ${studentProfile.name.split(' ')[0]}` : "Student Login & Register"}</span>
+                <ArrowRight className="h-3 w-3" />
+              </button>
+            </div>
           </div>
         )}
       </header>
