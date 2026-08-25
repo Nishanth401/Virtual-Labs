@@ -158,13 +158,33 @@ export default function CustomRecursionVisualizerPage() {
               ret: "int",
               name: "sumDigits",
               params: [{ id: 1, type: "int", name: "n" }],
-              body: "if (n == 0) return 0;\nreturn (n % 10) + sumDigits(n / 10);",
+              body: "if (n == 0) return 0;\nreturn (n % 10) + sumDigits(Math.floor(n / 10));",
               call: "sumDigits(1234)"
             })
           }
           className="text-xs h-8 rounded-xl"
         >
           Sum of Digits
+        </Button>
+
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() =>
+            loadPreset({
+              ret: "void",
+              name: "bubbleSort",
+              params: [
+                { id: 1, type: "int[]", name: "arr" },
+                { id: 2, type: "int", name: "n" }
+              ],
+              body: "if (n <= 1) return;\nfor (int i = 0; i < n - 1; i++) {\n    if (arr[i] > arr[i + 1]) {\n        int temp = arr[i]; arr[i] = arr[i + 1]; arr[i + 1] = temp;\n    }\n}\nbubbleSort(arr, n - 1);",
+              call: "bubbleSort(new int[]{64, 34, 25, 12, 22}, 5)"
+            })
+          }
+          className="text-xs h-8 rounded-xl"
+        >
+          Recursive Bubble Sort
         </Button>
       </div>
 

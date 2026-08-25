@@ -20,14 +20,6 @@ interface CallStackProps {
 }
 
 export function CallStack({ stack, currentNodeId, executionPhase }: CallStackProps) {
-  const topRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (topRef.current) {
-      topRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }, [stack]);
-
   return (
     <div className="flex h-full min-h-[300px] flex-col bg-card/80 backdrop-blur-md relative w-full overflow-hidden shadow-sm border border-border rounded-xl">
       {/* Header */}
@@ -36,13 +28,13 @@ export function CallStack({ stack, currentNodeId, executionPhase }: CallStackPro
           <Layers className="h-4 w-4" />
           <span>JVM Call Stack (LIFO)</span>
         </div>
-        <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full font-mono">
+        <span className="text-xs font-bold bg-white/20 px-2.5 py-0.5 rounded-full font-mono">
           Depth: {stack.length}
         </span>
       </div>
 
-      {/* Stack Frames (Bottom up, so top frame is displayed on top) */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col-reverse justify-start gap-2.5">
+      {/* Stack Frames (Bottom up, top frame displayed on top) */}
+      <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col-reverse justify-start gap-3">
         <AnimatePresence mode="popLayout">
           {stack.length === 0 && (
             <motion.div
@@ -55,8 +47,8 @@ export function CallStack({ stack, currentNodeId, executionPhase }: CallStackPro
               <div className="h-10 w-10 rounded-full bg-muted/60 flex items-center justify-center text-muted-foreground">
                 <Layers className="h-5 w-5 opacity-50" />
               </div>
-              <p className="text-xs font-medium text-muted-foreground">Call Stack is Empty</p>
-              <span className="text-[10px] text-muted-foreground/70">Click Run or Step Next to push activation frames</span>
+              <p className="text-xs font-bold text-foreground">Call Stack is Empty</p>
+              <span className="text-[10px] text-muted-foreground font-medium">Click Play Trace or Step Next to push activation frames</span>
             </motion.div>
           )}
 
@@ -70,29 +62,22 @@ export function CallStack({ stack, currentNodeId, executionPhase }: CallStackPro
                 exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
                 transition={{ type: "spring", stiffness: 350, damping: 25 }}
                 layout
-                className={`w-full p-3 rounded-lg border font-mono text-xs shadow-xs transition-all ${
+                className={`w-full py-4 px-5 rounded-2xl font-mono text-base md:text-lg font-extrabold text-center shadow-md transition-all flex items-center justify-center relative ${
                   isTop
-                    ? "bg-gradient-to-r from-blue-500/15 to-indigo-500/15 border-primary text-foreground font-semibold ring-1 ring-primary/40"
-                    : "bg-muted/40 border-border/70 text-muted-foreground"
+                    ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white ring-4 ring-amber-400 shadow-amber-400/30 shadow-xl scale-[1.02]"
+                    : "bg-gradient-to-r from-blue-600 to-indigo-600 text-white opacity-95 hover:opacity-100"
                 }`}
               >
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-[10px] text-primary uppercase font-bold tracking-wider">
-                    Frame #{frame.id} {isTop && "(ACTIVE TOP)"}
+                <span className="leading-snug">{frame.label}</span>
+                {frame.returned && (
+                  <span className="absolute right-3 text-xs bg-emerald-500 text-white px-2.5 py-1 rounded-full font-black shadow-xs">
+                    ✓ {String(frame.returnValue)}
                   </span>
-                  {frame.returned && (
-                    <span className="text-[10px] bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 px-1.5 py-0.2 rounded font-bold">
-                      Returned: {String(frame.returnValue)}
-                    </span>
-                  )}
-                </div>
-                <div className="text-sm font-bold text-foreground truncate">{frame.label}</div>
+                )}
               </motion.div>
             );
           })}
         </AnimatePresence>
-
-        <div ref={topRef} />
       </div>
     </div>
   );

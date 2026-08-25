@@ -7,6 +7,7 @@ import { RecursionTree, TreeNode } from "@/components/visualizer/recursion/recur
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { JavaCodeViewer } from "@/components/visualizer/code/java-code-viewer";
 import { Play, Pause, RotateCcw, ChevronRight, ChevronLeft, Sparkles, Code2, Layers, GitBranch, Gauge } from "lucide-react";
 
 interface RecursionVisualizerPanelProps {
@@ -44,21 +45,27 @@ const DEFAULT_JAVA_PRESETS: Record<string, { title: string; code: string; call: 
     if (arr[mid] > target) return binarySearch(arr, target, low, mid - 1);
     return binarySearch(arr, target, mid + 1, high);
 }`,
-    call: "binarySearch([2, 5, 8, 12, 16, 23, 38, 56], 23, 0, 7)",
+    call: "binarySearch(new int[]{2, 5, 8, 12, 16, 23, 38, 56}, 23, 0, 7)",
     desc: "Halves the search partition on each recursive call frame in O(log n) time."
   },
   bubbleSort: {
     title: "Recursive Bubble Sort",
     code: `public static void bubbleSort(int[] arr, int n) {
     if (n <= 1) return; // Base Case
+    
+    // One pass of bubble sort: move largest element to end
     for (int i = 0; i < n - 1; i++) {
         if (arr[i] > arr[i + 1]) {
-            int temp = arr[i]; arr[i] = arr[i + 1]; arr[i + 1] = temp;
+            int temp = arr[i];
+            arr[i] = arr[i + 1];
+            arr[i + 1] = temp;
         }
     }
-    bubbleSort(arr, n - 1); // Recur for remaining array
+    
+    // Recur for remaining n - 1 elements
+    bubbleSort(arr, n - 1);
 }`,
-    call: "bubbleSort([64, 34, 25, 12, 22], 5)",
+    call: "bubbleSort(new int[]{64, 34, 25, 12, 22}, 5)",
     desc: "Fixes the largest element at the end and recursively calls for n-1 items."
   }
 };
@@ -98,8 +105,12 @@ export function RecursionVisualizerPanel({
   };
 
   useEffect(() => {
-    runCode(initialCode || code, sampleCall || callStr);
-  }, []);
+    const activeCode = initialCode || code;
+    const activeCall = sampleCall || callStr;
+    if (initialCode) setCode(initialCode);
+    if (sampleCall) setCallStr(sampleCall);
+    runCode(activeCode, activeCall);
+  }, [initialCode, sampleCall]);
 
   // Compute live stack and tree nodes from steps up to stepIdx
   const { liveStack, liveNodes, currentNodeId, executionPhase } = useMemo(() => {
@@ -172,6 +183,14 @@ export function RecursionVisualizerPanel({
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [isPlaying, steps.length, speedMs]);
+
+  const handleTogglePlay = () => {
+    if (steps.length === 0) return;
+    if (!isPlaying && stepIdx >= steps.length - 1) {
+      setStepIdx(0);
+    }
+    setIsPlaying(!isPlaying);
+  };
 
   const handleStepNext = () => {
     if (stepIdx < steps.length - 1) {
@@ -248,7 +267,8 @@ export function RecursionVisualizerPanel({
           <div className="flex items-center gap-2">
             <Button
               size="sm"
-              onClick={() => setIsPlaying(!isPlaying)}
+              onClick={handleTogglePlay}
+              disabled={steps.length === 0}
               className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 font-bold shadow-xs"
             >
               {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
@@ -298,44 +318,30 @@ export function RecursionVisualizerPanel({
         </div>
       </Card>
 
-      {/* Main 2-Column Visualization Workspace */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left: Java Code Display */}
-        <div className="lg:col-span-5 space-y-4">
-          <Card className="border-border bg-card/90 overflow-hidden shadow-sm h-full flex flex-col justify-between">
-            <CardHeader className="pb-2 border-b border-border/50">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-xs uppercase font-bold text-muted-foreground tracking-wider flex items-center gap-1.5">
-                  <Code2 className="h-4 w-4 text-primary" />
-                  <span>Java Source Code</span>
-                </CardTitle>
-                <Badge variant="outline" className="font-mono text-[10px] text-primary">
-                  Java 17 / 21
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="p-4 flex-1">
-              <pre className="p-4 rounded-xl bg-slate-950 text-slate-100 font-mono text-xs overflow-x-auto leading-relaxed border border-border/80 h-full">
-                <code>{code}</code>
-              </pre>
-            </CardContent>
-            <div className="p-3 bg-muted/40 border-t border-border/50 flex items-center justify-between text-xs font-mono">
-              <span className="text-muted-foreground">Entry Call:</span>
-              <code className="text-primary font-bold">{callStr}</code>
-            </div>
-          </Card>
+      {/* Main 3-Column Visualization Workspace (Equal Size Panels) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch">
+        {/* Panel 1: Java Code Display */}
+        <div className="h-[480px]">
+          <JavaCodeViewer
+            code={code}
+            title="Java Source Code"
+            subtitle={`Entry Call: ${callStr}`}
+            badge="Java 17 / 21"
+            fileName={`${functionName || "Algorithm"}.java`}
+          />
         </div>
 
-        {/* Right: Stack & Tree Dual Visualization */}
-        <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Call Stack Frame Container */}
+        {/* Panel 2: JVM Call Stack */}
+        <div className="h-[480px]">
           <CallStack
             stack={liveStack}
             currentNodeId={currentNodeId}
             executionPhase={executionPhase}
           />
+        </div>
 
-          {/* Recursion Tree Container */}
+        {/* Panel 3: Recursion Call Tree Diagram */}
+        <div className="h-[480px]">
           <RecursionTree
             nodes={liveNodes}
             currentNodeId={currentNodeId}

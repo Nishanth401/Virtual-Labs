@@ -194,18 +194,53 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* Giant Bottom Fade Mask Text matching thick bold typography in 5th image */
+/* Giant Bottom Fade Mask Text with Fluid Metallic Shimmer Animation */
 .bottom-brand-mask {
   font-family: 'Pilcrow Rounded', 'General Sans', 'Outfit', -apple-system, sans-serif;
   font-weight: 950;
   text-transform: uppercase;
   letter-spacing: -0.04em;
-  background: linear-gradient(180deg, #ffffff 15%, rgba(220, 225, 240, 0.65) 50%, rgba(140, 150, 175, 0.2) 80%, rgba(255, 255, 255, 0.02) 100%);
+  background: linear-gradient(
+    115deg,
+    #ffffff 0%,
+    rgba(255, 255, 255, 0.95) 20%,
+    rgba(220, 225, 240, 0.6) 40%,
+    #ffffff 50%,
+    rgba(140, 150, 175, 0.3) 65%,
+    rgba(255, 255, 255, 0.15) 85%,
+    #ffffff 100%
+  );
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   user-select: none;
   display: inline-block;
   width: 100%;
+  animation: banner-shimmer 7s ease-in-out infinite;
+}
+
+@keyframes banner-shimmer {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.25;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  50% {
+    opacity: 0.55;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 5s ease-in-out infinite;
 }
 
 /* Infinite Marquee Animation */
