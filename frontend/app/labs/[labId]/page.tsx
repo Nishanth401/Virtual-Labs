@@ -10,6 +10,8 @@ import { Footer } from "@/components/navigation/footer";
 import { LabSidebar, LabTab } from "@/components/vlab/lab-sidebar";
 import { CourseAlignmentCard } from "@/components/vlab/course-alignment-card";
 import { MLPrerequisitesTrack } from "@/components/vlab/ml-prerequisites-track";
+import { DSARoadmap } from "@/components/vlab/dsa-roadmap";
+import { LAB_ROADMAPS_DATA } from "@/data/all-labs-roadmap-data";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -30,7 +32,8 @@ import {
   BrainCircuit,
   Database,
   Network,
-  Video
+  Video,
+  ExternalLink
 } from "lucide-react";
 
 interface LabDetailPageProps {
@@ -41,7 +44,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
   const { labId } = use(params);
   const lab = LABS_DATA.find((l) => l.id === labId) || LABS_DATA[0];
 
-  const [activeTab, setActiveTab] = useState<LabTab>("introduction");
+  const [activeTab, setActiveTab] = useState<LabTab>("dsa-roadmap");
   const [feedbackRating, setFeedbackRating] = useState<number>(5);
   const [feedbackText, setFeedbackText] = useState<string>("");
   const [feedbackSent, setFeedbackSent] = useState<boolean>(false);
@@ -108,6 +111,11 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
 
             {/* Right Tab Content View */}
             <div className="flex-1 w-full min-w-0">
+              {/* TAB 0: ROADMAP & PRACTICE */}
+              {activeTab === "dsa-roadmap" && (
+                <DSARoadmap labId={lab.id} />
+              )}
+
               {/* TAB 1: INTRODUCTION */}
               {activeTab === "introduction" && (
                 <Card className="border-border bg-card/80 backdrop-blur-xs shadow-sm">
@@ -274,48 +282,71 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 </div>
               )}
 
-              {/* TAB 4: TARGET AUDIENCE */}
-              {activeTab === "target-audience" && (
-                <Card className="border-border bg-card/80 backdrop-blur-xs shadow-sm">
-                  <CardHeader>
-                    <CardTitle className="text-xl font-bold text-primary font-heading">
-                      Target Audience &amp; Beneficiaries
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6 text-sm leading-relaxed text-muted-foreground">
-                    <div className="space-y-4">
-                      <div className="p-4 rounded-xl border border-border bg-muted/20 space-y-2">
-                        <h4 className="font-bold text-sm text-foreground flex items-center gap-2">
-                          <Users className="h-4 w-4 text-primary" />
-                          <span>Undergraduate (UG) Curriculum</span>
-                        </h4>
-                        <ul className="space-y-1 text-xs pl-6 list-disc">
-                          <li>
-                            B.Tech in Artificial Intelligence &amp; Data Science (Semesters 3 to 6).
-                          </li>
-                          <li>
-                            Data Structures &amp; Algorithms foundation for technical interview rounds.
-                          </li>
-                        </ul>
-                      </div>
 
-                      <div className="p-4 rounded-xl border border-border bg-muted/20 space-y-2">
-                        <h4 className="font-bold text-sm text-foreground flex items-center gap-2">
-                          <Users className="h-4 w-4 text-primary" />
-                          <span>Postgraduate (PG) &amp; Research</span>
-                        </h4>
-                        <ul className="space-y-1 text-xs pl-6 list-disc">
-                          <li>
-                            M.Tech AI &amp; Data Systems students reviewing algorithmic complexities.
-                          </li>
-                          <li>
-                            GATE CSE and Competitive Programming aspirants.
-                          </li>
-                        </ul>
+
+              {/* TAB 4: SELF-ASSESSMENT & LEETCODE PROBLEMS */}
+              {activeTab === "quizzes" && (
+                <div className="space-y-6">
+                  {/* Part 1: Topic-Related LeetCode Practice Problems */}
+                  <Card className="border-border bg-card/80 backdrop-blur-xs shadow-sm p-6 space-y-4">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div>
+                        <CardTitle className="text-xl font-bold text-primary font-heading flex items-center gap-2">
+                          <Sparkles className="h-5 w-5 text-amber-500" />
+                          <span>Topic-by-Topic LeetCode &amp; GFG Practice Problems</span>
+                        </CardTitle>
+                        <CardDescription className="text-xs mt-1">
+                          Solve these curated coding challenges directly on LeetCode to master {lab.name} topics for technical interview placement rounds.
+                        </CardDescription>
                       </div>
+                      <Badge variant="outline" className="text-xs font-mono bg-amber-500/10 text-amber-500 border-amber-500/30">
+                        {LAB_ROADMAPS_DATA[lab.id]?.categories.flatMap(c => c.topics.flatMap(t => t.practiceProblems)).length || 10} Challenges
+                      </Badge>
                     </div>
-                  </CardContent>
-                </Card>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                      {(LAB_ROADMAPS_DATA[lab.id]?.categories.flatMap(c => c.topics.flatMap(t => t.practiceProblems)) || [
+                        { title: "Two Sum", difficulty: "Easy", url: "https://leetcode.com/problems/two-sum/", platform: "LeetCode" },
+                        { title: "Reverse Linked List", difficulty: "Easy", url: "https://leetcode.com/problems/reverse-linked-list/", platform: "LeetCode" },
+                        { title: "Valid Parentheses", difficulty: "Easy", url: "https://leetcode.com/problems/valid-parentheses/", platform: "LeetCode" },
+                        { title: "Binary Search", difficulty: "Easy", url: "https://leetcode.com/problems/binary-search/", platform: "LeetCode" }
+                      ]).map((prob, idx) => (
+                        <a
+                          key={idx}
+                          href={prob.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/30 hover:bg-primary/5 hover:border-primary/40 transition-all group shadow-2xs"
+                        >
+                          <div className="space-y-1 min-w-0 pr-2">
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold text-xs text-foreground group-hover:text-primary transition-colors truncate">
+                                {idx + 1}. {prob.title}
+                              </span>
+                            </div>
+                            <span className="text-[10px] text-muted-foreground font-mono">{prob.platform}</span>
+                          </div>
+
+                          <div className="flex items-center gap-2 shrink-0">
+                            <Badge
+                              variant="outline"
+                              className={
+                                prob.difficulty === "Easy"
+                                  ? "text-emerald-500 border-emerald-500/30 text-[10px]"
+                                  : prob.difficulty === "Medium"
+                                  ? "text-amber-500 border-amber-500/30 text-[10px]"
+                                  : "text-rose-500 border-rose-500/30 text-[10px]"
+                              }
+                            >
+                              {prob.difficulty}
+                            </Badge>
+                            <Sparkles className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  </Card>
+                </div>
               )}
 
               {/* TAB 5: COURSE ALIGNMENT */}
