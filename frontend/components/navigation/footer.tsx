@@ -2,43 +2,53 @@
 
 import React from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { ArrowRight, Mail, Phone, MapPin, ExternalLink, Code2, BrainCircuit, Database, Network, Sparkles, Award, ShieldCheck } from "lucide-react";
 
 export function Footer() {
   return (
     <footer className="bg-[#070709] text-slate-300 relative overflow-hidden border-t border-slate-800/80">
       {/* ============================================================== */}
-      {/* 1. GIANT BOTTOM BANNER MATCHING 5TH & 6TH SCREENSHOTS          */}
+      {/* 1. MEDIUM-HEIGHT BOTTOM BANNER WITH AMBIENT ANIMATIONS         */}
       {/* ============================================================== */}
-      <div className="pt-16 pb-6 relative overflow-hidden border-b border-slate-900 bg-gradient-to-b from-[#090a0f] via-[#070709] to-[#040405]">
+      <div className="pt-8 pb-4 sm:pt-10 sm:pb-5 relative overflow-hidden border-b border-slate-900 bg-gradient-to-b from-[#090a0f] via-[#070709] to-[#040405] group">
         {/* Subtle LED Grid Background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
 
-        <div className="container max-w-7xl mx-auto px-4 text-center relative z-10 space-y-4">
-          {/* Sub-headline between horizontal hairline lines */}
-          <div className="flex items-center justify-center gap-4 text-[10px] sm:text-xs font-mono tracking-[0.25em] uppercase text-slate-400 font-semibold">
-            <div className="h-[1px] w-12 sm:w-28 bg-gradient-to-r from-transparent to-slate-700" />
-            <span>ENGINEERED FOR SCALE &amp; HIGH-CONVERTING DIGITAL EXPERIENCES</span>
-            <div className="h-[1px] w-12 sm:w-28 bg-gradient-to-l from-transparent to-slate-700" />
+        {/* Ambient Backlight Glow Aurora */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[70vw] max-w-4xl h-32 bg-gradient-to-r from-blue-600/10 via-rose-600/15 to-indigo-600/10 rounded-full blur-[80px] pointer-events-none animate-pulse-glow" />
+
+        <div className="container max-w-7xl mx-auto px-4 text-center relative z-10 space-y-3">
+          {/* Sub-headline between animated horizontal hairline lines */}
+          <div className="flex items-center justify-center gap-3 sm:gap-4 text-[10px] sm:text-xs font-mono tracking-[0.22em] uppercase text-slate-400 font-semibold">
+            <div className="h-[1px] w-8 sm:w-24 bg-gradient-to-r from-transparent via-rose-500/50 to-slate-700 animate-pulse" />
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping inline-block" />
+              <span className="bg-gradient-to-r from-slate-300 via-white to-slate-300 bg-clip-text text-transparent">
+                ENGINEERED FOR SCALE &amp; HIGH-CONVERTING DIGITAL EXPERIENCES
+              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping inline-block" />
+            </div>
+            <div className="h-[1px] w-8 sm:w-24 bg-gradient-to-l from-transparent via-rose-500/50 to-slate-700 animate-pulse" />
           </div>
 
-          {/* Giant Masked Gradient Typography: ROHITH DIGITAL X */}
-          <div className="w-full select-none pointer-events-none text-center overflow-hidden pt-4 pb-0 flex justify-center items-center">
-            <h2 className="text-[9.5vw] sm:text-[10.2vw] md:text-[10.8vw] font-black uppercase tracking-[-0.04em] leading-[0.85] bottom-brand-mask whitespace-nowrap drop-shadow-2xl">
-              ROHITH DIGITAL X
-            </h2>
+          {/* Masked Gradient Typography: ROHITH DIGITAL X (Medium Scale) */}
+          <div className="w-full select-none text-center overflow-hidden pt-1 pb-0 flex justify-center items-center relative">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="relative inline-block w-full"
+            >
+              <h2 className="text-[5.5vw] sm:text-[6vw] md:text-[6.2vw] font-black uppercase tracking-[-0.03em] leading-[0.9] bottom-brand-mask whitespace-nowrap drop-shadow-[0_15px_35px_rgba(0,0,0,0.85)] transition-transform duration-500 hover:scale-[1.012] cursor-default">
+                ROHITH DIGITAL <span className="text-transparent bg-clip-text bg-gradient-to-br from-rose-400 via-rose-500 to-amber-400 animate-pulse">X</span>
+              </h2>
+            </motion.div>
           </div>
         </div>
       </div>
 
-      {/* ============================================================== */}
-      {/* 2. VISIBLE WATERMARK SECTION MATCHING 4TH SCREENSHOT           */}
-      {/* ============================================================== */}
-      <div className="w-full select-none pointer-events-none text-center overflow-hidden py-2 bg-[#060608]">
-        <div className="text-[11vw] font-black uppercase tracking-tighter leading-none watermark-text whitespace-nowrap animate-pulse-slow">
-          ROHITH E
-        </div>
-      </div>
 
       {/* ============================================================== */}
       {/* 3. MAIN FOOTER DIRECTORY & NAVIGATION LINKS                    */}

@@ -351,7 +351,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
         {/* ============================================================== */}
         <TabsContent value="recursion-trace" className="space-y-6">
           <RecursionVisualizerPanel
-            initialCode={experiment.sections.sampleCode.code}
+            initialCode={experiment.sections.recursionPreset?.javaCode || experiment.sections.sampleCode.code}
             functionName={experiment.sections.recursionPreset?.functionName}
             sampleCall={experiment.sections.recursionPreset?.sampleCall}
             description={experiment.sections.recursionPreset?.description}

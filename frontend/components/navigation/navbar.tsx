@@ -117,7 +117,7 @@ export function Navbar() {
             </Link>
             <Link
               href="/practice"
-              className="px-3.5 py-1.5 rounded-full text-xs font-bold text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/10 transition-colors"
+              className="px-3.5 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white transition-colors"
             >
               DSA Sheets
             </Link>
@@ -214,7 +214,7 @@ export function Navbar() {
             <Link
               href="/practice"
               onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-lg text-xs font-bold text-yellow-400 hover:bg-white/10"
+              className="block px-3 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/10"
             >
               DSA Sheets (Practice)
             </Link>

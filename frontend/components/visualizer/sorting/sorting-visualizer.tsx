@@ -6,6 +6,8 @@ import { SortingDisplay } from "@/components/visualizer/sorting/sorting-display"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { JavaCodeViewer } from "@/components/visualizer/code/java-code-viewer";
+import { ComplexityPanel } from "@/components/visualizer/sorting/complexity-panel";
 
 interface SortingVisualizerProps {
   algorithm: SortingAlgorithm;
@@ -268,74 +270,19 @@ export function SortingVisualizer({ algorithm, title, description }: SortingVisu
 
         {/* TAB 2: PURE JAVA CODE TAB */}
         <TabsContent value="javacode" className="space-y-6">
-          <Card className="border-border/80 bg-card p-6 shadow-sm rounded-2xl space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-bold font-heading text-foreground">
-                  Official Java Source Code
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  Production-ready Java implementation following standard academic curriculum.
-                </p>
-              </div>
-              <Badge variant="outline" className="font-mono text-xs text-[#1e88e5] border-[#1e88e5]/30">
-                Java 17+
-              </Badge>
-            </div>
-
-            <div className="relative">
-              <pre className="p-5 bg-slate-950 text-slate-100 rounded-xl font-mono text-xs overflow-x-auto leading-relaxed border border-slate-800 shadow-inner">
-                <code>{javaCode}</code>
-              </pre>
-            </div>
-          </Card>
+          <JavaCodeViewer
+            code={javaCode}
+            title={`${title} Java Implementation`}
+            subtitle="Production-ready Java implementation following standard academic curriculum."
+            badge="Java 17+"
+            fileName={`${title.replace(/\s+/g, "")}.java`}
+            maxHeight="600px"
+          />
         </TabsContent>
 
         {/* TAB 3: ASYMPTOTIC COMPLEXITY ANALYSIS (TC & SC) */}
         <TabsContent value="pseudocode" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="border-border/80 bg-card p-6 rounded-2xl shadow-sm space-y-4">
-              <CardTitle className="text-base font-bold font-heading">
-                Time Complexity (TC) Analysis
-              </CardTitle>
-              <div className="space-y-3 text-xs">
-                <div className="p-3 rounded-xl bg-muted/40 border flex items-center justify-between">
-                  <span className="font-semibold text-foreground">Best Case Time Complexity</span>
-                  <Badge className="bg-emerald-500/10 text-emerald-600 font-mono text-xs">{complexity.best}</Badge>
-                </div>
-                <div className="p-3 rounded-xl bg-muted/40 border flex items-center justify-between">
-                  <span className="font-semibold text-foreground">Average Case Time Complexity</span>
-                  <Badge className="bg-amber-500/10 text-amber-600 font-mono text-xs">{complexity.avg}</Badge>
-                </div>
-                <div className="p-3 rounded-xl bg-muted/40 border flex items-center justify-between">
-                  <span className="font-semibold text-foreground">Worst Case Time Complexity</span>
-                  <Badge className="bg-rose-500/10 text-rose-600 font-mono text-xs">{complexity.worst}</Badge>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="border-border/80 bg-card p-6 rounded-2xl shadow-sm space-y-4">
-              <CardTitle className="text-base font-bold font-heading">
-                Space Complexity (SC) Analysis
-              </CardTitle>
-              <div className="space-y-3 text-xs">
-                <div className="p-3 rounded-xl bg-muted/40 border flex items-center justify-between">
-                  <span className="font-semibold text-foreground">Auxiliary Space Complexity</span>
-                  <Badge className="bg-teal-500/10 text-teal-600 font-mono text-xs">{complexity.space}</Badge>
-                </div>
-                <div className="p-3 rounded-xl bg-muted/40 border flex items-center justify-between">
-                  <span className="font-semibold text-foreground">In-Place Algorithm</span>
-                  <Badge className="bg-blue-500/10 text-blue-600 font-mono text-xs">Yes (In-Place)</Badge>
-                </div>
-                <div className="p-3 rounded-xl bg-muted/40 border flex items-center justify-between">
-                  <span className="font-semibold text-foreground">Stability Guarantee</span>
-                  <Badge className="bg-purple-500/10 text-purple-600 font-mono text-xs">
-                    {complexity.stable ? "Stable (Preserves Order)" : "Unstable"}
-                  </Badge>
-                </div>
-              </div>
-            </Card>
-          </div>
+          <ComplexityPanel algorithm={algorithm} />
         </TabsContent>
       </Tabs>
     </div>

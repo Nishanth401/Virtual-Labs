@@ -24,13 +24,13 @@ interface RecursionTreeProps {
   executionPhase: "calling" | "returning" | "idle";
 }
 
-const NODE_H = 40;
+const NODE_H = 46;
 const LEVEL_GAP_Y = 65;
-const SIBLING_GAP = 20;
-const RETURN_TAG_H = 18;
+const SIBLING_GAP = 24;
+const RETURN_TAG_H = 20;
 
 function measureTextWidth(text: string) {
-  return text.length * 8 + 32;
+  return text.length * 9.5 + 40;
 }
 
 function layoutTree(root: TreeNode | null) {
@@ -147,10 +147,10 @@ export function RecursionTree({ nodes, currentNodeId, executionPhase }: Recursio
       <div className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-2.5 px-4 font-bold text-sm tracking-wide flex items-center justify-between shadow-xs">
         <div className="flex items-center gap-2">
           <GitBranch className="h-4 w-4" />
-          <span>Recursion Call Tree Diagram</span>
+          <span>Recursion Tree</span>
         </div>
-        <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full font-mono">
-          {nodes.length} Call Nodes
+        <span className="text-xs font-bold bg-white/20 px-2.5 py-0.5 rounded-full font-mono">
+          {nodes.length} calls
         </span>
       </div>
 
@@ -158,6 +158,34 @@ export function RecursionTree({ nodes, currentNodeId, executionPhase }: Recursio
       <div ref={containerRef} className="flex-1 overflow-auto bg-slate-950/40 p-4 relative min-h-[260px]">
         {treeData && positioned.length > 0 ? (
           <svg width="100%" height="100%" className="block overflow-visible" style={{ minHeight: `${treeH}px` }}>
+            <defs>
+              <marker
+                id="tree-arrow"
+                viewBox="0 0 10 10"
+                refX="6"
+                refY="5"
+                markerWidth="6"
+                markerHeight="6"
+                orient="auto-start-reverse"
+              >
+                <path d="M 0 1 L 8 5 L 0 9 z" fill="#cbd5e1" />
+              </marker>
+              <marker
+                id="tree-arrow-active"
+                viewBox="0 0 10 10"
+                refX="6"
+                refY="5"
+                markerWidth="6"
+                markerHeight="6"
+                orient="auto-start-reverse"
+              >
+                <path d="M 0 1 L 8 5 L 0 9 z" fill="#f59e0b" />
+              </marker>
+              <filter id="active-glow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="0" stdDeviation="4" floodColor="#f59e0b" floodOpacity="0.8" />
+              </filter>
+            </defs>
+
             <g transform={`translate(${dimensions.translateX}, ${dimensions.translateY}) scale(${dimensions.scale})`}>
               {/* Edges */}
               {edges.map((e) => {
@@ -172,9 +200,9 @@ export function RecursionTree({ nodes, currentNodeId, executionPhase }: Recursio
                     key={`edge-${e.childId}`}
                     d={path}
                     fill="none"
-                    stroke={isCalling ? "#f59e0b" : isReturning ? "#10b981" : "#64748b"}
-                    strokeWidth={childActive ? 3 : 1.8}
-                    strokeDasharray={childActive ? "none" : "none"}
+                    stroke={isCalling ? "#f59e0b" : isReturning ? "#10b981" : "#94a3b8"}
+                    strokeWidth={childActive ? 2.5 : 1.8}
+                    markerEnd={childActive ? "url(#tree-arrow-active)" : "url(#tree-arrow)"}
                     className="transition-colors duration-300"
                   />
                 );
@@ -183,25 +211,24 @@ export function RecursionTree({ nodes, currentNodeId, executionPhase }: Recursio
               {/* Nodes */}
               {positioned.map((node) => {
                 const isActive = node.id === currentNodeId;
-                const nodeWidth = node.w || 80;
+                const nodeWidth = Math.max(90, node.w || 90);
 
-                let fill = "#1e293b";
-                let stroke = "#475569";
+                let fill = "#2563eb";
+                let stroke = "#1d4ed8";
                 if (isActive) {
-                  if (executionPhase === "calling") {
-                    fill = "#d97706";
-                    stroke = "#fbbf24";
-                  } else {
-                    fill = "#059669";
-                    stroke = "#34d399";
-                  }
+                  fill = "#2563eb";
+                  stroke = "#f59e0b";
                 } else if (node.returned) {
-                  fill = "#0f172a";
+                  fill = "#1d4ed8";
                   stroke = "#10b981";
                 }
 
                 return (
-                  <g key={`node-${node.id}`} transform={`translate(${node.x || 0}, ${node.y || 0})`}>
+                  <g
+                    key={`node-${node.id}`}
+                    transform={`translate(${node.x || 0}, ${node.y || 0})`}
+                    filter={isActive ? "url(#active-glow)" : undefined}
+                  >
                     <rect
                       x={-nodeWidth / 2}
                       y={0}
@@ -211,17 +238,17 @@ export function RecursionTree({ nodes, currentNodeId, executionPhase }: Recursio
                       ry={NODE_H / 2}
                       fill={fill}
                       stroke={stroke}
-                      strokeWidth={isActive ? 3 : 1.5}
-                      className="transition-all duration-300 shadow-md"
+                      strokeWidth={isActive ? 3.5 : 1.5}
+                      className="transition-all duration-300 shadow-md cursor-pointer"
                     />
                     <text
                       x={0}
                       y={NODE_H / 2 + 1}
                       textAnchor="middle"
                       dominantBaseline="central"
-                      fill="#f8fafc"
-                      fontSize="12"
-                      fontWeight="600"
+                      fill="#ffffff"
+                      fontSize="14"
+                      fontWeight="800"
                       fontFamily="var(--font-mono)"
                     >
                       {node.label}
@@ -236,9 +263,9 @@ export function RecursionTree({ nodes, currentNodeId, executionPhase }: Recursio
                           width={56}
                           height={18}
                           rx={9}
-                          fill="#f8fafc"
-                          stroke="#cbd5e1"
-                          strokeWidth={1}
+                          fill="#ffffff"
+                          stroke="#10b981"
+                          strokeWidth={1.5}
                         />
                         <text
                           x={0}
@@ -247,7 +274,7 @@ export function RecursionTree({ nodes, currentNodeId, executionPhase }: Recursio
                           dominantBaseline="central"
                           fill="#0f172a"
                           fontSize="10"
-                          fontWeight="bold"
+                          fontWeight="900"
                         >
                           → {String(node.returnValue)}
                         </text>
@@ -261,7 +288,7 @@ export function RecursionTree({ nodes, currentNodeId, executionPhase }: Recursio
         ) : (
           <div className="flex h-full min-h-[220px] flex-col items-center justify-center gap-2 text-muted-foreground">
             <GitBranch className="h-8 w-8 text-muted-foreground/40" />
-            <p className="text-xs text-muted-foreground">No recursion tree generated yet</p>
+            <p className="text-xs font-bold text-foreground">No recursion tree generated yet</p>
           </div>
         )}
       </div>

@@ -317,7 +317,7 @@ export const EXPERIMENTS_DATA: Experiment[] = [
       },
       recursionPreset: {
         functionName: "recursiveBubbleSort",
-        sampleCall: "bubbleSort(arr, arr.length)",
+        sampleCall: "recursiveBubbleSort(new int[]{64, 34, 25, 12, 22}, 5)",
         javaCode: `public static void recursiveBubbleSort(int[] arr, int n) {
     if (n <= 1) return; // Base Case
     
@@ -497,7 +497,7 @@ Comparisons: 18, Swaps: 6`,
       },
       recursionPreset: {
         functionName: "recursiveSelectionSort",
-        sampleCall: "selectionSort(arr, 0, arr.length)",
+        sampleCall: "recursiveSelectionSort(new int[]{29, 10, 14, 37, 13}, 0, 5)",
         javaCode: `public static void recursiveSelectionSort(int[] arr, int startIdx, int n) {
     if (startIdx >= n - 1) return; // Base Case
     
@@ -660,7 +660,7 @@ Pass 4: min=29 -> Swap(37, 29) -> [10, 13, 14, 29, 37]`,
       },
       recursionPreset: {
         functionName: "recursiveInsertionSort",
-        sampleCall: "insertionSort(arr, arr.length)",
+        sampleCall: "recursiveInsertionSort(new int[]{12, 11, 13, 5, 6}, 5)",
         javaCode: `public static void recursiveInsertionSort(int[] arr, int n) {
     if (n <= 1) return; // Base Case
     
