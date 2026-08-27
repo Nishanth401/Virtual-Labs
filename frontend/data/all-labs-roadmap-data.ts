@@ -194,6 +194,103 @@ Window: [a b c] ──> Window Slide ──> [b c a]`,
             practiceProblems: [
               { title: "Valid Palindrome", difficulty: "Easy", url: "https://leetcode.com/problems/valid-palindrome/", platform: "LeetCode" }
             ]
+          },
+          {
+            id: "two-pointers-algorithm",
+            slug: "two-pointers-algorithm-pattern",
+            title: "5. Two Pointers Algorithm",
+            categoryId: "arrays-strings",
+            categoryName: "2. Arrays & String Manipulation",
+            difficulty: "Intermediate",
+            estimatedTime: "15 mins",
+            visualizerType: "two-pointers",
+            gfgSearchQuery: "Two Pointers Technique GeeksforGeeks",
+            gfgUrl: "https://www.geeksforgeeks.org/two-pointers-technique/",
+            quickSummary: "Optimizes nested O(N²) loops into linear O(N) by moving left and right pointers inwards or in sync.",
+            keyPoints: [
+              "Opposite Directions (Left & Right): Used for target sums in sorted arrays, reversing, and container water capacity.",
+              "Same Direction (Slow & Fast): Used for linked list cycle detection (Floyd's) and removing duplicates in-place.",
+              "Optimal O(N) Time: Reduces search space per iteration without extra memory allocations."
+            ],
+            diagramTitle: "Two Pointers Target Sum Traversal",
+            diagram: `Array: [2,  7,  11, 15, 18, 22]  Target: 26
+        ▲                   ▲
+       LEFT               RIGHT
+Sum = 2 + 22 = 24 < 26 ──> move LEFT pointer right (LEFT++)`,
+            complexities: [
+              { operation: "Two Pointers Traversal", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)" }
+            ],
+            codeSnippets: [
+              {
+                language: "java",
+                label: "Java",
+                code: `public class TwoPointers {
+    public static int[] twoSum(int[] arr, int target) {
+        int l = 0, r = arr.length - 1;
+        while (l < r) {
+            int sum = arr[l] + arr[r];
+            if (sum == target) return new int[]{l + 1, r + 1};
+            if (sum < target) l++;
+            else r--;
+        }
+        return new int[]{-1, -1};
+    }
+}`
+              }
+            ],
+            practiceProblems: [
+              { title: "Two Sum II", difficulty: "Medium", url: "https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/", platform: "LeetCode" },
+              { title: "Container With Most Water", difficulty: "Medium", url: "https://leetcode.com/problems/container-with-most-water/", platform: "LeetCode" },
+              { title: "3Sum", difficulty: "Medium", url: "https://leetcode.com/problems/3sum/", platform: "LeetCode" }
+            ]
+          },
+          {
+            id: "sliding-window-algorithm",
+            slug: "sliding-window-algorithm-pattern",
+            title: "6. Sliding Window Algorithm",
+            categoryId: "arrays-strings",
+            categoryName: "2. Arrays & String Manipulation",
+            difficulty: "Intermediate",
+            estimatedTime: "15 mins",
+            visualizerType: "sliding-window",
+            gfgSearchQuery: "Sliding Window Technique GeeksforGeeks",
+            gfgUrl: "https://www.geeksforgeeks.org/window-sliding-technique/",
+            quickSummary: "Maintains a contiguous subarray box [windowStart ... windowEnd] that slides across the array in O(N) linear time.",
+            keyPoints: [
+              "Fixed Window Size (K): Add incoming element arr[right], subtract outgoing element arr[left] in O(1) time.",
+              "Variable Window Size: Expand windowEnd to meet constraints, then shrink windowStart to optimize length.",
+              "Replaces O(N*K) sub-array re-computations with O(N) running totals."
+            ],
+            diagramTitle: "Sliding Window Subarray Overlay",
+            diagram: `Array: [2, 1, 5, 1, 3, 2]  Window K = 3
+Window 1: [2, 1, 5] -> Sum = 8
+Window 2:    [1, 5, 1] -> Sum = 7 (subtract 2, add 1)`,
+            complexities: [
+              { operation: "Sliding Window Scan", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)" }
+            ],
+            codeSnippets: [
+              {
+                language: "java",
+                label: "Java",
+                code: `public class SlidingWindow {
+    public static int maxSum(int[] arr, int k) {
+        int wSum = 0;
+        for (int i = 0; i < k; i++) wSum += arr[i];
+        int maxS = wSum;
+        for (int i = k; i < arr.length; i++) {
+            wSum += arr[i] - arr[i - k];
+            maxS = Math.max(maxS, wSum);
+        }
+        return maxS;
+    }
+}`
+              }
+            ],
+            practiceProblems: [
+              { title: "Maximum Sum Subarray of Size K", difficulty: "Easy", url: "https://leetcode.com/problems/maximum-sum-of-distinct-subarrays-with-length-k/", platform: "LeetCode" },
+              { title: "Minimum Size Subarray Sum", difficulty: "Medium", url: "https://leetcode.com/problems/minimum-size-subarray-sum/", platform: "LeetCode" },
+              { title: "Longest Substring Without Repeating Characters", difficulty: "Medium", url: "https://leetcode.com/problems/longest-substring-without-repeating-characters/", platform: "LeetCode" }
+            ]
           }
         ]
       },

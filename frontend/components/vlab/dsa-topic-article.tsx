@@ -32,6 +32,8 @@ import { BinaryTreeVisualizer } from "@/components/visualizer/binary-tree/binary
 import { AVLTreeVisualizer } from "@/components/visualizer/avl-tree/avl-tree-visualizer";
 import { HeapVisualizer } from "@/components/visualizer/heap/heap-visualizer";
 import { DijkstraVisualizer } from "@/components/visualizer/dijkstra/dijkstra-visualizer";
+import { TwoPointersVisualizer } from "@/components/visualizer/two-pointers/two-pointers-visualizer";
+import { SlidingWindowVisualizer } from "@/components/visualizer/sliding-window/sliding-window-visualizer";
 
 interface DSATopicArticleProps {
   topic: DSATopic;
@@ -341,6 +343,12 @@ export function DSATopicArticle({
             )}
             {topic.visualizerType === "dijkstra" && (
               <DijkstraVisualizer />
+            )}
+            {topic.visualizerType === "two-pointers" && (
+              <TwoPointersVisualizer />
+            )}
+            {topic.visualizerType === "sliding-window" && (
+              <SlidingWindowVisualizer />
             )}
           </Card>
         </TabsContent>
