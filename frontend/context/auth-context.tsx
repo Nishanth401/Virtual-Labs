@@ -32,7 +32,8 @@ interface AuthContextType {
   loading: boolean;
   signInWithEmail: (email: string, pass: string, regNo?: string) => Promise<{ email: string; emailVerified: boolean }>;
   signUpWithEmail: (email: string, pass: string, name?: string, regNo?: string) => Promise<{ email: string; emailVerified: boolean }>;
-  updateStudentRegisterNumber: (regNo: string) => Promise<void>;
+  updateStudentRegisterNumber: (regNo: string, name?: string) => Promise<void>;
+  updateStudentName: (name: string) => Promise<void>;
   loginWithRegisterNumber: (regNoOrEmail: string, pass: string) => Promise<{ email: string; emailVerified: boolean }>;
   registerWithRegisterNumber: (
     name: string,
@@ -106,7 +107,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(currentUser);
         const email = currentUser.email || "";
         const regNo = email.includes("@") ? email.split("@")[0].toUpperCase() : "STUDENT";
-        const displayName = currentUser.displayName || (email ? email.split("@")[0] : "Student");
+        const displayName = currentUser.displayName || "Student";
 
         const profile: StudentProfile = {
           uid: currentUser.uid,
@@ -127,7 +128,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         getStudentProfileFromDb(currentUser.uid).then((p) => {
           if (p) {
-            setStudentProfile(p);
+            // Fix name if it was previously saved as email prefix
+            const savedName = p.name || "";
+            const isEmailPrefix = savedName.includes("@") || (email && savedName === email.split("@")[0]);
+            if (isEmailPrefix) {
+              const fixed = { ...p, name: currentUser.displayName || "Student" };
+              setStudentProfile(fixed);
+              saveStudentProfileToDb(fixed);
+            } else {
+              setStudentProfile(p);
+            }
           } else {
             saveStudentProfileToDb(profile);
             setStudentProfile(profile);
@@ -173,26 +183,40 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         console.warn("Firebase Auth signin fallback:", e);
       }
 
-      const profile: StudentProfile = {
-        uid: "student-" + regNo,
-        name: user?.displayName || (email ? email.split("@")[0] : "Student"),
-        registerNumber: regNo,
-        email,
-        department: "Artificial Intelligence & Data Science",
-        yearSemester: "Year III / Semester VI",
-        completedExperiments: ["bubble-sort"],
-        completedProblems: [],
-        starredProblems: [],
-        problemNotes: {},
-        quizScores: {},
-        feedbacks: {},
-        createdAt: new Date().toISOString(),
-        lastActive: new Date().toISOString()
-      };
-      await saveStudentProfileToDb(profile);
-      setStudentProfile(profile);
+      // Load existing profile from Firestore to preserve the registered name
+      const existingProfile = await getStudentProfileFromDb("student-" + regNo);
+      if (existingProfile) {
+        // Existing profile found — just update lastActive, keep name and all other data
+        const updated: StudentProfile = {
+          ...existingProfile,
+          lastActive: new Date().toISOString()
+        };
+        setStudentProfile(updated);
+        await saveStudentProfileToDb(updated);
+      } else {
+        // No profile yet — create one (this path only runs on first login after registration)
+        const profile: StudentProfile = {
+          uid: "student-" + regNo,
+          name: user?.displayName || "Student",
+          registerNumber: regNo,
+          email,
+          department: "Artificial Intelligence & Data Science",
+          yearSemester: "Year III / Semester VI",
+          completedExperiments: ["bubble-sort"],
+          completedProblems: [],
+          starredProblems: [],
+          problemNotes: {},
+          quizScores: {},
+          feedbacks: {},
+          createdAt: new Date().toISOString(),
+          lastActive: new Date().toISOString()
+        };
+        await saveStudentProfileToDb(profile);
+        setStudentProfile(profile);
+      }
 
       return { email, emailVerified: true };
+
     } catch (err: any) {
       if (err.message && err.message.includes("already bound")) {
         throw err;
@@ -243,7 +267,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       const profile: StudentProfile = {
         uid,
-        name: name && name.trim() ? name.trim() : (email ? email.split("@")[0] : "Student"),
+        name: name && name.trim() ? name.trim() : "Student",
         registerNumber: regNo,
         email,
         department,
@@ -272,7 +296,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const updateStudentRegisterNumber = async (regNo: string) => {
+  const updateStudentRegisterNumber = async (regNo: string, name?: string) => {
     if (!studentProfile) return;
     const cleanRegNo = regNo.trim().toUpperCase();
 
@@ -284,6 +308,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const updated: StudentProfile = {
       ...studentProfile,
       registerNumber: cleanRegNo,
+      ...(name && name.trim() ? { name: name.trim() } : {}),
+      lastActive: new Date().toISOString()
+    };
+    setStudentProfile(updated);
+    await saveStudentProfileToDb(updated);
+  };
+
+  const updateStudentName = async (name: string) => {
+    if (!studentProfile || !name.trim()) return;
+    const updated: StudentProfile = {
+      ...studentProfile,
+      name: name.trim(),
       lastActive: new Date().toISOString()
     };
     setStudentProfile(updated);
@@ -483,6 +519,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         signInWithEmail,
         signUpWithEmail,
         updateStudentRegisterNumber,
+        updateStudentName,
         loginWithRegisterNumber,
         registerWithRegisterNumber,
         loginWithGoogle,

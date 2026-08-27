@@ -122,7 +122,7 @@ export default function LabsCataloguePage() {
                         </span>
 
                         <Button asChild size="sm" className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 font-bold shadow-xs">
-                          <Link href={`/labs/${lab.id}`}>
+                          <Link href={`/labs/${lab.id}`} prefetch={true}>
                             <span>Enter Laboratory</span>
                             <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
                           </Link>

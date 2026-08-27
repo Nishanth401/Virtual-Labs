@@ -125,9 +125,11 @@ export default function ResourcesPage() {
                   <span className="flex items-center gap-1">
                     <Download className="h-3 w-3" /> {res.downloadCount || 100}+ downloads
                   </span>
-                  <Button size="sm" variant="default" className="text-xs h-7 gap-1 bg-primary hover:bg-primary/90 text-white">
-                    <Download className="h-3 w-3" /> Download
-                  </Button>
+                  <a href={res.fileUrl || "#"} target="_blank" rel="noopener noreferrer">
+                    <Button size="sm" variant="default" className="text-xs h-7 gap-1 bg-primary hover:bg-primary/90 text-white">
+                      <Download className="h-3 w-3" /> Download
+                    </Button>
+                  </a>
                 </div>
               </CardContent>
             </Card>

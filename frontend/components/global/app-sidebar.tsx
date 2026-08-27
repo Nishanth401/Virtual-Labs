@@ -66,6 +66,24 @@ const sortingAlgorithms = [
     icon: ArrowRightLeft,
     description: "Contiguous window overlay tracking sub-segment metrics",
   },
+  {
+    name: "Merge Sort",
+    url: "/visualizer/merge-sort",
+    icon: ArrowDownUp,
+    description: "Divide and conquer splitting with two-way merging",
+  },
+  {
+    name: "Cyclic Sort",
+    url: "/visualizer/cyclic-sort",
+    icon: ArrowDownUp,
+    description: "Linear O(n) in-place index matching placement",
+  },
+  {
+    name: "Quick Sort",
+    url: "/visualizer/quick-sort",
+    icon: ArrowDownUp,
+    description: "Pivot partitioning and recursive sub-array sorting",
+  },
 ]
 
 const dataStructures = [

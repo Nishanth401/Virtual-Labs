@@ -2,7 +2,6 @@
 
 import React from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { LABS_DATA } from "@/data/labs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -14,28 +13,6 @@ const ICON_MAP: Record<string, React.ElementType> = {
   BrainCircuit,
   Database,
   Network,
-};
-
-const gridContainerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const cardMotionVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.4,
-      ease: [0.16, 1, 0.3, 1],
-    },
-  },
 };
 
 export function BroadAreasGrid() {
@@ -54,23 +31,14 @@ export function BroadAreasGrid() {
           </p>
         </div>
 
-        <motion.div 
-          variants={gridContainerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
           {LABS_DATA.map((lab) => {
             const Icon = ICON_MAP[lab.iconName] || Code2;
 
             return (
-              <motion.div
+              <div
                 key={lab.id}
-                variants={cardMotionVariants}
-                whileHover={{ y: -5, scale: 1.01 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                className="transition-all duration-300 hover:-translate-y-1 hover:scale-[1.01]"
               >
                 <Card className="h-full border-border bg-card/80 backdrop-blur-xs hover:border-primary/50 transition-all duration-200 shadow-xs hover:shadow-lg flex flex-col justify-between group">
                   <CardHeader className="pb-3">
@@ -120,7 +88,7 @@ export function BroadAreasGrid() {
                         </span>
 
                         <Button asChild size="sm" className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 font-bold shadow-xs">
-                          <Link href={`/labs/${lab.id}`}>
+                          <Link href={`/labs/${lab.id}`} prefetch={true}>
                             <span>Enter Laboratory</span>
                             <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
                           </Link>
@@ -129,10 +97,10 @@ export function BroadAreasGrid() {
                     </div>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             );
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

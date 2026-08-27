@@ -716,6 +716,17 @@ export function CodingSheetsView() {
                       {/* Direct Platform Links (GFG, HackerRank, W3Schools) */}
                       <td className="py-2.5 px-2 text-center">
                         <div className="inline-flex items-center gap-1">
+                          {problem.takeUForwardUrl && (
+                            <a
+                              href={problem.takeUForwardUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              title="TakeUForward Striver Article & Video Tutorial"
+                              className="px-1.5 py-0.5 rounded hover:bg-rose-500/10 text-rose-500 font-bold font-mono text-[9px] border border-rose-500/20 transition-colors"
+                            >
+                              TUF
+                            </a>
+                          )}
                           {problem.gfgUrl && (
                             <a
                               href={problem.gfgUrl}

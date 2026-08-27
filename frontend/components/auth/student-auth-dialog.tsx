@@ -43,6 +43,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
     signInWithEmail,
     signUpWithEmail,
     updateStudentRegisterNumber,
+    updateStudentName,
     loginWithGoogle,
     logout,
     deleteAccount,
@@ -61,6 +62,12 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
   // Google 2nd step state for Register Number
   const [googleRegNoStep, setGoogleRegNoStep] = useState(false);
   const [googleRegNo, setGoogleRegNo] = useState("");
+  const [googleName, setGoogleName] = useState("");
+
+  // Edit name state (for logged-in profile panel)
+  const [editingName, setEditingName] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [nameSuccess, setNameSuccess] = useState(false);
 
   const isAuthenticated = Boolean(user || studentProfile);
   const effectiveOpen = open || !isAuthenticated;
@@ -107,6 +114,8 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
     setErrorMsg("");
     try {
       await loginWithGoogle();
+      // Pre-fill name from Google displayName if available
+      setGoogleName(""); // user will enter manually
       setGoogleRegNoStep(true);
     } catch (err: any) {
       setErrorMsg("Google Sign-In was cancelled or failed.");
@@ -116,17 +125,21 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
   const handleGoogleRegNoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
+    if (!googleName.trim()) {
+      setErrorMsg("Please enter your full name.");
+      return;
+    }
     if (!googleRegNo.trim()) {
       setErrorMsg("Please enter your official Register Number to proceed.");
       return;
     }
     try {
-      await updateStudentRegisterNumber(googleRegNo);
+      await updateStudentRegisterNumber(googleRegNo, googleName.trim());
       setGoogleRegNoStep(false);
       onOpenChange(false);
       router.push("/");
     } catch (err: any) {
-      setErrorMsg(err.message || "Failed to save Register Number. Please try again.");
+      setErrorMsg(err.message || "Failed to save details. Please try again.");
     }
   };
 
@@ -241,6 +254,21 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
 
             <form onSubmit={handleGoogleRegNoSubmit} className="space-y-4">
               <div className="space-y-1">
+                <Label className="text-xs font-semibold">Full Student Name</Label>
+                <div className="relative">
+                  <User className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    value={googleName}
+                    onChange={(e) => setGoogleName(e.target.value)}
+                    placeholder="e.g. Praveen S"
+                    className="pl-9 text-xs"
+                    required
+                    autoFocus
+                  />
+                </div>
+              </div>
+              <div className="space-y-1">
                 <Label className="text-xs font-semibold">Student Register Number</Label>
                 <div className="relative">
                   <GraduationCap className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
@@ -251,7 +279,6 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                     placeholder="e.g. 922521104001"
                     className="pl-9 text-xs font-mono"
                     required
-                    autoFocus
                   />
                 </div>
               </div>
@@ -324,9 +351,59 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                   VSB AI &amp; DS
                 </Badge>
               </div>
-              <DialogTitle className="text-xl font-bold font-heading text-foreground pt-1">
-                {studentProfile?.name || user?.displayName || "Student"}
-              </DialogTitle>
+
+              {editingName ? (
+                <form
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    if (!newName.trim()) return;
+                    await updateStudentName(newName.trim());
+                    setEditingName(false);
+                    setNameSuccess(true);
+                    setTimeout(() => setNameSuccess(false), 3000);
+                  }}
+                  className="flex gap-2 pt-2"
+                >
+                  <div className="relative flex-1">
+                    <User className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
+                    <Input
+                      autoFocus
+                      value={newName}
+                      onChange={(e) => setNewName(e.target.value)}
+                      placeholder="Enter your full name"
+                      className="pl-9 text-xs h-9"
+                      required
+                    />
+                  </div>
+                  <Button type="submit" size="sm" disabled={loading} className="text-xs bg-primary text-white px-3 h-9">
+                    Save
+                  </Button>
+                  <Button type="button" size="sm" variant="outline" onClick={() => setEditingName(false)} className="text-xs px-3 h-9">
+                    ✕
+                  </Button>
+                </form>
+              ) : (
+                <div className="flex items-center gap-2 pt-1">
+                  <DialogTitle className="text-xl font-bold font-heading text-foreground">
+                    {studentProfile?.name || user?.displayName || "Student"}
+                  </DialogTitle>
+                  <button
+                    type="button"
+                    onClick={() => { setNewName(studentProfile?.name || user?.displayName || ""); setEditingName(true); setNameSuccess(false); }}
+                    className="text-[10px] text-muted-foreground hover:text-primary border border-border rounded px-1.5 py-0.5 font-mono transition-colors"
+                    title="Edit your name"
+                  >
+                    ✎ edit
+                  </button>
+                </div>
+              )}
+
+              {nameSuccess && (
+                <p className="text-xs text-emerald-500 font-medium flex items-center gap-1">
+                  <CheckCircle2 className="h-3.5 w-3.5" /> Name updated!
+                </p>
+              )}
+
               <DialogDescription className="text-xs text-muted-foreground font-mono">
                 Artificial Intelligence &amp; Data Science
               </DialogDescription>
