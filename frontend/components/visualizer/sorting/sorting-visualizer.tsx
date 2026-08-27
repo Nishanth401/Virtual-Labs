@@ -58,13 +58,60 @@ const PSEUDOCODE_MAP: Record<SortingAlgorithm, string[]> = {
     "    A[j + 1] := key",
     "  end for",
     "end procedure"
+  ],
+  merge: [
+    "procedure mergeSort(A : list, left, right)",
+    "  if left >= right then return",
+    "  mid := (left + right) / 2",
+    "  mergeSort(A, left, mid)",
+    "  mergeSort(A, mid + 1, right)",
+    "  merge(A, left, mid, right)",
+    "end procedure",
+    "procedure merge(A, left, mid, right)",
+    "  create temporary array for merge",
+    "  compare left and right pointers",
+    "  copy smaller element to temp",
+    "  copy temp back to A[left..right]",
+    "end procedure"
+  ],
+  cyclic: [
+    "procedure cyclicSort(A : array of numbers)",
+    "  i := 0",
+    "  while i < length(A) do",
+    "    correct_idx := (A[i] - min(A)) mod n",
+    "    if A[i] != A[correct_idx] then",
+    "      swap(A[i], A[correct_idx])",
+    "    else",
+    "      i := i + 1",
+    "    end if",
+    "  end while",
+    "end procedure"
+  ],
+  quick: [
+    "procedure quickSort(A : list, low, high)",
+    "  if low < high then",
+    "    pi := partition(A, low, high)",
+    "    quickSort(A, low, pi - 1)",
+    "    quickSort(A, pi + 1, high)",
+    "  end if",
+    "end procedure",
+    "procedure partition(A, low, high)",
+    "  pivot := A[high], i := low - 1",
+    "  for j := low to high - 1 do",
+    "    if A[j] < pivot then swap(A[++i], A[j])",
+    "  swap(A[i + 1], A[high])",
+    "  return i + 1",
+    "end procedure"
   ]
 };
 
 const COMPLEXITY_MAP: Record<SortingAlgorithm, { best: string; avg: string; worst: string; space: string; stable: boolean }> = {
   bubble: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)", stable: true },
   selection: { best: "O(n²)", avg: "O(n²)", worst: "O(n²)", space: "O(1)", stable: false },
-  insertion: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)", stable: true }
+  insertion: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)", stable: true },
+  merge: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(n)", stable: true },
+  cyclic: { best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)", stable: true },
+  quick: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n²)", space: "O(log n)", stable: false }
 };
 
 const JAVA_CODE_MAP: Record<SortingAlgorithm, string> = {
@@ -129,6 +176,101 @@ public class InsertionSort {
             }
             arr[j + 1] = key;
         }
+    }
+}`,
+  merge: `// Java Implementation of Merge Sort (Divide and Conquer)
+public class MergeSort {
+    public static void mergeSort(int[] arr, int left, int right) {
+        if (left < right) {
+            int mid = left + (right - left) / 2;
+
+            // Sort first and second halves
+            mergeSort(arr, left, mid);
+            mergeSort(arr, mid + 1, right);
+
+            // Merge the sorted halves
+            merge(arr, left, mid, right);
+        }
+    }
+
+    private static void merge(int[] arr, int left, int mid, int right) {
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+
+        int[] L = new int[n1];
+        int[] R = new int[n2];
+
+        for (int i = 0; i < n1; ++i) L[i] = arr[left + i];
+        for (int j = 0; j < n2; ++j) R[j] = arr[mid + 1 + j];
+
+        int i = 0, j = 0, k = left;
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) {
+                arr[k] = L[i++];
+            } else {
+                arr[k] = R[j++];
+            }
+            k++;
+        }
+
+        while (i < n1) arr[k++] = L[i++];
+        while (j < n2) arr[k++] = R[j++];
+    }
+}`,
+  cyclic: `// Java Implementation of Cyclic Sort (O(n) In-Place Pattern)
+public class CyclicSort {
+    public static void cyclicSort(int[] arr) {
+        int i = 0;
+        int n = arr.length;
+        int minVal = Integer.MAX_VALUE;
+        for (int val : arr) minVal = Math.min(minVal, val);
+
+        while (i < n) {
+            // Expected index for value
+            int correctIndex = (arr[i] - minVal) % n;
+            if (correctIndex >= 0 && correctIndex < n && arr[i] != arr[correctIndex]) {
+                // Swap element to its correct index position
+                int temp = arr[i];
+                arr[i] = arr[correctIndex];
+                arr[correctIndex] = temp;
+            } else {
+                i++;
+            }
+        }
+    }
+}`,
+  quick: `// Java Implementation of Quick Sort (Lomuto Partition Scheme)
+public class QuickSort {
+    public static void quickSort(int[] arr, int low, int high) {
+        if (low < high) {
+            int pi = partition(arr, low, high);
+
+            // Recursively sort elements before and after partition
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
+        }
+    }
+
+    private static int partition(int[] arr, int low, int high) {
+        int pivot = arr[high];
+        int i = (low - 1);
+
+        for (int j = low; j < high; j++) {
+            // If current element is smaller than pivot
+            if (arr[j] < pivot) {
+                i++;
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+
+        // Swap pivot into correct position
+        int temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+
+        return i + 1;
     }
 }`
 };

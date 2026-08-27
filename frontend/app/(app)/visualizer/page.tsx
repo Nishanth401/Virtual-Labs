@@ -175,7 +175,7 @@ export default function VisualizerHubPage() {
             <FlaskConical className="h-3.5 w-3.5 mr-1" /> Department Simulator Suite
           </Badge>
           <Badge variant="secondary" className="text-xs">
-            13+ Interactive Studios
+            16+ Interactive Studios
           </Badge>
         </div>
         <h1 className="text-3xl sm:text-5xl font-black tracking-tight font-heading text-foreground">

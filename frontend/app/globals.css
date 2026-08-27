@@ -278,3 +278,17 @@
 .animate-marquee-reverse:hover {
   animation-play-state: paused;
 }
+
+/* Hide Next.js Dev Indicators & Static Route Indicator Badge */
+nextjs-portal,
+#nextjs-dev-overlay,
+[data-nextjs-dev-indicator],
+[data-nextjs-toast],
+div[data-nextjs-toast-wrapper],
+div[data-nextjs-route-announcer] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
