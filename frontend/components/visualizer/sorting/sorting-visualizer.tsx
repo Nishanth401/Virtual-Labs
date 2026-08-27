@@ -319,7 +319,7 @@ export function SortingVisualizer({ algorithm, title, description }: SortingVisu
         <TabsList className="grid w-full grid-cols-3 max-w-lg">
           <TabsTrigger value="visualization" className="text-xs font-bold">Simulator &amp; Timeline</TabsTrigger>
           <TabsTrigger value="javacode" className="text-xs font-bold">Java Source Code</TabsTrigger>
-          <TabsTrigger value="pseudocode" className="text-xs font-bold">LeetCode Complexity &amp; Stats</TabsTrigger>
+          <TabsTrigger value="pseudocode" className="text-xs font-bold">TC &amp; SC Complexity</TabsTrigger>
         </TabsList>
 
         {/* TAB 1: VISUALIZATION SIMULATOR */}
