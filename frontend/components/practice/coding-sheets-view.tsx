@@ -697,38 +697,55 @@ export function CodingSheetsView() {
                         </div>
                       </td>
 
-                      {/* Direct Platform Links (GFG, HackerRank, W3Schools) */}
+                      {/* Direct Platform Links (LeetCode, GFG, HackerRank, W3Schools) */}
                       <td className="py-2.5 px-2 text-center">
-                        <div className="inline-flex items-center gap-1">
-                          {problem.gfgUrl && (
-                            <a
-                              href={problem.gfgUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              title="GeeksforGeeks Tutorial"
-                              className="px-1.5 py-0.5 rounded hover:bg-emerald-500/10 text-emerald-600 font-bold font-mono text-[9px] border border-emerald-500/20 transition-colors"
-                            >
-                              GFG
-                            </a>
-                          )}
+                        <div className="inline-flex items-center gap-1 justify-center flex-wrap">
+                          {/* LeetCode Direct Button */}
+                          <a
+                            href={problem.leetcodeUrl || `https://leetcode.com/problems/${problem.slug}/`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="LeetCode Problem"
+                            className="px-1.5 py-0.5 rounded hover:bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold font-mono text-[9px] border border-amber-500/25 transition-colors"
+                          >
+                            LC
+                          </a>
+
+                          {/* GeeksforGeeks Tutorial / Solution */}
+                          <a
+                            href={
+                              problem.gfgUrl ||
+                              `https://www.geeksforgeeks.org/explore?page=1&search=${encodeURIComponent(problem.title)}`
+                            }
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="GeeksforGeeks Tutorial"
+                            className="px-1.5 py-0.5 rounded hover:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold font-mono text-[9px] border border-emerald-500/25 transition-colors"
+                          >
+                            GFG
+                          </a>
+
+                          {/* HackerRank Challenge */}
                           {problem.hackerrankUrl && (
                             <a
                               href={problem.hackerrankUrl}
                               target="_blank"
                               rel="noopener noreferrer"
                               title="HackerRank Challenge"
-                              className="px-1.5 py-0.5 rounded hover:bg-emerald-500/10 text-[#00EA64] font-bold font-mono text-[9px] border border-emerald-500/20 transition-colors"
+                              className="px-1.5 py-0.5 rounded hover:bg-emerald-500/10 text-[#00EA64] font-bold font-mono text-[9px] border border-emerald-500/25 transition-colors"
                             >
                               HR
                             </a>
                           )}
+
+                          {/* W3Schools SQL Tutorial */}
                           {problem.w3schoolsUrl && (
                             <a
                               href={problem.w3schoolsUrl}
                               target="_blank"
                               rel="noopener noreferrer"
                               title="W3Schools SQL Tutorial"
-                              className="px-1.5 py-0.5 rounded hover:bg-teal-500/10 text-teal-600 font-bold font-mono text-[9px] border border-teal-500/20 transition-colors"
+                              className="px-1.5 py-0.5 rounded hover:bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold font-mono text-[9px] border border-teal-500/25 transition-colors"
                             >
                               W3S
                             </a>

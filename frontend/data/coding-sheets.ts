@@ -4,7 +4,7 @@
  * Comprehensive dataset of LeetCode Top Interview 150, LeetCode 75, and Top SQL 50.
  * Includes direct LeetCode problem links, difficulty, ratings out of 10,
  * Product-Based Companies (FAANG / MANGA / Tier-1), Service-Based Companies (TCS, Infosys, etc.),
- * and direct learning platform links (GeeksforGeeks, HackerRank, Codeforces, W3Schools, TakeUForward).
+ * and direct learning platform links (GeeksforGeeks, HackerRank, Codeforces, W3Schools).
  */
 
 export type DifficultyLevel = "Easy" | "Medium" | "Hard";
@@ -191,6 +191,8 @@ export const CODING_PROBLEMS: CodingProblem[] = [
     difficulty: "Medium",
     importanceRating: 8.6,
     leetcodeUrl: "https://leetcode.com/problems/h-index/",
+    gfgUrl: "https://www.geeksforgeeks.org/find-h-index-of-a-researcher-given-citations-array/",
+    takeUForwardUrl: "https://takeuforward.org/data-structure/h-index-find-citations/",
     productCompanies: ["Google", "Facebook", "Amazon", "Bloomberg"],
     serviceCompanies: ["TCS", "Infosys"]
   },
@@ -204,6 +206,8 @@ export const CODING_PROBLEMS: CodingProblem[] = [
     difficulty: "Medium",
     importanceRating: 9.7,
     leetcodeUrl: "https://leetcode.com/problems/insert-delete-getrandom-o1/",
+    gfgUrl: "https://www.geeksforgeeks.org/design-a-data-structure-that-supports-insert-delete-getrandom-in-o1-with-duplicates/",
+    takeUForwardUrl: "https://takeuforward.org/data-structure/insert-delete-getrandom-o1/",
     productCompanies: ["Facebook", "Amazon", "Twitter", "Google", "Microsoft", "Uber", "Bloomberg"],
     serviceCompanies: ["Cognizant", "Accenture"]
   },
@@ -233,6 +237,7 @@ export const CODING_PROBLEMS: CodingProblem[] = [
     importanceRating: 9.3,
     leetcodeUrl: "https://leetcode.com/problems/gas-station/",
     gfgUrl: "https://www.geeksforgeeks.org/find-a-tour-that-visits-all-stations/",
+    takeUForwardUrl: "https://takeuforward.org/data-structure/gas-station-problem/",
     productCompanies: ["Google", "Amazon", "Microsoft", "Bloomberg", "Flipkart"],
     serviceCompanies: ["Infosys", "TCS", "Capgemini"]
   },
@@ -246,6 +251,8 @@ export const CODING_PROBLEMS: CodingProblem[] = [
     difficulty: "Hard",
     importanceRating: 9.1,
     leetcodeUrl: "https://leetcode.com/problems/candy/",
+    gfgUrl: "https://www.geeksforgeeks.org/candy-problem-distribution-of-candies/",
+    takeUForwardUrl: "https://takeuforward.org/data-structure/candy-problem/",
     productCompanies: ["Google", "Amazon", "Microsoft"],
     serviceCompanies: ["Accenture", "Cognizant"]
   },
@@ -275,6 +282,7 @@ export const CODING_PROBLEMS: CodingProblem[] = [
     importanceRating: 9.2,
     leetcodeUrl: "https://leetcode.com/problems/roman-to-integer/",
     gfgUrl: "https://www.geeksforgeeks.org/converting-roman-numerals-decimal-lying-1-3999/",
+    takeUForwardUrl: "https://takeuforward.org/data-structure/roman-to-integer/",
     productCompanies: ["Amazon", "Microsoft", "Apple", "Facebook", "Google", "Bloomberg"],
     serviceCompanies: ["TCS", "Infosys", "Wipro", "Cognizant"]
   },
@@ -288,6 +296,8 @@ export const CODING_PROBLEMS: CodingProblem[] = [
     difficulty: "Medium",
     importanceRating: 8.9,
     leetcodeUrl: "https://leetcode.com/problems/integer-to-roman/",
+    gfgUrl: "https://www.geeksforgeeks.org/converting-decimal-number-lying-between-1-to-3999-to-roman-numerals/",
+    takeUForwardUrl: "https://takeuforward.org/data-structure/integer-to-roman/",
     productCompanies: ["Amazon", "Microsoft", "Google", "Bloomberg"],
     serviceCompanies: ["Infosys", "TCS", "Capgemini"]
   },
@@ -301,6 +311,8 @@ export const CODING_PROBLEMS: CodingProblem[] = [
     difficulty: "Easy",
     importanceRating: 8.3,
     leetcodeUrl: "https://leetcode.com/problems/length-of-last-word/",
+    gfgUrl: "https://www.geeksforgeeks.org/length-of-last-word-in-a-string/",
+    takeUForwardUrl: "https://takeuforward.org/data-structure/length-of-the-last-word/",
     productCompanies: ["Amazon", "Apple", "Microsoft"],
     serviceCompanies: ["TCS", "Infosys", "Wipro"]
   },
@@ -315,6 +327,7 @@ export const CODING_PROBLEMS: CodingProblem[] = [
     importanceRating: 9.4,
     leetcodeUrl: "https://leetcode.com/problems/longest-common-prefix/",
     gfgUrl: "https://www.geeksforgeeks.org/longest-common-prefix-using-sorting/",
+    takeUForwardUrl: "https://takeuforward.org/data-structure/longest-common-prefix/",
     productCompanies: ["Amazon", "Google", "Apple", "Microsoft", "Facebook", "Adobe"],
     serviceCompanies: ["TCS", "Infosys", "Wipro", "Cognizant", "Accenture"]
   },
@@ -343,6 +356,8 @@ export const CODING_PROBLEMS: CodingProblem[] = [
     difficulty: "Medium",
     importanceRating: 8.7,
     leetcodeUrl: "https://leetcode.com/problems/zigzag-conversion/",
+    gfgUrl: "https://www.geeksforgeeks.org/print-concatenation-of-zig-zag-string-form-in-n-rows/",
+    takeUForwardUrl: "https://takeuforward.org/data-structure/zigzag-conversion/",
     productCompanies: ["PayPal", "Amazon", "Microsoft", "Google"],
     serviceCompanies: ["Infosys", "Cognizant"]
   },
@@ -356,6 +371,8 @@ export const CODING_PROBLEMS: CodingProblem[] = [
     difficulty: "Easy",
     importanceRating: 9.0,
     leetcodeUrl: "https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/",
+    gfgUrl: "https://www.geeksforgeeks.org/kmp-algorithm-for-pattern-searching/",
+    takeUForwardUrl: "https://takeuforward.org/data-structure/find-the-index-of-the-first-occurrence-in-a-string/",
     productCompanies: ["Amazon", "Microsoft", "Google", "Apple"],
     serviceCompanies: ["TCS", "Infosys", "Wipro", "Accenture"]
   },
@@ -369,6 +386,8 @@ export const CODING_PROBLEMS: CodingProblem[] = [
     difficulty: "Hard",
     importanceRating: 9.2,
     leetcodeUrl: "https://leetcode.com/problems/text-justification/",
+    gfgUrl: "https://www.geeksforgeeks.org/word-wrap-problem-dp-19/",
+    takeUForwardUrl: "https://takeuforward.org/data-structure/text-justification/",
     productCompanies: ["Google", "Airbnb", "Facebook", "Apple", "Microsoft", "Uber"],
     serviceCompanies: ["Accenture"]
   },

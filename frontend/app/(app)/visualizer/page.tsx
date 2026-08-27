@@ -38,7 +38,7 @@ const sections = {
     },
     {
       name: "Master Coding Practice (LeetCode 150)",
-      description: "Interactive practice sheet with company tags (FAANG & Service), difficulty ratings, TakeUForward notes & direct problem links.",
+      description: "Interactive practice sheet with company tags (FAANG & Service), difficulty ratings, revision notes & direct problem links.",
       href: "/practice",
       icon: Trophy,
       badge: "INTERVIEW ROADMAP",
