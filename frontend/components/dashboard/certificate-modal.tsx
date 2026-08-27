@@ -11,13 +11,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Award, Printer, Download, CheckCircle2, ShieldCheck, Sparkles } from "lucide-react";
+import { Award, Printer, ShieldCheck } from "lucide-react";
 
 interface CertificateModalProps {
   progress: StudentProgressState;
+  studentName?: string;
+  studentRollNo?: string;
+  department?: string;
 }
 
-export function CertificateModal({ progress }: CertificateModalProps) {
+export function CertificateModal({
+  progress,
+  studentName = progress.studentName,
+  studentRollNo = progress.studentRollNo,
+  department = progress.department
+}: CertificateModalProps) {
   const [open, setOpen] = useState(false);
 
   const handlePrint = () => {
@@ -67,23 +75,23 @@ export function CertificateModal({ progress }: CertificateModalProps) {
               VSB ENGINEERING COLLEGE, KARUR
             </div>
             <div className="text-xs text-muted-foreground">
-              Department of Artificial Intelligence & Data Science
+              Department of Artificial Intelligence &amp; Data Science
             </div>
             <div className="text-2xl sm:text-3xl font-black font-heading text-foreground pt-2">
               CERTIFICATE OF COMPLETION
             </div>
             <div className="text-xs text-muted-foreground italic">
-              Virtual Laboratories & Data Structures Practical Curriculum
+              Virtual Laboratories &amp; Data Structures Practical Curriculum
             </div>
           </div>
 
           <div className="space-y-2 py-2">
             <p className="text-xs text-muted-foreground">This is to certify that</p>
             <div className="text-xl sm:text-2xl font-bold font-heading text-primary border-b-2 border-primary/30 inline-block px-6 pb-1">
-              {progress.studentName}
+              {studentName}
             </div>
             <p className="text-xs font-mono text-muted-foreground">
-              Roll No: {progress.studentRollNo} • {progress.department}
+              Roll No: {studentRollNo} • {department}
             </p>
           </div>
 

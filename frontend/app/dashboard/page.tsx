@@ -7,9 +7,6 @@ import { Navbar } from "@/components/navigation/navbar";
 import { Footer } from "@/components/navigation/footer";
 import { ProgressCard } from "@/components/dashboard/progress-card";
 import { AttemptsTable } from "@/components/dashboard/attempts-table";
-import { UserFilesSection } from "@/components/dashboard/user-files-section";
-import { UserNotesSection } from "@/components/dashboard/user-notes-section";
-import { UserTeamSection } from "@/components/dashboard/user-team-section";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Award, RotateCcw, Sparkles, BookOpen, Layers, ArrowRight, LogOut, Trash2 } from "lucide-react";
@@ -108,7 +105,7 @@ export default function StudentDashboardPage() {
             </div>
           </div>
 
-          {/* Progress Overview Card with Certificate Generator */}
+          {/* Progress Overview Card with Certificate Generator (Dynamic for each logged-in student) */}
           <ProgressCard progress={progress} totalExperiments={6} />
 
           {/* Quick Shortcuts */}
@@ -137,15 +134,6 @@ export default function StudentDashboardPage() {
               </Button>
             </div>
           </div>
-
-          {/* 1) My Files Section (PDFs, Manuals, Datasets) */}
-          <UserFilesSection />
-
-          {/* 2) My Notes Section (Viva Questions, Code Tips) */}
-          <UserNotesSection />
-
-          {/* 3) Team Members Section (Lab Batch & Mentors) */}
-          <UserTeamSection />
 
           {/* Experiments & Assessment Table */}
           <AttemptsTable progress={progress} />
