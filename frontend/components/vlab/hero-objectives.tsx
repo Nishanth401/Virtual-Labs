@@ -72,11 +72,7 @@ const ROLLING_CARDS = [
   },
 ];
 
-import { useAuth } from "@/context/auth-context";
-
 export function HeroObjectives() {
-  const { studentProfile } = useAuth();
-
   return (
     <section className="relative min-h-[85vh] flex flex-col justify-between pt-4 pb-16 px-4 sm:px-6 bg-grid-pattern border-b border-border/40 overflow-hidden">
       {/* Interactive Constellation Particle Canvas Mesh confined to this Hero Panel */}
@@ -84,46 +80,26 @@ export function HeroObjectives() {
 
       <div className="container max-w-5xl mx-auto text-center relative z-10 space-y-6 pt-2">
         {/* Sleek Pill Badge matching Screenshot 1 */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#111113] text-white text-[11px] font-bold tracking-wider uppercase border border-white/10 shadow-md"
-        >
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#111113] text-white text-[11px] font-bold tracking-wider uppercase border border-white/10 shadow-md">
           <span>Department of Artificial Intelligence &amp; Data Science • VSB Engineering College</span>
-        </motion.div>
+        </div>
 
         {/* High-Impact Headline with Mixed Typography matching Screenshot 1 */}
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.15 }}
-          className="text-4xl sm:text-6xl md:text-7xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.08] font-heading max-w-4xl mx-auto"
-        >
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.08] font-heading max-w-4xl mx-auto">
           Simulate faster. <span className="font-serif-italic font-normal text-slate-600 dark:text-slate-400">Learn smarter.</span><br />
           Grow with<br />
           <span className="text-[#e11d48] dark:text-[#f43f5e] font-black">
             interactive virtual labs.
           </span>
-        </motion.h1>
+        </h1>
 
         {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed"
-        >
+        <p className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed">
           We design, build, and simulate high-performance data structures in pure Java, machine learning models with NumPy/Pandas pipelines, relational SQL databases, and network protocols for ambitious engineers.
-        </motion.p>
+        </p>
 
         {/* Dual Capsule CTA Buttons matching Screenshot 1 */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="flex flex-wrap items-center justify-center gap-3 pt-2"
-        >
+        <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
           <Button
             asChild
             size="lg"
@@ -146,7 +122,7 @@ export function HeroObjectives() {
               <ExternalLink className="h-3.5 w-3.5" />
             </Link>
           </Button>
-        </motion.div>
+        </div>
       </div>
 
       {/* CONTINUOUS ROLLING / MARQUEE ANIMATED TITLE CARDS SHOWCASE (Replacing 5th Image) */}

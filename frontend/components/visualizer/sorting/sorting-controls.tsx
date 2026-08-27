@@ -184,6 +184,15 @@ export function SortingControls({
               variant="ghost"
               size="sm"
               className="text-[11px] h-6 px-2 text-muted-foreground"
+              onClick={() => onCustomArray([3, 5, 2, 1, 4, 8, 6, 7])}
+            >
+              1..N Range
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="text-[11px] h-6 px-2 text-muted-foreground"
               onClick={() => onCustomArray([15, 20, 25, 60, 35, 40, 50])}
             >
               Nearly Sorted
