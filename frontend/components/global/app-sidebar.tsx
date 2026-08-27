@@ -1,5 +1,6 @@
 "use client"
 
+import * as React from "react"
 import { Binary, Home, Database, BrainCircuit, TreePine, List, SquareStack, SquareChevronLeft, Equal, MessageSquare, X, Hash, ArrowRightLeft, ArrowDownUp, Award, FlaskConical } from "lucide-react"
 import {
   Sidebar,
@@ -52,6 +53,18 @@ const sortingAlgorithms = [
     url: "/visualizer/insertion-sort",
     icon: ArrowDownUp,
     description: "Key element extraction and backward shifting",
+  },
+  {
+    name: "Two Pointers Algorithm",
+    url: "/visualizer/two-pointers",
+    icon: ArrowRightLeft,
+    description: "Inward & synchronized pointer stepping across sorted arrays",
+  },
+  {
+    name: "Sliding Window Algorithm",
+    url: "/visualizer/sliding-window",
+    icon: ArrowRightLeft,
+    description: "Contiguous window overlay tracking sub-segment metrics",
   },
 ]
 
