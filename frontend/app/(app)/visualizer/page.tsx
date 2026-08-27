@@ -67,6 +67,27 @@ const sections = {
       icon: ArrowDownUp,
       badge: "Adaptive"
     },
+    {
+      name: "Merge Sort Visualizer",
+      description: "Divide-and-conquer algorithm with guaranteed O(n log n) stable sorting and recursive split visualization.",
+      href: "/visualizer/merge-sort",
+      icon: ArrowDownUp,
+      badge: "O(n log n)"
+    },
+    {
+      name: "Cyclic Sort Visualizer",
+      description: "In-place cycle placement pattern for numbers 1..N with linear O(n) runtime and minimal swaps.",
+      href: "/visualizer/cyclic-sort",
+      icon: ArrowDownUp,
+      badge: "O(n) Pattern"
+    },
+    {
+      name: "Quick Sort Visualizer",
+      description: "Pivot partitioning and recursive sub-array sorting with Lomuto partitioning trace.",
+      href: "/visualizer/quick-sort",
+      icon: ArrowDownUp,
+      badge: "O(n log n)"
+    },
   ],
   dataStructures: [
     {
@@ -161,7 +182,7 @@ export default function VisualizerHubPage() {
             <FlaskConical className="h-3.5 w-3.5 mr-1" /> Department Simulator Suite
           </Badge>
           <Badge variant="secondary" className="text-xs">
-            13+ Interactive Studios
+            16+ Interactive Studios
           </Badge>
         </div>
         <h1 className="text-3xl sm:text-5xl font-black tracking-tight font-heading text-foreground">
@@ -217,7 +238,7 @@ export default function VisualizerHubPage() {
             <ArrowDownUp className="h-5 w-5 text-[#1e88e5]" />
             <span>Sorting Algorithms</span>
           </h2>
-          <Badge variant="secondary" className="text-xs">3 Simulators</Badge>
+          <Badge variant="secondary" className="text-xs">{sections.sorting.length} Simulators</Badge>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {sections.sorting.map((algo) => {

@@ -19,9 +19,7 @@ import {
   Network,
   BookOpen,
   ArrowRight,
-  MessageSquare,
-  User,
-  GraduationCap
+  MessageSquare
 } from "lucide-react";
 import {
   Dialog,
@@ -65,11 +63,16 @@ export function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const { user, studentProfile } = useAuth();
+  const [mounted, setMounted] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [hoveredHref, setHoveredHref] = useState<string | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const isItemActive = (href: string) => {
     if (href === "/") {
@@ -109,21 +112,7 @@ export function Navbar() {
     <>
       <header className="sticky top-3 z-50 w-full px-4 sm:px-6 pointer-events-none">
         <div className="container max-w-7xl mx-auto flex items-center justify-between gap-3 pointer-events-auto relative">
-          {/* Left Brand Capsule Pill matching 'Rohith Digital X' styling */}
-          <Link
-            href="/"
-            className="flex items-center px-4 py-1.5 rounded-full bg-white/95 dark:bg-card/90 backdrop-blur-md border border-[#e11d48]/80 dark:border-[#e11d48]/60 shadow-xs hover:shadow-md hover:scale-[1.02] transition-all group shrink-0"
-          >
-            <div className="flex items-center text-sm font-sans tracking-tight">
-              <span className="font-extrabold text-slate-950 dark:text-white font-heading text-base">
-                Rohith
-              </span>
-              <span className="font-normal text-slate-500 dark:text-slate-400 ml-1.5 text-base">
-                Digital
-              </span>
-              <span className="text-[#e11d48] font-black text-base ml-1.5 leading-none">X</span>
-            </div>
-          </Link>
+          <div />
 
           {/* Center Floating Dark Capsule Navbar - Mathematically & Visually Centered */}
           <nav
@@ -161,16 +150,6 @@ export function Navbar() {
                 </Link>
               );
             })}
-            {/* Red Accent CTA Pill Button (Student Portal / Login) */}
-            <button
-              type="button"
-              onClick={() => setAuthOpen(true)}
-              className="ml-1 px-4 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-[#e11d48] to-[#dc2626] text-white shadow-md shadow-red-500/30 hover:scale-105 transition-transform flex items-center gap-1.5 cursor-pointer shrink-0"
-            >
-              <GraduationCap className="h-3.5 w-3.5" />
-              <span>{studentProfile?.name ? `Student: ${studentProfile.name}` : (user?.displayName ? `Student: ${user.displayName.split(' ')[0]}` : (user?.email ? `Student: ${user.email.split('@')[0]}` : "Student Login"))}</span>
-              <ArrowRight className="h-3 w-3" />
-            </button>
           </nav>
 
           {/* Right Action Icons: Circular Search Button & Mode Toggle */}
@@ -185,23 +164,20 @@ export function Navbar() {
               <Search className="h-4 w-4" />
             </button>
 
-            {/* Student Auth Avatar / Name Display Trigger Button */}
+            {/* Student Auth Avatar / Trigger Button */}
             <button
               type="button"
               onClick={() => setAuthOpen(true)}
-              className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/95 dark:bg-card/90 backdrop-blur-md border border-slate-200 dark:border-border shadow-xs text-xs font-semibold text-slate-800 dark:text-slate-200 hover:border-[#e11d48] transition-colors cursor-pointer"
-              title={studentProfile?.name || user?.displayName ? `Signed in as ${studentProfile?.name || user?.displayName}` : "Sign In to Student Account"}
+              className="hidden sm:flex items-center px-3.5 py-1.5 rounded-full bg-white/95 dark:bg-card/90 backdrop-blur-md border border-slate-200 dark:border-border shadow-xs text-xs font-medium text-slate-800 dark:text-slate-200 hover:border-primary transition-colors cursor-pointer"
+              suppressHydrationWarning
             >
-              {studentProfile || user ? (
-                <>
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                  <span className="font-bold text-slate-900 dark:text-white max-w-[140px] truncate">{studentProfile?.name || user?.displayName || (user?.email ? user.email.split('@')[0] : "Student Active")}</span>
-                </>
+              {mounted && (studentProfile || user) ? (
+                <span className="flex items-center gap-1.5 font-bold text-slate-900 dark:text-white max-w-[140px] truncate">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0 inline-block" />
+                  {studentProfile?.name || user?.displayName || (user?.email ? user.email.split('@')[0] : "Student Active")}
+                </span>
               ) : (
-                <>
-                  <User className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                  <span>Sign In</span>
-                </>
+                <span>Sign In</span>
               )}
             </button>
 
@@ -246,8 +222,9 @@ export function Navbar() {
                   setAuthOpen(true);
                 }}
                 className="w-full px-3.5 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-[#e11d48] to-[#dc2626] text-white text-center cursor-pointer shadow-md shadow-red-500/30 flex items-center justify-center gap-1.5"
+                suppressHydrationWarning
               >
-                <span>{studentProfile?.name || user?.displayName || (user?.email ? user.email.split('@')[0] : "Student Login & Register")}</span>
+                <span>{mounted && (studentProfile?.name || user?.displayName || user?.email) ? `Student: ${studentProfile?.name || user?.displayName || user?.email?.split('@')[0]}` : "Student Login & Register"}</span>
                 <ArrowRight className="h-3 w-3" />
               </button>
             </div>
