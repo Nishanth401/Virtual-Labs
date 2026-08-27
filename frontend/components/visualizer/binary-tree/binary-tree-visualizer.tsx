@@ -8,7 +8,7 @@ import { MarkdownContent } from "@/components/shared/markdown-content"
 import { useBinaryTree } from "@/hooks/use-binary-tree"
 
 interface BinaryTreeVisualizerProps {
-  content: React.ReactNode
+  content?: React.ReactNode
 }
 
 export function BinaryTreeVisualizer({ content }: BinaryTreeVisualizerProps) {

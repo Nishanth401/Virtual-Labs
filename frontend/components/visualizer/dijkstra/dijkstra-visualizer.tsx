@@ -8,7 +8,7 @@ import { MarkdownContent } from "@/components/shared/markdown-content"
 import { useDijkstra } from "@/hooks/use-dijkstra"
 
 interface DijkstraVisualizerProps {
-  content: React.ReactNode
+  content?: React.ReactNode
 }
 
 export function DijkstraVisualizer({ content }: DijkstraVisualizerProps) {

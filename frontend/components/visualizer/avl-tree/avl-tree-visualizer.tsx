@@ -8,7 +8,7 @@ import { useAVLTree } from "@/hooks/use-avl-tree"
 import { AVLTreeAnalysis } from "./avl-tree-analysis"
 
 interface AVLTreeVisualizerProps {
-  content: React.ReactNode
+  content?: React.ReactNode
 }
 
 export function AVLTreeVisualizer({ content }: AVLTreeVisualizerProps) {

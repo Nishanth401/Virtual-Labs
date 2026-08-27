@@ -8,7 +8,7 @@ import { MarkdownContent } from "@/components/shared/markdown-content"
 import { useQueue } from "@/hooks/use-queue"
 
 interface QueueVisualizerProps {
-  content: React.ReactNode
+  content?: React.ReactNode
 }
 
 export function QueueVisualizer({ content }: QueueVisualizerProps) {

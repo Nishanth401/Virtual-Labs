@@ -16,7 +16,7 @@ const LIST_TYPES: { value: ListType; label: string }[] = [
 ]
 
 interface LinkedListVisualizerProps {
-  content: React.ReactNode
+  content?: React.ReactNode
 }
 
 export function LinkedListVisualizer({ content }: LinkedListVisualizerProps) {

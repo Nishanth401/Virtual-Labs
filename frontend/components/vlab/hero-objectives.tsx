@@ -72,9 +72,11 @@ const ROLLING_CARDS = [
   },
 ];
 
-import Image from "next/image";
+import { useAuth } from "@/context/auth-context";
 
 export function HeroObjectives() {
+  const { studentProfile } = useAuth();
+
   return (
     <section className="relative min-h-[85vh] flex flex-col justify-between pt-4 pb-16 px-4 sm:px-6 bg-grid-pattern border-b border-border/40 overflow-hidden">
       {/* Interactive Constellation Particle Canvas Mesh confined to this Hero Panel */}

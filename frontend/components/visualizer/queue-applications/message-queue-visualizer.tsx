@@ -8,7 +8,7 @@ import { MessageQueueDisplay } from "@/components/visualizer/queue-applications/
 import { ProducerControls } from "@/components/visualizer/queue-applications/producer-controls"
 import { ConsumerControls } from "@/components/visualizer/queue-applications/consumer-controls"
 
-export function MessageQueueVisualizer({ content }: { content: React.ReactNode }) {
+export function MessageQueueVisualizer({ content }: { content?: React.ReactNode }) {
   const { 
     queue,
     processed,

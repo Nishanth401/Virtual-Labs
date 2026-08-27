@@ -9,17 +9,24 @@ import { ProgressCard } from "@/components/dashboard/progress-card";
 import { AttemptsTable } from "@/components/dashboard/attempts-table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { RotateCcw, ArrowRight, LogOut } from "lucide-react";
+import { Award, RotateCcw, Sparkles, BookOpen, Layers, ArrowRight, LogOut, Trash2 } from "lucide-react";
 import Link from "next/link";
 
 export default function StudentDashboardPage() {
   const router = useRouter();
-  const { user, logout } = useAuth();
+  const { user, logout, deleteAccount } = useAuth();
   const { progress, isLoaded, resetProgress } = useStudentProgress();
 
   const handleLogout = async () => {
     await logout();
     router.push("/auth/login");
+  };
+
+  const handleDeleteAccount = async () => {
+    if (confirm("Are you sure you want to permanently delete your account? All progress, certificates, notes, and bound Register Number will be erased.")) {
+      await deleteAccount();
+      router.push("/");
+    }
   };
 
   if (!isLoaded) {
@@ -56,7 +63,10 @@ export default function StudentDashboardPage() {
               <h1 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight font-heading">
                 Student Learning Dashboard
               </h1>
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-sm font-bold text-[#e11d48] dark:text-[#f43f5e] flex items-center gap-1.5 mt-1 font-mono">
+                <span>Student: {progress.studentName} ({progress.studentRollNo})</span>
+              </p>
+              <p className="text-xs text-muted-foreground mt-0.5">
                 Department of Artificial Intelligence &amp; Data Science • VSB Engineering College
               </p>
             </div>
@@ -79,9 +89,18 @@ export default function StudentDashboardPage() {
                 variant="outline"
                 size="sm"
                 onClick={handleLogout}
-                className="text-xs gap-1.5 text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 border-border"
+                className="text-xs gap-1.5 text-slate-700 dark:text-slate-300 hover:bg-muted border-border"
               >
                 <LogOut className="h-3.5 w-3.5" /> Sign Out
+              </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleDeleteAccount}
+                className="text-xs gap-1.5 text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 border-rose-500/30"
+              >
+                <Trash2 className="h-3.5 w-3.5" /> Delete Account
               </Button>
             </div>
           </div>

@@ -11,7 +11,7 @@ import { MarkdownContent } from "@/components/shared/markdown-content"
 import { useHuffman } from "@/hooks/use-huffman"
 
 interface HuffmanVisualizerProps {
-  content: React.ReactNode
+  content?: React.ReactNode
 }
 
 export function HuffmanVisualizer({ content }: HuffmanVisualizerProps) {

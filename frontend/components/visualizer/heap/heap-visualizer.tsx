@@ -8,7 +8,7 @@ import { MarkdownContent } from "@/components/shared/markdown-content"
 import { useHeap } from "@/hooks/use-heap"
 
 interface HeapVisualizerProps {
-  content: React.ReactNode
+  content?: React.ReactNode
 }
 
 export function HeapVisualizer({ content }: HeapVisualizerProps) {
