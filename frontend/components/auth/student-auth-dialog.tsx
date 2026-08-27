@@ -25,7 +25,9 @@ import {
   ArrowRight,
   ShieldCheck,
   MailCheck,
-  GraduationCap
+  GraduationCap,
+  Trash2,
+  AlertTriangle
 } from "lucide-react";
 
 interface StudentAuthDialogProps {
@@ -40,27 +42,38 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
     studentProfile,
     signInWithEmail,
     signUpWithEmail,
+    updateStudentRegisterNumber,
     loginWithGoogle,
     logout,
+    deleteAccount,
     loading
   } = useAuth();
 
   const [authTab, setAuthTab] = useState<"login" | "register">("login");
   const [email, setEmail] = useState("");
+  const [regNo, setRegNo] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
+  const [confirmDeleteAccount, setConfirmDeleteAccount] = useState(false);
+
+  // Google 2nd step state for Register Number
+  const [googleRegNoStep, setGoogleRegNoStep] = useState(false);
+  const [googleRegNo, setGoogleRegNo] = useState("");
+
+  const isAuthenticated = Boolean(user || studentProfile);
+  const effectiveOpen = open || !isAuthenticated;
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
-    if (!email.trim() || !password.trim()) {
-      setErrorMsg("Please enter your email and password.");
+    if (!email.trim() || !password.trim() || !regNo.trim()) {
+      setErrorMsg("Please enter your email, register number, and password.");
       return;
     }
     try {
-      const res = await signInWithEmail(email, password);
+      const res = await signInWithEmail(email, password, regNo);
       if (res.emailVerified) {
         onOpenChange(false);
         router.push("/dashboard");
@@ -71,20 +84,19 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
         setErrorMsg("");
         return;
       }
-      setErrorMsg(err.message || "Email or password is incorrect");
+      setErrorMsg(err.message || "Email, Register Number, or password is incorrect");
     }
   };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
-    if (!email.trim() || !password.trim()) {
-      setErrorMsg("Please enter your email and password.");
+    if (!name.trim() || !email.trim() || !regNo.trim() || !password.trim()) {
+      setErrorMsg("Please fill in your name, email, register number, and password.");
       return;
     }
     try {
-      const res = await signUpWithEmail(email, password, name);
-      // Registration sent verification email and did not sign in automatically
+      const res = await signUpWithEmail(email, password, name, regNo);
       setUnverifiedEmail(res.email);
     } catch (err: any) {
       setErrorMsg(err.message || "User already exists. Please sign in");
@@ -95,23 +107,166 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
     setErrorMsg("");
     try {
       await loginWithGoogle();
-      onOpenChange(false);
-      router.push("/dashboard");
+      setGoogleRegNoStep(true);
     } catch (err: any) {
       setErrorMsg("Google Sign-In was cancelled or failed.");
+    }
+  };
+
+  const handleGoogleRegNoSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg("");
+    if (!googleRegNo.trim()) {
+      setErrorMsg("Please enter your official Register Number to proceed.");
+      return;
+    }
+    try {
+      await updateStudentRegisterNumber(googleRegNo);
+      setGoogleRegNoStep(false);
+      onOpenChange(false);
+      router.push("/");
+    } catch (err: any) {
+      setErrorMsg(err.message || "Failed to save Register Number. Please try again.");
     }
   };
 
   const handleLogout = async () => {
     await logout();
     setUnverifiedEmail(null);
+    setGoogleRegNoStep(false);
+    setConfirmDeleteAccount(false);
     setAuthTab("login");
   };
 
+  const handleDeleteAccount = async () => {
+    setErrorMsg("");
+    try {
+      await deleteAccount();
+      setConfirmDeleteAccount(false);
+      setGoogleRegNoStep(false);
+      setUnverifiedEmail(null);
+      setAuthTab("login");
+      router.push("/");
+    } catch (err: any) {
+      setErrorMsg(err.message || "Failed to delete account. Please try again.");
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={(val) => { onOpenChange(val); if (!val) setUnverifiedEmail(null); }}>
-      <DialogContent className="max-w-md p-0 overflow-hidden bg-white dark:bg-card/95 backdrop-blur-xl border border-border shadow-2xl rounded-2xl">
-        {unverifiedEmail ? (
+    <Dialog
+      open={effectiveOpen}
+      onOpenChange={(val) => {
+        if (!val && !isAuthenticated && !googleRegNoStep) {
+          return; // Lock dialog open if not authenticated
+        }
+        onOpenChange(val);
+        if (!val) {
+          setUnverifiedEmail(null);
+          setGoogleRegNoStep(false);
+          setConfirmDeleteAccount(false);
+        }
+      }}
+    >
+      <DialogContent className="max-w-md p-0 overflow-hidden bg-white dark:bg-card/95 backdrop-blur-xl border border-border shadow-2xl rounded-2xl [&>button]:hidden sm:[&>button]:block">
+        {confirmDeleteAccount ? (
+          /* ============================================================== */
+          /* CONFIRM DELETE ACCOUNT SCREEN                                 */
+          /* ============================================================== */
+          <div className="p-6 space-y-5">
+            <DialogHeader className="space-y-1.5 text-center">
+              <div className="mx-auto w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-500 mb-1">
+                <AlertTriangle className="h-6 w-6" />
+              </div>
+              <DialogTitle className="text-xl font-bold font-heading text-rose-600 dark:text-rose-500">
+                Delete Account Permanently?
+              </DialogTitle>
+              <DialogDescription className="text-xs text-foreground/90 leading-relaxed pt-1">
+                Are you sure you want to delete your account? All your experiment progress, notes, certificates, and bound Register Number will be permanently erased.
+              </DialogDescription>
+            </DialogHeader>
+
+            {errorMsg && (
+              <div className="p-2.5 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-500 text-xs font-medium">
+                {errorMsg}
+              </div>
+            )}
+
+            <div className="space-y-2 pt-2">
+              <Button
+                variant="destructive"
+                onClick={handleDeleteAccount}
+                disabled={loading}
+                className="w-full text-xs font-bold py-2.5 gap-2 cursor-pointer"
+              >
+                <Trash2 className="h-4 w-4" />
+                <span>{loading ? "Deleting..." : "Yes, Delete Account Permanently"}</span>
+              </Button>
+
+              <Button
+                variant="outline"
+                onClick={() => setConfirmDeleteAccount(false)}
+                className="w-full text-xs border-border"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        ) : googleRegNoStep ? (
+          /* ============================================================== */
+          /* GOOGLE SIGN IN - REGISTER NUMBER STEP                         */
+          /* ============================================================== */
+          <div className="p-6 space-y-5">
+            <DialogHeader className="space-y-1.5 text-center">
+              <div className="mx-auto w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 mb-1">
+                <GraduationCap className="h-6 w-6" />
+              </div>
+              <div className="flex justify-center">
+                <Badge variant="outline" className="text-[10px] font-mono uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30">
+                  Profile Completion
+                </Badge>
+              </div>
+              <DialogTitle className="text-xl font-bold font-heading text-foreground">
+                Enter Student Register Number
+              </DialogTitle>
+              <DialogDescription className="text-xs text-foreground/90 font-medium leading-relaxed pt-1">
+                Welcome <span className="font-bold text-primary">{studentProfile?.name || user?.displayName}</span>! Please enter your official college Register Number to activate your portal.
+              </DialogDescription>
+            </DialogHeader>
+
+            {errorMsg && (
+              <div className="p-2.5 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-500 text-xs font-medium">
+                {errorMsg}
+              </div>
+            )}
+
+            <form onSubmit={handleGoogleRegNoSubmit} className="space-y-4">
+              <div className="space-y-1">
+                <Label className="text-xs font-semibold">Student Register Number</Label>
+                <div className="relative">
+                  <GraduationCap className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    value={googleRegNo}
+                    onChange={(e) => setGoogleRegNo(e.target.value)}
+                    placeholder="e.g. 922521104001"
+                    className="pl-9 text-xs font-mono"
+                    required
+                    autoFocus
+                  />
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-primary hover:bg-primary/90 text-white text-xs font-bold py-2.5 cursor-pointer gap-2"
+              >
+                <span>Enter Virtual Labs Portal</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Button>
+            </form>
+          </div>
+        ) : unverifiedEmail ? (
           /* ============================================================== */
           /* EMAIL VERIFICATION SCREEN                                      */
           /* ============================================================== */
@@ -155,7 +310,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
               <ArrowRight className="h-3.5 w-3.5" />
             </Button>
           </div>
-        ) : user || studentProfile ? (
+        ) : isAuthenticated && open ? (
           /* ============================================================== */
           /* LOGGED IN STUDENT PROFILE VIEW                                */
           /* ============================================================== */
@@ -173,7 +328,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                 {studentProfile?.name || user?.displayName || "Student"}
               </DialogTitle>
               <DialogDescription className="text-xs text-muted-foreground font-mono">
-                Reg No: {studentProfile?.registerNumber || "Student Active"} • Artificial Intelligence &amp; Data Science
+                Artificial Intelligence &amp; Data Science
               </DialogDescription>
             </DialogHeader>
 
@@ -210,13 +365,23 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                 </Link>
               </Button>
 
-              <Button
-                variant="outline"
-                onClick={handleLogout}
-                className="w-full text-xs text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 gap-2 border-border"
-              >
-                <LogOut className="h-3.5 w-3.5" /> Sign Out
-              </Button>
+              <div className="grid grid-cols-2 gap-2">
+                <Button
+                  variant="outline"
+                  onClick={handleLogout}
+                  className="w-full text-xs text-slate-700 dark:text-slate-300 hover:bg-muted gap-1.5 border-border"
+                >
+                  <LogOut className="h-3.5 w-3.5" /> Sign Out
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={() => setConfirmDeleteAccount(true)}
+                  className="w-full text-xs text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 gap-1.5 border-rose-500/30"
+                >
+                  <Trash2 className="h-3.5 w-3.5" /> Delete Account
+                </Button>
+              </div>
             </div>
           </div>
         ) : (
@@ -237,7 +402,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                 VSB Virtual Labs Login
               </DialogTitle>
               <DialogDescription className="text-xs text-muted-foreground leading-relaxed">
-                Sign in to access your laboratory experiments, simulation studio, and progress.
+                Please sign in with your email, register number, and password to enter the laboratory platform.
               </DialogDescription>
             </DialogHeader>
 
@@ -278,7 +443,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
 
             <div className="flex items-center gap-3 text-xs text-muted-foreground">
               <div className="h-[1px] flex-1 bg-border/60" />
-              <span className="font-mono text-[10px] uppercase">Or Register Number &amp; Password</span>
+              <span className="font-mono text-[10px] uppercase">Or Student Credentials</span>
               <div className="h-[1px] flex-1 bg-border/60" />
             </div>
 
@@ -297,13 +462,28 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
               <TabsContent value="login">
                 <form onSubmit={handleLogin} className="space-y-3">
                   <div className="space-y-1">
-                    <Label className="text-xs font-semibold">Student Register Number</Label>
+                    <Label className="text-xs font-semibold">Email Address</Label>
                     <div className="relative">
-                      <User className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
+                      <Mail className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
                       <Input
-                        type="text"
+                        type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        placeholder="student@example.com"
+                        className="pl-9 text-xs"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <Label className="text-xs font-semibold">Student Register Number</Label>
+                    <div className="relative">
+                      <GraduationCap className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
+                      <Input
+                        type="text"
+                        value={regNo}
+                        onChange={(e) => setRegNo(e.target.value)}
                         placeholder="e.g. 922521104001"
                         className="pl-9 text-xs font-mono"
                         required
@@ -354,13 +534,28 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                   </div>
 
                   <div className="space-y-1">
+                    <Label className="text-xs font-semibold">Email Address</Label>
+                    <div className="relative">
+                      <Mail className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
+                      <Input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="student@example.com"
+                        className="pl-9 text-xs"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
                     <Label className="text-xs font-semibold">Student Register Number</Label>
                     <div className="relative">
                       <GraduationCap className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
                       <Input
                         type="text"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={regNo}
+                        onChange={(e) => setRegNo(e.target.value)}
                         placeholder="e.g. 922521104001"
                         className="pl-9 text-xs font-mono"
                         required

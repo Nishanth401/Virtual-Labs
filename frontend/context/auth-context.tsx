@@ -7,6 +7,8 @@ import {
   StudentProfile,
   saveStudentProfileToDb,
   getStudentProfileFromDb,
+  deleteStudentAccountFromDb,
+  verifyEmailAndRegNoUnique,
   markExperimentCompletedInDb,
   toggleProblemCompletedInDb,
   toggleProblemStarredInDb,
@@ -28,8 +30,9 @@ interface AuthContextType {
   student: StudentProfile | null;
   studentProfile: StudentProfile | null;
   loading: boolean;
-  signInWithEmail: (email: string, pass: string) => Promise<{ email: string; emailVerified: boolean }>;
-  signUpWithEmail: (email: string, pass: string, name?: string) => Promise<{ email: string; emailVerified: boolean }>;
+  signInWithEmail: (email: string, pass: string, regNo?: string) => Promise<{ email: string; emailVerified: boolean }>;
+  signUpWithEmail: (email: string, pass: string, name?: string, regNo?: string) => Promise<{ email: string; emailVerified: boolean }>;
+  updateStudentRegisterNumber: (regNo: string) => Promise<void>;
   loginWithRegisterNumber: (regNoOrEmail: string, pass: string) => Promise<{ email: string; emailVerified: boolean }>;
   registerWithRegisterNumber: (
     name: string,
@@ -40,6 +43,7 @@ interface AuthContextType {
   ) => Promise<{ email: string; emailVerified: boolean }>;
   loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
+  deleteAccount: () => Promise<void>;
   markExperimentComplete: (experimentId: string) => Promise<void>;
   saveQuizScore: (quizId: string, score: number, total: number) => Promise<void>;
   toggleProblemCompleted: (problemId: string) => Promise<void>;
@@ -146,11 +150,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // Sign In using email and password
-  const signInWithEmail = async (emailInput: string, pass: string) => {
+  const signInWithEmail = async (emailInput: string, pass: string, regNoInput?: string) => {
     setLoading(true);
     try {
       const email = formatAuthEmail(emailInput);
-      const regNo = email.split("@")[0].toUpperCase();
+      const regNo = regNoInput ? regNoInput.trim().toUpperCase() : email.split("@")[0].toUpperCase();
+
+      const uniqueCheck = await verifyEmailAndRegNoUnique(email, regNo);
+      if (!uniqueCheck.valid) {
+        throw new Error(uniqueCheck.error || "Email and Register Number mismatch.");
+      }
 
       try {
         const res = await Promise.race([
@@ -166,7 +175,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       const profile: StudentProfile = {
         uid: "student-" + regNo,
-        name: "Student " + regNo,
+        name: user?.displayName || (email ? email.split("@")[0] : "Student"),
         registerNumber: regNo,
         email,
         department: "Artificial Intelligence & Data Science",
@@ -185,6 +194,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       return { email, emailVerified: true };
     } catch (err: any) {
+      if (err.message && err.message.includes("already bound")) {
+        throw err;
+      }
       const errorMsg = mapAuthError(err, "signin");
       throw new Error(errorMsg);
     } finally {
@@ -197,14 +209,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     emailInput: string,
     pass: string,
     name?: string,
+    regNoInput?: string,
     department = "Artificial Intelligence & Data Science",
     yearSemester = "Year III / Semester VI"
   ) => {
     setLoading(true);
     try {
       const email = formatAuthEmail(emailInput);
-      const regNo = email.split("@")[0].toUpperCase();
+      const regNo = regNoInput ? regNoInput.trim().toUpperCase() : email.split("@")[0].toUpperCase();
       let uid = "student-" + regNo;
+
+      const uniqueCheck = await verifyEmailAndRegNoUnique(email, regNo);
+      if (!uniqueCheck.valid) {
+        throw new Error(uniqueCheck.error || "Email and Register Number mismatch.");
+      }
 
       try {
         const res = await Promise.race([
@@ -225,7 +243,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       const profile: StudentProfile = {
         uid,
-        name: name ? name.trim() : "Student " + regNo,
+        name: name && name.trim() ? name.trim() : (email ? email.split("@")[0] : "Student"),
         registerNumber: regNo,
         email,
         department,
@@ -244,11 +262,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       return { email, emailVerified: true };
     } catch (err: any) {
+      if (err.message && (err.message.includes("already bound") || err.message.includes("already registered"))) {
+        throw err;
+      }
       const errorMsg = mapAuthError(err, "signup");
       throw new Error(errorMsg);
     } finally {
       setLoading(false);
     }
+  };
+
+  const updateStudentRegisterNumber = async (regNo: string) => {
+    if (!studentProfile) return;
+    const cleanRegNo = regNo.trim().toUpperCase();
+
+    const uniqueCheck = await verifyEmailAndRegNoUnique(studentProfile.email, cleanRegNo, studentProfile.uid);
+    if (!uniqueCheck.valid) {
+      throw new Error(uniqueCheck.error || "Register Number already bound to another account.");
+    }
+
+    const updated: StudentProfile = {
+      ...studentProfile,
+      registerNumber: cleanRegNo,
+      lastActive: new Date().toISOString()
+    };
+    setStudentProfile(updated);
+    await saveStudentProfileToDb(updated);
   };
 
   // Aliases for Register Number / Email
@@ -329,6 +368,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     } catch (e) {
       console.error("Logout error:", e);
+    }
+  };
+
+  const deleteAccount = async () => {
+    setLoading(true);
+    try {
+      if (studentProfile) {
+        await deleteStudentAccountFromDb(studentProfile.uid, studentProfile.registerNumber);
+      }
+      if (auth.currentUser) {
+        try {
+          await auth.currentUser.delete();
+        } catch (e) {
+          console.warn("Firebase Auth user delete warning:", e);
+        }
+      }
+      await fbSignOut(auth);
+      setUser(null);
+      setStudentProfile(null);
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("vsb_student_profile_data");
+      }
+    } catch (err: any) {
+      console.error("Delete account error:", err);
+      throw err;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -416,10 +482,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         loading,
         signInWithEmail,
         signUpWithEmail,
+        updateStudentRegisterNumber,
         loginWithRegisterNumber,
         registerWithRegisterNumber,
         loginWithGoogle,
         logout,
+        deleteAccount,
         markExperimentComplete,
         saveQuizScore,
         toggleProblemCompleted,

@@ -99,26 +99,51 @@ export async function saveStudentProfileToDb(profile: StudentProfile): Promise<v
   }
 
   try {
+    const studentData = {
+      ...profile,
+      lastActive: new Date().toISOString()
+    };
+
+    // Save to Firestore 'users' collection by UID
     const userRef = doc(db, "users", profile.uid);
-    await Promise.race([
-      setDoc(userRef, {
-        ...profile,
-        lastActive: new Date().toISOString()
-      }, { merge: true }),
-      new Promise((resolve) => setTimeout(resolve, 1500))
-    ]);
+    await setDoc(userRef, studentData, { merge: true });
+
+    // Save to Firestore 'students' collection by Register Number
+    if (profile.registerNumber) {
+      const studentRef = doc(db, "students", profile.registerNumber);
+      await setDoc(studentRef, studentData, { merge: true });
+    }
   } catch (err) {
-    console.warn("Firestore sync fallback to localStorage:", err);
+    console.warn("Firestore save student profile error:", err);
+  }
+}
+
+export async function deleteStudentAccountFromDb(uid: string, registerNumber?: string): Promise<void> {
+  try {
+    const userRef = doc(db, "users", uid);
+    await deleteDoc(userRef);
+
+    if (registerNumber) {
+      const studentRef = doc(db, "students", registerNumber.trim().toUpperCase());
+      await deleteDoc(studentRef);
+    }
+  } catch (err) {
+    console.warn("Firestore delete student account warning:", err);
+  }
+
+  if (typeof window !== "undefined") {
+    try {
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+    } catch (e) {
+      console.warn("LocalStorage delete error:", e);
+    }
   }
 }
 
 export async function getStudentProfileFromDb(uid: string): Promise<StudentProfile | null> {
   try {
     const userRef = doc(db, "users", uid);
-    const snap = await Promise.race([
-      getDoc(userRef),
-      new Promise<null>((resolve) => setTimeout(() => resolve(null), 1500))
-    ]);
+    const snap = await getDoc(userRef);
     if (snap && snap.exists()) {
       const data = snap.data() as Partial<StudentProfile>;
       return {
@@ -139,7 +164,7 @@ export async function getStudentProfileFromDb(uid: string): Promise<StudentProfi
       };
     }
   } catch (err) {
-    console.warn("Firestore fetch fallback to localStorage:", err);
+    console.warn("Firestore fetch error, checking localStorage fallback:", err);
   }
 
   if (typeof window !== "undefined") {
@@ -153,6 +178,99 @@ export async function getStudentProfileFromDb(uid: string): Promise<StudentProfi
   }
 
   return null;
+}
+
+export async function verifyEmailAndRegNoUnique(
+  emailInput: string,
+  regNoInput: string,
+  currentUid?: string
+): Promise<{ valid: boolean; error?: string }> {
+  const email = emailInput.trim().toLowerCase();
+  const regNo = regNoInput.trim().toUpperCase();
+
+  if (!email || !regNo) {
+    return { valid: false, error: "Please enter both Email Address and Register Number." };
+  }
+
+  // 1. Check if Register Number is already bound to another Email in 'students' collection
+  try {
+    const studentRef = doc(db, "students", regNo);
+    const snap = await getDoc(studentRef);
+    if (snap && snap.exists()) {
+      const data = snap.data();
+      const existingEmail = (data.email || "").trim().toLowerCase();
+      const existingUid = data.uid || "";
+
+      if (existingEmail && existingEmail !== email) {
+        return {
+          valid: false,
+          error: `Register Number ${regNo} is already registered with email (${existingEmail}).`
+        };
+      }
+      if (currentUid && existingUid && existingUid !== currentUid && existingEmail !== email) {
+        return {
+          valid: false,
+          error: `Register Number ${regNo} belongs to another registered student account.`
+        };
+      }
+    }
+  } catch (err) {
+    console.warn("Firestore verifyEmailAndRegNoUnique regNo check warning:", err);
+  }
+
+  // 2. Check if Email is already bound to another Register Number in 'users' collection
+  try {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("email", "==", email));
+    const querySnap = await getDocs(q);
+
+    if (!querySnap.empty) {
+      for (const docSnap of querySnap.docs) {
+        const data = docSnap.data();
+        const existingRegNo = (data.registerNumber || "").trim().toUpperCase();
+        const existingUid = data.uid || docSnap.id;
+
+        if (existingRegNo && existingRegNo !== regNo) {
+          if (currentUid && existingUid === currentUid) {
+            continue;
+          }
+          return {
+            valid: false,
+            error: `Email address (${email}) is already bound to Register Number (${existingRegNo}). An email cannot be used for multiple Register Numbers.`
+          };
+        }
+      }
+    }
+  } catch (err) {
+    console.warn("Firestore verifyEmailAndRegNoUnique email check warning:", err);
+  }
+
+  // 3. LocalStorage fallback check
+  if (typeof window !== "undefined") {
+    try {
+      const local = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (local) {
+        const parsed = JSON.parse(local);
+        const localEmail = (parsed.email || "").trim().toLowerCase();
+        const localRegNo = (parsed.registerNumber || "").trim().toUpperCase();
+
+        if (localEmail === email && localRegNo && localRegNo !== regNo) {
+          return {
+            valid: false,
+            error: `This email is already bound to Register Number (${localRegNo}).`
+          };
+        }
+        if (localRegNo === regNo && localEmail && localEmail !== email) {
+          return {
+            valid: false,
+            error: `Register Number (${regNo}) is already registered to another email address.`
+          };
+        }
+      }
+    } catch {}
+  }
+
+  return { valid: true };
 }
 
 // ==========================================

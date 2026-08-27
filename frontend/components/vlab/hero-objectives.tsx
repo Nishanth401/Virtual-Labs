@@ -83,19 +83,6 @@ export function HeroObjectives() {
       <ConstellationBackground />
 
       <div className="container max-w-5xl mx-auto text-center relative z-10 space-y-6 pt-2">
-        {/* Student Welcome Bar when Signed In */}
-        {studentProfile && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-bold shadow-xs"
-          >
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Welcome back, <strong className="text-foreground font-black">{studentProfile.name}</strong> ({studentProfile.registerNumber})</span>
-          </motion.div>
-        )}
-
         {/* Sleek Pill Badge matching Screenshot 1 */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}

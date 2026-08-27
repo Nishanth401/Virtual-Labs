@@ -12,17 +12,24 @@ import { UserNotesSection } from "@/components/dashboard/user-notes-section";
 import { UserTeamSection } from "@/components/dashboard/user-team-section";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Award, RotateCcw, Sparkles, BookOpen, Layers, ArrowRight, LogOut } from "lucide-react";
+import { Award, RotateCcw, Sparkles, BookOpen, Layers, ArrowRight, LogOut, Trash2 } from "lucide-react";
 import Link from "next/link";
 
 export default function StudentDashboardPage() {
   const router = useRouter();
-  const { user, logout } = useAuth();
+  const { user, logout, deleteAccount } = useAuth();
   const { progress, isLoaded, resetProgress } = useStudentProgress();
 
   const handleLogout = async () => {
     await logout();
     router.push("/auth/login");
+  };
+
+  const handleDeleteAccount = async () => {
+    if (confirm("Are you sure you want to permanently delete your account? All progress, certificates, notes, and bound Register Number will be erased.")) {
+      await deleteAccount();
+      router.push("/");
+    }
   };
 
   if (!isLoaded) {
@@ -85,9 +92,18 @@ export default function StudentDashboardPage() {
                 variant="outline"
                 size="sm"
                 onClick={handleLogout}
-                className="text-xs gap-1.5 text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 border-border"
+                className="text-xs gap-1.5 text-slate-700 dark:text-slate-300 hover:bg-muted border-border"
               >
                 <LogOut className="h-3.5 w-3.5" /> Sign Out
+              </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleDeleteAccount}
+                className="text-xs gap-1.5 text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 border-rose-500/30"
+              >
+                <Trash2 className="h-3.5 w-3.5" /> Delete Account
               </Button>
             </div>
           </div>
