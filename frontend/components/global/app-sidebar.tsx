@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Binary, Home, Database, BrainCircuit, TreePine, List, SquareStack, SquareChevronLeft, Equal, MessageSquare, X, Hash, ArrowRightLeft, ArrowDownUp, Award, FlaskConical } from "lucide-react"
+import { Binary, Home, Database, BrainCircuit, TreePine, List, SquareStack, SquareChevronLeft, Equal, MessageSquare, X, Hash, ArrowRightLeft, ArrowDownUp, Award, FlaskConical, TrendingUp, Calculator, Layers, Flag, Vote } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -24,14 +24,19 @@ const navItems = [
     icon: Database,
   },
   {
-    title: "Data Structures Lab",
+    title: "DSA Roadmap Labs",
     url: "/labs/data-structures",
-    icon: List,
+    icon: BrainCircuit,
   },
   {
-    title: "Student Portal",
+    title: "AI & ML Labs",
+    url: "/labs/ai-machine-learning",
+    icon: Binary,
+  },
+  {
+    title: "Dashboard",
     url: "/dashboard",
-    icon: Award,
+    icon: Home,
   },
 ]
 
@@ -40,31 +45,31 @@ const sortingAlgorithms = [
     name: "Bubble Sort",
     url: "/visualizer/bubble-sort",
     icon: ArrowDownUp,
-    description: "Adjacent element comparison and bubbling pass",
+    description: "Adjacent comparison and swapping pass with early exit",
   },
   {
     name: "Selection Sort",
     url: "/visualizer/selection-sort",
     icon: ArrowDownUp,
-    description: "Minimum index scanning and in-place swapping",
+    description: "Finds minimum element in unsorted partition",
   },
   {
     name: "Insertion Sort",
     url: "/visualizer/insertion-sort",
     icon: ArrowDownUp,
-    description: "Key element extraction and backward shifting",
+    description: "Online card sorting with linear performance on nearly sorted inputs",
   },
   {
     name: "Merge Sort",
     url: "/visualizer/merge-sort",
     icon: ArrowDownUp,
-    description: "Divide and conquer splitting with two-way merging",
+    description: "Divide-and-conquer O(n log n) stable sorting",
   },
   {
     name: "Cyclic Sort",
     url: "/visualizer/cyclic-sort",
     icon: ArrowDownUp,
-    description: "Linear O(n) in-place index matching placement",
+    description: "In-place placement pattern for numbers 1..N",
   },
   {
     name: "Quick Sort",
@@ -86,6 +91,36 @@ const algorithmicPatterns = [
     url: "/visualizer/sliding-window",
     icon: ArrowRightLeft,
     description: "Contiguous window overlay tracking sub-segment metrics",
+  },
+  {
+    name: "Kadane's Algorithm",
+    url: "/visualizer/kadanes-algorithm",
+    icon: TrendingUp,
+    description: "Maximum contiguous subarray sum tracking",
+  },
+  {
+    name: "Prefix Sum",
+    url: "/visualizer/prefix-sum",
+    icon: Calculator,
+    description: "Precomputed cumulative sum array and O(1) Range Sum Query",
+  },
+  {
+    name: "Difference Array",
+    url: "/visualizer/difference-array",
+    icon: Layers,
+    description: "Efficient O(1) range updates with prefix sum reconstruction",
+  },
+  {
+    name: "Dutch National Flag",
+    url: "/visualizer/dutch-national-flag",
+    icon: Flag,
+    description: "3-way partitioning of 0s, 1s, and 2s in O(N)",
+  },
+  {
+    name: "Boyer-Moore Majority Vote",
+    url: "/visualizer/boyer-moore",
+    icon: Vote,
+    description: "Identify majority elements (> N/2) in O(N) time & O(1) space",
   },
 ]
 
@@ -182,7 +217,7 @@ export function AppSidebar() {
           }))}
         />
         <NavProjects
-          title="Algorithm Visualizer"
+          title="Array Algorithm Visualizer"
           projects={algorithmicPatterns.map(a => ({
             name: a.name,
             url: a.url,

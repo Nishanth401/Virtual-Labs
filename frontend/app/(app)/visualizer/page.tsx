@@ -23,7 +23,10 @@ import {
   GitBranch,
   ArrowRight,
   BookOpen,
-  Trophy
+  Trophy,
+  TrendingUp,
+  Flag,
+  Vote
 } from "lucide-react";
 
 const sections = {
@@ -103,6 +106,41 @@ const sections = {
       href: "/visualizer/sliding-window",
       icon: Box,
       badge: "O(N) Pattern"
+    },
+    {
+      name: "Kadane's Algorithm Visualizer",
+      description: "Maximum contiguous subarray sum tracking with greedy choice step decisions and optimal bounds.",
+      href: "/visualizer/kadanes-algorithm",
+      icon: TrendingUp,
+      badge: "O(N) Dynamic"
+    },
+    {
+      name: "Prefix Sum Visualizer",
+      description: "Precomputed cumulative sum array with interactive O(1) range sum query sum(L, R) simulator.",
+      href: "/visualizer/prefix-sum",
+      icon: Calculator,
+      badge: "O(1) Query"
+    },
+    {
+      name: "Difference Array Visualizer",
+      description: "Efficient O(1) range update processing D[L]+=val and D[R+1]-=val with prefix sum reconstruction.",
+      href: "/visualizer/difference-array",
+      icon: Layers,
+      badge: "O(1) Update"
+    },
+    {
+      name: "Dutch National Flag Visualizer",
+      description: "3-way partitioning of 0s, 1s, and 2s using low, mid, high pointers in a single O(N) pass.",
+      href: "/visualizer/dutch-national-flag",
+      icon: Flag,
+      badge: "3-Way Sort"
+    },
+    {
+      name: "Boyer-Moore Majority Vote Visualizer",
+      description: "Identify majority elements (> N/2) in O(N) time and O(1) space with candidate selection and verification passes.",
+      href: "/visualizer/boyer-moore",
+      icon: Vote,
+      badge: "Majority Vote"
     }
   ],
   dataStructures: [
@@ -292,7 +330,7 @@ export default function VisualizerHubPage() {
         <div className="flex items-center justify-between border-b border-border/60 pb-2">
           <h2 className="text-xl font-bold font-heading text-foreground flex items-center gap-2">
             <BrainCircuit className="h-5 w-5 text-[#1e88e5]" />
-            <span>Algorithm Visualizer</span>
+            <span>Array Algorithm Visualizer</span>
           </h2>
           <Badge variant="secondary" className="text-xs">{sections.algorithms.length} Simulators</Badge>
         </div>
