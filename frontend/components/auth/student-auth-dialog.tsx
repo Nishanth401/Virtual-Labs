@@ -479,7 +479,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                 VSB Virtual Labs Login
               </DialogTitle>
               <DialogDescription className="text-xs text-muted-foreground leading-relaxed">
-                Please sign in with your email, register number, and password to enter the laboratory platform.
+                Please sign in with your Google account to enter the laboratory platform.
               </DialogDescription>
             </DialogHeader>
 
@@ -495,7 +495,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
               variant="outline"
               onClick={handleGoogleSignIn}
               disabled={loading}
-              className="w-full py-5 rounded-xl border-border bg-white dark:bg-card hover:bg-muted font-bold text-xs flex items-center justify-center gap-2 shadow-xs"
+              className="w-full py-5 rounded-xl border-border bg-white dark:bg-card hover:bg-muted font-bold text-xs flex items-center justify-center gap-2 shadow-xs cursor-pointer"
             >
               <svg className="h-4 w-4" viewBox="0 0 24 24">
                 <path
@@ -517,154 +517,6 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
               </svg>
               <span>Continue with Google</span>
             </Button>
-
-            <div className="flex items-center gap-3 text-xs text-muted-foreground">
-              <div className="h-[1px] flex-1 bg-border/60" />
-              <span className="font-mono text-[10px] uppercase">Or Student Credentials</span>
-              <div className="h-[1px] flex-1 bg-border/60" />
-            </div>
-
-            {/* Tabs for Login vs Register */}
-            <Tabs value={authTab} onValueChange={(v) => { setAuthTab(v as any); setErrorMsg(""); }} className="w-full">
-              <TabsList className="grid grid-cols-2 w-full mb-3 bg-muted/60 p-1">
-                <TabsTrigger value="login" className="text-xs py-1.5 font-bold">
-                  Sign In
-                </TabsTrigger>
-                <TabsTrigger value="register" className="text-xs py-1.5 font-bold">
-                  Sign Up
-                </TabsTrigger>
-              </TabsList>
-
-              {/* Sign In Tab */}
-              <TabsContent value="login">
-                <form onSubmit={handleLogin} className="space-y-3">
-                  <div className="space-y-1">
-                    <Label className="text-xs font-semibold">Email Address</Label>
-                    <div className="relative">
-                      <Mail className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
-                      <Input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="student@example.com"
-                        className="pl-9 text-xs"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <Label className="text-xs font-semibold">Student Register Number</Label>
-                    <div className="relative">
-                      <GraduationCap className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
-                      <Input
-                        type="text"
-                        value={regNo}
-                        onChange={(e) => setRegNo(e.target.value)}
-                        placeholder="e.g. 922521104001"
-                        className="pl-9 text-xs font-mono"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <Label className="text-xs font-semibold">Password</Label>
-                    <div className="relative">
-                      <Lock className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
-                      <Input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="••••••••"
-                        className="pl-9 text-xs"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <Button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full bg-primary hover:bg-primary/90 text-white text-xs font-bold py-2 mt-2 cursor-pointer"
-                  >
-                    {loading ? "Signing In..." : "Sign In"}
-                  </Button>
-                </form>
-              </TabsContent>
-
-              {/* Register Tab */}
-              <TabsContent value="register">
-                <form onSubmit={handleRegister} className="space-y-2.5">
-                  <div className="space-y-1">
-                    <Label className="text-xs font-semibold">Full Student Name</Label>
-                    <div className="relative">
-                      <User className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
-                      <Input
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="e.g. Praveen S"
-                        className="pl-9 text-xs"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <Label className="text-xs font-semibold">Email Address</Label>
-                    <div className="relative">
-                      <Mail className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
-                      <Input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="student@example.com"
-                        className="pl-9 text-xs"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <Label className="text-xs font-semibold">Student Register Number</Label>
-                    <div className="relative">
-                      <GraduationCap className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
-                      <Input
-                        type="text"
-                        value={regNo}
-                        onChange={(e) => setRegNo(e.target.value)}
-                        placeholder="e.g. 922521104001"
-                        className="pl-9 text-xs font-mono"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <Label className="text-xs font-semibold">Password</Label>
-                    <div className="relative">
-                      <Lock className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
-                      <Input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="••••••••"
-                        className="pl-9 text-xs"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <Button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full bg-primary hover:bg-primary/90 text-white text-xs font-bold py-2 mt-2 cursor-pointer"
-                  >
-                    {loading ? "Creating Account..." : "Sign Up"}
-                  </Button>
-                </form>
-              </TabsContent>
-            </Tabs>
           </div>
         )}
       </DialogContent>
