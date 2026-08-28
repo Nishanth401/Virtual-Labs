@@ -34,6 +34,42 @@ import { ModeToggle } from "@/components/global/mode-toggle";
 import { useAuth } from "@/context/auth-context";
 import { StudentAuthDialog } from "@/components/auth/student-auth-dialog";
 
+/**
+ * Returns a clean display username from auth state.
+ * Priority: studentProfile.name > user.displayName > "User"
+ * Rejects anything that looks like an email address or raw email prefix.
+ */
+function getUsername(
+  studentProfile: { name?: string; email?: string } | null,
+  user: { displayName?: string | null; email?: string | null } | null
+): string {
+  const email = studentProfile?.email || user?.email || "";
+  const emailPrefix = email.split("@")[0].toLowerCase();
+
+  const isEmailLike = (val: string) => {
+    if (!val) return true;
+    const v = val.trim().toLowerCase();
+    // Explicit email address
+    if (v.includes("@")) return true;
+    // Matches the raw email prefix exactly
+    if (emailPrefix && v === emailPrefix) return true;
+    // All lowercase + digits + no spaces (typical email prefix pattern)
+    if (/^[a-z0-9._-]+$/.test(v) && v.length > 5 && !v.includes(" ")) return true;
+    return false;
+  };
+
+  const candidates = [
+    studentProfile?.name,
+    user?.displayName,
+  ];
+
+  for (const c of candidates) {
+    if (c && !isEmailLike(c)) return c.trim();
+  }
+
+  return "User";
+}
+
 const NAV_ITEMS = [
   { name: "Home", href: "/" },
   { name: "Labs", href: "/labs" },
@@ -174,7 +210,7 @@ export function Navbar() {
               {mounted && (studentProfile || user) ? (
                 <span className="flex items-center gap-1.5 font-bold text-slate-900 dark:text-white max-w-[140px] truncate">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0 inline-block" />
-                  {studentProfile?.name || user?.displayName || (user?.email ? user.email.split('@')[0] : "Student Active")}
+                  {getUsername(studentProfile, user)}
                 </span>
               ) : (
                 <span>Sign In</span>
@@ -224,7 +260,7 @@ export function Navbar() {
                 className="w-full px-3.5 py-2.5 rounded-xl text-xs font-bold bg-gradient-to-r from-[#e11d48] to-[#dc2626] text-white text-center cursor-pointer shadow-md shadow-red-500/30 flex items-center justify-center gap-1.5"
                 suppressHydrationWarning
               >
-                <span>{mounted && (studentProfile?.name || user?.displayName || user?.email) ? `Student: ${studentProfile?.name || user?.displayName || user?.email?.split('@')[0]}` : "Student Login & Register"}</span>
+                <span>{mounted && (studentProfile || user) ? `Student: ${getUsername(studentProfile, user)}` : "Student Login & Register"}</span>
                 <ArrowRight className="h-3 w-3" />
               </button>
             </div>
