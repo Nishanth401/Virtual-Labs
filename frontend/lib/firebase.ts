@@ -142,14 +142,39 @@ export async function deleteStudentAccountFromDb(uid: string, registerNumber?: s
 
 export async function getStudentProfileFromDb(uid: string): Promise<StudentProfile | null> {
   try {
+    // 1. Try 'users' collection by UID
     const userRef = doc(db, "users", uid);
     const snap = await getDoc(userRef);
     if (snap && snap.exists()) {
       const data = snap.data() as Partial<StudentProfile>;
       return {
-        uid,
+        uid: data.uid || uid,
         name: data.name || data.email?.split("@")[0] || "Student",
         registerNumber: data.registerNumber || "922521104001",
+        email: data.email || "",
+        department: data.department || "Artificial Intelligence & Data Science",
+        yearSemester: data.yearSemester || "III Year / VI Semester",
+        completedExperiments: data.completedExperiments || [],
+        completedProblems: data.completedProblems || [],
+        starredProblems: data.starredProblems || [],
+        problemNotes: data.problemNotes || {},
+        quizScores: data.quizScores || {},
+        feedbacks: data.feedbacks || {},
+        createdAt: data.createdAt || new Date().toISOString(),
+        lastActive: data.lastActive || new Date().toISOString()
+      };
+    }
+
+    // 2. Fallback: Try 'students' collection by Register Number
+    const cleanKey = uid.startsWith("student-") ? uid.replace("student-", "") : uid;
+    const studentRef = doc(db, "students", cleanKey.trim().toUpperCase());
+    const studentSnap = await getDoc(studentRef);
+    if (studentSnap && studentSnap.exists()) {
+      const data = studentSnap.data() as Partial<StudentProfile>;
+      return {
+        uid: data.uid || uid,
+        name: data.name || data.email?.split("@")[0] || "Student",
+        registerNumber: data.registerNumber || cleanKey.toUpperCase(),
         email: data.email || "",
         department: data.department || "Artificial Intelligence & Data Science",
         yearSemester: data.yearSemester || "III Year / VI Semester",
