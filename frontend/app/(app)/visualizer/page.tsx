@@ -68,26 +68,19 @@ const sections = {
       badge: "Adaptive"
     },
     {
-      name: "Merge Sort Visualizer",
-      description: "Divide-and-conquer algorithm with guaranteed O(n log n) stable sorting and recursive split visualization.",
-      href: "/visualizer/merge-sort",
-      icon: ArrowDownUp,
-      badge: "O(n log n)"
+      name: "Two Pointers Algorithm Visualizer",
+      description: "Inward & synchronized pointer stepping across sorted arrays for target sum and container area optimization.",
+      href: "/visualizer/two-pointers",
+      icon: ArrowLeftRight,
+      badge: "O(N) Pattern"
     },
     {
-      name: "Cyclic Sort Visualizer",
-      description: "In-place cycle placement pattern for numbers 1..N with linear O(n) runtime and minimal swaps.",
-      href: "/visualizer/cyclic-sort",
-      icon: ArrowDownUp,
-      badge: "O(n) Pattern"
-    },
-    {
-      name: "Quick Sort Visualizer",
-      description: "Pivot partitioning and recursive sub-array sorting with Lomuto partitioning trace.",
-      href: "/visualizer/quick-sort",
-      icon: ArrowDownUp,
-      badge: "O(n log n)"
-    },
+      name: "Sliding Window Algorithm Visualizer",
+      description: "Fixed and variable contiguous window overlays tracking sub-segment metrics and minimum subarray lengths.",
+      href: "/visualizer/sliding-window",
+      icon: Box,
+      badge: "O(N) Pattern"
+    }
   ],
   dataStructures: [
     {
@@ -231,14 +224,14 @@ export default function VisualizerHubPage() {
         </div>
       </section>
 
-      {/* Sorting Algorithms Section */}
+      {/* Sorting & Algorithmic Patterns Section */}
       <section className="space-y-4">
         <div className="flex items-center justify-between border-b border-border/60 pb-2">
           <h2 className="text-xl font-bold font-heading text-foreground flex items-center gap-2">
             <ArrowDownUp className="h-5 w-5 text-[#1e88e5]" />
-            <span>Sorting Algorithms</span>
+            <span>Sorting &amp; Algorithmic Patterns</span>
           </h2>
-          <Badge variant="secondary" className="text-xs">{sections.sorting.length} Simulators</Badge>
+          <Badge variant="secondary" className="text-xs bg-primary/10 text-primary border-primary/30 font-mono">5 Simulators</Badge>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {sections.sorting.map((algo) => {

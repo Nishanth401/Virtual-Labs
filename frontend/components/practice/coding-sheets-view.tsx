@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import {
   CodingProblem,
@@ -44,6 +44,11 @@ import {
 } from "lucide-react";
 
 export function CodingSheetsView() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const { student, toggleProblemCompleted, toggleProblemStarred, saveProblemNote } = useAuth();
 
   const [activeSheet, setActiveSheet] = useState<SheetType>("top-interview-150");
@@ -626,6 +631,17 @@ export function CodingSheetsView() {
                             <FileText className="h-2.5 w-2.5" />
                             <span>{hasNotes ? "Note" : "+Note"}</span>
                           </button>
+
+                          {problem.visualizerUrl && (
+                            <Link
+                              href={problem.visualizerUrl}
+                              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 font-bold hover:bg-emerald-500/20 transition-colors"
+                              title="Launch Interactive Step Visualizer Studio"
+                            >
+                              <Sparkles className="h-2.5 w-2.5" />
+                              <span>Visualize</span>
+                            </Link>
+                          )}
                         </div>
                       </td>
 

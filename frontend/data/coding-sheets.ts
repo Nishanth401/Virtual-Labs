@@ -25,157 +25,73 @@ export interface CodingProblem {
   codeforcesUrl?: string;
   w3schoolsUrl?: string;
   takeUForwardUrl?: string;
+  visualizerUrl?: string;
   productCompanies: string[];
   serviceCompanies: string[];
 }
 
 export const CODING_PROBLEMS: CodingProblem[] = [
   // ==========================================
-  // TOP INTERVIEW 150 & LEETCODE 75 - ARRAY / STRING
+  // TWO POINTERS ALGORITHM PATTERN
   // ==========================================
   {
-    id: "merge-sorted-array",
-    problemNumber: 88,
-    title: "Merge Sorted Array",
-    slug: "merge-sorted-array",
-    sheet: ["top-interview-150"],
-    category: "Array / String",
-    difficulty: "Easy",
-    importanceRating: 9.6,
-    leetcodeUrl: "https://leetcode.com/problems/merge-sorted-array/",
-    gfgUrl: "https://www.geeksforgeeks.org/merge-two-sorted-arrays/",
-    hackerrankUrl: "https://www.hackerrank.com/challenges/merge-two-sorted-arrays",
-    takeUForwardUrl: "https://takeuforward.org/data-structure/merge-two-sorted-arrays-without-extra-space/",
-    productCompanies: ["Facebook", "Microsoft", "Amazon", "Apple", "Google", "Bloomberg"],
-    serviceCompanies: ["TCS", "Infosys", "Wipro", "Cognizant", "Accenture"]
-  },
-  {
-    id: "remove-element",
-    problemNumber: 27,
-    title: "Remove Element",
-    slug: "remove-element",
-    sheet: ["top-interview-150"],
-    category: "Array / String",
-    difficulty: "Easy",
-    importanceRating: 8.8,
-    leetcodeUrl: "https://leetcode.com/problems/remove-element/",
-    gfgUrl: "https://www.geeksforgeeks.org/remove-occurrences-of-a-character-in-a-string/",
-    hackerrankUrl: "https://www.hackerrank.com/domains/tutorials/10-days-of-javascript",
-    productCompanies: ["Amazon", "Microsoft", "Adobe", "Google"],
-    serviceCompanies: ["TCS", "Infosys", "Capgemini", "Accenture"]
-  },
-  {
-    id: "remove-duplicates-from-sorted-array",
-    problemNumber: 26,
-    title: "Remove Duplicates from Sorted Array",
-    slug: "remove-duplicates-from-sorted-array",
-    sheet: ["top-interview-150"],
-    category: "Array / String",
-    difficulty: "Easy",
-    importanceRating: 9.7,
-    leetcodeUrl: "https://leetcode.com/problems/remove-duplicates-from-sorted-array/",
-    gfgUrl: "https://www.geeksforgeeks.org/remove-duplicates-sorted-array/",
-    takeUForwardUrl: "https://takeuforward.org/data-structure/remove-duplicates-in-place-from-sorted-array/",
-    productCompanies: ["Facebook", "Microsoft", "Amazon", "Apple", "Google", "Uber"],
-    serviceCompanies: ["TCS", "Wipro", "Cognizant", "HCL", "Accenture"]
-  },
-  {
-    id: "remove-duplicates-from-sorted-array-ii",
-    problemNumber: 80,
-    title: "Remove Duplicates from Sorted Array II",
-    slug: "remove-duplicates-from-sorted-array-ii",
-    sheet: ["top-interview-150"],
-    category: "Array / String",
+    id: "two-sum-ii-input-array-is-sorted",
+    problemNumber: 167,
+    title: "Two Sum II - Input Array Is Sorted",
+    slug: "two-sum-ii-input-array-is-sorted",
+    sheet: ["top-interview-150", "leetcode-75"],
+    category: "Two Pointers",
     difficulty: "Medium",
-    importanceRating: 9.1,
-    leetcodeUrl: "https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/",
-    gfgUrl: "https://www.geeksforgeeks.org/remove-duplicates-from-sorted-array/",
-    productCompanies: ["Facebook", "Amazon", "Microsoft", "Bloomberg"],
-    serviceCompanies: ["Cognizant", "Infosys", "Capgemini"]
+    importanceRating: 9.9,
+    leetcodeUrl: "https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/",
+    gfgUrl: "https://www.geeksforgeeks.org/two-pointers-technique/",
+    takeUForwardUrl: "https://takeuforward.org/data-structure/two-sum-check-if-a-pair-with-given-sum-exists-in-array/",
+    visualizerUrl: "/visualizer/two-pointers",
+    productCompanies: ["Amazon", "Microsoft", "Google", "Apple", "Facebook"],
+    serviceCompanies: ["TCS", "Infosys", "Wipro", "Cognizant"]
   },
   {
-    id: "majority-element",
-    problemNumber: 169,
-    title: "Majority Element",
-    slug: "majority-element",
-    sheet: ["top-interview-150"],
-    category: "Array / String",
-    difficulty: "Easy",
+    id: "container-with-most-water",
+    problemNumber: 11,
+    title: "Container With Most Water",
+    slug: "container-with-most-water",
+    sheet: ["top-interview-150", "leetcode-75"],
+    category: "Two Pointers",
+    difficulty: "Medium",
     importanceRating: 9.8,
-    leetcodeUrl: "https://leetcode.com/problems/majority-element/",
-    gfgUrl: "https://www.geeksforgeeks.org/majority-element/",
-    takeUForwardUrl: "https://takeuforward.org/data-structure/find-the-majority-element-that-occurs-more-than-n-2-times/",
-    productCompanies: ["Amazon", "Microsoft", "Google", "Apple", "Adobe", "Uber"],
-    serviceCompanies: ["TCS", "Infosys", "Wipro", "Accenture", "Cognizant"]
+    leetcodeUrl: "https://leetcode.com/problems/container-with-most-water/",
+    gfgUrl: "https://www.geeksforgeeks.org/container-with-most-water/",
+    takeUForwardUrl: "https://takeuforward.org/data-structure/container-with-most-water/",
+    visualizerUrl: "/visualizer/two-pointers",
+    productCompanies: ["Google", "Amazon", "Facebook", "Microsoft", "Adobe"],
+    serviceCompanies: ["TCS", "Accenture", "Cognizant"]
   },
   {
-    id: "rotate-array",
-    problemNumber: 189,
-    title: "Rotate Array",
-    slug: "rotate-array",
-    sheet: ["top-interview-150"],
-    category: "Array / String",
+    id: "3sum",
+    problemNumber: 15,
+    title: "3Sum",
+    slug: "3sum",
+    sheet: ["top-interview-150", "leetcode-75"],
+    category: "Two Pointers",
     difficulty: "Medium",
-    importanceRating: 9.5,
-    leetcodeUrl: "https://leetcode.com/problems/rotate-array/",
-    gfgUrl: "https://www.geeksforgeeks.org/array-rotation/",
-    takeUForwardUrl: "https://takeuforward.org/data-structure/rotate-array-by-k-elements/",
-    productCompanies: ["Amazon", "Microsoft", "Facebook", "Apple", "Paypal", "Cisco"],
+    importanceRating: 9.9,
+    leetcodeUrl: "https://leetcode.com/problems/3sum/",
+    gfgUrl: "https://www.geeksforgeeks.org/find-a-triplet-that-sum-to-a-given-value/",
+    takeUForwardUrl: "https://takeuforward.org/data-structure/3-sum-find-triplets-that-add-up-to-a-zero/",
+    visualizerUrl: "/visualizer/two-pointers",
+    productCompanies: ["Facebook", "Amazon", "Microsoft", "Google", "Apple", "Bloomberg"],
     serviceCompanies: ["TCS", "Infosys", "Wipro", "Capgemini"]
   },
   {
-    id: "best-time-to-buy-and-sell-stock",
-    problemNumber: 121,
-    title: "Best Time to Buy and Sell Stock",
-    slug: "best-time-to-buy-and-sell-stock",
+    id: "valid-palindrome",
+    problemNumber: 125,
+    title: "Valid Palindrome",
+    slug: "valid-palindrome",
     sheet: ["top-interview-150"],
-    category: "Array / String",
+    category: "Two Pointers",
     difficulty: "Easy",
-    importanceRating: 9.9,
-    leetcodeUrl: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/",
-    gfgUrl: "https://www.geeksforgeeks.org/stock-buy-sell/",
-    takeUForwardUrl: "https://takeuforward.org/data-structure/stock-buy-and-sell/",
-    productCompanies: ["Amazon", "Facebook", "Microsoft", "Apple", "Google", "Bloomberg", "Goldman Sachs"],
-    serviceCompanies: ["TCS", "Infosys", "Wipro", "Cognizant", "Accenture", "Mindtree"]
-  },
-  {
-    id: "best-time-to-buy-and-sell-stock-ii",
-    problemNumber: 122,
-    title: "Best Time to Buy and Sell Stock II",
-    slug: "best-time-to-buy-and-sell-stock-ii",
-    sheet: ["top-interview-150"],
-    category: "Array / String",
-    difficulty: "Medium",
-    importanceRating: 9.3,
-    leetcodeUrl: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/",
-    gfgUrl: "https://www.geeksforgeeks.org/maximum-profit-by-buying-and-selling-a-share-at-most-twice/",
-    takeUForwardUrl: "https://takeuforward.org/data-structure/buy-and-sell-stock-ii/",
-    productCompanies: ["Amazon", "Microsoft", "Facebook", "Bloomberg", "Adobe"],
-    serviceCompanies: ["Infosys", "Cognizant", "Accenture"]
-  },
-  {
-    id: "jump-game",
-    problemNumber: 55,
-    title: "Jump Game",
-    slug: "jump-game",
-    sheet: ["top-interview-150"],
-    category: "Array / String",
-    difficulty: "Medium",
-    importanceRating: 9.4,
-    leetcodeUrl: "https://leetcode.com/problems/jump-game/",
-    gfgUrl: "https://www.geeksforgeeks.org/minimum-number-of-jumps-to-reach-end-of-a-given-array/",
-    productCompanies: ["Amazon", "Microsoft", "Apple", "Google", "ByteDance"],
-    serviceCompanies: ["TCS", "Wipro", "Capgemini"]
-  },
-  {
-    id: "jump-game-ii",
-    problemNumber: 45,
-    title: "Jump Game II",
-    slug: "jump-game-ii",
-    sheet: ["top-interview-150"],
-    category: "Array / String",
-    difficulty: "Medium",
     importanceRating: 9.2,
+<<<<<<< HEAD
     leetcodeUrl: "https://leetcode.com/problems/jump-game-ii/",
     gfgUrl: "https://www.geeksforgeeks.org/minimum-number-jumps-reach-endset-2on-solution/",
     productCompanies: ["Amazon", "Google", "Microsoft", "Apple", "Adobe"],
@@ -270,6 +186,13 @@ export const CODING_PROBLEMS: CodingProblem[] = [
     takeUForwardUrl: "https://takeuforward.org/data-structure/trapping-rainwater/",
     productCompanies: ["Amazon", "Google", "Facebook", "Microsoft", "Apple", "Goldman Sachs", "Uber", "Adobe"],
     serviceCompanies: ["TCS Digital", "Infosys", "Wipro Turbo", "Accenture"]
+=======
+    leetcodeUrl: "https://leetcode.com/problems/valid-palindrome/",
+    gfgUrl: "https://www.geeksforgeeks.org/sentence-palindrome-palindrome-removing-spaces-dots-etc/",
+    visualizerUrl: "/visualizer/two-pointers",
+    productCompanies: ["Facebook", "Microsoft", "Amazon", "Wayfair"],
+    serviceCompanies: ["TCS", "Cognizant", "Accenture"]
+>>>>>>> 82197b7441e0df6f168c175b55b2dc19952b8365
   },
   {
     id: "roman-to-integer",
@@ -396,21 +319,6 @@ export const CODING_PROBLEMS: CodingProblem[] = [
   // TWO POINTERS
   // ==========================================
   {
-    id: "valid-palindrome",
-    problemNumber: 125,
-    title: "Valid Palindrome",
-    slug: "valid-palindrome",
-    sheet: ["top-interview-150"],
-    category: "Two Pointers",
-    difficulty: "Easy",
-    importanceRating: 9.5,
-    leetcodeUrl: "https://leetcode.com/problems/valid-palindrome/",
-    gfgUrl: "https://www.geeksforgeeks.org/sentence-palindrome-palette-given-sentence/",
-    takeUForwardUrl: "https://takeuforward.org/data-structure/check-if-the-given-string-is-palindrome-or-not/",
-    productCompanies: ["Facebook", "Microsoft", "Amazon", "Apple", "Spotify"],
-    serviceCompanies: ["TCS", "Infosys", "Wipro", "Cognizant", "Accenture"]
-  },
-  {
     id: "is-subsequence",
     problemNumber: 392,
     title: "Is Subsequence",
@@ -422,48 +330,6 @@ export const CODING_PROBLEMS: CodingProblem[] = [
     leetcodeUrl: "https://leetcode.com/problems/is-subsequence/",
     productCompanies: ["Amazon", "Google", "Microsoft", "Bloomberg"],
     serviceCompanies: ["TCS", "Infosys", "Wipro"]
-  },
-  {
-    id: "two-sum-ii-input-array-is-sorted",
-    problemNumber: 167,
-    title: "Two Sum II - Input Array Is Sorted",
-    slug: "two-sum-ii-input-array-is-sorted",
-    sheet: ["top-interview-150"],
-    category: "Two Pointers",
-    difficulty: "Medium",
-    importanceRating: 9.6,
-    leetcodeUrl: "https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/",
-    productCompanies: ["Amazon", "Facebook", "Apple", "Google", "Microsoft", "Uber"],
-    serviceCompanies: ["TCS", "Infosys", "Cognizant"]
-  },
-  {
-    id: "container-with-most-water",
-    problemNumber: 11,
-    title: "Container With Most Water",
-    slug: "container-with-most-water",
-    sheet: ["top-interview-150", "leetcode-75"],
-    category: "Two Pointers",
-    difficulty: "Medium",
-    importanceRating: 9.8,
-    leetcodeUrl: "https://leetcode.com/problems/container-with-most-water/",
-    gfgUrl: "https://www.geeksforgeeks.org/container-with-most-water/",
-    productCompanies: ["Amazon", "Google", "Facebook", "Apple", "Microsoft", "Bloomberg", "Goldman Sachs"],
-    serviceCompanies: ["TCS", "Infosys", "Wipro", "Cognizant", "Accenture"]
-  },
-  {
-    id: "3sum",
-    problemNumber: 15,
-    title: "3Sum",
-    slug: "3sum",
-    sheet: ["top-interview-150"],
-    category: "Two Pointers",
-    difficulty: "Medium",
-    importanceRating: 9.9,
-    leetcodeUrl: "https://leetcode.com/problems/3sum/",
-    gfgUrl: "https://www.geeksforgeeks.org/find-a-triplet-that-sum-to-a-given-value/",
-    takeUForwardUrl: "https://takeuforward.org/data-structure/3-sum-find-triplets-that-add-up-to-a-zero/",
-    productCompanies: ["Facebook", "Amazon", "Microsoft", "Apple", "Google", "Uber", "Cisco", "Adobe"],
-    serviceCompanies: ["TCS Digital", "Infosys DSE", "Wipro Turbo", "Cognizant"]
   },
 
   // ==========================================
