@@ -486,7 +486,7 @@ export function JavaCodeViewer({
 
       {/* Subtitle / Method Info (Optional) */}
       {subtitle && activeTab === "view" && (
-        <div className="px-3.5 py-1.5 bg-[#181818] border-b border-[#2d2d2d] text-[11px] font-mono text-[#858585] truncate">
+        <div className="px-4 py-2 bg-[#181818] border-b border-[#2d2d2d] text-xs sm:text-[13px] font-mono text-[#9cdcfe] truncate font-medium">
           {subtitle}
         </div>
       )}
@@ -494,7 +494,7 @@ export function JavaCodeViewer({
       {/* VIEW MODE: CLEAN SYNTAX HIGHLIGHTED CODE */}
       {activeTab === "view" && (
         <div
-          className="p-3 flex-1 overflow-auto font-mono text-xs leading-relaxed selection:bg-[#264f78]"
+          className="p-4 flex-1 overflow-auto font-mono text-sm sm:text-[15px] leading-relaxed selection:bg-[#264f78]"
           style={maxHeight ? { maxHeight } : undefined}
         >
           <pre className="table w-full">
@@ -502,7 +502,7 @@ export function JavaCodeViewer({
               {lines.map((line, lineIndex) => (
                 <div key={`line-${lineIndex}`} className="table-row hover:bg-[#2a2d2e]">
                   {showLineNumbers && (
-                    <span className="table-cell text-right pr-3.5 select-none text-[#858585] w-6 font-mono text-[11px]">
+                    <span className="table-cell text-right pr-4 pl-1 select-none text-[#858585] w-8 font-mono text-xs sm:text-[13px]">
                       {lineIndex + 1}
                     </span>
                   )}
@@ -522,9 +522,9 @@ export function JavaCodeViewer({
           {/* Editor Canvas */}
           <div className="flex-1 flex min-h-[220px] max-h-[380px] bg-[#1e1e1e] overflow-hidden">
             {showLineNumbers && (
-              <div className="py-2.5 px-2 bg-[#1e1e1e] border-r border-[#2d2d2d] select-none text-right font-mono text-[11px] text-[#858585] w-8 shrink-0">
+              <div className="py-4 px-2 bg-[#1e1e1e] border-r border-[#2d2d2d] select-none text-right font-mono text-xs sm:text-[13px] text-[#858585] w-10 shrink-0">
                 {Array.from({ length: editLinesCount }).map((_, i) => (
-                  <div key={i} className="leading-5">
+                  <div key={i} className="leading-6">
                     {i + 1}
                   </div>
                 ))}
@@ -540,7 +540,7 @@ export function JavaCodeViewer({
               }}
               onKeyDown={handleKeyDown}
               spellCheck={false}
-              className="flex-1 p-2.5 bg-transparent text-[#d4d4d4] font-mono text-xs leading-5 resize-none focus:outline-none focus:ring-0 selection:bg-[#264f78] border-0 overflow-auto"
+              className="flex-1 p-4 bg-transparent text-[#d4d4d4] font-mono text-sm sm:text-[15px] leading-6 resize-none focus:outline-none focus:ring-0 selection:bg-[#264f78] border-0 overflow-auto"
             />
           </div>
 
