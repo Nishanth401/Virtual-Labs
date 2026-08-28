@@ -68,6 +68,27 @@ const sections = {
       badge: "Adaptive"
     },
     {
+      name: "Merge Sort Visualizer",
+      description: "Divide-and-conquer recursion with stable two-way sorted subarray merging.",
+      href: "/visualizer/merge-sort",
+      icon: ArrowDownUp,
+      badge: "O(n log n)"
+    },
+    {
+      name: "Cyclic Sort Visualizer",
+      description: "In-place cycle placement pattern sorting 1 to N values in guaranteed O(n) linear time.",
+      href: "/visualizer/cyclic-sort",
+      icon: ArrowDownUp,
+      badge: "O(n)"
+    },
+    {
+      name: "Quick Sort Visualizer",
+      description: "Lomuto/Hoare partitioning with recursive divide-and-conquer subarray sorting around pivot.",
+      href: "/visualizer/quick-sort",
+      icon: ArrowDownUp,
+      badge: "O(n log n)"
+    },
+    {
       name: "Two Pointers Algorithm Visualizer",
       description: "Inward & synchronized pointer stepping across sorted arrays for target sum and container area optimization.",
       href: "/visualizer/two-pointers",

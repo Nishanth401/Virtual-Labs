@@ -55,6 +55,24 @@ const sortingAlgorithms = [
     description: "Key element extraction and backward shifting",
   },
   {
+    name: "Merge Sort",
+    url: "/visualizer/merge-sort",
+    icon: ArrowDownUp,
+    description: "Divide and conquer recursive subarray merging",
+  },
+  {
+    name: "Cyclic Sort",
+    url: "/visualizer/cyclic-sort",
+    icon: ArrowDownUp,
+    description: "In-place cycle placement pattern for 1 to N values",
+  },
+  {
+    name: "Quick Sort",
+    url: "/visualizer/quick-sort",
+    icon: ArrowDownUp,
+    description: "Partitioning around pivot with recursive sorting",
+  },
+  {
     name: "Two Pointers Algorithm",
     url: "/visualizer/two-pointers",
     icon: ArrowRightLeft,
