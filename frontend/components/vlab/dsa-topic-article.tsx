@@ -17,9 +17,6 @@ import {
   ChevronRight,
   Zap,
   Trophy,
-  Layers,
-  Copy,
-  Check
 } from "lucide-react";
 
 // Visualizer imports
@@ -53,26 +50,6 @@ export function DSATopicArticle({
   onToggleCompleted,
 }: DSATopicArticleProps) {
   const [activeTab, setActiveTab] = useState<"code-practice" | "visualizer">("code-practice");
-  const [selectedLang, setSelectedLang] = useState<string>(
-    topic.codeSnippets[0]?.language || "java"
-  );
-  const [copied, setCopied] = useState<boolean>(false);
-
-  // Sync selected lang when topic changes
-  React.useEffect(() => {
-    setSelectedLang(topic.codeSnippets[0]?.language || "java");
-  }, [topic.id]);
-
-  const activeSnippet =
-    topic.codeSnippets.find((s) => s.language === selectedLang) ||
-    topic.codeSnippets[0];
-
-  const handleCopyCode = () => {
-    if (!activeSnippet) return;
-    navigator.clipboard.writeText(activeSnippet.code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   return (
     <div className="space-y-5 flex-1 min-w-0">
@@ -137,7 +114,7 @@ export function DSATopicArticle({
       <Tabs value={activeTab} onValueChange={(val) => setActiveTab(val as any)} className="w-full space-y-5">
         <TabsList className="grid grid-cols-2 w-full p-1 bg-muted/60 backdrop-blur-md rounded-xl border border-border h-auto">
           <TabsTrigger value="code-practice" className="text-xs py-2.5 gap-1.5 font-bold">
-            <Code2 className="h-4 w-4 text-indigo-400" /> Code Implementations &amp; Practice ({topic.practiceProblems.length})
+            <BookOpen className="h-4 w-4 text-indigo-400" /> Key Concepts &amp; Practice ({topic.practiceProblems.length})
           </TabsTrigger>
           <TabsTrigger
             value="visualizer"
@@ -180,66 +157,6 @@ export function DSATopicArticle({
                   <div className="text-[10px] text-teal-400">{c.space}</div>
                 </div>
               ))}
-            </div>
-          </Card>
-
-          {/* Visual Architecture Diagram & Flowchart */}
-          {topic.diagram && (
-            <Card className="border-border bg-card/90 shadow-sm p-5 space-y-3">
-              <div className="flex items-center gap-2">
-                <Layers className="h-4 w-4 text-emerald-500" />
-                <span className="font-bold text-sm text-foreground font-heading">
-                  {topic.diagramTitle || "Architecture Flowchart & Step-by-step Execution Diagram"}
-                </span>
-              </div>
-              <div className="rounded-xl border border-emerald-500/20 bg-slate-950 p-4 font-mono text-xs text-emerald-400 overflow-x-auto leading-relaxed shadow-inner">
-                <pre><code>{topic.diagram}</code></pre>
-              </div>
-            </Card>
-          )}
-
-          {/* Multi-Language Code Snippets */}
-          <Card className="border-border bg-card/90 shadow-sm p-5 space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-2">
-                <Code2 className="h-5 w-5 text-indigo-400" />
-                <span className="font-bold text-sm text-foreground font-heading">
-                  Algorithm Implementation Code
-                </span>
-              </div>
-
-              {/* Language Switcher Tabs */}
-              <div className="flex items-center gap-1 bg-muted p-1 rounded-lg border border-border">
-                {topic.codeSnippets.map((s) => (
-                  <button
-                    key={s.language}
-                    onClick={() => setSelectedLang(s.language)}
-                    className={`px-3 py-1 text-xs font-bold font-mono rounded-md transition-all ${
-                      selectedLang === s.language
-                        ? "bg-primary text-primary-foreground shadow-xs"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {s.label}
-                  </button>
-                ))}
-
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleCopyCode}
-                  className="h-7 px-2 text-[11px] text-muted-foreground hover:text-foreground ml-1"
-                >
-                  {copied ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : <Copy className="h-3.5 w-3.5" />}
-                </Button>
-              </div>
-            </div>
-
-            {/* Code Box */}
-            <div className="rounded-xl overflow-hidden border border-slate-800 bg-slate-950 p-4">
-              <pre className="text-xs font-mono text-emerald-400 overflow-x-auto leading-relaxed">
-                <code>{activeSnippet?.code}</code>
-              </pre>
             </div>
           </Card>
 
