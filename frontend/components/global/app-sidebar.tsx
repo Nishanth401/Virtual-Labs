@@ -55,18 +55,6 @@ const sortingAlgorithms = [
     description: "Key element extraction and backward shifting",
   },
   {
-    name: "Two Pointers Algorithm",
-    url: "/visualizer/two-pointers",
-    icon: ArrowRightLeft,
-    description: "Inward & synchronized pointer stepping across sorted arrays",
-  },
-  {
-    name: "Sliding Window Algorithm",
-    url: "/visualizer/sliding-window",
-    icon: ArrowRightLeft,
-    description: "Contiguous window overlay tracking sub-segment metrics",
-  },
-  {
     name: "Merge Sort",
     url: "/visualizer/merge-sort",
     icon: ArrowDownUp,
@@ -83,6 +71,21 @@ const sortingAlgorithms = [
     url: "/visualizer/quick-sort",
     icon: ArrowDownUp,
     description: "Pivot partitioning and recursive sub-array sorting",
+  },
+]
+
+const algorithmicPatterns = [
+  {
+    name: "Two Pointers Algorithm",
+    url: "/visualizer/two-pointers",
+    icon: ArrowRightLeft,
+    description: "Inward & synchronized pointer stepping across sorted arrays",
+  },
+  {
+    name: "Sliding Window Algorithm",
+    url: "/visualizer/sliding-window",
+    icon: ArrowRightLeft,
+    description: "Contiguous window overlay tracking sub-segment metrics",
   },
 ]
 
@@ -176,6 +179,15 @@ export function AppSidebar() {
             url: s.url,
             icon: s.icon,
             description: s.description,
+          }))}
+        />
+        <NavProjects
+          title="Algorithm Visualizer"
+          projects={algorithmicPatterns.map(a => ({
+            name: a.name,
+            url: a.url,
+            icon: a.icon,
+            description: a.description,
           }))}
         />
         <NavProjects

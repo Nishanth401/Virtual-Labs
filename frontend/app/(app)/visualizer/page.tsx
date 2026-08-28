@@ -68,20 +68,6 @@ const sections = {
       badge: "Adaptive"
     },
     {
-      name: "Two Pointers Algorithm Visualizer",
-      description: "Inward & synchronized pointer stepping across sorted arrays for target sum and container area optimization.",
-      href: "/visualizer/two-pointers",
-      icon: ArrowLeftRight,
-      badge: "O(N) Pattern"
-    },
-    {
-      name: "Sliding Window Algorithm Visualizer",
-      description: "Fixed and variable contiguous window overlays tracking sub-segment metrics and minimum subarray lengths.",
-      href: "/visualizer/sliding-window",
-      icon: Box,
-      badge: "O(N) Pattern"
-    },
-    {
       name: "Merge Sort Visualizer",
       description: "Divide-and-conquer algorithm with guaranteed O(n log n) stable sorting and recursive split visualization.",
       href: "/visualizer/merge-sort",
@@ -101,6 +87,22 @@ const sections = {
       href: "/visualizer/quick-sort",
       icon: ArrowDownUp,
       badge: "O(n log n)"
+    }
+  ],
+  algorithms: [
+    {
+      name: "Two Pointers Algorithm Visualizer",
+      description: "Inward & synchronized pointer stepping across sorted arrays for target sum and container area optimization.",
+      href: "/visualizer/two-pointers",
+      icon: ArrowLeftRight,
+      badge: "O(N) Pattern"
+    },
+    {
+      name: "Sliding Window Algorithm Visualizer",
+      description: "Fixed and variable contiguous window overlays tracking sub-segment metrics and minimum subarray lengths.",
+      href: "/visualizer/sliding-window",
+      icon: Box,
+      badge: "O(N) Pattern"
     }
   ],
   dataStructures: [
@@ -245,17 +247,57 @@ export default function VisualizerHubPage() {
         </div>
       </section>
 
-      {/* Sorting & Algorithmic Patterns Section */}
+      {/* Sorting Algorithms Section */}
       <section className="space-y-4">
         <div className="flex items-center justify-between border-b border-border/60 pb-2">
           <h2 className="text-xl font-bold font-heading text-foreground flex items-center gap-2">
             <ArrowDownUp className="h-5 w-5 text-[#1e88e5]" />
-            <span>Sorting &amp; Algorithmic Patterns</span>
+            <span>Sorting Visualizer</span>
           </h2>
           <Badge variant="secondary" className="text-xs">{sections.sorting.length} Simulators</Badge>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {sections.sorting.map((algo) => {
+            const Icon = algo.icon;
+            return (
+              <Link key={algo.href} href={algo.href}>
+                <Card className="h-full border-border/80 bg-card hover:border-[#1e88e5] transition-all hover:shadow-md rounded-2xl group">
+                  <CardHeader className="pb-2">
+                    <div className="flex items-center justify-between">
+                      <div className="p-2 rounded-xl bg-primary/10 text-primary group-hover:bg-[#1e88e5] group-hover:text-white transition-colors">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <Badge variant="outline" className="text-[10px] font-mono">
+                        {algo.badge}
+                      </Badge>
+                    </div>
+                    <CardTitle className="text-base font-bold mt-2 group-hover:text-[#1e88e5] transition-colors">
+                      {algo.name}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-xs leading-relaxed">
+                      {algo.description}
+                    </CardDescription>
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Algorithmic Patterns Section */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between border-b border-border/60 pb-2">
+          <h2 className="text-xl font-bold font-heading text-foreground flex items-center gap-2">
+            <BrainCircuit className="h-5 w-5 text-[#1e88e5]" />
+            <span>Algorithm Visualizer</span>
+          </h2>
+          <Badge variant="secondary" className="text-xs">{sections.algorithms.length} Simulators</Badge>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {sections.algorithms.map((algo) => {
             const Icon = algo.icon;
             return (
               <Link key={algo.href} href={algo.href}>
