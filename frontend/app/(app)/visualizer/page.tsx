@@ -80,7 +80,6 @@ const sections = {
       href: "/visualizer/sliding-window",
       icon: Box,
       badge: "O(N) Pattern"
-<<<<<<< HEAD
     },
     {
       name: "Merge Sort Visualizer",
@@ -102,10 +101,7 @@ const sections = {
       href: "/visualizer/quick-sort",
       icon: ArrowDownUp,
       badge: "O(n log n)"
-    },
-=======
     }
->>>>>>> 6a318ab8658bc9e80ea157d15fff61edbb5f33ac
   ],
   dataStructures: [
     {
@@ -256,11 +252,7 @@ export default function VisualizerHubPage() {
             <ArrowDownUp className="h-5 w-5 text-[#1e88e5]" />
             <span>Sorting &amp; Algorithmic Patterns</span>
           </h2>
-<<<<<<< HEAD
           <Badge variant="secondary" className="text-xs">{sections.sorting.length} Simulators</Badge>
-=======
-          <Badge variant="secondary" className="text-xs bg-primary/10 text-primary border-primary/30 font-mono">5 Simulators</Badge>
->>>>>>> 6a318ab8658bc9e80ea157d15fff61edbb5f33ac
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {sections.sorting.map((algo) => {

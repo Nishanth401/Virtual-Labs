@@ -65,7 +65,6 @@ const sortingAlgorithms = [
     url: "/visualizer/sliding-window",
     icon: ArrowRightLeft,
     description: "Contiguous window overlay tracking sub-segment metrics",
-<<<<<<< HEAD
   },
   {
     name: "Merge Sort",
@@ -84,8 +83,6 @@ const sortingAlgorithms = [
     url: "/visualizer/quick-sort",
     icon: ArrowDownUp,
     description: "Pivot partitioning and recursive sub-array sorting",
-=======
->>>>>>> 6a318ab8658bc9e80ea157d15fff61edbb5f33ac
   },
 ]
 
