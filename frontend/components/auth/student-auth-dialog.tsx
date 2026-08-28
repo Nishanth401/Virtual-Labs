@@ -70,7 +70,6 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
   const [nameSuccess, setNameSuccess] = useState(false);
 
   const isAuthenticated = Boolean(user || studentProfile);
-  const effectiveOpen = open || !isAuthenticated;
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -167,11 +166,8 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
 
   return (
     <Dialog
-      open={effectiveOpen}
+      open={open}
       onOpenChange={(val) => {
-        if (!val && !isAuthenticated && !googleRegNoStep) {
-          return; // Lock dialog open if not authenticated
-        }
         onOpenChange(val);
         if (!val) {
           setUnverifiedEmail(null);
