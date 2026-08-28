@@ -91,11 +91,10 @@ export const CODING_PROBLEMS: CodingProblem[] = [
     category: "Two Pointers",
     difficulty: "Easy",
     importanceRating: 9.2,
-<<<<<<< HEAD
-    leetcodeUrl: "https://leetcode.com/problems/jump-game-ii/",
-    gfgUrl: "https://www.geeksforgeeks.org/minimum-number-jumps-reach-endset-2on-solution/",
-    productCompanies: ["Amazon", "Google", "Microsoft", "Apple", "Adobe"],
-    serviceCompanies: ["Infosys", "Cognizant", "Accenture"]
+    leetcodeUrl: "https://leetcode.com/problems/valid-palindrome/",
+    gfgUrl: "https://www.geeksforgeeks.org/sentence-palindrome-palette-given-sentence-words-reverse-ignore-spaces-alphanumeric/",
+    productCompanies: ["Facebook", "Amazon", "Microsoft", "Google", "Apple"],
+    serviceCompanies: ["TCS", "Infosys", "Wipro", "Cognizant"]
   },
   {
     id: "h-index",

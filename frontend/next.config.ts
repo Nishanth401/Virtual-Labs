@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
-  devIndicators: false,
+  devIndicators: { buildActivity: false },
   eslint: {
     ignoreDuringBuilds: true,
   },

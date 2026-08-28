@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { LucideIcon } from "lucide-react"
 import {
   SidebarGroup,
@@ -31,10 +32,10 @@ export function NavMain({
               asChild
               className={pathname === item.url ? "bg-secondary" : undefined}
             >
-              <a href={item.url}>
+              <Link href={item.url} prefetch={true}>
                 {item.icon && <item.icon />}
                 <span>{item.title}</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}

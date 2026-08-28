@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { type LucideIcon } from "lucide-react";
 import {
   SidebarGroup,
@@ -34,8 +35,9 @@ export function NavProjects({
           const isActive = pathname === item.url;
           return (
             <SidebarMenuItem key={item.url}>
-              <a
+              <Link
                 href={item.url}
+                prefetch={true}
                 title={item.description || item.name}
                 className={`flex w-full items-center gap-2 overflow-hidden rounded-md px-2 py-1.5 text-left text-sm transition-colors ${
                   isActive
@@ -45,7 +47,7 @@ export function NavProjects({
               >
                 <item.icon className="h-4 w-4 shrink-0 text-primary/80" />
                 <span className="truncate">{item.name}</span>
-              </a>
+              </Link>
             </SidebarMenuItem>
           );
         })}

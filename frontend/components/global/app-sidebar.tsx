@@ -29,6 +29,11 @@ const navItems = [
     icon: List,
   },
   {
+    title: "Coding Practice Roadmaps",
+    url: "/practice",
+    icon: Award,
+  },
+  {
     title: "Student Portal",
     url: "/dashboard",
     icon: Award,
@@ -58,19 +63,28 @@ const sortingAlgorithms = [
     name: "Merge Sort",
     url: "/visualizer/merge-sort",
     icon: ArrowDownUp,
-    description: "Divide and conquer recursive subarray merging",
+    description: "Divide and conquer splitting with two-way merging",
   },
   {
     name: "Cyclic Sort",
     url: "/visualizer/cyclic-sort",
     icon: ArrowDownUp,
-    description: "In-place cycle placement pattern for 1 to N values",
+    description: "Linear O(n) in-place index matching placement",
   },
   {
     name: "Quick Sort",
     url: "/visualizer/quick-sort",
     icon: ArrowDownUp,
-    description: "Partitioning around pivot with recursive sorting",
+    description: "Pivot partitioning and recursive sub-array sorting",
+  },
+]
+
+const algorithmicPatterns = [
+  {
+    name: "Custom Recursion & Visualizer",
+    url: "/visualizer/custom-recursion",
+    icon: BrainCircuit,
+    description: "Build custom recursive Java algorithms with call-tree and stack frames",
   },
   {
     name: "Two Pointers Algorithm",
@@ -176,6 +190,15 @@ export function AppSidebar() {
             url: s.url,
             icon: s.icon,
             description: s.description,
+          }))}
+        />
+        <NavProjects
+          title="Algorithm Visualizer"
+          projects={algorithmicPatterns.map(a => ({
+            name: a.name,
+            url: a.url,
+            icon: a.icon,
+            description: a.description,
           }))}
         />
         <NavProjects

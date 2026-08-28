@@ -715,33 +715,29 @@ export function CodingSheetsView() {
 
                       {/* Direct Platform Links (LeetCode, GFG, HackerRank, W3Schools) */}
                       <td className="py-2.5 px-2 text-center">
-                        <div className="inline-flex items-center gap-1 justify-center flex-wrap">
-                          {/* LeetCode Direct Button */}
-                          <a
-                            href={problem.leetcodeUrl || `https://leetcode.com/problems/${problem.slug}/`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title="LeetCode Problem"
-                            className="px-1.5 py-0.5 rounded hover:bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold font-mono text-[9px] border border-amber-500/25 transition-colors"
-                          >
-                            LC
-                          </a>
-
-                          {/* GeeksforGeeks Tutorial / Solution */}
-                          <a
-                            href={
-                              problem.gfgUrl ||
-                              `https://www.geeksforgeeks.org/explore?page=1&search=${encodeURIComponent(problem.title)}`
-                            }
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title="GeeksforGeeks Tutorial"
-                            className="px-1.5 py-0.5 rounded hover:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold font-mono text-[9px] border border-emerald-500/25 transition-colors"
-                          >
-                            GFG
-                          </a>
-
-                          {/* HackerRank Challenge */}
+                        <div className="inline-flex items-center gap-1">
+                          {problem.takeUForwardUrl && (
+                            <a
+                              href={problem.takeUForwardUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              title="TakeUForward Striver Article & Video Tutorial"
+                              className="px-1.5 py-0.5 rounded hover:bg-rose-500/10 text-rose-500 font-bold font-mono text-[9px] border border-rose-500/20 transition-colors"
+                            >
+                              TUF
+                            </a>
+                          )}
+                          {problem.gfgUrl && (
+                            <a
+                              href={problem.gfgUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              title="GeeksforGeeks Tutorial"
+                              className="px-1.5 py-0.5 rounded hover:bg-emerald-500/10 text-emerald-600 font-bold font-mono text-[9px] border border-emerald-500/20 transition-colors"
+                            >
+                              GFG
+                            </a>
+                          )}
                           {problem.hackerrankUrl && (
                             <a
                               href={problem.hackerrankUrl}
