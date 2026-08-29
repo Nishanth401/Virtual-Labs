@@ -2,9 +2,43 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Only the logged-in user can read and write their own data
-    match /users/{uid}/{document=**} {
-      allow read, write: if request.auth != null && request.auth.uid == uid;
+    // 1. User document and all nested subcollections
+    // (folders, files, notes, teamMembers, completedExperiments, completedProblems, starredProblems, problemNotes)
+    match /users/{uid} {
+      allow read, write: if request.auth != null && (request.auth.uid == uid || resource.data.uid == request.auth.uid);
+      allow create: if request.auth != null;
+      
+      match /{allSubcollections=**} {
+        allow read, write: if request.auth != null;
+      }
+    }
+
+    // 2. Allow reading users collection for account validation and email uniqueness checks
+    match /users/{document} {
+      allow read: if request.auth != null;
+    }
+
+    // 3. Students collection indexed by Register Number
+    match /students/{registerNumber} {
+      allow read: if true;
+      allow write, create, update, delete: if request.auth != null;
+    }
+
+    // 4. Announcements, Feedbacks, and Quizzes
+    match /announcements/{announcementId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    match /feedbacks/{feedbackId} {
+      allow read: if true;
+      allow create: if true;
+      allow update, delete: if request.auth != null;
+    }
+
+    match /quizzes/{quizId}/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
     }
   }
 }

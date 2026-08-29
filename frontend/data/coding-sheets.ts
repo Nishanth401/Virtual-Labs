@@ -185,13 +185,11 @@ export const CODING_PROBLEMS: CodingProblem[] = [
     takeUForwardUrl: "https://takeuforward.org/data-structure/trapping-rainwater/",
     productCompanies: ["Amazon", "Google", "Facebook", "Microsoft", "Apple", "Goldman Sachs", "Uber", "Adobe"],
     serviceCompanies: ["TCS Digital", "Infosys", "Wipro Turbo", "Accenture"]
-=======
     leetcodeUrl: "https://leetcode.com/problems/valid-palindrome/",
     gfgUrl: "https://www.geeksforgeeks.org/sentence-palindrome-palindrome-removing-spaces-dots-etc/",
     visualizerUrl: "/visualizer/two-pointers",
     productCompanies: ["Facebook", "Microsoft", "Amazon", "Wayfair"],
     serviceCompanies: ["TCS", "Cognizant", "Accenture"]
->>>>>>> 82197b7441e0df6f168c175b55b2dc19952b8365
   },
   {
     id: "roman-to-integer",

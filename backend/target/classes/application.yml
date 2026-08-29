@@ -42,3 +42,10 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     operationsSorter: method
+
+# Firebase Integration Configuration
+firebase:
+  project-id: "virtual-lab-e7495"
+  credentials-path: ${FIREBASE_CREDENTIALS_PATH:}
+  enabled: true
+
