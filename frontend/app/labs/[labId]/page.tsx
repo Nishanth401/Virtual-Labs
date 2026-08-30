@@ -54,7 +54,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
   const [quizSubmitted, setQuizSubmitted] = useState<boolean>(false);
 
   // Filter experiments for this lab
-  const experiments = EXPERIMENTS_DATA.filter((e) => e.labId === lab.id || (lab.id === "data-structures" && e.labId === "data-structures"));
+  const experiments = EXPERIMENTS_DATA.filter((e) => e.labId === lab.id);
 
   const handleQuizOptionSelect = (questionId: string, optionIndex: number) => {
     if (quizSubmitted) return;
@@ -232,7 +232,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                           Laboratory Experiments Syllabus ({experiments.length})
                         </CardTitle>
                         <Badge variant="outline" className="text-xs font-mono">
-                          {lab.id === "data-structures" ? "100% Pure Java" : "Python / NumPy"}
+                          {LAB_ROADMAPS_DATA[lab.id]?.badge || (lab.id === "data-structures" ? "100% Pure Java" : "Engineering Sandbox")}
                         </Badge>
                       </div>
                     </CardHeader>

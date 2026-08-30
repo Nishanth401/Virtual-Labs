@@ -9,13 +9,20 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, FlaskConical, Star, ArrowRight, Layers, Code2, BrainCircuit, Database, Network } from "lucide-react";
+import { Search, FlaskConical, Star, ArrowRight, Layers, Code2, BrainCircuit, Database, Network, Cpu, Bot, BarChart3, Cloud, Server, Sparkles, Terminal } from "lucide-react";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Code2,
   BrainCircuit,
   Database,
   Network,
+  Cpu,
+  Bot,
+  BarChart3,
+  Cloud,
+  Server,
+  Sparkles,
+  Terminal,
 };
 
 export default function LabsCataloguePage() {
@@ -48,7 +55,7 @@ export default function LabsCataloguePage() {
               Artificial Intelligence &amp; Data Science Virtual Labs
             </h1>
             <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">
-              Explore our 4 dedicated engineering laboratories: Data Structures (Java), Machine Learning (NumPy/Pandas), Database Systems (SQL), and Computer Networks (Protocols).
+              Explore our 8 dedicated engineering laboratories: Data Structures (Java), Machine Learning (NumPy/Pandas), Database Systems (SQL), Computer Networks, Operating Systems (C/Linux), Artificial Intelligence (Python), Big Data Analytics (Hadoop/Spark), and Cloud Service Management (AWS/Docker/K8s).
             </p>
           </div>
 
@@ -59,7 +66,7 @@ export default function LabsCataloguePage() {
               <Input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search labs by keyword (e.g. Java, Sorting, Stack, NumPy, SQL, Dijkstra)..."
+                placeholder="Search labs by keyword (e.g. Java, Sorting, CPU, Semaphores, A* Search, Hadoop, PySpark, AWS, Docker)..."
                 className="pl-10 h-11 text-xs sm:text-sm bg-card border-border shadow-xs"
               />
             </div>

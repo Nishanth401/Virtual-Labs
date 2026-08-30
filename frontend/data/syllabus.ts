@@ -32,6 +32,42 @@ export const REFERENCE_BOOKS_DATA: ReferenceBook[] = [
     coverColor: "from-blue-600 to-indigo-800"
   },
   {
+    id: "silberschatz-os",
+    title: "Operating System Concepts",
+    author: "Abraham Silberschatz, Peter B. Galvin, Greg Gagne",
+    publisher: "John Wiley & Sons",
+    edition: "10th Edition (2021)",
+    isbn: "978-1119800361",
+    coverColor: "from-cyan-600 to-blue-800"
+  },
+  {
+    id: "russell-norvig",
+    title: "Artificial Intelligence: A Modern Approach",
+    author: "Stuart Russell, Peter Norvig",
+    publisher: "Pearson Education",
+    edition: "4th Global Edition",
+    isbn: "978-0134610993",
+    coverColor: "from-purple-600 to-violet-800"
+  },
+  {
+    id: "white-hadoop",
+    title: "Hadoop: The Definitive Guide",
+    author: "Tom White",
+    publisher: "O'Reilly Media",
+    edition: "4th Edition",
+    isbn: "978-1491901632",
+    coverColor: "from-amber-600 to-orange-800"
+  },
+  {
+    id: "buyya-cloud",
+    title: "Mastering Cloud Computing: Foundations and Applications",
+    author: "Rajkumar Buyya, Christian Vecchiola, S. Thamarai Selvi",
+    publisher: "Morgan Kaufmann / Elsevier",
+    edition: "1st Edition",
+    isbn: "978-0124114548",
+    coverColor: "from-teal-600 to-cyan-800"
+  },
+  {
     id: "goodrich",
     title: "Data Structures and Algorithms in Java / C++",
     author: "Michael T. Goodrich, Roberto Tamassia, Michael H. Goldwasser",
@@ -39,33 +75,6 @@ export const REFERENCE_BOOKS_DATA: ReferenceBook[] = [
     edition: "6th Edition",
     isbn: "978-1118771334",
     coverColor: "from-purple-600 to-violet-800"
-  },
-  {
-    id: "thareja",
-    title: "Data Structures Using C",
-    author: "Reema Thareja",
-    publisher: "Oxford University Press",
-    edition: "2nd Edition",
-    isbn: "978-0198099307",
-    coverColor: "from-emerald-600 to-teal-800"
-  },
-  {
-    id: "sahni",
-    title: "Data Structures, Algorithms and Applications in C++",
-    author: "Sartaj Sahni",
-    publisher: "Universities Press / Silicon Press",
-    edition: "2nd Edition",
-    isbn: "978-0929306322",
-    coverColor: "from-amber-600 to-orange-800"
-  },
-  {
-    id: "horowitz",
-    title: "Fundamentals of Data Structures in C",
-    author: "Ellis Horowitz, Sartaj Sahni, Susan Anderson-Freed",
-    publisher: "Universities Press",
-    edition: "2nd Edition",
-    isbn: "978-8173716058",
-    coverColor: "from-rose-600 to-pink-800"
   }
 ];
 
@@ -109,36 +118,107 @@ export const SYLLABUS_MAPPINGS_DATA: UniversitySyllabus[] = [
     ]
   },
   {
-    university: "Osmania University / JNTU Hyderabad",
-    courseCode: "CS301PC",
-    courseTitle: "Data Structures and Laboratory",
-    semester: "B.Tech II Year I Sem",
-    regulations: "R22",
+    university: "Anna University (Regulation 2021)",
+    courseCode: "CS3461",
+    courseTitle: "Operating Systems Laboratory",
+    semester: "Semester 4 (B.E / B.Tech CSE & AIDS)",
+    regulations: "R2021",
     units: [
       {
-        unit: "Module 1",
-        title: "Stacks and Queues",
+        unit: "Unit I",
+        title: "Process Scheduling & Inter-Process Communication",
         topics: [
-          "ADT Stack and its operations using static and dynamic arrays",
-          "Queue ADT and Circular Queue array implementations",
-          "Stack applications: Balancing symbols, evaluation of expressions"
+          "CPU Scheduling: FCFS, SJF, Priority, and Round Robin",
+          "POSIX IPC: Shared Memory and Message Queues",
+          "Process Synchronization using Mutex and Semaphores"
         ]
       },
       {
-        unit: "Module 2",
-        title: "Linked Lists and Applications",
+        unit: "Unit II",
+        title: "Deadlocks & Memory Virtualization",
         topics: [
-          "Singly Linked Lists, Doubly Linked Lists, Circular Linked Lists",
-          "Polynomial arithmetic using linked list representation",
-          "Dynamic memory management and cursor implementation"
+          "Banker's Algorithm for Deadlock Avoidance and Safety Check",
+          "Page Replacement: FIFO, LRU, and Optimal Replacement",
+          "Memory Allocation: First-Fit, Best-Fit, Worst-Fit strategies"
+        ]
+      }
+    ]
+  },
+  {
+    university: "Anna University (Regulation 2021)",
+    courseCode: "AI3401",
+    courseTitle: "Artificial Intelligence Laboratory",
+    semester: "Semester 5 (B.Tech AI & DS)",
+    regulations: "R2021",
+    units: [
+      {
+        unit: "Unit I",
+        title: "Heuristic Search & Problem Solving",
+        topics: [
+          "State-space graph traversal and 8-Puzzle problem",
+          "A* Algorithm with Manhattan and Euclidean heuristics",
+          "Adversarial Minimax Search and Alpha-Beta Pruning"
         ]
       },
       {
-        unit: "Module 3",
-        title: "Sorting Strategies",
+        unit: "Unit II",
+        title: "Constraint Satisfaction & Knowledge Systems",
         topics: [
-          "Internal Sorting: Bubble, Insertion, Selection Sort",
-          "Comparative asymptotic space and time analysis"
+          "N-Queens Constraint Satisfaction Problem Backtracking",
+          "Propositional Logic and Forward/Backward Chaining Inference",
+          "Rule-Based Expert System design in Python"
+        ]
+      }
+    ]
+  },
+  {
+    university: "Anna University (Regulation 2021)",
+    courseCode: "CS8711",
+    courseTitle: "Big Data Analytics Laboratory",
+    semester: "Semester 7 (B.Tech AI & DS)",
+    regulations: "R2021",
+    units: [
+      {
+        unit: "Unit I",
+        title: "Hadoop HDFS & Distributed MapReduce",
+        topics: [
+          "HDFS cluster installation, file replication, and shell administration",
+          "MapReduce distributed word count, matrix math, and inverted indexing"
+        ]
+      },
+      {
+        unit: "Unit II",
+        title: "PySpark DataFrames & NoSQL Analytics",
+        topics: [
+          "Apache Spark RDD transformations and actions",
+          "PySpark SQL DataFrames e-commerce group aggregations",
+          "MongoDB multi-stage aggregation pipelines and sharding"
+        ]
+      }
+    ]
+  },
+  {
+    university: "Anna University (Regulation 2021)",
+    courseCode: "CS8811",
+    courseTitle: "Cloud Service Management Laboratory",
+    semester: "Semester 8 (B.Tech AI & DS)",
+    regulations: "R2021",
+    units: [
+      {
+        unit: "Unit I",
+        title: "Cloud Infrastructure & Containerization",
+        topics: [
+          "AWS EC2 instance provisioning, VPC subnets, and Security Groups",
+          "AWS S3 scalable object storage and automated Lifecycle policies",
+          "Docker containerization and multi-tier Docker Compose applications"
+        ]
+      },
+      {
+        unit: "Unit II",
+        title: "Serverless Microservices & Kubernetes Orchestration",
+        topics: [
+          "AWS Lambda event-driven functions and API Gateway integration",
+          "Kubernetes Pod deployment, ReplicaSets, and Service LoadBalancers"
         ]
       }
     ]

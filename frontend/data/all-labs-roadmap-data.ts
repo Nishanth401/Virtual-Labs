@@ -1919,5 +1919,1043 @@ conn.close()`
         ]
       }
     ]
+  },
+
+  // ==========================================
+  // 5. OPERATING SYSTEMS LAB (OSL - CS3461)
+  // ==========================================
+  "operating-systems": {
+    title: "Operating Systems Learning Roadmap",
+    badge: "C / Linux / POSIX / Kernel Threads",
+    categories: [
+      {
+        id: "cpu-scheduling",
+        name: "1. Process Management & CPU Scheduling",
+        shortDesc: "FCFS, Shortest Job First (SJF), and Round-Robin time slice scheduling.",
+        iconName: "Cpu",
+        topics: [
+          {
+            id: "fcfs-sjf-scheduling",
+            slug: "cpu-scheduling-fcfs-sjf",
+            title: "1. FCFS & Shortest Job First (SJF) Scheduling",
+            categoryId: "cpu-scheduling",
+            categoryName: "1. Process Management & CPU Scheduling",
+            difficulty: "Beginner",
+            estimatedTime: "15 mins",
+            gfgSearchQuery: "CPU Scheduling Algorithms GeeksforGeeks",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=CPU%20Scheduling",
+            quickSummary: "CPU scheduling allocates processor time slices to ready processes to minimize turnaround and waiting time.",
+            keyPoints: [
+              "FCFS: Non-preemptive scheduling by arrival timestamp; suffers from Convoy Effect.",
+              "SJF: Shortest Burst Time first; provably optimal minimum average waiting time.",
+              "SRTF: Preemptive SJF that switches CPU if a shorter burst arrival occurs."
+            ],
+            diagramTitle: "CPU Gantt Chart Scheduling Comparison",
+            diagram: `FCFS Gantt Chart:
+[ P1 (Burst: 10) ]──────>[ P2 (Burst: 2) ]──>[ P3 (Burst: 3) ]
+0                       10                 12               15
+
+SJF Gantt Chart (Optimal Reorder):
+[ P2 (2) ]──>[ P3 (3) ]──>[ P1 (10) ]
+0            2            5         15`,
+            complexities: [
+              { operation: "SJF Scheduling", best: "O(n log n)", avg: "O(n log n)", worst: "O(n²)", space: "O(n)" }
+            ],
+            codeSnippets: [
+              {
+                language: "java",
+                label: "C Implementation",
+                code: `#include <stdio.h>
+
+struct Process { int pid, bt, wt, tat; };
+
+void calculateTimes(struct Process p[], int n) {
+    p[0].wt = 0;
+    for (int i = 1; i < n; i++) {
+        p[i].wt = p[i-1].wt + p[i-1].bt;
+    }
+    for (int i = 0; i < n; i++) {
+        p[i].tat = p[i].bt + p[i].wt;
+    }
+}`
+              }
+            ],
+            practiceProblems: [
+              { title: "Task Scheduler", difficulty: "Medium", url: "https://leetcode.com/problems/task-scheduler/", platform: "LeetCode" }
+            ]
+          },
+          {
+            id: "round-robin-scheduling",
+            slug: "round-robin-cpu-scheduling",
+            title: "2. Round Robin Time-Quantum Scheduling",
+            categoryId: "cpu-scheduling",
+            categoryName: "1. Process Management & CPU Scheduling",
+            difficulty: "Intermediate",
+            estimatedTime: "20 mins",
+            gfgSearchQuery: "Round Robin Scheduling GeeksforGeeks",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=Round%20Robin%20Scheduling",
+            quickSummary: "Preemptive time-sharing scheduler allocating a fixed Time Quantum (q) to each queued process.",
+            keyPoints: [
+              "Time Quantum (q): If q is too large, behaves like FCFS; if too small, high context-switch overhead.",
+              "Ready Queue managed as a FIFO circular ring buffer.",
+              "Provides excellent interactive response time for multi-user operating systems."
+            ],
+            diagramTitle: "Round Robin Circular Quantum Dispatch",
+            diagram: `Ready Queue (q = 4ms):
+┌────┐      ┌────┐      ┌────┐
+│ P1 │ ───> │ P2 │ ───> │ P3 │ ───> [CPU 4ms] ──(Incomplete)──> Re-enqueue
+└────┘      └────┘      └────┘`,
+            complexities: [
+              { operation: "Context Switch", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(n)" }
+            ],
+            codeSnippets: [
+              {
+                language: "java",
+                label: "C Code",
+                code: `#include <stdio.h>
+void roundRobin(int bt[], int n, int quantum) {
+    int rem_bt[n];
+    for (int i = 0 ; i < n ; i++) rem_bt[i] = bt[i];
+    int t = 0;
+    while (1) {
+        int done = 1;
+        for (int i = 0 ; i < n; i++) {
+            if (rem_bt[i] > 0) {
+                done = 0;
+                if (rem_bt[i] > quantum) { t += quantum; rem_bt[i] -= quantum; }
+                else { t += rem_bt[i]; rem_bt[i] = 0; }
+            }
+        }
+        if (done == 1) break;
+    }
+}`
+              }
+            ],
+            practiceProblems: [
+              { title: "Design Circular Queue", difficulty: "Medium", url: "https://leetcode.com/problems/design-circular-queue/", platform: "LeetCode" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "synchronization-deadlocks",
+        name: "2. Concurrency, Semaphores & Deadlocks",
+        shortDesc: "Critical section problem, POSIX semaphores, and Banker's deadlock safety algorithm.",
+        iconName: "Cpu",
+        topics: [
+          {
+            id: "producer-consumer-semaphores",
+            slug: "producer-consumer-semaphores-mutex",
+            title: "3. Producer-Consumer Problem using Semaphores",
+            categoryId: "synchronization-deadlocks",
+            categoryName: "2. Concurrency, Semaphores & Deadlocks",
+            difficulty: "Intermediate",
+            estimatedTime: "20 mins",
+            gfgSearchQuery: "Producer Consumer Problem Semaphores",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=Producer%20Consumer%20Semaphores",
+            quickSummary: "Synchronizes concurrent threads sharing a finite buffer using Mutex, Empty, and Full semaphores.",
+            keyPoints: [
+              "Mutex Semaphore (Binary): Enforces mutual exclusion inside the critical buffer section.",
+              "Counting Semaphores: 'empty' tracks free slots; 'full' tracks filled items.",
+              "Prevents race conditions, buffer overflow, and underflow."
+            ],
+            diagramTitle: "Producer-Consumer Buffer Synchronization",
+            diagram: `Producer ──> wait(empty) ──> wait(mutex) ──> [ Write Item ] ──> signal(mutex) ──> signal(full)
+Consumer ──> wait(full)  ──> wait(mutex) ──> [ Read Item  ] ──> signal(mutex) ──> signal(empty)`,
+            complexities: [
+              { operation: "Semaphore Lock", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(Buffer Size)" }
+            ],
+            codeSnippets: [
+              {
+                language: "java",
+                label: "C POSIX Threads",
+                code: `#include <pthread.h>
+#include <semaphore.h>
+
+sem_t empty_slots, full_slots;
+pthread_mutex_t buffer_mutex;
+
+void* producer(void* arg) {
+    sem_wait(&empty_slots);
+    pthread_mutex_lock(&buffer_mutex);
+    // Add item to shared ring buffer
+    pthread_mutex_unlock(&buffer_mutex);
+    sem_post(&full_slots);
+}`
+              }
+            ],
+            practiceProblems: [
+              { title: "Print in Order (Concurrency)", difficulty: "Easy", url: "https://leetcode.com/problems/print-in-order/", platform: "LeetCode" },
+              { title: "The Dining Philosophers", difficulty: "Medium", url: "https://leetcode.com/problems/the-dining-philosophers/", platform: "LeetCode" }
+            ]
+          },
+          {
+            id: "bankers-algorithm",
+            slug: "bankers-deadlock-avoidance-algorithm",
+            title: "4. Banker's Deadlock Avoidance Algorithm",
+            categoryId: "synchronization-deadlocks",
+            categoryName: "2. Concurrency, Semaphores & Deadlocks",
+            difficulty: "Advanced",
+            estimatedTime: "25 mins",
+            gfgSearchQuery: "Bankers Algorithm Deadlock Avoidance",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=Bankers%20Algorithm",
+            quickSummary: "Simulates safe state allocation to guarantee that no sequence of resource requests can trigger a deadlock.",
+            keyPoints: [
+              "Need Matrix Calculation: Need[i][j] = Max[i][j] - Allocation[i][j].",
+              "Safety Test: Scans for an unfinished process Pi whose Need <= Available resources.",
+              "If all processes finish in sequence <P1, P3, ...>, system is in a Safe State."
+            ],
+            diagramTitle: "Banker's Safety Check Matrix Vector",
+            diagram: `Available Vector [ A: 3, B: 3, C: 2 ]
+Allocation Matrix + Need Matrix ──> Find Pi where Need[i] <= Available ──> Reclaim Allocation[i]`,
+            complexities: [
+              { operation: "Safety Algorithm", best: "O(m * n²)", avg: "O(m * n²)", worst: "O(m * n²)", space: "O(m * n)" }
+            ],
+            codeSnippets: [
+              {
+                language: "java",
+                label: "C Algorithm",
+                code: `int isSafeState(int alloc[5][3], int max[5][3], int avail[3], int n, int m) {
+    int f[5] = {0}, ans[5], ind = 0, need[5][3];
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++) need[i][j] = max[i][j] - alloc[i][j];
+    int y = 0;
+    for (int k = 0; k < n; k++) {
+        for (int i = 0; i < n; i++) {
+            if (f[i] == 0) {
+                int flag = 0;
+                for (int j = 0; j < m; j++) {
+                    if (need[i][j] > avail[j]) { flag = 1; break; }
+                }
+                if (flag == 0) {
+                    ans[ind++] = i;
+                    for (y = 0; y < m; y++) avail[y] += alloc[i][y];
+                    f[i] = 1;
+                }
+            }
+        }
+    }
+    return ind == n;
+}`
+              }
+            ],
+            practiceProblems: [
+              { title: "Course Schedule (Deadlock Cycle)", difficulty: "Medium", url: "https://leetcode.com/problems/course-schedule/", platform: "LeetCode" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "memory-virtualization",
+        name: "3. Virtual Memory & Page Replacement",
+        shortDesc: "Paging structures, LRU (Least Recently Used), and Optimal Page Replacement.",
+        iconName: "Cpu",
+        topics: [
+          {
+            id: "page-replacement-lru",
+            slug: "page-replacement-algorithms-lru-fifo",
+            title: "5. FIFO, LRU & Optimal Page Replacement",
+            categoryId: "memory-virtualization",
+            categoryName: "3. Virtual Memory & Page Replacement",
+            difficulty: "Intermediate",
+            estimatedTime: "20 mins",
+            gfgSearchQuery: "Page Replacement Algorithms GeeksforGeeks",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=Page%20Replacement%20Algorithms",
+            quickSummary: "When physical page frame memory is full, page replacement decides which page to evict to disk swap space.",
+            keyPoints: [
+              "FIFO: Evicts oldest loaded page; suffers from Belady's Anomaly.",
+              "LRU: Evicts page that hasn't been referenced for the longest time period.",
+              "Optimal (OPT): Evicts page that will not be used for the longest future period (theoretical benchmark)."
+            ],
+            diagramTitle: "LRU Page Frame Replacement Cache",
+            diagram: `Page Reference Stream: [ 7, 0, 1, 2, 0, 3, 0, 4 ]
+Frames (Capacity 3):
+[7] ──> [7, 0] ──> [7, 0, 1] ──(Page Fault: 2 replaces 7)──> [2, 0, 1]`,
+            complexities: [
+              { operation: "LRU Cache Access", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(Capacity)" }
+            ],
+            codeSnippets: [
+              {
+                language: "java",
+                label: "C Implementation",
+                code: `#include <stdio.h>
+int findLRU(int time[], int n) {
+    int min = time[0], pos = 0;
+    for (int i = 1; i < n; ++i) {
+        if (time[i] < min) { min = time[i]; pos = i; }
+    }
+    return pos;
+}`
+              }
+            ],
+            practiceProblems: [
+              { title: "LRU Cache", difficulty: "Medium", url: "https://leetcode.com/problems/lru-cache/", platform: "LeetCode" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  // ==========================================
+  // 6. ARTIFICIAL INTELLIGENCE LAB (AIL - AI3401)
+  // ==========================================
+  "artificial-intelligence": {
+    title: "Artificial Intelligence Roadmap",
+    badge: "Python / Search / Heuristics / Knowledge Systems",
+    categories: [
+      {
+        id: "heuristic-search",
+        name: "1. State-Space & Heuristic Search",
+        shortDesc: "A* search algorithm, Manhattan distance heuristics, and 8-puzzle state solver.",
+        iconName: "Bot",
+        topics: [
+          {
+            id: "astar-search-algorithm",
+            slug: "astar-heuristic-search-algorithm",
+            title: "1. A* Heuristic Search & Manhattan Distance",
+            categoryId: "heuristic-search",
+            categoryName: "1. State-Space & Heuristic Search",
+            difficulty: "Intermediate",
+            estimatedTime: "20 mins",
+            gfgSearchQuery: "A* Search Algorithm GeeksforGeeks",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=A%2A%20Search%20Algorithm",
+            quickSummary: "Informed graph search evaluating f(n) = g(n) + h(n) to find the shortest path efficiently.",
+            keyPoints: [
+              "Evaluation Function: f(n) = g(n) (path cost from start) + h(n) (estimated heuristic cost to goal).",
+              "Admissible Heuristic: h(n) never overestimates the true cost to reach the goal.",
+              "Consistent (Monotonic): Satisfies triangle inequality h(A) <= cost(A, B) + h(B)."
+            ],
+            diagramTitle: "A* Evaluation Function Graph",
+            diagram: `[ Start Node S ] ──── g(n): Actual Travelled Cost ────> [ Current Node n ]
+                                                            │
+                                                     h(n): Estimated Heuristic
+                                                            │
+                                                            ▼
+                                                   [ Target Goal G ]`,
+            complexities: [
+              { operation: "A* Search with Min-Heap", best: "O(d)", avg: "O(b^d)", worst: "O(b^d)", space: "O(b^d)" }
+            ],
+            codeSnippets: [
+              {
+                language: "python",
+                label: "Python",
+                code: `import heapq
+
+def a_star_search(graph, heuristics, start, goal):
+    pq = [(heuristics[start], 0, start, [start])]
+    visited = set()
+    while pq:
+        f, g, current, path = heapq.heappop(pq)
+        if current == goal: return (path, g)
+        if current in visited: continue
+        visited.add(current)
+        for neighbor, cost in graph.get(current, []):
+            if neighbor not in visited:
+                new_g = g + cost
+                new_f = new_g + heuristics.get(neighbor, 0)
+                heapq.heappush(pq, (new_f, new_g, neighbor, path + [neighbor]))
+    return None`
+              }
+            ],
+            practiceProblems: [
+              { title: "Shortest Path in Binary Matrix", difficulty: "Medium", url: "https://leetcode.com/problems/shortest-path-in-binary-matrix/", platform: "LeetCode" },
+              { title: "Sliding Puzzle (8-Puzzle Solver)", difficulty: "Hard", url: "https://leetcode.com/problems/sliding-puzzle/", platform: "LeetCode" }
+            ]
+          },
+          {
+            id: "eight-puzzle-solver",
+            slug: "eight-puzzle-problem-heuristics",
+            title: "2. 8-Puzzle Problem & State-Space Search",
+            categoryId: "heuristic-search",
+            categoryName: "1. State-Space & Heuristic Search",
+            difficulty: "Intermediate",
+            estimatedTime: "20 mins",
+            gfgSearchQuery: "8 Puzzle Problem Artificial Intelligence",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=8%20puzzle%20problem",
+            quickSummary: "Sliding tile puzzle navigating a 3x3 grid using misplaced tile count and Manhattan distance.",
+            keyPoints: [
+              "State representation: 3x3 matrix with integers 1-8 and 0 (empty blank tile).",
+              "Heuristic h1: Number of misplaced tiles compared to the goal state.",
+              "Heuristic h2: Total Manhattan distance sum = |x1 - x2| + |y1 - y2| for each tile."
+            ],
+            diagramTitle: "8-Puzzle State Transition Branching",
+            diagram: `Initial State:           Move Blank:           Goal State:
+┌───┬───┬───┐          ┌───┬───┬───┐          ┌───┬───┬───┐
+│ 1 │ 2 │ 3 │          │ 1 │ 2 │ 3 │          │ 1 │ 2 │ 3 │
+├───┼───┼───┤  ───>    ├───┼───┼───┤  ───>    ├───┼───┼───┤
+│ 8 │ 0 │ 4 │          │ 8 │ 4 │ 0 │          │ 8 │ 0 │ 4 │
+├───┼───┼───┤          ├───┼───┼───┤          ├───┼───┼───┤
+│ 7 │ 6 │ 5 │          │ 7 │ 6 │ 5 │          │ 7 │ 6 │ 5 │
+└───┴───┴───┘          └───┴───┴───┘          └───┴───┴───┘`,
+            complexities: [
+              { operation: "Manhattan Evaluation", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(State Space)" }
+            ],
+            codeSnippets: [
+              {
+                language: "python",
+                label: "Python",
+                code: `def manhattan_distance(state, goal):
+    dist = 0
+    for i in range(3):
+        for j in range(3):
+            val = state[i][j]
+            if val != 0:
+                target_x, target_y = divmod(val - 1, 3)
+                dist += abs(i - target_x) + abs(j - target_y)
+    return dist`
+              }
+            ],
+            practiceProblems: [
+              { title: "Sliding Puzzle", difficulty: "Hard", url: "https://leetcode.com/problems/sliding-puzzle/", platform: "LeetCode" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "game-adversarial",
+        name: "2. Game Trees & Adversarial Search",
+        shortDesc: "Minimax strategy for 2-player zero-sum games and Alpha-Beta pruning.",
+        iconName: "Bot",
+        topics: [
+          {
+            id: "minimax-alpha-beta",
+            slug: "minimax-algorithm-alpha-beta-pruning",
+            title: "3. Minimax Algorithm & Alpha-Beta Pruning",
+            categoryId: "game-adversarial",
+            categoryName: "2. Game Trees & Adversarial Search",
+            difficulty: "Advanced",
+            estimatedTime: "25 mins",
+            gfgSearchQuery: "Minimax Algorithm in AI GeeksforGeeks",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=Minimax%20Algorithm%20in%20AI",
+            quickSummary: "Optimal decision making in 2-player zero-sum games (Tic-Tac-Toe, Chess) with Alpha-Beta branch pruning.",
+            keyPoints: [
+              "MAX Player aims to maximize evaluation score; MIN Player aims to minimize score.",
+              "Alpha (α): Best score MAX can guarantee so far; Beta (β): Best score MIN can guarantee so far.",
+              "Pruning condition: If α >= β, discard the remaining sub-branches immediately without evaluation."
+            ],
+            diagramTitle: "Minimax Game Tree with Alpha-Beta Cutoffs",
+            diagram: `             [ MAX: 3 ]
+            /          \\
+     [ MIN: 3 ]      [ MIN: <=2 ] (Pruned when β <= α)
+     /        \\       /
+  [ 3 ]      [ 5 ]  [ 2 ]`,
+            complexities: [
+              { operation: "Minimax Tree", best: "O(b^(d/2))", avg: "O(b^(3d/4))", worst: "O(b^d)", space: "O(d)" }
+            ],
+            codeSnippets: [
+              {
+                language: "python",
+                label: "Python",
+                code: `def minimax(depth, node_idx, is_max, scores, alpha, beta, h):
+    if depth == h: return scores[node_idx]
+    if is_max:
+        best = -float('inf')
+        for i in range(2):
+            val = minimax(depth + 1, node_idx * 2 + i, False, scores, alpha, beta, h)
+            best = max(best, val)
+            alpha = max(alpha, best)
+            if beta <= alpha: break # Beta Pruning
+        return best
+    else:
+        best = float('inf')
+        for i in range(2):
+            val = minimax(depth + 1, node_idx * 2 + i, True, scores, alpha, beta, h)
+            best = min(best, val)
+            beta = min(beta, best)
+            if beta <= alpha: break # Alpha Pruning
+        return best`
+              }
+            ],
+            practiceProblems: [
+              { title: "Nim Game", difficulty: "Easy", url: "https://leetcode.com/problems/nim-game/", platform: "LeetCode" },
+              { title: "Predict the Winner", difficulty: "Medium", url: "https://leetcode.com/problems/predict-the-winner/", platform: "LeetCode" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "csp-expert-systems",
+        name: "3. Constraint Satisfaction & Expert Reasoning",
+        shortDesc: "N-Queens CSP, Backtracking search, and Forward Chaining expert systems.",
+        iconName: "Bot",
+        topics: [
+          {
+            id: "n-queens-csp",
+            slug: "n-queens-constraint-satisfaction-problem",
+            title: "4. N-Queens Constraint Satisfaction Problem",
+            categoryId: "csp-expert-systems",
+            categoryName: "3. Constraint Satisfaction & Expert Reasoning",
+            difficulty: "Intermediate",
+            estimatedTime: "20 mins",
+            gfgSearchQuery: "N Queen Problem Backtracking",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=N%20Queen%20Problem",
+            quickSummary: "Places N non-attacking queens on an N×N chessboard so no two share row, column, or diagonal.",
+            keyPoints: [
+              "Variables: Column positions of queens Q1, Q2, ..., QN.",
+              "Domain: Rows {1, 2, ..., N}.",
+              "Constraints: No identical rows (r1 != r2) and no diagonal clashes (|r1 - r2| != |c1 - c2|)."
+            ],
+            diagramTitle: "4-Queens Backtracking Board Configuration",
+            diagram: `[ .  Q  .  . ]
+[ .  .  .  Q ]
+[ Q  .  .  . ]
+[ .  .  Q  . ]`,
+            complexities: [
+              { operation: "N-Queens Search", best: "O(N)", avg: "O(N!)", worst: "O(N!)", space: "O(N)" }
+            ],
+            codeSnippets: [
+              {
+                language: "python",
+                label: "Python Backtracking",
+                code: `def solve_n_queens(n):
+    res = []
+    cols, pos_diag, neg_diag = set(), set(), set()
+    board = [["."] * n for _ in range(n)]
+
+    def backtrack(r):
+        if r == n:
+            res.append(["".join(row) for row in board])
+            return
+        for c in range(n):
+            if c in cols or (r + c) in pos_diag or (r - c) in neg_diag:
+                continue
+            cols.add(c); pos_diag.add(r + c); neg_diag.add(r - c)
+            board[r][c] = "Q"
+            backtrack(r + 1)
+            cols.remove(c); pos_diag.remove(r + c); neg_diag.remove(r - c)
+            board[r][c] = "."
+
+    backtrack(0)
+    return res`
+              }
+            ],
+            practiceProblems: [
+              { title: "N-Queens", difficulty: "Hard", url: "https://leetcode.com/problems/n-queens/", platform: "LeetCode" }
+            ]
+          },
+          {
+            id: "expert-systems-inference",
+            slug: "expert-systems-forward-backward-chaining",
+            title: "5. Expert Systems & Forward/Backward Chaining",
+            categoryId: "csp-expert-systems",
+            categoryName: "3. Constraint Satisfaction & Expert Reasoning",
+            difficulty: "Beginner",
+            estimatedTime: "15 mins",
+            gfgSearchQuery: "Expert Systems Forward and Backward Chaining",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=Expert%20Systems",
+            quickSummary: "Rule-based reasoning engine inferring conclusions from observed facts (IF <condition> THEN <action>).",
+            keyPoints: [
+              "Knowledge Base: Set of production rules and verified domain facts.",
+              "Forward Chaining (Data-Driven): Starts with known facts and triggers matching rules to derive new facts.",
+              "Backward Chaining (Goal-Driven): Starts with a hypothesis and looks backward to check if supporting facts exist."
+            ],
+            diagramTitle: "Forward Chaining Inference Flowchart",
+            diagram: `Known Facts: { Fever, Cough } ──> Match Rule: IF Fever AND Cough THEN Diagnosis: Flu`,
+            complexities: [
+              { operation: "Rule Matching", best: "O(1)", avg: "O(R * F)", worst: "O(R * F)", space: "O(F)" }
+            ],
+            codeSnippets: [
+              {
+                language: "python",
+                label: "Python Inference Engine",
+                code: `class RuleEngine:
+    def __init__(self):
+        self.facts = set()
+        self.rules = []
+
+    def add_rule(self, conditions, conclusion):
+        self.rules.append((conditions, conclusion))
+
+    def infer(self):
+        added = True
+        while added:
+            added = False
+            for conds, conclusion in self.rules:
+                if conds.issubset(self.facts) and conclusion not in self.facts:
+                    self.facts.add(conclusion)
+                    added = True
+        return self.facts`
+              }
+            ],
+            practiceProblems: [
+              { title: "Evaluate Division (Graph Inference)", difficulty: "Medium", url: "https://leetcode.com/problems/evaluate-division/", platform: "LeetCode" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  // ==========================================
+  // 7. BIG DATA ANALYTICS LAB (BDAL - CS8711)
+  // ==========================================
+  "big-data-analytics": {
+    title: "Big Data Analytics Roadmap",
+    badge: "Hadoop / HDFS / PySpark / NoSQL / MapReduce",
+    categories: [
+      {
+        id: "hdfs-architecture",
+        name: "1. Hadoop Architecture & HDFS",
+        shortDesc: "Hadoop NameNode/DataNode architecture, block replication, and HDFS shell commands.",
+        iconName: "BarChart3",
+        topics: [
+          {
+            id: "hdfs-file-operations",
+            slug: "hadoop-hdfs-architecture-file-operations",
+            title: "1. HDFS Block Distribution & Shell Commands",
+            categoryId: "hdfs-architecture",
+            categoryName: "1. Hadoop Architecture & HDFS",
+            difficulty: "Beginner",
+            estimatedTime: "15 mins",
+            gfgSearchQuery: "Hadoop HDFS Architecture GeeksforGeeks",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=Hadoop%20HDFS",
+            quickSummary: "HDFS stores massive datasets across distributed commodity hardware with fault-tolerant block replication.",
+            keyPoints: [
+              "NameNode: Master metadata server storing directory trees and block mappings in memory.",
+              "DataNode: Worker slave nodes storing raw file block chunks (default 128MB).",
+              "Replication Factor: Default 3x rack-aware replication ensures high availability."
+            ],
+            diagramTitle: "HDFS Master-Slave Rack Architecture",
+            diagram: `                    [ Master: NameNode ]
+                    (Metadata & Block Map)
+                             │
+            ┌────────────────┴────────────────┐
+            ▼                                 ▼
+      [ Rack 1: DataNode A ]            [ Rack 2: DataNode C ]
+      [ Rack 1: DataNode B ]            [ Rack 2: DataNode D ]`,
+            complexities: [
+              { operation: "Block Streaming", best: "O(1)", avg: "O(Block Size)", worst: "O(Block Size)", space: "O(Metadata)" }
+            ],
+            codeSnippets: [
+              {
+                language: "java",
+                label: "Bash HDFS CLI",
+                code: `# HDFS File Management Commands
+hdfs dfs -mkdir -p /user/virtual_lab/data
+hdfs dfs -put local_sales.csv /user/virtual_lab/data/
+hdfs dfs -ls /user/virtual_lab/data/
+hdfs dfs -cat /user/virtual_lab/data/local_sales.csv | head -n 10
+hdfs dfs -setrep -w 3 /user/virtual_lab/data/local_sales.csv`
+              }
+            ],
+            practiceProblems: [
+              { title: "Design Distributed File System", difficulty: "Medium", url: "https://leetcode.com/problems/design-file-system/", platform: "LeetCode" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "mapreduce-computing",
+        name: "2. MapReduce Distributed Framework",
+        shortDesc: "Map, Shuffle, and Reduce distributed operations for large-scale data processing.",
+        iconName: "BarChart3",
+        topics: [
+          {
+            id: "mapreduce-wordcount",
+            slug: "mapreduce-word-count-matrix-multiplication",
+            title: "2. MapReduce Distributed Word Count & Matrix Math",
+            categoryId: "mapreduce-computing",
+            categoryName: "2. MapReduce Distributed Framework",
+            difficulty: "Intermediate",
+            estimatedTime: "20 mins",
+            gfgSearchQuery: "MapReduce Word Count Program GeeksforGeeks",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=MapReduce%20Word%20Count",
+            quickSummary: "Splits computation into a parallel Map step, intermediate key-value Shuffle/Sort, and aggregate Reduce step.",
+            keyPoints: [
+              "Mapper: Emits intermediate Key-Value pairs: (word, 1).",
+              "Shuffle & Sort: Groups all values with matching keys across cluster partitions.",
+              "Reducer: Aggregates list of counts per word: (word, sum([1, 1, 1])).",
+              "Fault tolerant: Failed tasks restart automatically on alternate worker nodes."
+            ],
+            diagramTitle: "MapReduce Data Pipeline Flowchart",
+            diagram: `Input Data ──> [ Split ] ──> [ Map (w, 1) ] ──> [ Shuffle & Sort ] ──> [ Reduce (w, total) ] ──> Final Output`,
+            complexities: [
+              { operation: "MapReduce Job", best: "O(N/K)", avg: "O(N/K + log K)", worst: "O(N)", space: "O(N)" }
+            ],
+            codeSnippets: [
+              {
+                language: "python",
+                label: "Python Streaming MapReduce",
+                code: `# mapper.py
+import sys
+for line in sys.stdin:
+    for word in line.strip().split():
+        print(f"{word}\t1")
+
+# reducer.py
+import sys
+from collections import defaultdict
+counts = defaultdict(int)
+for line in sys.stdin:
+    word, count = line.strip().split('\t')
+    counts[word] += int(count)
+for word, count in counts.items():
+    print(f"{word}\t{count}")`
+              }
+            ],
+            practiceProblems: [
+              { title: "Top K Frequent Words", difficulty: "Medium", url: "https://leetcode.com/problems/top-k-frequent-words/", platform: "LeetCode" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "spark-pyspark",
+        name: "3. Apache Spark & NoSQL Analytics",
+        shortDesc: "In-memory RDD transformations, PySpark DataFrames, and MongoDB Aggregations.",
+        iconName: "BarChart3",
+        topics: [
+          {
+            id: "pyspark-dataframe-analytics",
+            slug: "pyspark-rdd-dataframe-analytics",
+            title: "3. Apache Spark RDDs & PySpark DataFrames",
+            categoryId: "spark-pyspark",
+            categoryName: "3. Apache Spark & NoSQL Analytics",
+            difficulty: "Intermediate",
+            estimatedTime: "20 mins",
+            gfgSearchQuery: "PySpark DataFrame Tutorial GeeksforGeeks",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=PySpark%20DataFrame",
+            quickSummary: "Apache Spark provides 100x faster in-memory distributed compute via Resilient Distributed Datasets (RDDs).",
+            keyPoints: [
+              "RDD (Resilient Distributed Dataset): Immutable, lazily evaluated, partition-aware collections.",
+              "Transformations (Lazy): map(), filter(), flatMap(), groupByKey() construct a Directed Acyclic Graph (DAG).",
+              "Actions (Eager Execution): count(), collect(), saveAsTextFile() trigger physical execution pipelines.",
+              "PySpark SQL DataFrames optimize queries with the Catalyst Query Optimizer."
+            ],
+            diagramTitle: "Spark DAG Execution Pipeline",
+            diagram: `Raw CSV ──> RDD Transformation (filter) ──> DAG Plan ──> Action (count) ──> In-Memory Compute`,
+            complexities: [
+              { operation: "Spark In-Memory Scan", best: "O(1)", avg: "O(N/Cores)", worst: "O(N)", space: "O(RAM Cache)" }
+            ],
+            codeSnippets: [
+              {
+                language: "python",
+                label: "PySpark",
+                code: `from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, avg, count
+
+spark = SparkSession.builder.appName("BigDataAnalytics").getOrCreate()
+df = spark.read.csv("hdfs:///data/ecommerce_sales.csv", header=True, inferSchema=True)
+
+# Group by category, compute count and average price
+metrics_df = df.groupBy("category") \
+               .agg(count("order_id").alias("total_orders"), avg("price").alias("avg_price")) \
+               .filter(col("total_orders") > 1000) \
+               .orderBy(col("avg_price").desc())
+
+metrics_df.show(5)`
+              }
+            ],
+            practiceProblems: [
+              { title: "Aggregate Large Data Streams", difficulty: "Medium", url: "https://leetcode.com/problems/first-unique-number/", platform: "LeetCode" }
+            ]
+          },
+          {
+            id: "mongodb-nosql-analytics",
+            slug: "mongodb-nosql-aggregation-pipelines",
+            title: "4. NoSQL Big Data & MongoDB Aggregation Pipeline",
+            categoryId: "spark-pyspark",
+            categoryName: "3. Apache Spark & NoSQL Analytics",
+            difficulty: "Intermediate",
+            estimatedTime: "20 mins",
+            gfgSearchQuery: "MongoDB Aggregation Pipeline GeeksforGeeks",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=MongoDB%20Aggregation",
+            quickSummary: "Document-oriented NoSQL storage with multi-stage aggregation pipelines ($match, $group, $project).",
+            keyPoints: [
+              "Flexible BSON JSON schema allows semi-structured data ingestion at terabyte scale.",
+              "Sharding: Distributes collection documents across multiple replica sets.",
+              "Aggregation Pipeline: Multi-stage transformations ($match -> $group -> $sort -> $limit)."
+            ],
+            diagramTitle: "MongoDB Aggregation Pipeline Stages",
+            diagram: `Collection ──> [$match: active:true] ──> [$group: _id:"$region", total:{$sum:"$revenue"}] ──> [$sort: -1]`,
+            complexities: [
+              { operation: "Pipeline Execution", best: "O(log N)", avg: "O(N)", worst: "O(N)", space: "O(Result Size)" }
+            ],
+            codeSnippets: [
+              {
+                language: "java",
+                label: "MongoDB Query",
+                code: `db.transactions.aggregate([
+  { $match: { status: "COMPLETED", amount: { $gte: 100 } } },
+  { $group: {
+      _id: "$category",
+      totalRevenue: { $sum: "$amount" },
+      avgTransaction: { $avg: "$amount" },
+      count: { $sum: 1 }
+  }},
+  { $sort: { totalRevenue: -1 } },
+  { $limit: 5 }
+]);`
+              }
+            ],
+            practiceProblems: [
+              { title: "Design In-Memory Database", difficulty: "Medium", url: "https://leetcode.com/problems/design-an-in-memory-file-system/", platform: "LeetCode" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  // ==========================================
+  // 8. CLOUD SERVICE MANAGEMENT LAB (CSML - CS8811)
+  // ==========================================
+  "cloud-service-management": {
+    title: "Cloud Service Management Roadmap",
+    badge: "AWS / Docker / Kubernetes / Serverless / Terraform",
+    categories: [
+      {
+        id: "cloud-infrastructure-aws",
+        name: "1. Cloud Infrastructure & AWS Core Services",
+        shortDesc: "AWS EC2 virtual compute, VPC networks, and S3 scalable object storage.",
+        iconName: "Cloud",
+        topics: [
+          {
+            id: "aws-ec2-vpc-provisioning",
+            slug: "aws-ec2-vpc-security-groups-provisioning",
+            title: "1. AWS EC2 Compute, VPC & Security Groups",
+            categoryId: "cloud-infrastructure-aws",
+            categoryName: "1. Cloud Infrastructure & AWS Core Services",
+            difficulty: "Beginner",
+            estimatedTime: "15 mins",
+            gfgSearchQuery: "AWS EC2 Instance Setup GeeksforGeeks",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=AWS%20EC2",
+            quickSummary: "Virtual compute instances on demand with elastic IPs, custom VPC subnets, and stateful security group firewalls.",
+            keyPoints: [
+              "EC2 Instances: Virtual servers providing resizable compute capacity.",
+              "VPC (Virtual Private Cloud): Isolated virtual network spanning Public and Private subnets.",
+              "Security Groups: Stateful virtual firewalls controlling inbound and outbound traffic."
+            ],
+            diagramTitle: "AWS Virtual Private Cloud (VPC) Topology",
+            diagram: `Internet Gateway ──> Route Table ──> [ Public Subnet: Web Server (EC2) ]
+                                                    │ (Internal Routing)
+                                                    ▼
+                                      [ Private Subnet: DB Server (RDS) ]`,
+            complexities: [
+              { operation: "Instance Provisioning", best: "O(1)", avg: "1-2 mins", worst: "5 mins", space: "O(Storage EBS)" }
+            ],
+            codeSnippets: [
+              {
+                language: "java",
+                label: "Terraform HCL",
+                code: `resource "aws_instance" "web_server" {
+  ami           = "ami-0c55b159cbfafe1f0" # Ubuntu 22.04 LTS
+  instance_type = "t3.micro"
+  key_name      = "vlab-keypair"
+
+  vpc_security_group_ids = [aws_security_group.web_sg.id]
+
+  tags = {
+    Name        = "VLab-WebServer"
+    Environment = "Production"
+  }
+}`
+              }
+            ],
+            practiceProblems: [
+              { title: "Design Load Balancer Router", difficulty: "Medium", url: "https://leetcode.com/problems/insert-delete-getrandom-o1/", platform: "LeetCode" }
+            ]
+          },
+          {
+            id: "aws-s3-storage-lifecycle",
+            slug: "aws-s3-object-storage-lifecycle-management",
+            title: "2. AWS S3 Storage & Lifecycle Policies",
+            categoryId: "cloud-infrastructure-aws",
+            categoryName: "1. Cloud Infrastructure & AWS Core Services",
+            difficulty: "Beginner",
+            estimatedTime: "15 mins",
+            gfgSearchQuery: "AWS S3 Bucket Tutorial GeeksforGeeks",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=AWS%20S3",
+            quickSummary: "Scalable 99.999999999% (11 9s) durable object storage with automated tiered archiving policies.",
+            keyPoints: [
+              "Storage Classes: S3 Standard, S3 Intelligent-Tiering, S3 Glacier Flexible, S3 Glacier Deep Archive.",
+              "Lifecycle Rules: Automatically transition objects to Glacier after 30 days and delete after 365 days.",
+              "Cross-Region Replication (CRR) and Bucket Versioning protection."
+            ],
+            diagramTitle: "S3 Object Lifecycle Transition Flowchart",
+            diagram: `Upload Object ──> [ S3 Standard (0-30 Days) ] ──> [ S3 Glacier (30-90 Days) ] ──> [ Expire (365 Days) ]`,
+            complexities: [
+              { operation: "S3 Object Put", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(Unlimited)" }
+            ],
+            codeSnippets: [
+              {
+                language: "python",
+                label: "Python (boto3)",
+                code: `import boto3
+
+s3 = boto3.client('s3')
+# Upload file with public read permissions
+s3.upload_file(
+    Filename='dataset.csv',
+    Bucket='vlab-cloud-bucket',
+    Key='analytics/dataset.csv',
+    ExtraArgs={'ContentType': 'text/csv'}
+)
+print("File successfully uploaded to AWS S3!")`
+              }
+            ],
+            practiceProblems: [
+              { title: "Design Compressed File Storage", difficulty: "Medium", url: "https://leetcode.com/problems/encode-and-decode-tinyurl/", platform: "LeetCode" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "containerization-kubernetes",
+        name: "2. Docker Containers & Kubernetes Orchestration",
+        shortDesc: "Containerizing microservices with Docker and managing multi-pod clusters with Kubernetes.",
+        iconName: "Cloud",
+        topics: [
+          {
+            id: "docker-containerization",
+            slug: "docker-containerization-dockerfile-compose",
+            title: "3. Docker Containerization & Multi-Container Compose",
+            categoryId: "containerization-kubernetes",
+            categoryName: "2. Docker Containers & Kubernetes Orchestration",
+            difficulty: "Intermediate",
+            estimatedTime: "20 mins",
+            gfgSearchQuery: "Docker Containerization GeeksforGeeks",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=Docker%20Containerization",
+            quickSummary: "Packages code, dependencies, and environment into lightweight, portable, isolated containers.",
+            keyPoints: [
+              "Dockerfile: Declarative instructions for building layered container images.",
+              "Docker Compose: Multi-container orchestration tool defining services, networks, and persistent volumes.",
+              "Eliminates 'it works on my machine' environmental discrepancies."
+            ],
+            diagramTitle: "Docker Layered Architecture",
+            diagram: `[ App Code ] ──> [ Dependencies / Node.js ] ──> [ Alpine Linux OS Base Layer ] ──> Docker Engine`,
+            complexities: [
+              { operation: "Container Startup", best: "O(1) (~500ms)", avg: "1s", worst: "5s", space: "O(Image Size)" }
+            ],
+            codeSnippets: [
+              {
+                language: "java",
+                label: "Dockerfile",
+                code: `FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+EXPOSE 3000
+CMD ["npm", "start"]`
+              }
+            ],
+            practiceProblems: [
+              { title: "Design Parking System (Stateful Allocation)", difficulty: "Easy", url: "https://leetcode.com/problems/design-parking-system/", platform: "LeetCode" }
+            ]
+          },
+          {
+            id: "kubernetes-cluster-pods",
+            slug: "kubernetes-pods-deployments-services",
+            title: "4. Kubernetes Pods, Deployments & Service Mesh",
+            categoryId: "containerization-kubernetes",
+            categoryName: "2. Docker Containers & Kubernetes Orchestration",
+            difficulty: "Advanced",
+            estimatedTime: "25 mins",
+            gfgSearchQuery: "Kubernetes Tutorial GeeksforGeeks",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=Kubernetes",
+            quickSummary: "Automated deployment, auto-scaling, self-healing, and load-balancing of containerized applications.",
+            keyPoints: [
+              "Pod: Smallest deployable compute unit in Kubernetes containing one or more containers.",
+              "Deployment: Manages ReplicaSets to maintain desired state and perform zero-downtime rolling updates.",
+              "Service: Stable IP and DNS load-balancer abstraction over dynamic pods."
+            ],
+            diagramTitle: "Kubernetes Cluster Pod Topology",
+            diagram: `[ Kube Service (ClusterIP: 80) ] ──> Load Balance ──> [ Pod Replica 1 ]
+                                                   ──> [ Pod Replica 2 ]
+                                                   ──> [ Pod Replica 3 ]`,
+            complexities: [
+              { operation: "Pod Rolling Update", best: "Zero Downtime", avg: "O(Replicas)", worst: "Timeout", space: "O(Cluster RAM)" }
+            ],
+            codeSnippets: [
+              {
+                language: "java",
+                label: "Kubernetes YAML",
+                code: `apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: virtual-lab-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: vlab-api
+  template:
+    metadata:
+      labels:
+        app: vlab-api
+    spec:
+      containers:
+      - name: api
+        image: vlab/api:v1.2
+        ports:
+        - containerPort: 8080`
+              }
+            ],
+            practiceProblems: [
+              { title: "Design Distributed Rate Limiter", difficulty: "Medium", url: "https://leetcode.com/problems/logger-rate-limiter/", platform: "LeetCode" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "serverless-cloud-iam",
+        name: "3. Serverless Architecture & Cloud Security",
+        shortDesc: "AWS Lambda event-driven execution, API Gateway, and IAM security policies.",
+        iconName: "Cloud",
+        topics: [
+          {
+            id: "aws-lambda-serverless",
+            slug: "aws-lambda-serverless-api-gateway",
+            title: "5. AWS Lambda Serverless Microservices & IAM",
+            categoryId: "serverless-cloud-iam",
+            categoryName: "3. Serverless Architecture & Cloud Security",
+            difficulty: "Intermediate",
+            estimatedTime: "20 mins",
+            gfgSearchQuery: "AWS Lambda Serverless Tutorial",
+            gfgUrl: "https://www.geeksforgeeks.org/search/?gq=AWS%20Lambda",
+            quickSummary: "Run backend code without managing or provisioning servers; charges only for compute time consumed.",
+            keyPoints: [
+              "Event-Driven: Triggered by S3 uploads, DynamoDB streams, HTTP API Gateway requests, or CloudWatch timers.",
+              "Auto-Scaling: Scales automatically from zero requests to thousands of concurrent executions.",
+              "IAM Policies: Least privilege access control granting granular permissions to specific cloud resources."
+            ],
+            diagramTitle: "Serverless REST API Architecture",
+            diagram: `Client HTTP Request ──> [ AWS API Gateway ] ──> [ AWS Lambda Function ] ──> [ DynamoDB / S3 ]`,
+            complexities: [
+              { operation: "Warm Invocation", best: "O(1) (<10ms)", avg: "50ms", worst: "Cold Start (~200ms)", space: "O(Configured RAM)" }
+            ],
+            codeSnippets: [
+              {
+                language: "python",
+                label: "Python AWS Lambda Handler",
+                code: `import json
+
+def lambda_handler(event, context):
+    # Parse request payload from API Gateway
+    body = json.loads(event.get('body', '{}'))
+    user_name = body.get('name', 'Student')
+
+    return {
+        'statusCode': 200,
+        'headers': {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        'body': json.dumps({
+            'message': f"Welcome to Cloud Lab, {user_name}!",
+            'status': 'SUCCESS'
+        })
+    }`
+              }
+            ],
+            practiceProblems: [
+              { title: "Design Hit Counter (High Throughput)", difficulty: "Medium", url: "https://leetcode.com/problems/design-hit-counter/", platform: "LeetCode" }
+            ]
+          }
+        ]
+      }
+    ]
   }
 };
