@@ -26,7 +26,8 @@ import {
   Trophy,
   TrendingUp,
   Flag,
-  Vote
+  Vote,
+  Search
 } from "lucide-react";
 
 const sections = {
@@ -38,6 +39,14 @@ const sections = {
       icon: Code2,
       badge: "NEW STUDIO",
       color: "from-blue-500/20 to-indigo-500/20 text-[#1e88e5] border-[#1e88e5]/40"
+    },
+    {
+      name: "Complexity & DS Comparison Matrix",
+      description: "Interactive Big-O growth calculator, data structure operation matrix (Access, Search, Insert, Delete), and sorting benchmarks.",
+      href: "/visualizer/complexity-matrix",
+      icon: TrendingUp,
+      badge: "BIG-O MATRIX",
+      color: "from-purple-500/20 to-pink-500/20 text-purple-500 border-purple-500/40"
     },
     {
       name: "Master Coding Practice (LeetCode 150)",
@@ -90,6 +99,36 @@ const sections = {
       href: "/visualizer/quick-sort",
       icon: ArrowDownUp,
       badge: "O(n log n)"
+    },
+    {
+      name: "Heap Sort Visualizer",
+      description: "Binary max-heap construction and root extraction algorithm with O(n log n) performance.",
+      href: "/visualizer/heap-sort",
+      icon: ArrowDownUp,
+      badge: "O(n log n)"
+    },
+    {
+      name: "Counting Sort Visualizer",
+      description: "Non-comparison linear sorting algorithm relying on key frequency counts.",
+      href: "/visualizer/counting-sort",
+      icon: ArrowDownUp,
+      badge: "O(n + k)"
+    }
+  ],
+  searching: [
+    {
+      name: "Linear Search Visualizer",
+      description: "Sequential search checking element-by-element from left to right in O(N) time.",
+      href: "/visualizer/linear-search",
+      icon: Search,
+      badge: "O(N)"
+    },
+    {
+      name: "Binary Search Visualizer",
+      description: "Logarithmic divide-and-conquer search repeatedly splitting sorted search space.",
+      href: "/visualizer/binary-search",
+      icon: Search,
+      badge: "O(log N)"
     }
   ],
   algorithms: [
@@ -249,7 +288,7 @@ export default function VisualizerHubPage() {
 
       {/* Featured Studios (Custom Recursion & Practice Sheets) */}
       <section className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {sections.customAndFeatured.map((item) => {
             const Icon = item.icon;
             return (
@@ -310,6 +349,46 @@ export default function VisualizerHubPage() {
                       </Badge>
                     </div>
                     <CardTitle className="text-base font-bold mt-2 group-hover:text-[#1e88e5] transition-colors">
+                      {algo.name}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-xs leading-relaxed">
+                      {algo.description}
+                    </CardDescription>
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Searching Algorithms Section */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between border-b border-border/60 pb-2">
+          <h2 className="text-xl font-bold font-heading text-foreground flex items-center gap-2">
+            <Search className="h-5 w-5 text-emerald-500" />
+            <span>Searching Visualizer</span>
+          </h2>
+          <Badge variant="secondary" className="text-xs">{sections.searching.length} Simulators</Badge>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {sections.searching.map((algo) => {
+            const Icon = algo.icon;
+            return (
+              <Link key={algo.href} href={algo.href}>
+                <Card className="h-full border-border/80 bg-card hover:border-emerald-500 transition-all hover:shadow-md rounded-2xl group">
+                  <CardHeader className="pb-2">
+                    <div className="flex items-center justify-between">
+                      <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <Badge variant="outline" className="text-[10px] font-mono">
+                        {algo.badge}
+                      </Badge>
+                    </div>
+                    <CardTitle className="text-base font-bold mt-2 group-hover:text-emerald-500 transition-colors">
                       {algo.name}
                     </CardTitle>
                   </CardHeader>

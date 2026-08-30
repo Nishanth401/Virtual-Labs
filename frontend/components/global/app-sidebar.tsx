@@ -39,6 +39,11 @@ const navItems = [
     icon: Award,
   },
   {
+    title: "Complexity & DS Matrix",
+    url: "/visualizer/complexity-matrix",
+    icon: TrendingUp,
+  },
+  {
     title: "Student Portal",
     url: "/dashboard",
     icon: Home,
@@ -81,6 +86,33 @@ const sortingAlgorithms = [
     url: "/visualizer/quick-sort",
     icon: ArrowDownUp,
     description: "Pivot partitioning and recursive sub-array sorting",
+  },
+  {
+    name: "Heap Sort",
+    url: "/visualizer/heap-sort",
+    icon: ArrowDownUp,
+    description: "Max-heap construction and root extraction",
+  },
+  {
+    name: "Counting Sort",
+    url: "/visualizer/counting-sort",
+    icon: ArrowDownUp,
+    description: "Non-comparison linear sorting",
+  },
+]
+
+const searchingAlgorithms = [
+  {
+    name: "Linear Search",
+    url: "/visualizer/linear-search",
+    icon: Database,
+    description: "Sequential search across array elements",
+  },
+  {
+    name: "Binary Search",
+    url: "/visualizer/binary-search",
+    icon: Database,
+    description: "Logarithmic divide-and-conquer search",
   },
 ]
 
@@ -221,6 +253,15 @@ export function AppSidebar() {
         <NavProjects
           title="Sorting Visualizers"
           projects={sortingAlgorithms.map(s => ({
+            name: s.name,
+            url: s.url,
+            icon: s.icon,
+            description: s.description,
+          }))}
+        />
+        <NavProjects
+          title="Searching Visualizers"
+          projects={searchingAlgorithms.map(s => ({
             name: s.name,
             url: s.url,
             icon: s.icon,
