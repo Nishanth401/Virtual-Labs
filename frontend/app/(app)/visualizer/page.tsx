@@ -82,7 +82,7 @@ const sections = {
       description: "In-place cycle placement pattern for numbers 1..N with linear O(n) runtime and minimal swaps.",
       href: "/visualizer/cyclic-sort",
       icon: ArrowDownUp,
-      badge: "O(n) Pattern"
+      badge: "O(n)"
     },
     {
       name: "Quick Sort Visualizer",

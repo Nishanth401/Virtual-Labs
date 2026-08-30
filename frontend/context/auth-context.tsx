@@ -102,9 +102,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Synchronize Firebase Auth state
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
+        try {
+          const token = await currentUser.getIdToken();
+          if (typeof window !== "undefined") {
+            localStorage.setItem("vlab_auth_token", token);
+          }
+        } catch (e) {
+          console.warn("Could not retrieve Firebase token:", e);
+        }
+
         const email = currentUser.email || "";
         const regNo = email.includes("@") ? email.split("@")[0].toUpperCase() : "STUDENT";
         const displayName = currentUser.displayName || "Student";
@@ -144,6 +153,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
         });
       } else {
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("vlab_auth_token");
+        }
         const local = typeof window !== "undefined" ? localStorage.getItem("vsb_student_profile_data") : null;
         if (local) {
           try {
@@ -338,7 +350,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     department?: string,
     yearSemester?: string
   ) => {
-    return signUpWithEmail(regNoOrEmail, pass, name, department, yearSemester);
+    return signUpWithEmail(regNoOrEmail, pass, name, regNoOrEmail, department, yearSemester);
   };
 
   const loginWithGoogle = async () => {
@@ -351,6 +363,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         )
       ]);
       setUser(res.user);
+      const token = await res.user.getIdToken();
+      if (typeof window !== "undefined") {
+        localStorage.setItem("vlab_auth_token", token);
+      }
       const profile: StudentProfile = {
         uid: res.user.uid,
         name: res.user.displayName || "Google Student User",
@@ -401,6 +417,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setStudentProfile(null);
       if (typeof window !== "undefined") {
         localStorage.removeItem("vsb_student_profile_data");
+        localStorage.removeItem("vlab_auth_token");
       }
     } catch (e) {
       console.error("Logout error:", e);
@@ -425,6 +442,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setStudentProfile(null);
       if (typeof window !== "undefined") {
         localStorage.removeItem("vsb_student_profile_data");
+        localStorage.removeItem("vlab_auth_token");
       }
     } catch (err: any) {
       console.error("Delete account error:", err);

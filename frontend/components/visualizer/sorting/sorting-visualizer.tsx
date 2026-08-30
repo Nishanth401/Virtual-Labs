@@ -419,6 +419,9 @@ export function SortingVisualizer({ algorithm, title, description }: SortingVisu
             badge="Java 17+"
             fileName={`${title.replace(/\s+/g, "")}.java`}
             maxHeight="600px"
+            onSendToVisualizer={(arr) => {
+              setCustomArray(arr);
+            }}
           />
         </TabsContent>
 

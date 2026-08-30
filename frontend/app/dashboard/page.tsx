@@ -7,9 +7,26 @@ import { Navbar } from "@/components/navigation/navbar";
 import { Footer } from "@/components/navigation/footer";
 import { ProgressCard } from "@/components/dashboard/progress-card";
 import { AttemptsTable } from "@/components/dashboard/attempts-table";
+import { UserFilesSection } from "@/components/dashboard/user-files-section";
+import { UserNotesSection } from "@/components/dashboard/user-notes-section";
+import { UserTeamSection } from "@/components/dashboard/user-team-section";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Award, RotateCcw, Sparkles, BookOpen, Layers, ArrowRight, LogOut, Trash2 } from "lucide-react";
+import {
+  Award,
+  RotateCcw,
+  Sparkles,
+  BookOpen,
+  Layers,
+  ArrowRight,
+  LogOut,
+  Trash2,
+  FolderOpen,
+  StickyNote,
+  Users,
+  CheckCircle2
+} from "lucide-react";
 import Link from "next/link";
 
 export default function StudentDashboardPage() {
@@ -23,7 +40,11 @@ export default function StudentDashboardPage() {
   };
 
   const handleDeleteAccount = async () => {
-    if (confirm("Are you sure you want to permanently delete your account? All progress, certificates, notes, and bound Register Number will be erased.")) {
+    if (
+      confirm(
+        "Are you sure you want to permanently delete your account? All progress, certificates, notes, and bound Register Number will be erased."
+      )
+    ) {
       await deleteAccount();
       router.push("/");
     }
@@ -105,7 +126,7 @@ export default function StudentDashboardPage() {
             </div>
           </div>
 
-          {/* Progress Overview Card with Certificate Generator (Dynamic for each logged-in student) */}
+          {/* Progress Overview Card with Certificate Generator */}
           <ProgressCard progress={progress} totalExperiments={6} />
 
           {/* Quick Shortcuts */}
@@ -135,8 +156,43 @@ export default function StudentDashboardPage() {
             </div>
           </div>
 
-          {/* Experiments & Assessment Table */}
-          <AttemptsTable progress={progress} />
+          {/* Dashboard Tabs for Assessments, Lab Files, Viva Notes, and Lab Team */}
+          <Tabs defaultValue="attempts" className="w-full space-y-4">
+            <TabsList className="grid grid-cols-2 sm:grid-cols-4 w-full bg-muted/60 p-1 rounded-xl">
+              <TabsTrigger value="attempts" className="text-xs font-bold gap-1.5 py-2">
+                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+                <span>Lab Assessments</span>
+              </TabsTrigger>
+              <TabsTrigger value="files" className="text-xs font-bold gap-1.5 py-2">
+                <FolderOpen className="h-3.5 w-3.5 text-primary" />
+                <span>Lab Files &amp; Manuals</span>
+              </TabsTrigger>
+              <TabsTrigger value="notes" className="text-xs font-bold gap-1.5 py-2">
+                <StickyNote className="h-3.5 w-3.5 text-amber-500" />
+                <span>Viva Notes</span>
+              </TabsTrigger>
+              <TabsTrigger value="team" className="text-xs font-bold gap-1.5 py-2">
+                <Users className="h-3.5 w-3.5 text-emerald-500" />
+                <span>Batch Partners</span>
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="attempts" className="space-y-4">
+              <AttemptsTable progress={progress} />
+            </TabsContent>
+
+            <TabsContent value="files" className="space-y-4">
+              <UserFilesSection />
+            </TabsContent>
+
+            <TabsContent value="notes" className="space-y-4">
+              <UserNotesSection />
+            </TabsContent>
+
+            <TabsContent value="team" className="space-y-4">
+              <UserTeamSection />
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
       <Footer />

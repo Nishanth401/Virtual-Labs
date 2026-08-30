@@ -34,7 +34,12 @@ const navItems = [
     icon: Binary,
   },
   {
-    title: "Dashboard",
+    title: "Coding Practice Roadmaps",
+    url: "/practice",
+    icon: Award,
+  },
+  {
+    title: "Student Portal",
     url: "/dashboard",
     icon: Home,
   },
@@ -80,6 +85,12 @@ const sortingAlgorithms = [
 ]
 
 const algorithmicPatterns = [
+  {
+    name: "Custom Recursion & Visualizer",
+    url: "/visualizer/custom-recursion",
+    icon: BrainCircuit,
+    description: "Build custom recursive Java algorithms with call-tree and stack frames",
+  },
   {
     name: "Two Pointers Algorithm",
     url: "/visualizer/two-pointers",
