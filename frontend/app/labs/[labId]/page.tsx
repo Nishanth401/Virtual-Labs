@@ -48,6 +48,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
   const [feedbackRating, setFeedbackRating] = useState<number>(5);
   const [feedbackText, setFeedbackText] = useState<string>("");
   const [feedbackSent, setFeedbackSent] = useState<boolean>(false);
+  const [resourceSourceFilter, setResourceSourceFilter] = useState<string>("ALL");
 
   // Quiz State
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
@@ -107,6 +108,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
               activeTab={activeTab}
               onTabChange={setActiveTab}
               experimentsCount={experiments.length}
+              resourcesCount={lab.resources?.length || 0}
             />
 
             {/* Right Tab Content View */}
@@ -354,7 +356,158 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 <CourseAlignmentCard />
               )}
 
-              {/* TAB 6: FEEDBACK */}
+              {/* TAB 6: RESOURCES & TUTORIALS (GEEKSFORGEEKS & W3SCHOOLS) */}
+              {activeTab === "resources" && (
+                <div className="space-y-6">
+                  <Card className="border-border bg-card/80 backdrop-blur-xs shadow-sm">
+                    <CardHeader className="pb-4 border-b border-border/50">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <Badge variant="outline" className="text-xs font-mono bg-primary/10 text-primary border-primary/20">
+                              Curated Study Material
+                            </Badge>
+                            <Badge variant="outline" className="text-xs font-mono border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10">
+                              GeeksforGeeks
+                            </Badge>
+                            <Badge variant="outline" className="text-xs font-mono border-green-500/30 text-green-600 dark:text-green-400 bg-green-500/10">
+                              W3Schools
+                            </Badge>
+                          </div>
+                          <CardTitle className="text-xl font-bold text-primary font-heading">
+                            {lab.name} — Handbooks &amp; Interactive Tutorials
+                          </CardTitle>
+                          <CardDescription className="text-xs mt-1">
+                            Master core concepts through curated, industry-standard tutorials and documentation from GeeksforGeeks and W3Schools.
+                          </CardDescription>
+                        </div>
+
+                        {/* Source Filter Buttons */}
+                        <div className="flex items-center gap-1.5 p-1 bg-muted/60 rounded-xl border border-border shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => setResourceSourceFilter("ALL")}
+                            className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+                              resourceSourceFilter === "ALL"
+                                ? "bg-primary text-white shadow-xs"
+                                : "text-muted-foreground hover:text-foreground"
+                            }`}
+                          >
+                            All ({lab.resources?.length || 0})
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setResourceSourceFilter("GeeksforGeeks")}
+                            className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+                              resourceSourceFilter === "GeeksforGeeks"
+                                ? "bg-emerald-600 text-white shadow-xs"
+                                : "text-muted-foreground hover:text-emerald-500"
+                            }`}
+                          >
+                            GeeksforGeeks
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setResourceSourceFilter("W3Schools")}
+                            className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+                              resourceSourceFilter === "W3Schools"
+                                ? "bg-green-600 text-white shadow-xs"
+                                : "text-muted-foreground hover:text-green-500"
+                            }`}
+                          >
+                            W3Schools
+                          </button>
+                        </div>
+                      </div>
+                    </CardHeader>
+
+                    <CardContent className="p-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {(lab.resources || [])
+                          .filter((res) => resourceSourceFilter === "ALL" || res.source === resourceSourceFilter)
+                          .map((res, rIdx) => {
+                            const isGfg = res.source === "GeeksforGeeks";
+
+                            return (
+                              <a
+                                key={rIdx}
+                                href={res.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group p-4 rounded-xl bg-muted/30 hover:bg-card border border-border hover:border-primary/50 transition-all duration-200 shadow-xs hover:shadow-md flex flex-col justify-between"
+                              >
+                                <div className="space-y-2.5">
+                                  <div className="flex items-center justify-between gap-2">
+                                    <Badge
+                                      variant="outline"
+                                      className={`text-[10px] font-bold font-mono ${
+                                        isGfg
+                                          ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+                                          : "bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/30"
+                                      }`}
+                                    >
+                                      {isGfg ? "🟢 GeeksforGeeks" : "🔵 W3Schools"}
+                                    </Badge>
+
+                                    <Badge variant="outline" className="text-[10px] font-mono text-muted-foreground">
+                                      {res.category}
+                                    </Badge>
+                                  </div>
+
+                                  <h4 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
+                                    {res.title}
+                                  </h4>
+
+                                  <p className="text-xs text-muted-foreground leading-relaxed">
+                                    {res.description}
+                                  </p>
+                                </div>
+
+                                <div className="pt-3 mt-3 border-t border-border/50 flex items-center justify-between text-xs font-semibold text-primary">
+                                  <span>{isGfg ? "Read on GeeksforGeeks" : "Practice on W3Schools"}</span>
+                                  <ExternalLink className="h-3.5 w-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                                </div>
+                              </a>
+                            );
+                          })}
+                      </div>
+
+                      {/* Portal Direct Links */}
+                      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6 border-t border-border/50">
+                        <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20 flex items-center justify-between">
+                          <div className="space-y-0.5">
+                            <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 block font-mono">
+                              GeeksforGeeks Portal
+                            </span>
+                            <p className="text-[11px] text-muted-foreground">Explore 10,000+ computer science articles &amp; practice problems</p>
+                          </div>
+                          <Button asChild size="sm" variant="outline" className="text-xs border-emerald-500/30 hover:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold shrink-0">
+                            <a href="https://www.geeksforgeeks.org/" target="_blank" rel="noopener noreferrer">
+                              Visit GfG ↗
+                            </a>
+                          </Button>
+                        </div>
+
+                        <div className="p-4 rounded-xl bg-green-500/5 border border-green-500/20 flex items-center justify-between">
+                          <div className="space-y-0.5">
+                            <span className="text-xs font-bold text-green-600 dark:text-green-400 block font-mono">
+                              W3Schools Web Tutorials
+                            </span>
+                            <p className="text-[11px] text-muted-foreground">Interactive code exercises, live sandboxes &amp; cheatsheets</p>
+                          </div>
+                          <Button asChild size="sm" variant="outline" className="text-xs border-green-500/30 hover:bg-green-500/10 text-green-600 dark:text-green-400 font-bold shrink-0">
+                            <a href="https://www.w3schools.com/" target="_blank" rel="noopener noreferrer">
+                              Visit W3Schools ↗
+                            </a>
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
+              {/* TAB 7: FEEDBACK */}
               {activeTab === "feedback" && (
                 <Card className="border-border bg-card/80 backdrop-blur-xs shadow-sm">
                   <CardHeader>
