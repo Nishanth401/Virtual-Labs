@@ -87,9 +87,7 @@ const SEARCH_ITEMS = [
   { title: "Singly Linked List", category: "Data Structures", url: "/experiments/singly-linked-list", desc: "Dynamic node allocations, head/tail insert & reversal" },
   { title: "Linear Regression & Gradient Descent", category: "Machine Learning", url: "/experiments/linear-regression", desc: "Vectorized MSE loss minimization with NumPy" },
   { title: "K-Nearest Neighbors (KNN)", category: "Machine Learning", url: "/experiments/knn-classification", desc: "Euclidean distance classification & decision boundary" },
-  { title: "12-Module NumPy Master Track", category: "ML Prerequisites", url: "/labs/ai-machine-learning", desc: "Array creation, slicing, broadcasting & linear algebra" },
-  { title: "Master Coding Practice Sheets", category: "Practice", url: "/practice", desc: "LeetCode 150, LeetCode 75, SQL 50 with company tags & notes" },
-  { title: "DSA Visualizer Studio", category: "Simulators", url: "/visualizer", desc: "Interactive sandbox for 11+ algorithms and trees" },
+  { title: "DG Visualization Platform", category: "Simulators", url: "/dg-visualization", desc: "12 Core Modules Interactive Learning & Visualizer" },
   { title: "Student Progress & Certificate", category: "Dashboard", url: "/dashboard", desc: "Track completed labs and download verified certificate" },
   { title: "Student Login & Registration", category: "Auth", url: "/auth/login", desc: "Sign in with Email or Continue with Google" },
 ];
