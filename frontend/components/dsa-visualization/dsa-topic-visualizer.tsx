@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { DSATopic } from "@/data/dsa-topic-data";
 import { Button } from "@/components/ui/button";
@@ -25,11 +25,32 @@ import { HashingSuiteVisualizer } from "./hashing-suite-visualizer";
 import { StringSuiteVisualizer } from "./string-suite-visualizer";
 import { ComplexityComparator } from "./complexity-comparator";
 
+// Dedicated visualizers
+import { StackVisualizer } from "@/components/visualizer/stack/stack-visualizer";
+import { QueueVisualizer } from "@/components/visualizer/queue/queue-visualizer";
+import { LinkedListVisualizer } from "@/components/visualizer/linked-list/linked-list-visualizer";
+import { SearchingVisualizer } from "@/components/visualizer/searching/searching-visualizer";
+import { SortingVisualizer } from "@/components/visualizer/sorting/sorting-visualizer";
+import { HeapVisualizer } from "@/components/visualizer/heap/heap-visualizer";
+import { DijkstraVisualizer } from "@/components/visualizer/dijkstra/dijkstra-visualizer";
+import { TwoPointersVisualizer } from "@/components/visualizer/two-pointers/two-pointers-visualizer";
+import { SlidingWindowVisualizer } from "@/components/visualizer/sliding-window/sliding-window-visualizer";
+import { KadanesVisualizer } from "@/components/visualizer/kadanes-algorithm/kadanes-visualizer";
+import { PrefixSumVisualizer } from "@/components/visualizer/prefix-sum/prefix-sum-visualizer";
+import { DifferenceArrayVisualizer } from "@/components/visualizer/difference-array/difference-array-visualizer";
+import { DNFVisualizer } from "@/components/visualizer/dutch-national-flag/dnf-visualizer";
+import { BoyerMooreVisualizer } from "@/components/visualizer/boyer-moore/boyer-moore-visualizer";
+import { HuffmanVisualizer } from "@/components/visualizer/huffman/huffman-visualizer";
+
 interface DSATopicVisualizerProps {
   topic: DSATopic;
 }
 
 export function DSATopicVisualizer({ topic }: DSATopicVisualizerProps) {
+  const [sqSubMode, setSqSubMode] = useState<"stack" | "queue">("stack");
+  const [sortingSubAlgo, setSortingSubAlgo] = useState<"bubble" | "selection" | "insertion" | "merge" | "quick">("bubble");
+  const [treeSubMode, setTreeSubMode] = useState<"bst" | "avl" | "heap">("bst");
+
   // Mapping topic to dedicated standalone studio route if available
   const getDedicatedStudioUrl = () => {
     switch (topic.id) {
@@ -81,29 +102,79 @@ export function DSATopicVisualizer({ topic }: DSATopicVisualizerProps) {
   const renderVisualizerContent = () => {
     // 1. Basic Data Structures
     if (topic.categoryId === "basic-data-structures") {
-      if (topic.id === "matrix-ds") return <BasicDSVisualizer initialMode="matrix" />;
-      if (topic.id === "linked-list-all") return <BasicDSVisualizer initialMode="linked-list" />;
-      if (topic.id === "stack-queue-all") return <BasicDSVisualizer initialMode="stack-queue" />;
-      return <BasicDSVisualizer initialMode="array" />;
+      if (topic.id === "stack-queue-all") {
+        return (
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 pb-2 border-b border-border">
+              <span className="text-xs font-mono text-muted-foreground">Select DS:</span>
+              <Button
+                size="sm"
+                variant={sqSubMode === "stack" ? "default" : "outline"}
+                onClick={() => setSqSubMode("stack")}
+                className="h-7 text-xs"
+              >
+                Stack (LIFO)
+              </Button>
+              <Button
+                size="sm"
+                variant={sqSubMode === "queue" ? "default" : "outline"}
+                onClick={() => setSqSubMode("queue")}
+                className="h-7 text-xs"
+              >
+                Queue (FIFO)
+              </Button>
+            </div>
+            {sqSubMode === "stack" ? <StackVisualizer /> : <QueueVisualizer />}
+          </div>
+        );
+      }
+      if (topic.id === "linked-list-all") {
+        return <LinkedListVisualizer />;
+      }
+      // Array / Matrix fallback to rich BasicDSVisualizer
+      return <BasicDSVisualizer initialMode={topic.id === "matrix-ds" ? "matrix" : "array"} />;
     }
 
     // 2. Searching Algorithms
     if (topic.categoryId === "searching-algorithms") {
-      if (topic.id === "advanced-searching") return <SearchingSuiteVisualizer defaultAlgo="jump" />;
-      return <SearchingSuiteVisualizer defaultAlgo="binary" />;
+      return (
+        <div className="space-y-4">
+          <SearchingVisualizer type={topic.id === "advanced-searching" ? "binary" : "linear"} />
+        </div>
+      );
     }
 
     // 3. Sorting Algorithms
     if (topic.categoryId === "sorting-algorithms") {
-      if (topic.id === "efficient-sorts") return <SortingSuiteVisualizer defaultAlgo="quick" />;
-      if (topic.id === "linear-sorts") return <SortingSuiteVisualizer defaultAlgo="counting" />;
-      return <SortingSuiteVisualizer defaultAlgo="bubble" />;
+      return (
+        <div className="space-y-4">
+          <div className="flex flex-wrap items-center gap-2 pb-2 border-b border-border">
+            <span className="text-xs font-mono text-muted-foreground">Select Algorithm:</span>
+            {(["bubble", "selection", "insertion", "merge", "quick"] as const).map((algo) => (
+              <Button
+                key={algo}
+                size="sm"
+                variant={sortingSubAlgo === algo ? "default" : "outline"}
+                onClick={() => setSortingSubAlgo(algo)}
+                className="h-7 text-xs capitalize font-semibold"
+              >
+                {algo} Sort
+              </Button>
+            ))}
+          </div>
+
+          <SortingVisualizer
+            algorithm={sortingSubAlgo}
+            title={`${sortingSubAlgo.toUpperCase()} Sort Visualizer`}
+            description={`Interactive ${sortingSubAlgo} sort with animated vertical bars, step scrubber, comparison counters, and live pseudocode pointer.`}
+          />
+        </div>
+      );
     }
 
     // 4. Recursion & Backtracking
     if (topic.categoryId === "recursion-backtracking") {
-      if (topic.id === "backtracking-nqueens") return <RecursionBacktrackingVisualizer defaultMode="nqueens" />;
-      return <RecursionBacktrackingVisualizer defaultMode="factorial" />;
+      return <RecursionBacktrackingVisualizer defaultMode={topic.id === "backtracking-nqueens" ? "nqueens" : "factorial"} />;
     }
 
     // 5. Trees & Balanced Trees
@@ -117,40 +188,48 @@ export function DSATopicVisualizer({ topic }: DSATopicVisualizerProps) {
     if (topic.categoryId === "graphs-networks") {
       if (topic.id === "bfs-dfs-traversal") return <GraphSuiteVisualizer defaultMode="bfs" />;
       if (topic.id === "mst-union-find") return <GraphSuiteVisualizer defaultMode="union-find" />;
-      return <GraphSuiteVisualizer defaultMode="dijkstra" />;
+      return <DijkstraVisualizer />;
     }
 
-    // 7. Greedy Algorithms
+    // 7. Greedy & DP
     if (topic.categoryId === "greedy-algorithms") {
       return <GreedyDpVisualizer defaultMode="activity" />;
     }
 
-    // 8. Dynamic Programming
     if (topic.categoryId === "dynamic-programming") {
-      return <GreedyDpVisualizer defaultMode="knapsack" />;
+      return <GreedyDpVisualizer defaultMode="dp-knapsack-2d" />;
     }
 
-    // 9. Hashing & Collisions
+    // 8. Hashing
     if (topic.categoryId === "hashing-collisions") {
       return <HashingSuiteVisualizer defaultMode="chaining" />;
     }
 
-    // 10. String Algorithms & Tries
+    // 9. Strings
     if (topic.categoryId === "string-algorithms") {
       return <StringSuiteVisualizer defaultMode="trie" />;
     }
 
-    // 11. Divide & Conquer
+    // 10. Divide & Conquer / Algorithmic Patterns
+    if (topic.id === "two-pointers") return <TwoPointersVisualizer />;
+    if (topic.id === "sliding-window") return <SlidingWindowVisualizer />;
+    if (topic.id === "kadanes-algorithm") return <KadanesVisualizer />;
+    if (topic.id === "prefix-sum") return <PrefixSumVisualizer />;
+    if (topic.id === "difference-array") return <DifferenceArrayVisualizer />;
+    if (topic.id === "dutch-national-flag") return <DNFVisualizer />;
+    if (topic.id === "boyer-moore") return <BoyerMooreVisualizer />;
+    if (topic.id === "huffman") return <HuffmanVisualizer />;
+
     if (topic.categoryId === "divide-conquer") {
       return <SortingSuiteVisualizer defaultAlgo="merge" />;
     }
 
-    // 12. Complexity Analysis
     if (topic.categoryId === "complexity-analysis") {
       return <ComplexityComparator />;
     }
 
-    return <BasicDSVisualizer initialMode="array" />;
+    // Fallback
+    return <SortingVisualizer algorithm="bubble" title="Bubble Sort" description="Adjacent comparison visualizer." />;
   };
 
   return (

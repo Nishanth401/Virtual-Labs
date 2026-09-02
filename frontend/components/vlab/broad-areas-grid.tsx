@@ -6,13 +6,20 @@ import { LABS_DATA } from "@/data/labs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Code2, BrainCircuit, Database, Network, ArrowRight, Star, Sparkles, BookOpen, Layers } from "lucide-react";
+import { Code2, BrainCircuit, Database, Network, ArrowRight, Star, Sparkles, BookOpen, Layers, Cpu, Bot, BarChart3, Cloud, Server, Terminal } from "lucide-react";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Code2,
   BrainCircuit,
   Database,
   Network,
+  Cpu,
+  Bot,
+  BarChart3,
+  Cloud,
+  Server,
+  Sparkles,
+  Terminal,
 };
 
 export function BroadAreasGrid() {
@@ -27,7 +34,7 @@ export function BroadAreasGrid() {
             Department Laboratories Catalogue
           </h2>
           <p className="text-xs sm:text-sm text-muted-foreground mt-2">
-            Explore our 4 core engineering virtual laboratories with simulation sandboxes, Java/Python code traces, and LeetCode assessments.
+            Explore our 8 core engineering virtual laboratories with simulation sandboxes, Java/Python/C code traces, and LeetCode assessments.
           </p>
         </div>
 

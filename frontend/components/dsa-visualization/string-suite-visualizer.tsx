@@ -7,8 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Play, RotateCcw, Search, Code2, Info, CheckCircle2 } from "lucide-react";
 
-export function StringSuiteVisualizer() {
-  const [mode, setMode] = useState<"kmp" | "trie">("trie");
+export function StringSuiteVisualizer({ defaultMode = "trie" }: { defaultMode?: "kmp" | "trie" } = {}) {
+  const [mode, setMode] = useState<"kmp" | "trie">(defaultMode);
 
   // --- TRIE STATE ---
   const [trieWords, setTrieWords] = useState<string[]>(["cat", "car", "can", "dog", "dot"]);
