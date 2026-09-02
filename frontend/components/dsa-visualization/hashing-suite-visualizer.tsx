@@ -7,8 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Plus, Search, RotateCcw, Hash, Info, ArrowRight } from "lucide-react";
 
-export function HashingSuiteVisualizer() {
-  const [method, setMethod] = useState<"chaining" | "linear-probing">("chaining");
+export function HashingSuiteVisualizer({ defaultMode = "chaining" }: { defaultMode?: "chaining" | "linear-probing" } = {}) {
+  const [method, setMethod] = useState<"chaining" | "linear-probing">(defaultMode);
   const [inputValue, setInputValue] = useState<string>("");
 
   // Chaining table: 10 buckets, each an array of numbers

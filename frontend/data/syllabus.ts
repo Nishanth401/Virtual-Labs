@@ -32,6 +32,15 @@ export const REFERENCE_BOOKS_DATA: ReferenceBook[] = [
     coverColor: "from-blue-600 to-indigo-800"
   },
   {
+    id: "silberschatz-dbms",
+    title: "Database System Concepts",
+    author: "Abraham Silberschatz, Henry F. Korth, S. Sudarshan",
+    publisher: "McGraw-Hill Education",
+    edition: "7th Edition (2020)",
+    isbn: "978-0078022159",
+    coverColor: "from-emerald-600 to-teal-800"
+  },
+  {
     id: "silberschatz-os",
     title: "Operating System Concepts",
     author: "Abraham Silberschatz, Peter B. Galvin, Greg Gagne",
@@ -41,6 +50,42 @@ export const REFERENCE_BOOKS_DATA: ReferenceBook[] = [
     coverColor: "from-cyan-600 to-blue-800"
   },
   {
+    id: "kurose-networks",
+    title: "Computer Networking: A Top-Down Approach",
+    author: "James F. Kurose, Keith W. Ross",
+    publisher: "Pearson Education",
+    edition: "8th Edition (2021)",
+    isbn: "978-0136681557",
+    coverColor: "from-indigo-600 to-blue-800"
+  },
+  {
+    id: "mitchell-ml",
+    title: "Machine Learning",
+    author: "Tom M. Mitchell",
+    publisher: "McGraw-Hill Education",
+    edition: "1st Edition",
+    isbn: "978-0070428072",
+    coverColor: "from-violet-600 to-purple-800"
+  },
+  {
+    id: "mckinney-python",
+    title: "Python for Data Analysis: Data Wrangling with Pandas, NumPy, and Jupyter",
+    author: "Wes McKinney",
+    publisher: "O'Reilly Media",
+    edition: "3rd Edition (2022)",
+    isbn: "978-1098104030",
+    coverColor: "from-amber-600 to-orange-800"
+  },
+  {
+    id: "schildt-java",
+    title: "Java: The Complete Reference",
+    author: "Herbert Schildt",
+    publisher: "Oracle Press / McGraw-Hill",
+    edition: "12th Edition (2021)",
+    isbn: "978-1260440232",
+    coverColor: "from-rose-600 to-red-800"
+  },
+  {
     id: "russell-norvig",
     title: "Artificial Intelligence: A Modern Approach",
     author: "Stuart Russell, Peter Norvig",
@@ -48,75 +93,126 @@ export const REFERENCE_BOOKS_DATA: ReferenceBook[] = [
     edition: "4th Global Edition",
     isbn: "978-0134610993",
     coverColor: "from-purple-600 to-violet-800"
-  },
-  {
-    id: "white-hadoop",
-    title: "Hadoop: The Definitive Guide",
-    author: "Tom White",
-    publisher: "O'Reilly Media",
-    edition: "4th Edition",
-    isbn: "978-1491901632",
-    coverColor: "from-amber-600 to-orange-800"
-  },
-  {
-    id: "buyya-cloud",
-    title: "Mastering Cloud Computing: Foundations and Applications",
-    author: "Rajkumar Buyya, Christian Vecchiola, S. Thamarai Selvi",
-    publisher: "Morgan Kaufmann / Elsevier",
-    edition: "1st Edition",
-    isbn: "978-0124114548",
-    coverColor: "from-teal-600 to-cyan-800"
-  },
-  {
-    id: "goodrich",
-    title: "Data Structures and Algorithms in Java / C++",
-    author: "Michael T. Goodrich, Roberto Tamassia, Michael H. Goldwasser",
-    publisher: "John Wiley & Sons",
-    edition: "6th Edition",
-    isbn: "978-1118771334",
-    coverColor: "from-purple-600 to-violet-800"
   }
 ];
 
 export const SYLLABUS_MAPPINGS_DATA: UniversitySyllabus[] = [
+  // 1. DATA SCIENCE AND ANALYTICS LABORATORY
   {
     university: "Anna University (Regulation 2021)",
-    courseCode: "CS3301",
-    courseTitle: "Data Structures & Algorithms Laboratory",
-    semester: "Semester 3 (B.E / B.Tech CSE & AIDS)",
+    courseCode: "AD8482",
+    courseTitle: "Data Science and Analytics Laboratory",
+    semester: "Semester 4 (B.Tech AI & DS)",
     regulations: "R2021",
     units: [
       {
         unit: "Unit I",
-        title: "Linear Data Structures - List, Stack, Queue",
+        title: "Scientific Computing & Exploratory Data Analysis",
         topics: [
-          "Array and Linked implementations of List ADT",
-          "Stack ADT: Push, Pop, Infix to Postfix conversion",
-          "Queue ADT: Linear Queue, Circular Queue implementation",
-          "Applications of Stack and Queue in recursion and scheduling"
+          "NumPy ndarray multi-dimensional arrays, vectorization, and linear algebra",
+          "Pandas DataFrames, missing value imputation, indexing, and groupby",
+          "Matplotlib visualization plots: line charts, histograms, and subplots"
         ]
       },
       {
         unit: "Unit II",
-        title: "Non-Linear Data Structures - Trees",
+        title: "Statistical Distributions & Hypothesis Testing",
         topics: [
-          "Tree ADT, Binary Tree, Binary Search Tree (BST) operations",
-          "Tree Traversals: Inorder, Preorder, Postorder",
-          "AVL Trees, Balance factors, Rotations (LL, RR, LR, RL)",
-          "Binary Heaps, Priority Queue operations"
+          "Descriptive statistics: Mean, Median, Mode, Variance, IQR, and Outliers",
+          "Normal curve, Pearson correlation coefficient, and scatter plots",
+          "Z-test, Student's T-test (Independent & Paired), and One-Way ANOVA"
         ]
       },
       {
         unit: "Unit III",
-        title: "Sorting and Searching Algorithms",
+        title: "Predictive Modeling & Time Series Analytics",
         topics: [
-          "Bubble Sort, Selection Sort, Insertion Sort",
-          "Merge Sort, Quick Sort divide-and-conquer",
-          "Linear and Binary Search complexity analysis"
+          "Ordinary Least Squares Simple and Multiple Linear Regression models",
+          "Binary Logistic Regression classification and ROC-AUC validation",
+          "Time series additive decomposition and Augmented Dickey-Fuller stationarity"
         ]
       }
     ]
   },
+
+  // 2. COMPUTER NETWORKS LABORATORY
+  {
+    university: "Anna University (Regulation 2021)",
+    courseCode: "AD8581",
+    courseTitle: "Computer Networks Laboratory",
+    semester: "Semester 5 (B.Tech AI & DS / CSE)",
+    regulations: "R2021",
+    units: [
+      {
+        unit: "Unit I",
+        title: "Network Utilities & Socket Programming",
+        topics: [
+          "Network CLI diagnostics: tcpdump, netstat, ifconfig, nslookup, traceroute",
+          "HTTP Web client implementation over TCP streams",
+          "TCP Concurrent Echo Server and Multi-Client Chat Broadcast",
+          "UDP Domain Name System (DNS) simulation"
+        ]
+      },
+      {
+        unit: "Unit II",
+        title: "Protocol Analysis & Network Simulation",
+        topics: [
+          "Wireshark packet capture and OSI layer protocol dissection",
+          "ARP / RARP broadcast resolution and cache management simulation",
+          "TCP Congestion Control (Slow Start, AIMD, Fast Retransmit)",
+          "TCP vs UDP throughput, latency, and packet loss benchmarking"
+        ]
+      },
+      {
+        unit: "Unit III",
+        title: "Routing & Error Control",
+        topics: [
+          "Distance Vector Routing (Bellman-Ford) and Link State Routing (Dijkstra)",
+          "Cyclic Redundancy Check (CRC) modulo-2 polynomial error detection"
+        ]
+      }
+    ]
+  },
+
+  // 3. MACHINE LEARNING LABORATORY
+  {
+    university: "Anna University (Regulation 2021)",
+    courseCode: "AD8481",
+    courseTitle: "Machine Learning Laboratory",
+    semester: "Semester 4 (B.Tech AI & DS)",
+    regulations: "R2021",
+    units: [
+      {
+        unit: "Unit I",
+        title: "Concept Learning & Decision Trees",
+        topics: [
+          "Candidate-Elimination algorithm Version Space computation",
+          "ID3 Decision Tree with Shannon Entropy and Information Gain"
+        ]
+      },
+      {
+        unit: "Unit II",
+        title: "Neural Networks & Probabilistic Classifiers",
+        topics: [
+          "Artificial Neural Network (ANN) Backpropagation gradient descent",
+          "Gaussian Naïve Bayes classifier on continuous CSV attributes",
+          "Multinomial Naïve Bayes document text classification and NLP metrics",
+          "Bayesian Network disease diagnosis using WHO datasets"
+        ]
+      },
+      {
+        unit: "Unit III",
+        title: "Clustering & Instance-Based Learning",
+        topics: [
+          "Expectation-Maximization (GMM) soft clustering vs hard k-Means",
+          "k-Nearest Neighbors (k-NN) classification on Fisher Iris dataset",
+          "Locally Weighted Regression (LWR) non-parametric curve fitting"
+        ]
+      }
+    ]
+  },
+
+  // 4. OPERATING SYSTEMS LABORATORY
   {
     university: "Anna University (Regulation 2021)",
     courseCode: "CS3461",
@@ -126,99 +222,154 @@ export const SYLLABUS_MAPPINGS_DATA: UniversitySyllabus[] = [
     units: [
       {
         unit: "Unit I",
-        title: "Process Scheduling & Inter-Process Communication",
+        title: "System Calls, Process Control & Scheduling",
         topics: [
-          "CPU Scheduling: FCFS, SJF, Priority, and Round Robin",
-          "POSIX IPC: Shared Memory and Message Queues",
-          "Process Synchronization using Mutex and Semaphores"
+          "UNIX Commands and Shell Programming scripts",
+          "Process System Calls: fork, exec, getpid, exit, wait, close",
+          "CPU Scheduling: FCFS, SJF, Priority, and Round Robin"
         ]
       },
       {
         unit: "Unit II",
-        title: "Deadlocks & Memory Virtualization",
+        title: "Concurrency, Deadlocks & Memory Management",
         topics: [
-          "Banker's Algorithm for Deadlock Avoidance and Safety Check",
-          "Page Replacement: FIFO, LRU, and Optimal Replacement",
-          "Memory Allocation: First-Fit, Best-Fit, Worst-Fit strategies"
+          "Inter-Process Communication (Pipes, Shared Memory, Message Queues)",
+          "Producer-Consumer problem synchronization using Semaphores and Mutex",
+          "Banker's Algorithm for Deadlock Avoidance and Deadlock Detection",
+          "Paging address translation and Dynamic Allocation (First/Best/Worst Fit)",
+          "Page Replacement: FIFO, LRU, and Optimal algorithms"
+        ]
+      },
+      {
+        unit: "Unit III",
+        title: "File Systems & Disk Scheduling",
+        topics: [
+          "File Organization: Single-Level, Two-Level, and Hierarchical Directory",
+          "File Allocation: Sequential, Indexed, and Linked structures",
+          "Disk Scheduling: FCFS, SSTF, SCAN, C-SCAN, and LOOK"
         ]
       }
     ]
   },
+
+  // 5. OBJECT ORIENTED PROGRAMMING SYSTEM (JAVA)
   {
     university: "Anna University (Regulation 2021)",
-    courseCode: "AI3401",
-    courseTitle: "Artificial Intelligence Laboratory",
-    semester: "Semester 5 (B.Tech AI & DS)",
+    courseCode: "CS3351",
+    courseTitle: "Object Oriented Programming System (Java)",
+    semester: "Semester 3 (B.E / B.Tech CSE & AIDS)",
     regulations: "R2021",
     units: [
       {
         unit: "Unit I",
-        title: "Heuristic Search & Problem Solving",
+        title: "Java Fundamentals & Class Design",
         topics: [
-          "State-space graph traversal and 8-Puzzle problem",
-          "A* Algorithm with Manhattan and Euclidean heuristics",
-          "Adversarial Minimax Search and Alpha-Beta Pruning"
+          "Student Grade Calculator and conditional control structures",
+          "Banking Application encapsulation and data hiding",
+          "Product Catalog and Employee Payroll calculations",
+          "Account Validation and OTP Authentication engine"
         ]
       },
       {
         unit: "Unit II",
-        title: "Constraint Satisfaction & Knowledge Systems",
+        title: "Inheritance, Polymorphism & 2D Arrays",
         topics: [
-          "N-Queens Constraint Satisfaction Problem Backtracking",
-          "Propositional Logic and Forward/Backward Chaining Inference",
-          "Rule-Based Expert System design in Python"
+          "Single, Multilevel, and Hierarchical inheritance (Employee/Manager/Dev)",
+          "Academic Person, Student, and Teacher class hierarchies",
+          "Recursive algorithms and Method Overloading compile-time polymorphism",
+          "2D Matrix Manipulation (Addition, Multiplication, Transpose)",
+          "2D Matrix Spiral and Boundary Traversals"
+        ]
+      },
+      {
+        unit: "Unit III",
+        title: "Algorithms, Collections & Database Persistence",
+        topics: [
+          "String Anagram checking and Kadane's Maximum Subarray Sum",
+          "Exception Handling (custom exceptions) and File I/O Streams",
+          "Java Collections Framework (ArrayList, HashMap, Set) and Stream API",
+          "Java Database Connectivity (JDBC) PreparedStatement CRUD"
         ]
       }
     ]
   },
+
+  // 6. DATA STRUCTURES AND ALGORITHMS LABORATORY
   {
     university: "Anna University (Regulation 2021)",
-    courseCode: "CS8711",
-    courseTitle: "Big Data Analytics Laboratory",
-    semester: "Semester 7 (B.Tech AI & DS)",
+    courseCode: "AD8381",
+    courseTitle: "Data Structures and Algorithms Laboratory",
+    semester: "Semester 3 (B.E / B.Tech CSE & AIDS)",
     regulations: "R2021",
     units: [
       {
         unit: "Unit I",
-        title: "Hadoop HDFS & Distributed MapReduce",
+        title: "Linear Data Structures & Applications",
         topics: [
-          "HDFS cluster installation, file replication, and shell administration",
-          "MapReduce distributed word count, matrix math, and inverted indexing"
+          "Singly, Doubly, and Circular Linked Lists operations",
+          "Linked List Applications: Reversal, Floyd's Cycle Detection, and Merge",
+          "Stack ADT: Array/Linked implementations, Infix to Postfix, Valid Parentheses",
+          "Queue ADT: Circular Queue, Priority Queue, and Monotonic Deque"
         ]
       },
       {
         unit: "Unit II",
-        title: "PySpark DataFrames & NoSQL Analytics",
+        title: "Hierarchical Search Trees & Graphs",
         topics: [
-          "Apache Spark RDD transformations and actions",
-          "PySpark SQL DataFrames e-commerce group aggregations",
-          "MongoDB multi-stage aggregation pipelines and sharding"
+          "Binary Search Tree (BST) insertion, deletion, and inorder traversal",
+          "AVL Tree self-balancing single and double rotations",
+          "Advanced Trees: Lowest Common Ancestor (LCA), Huffman Coding, Trie Prefix Tree",
+          "Multi-way B-Trees and B+ Trees for disk block indexing",
+          "Graph representations (Adjacency List) and Traversals (BFS & DFS)",
+          "Shortest Path (Dijkstra) and Minimum Spanning Trees (Prim's & Kruskal's)"
+        ]
+      },
+      {
+        unit: "Unit III",
+        title: "Searching, Sorting & Hashing",
+        topics: [
+          "Linear Search vs Binary Search interval bisection",
+          "Bubble Sort, Merge Sort, and Quick Sort comparative analysis",
+          "Hash Tables: Separate Chaining, Open Addressing, and Dynamic Rehashing"
         ]
       }
     ]
   },
+
+  // 7. DATABASE MANAGEMENT SYSTEM
   {
     university: "Anna University (Regulation 2021)",
-    courseCode: "CS8811",
-    courseTitle: "Cloud Service Management Laboratory",
-    semester: "Semester 8 (B.Tech AI & DS)",
+    courseCode: "AD8382",
+    courseTitle: "Database Management System Laboratory",
+    semester: "Semester 3 (B.E / B.Tech CSE & AIDS)",
     regulations: "R2021",
     units: [
       {
         unit: "Unit I",
-        title: "Cloud Infrastructure & Containerization",
+        title: "Relational Schemas, DDL & DML",
         topics: [
-          "AWS EC2 instance provisioning, VPC subnets, and Security Groups",
-          "AWS S3 scalable object storage and automated Lifecycle policies",
-          "Docker containerization and multi-tier Docker Compose applications"
+          "DDL Schema Management: CREATE, ALTER, DROP, and Constraints",
+          "DML Queries: INSERT, UPDATE, DELETE, and SELECT filtering with GROUP BY",
+          "Set Operations (UNION, INTERSECT, MINUS) and Aggregate Functions"
         ]
       },
       {
         unit: "Unit II",
-        title: "Serverless Microservices & Kubernetes Orchestration",
+        title: "Joins, Views & Index Optimization",
         topics: [
-          "AWS Lambda event-driven functions and API Gateway integration",
-          "Kubernetes Pod deployment, ReplicaSets, and Service LoadBalancers"
+          "Complex Multi-Table Joins (Inner, Left, Right) and Correlated Subqueries",
+          "Database Views for security abstraction and B-Tree Index optimization plans"
+        ]
+      },
+      {
+        unit: "Unit III",
+        title: "PL/SQL Programming, Triggers & ACID Transactions",
+        topics: [
+          "PL/SQL Fundamentals: Loops, Control Structures, and Explicit Cursors",
+          "Stored Procedures and Functions with IN/OUT parameter modes",
+          "Database Triggers for automated row-level audit logging",
+          "Predefined and User-Defined Exception Handling in PL/SQL",
+          "Transaction Control Language (TCL): COMMIT, ROLLBACK, and SAVEPOINT ACID"
         ]
       }
     ]

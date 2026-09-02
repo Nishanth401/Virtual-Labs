@@ -45,9 +45,9 @@ export const DISCIPLINES_DATA: Discipline[] = [
     id: "aids",
     name: "Artificial Intelligence & Data Science",
     shortName: "AI & DS",
-    description: "Department core curriculum encompassing Algorithmics, Machine Intelligence, Neural Computing, Database Architectures, Operating Systems, Big Data, Cloud Infrastructure, and Network Protocols.",
+    description: "Department core curriculum encompassing Algorithmics, Machine Intelligence, Neural Computing, Database Architectures, Operating Systems, Data Science, OOPS, Big Data, Cloud Infrastructure, and Network Protocols.",
     icon: "BrainCircuit",
-    labsCount: 8,
+    labsCount: 10,
     color: "from-blue-600/20 via-indigo-600/20 to-amber-500/20 text-blue-400",
     accentColor: "blue",
   },
@@ -55,217 +55,73 @@ export const DISCIPLINES_DATA: Discipline[] = [
 
 export const LABS_DATA: Lab[] = [
   {
-    id: "data-structures",
-    code: "AD8381",
-    name: "Data Structures & Algorithms Lab",
-    shortTitle: "DSL",
+    id: "data-science-analytics",
+    code: "AD8482",
+    name: "Data Science and Analytics Laboratory",
+    shortTitle: "DSAL",
     discipline: "Artificial Intelligence & Data Science",
     disciplineSlug: "aids",
-    shortDesc: "Master fundamental linear and non-linear data structures, recursive call traces, and asymptotic algorithm performance in pure Java.",
-    description: "Welcome to the Data Structures & Algorithms Lab. This laboratory provides hands-on visual simulations for Arrays, Stacks, Queues, Singly Linked Lists, Sorting Algorithms (Bubble, Selection, Insertion), Trees, Recursion Call Stack inspection, and LeetCode problem solving in Java.",
-    institute: "VSB Engineering College, Karur",
-    department: "Department of Artificial Intelligence & Data Science",
-    difficulty: "Beginner",
-    experimentsCount: 6,
-    rating: 4.95,
-    ratingsCount: 428,
-    iconName: "Code2",
-    tags: ["Java", "Recursion", "Stacks & Queues", "Sorting", "LeetCode"],
-    bannerGradient: "from-blue-700 via-indigo-900 to-slate-950",
-    videoUrl: "https://www.youtube-nocookie.com/embed/zWg7U0OEAoE",
-    semester: "Semester 3",
-    resources: [
-      {
-        title: "DSA Tutorial — Complete Guide to Data Structures & Algorithms",
-        source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/data-structures/",
-        description: "Comprehensive step-by-step documentation for linear, tree, and graph structures with Java code traces.",
-        category: "Data Structures"
-      },
-      {
-        title: "Java Data Structures Handbook & Collections Framework",
-        source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/java-data-structures/",
-        description: "Deep dive into ArrayList, LinkedList, Stack, Queue, and HashMap class implementations in Java.",
-        category: "Java Programming"
-      },
-      {
-        title: "Sorting Algorithms Comprehensive Guide & Complexity Analysis",
-        source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/sorting-algorithms/",
-        description: "Comparative visual walkthrough of Bubble Sort, Insertion Sort, Selection Sort, Quick Sort, and Merge Sort.",
-        category: "Algorithms"
-      },
-      {
-        title: "W3Schools Data Structures & Algorithms (DSA) Tutorial",
-        source: "W3Schools",
-        url: "https://www.w3schools.com/dsa/index.php",
-        description: "Interactive visual DSA tutorials with step-by-step illustrations and online practice sandboxes.",
-        category: "Interactive Tutorial"
-      },
-      {
-        title: "W3Schools Java Data Structures & Collections Guide",
-        source: "W3Schools",
-        url: "https://www.w3schools.com/java/java_data_structures.asp",
-        description: "Beginner-friendly interactive lessons covering Java arrays, linked lists, queues, and sets.",
-        category: "Java Reference"
-      },
-      {
-        title: "W3Schools Java Recursion & Call Stack Execution",
-        source: "W3Schools",
-        url: "https://www.w3schools.com/java/java_recursion.asp",
-        description: "Interactive tutorial on base cases, recursive breakdowns, and memory call stack lifecycles.",
-        category: "Recursion"
-      }
-    ]
-  },
-  {
-    id: "ai-machine-learning",
-    code: "AD8481",
-    name: "Machine Learning & Deep Learning Lab",
-    shortTitle: "MLDL",
-    discipline: "Artificial Intelligence & Data Science",
-    disciplineSlug: "aids",
-    shortDesc: "Implement supervised/unsupervised machine learning models, neural networks, loss minimization, and prerequisite NumPy/Pandas pipelines.",
-    description: "Explore the end-to-end Machine Learning pipeline starting with prerequisite NumPy/Pandas modules, followed by Linear Regression, Logistic Regression, KNN Classifier, Decision Trees, K-Means Clustering, and Multi-Layer Perceptron Backpropagation.",
+    shortDesc: "Master statistical hypothesis testing (Z-test, T-test, ANOVA), NumPy/Pandas pipelines, regression, logistic models, and time series forecasting.",
+    description: "The Data Science & Analytics Virtual Laboratory provides an interactive Python statistical computing suite: NumPy multi-dimensional array vectorization, Pandas DataFrame wrangling, Matplotlib visualization, descriptive variability metrics, hypothesis testing (Z-test, T-test, ANOVA), linear/logistic predictive models, and time series decomposition.",
     institute: "VSB Engineering College, Karur",
     department: "Department of Artificial Intelligence & Data Science",
     difficulty: "Intermediate",
-    experimentsCount: 6,
-    rating: 4.92,
-    ratingsCount: 384,
-    iconName: "BrainCircuit",
-    tags: ["NumPy", "Pandas", "Scikit-Learn", "Neural Networks", "Gradient Descent"],
-    bannerGradient: "from-purple-700 via-indigo-950 to-slate-950",
-    videoUrl: "https://www.youtube-nocookie.com/embed/aircAruvnKk",
-    semester: "Semester 4 & 5",
+    experimentsCount: 12,
+    rating: 4.96,
+    ratingsCount: 360,
+    iconName: "BarChart3",
+    tags: ["NumPy", "Pandas", "Matplotlib", "Z-Test", "ANOVA", "Regression", "Time Series"],
+    bannerGradient: "from-violet-700 via-indigo-950 to-slate-950",
+    videoUrl: "https://www.youtube-nocookie.com/embed/LHBE6Q9XlzI",
+    semester: "Semester 4",
     resources: [
       {
-        title: "GeeksforGeeks Machine Learning Tutorial & Algorithms",
-        source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/machine-learning/",
-        description: "End-to-end ML roadmap covering Supervised, Unsupervised, Ensemble, and Deep Learning models.",
-        category: "Machine Learning"
-      },
-      {
-        title: "NumPy Tutorial with 100+ Python Exercises & Code Traces",
+        title: "NumPy Tutorial — Vectorized Data Processing in Python",
         source: "GeeksforGeeks",
         url: "https://www.geeksforgeeks.org/numpy-tutorial/",
         description: "Multi-dimensional array slicing, matrix vectorization, broadcasting rules, and linear algebra.",
         category: "NumPy"
       },
       {
-        title: "Pandas Data Wrangling & Feature Engineering Handbook",
+        title: "Pandas DataFrame & Data Science Complete Handbook",
         source: "GeeksforGeeks",
         url: "https://www.geeksforgeeks.org/pandas-tutorial/",
         description: "DataFrames, Series manipulation, missing value imputation, grouping, and aggregations.",
         category: "Pandas"
       },
       {
-        title: "W3Schools Python Machine Learning Tutorial & Interactive Sandbox",
-        source: "W3Schools",
-        url: "https://www.w3schools.com/python/python_ml_getting_started.asp",
-        description: "Hands-on tutorials for Mean/Median/Mode, Standard Deviation, Linear/Polynomial Regression, and KNN.",
-        category: "Machine Learning"
-      },
-      {
-        title: "W3Schools Python NumPy Tutorial",
-        source: "W3Schools",
-        url: "https://www.w3schools.com/python/numpy/default.asp",
-        description: "Interactive array creations, indexing, slicing, reshaping, joining, and array searching in Python.",
-        category: "NumPy"
-      },
-      {
-        title: "W3Schools Python Pandas DataFrame Tutorial",
-        source: "W3Schools",
-        url: "https://www.w3schools.com/python/pandas/default.asp",
-        description: "Practical interactive guides for CSV ingestion, DataFrame cleaning, plotting, and correlations.",
-        category: "Pandas"
-      }
-    ]
-  },
-  {
-    id: "dbms-lab",
-    code: "AD8382",
-    name: "Database Management Systems Lab",
-    shortTitle: "DBMS",
-    discipline: "Artificial Intelligence & Data Science",
-    disciplineSlug: "aids",
-    shortDesc: "Practice relational database design, complex SQL queries, B+ Tree indexing, relational normalization, and ACID transaction concurrency.",
-    description: "Interactive laboratory environment for mastering SQL DDL/DML, nested subqueries, views, indexing structures, schema normalization (1NF to BCNF), and transaction isolation levels.",
-    institute: "VSB Engineering College, Karur",
-    department: "Department of Artificial Intelligence & Data Science",
-    difficulty: "Intermediate",
-    experimentsCount: 5,
-    rating: 4.88,
-    ratingsCount: 312,
-    iconName: "Database",
-    tags: ["SQL", "Normalization", "B+ Trees", "Transactions", "Query Optimization"],
-    bannerGradient: "from-emerald-700 via-teal-950 to-slate-950",
-    videoUrl: "https://www.youtube-nocookie.com/embed/HXV3zeRR3h4",
-    semester: "Semester 3",
-    resources: [
-      {
-        title: "GeeksforGeeks DBMS Tutorial — Complete Reference",
+        title: "Hypothesis Testing in Python (Z-test, T-test, ANOVA)",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/dbms/",
-        description: "ER Modeling, Relational Algebra, B/B+ Trees, Query Optimization, and Concurrency Control.",
-        category: "DBMS Theory"
+        url: "https://www.geeksforgeeks.org/hypothesis-testing-in-python/",
+        description: "Formulation of null/alternate hypotheses, p-value calculations, and significance testing using SciPy.",
+        category: "Statistics"
       },
       {
-        title: "SQL Tutorial — From Beginner to Advanced Queries",
-        source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/sql-tutorial/",
-        description: "Complete guide to DDL, DML, DCL, Window Functions, Stored Procedures, and Indexes in SQL.",
-        category: "SQL"
-      },
-      {
-        title: "Database Normalization Tutorial (1NF, 2NF, 3NF, BCNF)",
-        source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/database-normalization-introduction/",
-        description: "Functional dependencies, lossless decomposition, and candidate key determination.",
-        category: "Normalization"
-      },
-      {
-        title: "W3Schools SQL Tutorial & Live SQL Try-It Editor",
+        title: "W3Schools Python Data Science & Matplotlib Guide",
         source: "W3Schools",
-        url: "https://www.w3schools.com/sql/default.asp",
-        description: "Interactive SQL queries with live database sandbox for SELECT, INSERT, UPDATE, DELETE, and JOINs.",
-        category: "Interactive SQL"
-      },
-      {
-        title: "W3Schools MySQL Database Reference & Tutorial",
-        source: "W3Schools",
-        url: "https://www.w3schools.com/mysql/default.asp",
-        description: "Structured guide to MySQL table constraints, foreign keys, views, and aggregate functions.",
-        category: "MySQL"
-      },
-      {
-        title: "W3Schools SQL Joins & Subqueries Interactive Guide",
-        source: "W3Schools",
-        url: "https://www.w3schools.com/sql/sql_join.asp",
-        description: "Visual diagrams and examples for Inner Join, Left Join, Right Join, and Full Outer Join.",
-        category: "SQL Joins"
+        url: "https://www.w3schools.com/datascience/default.asp",
+        description: "Interactive data visualization, scatter plots, normal distribution curves, and linear models.",
+        category: "Interactive Data Science"
       }
     ]
   },
   {
     id: "computer-networks",
     code: "AD8581",
-    name: "Computer Networks & Protocols Lab",
-    shortTitle: "CEN",
+    name: "Computer Networks Laboratory",
+    shortTitle: "CNL",
     discipline: "Artificial Intelligence & Data Science",
     disciplineSlug: "aids",
-    shortDesc: "Simulate sliding window protocols, packet routing algorithms (Dijkstra/Bellman-Ford), socket programming, and TCP/IP handshake states.",
-    description: "Hands-on virtual simulation of data link layer framing, Stop-and-Wait ARQ, Go-Back-N, Selective Repeat, Shortest Path routing topologies, and Java network socket implementations.",
+    shortDesc: "Hands-on packet sniffing (Wireshark, tcpdump), TCP/UDP socket programming, DNS resolution, ARP/RARP simulation, routing algorithms, and CRC error correction.",
+    description: "Welcome to the Computer Networks Virtual Laboratory. Explore network protocol analysis using tcpdump/Wireshark, build TCP web clients and chat servers, simulate UDP DNS resolution, study ARP/RARP translation, simulate Distance Vector/Link State routing, and verify CRC error detection.",
     institute: "VSB Engineering College, Karur",
     department: "Department of Artificial Intelligence & Data Science",
     difficulty: "Intermediate",
-    experimentsCount: 5,
+    experimentsCount: 10,
     rating: 4.91,
     ratingsCount: 290,
     iconName: "Network",
-    tags: ["TCP/IP", "Dijkstra Routing", "ARQ Protocols", "Sockets", "Wireshark"],
+    tags: ["tcpdump", "Wireshark", "TCP Sockets", "UDP DNS", "ARP/RARP", "Routing", "CRC"],
     bannerGradient: "from-amber-600 via-orange-950 to-slate-950",
     videoUrl: "https://www.youtube-nocookie.com/embed/IPvYjXCsTg8",
     semester: "Semester 5",
@@ -278,25 +134,18 @@ export const LABS_DATA: Lab[] = [
         category: "Computer Networks"
       },
       {
-        title: "OSI 7-Layer Model Architecture & Packet Encapsulation",
+        title: "Socket Programming in Java & Python (TCP/UDP)",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/layers-of-osi-model/",
-        description: "Functions, header structures, and protocol mappings for all seven layers of the OSI model.",
-        category: "OSI Model"
+        url: "https://www.geeksforgeeks.org/socket-programming-in-java/",
+        description: "Client-server TCP/UDP communication using ServerSocket and DatagramPacket.",
+        category: "Socket Programming"
       },
       {
-        title: "Sliding Window Protocols (Stop & Wait, Go-Back-N, Selective Repeat)",
+        title: "Routing Algorithms: Distance Vector & Link State (Dijkstra)",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/sliding-window-protocol-set-1/",
-        description: "Mathematical throughput efficiency, window size limits, and sequence number formulas.",
-        category: "ARQ Protocols"
-      },
-      {
-        title: "W3Schools Cyber Security & Networking Basics Tutorial",
-        source: "W3Schools",
-        url: "https://www.w3schools.com/cybersecurity/index.php",
-        description: "Beginner-friendly overview of network topologies, IP addressing, DNS, and network defenses.",
-        category: "Network Security"
+        url: "https://www.geeksforgeeks.org/routing-v-s-routed-protocols-in-computer-network/",
+        description: "Bellman-Ford and Dijkstra shortest path routing algorithm implementation in C/Python.",
+        category: "Routing"
       },
       {
         title: "W3Schools Network Protocols & TCP/IP Architecture",
@@ -304,33 +153,77 @@ export const LABS_DATA: Lab[] = [
         url: "https://www.w3schools.com/cybersecurity/cybersecurity_network_basics.php",
         description: "Tutorial on packet routing, MAC vs IP addressing, port numbers, and socket communication.",
         category: "TCP/IP"
+      }
+    ]
+  },
+  {
+    id: "ai-machine-learning",
+    code: "AD8481",
+    name: "Machine Learning Laboratory",
+    shortTitle: "MLL",
+    discipline: "Artificial Intelligence & Data Science",
+    disciplineSlug: "aids",
+    shortDesc: "Implement Candidate-Elimination, ID3 Decision Trees, Backpropagation ANN, Naïve Bayes text classifiers, Bayesian Networks, EM vs k-Means, k-NN, and LWR.",
+    description: "The Machine Learning Virtual Laboratory provides comprehensive algorithm implementations in Python: Version space search with Candidate-Elimination, ID3 Entropy information gain decision trees, Multilayer Perceptron Backpropagation, Gaussian/Multinomial Naïve Bayes, Bayesian Network disease diagnosis, EM clustering vs k-Means, k-NN classification on Iris, and non-parametric Locally Weighted Regression.",
+    institute: "VSB Engineering College, Karur",
+    department: "Department of Artificial Intelligence & Data Science",
+    difficulty: "Intermediate",
+    experimentsCount: 9,
+    rating: 4.94,
+    ratingsCount: 395,
+    iconName: "BrainCircuit",
+    tags: ["Candidate-Elimination", "ID3 Trees", "Backpropagation", "Naïve Bayes", "EM vs k-Means", "k-NN", "LWR"],
+    bannerGradient: "from-purple-700 via-indigo-950 to-slate-950",
+    videoUrl: "https://www.youtube-nocookie.com/embed/aircAruvnKk",
+    semester: "Semester 5",
+    resources: [
+      {
+        title: "GeeksforGeeks Machine Learning Tutorial & Algorithms",
+        source: "GeeksforGeeks",
+        url: "https://www.geeksforgeeks.org/machine-learning/",
+        description: "End-to-end ML roadmap covering Supervised, Unsupervised, Ensemble, and Deep Learning models.",
+        category: "Machine Learning"
       },
       {
-        title: "Socket Programming in Java & C Tutorial",
+        title: "Decision Tree ID3 Algorithm & Information Gain",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/socket-programming-in-java/",
-        description: "Client-server TCP/UDP communication using ServerSocket and DatagramPacket in Java.",
-        category: "Socket Programming"
+        url: "https://www.geeksforgeeks.org/decision-tree-introduction-example/",
+        description: "Entropy and Information Gain calculation for categorical and continuous dataset splits.",
+        category: "Decision Trees"
+      },
+      {
+        title: "Backpropagation in Neural Networks Step-by-Step",
+        source: "GeeksforGeeks",
+        url: "https://www.geeksforgeeks.org/backpropagation-in-neural-network/",
+        description: "Gradient computation, chain rule derivation, weight update formulas in multi-layer perceptrons.",
+        category: "Neural Networks"
+      },
+      {
+        title: "W3Schools Python Machine Learning Interactive Sandbox",
+        source: "W3Schools",
+        url: "https://www.w3schools.com/python/python_ml_getting_started.asp",
+        description: "Hands-on tutorials for Mean/Median/Mode, Standard Deviation, Linear/Polynomial Regression, and KNN.",
+        category: "Machine Learning"
       }
     ]
   },
   {
     id: "operating-systems",
     code: "CS3461",
-    name: "Operating Systems Lab",
+    name: "Operating Systems Laboratory",
     shortTitle: "OSL",
     discipline: "Artificial Intelligence & Data Science",
     disciplineSlug: "aids",
-    shortDesc: "Simulate CPU scheduling algorithms (FCFS, SJF, Round Robin), semaphores, Banker's deadlock avoidance, and page replacement policies.",
-    description: "The Operating Systems Virtual Laboratory offers interactive visual simulations and hands-on algorithm implementations for CPU Scheduling, Process Synchronization, Mutex/Semaphores, Banker's Deadlock Avoidance, Page Replacement (FIFO, LRU, Optimal), and Disk Scheduling in C and Linux environments.",
+    shortDesc: "Simulate UNIX commands, fork()/exec() process calls, CPU scheduling (FCFS/SJF/RR), semaphores, Banker's deadlock avoidance, paging, and disk scheduling.",
+    description: "The Operating Systems Virtual Laboratory offers interactive visual simulations and hands-on C/Linux implementations for OS Installation, Shell Scripting, Process Management (fork, exec, wait), CPU Scheduling (FCFS, SJF, Priority, Round Robin), IPC (Pipes, Shared Memory, Message Queues), Semaphores, Banker's Deadlock Avoidance, Deadlock Detection, POSIX Multi-threading, Paging, Dynamic Memory Allocation (First/Worst/Best Fit), Page Replacement (FIFO, LRU, Optimal), File Organization & Allocation, and Disk Scheduling (FCFS, SSTF, SCAN, C-SCAN, LOOK).",
     institute: "VSB Engineering College, Karur",
     department: "Department of Artificial Intelligence & Data Science",
     difficulty: "Intermediate",
-    experimentsCount: 5,
+    experimentsCount: 15,
     rating: 4.93,
     ratingsCount: 342,
     iconName: "Cpu",
-    tags: ["CPU Scheduling", "Semaphores", "Banker's Algorithm", "Page Replacement", "Linux"],
+    tags: ["CPU Scheduling", "System Calls", "Semaphores", "Banker's Algorithm", "Paging", "Disk Scheduling"],
     bannerGradient: "from-cyan-700 via-sky-950 to-slate-950",
     videoUrl: "https://www.youtube-nocookie.com/embed/26QPDBe-NB8",
     semester: "Semester 4",
@@ -369,13 +262,159 @@ export const LABS_DATA: Lab[] = [
         url: "https://www.w3schools.com/linux/index.php",
         description: "Hands-on reference for bash commands, file system permissions, and process management.",
         category: "Linux / Shell"
+      }
+    ]
+  },
+  {
+    id: "oops-java",
+    code: "CS3351",
+    name: "Object Oriented Programming System (Java)",
+    shortTitle: "OOPS",
+    discipline: "Artificial Intelligence & Data Science",
+    disciplineSlug: "aids",
+    shortDesc: "Master OOP principles: Classes & Objects, Encapsulation, Inheritance hierarchies, Polymorphism, Matrix traversals, Exception Handling, Collections & JDBC.",
+    description: "The OOPS Java Virtual Laboratory provides hands-on mastery over core Object-Oriented paradigms: Student Grade Calculators, Banking transactions, Product Catalogs, Multi-tier Payroll calculations, OTP Authentication engines, Academic inheritance hierarchies, Recursive algorithms, Matrix & Spiral traversals, Kadane's maximum subarray sum, Custom Exception handling, Collections Framework (Streams, Lambdas), and JDBC database persistence.",
+    institute: "VSB Engineering College, Karur",
+    department: "Department of Artificial Intelligence & Data Science",
+    difficulty: "Beginner",
+    experimentsCount: 15,
+    rating: 4.97,
+    ratingsCount: 450,
+    iconName: "Code2",
+    tags: ["Java OOP", "Inheritance", "Polymorphism", "Recursion", "Collections", "JDBC", "Streams"],
+    bannerGradient: "from-blue-700 via-indigo-950 to-slate-950",
+    videoUrl: "https://www.youtube-nocookie.com/embed/eIrMbAQSU34",
+    semester: "Semester 3",
+    resources: [
+      {
+        title: "Java OOPs Concepts Tutorial & Code Examples",
+        source: "GeeksforGeeks",
+        url: "https://www.geeksforgeeks.org/object-oriented-programming-oops-concept-in-java/",
+        description: "Encapsulation, Inheritance, Polymorphism, Abstraction with working class diagrams in Java.",
+        category: "Java OOP"
       },
       {
-        title: "W3Schools C Programming Tutorial & Memory Pointers",
+        title: "Java Collections Framework & Stream API Guide",
+        source: "GeeksforGeeks",
+        url: "https://www.geeksforgeeks.org/collections-in-java-2/",
+        description: "ArrayList, HashSet, HashMap, Lambda Expressions, and functional stream pipelines in Java.",
+        category: "Collections"
+      },
+      {
+        title: "Java JDBC Tutorial — Connect Java to Relational Databases",
+        source: "GeeksforGeeks",
+        url: "https://www.geeksforgeeks.org/introduction-to-jdbc/",
+        description: "DriverManager, Connection, Statement, PreparedStatement, and ResultSet execution.",
+        category: "JDBC"
+      },
+      {
+        title: "W3Schools Java Tutorial & Interactive Code Sandbox",
         source: "W3Schools",
-        url: "https://www.w3schools.com/c/index.php",
-        description: "Interactive tutorial covering C pointers, structures, dynamic memory malloc/free, and system calls.",
-        category: "C Programming"
+        url: "https://www.w3schools.com/java/default.asp",
+        description: "Interactive classes, methods, constructors, access modifiers, and file handling in Java.",
+        category: "Interactive Java"
+      }
+    ]
+  },
+  {
+    id: "data-structures",
+    code: "AD8381",
+    name: "Data Structures and Algorithms Laboratory",
+    shortTitle: "DSAL",
+    discipline: "Artificial Intelligence & Data Science",
+    disciplineSlug: "aids",
+    shortDesc: "Explore Singly/Doubly Linked Lists, Stacks, Queues, BSTs, AVL balancing, Tries, B-Trees, Graph traversals (BFS/DFS), Shortest Path & MST, Sorting and Hashing.",
+    description: "Welcome to the Data Structures and Algorithms Laboratory. Implement 15 foundational and advanced data structures and algorithms in Java and C++: Singly/Doubly/Circular Linked Lists, Floyd's Cycle Detection, Stack Applications (Infix to Postfix), Circular & Priority Queues, BST Operations, AVL Balancing Rotations, Huffman Coding Trees, Trie, B/B+ Trees, Graph BFS/DFS, Dijkstra & Prim/Kruskal MST, Searching, Sorting (Merge/Quick Sort), and Hashing with Open Addressing & Rehashing.",
+    institute: "VSB Engineering College, Karur",
+    department: "Department of Artificial Intelligence & Data Science",
+    difficulty: "Beginner",
+    experimentsCount: 15,
+    rating: 4.95,
+    ratingsCount: 428,
+    iconName: "Code2",
+    tags: ["Linked Lists", "Stacks & Queues", "BST & AVL", "Trie & B-Trees", "Graphs", "Sorting & Hashing"],
+    bannerGradient: "from-blue-700 via-indigo-900 to-slate-950",
+    videoUrl: "https://www.youtube-nocookie.com/embed/zWg7U0OEAoE",
+    semester: "Semester 3",
+    resources: [
+      {
+        title: "DSA Tutorial — Complete Guide to Data Structures & Algorithms",
+        source: "GeeksforGeeks",
+        url: "https://www.geeksforgeeks.org/data-structures/",
+        description: "Comprehensive step-by-step documentation for linear, tree, and graph structures with Java code traces.",
+        category: "Data Structures"
+      },
+      {
+        title: "Binary Trees, BST, and AVL Self-Balancing Trees",
+        source: "GeeksforGeeks",
+        url: "https://www.geeksforgeeks.org/binary-search-tree-data-structure/",
+        description: "Tree traversals, height balancing rotations (LL, RR, LR, RL), and AVL balance factor calculations.",
+        category: "Trees"
+      },
+      {
+        title: "Graph Algorithms: BFS, DFS, Dijkstra, Prim's and Kruskal's MST",
+        source: "GeeksforGeeks",
+        url: "https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/",
+        description: "Adjacency matrix/list structures, greedy shortest path, and minimum spanning tree routines.",
+        category: "Graphs"
+      },
+      {
+        title: "W3Schools Data Structures & Algorithms (DSA) Tutorial",
+        source: "W3Schools",
+        url: "https://www.w3schools.com/dsa/index.php",
+        description: "Interactive visual DSA tutorials with step-by-step illustrations and online practice sandboxes.",
+        category: "Interactive Tutorial"
+      }
+    ]
+  },
+  {
+    id: "dbms-lab",
+    code: "AD8382",
+    name: "Database Management System",
+    shortTitle: "DBMS",
+    discipline: "Artificial Intelligence & Data Science",
+    disciplineSlug: "aids",
+    shortDesc: "Master DDL/DML, Set Operations, Complex Joins, Views & B-Tree indexing, PL/SQL control structures, Stored Procedures, Triggers, Exceptions, and TCL ACID transactions.",
+    description: "Interactive laboratory environment for mastering relational SQL and PL/SQL: DDL schema definitions with integrity constraints, DML data manipulation and filtering, Set operations & aggregate functions, Inner/Outer Joins & correlated subqueries, Views and B-Tree indexing, PL/SQL control blocks and cursors, Parameterized stored procedures and functions, Audit logging database triggers, Custom exception handlers, and TCL transaction management (COMMIT, ROLLBACK, SAVEPOINT).",
+    institute: "VSB Engineering College, Karur",
+    department: "Department of Artificial Intelligence & Data Science",
+    difficulty: "Intermediate",
+    experimentsCount: 10,
+    rating: 4.88,
+    ratingsCount: 312,
+    iconName: "Database",
+    tags: ["SQL DDL/DML", "Joins & Subqueries", "Views & Indexes", "PL/SQL", "Procedures & Triggers", "ACID TCL"],
+    bannerGradient: "from-emerald-700 via-teal-950 to-slate-950",
+    videoUrl: "https://www.youtube-nocookie.com/embed/HXV3zeRR3h4",
+    semester: "Semester 3",
+    resources: [
+      {
+        title: "GeeksforGeeks DBMS Tutorial — Complete Reference",
+        source: "GeeksforGeeks",
+        url: "https://www.geeksforgeeks.org/dbms/",
+        description: "ER Modeling, Relational Algebra, B/B+ Trees, Query Optimization, and Concurrency Control.",
+        category: "DBMS Theory"
+      },
+      {
+        title: "SQL Tutorial — From Beginner to Advanced Queries",
+        source: "GeeksforGeeks",
+        url: "https://www.geeksforgeeks.org/sql-tutorial/",
+        description: "Complete guide to DDL, DML, DCL, Window Functions, Stored Procedures, and Indexes in SQL.",
+        category: "SQL"
+      },
+      {
+        title: "PL/SQL Tutorial — Blocks, Cursors, Triggers & Procedures",
+        source: "GeeksforGeeks",
+        url: "https://www.geeksforgeeks.org/pl-sql-introduction/",
+        description: "Procedural SQL programming, explicit/implicit cursors, before/after triggers, and ACID transactions.",
+        category: "PL/SQL"
+      },
+      {
+        title: "W3Schools SQL Tutorial & Live SQL Try-It Editor",
+        source: "W3Schools",
+        url: "https://www.w3schools.com/sql/default.asp",
+        description: "Interactive SQL queries with live database sandbox for SELECT, INSERT, UPDATE, DELETE, and JOINs.",
+        category: "Interactive SQL"
       }
     ]
   },
@@ -413,34 +452,6 @@ export const LABS_DATA: Lab[] = [
         url: "https://www.geeksforgeeks.org/a-search-algorithm/",
         description: "Evaluation function f(n) = g(n) + h(n), Manhattan distance heuristic, and 8-puzzle solver.",
         category: "Heuristic Search"
-      },
-      {
-        title: "Minimax Algorithm & Alpha-Beta Pruning in Game Theory",
-        source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-4-alpha-beta-pruning/",
-        description: "Adversarial game search tree optimization for Tic-Tac-Toe and Chess.",
-        category: "Game Playing"
-      },
-      {
-        title: "N-Queen Problem using Backtracking & CSP",
-        source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/n-queen-problem-backtracking-3/",
-        description: "Constraint satisfaction problem solving, diagonal threat hashing, and solution state trees.",
-        category: "Constraint Satisfaction"
-      },
-      {
-        title: "W3Schools Artificial Intelligence (AI) Overview & Tutorial",
-        source: "W3Schools",
-        url: "https://www.w3schools.com/ai/default.asp",
-        description: "Interactive visual introduction to AI systems, neural networks, machine reasoning, and agents.",
-        category: "Interactive AI"
-      },
-      {
-        title: "W3Schools Python Tutorial for AI Developers",
-        source: "W3Schools",
-        url: "https://www.w3schools.com/python/default.asp",
-        description: "Essential Python programming: OOP classes, heapq, collections, deque, and recursion.",
-        category: "Python for AI"
       }
     ]
   },
@@ -471,41 +482,6 @@ export const LABS_DATA: Lab[] = [
         url: "https://www.geeksforgeeks.org/big-data-tutorial/",
         description: "Characteristics of Big Data (5 V's), distributed storage, and parallel batch processing.",
         category: "Big Data"
-      },
-      {
-        title: "Hadoop Tutorial — HDFS Architecture & Cluster Setup",
-        source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/hadoop-tutorial/",
-        description: "NameNode, DataNode, Block replication factor, and HDFS shell command administration.",
-        category: "Hadoop HDFS"
-      },
-      {
-        title: "MapReduce Framework Tutorial with Java & Python WordCount",
-        source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/mapreduce-tutorial/",
-        description: "Mapper, Shuffle & Sort, and Reducer stages with distributed computation code traces.",
-        category: "MapReduce"
-      },
-      {
-        title: "PySpark Tutorial — Spark RDDs & DataFrames in Python",
-        source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/pyspark-tutorial/",
-        description: "In-memory distributed computing, lazy evaluation, and Spark SQL transformations.",
-        category: "PySpark"
-      },
-      {
-        title: "W3Schools MongoDB NoSQL Database Tutorial & Aggregation Guide",
-        source: "W3Schools",
-        url: "https://www.w3schools.com/mongodb/index.php",
-        description: "Document collections, BSON queries, CRUD operations, and multi-stage aggregation pipelines.",
-        category: "MongoDB NoSQL"
-      },
-      {
-        title: "W3Schools Data Science & Analytics Tutorial",
-        source: "W3Schools",
-        url: "https://www.w3schools.com/datascience/default.asp",
-        description: "Applied statistical aggregations, data frame filtering, and large-scale dataset plotting.",
-        category: "Data Science"
       }
     ]
   },
@@ -536,42 +512,7 @@ export const LABS_DATA: Lab[] = [
         url: "https://www.geeksforgeeks.org/cloud-computing/",
         description: "IaaS, PaaS, SaaS delivery models, public/private deployment models, and cloud virtualization.",
         category: "Cloud Computing"
-      },
-      {
-        title: "AWS Tutorial — Amazon Web Services Complete Handbook",
-        source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/aws-tutorial/",
-        description: "EC2 compute instances, Custom VPCs, Security Groups, S3 Buckets, and IAM permission policies.",
-        category: "Amazon Web Services"
-      },
-      {
-        title: "Docker Tutorial — Containerization from Scratch",
-        source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/docker-tutorial/",
-        description: "Dockerfiles, Images, Multi-container Docker Compose, and bridge network configurations.",
-        category: "Docker"
-      },
-      {
-        title: "Kubernetes Tutorial — Pods, Deployments & Services Orchestration",
-        source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/kubernetes/",
-        description: "Container orchestration, ReplicaSets, Service LoadBalancers, and Helm chart management.",
-        category: "Kubernetes"
-      },
-      {
-        title: "W3Schools AWS Cloud Services Tutorial",
-        source: "W3Schools",
-        url: "https://www.w3schools.com/aws/index.php",
-        description: "Hands-on beginner guide to AWS Cloud infrastructure, compute, and serverless hosting.",
-        category: "AWS Interactive"
-      },
-      {
-        title: "W3Schools Cloud Security & Virtualization Concepts",
-        source: "W3Schools",
-        url: "https://www.w3schools.com/cybersecurity/cybersecurity_cloud_security.php",
-        description: "Cloud identity management, zero trust networks, firewalls, and data encryption at rest.",
-        category: "Cloud Security"
       }
     ]
-  },
+  }
 ];

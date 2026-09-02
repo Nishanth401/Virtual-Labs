@@ -284,6 +284,12 @@ export const QUIZZES_DATA: Record<string, Quiz> = {
       {
         id: "isq-4",
         question: "Why is Insertion Sort often used as the base-case sorting routine inside hybrid algorithms like Timsort or IntroSort?",
+        options: [
+          "Low overhead and high performance on small sub-arrays (n < 16)",
+          "It guarantees O(n log n) worst-case time complexity",
+          "It requires O(n) extra heap allocation memory",
+          "It is a non-comparison based sorting algorithm"
+        ],
         correctIndex: 0,
         explanation: "Due to low overhead and excellent CPU cache locality, Insertion Sort outperforms Quick Sort and Merge Sort on small sub-arrays."
       }

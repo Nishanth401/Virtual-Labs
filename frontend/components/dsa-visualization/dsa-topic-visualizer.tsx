@@ -203,7 +203,7 @@ export function DSATopicVisualizer({ topic }: DSATopicVisualizerProps) {
     }
 
     if (topic.categoryId === "dynamic-programming") {
-      return <GreedyDpVisualizer defaultMode="knapsack" />;
+      return <GreedyDpVisualizer defaultMode="dp-knapsack-2d" />;
     }
 
     // 8. Hashing
@@ -276,7 +276,7 @@ export function DSATopicVisualizer({ topic }: DSATopicVisualizerProps) {
     }
 
     if (topic.categoryId === "greedy-algorithms") return <GreedyDpVisualizer defaultMode="activity" />;
-    if (topic.categoryId === "dynamic-programming") return <GreedyDpVisualizer defaultMode="knapsack" />;
+    if (topic.categoryId === "dynamic-programming") return <GreedyDpVisualizer defaultMode="dp-knapsack-2d" />;
     if (topic.categoryId === "hashing-collisions") return <HashingSuiteVisualizer defaultMode="chaining" />;
     if (topic.categoryId === "string-algorithms") return <StringSuiteVisualizer defaultMode="trie" />;
     if (topic.categoryId === "complexity-analysis") return <ComplexityComparator />;
