@@ -19,12 +19,16 @@ const routes = {
     path: "/home",
   },
   "/visualizer": {
-    name: "DG Visualization",
+    name: "DSA Visualization",
     path: "/visualizer",
   },
+  "/dsa-visualization": {
+    name: "DSA Visualization",
+    path: "/dsa-visualization",
+  },
   "/dg-visualization": {
-    name: "DG Visualization",
-    path: "/dg-visualization",
+    name: "DSA Visualization",
+    path: "/dsa-visualization",
   },
   "/visualizer/stack": {
     name: "Stack",

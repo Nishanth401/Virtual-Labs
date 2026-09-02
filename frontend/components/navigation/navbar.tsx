@@ -73,7 +73,7 @@ function getUsername(
 const NAV_ITEMS = [
   { name: "Home", href: "/" },
   { name: "Labs", href: "/labs" },
-  { name: "DG Visualization", href: "/dg-visualization" },
+  { name: "DSA Visualization", href: "/dsa-visualization" },
   { name: "ML Track", href: "/labs/ai-machine-learning" },
   { name: "Curriculum", href: "/courses" },
 ];
@@ -87,7 +87,7 @@ const SEARCH_ITEMS = [
   { title: "Singly Linked List", category: "Data Structures", url: "/experiments/singly-linked-list", desc: "Dynamic node allocations, head/tail insert & reversal" },
   { title: "Linear Regression & Gradient Descent", category: "Machine Learning", url: "/experiments/linear-regression", desc: "Vectorized MSE loss minimization with NumPy" },
   { title: "K-Nearest Neighbors (KNN)", category: "Machine Learning", url: "/experiments/knn-classification", desc: "Euclidean distance classification & decision boundary" },
-  { title: "DG Visualization Platform", category: "Simulators", url: "/dg-visualization", desc: "12 Core Modules Interactive Learning & Visualizer" },
+  { title: "DSA Visualization Platform", category: "Simulators", url: "/dsa-visualization", desc: "12 Core Modules Interactive Learning & Visualizer" },
   { title: "Student Progress & Certificate", category: "Dashboard", url: "/dashboard", desc: "Track completed labs and download verified certificate" },
   { title: "Student Login & Registration", category: "Auth", url: "/auth/login", desc: "Sign in with Email or Continue with Google" },
 ];

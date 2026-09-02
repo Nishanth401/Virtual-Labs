@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { DSA_CATEGORIES_DATA, DSACategory, DSATopic } from "@/data/dsa-topic-data";
 import { DSACategorySidebar } from "@/components/vlab/dsa-category-sidebar";
-import { DGTopicVisualizer } from "@/components/dg-visualization/dg-topic-visualizer";
+import { DSATopicVisualizer } from "@/components/dsa-visualization/dsa-topic-visualizer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -26,7 +26,7 @@ import {
   Layers
 } from "lucide-react";
 
-export default function DGVisualizationPage() {
+export default function DSAVisualizationPage() {
   const allTopics: DSATopic[] = DSA_CATEGORIES_DATA.flatMap((cat) => cat.topics);
   const [activeTopic, setActiveTopic] = useState<DSATopic>(allTopics[0]);
   const [completedTopicIds, setCompletedTopicIds] = useState<string[]>([]);
@@ -52,14 +52,14 @@ export default function DGVisualizationPage() {
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
             <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/30 font-mono font-bold">
-              <Sparkles className="h-3.5 w-3.5 mr-1 text-primary" /> DG &amp; DSA Complete Learning Platform
+              <Sparkles className="h-3.5 w-3.5 mr-1 text-primary" /> DSA Complete Learning &amp; Visualization Platform
             </Badge>
             <Badge variant="secondary" className="text-xs font-mono">
               12 Core Modules • Top to Bottom
             </Badge>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black text-foreground font-heading tracking-tight">
-            Interactive DSA &amp; DG Visualization System
+            Interactive DSA Visualization System
           </h1>
           <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl leading-relaxed">
             Master Data Structures and Algorithms with step-by-step simulations, live execution metrics, multi-language code traces, and curated LeetCode interview practice.
@@ -172,7 +172,7 @@ export default function DGVisualizationPage() {
             {/* TAB 1: INTERACTIVE SIMULATOR */}
             <TabsContent value="visualizer" className="space-y-5">
               <Card className="border-border bg-card/90 shadow-sm p-4">
-                <DGTopicVisualizer topic={activeTopic} />
+                <DSATopicVisualizer topic={activeTopic} />
               </Card>
             </TabsContent>
 
@@ -357,3 +357,5 @@ export default function DGVisualizationPage() {
     </div>
   );
 }
+
+export const DGVisualizationPage = DSAVisualizationPage;

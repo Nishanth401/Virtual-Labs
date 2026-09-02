@@ -55,12 +55,12 @@ const ROLLING_CARDS = [
     url: "/labs/computer-networks",
   },
   {
-    title: "DG Visualization Platform",
+    title: "DSA Visualization Platform",
     tag: "12 CORE MODULES",
-    desc: "Complete top-to-bottom interactive DSA & DG learning curriculum with live simulators.",
+    desc: "Complete top-to-bottom interactive DSA learning curriculum with live simulators.",
     icon: Layers,
     color: "from-rose-500/10 to-red-500/10 text-rose-500 border-rose-500/30",
-    url: "/dg-visualization",
+    url: "/dsa-visualization",
   },
   {
     title: "Verified Student Certificates",

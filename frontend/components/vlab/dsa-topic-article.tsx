@@ -19,7 +19,7 @@ import {
   Trophy,
 } from "lucide-react";
 
-import { DGTopicVisualizer } from "@/components/dg-visualization/dg-topic-visualizer";
+import { DSATopicVisualizer } from "@/components/dsa-visualization/dsa-topic-visualizer";
 
 interface DSATopicArticleProps {
   topic: DSATopic;
@@ -203,7 +203,7 @@ export function DSATopicArticle({
         {/* TAB 2: INTERACTIVE VISUALIZER */}
         <TabsContent value="visualizer" className="space-y-5">
           <Card className="border-border bg-card/90 shadow-sm p-4">
-            <DGTopicVisualizer topic={topic} />
+            <DSATopicVisualizer topic={topic} />
           </Card>
         </TabsContent>
       </Tabs>
