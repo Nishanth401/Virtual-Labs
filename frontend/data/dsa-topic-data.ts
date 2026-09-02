@@ -15,7 +15,7 @@ export interface DSATopicPractice {
 }
 
 export interface CodeSnippet {
-  language: "java" | "cpp" | "python" | "javascript";
+  language: "java" | "cpp" | "python" | "javascript" | "sql" | "c" | "bash" | string;
   label: string;
   code: string;
 }

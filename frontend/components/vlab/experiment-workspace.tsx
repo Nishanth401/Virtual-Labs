@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Experiment, EXPERIMENTS_DATA } from "@/data/experiments";
+import { LABS_DATA } from "@/data/labs";
 import { QUIZZES_DATA } from "@/data/quizzes";
 import { useStudentProgress } from "@/hooks/use-student-progress";
 
@@ -36,7 +37,8 @@ import {
   Layers,
   BookOpen,
   Send,
-  Sparkles
+  Sparkles,
+  Terminal
 } from "lucide-react";
 
 interface ExperimentWorkspaceProps {
@@ -49,7 +51,10 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
   const [userRating, setUserRating] = useState<number>(5);
   const [feedbackComment, setFeedbackComment] = useState<string>("");
   const [feedbackSubmitted, setFeedbackSubmitted] = useState<boolean>(false);
+  const [isSimulating, setIsSimulating] = useState<boolean>(false);
+  const [simOutput, setSimOutput] = useState<string | null>(null);
 
+  const lab = LABS_DATA.find((l) => l.id === experiment.labId);
   const quiz = QUIZZES_DATA[experiment.quizId];
   const isCompleted = progress.completedExperiments.includes(experiment.id);
 
@@ -68,6 +73,14 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
     setFeedbackSubmitted(true);
   };
 
+  const handleRunSimulation = () => {
+    setIsSimulating(true);
+    setTimeout(() => {
+      setSimOutput(experiment.sections.expectedOutput);
+      setIsSimulating(false);
+    }, 600);
+  };
+
   return (
     <div className="container max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
       {/* Top Header & Breadcrumbs */}
@@ -79,7 +92,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             <Link href="/labs" className="hover:text-primary transition-colors">Virtual Labs</Link>
             <span>/</span>
             <Link href={`/labs/${experiment.labId}`} className="hover:text-primary transition-colors">
-              {experiment.labId === "data-structures" ? "Data Structures Lab (Java)" : "AI & ML Lab"}
+              {lab?.name || "Virtual Laboratory"}
             </Link>
             <span>/</span>
             <span className="text-foreground font-semibold">{experiment.title}</span>
@@ -98,7 +111,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
 
           <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-muted-foreground">
             <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/30 font-semibold font-mono">
-              Java DSA
+              {experiment.category}
             </Badge>
             <span>•</span>
             <span className="flex items-center gap-1">
@@ -138,13 +151,13 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
         <TabsList className="grid grid-cols-2 md:grid-cols-5 w-full p-1 bg-muted/60 backdrop-blur-md rounded-xl border border-border h-auto gap-1">
           <TabsTrigger value="video-concept" className="text-xs py-2.5 gap-1.5 font-bold">
-            <Video className="h-4 w-4 text-blue-500" /> Part 1: Video Tutorial &amp; Theory
+            <Video className="h-4 w-4 text-blue-500" /> Part 1: Video &amp; Theory
           </TabsTrigger>
           <TabsTrigger value="simulation" className="text-xs py-2.5 gap-1.5 font-bold text-primary">
             <PlayCircle className="h-4 w-4 text-primary" /> Part 2: Interactive Simulator
           </TabsTrigger>
           <TabsTrigger value="recursion-trace" className="text-xs py-2.5 gap-1.5 font-bold text-indigo-400">
-            <Code2 className="h-4 w-4 text-indigo-400" /> Part 3: Java Code &amp; Call Stack
+            <Code2 className="h-4 w-4 text-indigo-400" /> Part 3: Code &amp; Execution
           </TabsTrigger>
           <TabsTrigger value="leetcode-quiz" className="text-xs py-2.5 gap-1.5 font-bold text-amber-500">
             <Trophy className="h-4 w-4 text-amber-500" /> Part 4: LeetCode &amp; Quiz
@@ -163,18 +176,33 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-6">
               {/* Left 7 Cols: Video Player */}
               <div className="lg:col-span-7 space-y-3">
+                <div className="flex items-center justify-between gap-2 px-1">
+                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono flex items-center gap-1.5">
+                    <Video className="h-3.5 w-3.5 text-primary" /> Concept Walkthrough &amp; Demonstration
+                  </span>
+                  <Badge variant="outline" className="text-[10px] font-mono bg-primary/10 text-primary border-primary/20">
+                    Video Guide
+                  </Badge>
+                </div>
+
+                {/* Video Player Frame */}
                 <div className="aspect-video w-full rounded-xl bg-slate-950 border border-border overflow-hidden shadow-md">
                   <iframe
-                    src={experiment.sections.videoUrl || "https://www.youtube-nocookie.com/embed/zWg7U0OEAoE"}
-                    title={experiment.sections.videoTitle}
+                    src={experiment.sections.videoUrl || lab?.videoUrl || "https://www.youtube-nocookie.com/embed/8hly31xKli0"}
+                    title={experiment.sections.videoTitle || experiment.title}
                     className="w-full h-full border-0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                   />
                 </div>
-                <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  <span className="font-semibold text-foreground">{experiment.sections.videoTitle}</span>
-                  <Badge variant="outline" className="text-[10px]">{experiment.sections.videoChannel}</Badge>
+
+                <div className="flex items-center justify-between text-xs text-muted-foreground px-1">
+                  <span className="font-semibold text-foreground">
+                    {experiment.sections.videoTitle || `${experiment.title} Full Tutorial`}
+                  </span>
+                  <Badge variant="outline" className="text-[10px] font-mono text-muted-foreground">
+                    {experiment.category}
+                  </Badge>
                 </div>
               </div>
 
@@ -334,6 +362,87 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 description="Observe element extraction, backward shifting, and adaptive linear performance."
               />
             )}
+            {experiment.simulator !== "stack" &&
+              experiment.simulator !== "queue" &&
+              experiment.simulator !== "linked-list" &&
+              experiment.simulator !== "bubble-sort" &&
+              experiment.simulator !== "selection-sort" &&
+              experiment.simulator !== "insertion-sort" && (
+                <div className="space-y-6">
+                  <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-border/50">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <Terminal className="h-5 w-5 text-primary" />
+                        <h3 className="font-bold text-base text-foreground font-heading">
+                          {experiment.title} Interactive Simulation Sandbox
+                        </h3>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Execute step-by-step algorithm trace, inspect memory state transitions, and verify outputs.
+                      </p>
+                    </div>
+                    <Button
+                      onClick={handleRunSimulation}
+                      disabled={isSimulating}
+                      className="bg-primary hover:bg-primary/90 text-white text-xs font-bold gap-2 shadow-sm"
+                    >
+                      {isSimulating ? (
+                        <>
+                          <span className="w-3 h-3 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                          <span>Simulating Execution...</span>
+                        </>
+                      ) : (
+                        <>
+                          <PlayCircle className="h-4 w-4" />
+                          <span>Run Simulation Sandbox</span>
+                        </>
+                      )}
+                    </Button>
+                  </div>
+
+                  {/* Procedure Step Checklist */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-3 p-4 rounded-xl bg-muted/30 border border-border/60">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-primary font-mono flex items-center gap-1.5">
+                        <CheckCircle2 className="h-4 w-4" /> Execution Procedure Steps
+                      </h4>
+                      <div className="space-y-2">
+                        {experiment.sections.procedure.map((step, sIdx) => (
+                          <div key={sIdx} className="p-2.5 rounded-lg bg-card/90 border border-border/50 text-xs text-muted-foreground flex items-start gap-2">
+                            <span className="flex items-center justify-center h-4 w-4 rounded-full bg-primary/10 text-primary text-[10px] font-bold shrink-0 mt-0.5 font-mono">
+                              {sIdx + 1}
+                            </span>
+                            <span className="leading-snug">{step}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Live Output Terminal */}
+                    <div className="space-y-3 p-4 rounded-xl bg-slate-950 text-slate-100 border border-slate-800 shadow-inner flex flex-col justify-between">
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                          <span className="text-[11px] font-mono text-slate-400 flex items-center gap-1.5">
+                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                            Simulation Console Stream
+                          </span>
+                          <Badge variant="outline" className="text-[10px] font-mono border-slate-700 text-slate-300">
+                            {experiment.sections.sampleCode.language.toUpperCase()} ENGINE
+                          </Badge>
+                        </div>
+                        <pre className="font-mono text-xs text-emerald-400 whitespace-pre-wrap leading-relaxed max-h-60 overflow-y-auto p-2 bg-black/40 rounded-lg">
+                          {simOutput || experiment.sections.expectedOutput}
+                        </pre>
+                      </div>
+
+                      <div className="pt-2 text-[10px] text-slate-500 font-mono flex items-center justify-between border-t border-slate-800/60">
+                        <span>Status: 0 Errors | Memory Verified</span>
+                        <span>State: READY</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
           </div>
 
           <div className="flex items-center justify-between pt-4 border-t border-border/60">

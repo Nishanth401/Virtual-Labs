@@ -65,27 +65,37 @@ export function Footer() {
             {/* Column: SPECIFICS */}
             <div className="space-y-3">
               <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400 font-bold block">
-                SPECIFICS
+                LABORATORIES
               </span>
-              <ul className="space-y-2 text-slate-400">
+              <ul className="space-y-1.5 text-slate-400 text-xs">
                 <li>
-                  <Link href="/labs/data-structures" className="hover:text-white transition-colors block py-1">
-                    DSA Lab (Java)
+                  <Link href="/labs/data-structures" className="hover:text-white transition-colors block py-0.5">
+                    Data Structures (Java)
                   </Link>
                 </li>
                 <li>
-                  <Link href="/labs/ai-machine-learning" className="hover:text-white transition-colors block py-1">
+                  <Link href="/labs/operating-systems" className="hover:text-white transition-colors block py-0.5">
+                    Operating Systems (C)
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/labs/artificial-intelligence" className="hover:text-white transition-colors block py-0.5">
+                    Artificial Intelligence
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/labs/big-data-analytics" className="hover:text-white transition-colors block py-0.5">
+                    Big Data Analytics
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/labs/cloud-service-management" className="hover:text-white transition-colors block py-0.5">
+                    Cloud Service Mgmt
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/labs/ai-machine-learning" className="hover:text-white transition-colors block py-0.5">
                     ML &amp; NumPy Track
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/labs/dbms-lab" className="hover:text-white transition-colors block py-1">
-                    DBMS (SQL)
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/labs/computer-networks" className="hover:text-white transition-colors block py-1">
-                    CEN (Protocols)
                   </Link>
                 </li>
               </ul>

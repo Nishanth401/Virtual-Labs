@@ -18,7 +18,11 @@ import {
   ExternalLink,
   Award,
   BookOpen,
-  Layers
+  Layers,
+  Cpu,
+  Bot,
+  BarChart3,
+  Cloud
 } from "lucide-react";
 
 const ROLLING_CARDS = [
@@ -53,6 +57,38 @@ const ROLLING_CARDS = [
     icon: Network,
     color: "from-amber-500/10 to-orange-500/10 text-amber-500 border-amber-500/30",
     url: "/labs/computer-networks",
+  },
+  {
+    title: "Operating Systems Lab",
+    tag: "OSL • CS3461",
+    desc: "CPU Scheduling Gantt charts, POSIX Semaphores & Banker's deadlock safety algorithm.",
+    icon: Cpu,
+    color: "from-cyan-500/10 to-sky-500/10 text-cyan-500 border-cyan-500/30",
+    url: "/labs/operating-systems",
+  },
+  {
+    title: "Artificial Intelligence Lab",
+    tag: "AIL • AI3401",
+    desc: "A* 8-Puzzle Manhattan search, Minimax Alpha-Beta pruning & N-Queens CSP solver.",
+    icon: Bot,
+    color: "from-violet-500/10 to-purple-500/10 text-violet-500 border-violet-500/30",
+    url: "/labs/artificial-intelligence",
+  },
+  {
+    title: "Big Data Analytics Lab",
+    tag: "BDAL • CS8711",
+    desc: "Hadoop HDFS cluster replication, Distributed MapReduce & PySpark DataFrames.",
+    icon: BarChart3,
+    color: "from-amber-500/10 to-orange-500/10 text-amber-500 border-amber-500/30",
+    url: "/labs/big-data-analytics",
+  },
+  {
+    title: "Cloud Service Management Lab",
+    tag: "CSML • CS8811",
+    desc: "AWS EC2/VPC provisioning, S3 bucket lifecycle, Docker Compose & Kubernetes mesh.",
+    icon: Cloud,
+    color: "from-teal-500/10 to-cyan-500/10 text-teal-500 border-teal-500/30",
+    url: "/labs/cloud-service-management",
   },
   {
     title: "DSA Visualization Platform",

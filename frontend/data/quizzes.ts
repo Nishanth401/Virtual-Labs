@@ -285,13 +285,490 @@ export const QUIZZES_DATA: Record<string, Quiz> = {
         id: "isq-4",
         question: "Why is Insertion Sort often used as the base-case sorting routine inside hybrid algorithms like Timsort or IntroSort?",
         options: [
-          "Because it has lower constant factors and high cache locality on small arrays (e.g., n < 32)",
-          "Because it runs in O(log n) time",
-          "Because it is non-recursive only",
-          "Because it does not require CPU registers"
+          "Low overhead and high performance on small sub-arrays (n < 16)",
+          "It guarantees O(n log n) worst-case time complexity",
+          "It requires O(n) extra heap allocation memory",
+          "It is a non-comparison based sorting algorithm"
         ],
         correctIndex: 0,
         explanation: "Due to low overhead and excellent CPU cache locality, Insertion Sort outperforms Quick Sort and Merge Sort on small sub-arrays."
+      }
+    ]
+  },
+
+  // ==========================================
+  // OPERATING SYSTEMS QUIZZES
+  // ==========================================
+  "cpu-scheduling-quiz": {
+    id: "cpu-scheduling-quiz",
+    experimentId: "cpu-scheduling-fcfs-sjf",
+    title: "CPU Scheduling Self-Assessment",
+    description: "Evaluate your understanding of FCFS, SJF, Gantt charts, and turnaround/waiting time calculations.",
+    passingScore: 3,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "csq-1",
+        question: "Which CPU scheduling algorithm is provably optimal for minimizing average waiting time?",
+        options: ["First-Come First-Served (FCFS)", "Shortest Job First (SJF)", "Priority Scheduling", "Round Robin"],
+        correctIndex: 1,
+        explanation: "SJF (Shortest Job First) is provably optimal because scheduling the shortest CPU burst first results in the minimum average waiting time for a given set of processes."
+      },
+      {
+        id: "csq-2",
+        question: "What is the Convoy Effect in operating systems?",
+        options: [
+          "CPU switching between threads too quickly",
+          "Short processes waiting for a prolonged time behind one long CPU-bound process in FCFS",
+          "Deadlock occurring between multiple processes",
+          "Memory page swapping degradation"
+        ],
+        correctIndex: 1,
+        explanation: "In FCFS, when a long CPU-intensive process executes first, all subsequent short I/O or CPU jobs must wait, leading to severe resource underutilization known as the Convoy Effect."
+      },
+      {
+        id: "csq-3",
+        question: "How is Turnaround Time (TAT) calculated for a process?",
+        options: [
+          "TAT = Completion Time - Arrival Time",
+          "TAT = Waiting Time + Arrival Time",
+          "TAT = Burst Time - Waiting Time",
+          "TAT = Arrival Time - Burst Time"
+        ],
+        correctIndex: 0,
+        explanation: "Turnaround time measures total time spent from arrival to termination: TAT = Completion Time - Arrival Time."
+      }
+    ]
+  },
+  "semaphores-quiz": {
+    id: "semaphores-quiz",
+    experimentId: "producer-consumer-semaphores",
+    title: "Process Synchronization & Semaphores Quiz",
+    description: "Test your knowledge of Producer-Consumer synchronization, counting semaphores, and race conditions.",
+    passingScore: 3,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "sem-1",
+        question: "In the bounded-buffer Producer-Consumer problem, what is the initial value of the 'empty' counting semaphore?",
+        options: ["0", "1", "Buffer Capacity N", "Infinity"],
+        correctIndex: 2,
+        explanation: "The 'empty' semaphore is initialized to the capacity of the buffer (N) because initially all N slots are available for writing."
+      },
+      {
+        id: "sem-2",
+        question: "Which atomic operation decrements the value of a semaphore and blocks if the value is <= 0?",
+        options: ["sem_post() / signal()", "sem_wait() / wait()", "pthread_join()", "sem_init()"],
+        correctIndex: 1,
+        explanation: "sem_wait() (or P() / wait()) decrements the semaphore counter and suspends the calling thread if no slots are available."
+      },
+      {
+        id: "sem-3",
+        question: "Why is a Mutex lock used alongside counting semaphores in Producer-Consumer?",
+        options: [
+          "To prevent CPU cache misses",
+          "To guarantee mutual exclusion when modifying shared buffer indices (in / out)",
+          "To allow multiple consumers to write simultaneously",
+          "To eliminate the need for memory allocation"
+        ],
+        correctIndex: 1,
+        explanation: "The mutex ensures only one thread updates shared pointers (in and out) and writes to the memory buffer at any given millisecond."
+      }
+    ]
+  },
+  "bankers-quiz": {
+    id: "bankers-quiz",
+    experimentId: "bankers-deadlock-algorithm",
+    title: "Banker's Deadlock Avoidance Quiz",
+    description: "Assess your understanding of safe states, resource matrices, and deadlock avoidance.",
+    passingScore: 3,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "bnk-1",
+        question: "How is the Need matrix computed in Banker's Algorithm?",
+        options: [
+          "Need[i][j] = Allocation[i][j] - Max[i][j]",
+          "Need[i][j] = Max[i][j] - Allocation[i][j]",
+          "Need[i][j] = Available[j] - Allocation[i][j]",
+          "Need[i][j] = Max[i][j] + Available[j]"
+        ],
+        correctIndex: 1,
+        explanation: "Need represents the remaining resource units that process i may request: Need = Max - Allocation."
+      },
+      {
+        id: "bnk-2",
+        question: "If a system is in an Unsafe State, does that guarantee that a Deadlock has already occurred?",
+        options: [
+          "Yes, unsafe state is synonymous with deadlock",
+          "No, an unsafe state only means that deadlock is possible depending on future process requests",
+          "Yes, all running processes are frozen",
+          "No, it means memory is full"
+        ],
+        correctIndex: 1,
+        explanation: "An unsafe state is not necessarily a deadlock; it simply means the operating system cannot guarantee avoidance of a deadlock if all processes request their maximum resources."
+      }
+    ]
+  },
+  "page-replacement-quiz": {
+    id: "page-replacement-quiz",
+    experimentId: "page-replacement-lru-fifo",
+    title: "Page Replacement Algorithms Quiz",
+    description: "Evaluate your understanding of virtual memory demand paging, LRU, and Belady's anomaly.",
+    passingScore: 2,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "prq-1",
+        question: "Which page replacement algorithm suffers from Belady's Anomaly (increasing frames can increase page faults)?",
+        options: ["Least Recently Used (LRU)", "Optimal Page Replacement (OPT)", "First-In First-Out (FIFO)", "Least Frequently Used (LFU)"],
+        correctIndex: 2,
+        explanation: "FIFO is susceptible to Belady's Anomaly because it is not a stack algorithm, unlike LRU and Optimal."
+      },
+      {
+        id: "prq-2",
+        question: "What hardware support or software structure is commonly used to implement pure O(1) LRU eviction?",
+        options: [
+          "Doubly Linked List combined with a Hash Map",
+          "Binary Search Tree",
+          "Single Array scanning from left to right",
+          "FIFO Circular Ring without timestamps"
+        ],
+        correctIndex: 0,
+        explanation: "A Doubly Linked List enables O(1) node relocation and removal while a Hash Map allows O(1) key lookups."
+      }
+    ]
+  },
+  "file-allocation-quiz": {
+    id: "file-allocation-quiz",
+    experimentId: "file-allocation-table",
+    title: "File Allocation Methods Quiz",
+    description: "Check your knowledge of contiguous, linked, and indexed disk file allocation.",
+    passingScore: 2,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "faq-1",
+        question: "What is the primary advantage of Indexed File Allocation over Linked Allocation?",
+        options: [
+          "Direct random access without traversing preceding block pointers",
+          "Zero index block memory overhead",
+          "Guaranteed contiguous physical sectors",
+          "Faster sequential tape reading"
+        ],
+        correctIndex: 0,
+        explanation: "Indexed allocation brings all block pointers into an Index Block (Inode), enabling O(1) direct seeking to any offset of the file."
+      }
+    ]
+  },
+
+  // ==========================================
+  // ARTIFICIAL INTELLIGENCE QUIZZES
+  // ==========================================
+  "astar-search-quiz": {
+    id: "astar-search-quiz",
+    experimentId: "astar-search-8puzzle",
+    title: "A* Heuristic Search Self-Assessment",
+    description: "Test your mastery of A* search evaluation functions, admissible heuristics, and Manhattan distance.",
+    passingScore: 3,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "asq-1",
+        question: "What does an 'Admissible Heuristic' mean in A* search?",
+        options: [
+          "h(n) must be strictly greater than the true remaining path cost",
+          "h(n) must never overestimate the true cost to reach the goal",
+          "h(n) must equal 0 for all nodes",
+          "h(n) must be calculated using Euclidean geometry only"
+        ],
+        correctIndex: 1,
+        explanation: "An admissible heuristic never overestimates the actual cost to reach the goal state, which guarantees that A* will find an optimal shortest path."
+      },
+      {
+        id: "asq-2",
+        question: "What is the formula for the evaluation function f(n) in A* search?",
+        options: ["f(n) = g(n) * h(n)", "f(n) = g(n) + h(n)", "f(n) = max(g(n), h(n))", "f(n) = g(n) - h(n)"],
+        correctIndex: 1,
+        explanation: "f(n) = g(n) + h(n), where g(n) is the exact cost from start to node n, and h(n) is the heuristic estimate from n to the goal."
+      }
+    ]
+  },
+  "minimax-quiz": {
+    id: "minimax-quiz",
+    experimentId: "minimax-alpha-beta-tictactoe",
+    title: "Minimax & Alpha-Beta Pruning Quiz",
+    description: "Assess your knowledge of adversarial search trees and branch pruning cutoffs.",
+    passingScore: 2,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "mmq-1",
+        question: "Under what condition does Alpha-Beta pruning discard (prune) remaining subtrees?",
+        options: ["alpha > 100", "beta <= alpha", "alpha == 0", "beta > alpha"],
+        correctIndex: 1,
+        explanation: "When beta <= alpha, the opponent already has a better or equal alternative elsewhere in the tree, so continuing exploration cannot influence the root decision."
+      }
+    ]
+  },
+  "nqueens-quiz": {
+    id: "nqueens-quiz",
+    experimentId: "nqueens-backtracking-csp",
+    title: "N-Queens CSP Quiz",
+    description: "Evaluate your understanding of constraint satisfaction, backtracking, and diagonal collision tests.",
+    passingScore: 2,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "nqq-1",
+        question: "For a queen at row r and column c, which formula identifies its positive diagonal index?",
+        options: ["r * c", "r + c", "r - c", "|r - c|"],
+        correctIndex: 1,
+        explanation: "All cells on the same positive diagonal (bottom-left to top-right) have an invariant sum: r + c = constant."
+      }
+    ]
+  },
+  "expert-systems-quiz": {
+    id: "expert-systems-quiz",
+    experimentId: "expert-system-forward-chaining",
+    title: "Expert Systems & Inference Quiz",
+    description: "Test your understanding of rule-based systems, forward chaining, and knowledge bases.",
+    passingScore: 2,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "esq-1",
+        question: "Forward Chaining in rule-based expert systems is also known as:",
+        options: ["Goal-driven reasoning", "Data-driven reasoning", "Exhaustive depth-first search", "Randomized inference"],
+        correctIndex: 1,
+        explanation: "Forward Chaining starts with known data/facts and moves forward through rules to reach conclusions, making it data-driven."
+      }
+    ]
+  },
+  "water-jug-quiz": {
+    id: "water-jug-quiz",
+    experimentId: "water-jug-problem-ai",
+    title: "Water Jug State Space Quiz",
+    description: "Check your knowledge of state space representation and solvable preconditions.",
+    passingScore: 2,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "wjq-1",
+        question: "A Water Jug problem with capacities X and Y can measure target Z if and only if:",
+        options: ["Z <= max(X, Y) and Z is a multiple of gcd(X, Y)", "Z == X + Y", "Z is an odd number", "X and Y are both prime numbers"],
+        correctIndex: 0,
+        explanation: "According to Bezout's identity, integer combinations of X and Y can produce any multiple of gcd(X, Y) up to X + Y."
+      }
+    ]
+  },
+
+  // ==========================================
+  // BIG DATA ANALYTICS QUIZZES
+  // ==========================================
+  "hdfs-quiz": {
+    id: "hdfs-quiz",
+    experimentId: "hadoop-hdfs-cluster-management",
+    title: "Hadoop HDFS Architecture Quiz",
+    description: "Evaluate your knowledge of HDFS block allocation, NameNode metadata, and rack awareness.",
+    passingScore: 2,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "hdq-1",
+        question: "What is the default block size in modern Apache Hadoop HDFS?",
+        options: ["4 KB", "64 KB", "128 MB", "10 GB"],
+        correctIndex: 2,
+        explanation: "HDFS uses a large default block size (128 MB or 256 MB) to minimize NameNode metadata overhead and enable high sequential streaming read throughput."
+      },
+      {
+        id: "hdq-2",
+        question: "What is the primary role of the NameNode in HDFS?",
+        options: [
+          "Storing raw physical file bytes on disk",
+          "Maintaining file system namespace, directory hierarchy, and block location mappings in RAM",
+          "Executing SQL queries directly",
+          "Encrypting network packets between clients"
+        ],
+        correctIndex: 1,
+        explanation: "The NameNode acts as the master metadata coordinator, keeping directory structures and block distribution maps in active RAM."
+      }
+    ]
+  },
+  "mapreduce-quiz": {
+    id: "mapreduce-quiz",
+    experimentId: "mapreduce-wordcount-processing",
+    title: "MapReduce Framework Quiz",
+    description: "Assess your understanding of Map, Shuffle, Sort, and Reduce distributed processing.",
+    passingScore: 2,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "mrq-1",
+        question: "Which phase of MapReduce automatically groups all values with the same key across worker nodes?",
+        options: ["Map Phase", "Shuffle and Sort Phase", "Reduce Phase", "Input Splitter Phase"],
+        correctIndex: 1,
+        explanation: "The Shuffle and Sort phase transfers intermediate key-value pairs from Mappers to Reducers, grouping values by key."
+      }
+    ]
+  },
+  "pyspark-quiz": {
+    id: "pyspark-quiz",
+    experimentId: "pyspark-dataframe-ecommerce",
+    title: "PySpark & In-Memory Analytics Quiz",
+    description: "Check your knowledge of Spark RDDs, DataFrames, lazy evaluation, and DAG optimization.",
+    passingScore: 2,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "psq-1",
+        question: "In Apache Spark, what triggers the actual physical execution of a series of transformations?",
+        options: ["Calling a Transformation (e.g. filter, select)", "Calling an Action (e.g. show, count, collect)", "Importing PySpark libraries", "Creating a SparkSession"],
+        correctIndex: 1,
+        explanation: "Spark uses Lazy Evaluation; transformations build an execution DAG graph, but computation runs only when an Action is invoked."
+      }
+    ]
+  },
+  "hive-quiz": {
+    id: "hive-quiz",
+    experimentId: "hive-data-warehousing-queries",
+    title: "Apache Hive Data Warehousing Quiz",
+    description: "Test your understanding of HiveQL, partitioned tables, and partition pruning.",
+    passingScore: 2,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "hvq-1",
+        question: "Why is Table Partitioning used in Apache Hive?",
+        options: [
+          "To convert SQL into C code",
+          "To enable Partition Pruning so queries read only relevant sub-directories instead of full table scans",
+          "To eliminate the need for HDFS storage",
+          "To restrict user access permissions"
+        ],
+        correctIndex: 1,
+        explanation: "Partitioning stores data in distinct directory paths, allowing Hive queries with WHERE filters to scan only matching folders."
+      }
+    ]
+  },
+  "mongodb-quiz": {
+    id: "mongodb-quiz",
+    experimentId: "mongodb-bigdata-aggregations",
+    title: "MongoDB NoSQL Aggregations Quiz",
+    description: "Evaluate your knowledge of document pipelines, sharding, and BSON indexing.",
+    passingScore: 2,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "mgq-1",
+        question: "Which aggregation stage in MongoDB filters documents equivalent to the SQL WHERE clause?",
+        options: ["$group", "$match", "$project", "$unwind"],
+        correctIndex: 1,
+        explanation: "$match filters documents so that only those meeting specified query criteria pass to subsequent pipeline stages."
+      }
+    ]
+  },
+
+  // ==========================================
+  // CLOUD SERVICE MANAGEMENT QUIZZES
+  // ==========================================
+  "aws-ec2-quiz": {
+    id: "aws-ec2-quiz",
+    experimentId: "aws-ec2-vpc-infrastructure",
+    title: "AWS EC2 & VPC Infrastructure Quiz",
+    description: "Assess your knowledge of virtual compute instances, security groups, and VPC networking.",
+    passingScore: 2,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "ecq-1",
+        question: "What is the key characteristic of AWS Security Groups regarding traffic rules?",
+        options: [
+          "They are stateless (return traffic must be explicitly allowed)",
+          "They are stateful (inbound traffic automatically allows return outbound traffic)",
+          "They operate at the subnet level only",
+          "They cannot block IP addresses"
+        ],
+        correctIndex: 1,
+        explanation: "Security Groups are stateful: if an inbound request is permitted, response traffic is automatically allowed regardless of outbound rules."
+      }
+    ]
+  },
+  "aws-s3-quiz": {
+    id: "aws-s3-quiz",
+    experimentId: "aws-s3-lifecycle-management",
+    title: "AWS S3 Cloud Storage Quiz",
+    description: "Test your understanding of object storage tiers, bucket versioning, and lifecycle policies.",
+    passingScore: 2,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "s3q-1",
+        question: "Which AWS S3 storage class is best suited for long-term compliance data archived for years with rare retrieval?",
+        options: ["S3 Standard", "S3 Intelligent-Tiering", "S3 Glacier Deep Archive", "S3 Express One Zone"],
+        correctIndex: 2,
+        explanation: "S3 Glacier Deep Archive offers the lowest cost object storage tier in AWS designed for cold archives."
+      }
+    ]
+  },
+  "docker-quiz": {
+    id: "docker-quiz",
+    experimentId: "docker-multi-container-compose",
+    title: "Docker Containerization Quiz",
+    description: "Check your knowledge of container images, multi-container compose, and bridge networks.",
+    passingScore: 2,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "dkq-1",
+        question: "What is the primary difference between a Docker Container and a Virtual Machine (VM)?",
+        options: [
+          "Containers include a full Guest Operating System kernel, while VMs share the host kernel",
+          "Containers share the host OS kernel and run as isolated processes, making them significantly lighter and faster than VMs",
+          "Containers can only run on Linux, while VMs run on any OS",
+          "Containers require dedicated physical hardware"
+        ],
+        correctIndex: 1,
+        explanation: "Containers share the underlying host OS kernel while virtualizing user-space libraries, resulting in sub-second startup times and low RAM overhead."
+      }
+    ]
+  },
+  "serverless-quiz": {
+    id: "serverless-quiz",
+    experimentId: "aws-lambda-serverless-api",
+    title: "Serverless Architecture & AWS Lambda Quiz",
+    description: "Evaluate your understanding of event-driven execution, cold starts, and API Gateway integration.",
+    passingScore: 2,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "svq-1",
+        question: "What causes a 'Cold Start' in serverless computing (AWS Lambda)?",
+        options: [
+          "Running Lambda in sub-zero temperature datacenters",
+          "Initializing a new execution environment container and runtime before executing the handler code",
+          "Database connection timeouts",
+          "Exceeding maximum memory limits"
+        ],
+        correctIndex: 1,
+        explanation: "When a function hasn't been called recently or requires scaling up, the cloud provider provisions and downloads container layers, creating an initial latency spike known as a cold start."
+      }
+    ]
+  },
+  "kubernetes-quiz": {
+    id: "kubernetes-quiz",
+    experimentId: "kubernetes-pod-cluster-deployment",
+    title: "Kubernetes Cluster Orchestration Quiz",
+    description: "Test your mastery of Pods, Deployments, ReplicaSets, and Service load-balancing.",
+    passingScore: 2,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "kbq-1",
+        question: "What is the smallest deployable computing unit in a Kubernetes cluster?",
+        options: ["Node", "Pod", "ClusterIP", "Namespace"],
+        correctIndex: 1,
+        explanation: "A Pod represents a single instance of a running process in Kubernetes and can contain one or more tightly coupled containers."
       }
     ]
   }
