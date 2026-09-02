@@ -93,6 +93,7 @@ export const CODING_PROBLEMS: CodingProblem[] = [
     importanceRating: 9.2,
     leetcodeUrl: "https://leetcode.com/problems/valid-palindrome/",
     gfgUrl: "https://www.geeksforgeeks.org/sentence-palindrome-palette-given-sentence-words-reverse-ignore-spaces-alphanumeric/",
+    visualizerUrl: "/visualizer/two-pointers",
     productCompanies: ["Facebook", "Amazon", "Microsoft", "Google", "Apple"],
     serviceCompanies: ["TCS", "Infosys", "Wipro", "Cognizant"]
   },
@@ -185,11 +186,6 @@ export const CODING_PROBLEMS: CodingProblem[] = [
     takeUForwardUrl: "https://takeuforward.org/data-structure/trapping-rainwater/",
     productCompanies: ["Amazon", "Google", "Facebook", "Microsoft", "Apple", "Goldman Sachs", "Uber", "Adobe"],
     serviceCompanies: ["TCS Digital", "Infosys", "Wipro Turbo", "Accenture"]
-    leetcodeUrl: "https://leetcode.com/problems/valid-palindrome/",
-    gfgUrl: "https://www.geeksforgeeks.org/sentence-palindrome-palindrome-removing-spaces-dots-etc/",
-    visualizerUrl: "/visualizer/two-pointers",
-    productCompanies: ["Facebook", "Microsoft", "Amazon", "Wayfair"],
-    serviceCompanies: ["TCS", "Cognizant", "Accenture"]
   },
   {
     id: "roman-to-integer",

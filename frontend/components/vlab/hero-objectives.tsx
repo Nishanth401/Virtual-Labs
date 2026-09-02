@@ -91,12 +91,12 @@ const ROLLING_CARDS = [
     url: "/labs/cloud-service-management",
   },
   {
-    title: "DSA Visualizer Studio",
-    tag: "SIMULATION SANDBOX",
-    desc: "11+ interactive algorithm visualizers with speed scrubbers & sound synthesis.",
+    title: "DSA Visualization Platform",
+    tag: "12 CORE MODULES",
+    desc: "Complete top-to-bottom interactive DSA learning curriculum with live simulators.",
     icon: Layers,
     color: "from-rose-500/10 to-red-500/10 text-rose-500 border-rose-500/30",
-    url: "/visualizer",
+    url: "/dsa-visualization",
   },
   {
     title: "Verified Student Certificates",
@@ -153,8 +153,8 @@ export function HeroObjectives() {
             size="lg"
             className="rounded-full px-7 py-6 text-sm font-semibold border-border bg-white/90 dark:bg-card/80 backdrop-blur-md hover:bg-muted transition-all gap-1.5 shadow-xs"
           >
-            <Link href="/visualizer">
-              <span>DSA Visualizer Studio</span>
+            <Link href="/dsa-visualization">
+              <span>DSA Visualization Platform</span>
               <ExternalLink className="h-3.5 w-3.5" />
             </Link>
           </Button>

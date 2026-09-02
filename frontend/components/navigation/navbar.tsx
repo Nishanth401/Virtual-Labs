@@ -73,7 +73,7 @@ function getUsername(
 const NAV_ITEMS = [
   { name: "Home", href: "/" },
   { name: "Labs", href: "/labs" },
-  { name: "Visualizer", href: "/visualizer" },
+  { name: "DSA Visualization", href: "/dsa-visualization" },
   { name: "DSA Sheets", href: "/practice" },
   { name: "ML Track", href: "/labs/ai-machine-learning" },
   { name: "Curriculum", href: "/courses" },
@@ -99,6 +99,7 @@ const SEARCH_ITEMS = [
   { title: "AWS EC2 & Custom VPC", category: "Cloud Computing", url: "/experiments/aws-ec2-vpc-infrastructure", desc: "Virtual compute provisioning and security firewalls" },
   { title: "12-Module NumPy Master Track", category: "ML Prerequisites", url: "/labs/ai-machine-learning", desc: "Array creation, slicing, broadcasting & linear algebra" },
   { title: "Master Coding Practice Sheets", category: "Practice", url: "/practice", desc: "LeetCode 150, LeetCode 75, SQL 50 with company tags & notes" },
+  { title: "DSA Visualization Platform", category: "Simulators", url: "/dsa-visualization", desc: "12 Core Modules Interactive Learning & Visualizer" },
   { title: "DSA Visualizer Studio", category: "Simulators", url: "/visualizer", desc: "Interactive sandbox for 11+ algorithms and trees" },
   { title: "Student Progress & Certificate", category: "Dashboard", url: "/dashboard", desc: "Track completed labs and download verified certificate" },
   { title: "Student Login & Registration", category: "Auth", url: "/auth/login", desc: "Sign in with Email or Continue with Google" },

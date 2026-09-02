@@ -19,18 +19,7 @@ import {
   Trophy,
 } from "lucide-react";
 
-// Visualizer imports
-import { StackVisualizer } from "@/components/visualizer/stack/stack-visualizer";
-import { QueueVisualizer } from "@/components/visualizer/queue/queue-visualizer";
-import { LinkedListVisualizer } from "@/components/visualizer/linked-list/linked-list-visualizer";
-import { SortingVisualizer } from "@/components/visualizer/sorting/sorting-visualizer";
-import { RecursionVisualizerPanel } from "@/components/visualizer/recursion/recursion-visualizer-panel";
-import { BinaryTreeVisualizer } from "@/components/visualizer/binary-tree/binary-tree-visualizer";
-import { AVLTreeVisualizer } from "@/components/visualizer/avl-tree/avl-tree-visualizer";
-import { HeapVisualizer } from "@/components/visualizer/heap/heap-visualizer";
-import { DijkstraVisualizer } from "@/components/visualizer/dijkstra/dijkstra-visualizer";
-import { TwoPointersVisualizer } from "@/components/visualizer/two-pointers/two-pointers-visualizer";
-import { SlidingWindowVisualizer } from "@/components/visualizer/sliding-window/sliding-window-visualizer";
+import { DSATopicVisualizer } from "@/components/dsa-visualization/dsa-topic-visualizer";
 
 interface DSATopicArticleProps {
   topic: DSATopic;
@@ -119,10 +108,8 @@ export function DSATopicArticle({
           <TabsTrigger
             value="visualizer"
             className="text-xs py-2.5 gap-1.5 font-bold text-primary"
-            disabled={!topic.visualizerType}
           >
             <PlayCircle className="h-4 w-4 text-primary" /> Interactive Visualizer
-            {!topic.visualizerType && <span className="text-[10px] opacity-60">(Theory Only)</span>}
           </TabsTrigger>
         </TabsList>
 
@@ -216,57 +203,7 @@ export function DSATopicArticle({
         {/* TAB 2: INTERACTIVE VISUALIZER */}
         <TabsContent value="visualizer" className="space-y-5">
           <Card className="border-border bg-card/90 shadow-sm p-4">
-            {topic.visualizerType === "stack" && (
-              <StackVisualizer content={<p>Java Stack LIFO simulation sandbox.</p>} />
-            )}
-            {topic.visualizerType === "queue" && (
-              <QueueVisualizer content={<p>Java Queue FIFO simulation sandbox.</p>} />
-            )}
-            {topic.visualizerType === "linked-list" && (
-              <LinkedListVisualizer content={<p>Java Singly Linked List dynamic pointer visualizer.</p>} />
-            )}
-            {topic.visualizerType === "bubble-sort" && (
-              <SortingVisualizer
-                algorithm="bubble"
-                title="Bubble Sort Simulation"
-                description="Observe adjacent comparison passes and bubbling of maximum unsorted values."
-              />
-            )}
-            {topic.visualizerType === "selection-sort" && (
-              <SortingVisualizer
-                algorithm="selection"
-                title="Selection Sort Simulation"
-                description="Observe minimum index scanning across unsorted partition and minimal memory swaps."
-              />
-            )}
-            {topic.visualizerType === "insertion-sort" && (
-              <SortingVisualizer
-                algorithm="insertion"
-                title="Insertion Sort Simulation"
-                description="Observe element extraction, backward shifting, and adaptive linear performance."
-              />
-            )}
-            {topic.visualizerType === "recursion" && (
-              <RecursionVisualizerPanel />
-            )}
-            {topic.visualizerType === "binary-tree" && (
-              <BinaryTreeVisualizer />
-            )}
-            {topic.visualizerType === "avl-tree" && (
-              <AVLTreeVisualizer />
-            )}
-            {topic.visualizerType === "heap" && (
-              <HeapVisualizer />
-            )}
-            {topic.visualizerType === "dijkstra" && (
-              <DijkstraVisualizer />
-            )}
-            {topic.visualizerType === "two-pointers" && (
-              <TwoPointersVisualizer />
-            )}
-            {topic.visualizerType === "sliding-window" && (
-              <SlidingWindowVisualizer />
-            )}
+            <DSATopicVisualizer topic={topic} />
           </Card>
         </TabsContent>
       </Tabs>
