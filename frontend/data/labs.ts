@@ -15,6 +15,13 @@ export interface LabVideoPart {
   description: string;
 }
 
+export interface LabTamilVideo {
+  url: string;
+  title: string;
+  description: string;
+  duration?: string;
+}
+
 export interface Lab {
   id: string;
   code: string;
@@ -35,6 +42,7 @@ export interface Lab {
   bannerGradient: string;
   videoUrl: string;
   videoParts: LabVideoPart[];
+  tamilVideo?: LabTamilVideo;
   semester: string;
   resources?: LabResourceLink[];
 }
@@ -117,6 +125,12 @@ export const LABS_DATA: Lab[] = [
         description: "Formulation of Z-test, Student's T-test, One-way ANOVA, OLS Regression, and Time Series decomposition."
       }
     ],
+    tamilVideo: {
+      url: "https://www.youtube-nocookie.com/embed/fW4B07y04V4",
+      title: "Data Science & Python Full Course in Tamil",
+      description: "Comprehensive Tamil tutorial covering Python for data science, NumPy, Pandas, visualization, and statistical modeling.",
+      duration: "Full Course"
+    },
     semester: "Semester 4",
     resources: [
       {
@@ -202,6 +216,12 @@ export const LABS_DATA: Lab[] = [
         description: "Distance Vector Routing, Link State Dijkstra, and Cyclic Redundancy Check (CRC)."
       }
     ],
+    tamilVideo: {
+      url: "https://www.youtube-nocookie.com/embed/yiIpBNBl4bc",
+      title: "Computer Networks Full Course in Tamil",
+      description: "Complete Tamil tutorial covering OSI layers, TCP/IP, IP addressing, routing algorithms, socket programming, and Wireshark analysis.",
+      duration: "Full Course"
+    },
     semester: "Semester 5",
     resources: [
       {
@@ -287,6 +307,12 @@ export const LABS_DATA: Lab[] = [
         description: "Expectation-Maximization Gaussian Mixtures vs k-Means, k-NN on Iris, and Locally Weighted Regression."
       }
     ],
+    tamilVideo: {
+      url: "https://www.youtube-nocookie.com/embed/7eh4d6sabA0",
+      title: "Machine Learning Full Course in Tamil",
+      description: "Complete Tamil guide covering supervised learning, decision trees, neural networks, Naïve Bayes, and clustering.",
+      duration: "Full Course"
+    },
     semester: "Semester 4",
     resources: [
       {
@@ -372,6 +398,12 @@ export const LABS_DATA: Lab[] = [
         description: "Banker's deadlock avoidance, FIFO/LRU/Optimal page replacement, and FCFS/SSTF/SCAN disk scheduling."
       }
     ],
+    tamilVideo: {
+      url: "https://www.youtube-nocookie.com/embed/bkSWJJZNgf8",
+      title: "Operating Systems Full Course in Tamil",
+      description: "Complete Tamil tutorial covering process lifecycles, CPU scheduling, semaphores, deadlocks, and virtual memory paging.",
+      duration: "Full Course"
+    },
     semester: "Semester 4",
     resources: [
       {
@@ -457,6 +489,12 @@ export const LABS_DATA: Lab[] = [
         description: "ArrayList, HashMap, Stream API filters, and JDBC PreparedStatement database CRUD."
       }
     ],
+    tamilVideo: {
+      url: "https://www.youtube-nocookie.com/embed/nqB3qAtDLKU",
+      title: "Object Oriented Programming with Java in Tamil",
+      description: "Complete Tamil tutorial covering classes, objects, inheritance, polymorphism, abstraction, exception handling, and Java collections.",
+      duration: "Full Course"
+    },
     semester: "Semester 3",
     resources: [
       {
@@ -535,6 +573,12 @@ export const LABS_DATA: Lab[] = [
         description: "BFS/DFS traversals, Dijkstra shortest path, Minimum Spanning Trees, Quick/Merge Sort, and Hashing."
       }
     ],
+    tamilVideo: {
+      url: "https://www.youtube-nocookie.com/embed/YZVF4ehkn24",
+      title: "Data Structures and Algorithms Complete Tutorial in Tamil",
+      description: "Complete DSA lecture series in Tamil covering linear arrays, linked lists, stacks, queues, trees, graphs, and sorting algorithms.",
+      duration: "Full Course"
+    },
     semester: "Semester 3",
     resources: [
       {
@@ -613,6 +657,12 @@ export const LABS_DATA: Lab[] = [
         description: "PL/SQL Blocks, Explicit Cursors, Stored Procedures/Functions, Triggers, and TCL ACID transactions."
       }
     ],
+    tamilVideo: {
+      url: "https://www.youtube-nocookie.com/embed/wsYx5qOP_bI",
+      title: "Database Management Systems Full Course in Tamil",
+      description: "Complete Tamil DBMS tutorial covering SQL DDL/DML, joins, subqueries, relational normal forms, and PL/SQL programming.",
+      duration: "Full Course"
+    },
     semester: "Semester 3",
     resources: [
       {
@@ -691,6 +741,12 @@ export const LABS_DATA: Lab[] = [
         description: "Pointer arithmetic, malloc/free heap management, typedef structures, and fopen/fprintf file I/O."
       }
     ],
+    tamilVideo: {
+      url: "https://www.youtube-nocookie.com/embed/Zi_n_mE3pEM",
+      title: "C Programming Language Complete Tutorial in Tamil",
+      description: "Complete C programming course in Tamil covering data types, control flow, functions, pointers, arrays, memory management, and file streams.",
+      duration: "Full Course"
+    },
     semester: "Semester 1",
     resources: [
       {
@@ -762,6 +818,12 @@ export const LABS_DATA: Lab[] = [
         description: "Classes, super() inheritance, custom exceptions, and with open() CSV context managers."
       }
     ],
+    tamilVideo: {
+      url: "https://www.youtube-nocookie.com/embed/KCdbwcjyHvA",
+      title: "Python Programming Complete Tutorial in Tamil",
+      description: "Full Python course in Tamil covering language basics, data structures, list comprehensions, OOP principles, exception handling, and file operations.",
+      duration: "Full Course"
+    },
     semester: "Semester 1",
     resources: [
       {
@@ -833,6 +895,12 @@ export const LABS_DATA: Lab[] = [
         description: "N-Queens backtracking CSP solvers, forward/backward chaining inference engines."
       }
     ],
+    tamilVideo: {
+      url: "https://www.youtube-nocookie.com/embed/k2gYQ9c9Yl4",
+      title: "Artificial Intelligence & Search Algorithms in Tamil",
+      description: "Complete Tamil guide covering state space search, A* heuristic algorithms, Minimax, and knowledge representation.",
+      duration: "Full Course"
+    },
     semester: "Semester 5",
     resources: [
       {
@@ -897,6 +965,12 @@ export const LABS_DATA: Lab[] = [
         description: "BSON document schemas, multi-stage aggregation pipelines, and sharding."
       }
     ],
+    tamilVideo: {
+      url: "https://www.youtube-nocookie.com/embed/rR9aGkZ-RZs",
+      title: "Big Data Analytics & Hadoop Course in Tamil",
+      description: "Comprehensive Tamil tutorial covering HDFS, MapReduce paradigms, Apache Spark, and MongoDB.",
+      duration: "Full Course"
+    },
     semester: "Semester 7",
     resources: [
       {
@@ -961,6 +1035,12 @@ export const LABS_DATA: Lab[] = [
         description: "Event-driven serverless computing with Lambda, API Gateway, and Kubernetes Pod deployments."
       }
     ],
+    tamilVideo: {
+      url: "https://www.youtube-nocookie.com/embed/aYhE1sC6mGg",
+      title: "Cloud Computing & AWS Masterclass in Tamil",
+      description: "Complete Tamil guide covering AWS cloud infrastructure, EC2 instances, S3 storage, Docker containerization, and Kubernetes.",
+      duration: "Full Course"
+    },
     semester: "Semester 8",
     resources: [
       {
