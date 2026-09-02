@@ -1,10 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { BookOpen, Target, ListTree, GraduationCap, MessageSquareHeart, FileQuestion, Sparkles, ExternalLink } from "lucide-react";
+import { BookOpen, Target, ListTree, GraduationCap, MessageSquareHeart, FileQuestion, Sparkles, ExternalLink, Video } from "lucide-react";
 
 export type LabTab =
   | "introduction"
+  | "video-tutorials"
   | "dsa-roadmap"
   | "objective"
   | "experiments"
@@ -18,10 +19,12 @@ interface LabSidebarProps {
   onTabChange: (tab: LabTab) => void;
   experimentsCount?: number;
   resourcesCount?: number;
+  videoPartsCount?: number;
 }
 
 const TABS: { id: LabTab; label: string; icon: React.ElementType }[] = [
   { id: "introduction", label: "Introduction", icon: BookOpen },
+  { id: "video-tutorials", label: "Video Tutorials", icon: Video },
   { id: "dsa-roadmap", label: "Roadmap & Practice", icon: Sparkles },
   { id: "objective", label: "Objective", icon: Target },
   { id: "experiments", label: "List of experiments", icon: ListTree },
@@ -31,7 +34,7 @@ const TABS: { id: LabTab; label: string; icon: React.ElementType }[] = [
   { id: "feedback", label: "Feedback", icon: MessageSquareHeart },
 ];
 
-export function LabSidebar({ activeTab, onTabChange, experimentsCount = 6, resourcesCount = 6 }: LabSidebarProps) {
+export function LabSidebar({ activeTab, onTabChange, experimentsCount = 6, resourcesCount = 6, videoPartsCount = 4 }: LabSidebarProps) {
   return (
     <aside className="w-full lg:w-64 shrink-0">
       <div className="bg-card/70 backdrop-blur-md rounded-2xl border border-secondary/40 p-3 sticky top-24 shadow-sm">
@@ -62,6 +65,17 @@ export function LabSidebar({ activeTab, onTabChange, experimentsCount = 6, resou
                   <Icon className={cn("h-4 w-4 shrink-0", isActive ? "text-primary-foreground" : "text-muted-foreground")} />
                   <span>{tab.label}</span>
                 </div>
+
+                {tab.id === "video-tutorials" && (
+                  <span
+                    className={cn(
+                      "px-1.5 py-0.5 rounded text-[10px] font-mono font-bold",
+                      isActive ? "bg-primary-foreground/20 text-primary-foreground" : "bg-primary/10 text-primary"
+                    )}
+                  >
+                    {videoPartsCount || 4} Parts
+                  </span>
+                )}
 
                 {tab.id === "experiments" && (
                   <span

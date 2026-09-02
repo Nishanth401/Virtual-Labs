@@ -176,18 +176,33 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-6">
               {/* Left 7 Cols: Video Player */}
               <div className="lg:col-span-7 space-y-3">
+                <div className="flex items-center justify-between gap-2 px-1">
+                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono flex items-center gap-1.5">
+                    <Video className="h-3.5 w-3.5 text-primary" /> Concept Walkthrough &amp; Demonstration
+                  </span>
+                  <Badge variant="outline" className="text-[10px] font-mono bg-primary/10 text-primary border-primary/20">
+                    Video Guide
+                  </Badge>
+                </div>
+
+                {/* Video Player Frame */}
                 <div className="aspect-video w-full rounded-xl bg-slate-950 border border-border overflow-hidden shadow-md">
                   <iframe
-                    src={experiment.sections.videoUrl || "https://www.youtube-nocookie.com/embed/zWg7U0OEAoE"}
-                    title={experiment.sections.videoTitle}
+                    src={experiment.sections.videoUrl || lab?.videoUrl || "https://www.youtube-nocookie.com/embed/8hly31xKli0"}
+                    title={experiment.sections.videoTitle || experiment.title}
                     className="w-full h-full border-0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                   />
                 </div>
-                <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  <span className="font-semibold text-foreground">{experiment.sections.videoTitle}</span>
-                  <Badge variant="outline" className="text-[10px]">{experiment.sections.videoChannel}</Badge>
+
+                <div className="flex items-center justify-between text-xs text-muted-foreground px-1">
+                  <span className="font-semibold text-foreground">
+                    {experiment.sections.videoTitle || `${experiment.title} Full Tutorial`}
+                  </span>
+                  <Badge variant="outline" className="text-[10px] font-mono text-muted-foreground">
+                    {experiment.category}
+                  </Badge>
                 </div>
               </div>
 

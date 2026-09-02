@@ -32,7 +32,7 @@ export interface ExperimentSection {
   objective: string;
   videoUrl: string;
   videoTitle: string;
-  videoChannel: string;
+  videoChannel?: string;
   prerequisites: string[];
   theory: {
     overview: string;
