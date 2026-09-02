@@ -5,6 +5,8 @@ import { OS_EXPERIMENTS } from "./experiments-data/os-experiments";
 import { OOPS_JAVA_EXPERIMENTS } from "./experiments-data/oops-java-experiments";
 import { DSA_EXPERIMENTS } from "./experiments-data/dsa-experiments";
 import { DBMS_EXPERIMENTS } from "./experiments-data/dbms-experiments";
+import { C_PROGRAMMING_EXPERIMENTS } from "./experiments-data/c-programming-experiments";
+import { PYTHON_PROGRAMMING_EXPERIMENTS } from "./experiments-data/python-programming-experiments";
 import { ADVANCED_LABS_EXPERIMENTS } from "./experiments-data/advanced-labs-experiments";
 
 export interface ComplexityEntry {
@@ -244,5 +246,7 @@ export const EXPERIMENTS_DATA: Experiment[] = [
   ...OOPS_JAVA_EXPERIMENTS,
   ...DSA_EXPERIMENTS,
   ...DBMS_EXPERIMENTS,
+  ...C_PROGRAMMING_EXPERIMENTS,
+  ...PYTHON_PROGRAMMING_EXPERIMENTS,
   ...ADVANCED_LABS_EXPERIMENTS,
 ];

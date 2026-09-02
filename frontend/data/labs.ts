@@ -45,9 +45,9 @@ export const DISCIPLINES_DATA: Discipline[] = [
     id: "aids",
     name: "Artificial Intelligence & Data Science",
     shortName: "AI & DS",
-    description: "Department core curriculum encompassing Algorithmics, Machine Intelligence, Neural Computing, Database Architectures, Operating Systems, Data Science, OOPS, Big Data, Cloud Infrastructure, and Network Protocols.",
+    description: "Department core curriculum encompassing C Programming, Python Programming, Algorithmics, Machine Intelligence, Neural Computing, Database Architectures, Operating Systems, Data Science, OOPS, Big Data, Cloud Infrastructure, and Network Protocols.",
     icon: "BrainCircuit",
-    labsCount: 10,
+    labsCount: 12,
     color: "from-blue-600/20 via-indigo-600/20 to-amber-500/20 text-blue-400",
     accentColor: "blue",
   },
@@ -512,6 +512,80 @@ export const LABS_DATA: Lab[] = [
         url: "https://www.geeksforgeeks.org/cloud-computing/",
         description: "IaaS, PaaS, SaaS delivery models, public/private deployment models, and cloud virtualization.",
         category: "Cloud Computing"
+      }
+    ]
+  },
+  {
+    id: "c-programming",
+    code: "CS3151",
+    name: "C Programming Laboratory",
+    shortTitle: "CPL",
+    discipline: "Artificial Intelligence & Data Science",
+    disciplineSlug: "aids",
+    shortDesc: "Master C procedural foundations: formatted I/O, control flow, loops, 1D/2D arrays, pointers, memory allocation (malloc/free), structs, and file streams.",
+    description: "Hands-on C Programming Virtual Laboratory providing an interactive workspace covering primitive data types, formatted I/O, conditionals, loops and pattern generation, 1D/2D array matrix mathematics, string manipulation, recursion and Euclidean GCD, pointer dereferencing, dynamic memory management (malloc, calloc, realloc, free), heterogeneous structures, and disk file I/O operations.",
+    institute: "VSB Engineering College, Karur",
+    department: "Department of Artificial Intelligence & Data Science",
+    difficulty: "Beginner",
+    experimentsCount: 10,
+    rating: 4.94,
+    ratingsCount: 310,
+    iconName: "Code2",
+    tags: ["C Programming", "Pointers", "malloc/free", "Structures", "File I/O", "Recursion", "Matrices"],
+    bannerGradient: "from-cyan-700 via-blue-950 to-slate-950",
+    videoUrl: "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
+    semester: "Semester 1",
+    resources: [
+      {
+        title: "C Programming Tutorial — Complete Handbook",
+        source: "GeeksforGeeks",
+        url: "https://www.geeksforgeeks.org/c-programming-language/",
+        description: "Comprehensive guide covering C fundamentals, pointers, dynamic memory, structures, and file streams.",
+        category: "C Basics"
+      },
+      {
+        title: "Dynamic Memory Allocation in C (malloc, calloc, free)",
+        source: "GeeksforGeeks",
+        url: "https://www.geeksforgeeks.org/dynamic-memory-allocation-in-c-using-malloc-calloc-free-and-realloc/",
+        description: "Heap allocation, pointer arithmetic, and memory leak prevention.",
+        category: "Memory Management"
+      }
+    ]
+  },
+  {
+    id: "python-programming",
+    code: "GE3171",
+    name: "Python Programming Laboratory",
+    shortTitle: "PPL",
+    discipline: "Artificial Intelligence & Data Science",
+    disciplineSlug: "aids",
+    shortDesc: "Explore dynamic typing, loops, lambdas, extended string slicing, lists/tuples/dicts, OOP classes, custom exceptions, and file handling.",
+    description: "Interactive Python Programming Virtual Laboratory exploring dynamic type models, conditionals and loops, function parameter packing (*args, **kwargs) and lambdas, string slicing and regex, built-in collections (Lists, Tuples, Sets, Dictionaries), list/dict comprehensions, object-oriented class hierarchies and dunder methods, custom exception handlers, and CSV/file context managers.",
+    institute: "VSB Engineering College, Karur",
+    department: "Department of Artificial Intelligence & Data Science",
+    difficulty: "Beginner",
+    experimentsCount: 10,
+    rating: 4.96,
+    ratingsCount: 380,
+    iconName: "Code2",
+    tags: ["Python", "OOP", "List Comprehensions", "Lambdas", "File I/O", "Exceptions", "Dictionaries"],
+    bannerGradient: "from-emerald-700 via-teal-950 to-slate-950",
+    videoUrl: "https://www.youtube-nocookie.com/embed/rfscVS0vtbw",
+    semester: "Semester 1",
+    resources: [
+      {
+        title: "Python Programming Tutorial & Reference Manual",
+        source: "GeeksforGeeks",
+        url: "https://www.geeksforgeeks.org/python-programming-language/",
+        description: "Core syntax, data structures, list comprehensions, OOP, and exception handling.",
+        category: "Python Basics"
+      },
+      {
+        title: "Python Official Documentation & Standard Library",
+        source: "Official Docs",
+        url: "https://docs.python.org/3/",
+        description: "Comprehensive standard library documentation, built-in functions, and file I/O utilities.",
+        category: "Documentation"
       }
     ]
   }

@@ -86,6 +86,24 @@ export const REFERENCE_BOOKS_DATA: ReferenceBook[] = [
     coverColor: "from-rose-600 to-red-800"
   },
   {
+    id: "kernighan-c",
+    title: "The C Programming Language (ANSI C)",
+    author: "Brian W. Kernighan, Dennis M. Ritchie",
+    publisher: "Prentice Hall / Pearson",
+    edition: "2nd Edition",
+    isbn: "978-0131103627",
+    coverColor: "from-cyan-600 to-blue-800"
+  },
+  {
+    id: "lutz-python",
+    title: "Learning Python: Powerful Object-Oriented Programming",
+    author: "Mark Lutz",
+    publisher: "O'Reilly Media",
+    edition: "5th Edition",
+    isbn: "978-1449355739",
+    coverColor: "from-emerald-600 to-teal-800"
+  },
+  {
     id: "russell-norvig",
     title: "Artificial Intelligence: A Modern Approach",
     author: "Stuart Russell, Peter Norvig",
@@ -370,6 +388,84 @@ export const SYLLABUS_MAPPINGS_DATA: UniversitySyllabus[] = [
           "Database Triggers for automated row-level audit logging",
           "Predefined and User-Defined Exception Handling in PL/SQL",
           "Transaction Control Language (TCL): COMMIT, ROLLBACK, and SAVEPOINT ACID"
+        ]
+      }
+    ]
+  },
+
+  // 8. C PROGRAMMING LABORATORY
+  {
+    university: "Anna University (Regulation 2021)",
+    courseCode: "CS3151",
+    courseTitle: "C Programming Laboratory",
+    semester: "Semester 1 (B.E / B.Tech All Branches)",
+    regulations: "R2021",
+    units: [
+      {
+        unit: "Unit I",
+        title: "I/O, Operators & Control Flow",
+        topics: [
+          "Data types, format specifiers (%d, %f, %c, %lf), and formatted console I/O",
+          "Decision Making: if-else ladders, switch-case, leap year and quadratic roots",
+          "Iterative Loops: for, while, do-while, prime checking, and nested star pyramids"
+        ]
+      },
+      {
+        unit: "Unit II",
+        title: "Arrays, Strings & Modular Functions",
+        topics: [
+          "1D Arrays: min, max, average statistics, and Linear Search",
+          "2D Arrays: matrix addition, multiplication, and diagonal sum",
+          "Strings: null-terminated character buffers, custom strlen/strcpy, and palindromes",
+          "Functions: pass-by-value vs pass-by-reference pointers, factorial, and Euclidean GCD"
+        ]
+      },
+      {
+        unit: "Unit III",
+        title: "Pointers, Structures & File Streams",
+        topics: [
+          "Pointers: pointer arithmetic, malloc, calloc, realloc, and free memory management",
+          "Structures & Unions: typedef student databases and memory footprint analysis",
+          "File Handling: fopen, fprintf, fscanf, fclose, and preprocessor macros"
+        ]
+      }
+    ]
+  },
+
+  // 9. PYTHON PROGRAMMING LABORATORY
+  {
+    university: "Anna University (Regulation 2021)",
+    courseCode: "GE3171",
+    courseTitle: "Problem Solving and Python Programming Laboratory",
+    semester: "Semester 1 (B.E / B.Tech All Branches)",
+    regulations: "R2021",
+    units: [
+      {
+        unit: "Unit I",
+        title: "Python Foundations, Conditionals & Functions",
+        topics: [
+          "Dynamic typing, numeric objects, boolean logic, and formatted f-strings",
+          "Control flow: if-elif-else, range-based for loops, while, and Armstrong numbers",
+          "Functions: *args, **kwargs, lambda expressions, and recursive Fibonacci"
+        ]
+      },
+      {
+        unit: "Unit II",
+        title: "Strings, Collections & Comprehensions",
+        topics: [
+          "Strings: extended step slicing [::-1], strip/split/join, and anagram checks",
+          "Lists: dynamic arrays, 2D matrix transposition, and list comprehensions",
+          "Tuples & Sets: immutability, union, intersection, and set difference",
+          "Dictionaries: hash map key-value pairs, word frequency counts, and sorting"
+        ]
+      },
+      {
+        unit: "Unit III",
+        title: "OOP, Exceptions & File I/O",
+        topics: [
+          "Object-Oriented Programming: classes, __init__, inheritance, super(), and dunder methods",
+          "Exception Handling: try-except-else-finally blocks and custom exception classes",
+          "File I/O & Modules: with open context managers, CSV parsing with DictReader"
         ]
       }
     ]

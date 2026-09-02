@@ -6,6 +6,8 @@ import { OS_ROADMAP_CATEGORIES } from "./roadmaps/os-lab-roadmap";
 import { OOPS_JAVA_ROADMAP_CATEGORIES } from "./roadmaps/oops-java-roadmap";
 import { DSA_LAB_ROADMAP_CATEGORIES } from "./roadmaps/dsa-lab-roadmap";
 import { DBMS_LAB_ROADMAP_CATEGORIES } from "./roadmaps/dbms-lab-roadmap";
+import { C_PROGRAMMING_ROADMAP_CATEGORIES } from "./roadmaps/c-programming-roadmap";
+import { PYTHON_PROGRAMMING_ROADMAP_CATEGORIES } from "./roadmaps/python-programming-roadmap";
 import { AI_LAB_ROADMAP_CATEGORIES } from "./roadmaps/ai-lab-roadmap";
 import { BIGDATA_ROADMAP_CATEGORIES } from "./roadmaps/bigdata-roadmap";
 import { CLOUD_ROADMAP_CATEGORIES } from "./roadmaps/cloud-roadmap";
@@ -75,7 +77,25 @@ export const LAB_ROADMAPS_DATA: Record<string, { title: string; badge: string; c
   },
 
   // ==========================================
-  // 8. ARTIFICIAL INTELLIGENCE LAB
+  // 8. C PROGRAMMING LABORATORY (10 EXPERIMENTS)
+  // ==========================================
+  "c-programming": {
+    title: "C Programming Laboratory Roadmap",
+    badge: "10 Core Experiments • Formatted I/O / Loops / Pointers / malloc / Structs / Files",
+    categories: C_PROGRAMMING_ROADMAP_CATEGORIES,
+  },
+
+  // ==========================================
+  // 9. PYTHON PROGRAMMING LABORATORY (10 EXPERIMENTS)
+  // ==========================================
+  "python-programming": {
+    title: "Python Programming Laboratory Roadmap",
+    badge: "10 Core Experiments • Slicing / Comprehensions / OOP / Exceptions / File I/O",
+    categories: PYTHON_PROGRAMMING_ROADMAP_CATEGORIES,
+  },
+
+  // ==========================================
+  // 10. ARTIFICIAL INTELLIGENCE LAB
   // ==========================================
   "artificial-intelligence": {
     title: "Artificial Intelligence Roadmap",
@@ -84,7 +104,7 @@ export const LAB_ROADMAPS_DATA: Record<string, { title: string; badge: string; c
   },
 
   // ==========================================
-  // 9. BIG DATA ANALYTICS LAB
+  // 11. BIG DATA ANALYTICS LAB
   // ==========================================
   "big-data-analytics": {
     title: "Big Data Analytics Roadmap",
@@ -93,7 +113,7 @@ export const LAB_ROADMAPS_DATA: Record<string, { title: string; badge: string; c
   },
 
   // ==========================================
-  // 10. CLOUD SERVICE MANAGEMENT LAB
+  // 12. CLOUD SERVICE MANAGEMENT LAB
   // ==========================================
   "cloud-service-management": {
     title: "Cloud Service Management Roadmap",
