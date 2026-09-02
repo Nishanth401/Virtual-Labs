@@ -52,21 +52,16 @@ const navItems = [
     badgeColor: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30",
   },
   {
-    title: "DSA Roadmap Labs",
-    url: "/labs/data-structures",
+    title: "DG Visualization",
+    url: "/dg-visualization",
     icon: BrainCircuit,
+    badge: "12 MODULES",
+    badgeColor: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
   },
   {
     title: "AI & ML Labs",
     url: "/labs/ai-machine-learning",
     icon: Binary,
-  },
-  {
-    title: "Coding Practice Roadmaps",
-    url: "/practice",
-    icon: Award,
-    badge: "150 SHEET",
-    badgeColor: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30",
   },
   {
     title: "Complexity & DS Matrix",

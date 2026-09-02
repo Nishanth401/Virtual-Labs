@@ -56,14 +56,6 @@ const sections = {
       icon: TrendingUp,
       badge: "BIG-O MATRIX",
       color: "from-purple-500/20 to-pink-500/20 text-purple-500 border-purple-500/40"
-    },
-    {
-      name: "Master Coding Practice (LeetCode 150)",
-      description: "Interactive practice sheet with company tags (FAANG & Service), difficulty ratings, revision notes & direct problem links.",
-      href: "/practice",
-      icon: Trophy,
-      badge: "INTERVIEW ROADMAP",
-      color: "from-amber-500/20 to-orange-500/20 text-amber-500 border-amber-500/40"
     }
   ],
   sorting: [
