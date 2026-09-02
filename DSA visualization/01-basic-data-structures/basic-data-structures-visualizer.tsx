@@ -199,7 +199,7 @@ export function BasicDSVisualizer({ initialMode = "array" }: { initialMode?: "ar
   const [matrixVisited, setMatrixVisited] = useState<string[]>([]);
   const [matrixIsBusy, setMatrixIsBusy] = useState<boolean>(false);
   const [matrixSearchVal, setMatrixSearchVal] = useState<string>("");
-  const [matrixMessage, setMatrixMessage] = useState<string>("2D Matrix (3 rows × 4 columns). Contiguous row-major order RAM mapping.");
+  const [matrixMessage, setMatrixMessage] = useState<string>("2D Matrix (3 rows x 4 columns). Contiguous row-major order RAM mapping.");
 
   const runSpiralTraversal = async () => {
     if (matrixIsBusy) return;
@@ -234,7 +234,7 @@ export function BasicDSVisualizer({ initialMode = "array" }: { initialMode?: "ar
     }
     setMatrixActiveCell(null);
     setMatrixIsBusy(false);
-    setMatrixMessage("Spiral boundary traversal completed successfully in O(R × C) time!");
+    setMatrixMessage("Spiral boundary traversal completed successfully in O(R x C) time!");
   };
 
   const runRowMajorScan = async () => {
@@ -547,7 +547,7 @@ export function BasicDSVisualizer({ initialMode = "array" }: { initialMode?: "ar
                         [{idx}]
                       </span>
                       <span className="text-base font-bold font-mono text-foreground mt-2">
-                        {isFilled ? val : "—"}
+                        {isFilled ? val : "-"}
                       </span>
                       {isFilled && (
                         <button
@@ -587,7 +587,7 @@ export function BasicDSVisualizer({ initialMode = "array" }: { initialMode?: "ar
                 <Play className="h-3.5 w-3.5" /> Animate Spiral Traversal
               </Button>
               <Button variant="outline" size="sm" onClick={runRowMajorScan} disabled={matrixIsBusy} className="h-9 text-xs">
-                Row-Major Scan (O(R×C))
+                Row-Major Scan (O(R x C))
               </Button>
               <Button variant="outline" size="sm" onClick={runColMajorScan} disabled={matrixIsBusy} className="h-9 text-xs">
                 Col-Major Scan
@@ -608,7 +608,7 @@ export function BasicDSVisualizer({ initialMode = "array" }: { initialMode?: "ar
             </div>
 
             <Badge variant="outline" className="text-xs font-mono">
-              Dimensions: 3 × 4 (12 cells)
+              Dimensions: 3 x 4 (12 cells)
             </Badge>
           </div>
 
@@ -757,7 +757,7 @@ export function BasicDSVisualizer({ initialMode = "array" }: { initialMode?: "ar
 
                         {/* Next Pointer Block */}
                         <div className="px-2.5 py-3 border-l border-border text-[9px] font-mono text-muted-foreground bg-muted/30">
-                          {isTail ? (llType === "circular" ? "→head" : "null") : "next"}
+                          {isTail ? (llType === "circular" ? "head" : "null") : "next"}
                         </div>
                       </div>
 
@@ -769,10 +769,10 @@ export function BasicDSVisualizer({ initialMode = "array" }: { initialMode?: "ar
                         </div>
                       ) : llType === "circular" ? (
                         <Badge variant="outline" className="text-[9px] font-mono text-primary ml-1">
-                          ↳ loops to Head
+                          loops to Head
                         </Badge>
                       ) : (
-                        <span className="text-xs font-mono text-muted-foreground ml-1">→ null</span>
+                        <span className="text-xs font-mono text-muted-foreground ml-1">null</span>
                       )}
                     </React.Fragment>
                   );
