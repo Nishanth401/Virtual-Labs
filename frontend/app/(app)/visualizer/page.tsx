@@ -133,9 +133,9 @@ export default function VisualizerPage() {
 
           <div className="flex flex-wrap items-center gap-3 pt-2">
             <Button asChild className="bg-primary hover:bg-primary/90 text-white font-bold gap-2 text-xs shadow-md">
-              <Link href="/dg-visualization">
+              <Link href="/dsa-visualization">
                 <Sparkles className="h-4 w-4" />
-                <span>Launch DG Visualization (12 Modules)</span>
+                <span>Launch DSA Visualization (12 Modules)</span>
               </Link>
             </Button>
 
