@@ -13,11 +13,11 @@ import { HashingSuiteVisualizer } from "./hashing-suite-visualizer";
 import { StringSuiteVisualizer } from "./string-suite-visualizer";
 import { ComplexityComparator } from "./complexity-comparator";
 
-interface DGTopicVisualizerProps {
+interface DSATopicVisualizerProps {
   topic: DSATopic;
 }
 
-export function DGTopicVisualizer({ topic }: DGTopicVisualizerProps) {
+export function DSATopicVisualizer({ topic }: DSATopicVisualizerProps) {
   // Category-based routing & visualizerType matching
   if (topic.categoryId === "basic-data-structures") {
     if (topic.id === "matrix-ds") return <BasicDSVisualizer initialMode="matrix" />;
@@ -82,3 +82,5 @@ export function DGTopicVisualizer({ topic }: DGTopicVisualizerProps) {
   // Fallback to Sorting Suite
   return <SortingSuiteVisualizer defaultAlgo="bubble" />;
 }
+
+export const DGTopicVisualizer = DSATopicVisualizer;

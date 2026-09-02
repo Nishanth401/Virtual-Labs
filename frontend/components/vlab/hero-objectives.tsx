@@ -117,8 +117,8 @@ export function HeroObjectives() {
             size="lg"
             className="rounded-full px-7 py-6 text-sm font-semibold border-border bg-white/90 dark:bg-card/80 backdrop-blur-md hover:bg-muted transition-all gap-1.5 shadow-xs"
           >
-            <Link href="/dg-visualization">
-              <span>DG Visualization Platform</span>
+            <Link href="/dsa-visualization">
+              <span>DSA Visualization Platform</span>
               <ExternalLink className="h-3.5 w-3.5" />
             </Link>
           </Button>

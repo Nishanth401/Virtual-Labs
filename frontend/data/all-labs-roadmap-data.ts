@@ -5,7 +5,7 @@ export const LAB_ROADMAPS_DATA: Record<string, { title: string; badge: string; c
   // 1. DATA STRUCTURES & ALGORITHMS LAB (12 CORE MODULES)
   // ==========================================
   "data-structures": {
-    title: "DSA & DG Complete Curriculum",
+    title: "DSA Complete Curriculum",
     badge: "12 Core Modules • Top to Bottom",
     categories: DSA_CATEGORIES_DATA,
   },

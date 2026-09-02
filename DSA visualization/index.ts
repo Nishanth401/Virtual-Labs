@@ -11,4 +11,4 @@ export * from "./09-hashing-and-collisions/hashing-and-collisions-visualizer";
 export * from "./10-string-algorithms/string-and-trie-visualizer";
 export * from "./11-divide-and-conquer/divide-and-conquer-visualizer";
 export * from "./12-complexity-analysis/complexity-matrix-visualizer";
-export * from "./dg-topic-visualizer";
+export * from "./dsa-topic-visualizer";

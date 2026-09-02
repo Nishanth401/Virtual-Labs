@@ -1,6 +1,6 @@
-# 🎯 DG & DSA Visualization Platform — Complete Topic Architecture
+# 🎯 DSA Visualization Platform — Complete Topic Architecture
 
-This directory houses the comprehensive **DG / DSA Interactive Learning and Visualization System** designed for college students and faculty.
+This directory houses the comprehensive **DSA Interactive Learning and Visualization System** designed for college students and faculty.
 
 ## 📦 Complete Topic Structure (All 12 Modules)
 
