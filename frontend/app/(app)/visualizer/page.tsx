@@ -27,11 +27,20 @@ import {
   TrendingUp,
   Flag,
   Vote,
-  Search
+  Search,
+  Sparkles
 } from "lucide-react";
 
 const sections = {
   customAndFeatured: [
+    {
+      name: "DG Visualization Platform (All 12 Modules)",
+      description: "Complete top-to-bottom interactive DSA & DG curriculum covering basic data structures, searching, sorting, recursion, trees, graphs, greedy, DP, hashing, and complexity.",
+      href: "/dg-visualization",
+      icon: Sparkles,
+      badge: "COMPLETE 12 MODULES",
+      color: "from-emerald-500/20 to-teal-500/20 text-emerald-500 border-emerald-500/40"
+    },
     {
       name: "Custom Recursion & Method Studio",
       description: "Build custom recursive Java methods with interactive signature builder, AST tracer, recursion tree & JVM call stack.",

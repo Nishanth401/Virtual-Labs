@@ -73,6 +73,7 @@ function getUsername(
 const NAV_ITEMS = [
   { name: "Home", href: "/" },
   { name: "Labs", href: "/labs" },
+  { name: "DG Visualization", href: "/dg-visualization" },
   { name: "Visualizer", href: "/visualizer" },
   { name: "DSA Sheets", href: "/practice" },
   { name: "ML Track", href: "/labs/ai-machine-learning" },
