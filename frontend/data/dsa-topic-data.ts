@@ -28,7 +28,7 @@ export interface DSATopic {
   categoryName: string;
   difficulty: "Beginner" | "Intermediate" | "Advanced";
   estimatedTime: string;
-  visualizerType?: "stack" | "queue" | "linked-list" | "bubble-sort" | "selection-sort" | "insertion-sort" | "recursion" | "binary-tree" | "avl-tree" | "heap" | "dijkstra" | "two-pointers" | "sliding-window";
+  visualizerType?: "stack" | "queue" | "linked-list" | "bubble-sort" | "selection-sort" | "insertion-sort" | "recursion" | "binary-tree" | "avl-tree" | "heap" | "dijkstra" | "two-pointers" | "sliding-window" | "kadanes-algorithm" | "prefix-sum" | "difference-array" | "dutch-national-flag" | "boyer-moore";
   gfgSearchQuery: string;
   gfgUrl: string;
   quickSummary: string; // concise 1-2 lines theory

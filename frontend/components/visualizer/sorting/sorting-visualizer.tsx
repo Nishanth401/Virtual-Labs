@@ -102,6 +102,28 @@ const PSEUDOCODE_MAP: Record<SortingAlgorithm, string[]> = {
     "  swap(A[i + 1], A[high])",
     "  return i + 1",
     "end procedure"
+  ],
+  heap: [
+    "procedure heapSort(A : array)",
+    "  n := length(A)",
+    "  for i := n/2 - 1 down to 0 do heapify(A, n, i)",
+    "  for i := n-1 down to 1 do",
+    "    swap(A[0], A[i])",
+    "    heapify(A, i, 0)",
+    "  end for",
+    "end procedure"
+  ],
+  counting: [
+    "procedure countingSort(A : array)",
+    "  k := max(A)",
+    "  count := array of zeros size k + 1",
+    "  for x in A do count[x]++",
+    "  idx := 0",
+    "  for val := 0 to k do",
+    "    while count[val] > 0 do",
+    "      A[idx++] := val, count[val]--",
+    "  end for",
+    "end procedure"
   ]
 };
 
@@ -111,7 +133,9 @@ const COMPLEXITY_MAP: Record<SortingAlgorithm, { best: string; avg: string; wors
   insertion: { best: "O(n)", avg: "O(n²)", worst: "O(n²)", space: "O(1)", stable: true },
   merge: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(n)", stable: true },
   cyclic: { best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)", stable: true },
-  quick: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n²)", space: "O(log n)", stable: false }
+  quick: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n²)", space: "O(log n)", stable: false },
+  heap: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(1)", stable: false },
+  counting: { best: "O(n + k)", avg: "O(n + k)", worst: "O(n + k)", space: "O(k)", stable: true }
 };
 
 const JAVA_CODE_MAP: Record<SortingAlgorithm, string> = {
@@ -271,6 +295,47 @@ public class QuickSort {
         arr[high] = temp;
 
         return i + 1;
+    }
+}`,
+  heap: `// Java Implementation of Heap Sort
+public class HeapSort {
+    public static void heapSort(int[] arr) {
+        int n = arr.length;
+        for (int i = n / 2 - 1; i >= 0; i--) heapify(arr, n, i);
+        for (int i = n - 1; i > 0; i--) {
+            int temp = arr[0];
+            arr[0] = arr[i];
+            arr[i] = temp;
+            heapify(arr, i, 0);
+        }
+    }
+
+    private static void heapify(int[] arr, int n, int i) {
+        int largest = i, left = 2 * i + 1, right = 2 * i + 2;
+        if (left < n && arr[left] > arr[largest]) largest = left;
+        if (right < n && arr[right] > arr[largest]) largest = right;
+        if (largest != i) {
+            int swap = arr[i];
+            arr[i] = arr[largest];
+            arr[largest] = swap;
+            heapify(arr, n, largest);
+        }
+    }
+}`,
+  counting: `// Java Implementation of Counting Sort (Non-Comparison O(N+K))
+public class CountingSort {
+    public static void countingSort(int[] arr) {
+        int max = arr[0];
+        for (int val : arr) if (val > max) max = val;
+        int[] count = new int[max + 1];
+        for (int val : arr) count[val]++;
+        int idx = 0;
+        for (int i = 0; i <= max; i++) {
+            while (count[i] > 0) {
+                arr[idx++] = i;
+                count[i]--;
+            }
+        }
     }
 }`
 };

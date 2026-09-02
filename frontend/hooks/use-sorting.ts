@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 
-export type SortingAlgorithm = "bubble" | "selection" | "insertion" | "merge" | "cyclic" | "quick";
+export type SortingAlgorithm = "bubble" | "selection" | "insertion" | "merge" | "cyclic" | "quick" | "heap" | "counting";
 
 export interface SortingStep {
   array: number[];
@@ -682,6 +682,171 @@ export function generateQuickSortSteps(initial: number[]): SortingStep[] {
   return steps;
 }
 
+export function generateHeapSortSteps(initial: number[]): SortingStep[] {
+  const arr = [...initial];
+  const n = arr.length;
+  const steps: SortingStep[] = [];
+  let comparisons = 0;
+  let swaps = 0;
+  const sortedIndices: number[] = [];
+
+  steps.push({
+    array: [...arr],
+    comparingIndices: [],
+    swappedIndices: [],
+    sortedIndices: [],
+    codeLine: 1,
+    message: "Starting Heap Sort: Building Max-Heap from initial array.",
+    comparisons: 0,
+    swaps: 0
+  });
+
+  function heapify(size: number, i: number) {
+    let largest = i;
+    const left = 2 * i + 1;
+    const right = 2 * i + 2;
+
+    if (left < size) {
+      comparisons++;
+      if (arr[left] > arr[largest]) largest = left;
+    }
+
+    if (right < size) {
+      comparisons++;
+      if (arr[right] > arr[largest]) largest = right;
+    }
+
+    if (largest !== i) {
+      swaps++;
+      [arr[i], arr[largest]] = [arr[largest], arr[i]];
+      steps.push({
+        array: [...arr],
+        comparingIndices: [i, largest],
+        swappedIndices: [i, largest],
+        sortedIndices: [...sortedIndices],
+        message: `Heapify: Swapped root element ${arr[largest]} with child ${arr[i]}.`,
+        comparisons,
+        swaps
+      });
+      heapify(size, largest);
+    }
+  }
+
+  // Build max heap
+  for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+    heapify(n, i);
+  }
+
+  steps.push({
+    array: [...arr],
+    comparingIndices: [],
+    swappedIndices: [],
+    sortedIndices: [],
+    message: "Max-Heap constructed successfully. Starting extraction phase.",
+    comparisons,
+    swaps
+  });
+
+  // Extract elements from heap one by one
+  for (let i = n - 1; i > 0; i--) {
+    swaps++;
+    [arr[0], arr[i]] = [arr[i], arr[0]];
+    sortedIndices.push(i);
+
+    steps.push({
+      array: [...arr],
+      comparingIndices: [],
+      swappedIndices: [0, i],
+      sortedIndices: [...sortedIndices],
+      message: `Extracted max element ${arr[i]} to position ${i}. Restoring heap property.`,
+      comparisons,
+      swaps
+    });
+
+    heapify(i, 0);
+  }
+
+  sortedIndices.push(0);
+  steps.push({
+    array: [...arr],
+    comparingIndices: [],
+    swappedIndices: [],
+    sortedIndices: Array.from({ length: n }, (_, idx) => idx),
+    message: "Heap Sort complete! Array is fully sorted.",
+    comparisons,
+    swaps
+  });
+
+  return steps;
+}
+
+export function generateCountingSortSteps(initial: number[]): SortingStep[] {
+  const arr = [...initial];
+  const n = arr.length;
+  const steps: SortingStep[] = [];
+  let comparisons = 0;
+  let swaps = 0;
+
+  const maxVal = Math.max(...arr, 0);
+  const count = new Array(maxVal + 1).fill(0);
+
+  steps.push({
+    array: [...arr],
+    comparingIndices: [],
+    swappedIndices: [],
+    sortedIndices: [],
+    message: `Starting Counting Sort: Finding frequency array up to max element ${maxVal}.`,
+    comparisons: 0,
+    swaps: 0
+  });
+
+  for (let i = 0; i < n; i++) {
+    count[arr[i]]++;
+    steps.push({
+      array: [...arr],
+      comparingIndices: [i],
+      swappedIndices: [],
+      sortedIndices: [],
+      message: `Counting occurrences of element ${arr[i]} (Count[${arr[i]}] = ${count[arr[i]]}).`,
+      comparisons: comparisons++,
+      swaps
+    });
+  }
+
+  let idx = 0;
+  const sortedIndices: number[] = [];
+  for (let i = 0; i <= maxVal; i++) {
+    while (count[i] > 0) {
+      arr[idx] = i;
+      sortedIndices.push(idx);
+      swaps++;
+      count[i]--;
+      steps.push({
+        array: [...arr],
+        comparingIndices: [],
+        swappedIndices: [idx],
+        sortedIndices: [...sortedIndices],
+        message: `Placing value ${i} back into array at index ${idx}.`,
+        comparisons,
+        swaps
+      });
+      idx++;
+    }
+  }
+
+  steps.push({
+    array: [...arr],
+    comparingIndices: [],
+    swappedIndices: [],
+    sortedIndices: Array.from({ length: n }, (_, i) => i),
+    message: "Counting Sort complete in non-comparison linear O(N + K) time!",
+    comparisons,
+    swaps
+  });
+
+  return steps;
+}
+
 export function useSorting(
   algorithm: SortingAlgorithm = "bubble",
   initialArray: number[] = [45, 12, 89, 34, 23, 76, 50, 9]
@@ -707,6 +872,8 @@ export function useSorting(
     else if (algo === "merge") generated = generateMergeSortSteps(arr);
     else if (algo === "cyclic") generated = generateCyclicSortSteps(arr);
     else if (algo === "quick") generated = generateQuickSortSteps(arr);
+    else if (algo === "heap") generated = generateHeapSortSteps(arr);
+    else if (algo === "counting") generated = generateCountingSortSteps(arr);
     setSteps(generated);
     setCurrentStepIndex(0);
     setIsPlaying(false);

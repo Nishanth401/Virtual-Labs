@@ -389,6 +389,36 @@ const LEETCODE_DATA: Record<SortingAlgorithm, LeetCodeMetricData> = {
     ],
     runtimeXAxis: ["5ms", "10ms", "15ms", "20ms"],
     memoryXAxis: ["42MB", "44MB", "46MB", "48MB"]
+  },
+  heap: {
+    name: "Heap Sort",
+    currentApproach: "Heap Sort",
+    suggestedApproach: "Binary Max-Heap In-Place Sort",
+    keyIdea: "Build max heap in O(n) and repeatedly extract root max element in O(log n).",
+    considerQuestion: "Why is Heap Sort preferred over Quick Sort when guaranteed O(n log n) worst case space/time is needed?",
+    runtimeMs: 4,
+    runtimePercentile: 91.50,
+    memoryMb: 42.10,
+    memoryPercentile: 94.20,
+    runtimeBins: [{ label: "4ms", height: 80, isUser: true }],
+    memoryBins: [{ label: "42MB", height: 75, isUser: true }],
+    runtimeXAxis: ["2ms", "4ms", "6ms", "8ms"],
+    memoryXAxis: ["40MB", "42MB", "44MB", "46MB"]
+  },
+  counting: {
+    name: "Counting Sort",
+    currentApproach: "Counting Sort",
+    suggestedApproach: "Frequency Array Accumulation",
+    keyIdea: "Count frequencies of keys in range 0..K and place elements directly without pairwise comparisons.",
+    considerQuestion: "What happens to Counting Sort efficiency when max element K is significantly larger than N?",
+    runtimeMs: 1,
+    runtimePercentile: 98.80,
+    memoryMb: 43.50,
+    memoryPercentile: 88.60,
+    runtimeBins: [{ label: "1ms", height: 90, isUser: true }],
+    memoryBins: [{ label: "43MB", height: 85, isUser: true }],
+    runtimeXAxis: ["1ms", "2ms", "3ms", "4ms"],
+    memoryXAxis: ["41MB", "43MB", "45MB", "47MB"]
   }
 };
 
