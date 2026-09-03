@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, FlaskConical, Star, ArrowRight, Layers, Code2, BrainCircuit, Database, Network, Cpu, Bot, BarChart3, Cloud, Server, Sparkles, Terminal } from "lucide-react";
+import { Search, FlaskConical, ArrowRight, Layers, Code2, BrainCircuit, Database, Network, Cpu, Bot, BarChart3, Cloud, Server, Sparkles, Terminal } from "lucide-react";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Code2,
@@ -91,12 +91,6 @@ export default function LabsCataloguePage() {
                         <Badge variant="outline" className="text-xs font-mono font-bold text-primary border-primary/30">
                           {lab.shortTitle} • {lab.code}
                         </Badge>
-                      </div>
-
-                      <div className="flex items-center gap-1 text-amber-500 font-bold text-xs bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
-                        <Star className="h-3.5 w-3.5 fill-current" />
-                        <span>{lab.rating}</span>
-                        <span className="text-[10px] text-muted-foreground font-normal">({lab.ratingsCount})</span>
                       </div>
                     </div>
 

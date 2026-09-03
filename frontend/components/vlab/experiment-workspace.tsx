@@ -15,6 +15,7 @@ import { SortingVisualizer } from "@/components/visualizer/sorting/sorting-visua
 import { RecursionVisualizerPanel } from "@/components/visualizer/recursion/recursion-visualizer-panel";
 import { LeetCodePracticeCard } from "@/components/vlab/leetcode-practice-card";
 import { QuizEngine } from "@/components/quiz/quiz-engine";
+import { TamilVideoTimeline } from "@/components/vlab/tamil-video-timeline";
 
 // UI Components
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -30,7 +31,6 @@ import {
   MessageSquareHeart,
   ChevronLeft,
   ChevronRight,
-  Star,
   Clock,
   CheckCircle2,
   Cpu,
@@ -54,6 +54,13 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
   const [simOutput, setSimOutput] = useState<string | null>(null);
   const [expVideoLang, setExpVideoLang] = useState<"english" | "tamil">("english");
+  const [expTamilVideoTime, setExpTamilVideoTime] = useState<number>(0);
+  const [activeExpTamilTimestampIdx, setActiveExpTamilTimestampIdx] = useState<number | null>(null);
+
+  const handleSelectExpTamilTimestamp = (seconds: number, idx: number) => {
+    setExpTamilVideoTime(seconds);
+    setActiveExpTamilTimestampIdx(idx);
+  };
 
   const lab = LABS_DATA.find((l) => l.id === experiment.labId);
   const quiz = QUIZZES_DATA[experiment.quizId];
@@ -122,10 +129,6 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             <Badge variant="outline" className="text-[11px] font-medium">
               {experiment.difficulty}
             </Badge>
-            <span>•</span>
-            <span className="flex items-center gap-1 text-amber-500 font-semibold">
-              <Star className="h-3.5 w-3.5 fill-current" /> {experiment.rating} ({experiment.ratingsCount} verified reviews)
-            </span>
           </div>
         </div>
 
@@ -212,11 +215,15 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 {/* Video Player Frame */}
                 <div className="aspect-video w-full rounded-xl bg-slate-950 border border-border overflow-hidden shadow-md">
                   <iframe
-                    key={expVideoLang}
+                    key={`${expVideoLang}-${expTamilVideoTime}`}
                     src={
                       expVideoLang === "english"
                         ? (experiment.sections.videoUrl || lab?.videoUrl || "https://www.youtube-nocookie.com/embed/8hly31xKli0")
-                        : (lab?.tamilVideo?.url || "https://www.youtube-nocookie.com/embed/8hly31xKli0")
+                        : (lab?.tamilVideo
+                            ? (expTamilVideoTime > 0
+                                ? `${lab.tamilVideo.url}?start=${expTamilVideoTime}&autoplay=1`
+                                : lab.tamilVideo.url)
+                            : "https://www.youtube-nocookie.com/embed/8hly31xKli0")
                     }
                     title={
                       expVideoLang === "english"
@@ -239,6 +246,19 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                     {experiment.category}
                   </Badge>
                 </div>
+
+                {/* Tamil Chapters in Experiment Workspace */}
+                {expVideoLang === "tamil" && lab?.tamilVideo?.timestamps && lab.tamilVideo.timestamps.length > 0 && (
+                  <div className="pt-2">
+                    <TamilVideoTimeline
+                      tamilVideo={lab.tamilVideo}
+                      activeTimestampIdx={activeExpTamilTimestampIdx}
+                      onSelectTimestamp={handleSelectExpTamilTimestamp}
+                      currentVideoTime={expTamilVideoTime}
+                      compact={true}
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Right 5 Cols: Overview & Objectives */}
@@ -579,23 +599,23 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
               ) : (
                 <form onSubmit={handleFeedbackSubmit} className="space-y-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold">How would you rate this experiment simulation?</label>
+                    <label className="text-xs font-semibold">How would you rate this experiment simulation? (1 - 5)</label>
                     <div className="flex items-center gap-2 pt-1">
-                      {[1, 2, 3, 4, 5].map((star) => (
+                      {[1, 2, 3, 4, 5].map((score) => (
                         <button
-                          key={star}
+                          key={score}
                           type="button"
-                          onClick={() => setUserRating(star)}
-                          className="p-1 hover:scale-110 transition-transform"
+                          onClick={() => setUserRating(score)}
+                          className={`h-9 w-9 rounded-lg text-xs font-bold border transition-all ${
+                            score === userRating
+                              ? "bg-primary text-primary-foreground border-primary shadow-xs"
+                              : "bg-muted/50 hover:bg-muted text-muted-foreground border-border"
+                          }`}
                         >
-                          <Star
-                            className={`h-6 w-6 ${
-                              star <= userRating ? "text-amber-500 fill-amber-500" : "text-muted"
-                            }`}
-                          />
+                          {score}
                         </button>
                       ))}
-                      <span className="text-xs text-muted-foreground ml-2">({userRating} out of 5 stars)</span>
+                      <span className="text-xs text-muted-foreground ml-2">({userRating} / 5)</span>
                     </div>
                   </div>
 
