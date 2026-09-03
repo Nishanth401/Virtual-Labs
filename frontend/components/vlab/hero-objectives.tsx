@@ -109,11 +109,11 @@ const ROLLING_CARDS = [
 
 export function HeroObjectives() {
   return (
-    <section className="relative min-h-[85vh] flex flex-col justify-between pt-6 pb-16 px-4 sm:px-6 bg-gradient-to-b from-background via-background to-muted/30 border-b border-border/40 overflow-hidden">
+    <section className="relative min-h-[85vh] flex flex-col justify-between pt-14 sm:pt-20 pb-16 px-4 sm:px-6 bg-gradient-to-b from-background via-background to-muted/30 border-b border-border/40 overflow-hidden">
       {/* Ambient Lighting & Glow Backdrop (Fastlane aesthetic - No dot particles) */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-[#ff2a5f]/15 via-rose-500/10 to-primary/10 rounded-full blur-[120px] pointer-events-none -z-10" />
 
-      <div className="container max-w-5xl mx-auto text-center relative z-10 space-y-6 pt-4">
+      <div className="container max-w-5xl mx-auto text-center relative z-10 space-y-6 pt-2">
         {/* Sleek Announcement Pill Badge */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
