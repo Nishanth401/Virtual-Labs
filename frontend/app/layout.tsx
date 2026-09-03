@@ -26,9 +26,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="light overflow-x-hidden">
       <head>
-        <link rel="preconnect" href="https://identitytoolkit.googleapis.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://firestore.googleapis.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://virtual-lab-e7495.firebaseapp.com" />
+        <link rel="preconnect" href="https://supabase.co" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://supabase.co" />
       </head>
       <body className={`${inter.variable} font-sans min-h-screen bg-background text-foreground overflow-x-hidden antialiased`}>
         <ThemeProvider

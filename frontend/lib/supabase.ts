@@ -2,16 +2,18 @@
  * supabase.ts
  *
  * Supabase client and data access layer.
- * Replaces Firebase with Supabase Auth, PostgreSQL tables, and Storage.
+ * Powered by Supabase Auth, PostgreSQL tables, and Storage.
  */
 
 import { createClient, User as SupabaseUser, Session } from "@supabase/supabase-js";
 
 // Supabase environment credentials with safe fallbacks
 export const supabaseUrl = 
-  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://your-project.supabase.co";
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://fxozrkxpnnpvnzqguugk.supabase.co";
 export const supabaseAnonKey = 
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.placeholder";
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 
+  "sb_publishable_bLMZgS-WWCJjzmB6IaAWUQ_NFqlSbkX";
 
 // Initialize Supabase Client
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
@@ -22,7 +24,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   }
 });
 
-// Re-export User type with Firebase-compatible aliases
+// Re-export User type
 export type User = SupabaseUser & {
   uid: string;
   displayName: string | null;

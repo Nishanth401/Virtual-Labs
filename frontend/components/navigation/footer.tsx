@@ -138,7 +138,7 @@ export function Footer() {
             © 2026 Rohith E • Dept. of AI &amp; DS, VSB Engineering College. All rights reserved.
           </div>
           <div className="text-[11px] font-mono text-slate-600">
-            Powered by Next.js &amp; Firebase
+            Powered by Next.js &amp; Supabase
           </div>
         </div>
       </div>

@@ -119,7 +119,7 @@ export default function AuthLoginPage() {
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" /> Instructions:
                 </p>
                 <p className="pl-5">1. Check your email inbox (and spam folder).</p>
-                <p className="pl-5">2. Click the verification link from Firebase.</p>
+                <p className="pl-5">2. Click the verification link sent to your email.</p>
                 <p className="pl-5">3. Click the Login button below to proceed.</p>
               </div>
 
@@ -145,7 +145,7 @@ export default function AuthLoginPage() {
                     <ShieldCheck className="h-3.5 w-3.5" /> Authenticated
                   </Badge>
                   <Badge variant="secondary" className="text-[10px] font-mono">
-                    Firebase Auth
+                    Supabase Auth
                   </Badge>
                 </div>
                 <h2 className="text-xl font-bold font-heading text-foreground pt-1">
@@ -188,7 +188,7 @@ export default function AuthLoginPage() {
                     <img src="/vsb-logo.png" alt="VSB College" className="w-full h-full object-contain" />
                   </div>
                   <Badge variant="outline" className="text-[10px] font-mono uppercase bg-primary/10 text-primary border-primary/20">
-                    Firebase Authentication
+                    Supabase Authentication
                   </Badge>
                 </div>
                 <h1 className="text-xl font-bold font-heading text-foreground">
