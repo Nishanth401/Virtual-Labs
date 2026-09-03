@@ -1,14 +1,34 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import { runRecursiveCodeLocally, ExecutionStep, StepCall, StepReturn } from "@/lib/recursion-code-runner";
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { 
+  runCodeLocally, 
+  ExecutionStep, 
+  StepCall, 
+  StepReturn, 
+  RECURSION_EXAMPLES 
+} from "@/lib/code-runner-engine";
 import { CallStack, StackFrame } from "@/components/visualizer/recursion/call-stack";
-import { RecursionTree, TreeNode } from "@/components/visualizer/recursion/recursion-tree";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { RecursionTreeEngine, TreeNodeData } from "@/components/visualizer/recursion/recursion-tree-engine";
+import { CodeViewer } from "@/components/visualizer/recursion/code-viewer";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { JavaCodeViewer } from "@/components/visualizer/code/java-code-viewer";
-import { Play, Pause, RotateCcw, ChevronRight, ChevronLeft, Sparkles, Code2, Layers, GitBranch, Gauge } from "lucide-react";
+import { 
+  Play, 
+  Pause, 
+  RotateCcw, 
+  ChevronRight, 
+  ChevronLeft, 
+  Sparkles, 
+  Code2, 
+  Layers, 
+  GitBranch, 
+  Gauge, 
+  AlertCircle,
+  CheckCircle2,
+  Cpu
+} from "lucide-react";
 
 interface RecursionVisualizerPanelProps {
   initialCode?: string;
@@ -17,338 +37,376 @@ interface RecursionVisualizerPanelProps {
   description?: string;
 }
 
-const DEFAULT_JAVA_PRESETS: Record<string, { title: string; code: string; call: string; desc: string }> = {
-  factorial: {
-    title: "Factorial (n!)",
-    code: `public static int factorial(int n) {
-    if (n <= 1) return 1; // Base Case
-    return n * factorial(n - 1); // Recursive Step
-}`,
-    call: "factorial(4)",
-    desc: "Computes n! by unwinding recursive call frames from base case n=1."
-  },
-  fibonacci: {
-    title: "Fibonacci Tree",
-    code: `public static int fib(int n) {
-    if (n <= 1) return n; // Base Case
-    return fib(n - 1) + fib(n - 2); // Binary Recursive Branches
-}`,
-    call: "fib(4)",
-    desc: "Binary recursion branching into two subproblems at each step."
-  },
-  binarySearch: {
-    title: "Recursive Binary Search",
-    code: `public static int binarySearch(int[] arr, int target, int low, int high) {
-    if (low > high) return -1; // Base Case: Not found
-    int mid = low + (high - low) / 2;
-    if (arr[mid] == target) return mid; // Found
-    if (arr[mid] > target) return binarySearch(arr, target, low, mid - 1);
-    return binarySearch(arr, target, mid + 1, high);
-}`,
-    call: "binarySearch(new int[]{2, 5, 8, 12, 16, 23, 38, 56}, 23, 0, 7)",
-    desc: "Halves the search partition on each recursive call frame in O(log n) time."
-  },
-  bubbleSort: {
-    title: "Recursive Bubble Sort",
-    code: `public static void bubbleSort(int[] arr, int n) {
-    if (n <= 1) return; // Base Case
-    
-    // One pass of bubble sort: move largest element to end
-    for (int i = 0; i < n - 1; i++) {
-        if (arr[i] > arr[i + 1]) {
-            int temp = arr[i];
-            arr[i] = arr[i + 1];
-            arr[i + 1] = temp;
-        }
-    }
-    
-    // Recur for remaining n - 1 elements
-    bubbleSort(arr, n - 1);
-}`,
-    call: "bubbleSort(new int[]{64, 34, 25, 12, 22}, 5)",
-    desc: "Fixes the largest element at the end and recursively calls for n-1 items."
-  }
-};
-
 export function RecursionVisualizerPanel({
   initialCode,
-  functionName,
-  sampleCall,
+  functionName: propFuncName,
+  sampleCall: propSampleCall,
   description
 }: RecursionVisualizerPanelProps) {
-  const [selectedPreset, setSelectedPreset] = useState<string>("bubbleSort");
-  const [code, setCode] = useState<string>(initialCode || DEFAULT_JAVA_PRESETS.bubbleSort.code);
-  const [callStr, setCallStr] = useState<string>(sampleCall || DEFAULT_JAVA_PRESETS.bubbleSort.call);
+  const [selectedExampleId, setSelectedExampleId] = useState<string>("factorial");
+  const [language, setLanguage] = useState<"java" | "python" | "cpp" | "js">("java");
+
+  // Active code and call string
+  const currentPreset = useMemo(() => {
+    return RECURSION_EXAMPLES.find(ex => ex.id === selectedExampleId) || RECURSION_EXAMPLES[0];
+  }, [selectedExampleId]);
+
+  const getPresetCodeForLang = (preset: typeof currentPreset, lang: string) => {
+    switch (lang) {
+      case "python": return preset.codePython;
+      case "cpp": return preset.codeCpp;
+      case "js": return preset.codeJs;
+      default: return preset.codeJava;
+    }
+  };
+
+  const [code, setCode] = useState<string>(initialCode || getPresetCodeForLang(currentPreset, language));
+  const [callStr, setCallStr] = useState<string>(propSampleCall || currentPreset.defaultCall);
 
   // Execution state
   const [steps, setSteps] = useState<ExecutionStep[]>([]);
   const [stepIdx, setStepIdx] = useState<number>(-1);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [speedMs, setSpeedMs] = useState<number>(800);
+  const [speedMs, setSpeedMs] = useState<number>(750);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isTreeExpanded, setIsTreeExpanded] = useState<boolean>(false);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Run transpiler & AST tracer when code changes
-  const runCode = (customCode = code, customCall = callStr) => {
+  const runEngine = useCallback((customCode = code, customLang = language, customCall = callStr) => {
     try {
       setErrorMsg(null);
-      const result = runRecursiveCodeLocally(customCode, "java", customCall);
+      const result = runCodeLocally(customCode, customLang, customCall);
       setSteps(result.steps);
       setStepIdx(0);
       setIsPlaying(false);
     } catch (err: any) {
-      setErrorMsg(err.message || "Failed to execute recursive Java code.");
+      console.error("Execution error:", err);
+      setErrorMsg(err.message || String(err));
       setSteps([]);
       setStepIdx(-1);
     }
+  }, [code, language, callStr]);
+
+  // Initial execution on mount
+  useEffect(() => {
+    runEngine();
+  }, []);
+
+  const handleSelectPreset = (presetId: string) => {
+    setSelectedExampleId(presetId);
+    const ex = RECURSION_EXAMPLES.find(e => e.id === presetId) || RECURSION_EXAMPLES[0];
+    const newCode = getPresetCodeForLang(ex, language);
+    setCode(newCode);
+    setCallStr(ex.defaultCall);
+    runEngine(newCode, language, ex.defaultCall);
   };
 
-  useEffect(() => {
-    const activeCode = initialCode || code;
-    const activeCall = sampleCall || callStr;
-    if (initialCode) setCode(initialCode);
-    if (sampleCall) setCallStr(sampleCall);
-    runCode(activeCode, activeCall);
-  }, [initialCode, sampleCall]);
+  const handleLanguageChange = (newLang: "java" | "python" | "cpp" | "js") => {
+    setLanguage(newLang);
+    const newCode = getPresetCodeForLang(currentPreset, newLang);
+    setCode(newCode);
+    runEngine(newCode, newLang, callStr);
+  };
 
-  // Compute live stack and tree nodes from steps up to stepIdx
-  const { liveStack, liveNodes, currentNodeId, executionPhase } = useMemo(() => {
-    if (stepIdx < 0 || steps.length === 0) {
-      return { liveStack: [], liveNodes: [], currentNodeId: null, executionPhase: "idle" as const };
-    }
-
-    const currentStep = steps[stepIdx];
-    const stack: StackFrame[] = [];
-    const nodeMap: Record<number, TreeNode> = {};
-
-    for (let i = 0; i <= stepIdx; i++) {
-      const s = steps[i];
-      if (s.type === "call") {
-        const frame: StackFrame = {
-          id: s.nodeId,
-          label: s.label,
-          params: s.params,
-          isBaseCase: s.isBaseCase,
-          returned: false
-        };
-        stack.push(frame);
-
-        nodeMap[s.nodeId] = {
-          id: s.nodeId,
-          parentId: s.parentId,
-          label: s.label,
-          params: s.params,
-          isBaseCase: s.isBaseCase,
-          returned: false
-        };
-      } else if (s.type === "return") {
-        const popped = stack.pop();
-        if (popped) {
-          popped.returned = true;
-          popped.returnValue = s.value;
-        }
-        if (nodeMap[s.nodeId]) {
-          nodeMap[s.nodeId].returned = true;
-          nodeMap[s.nodeId].returnValue = s.value;
-        }
-      }
-    }
-
-    return {
-      liveStack: stack,
-      liveNodes: Object.values(nodeMap),
-      currentNodeId: currentStep.nodeId,
-      executionPhase: currentStep.type === "call" ? ("calling" as const) : ("returning" as const)
-    };
-  }, [steps, stepIdx]);
-
-  // Handle Play/Pause timer
+  // Autoplay timer
   useEffect(() => {
     if (isPlaying) {
       timerRef.current = setInterval(() => {
         setStepIdx((prev) => {
-          if (prev >= steps.length - 1) {
-            setIsPlaying(false);
-            return prev;
-          }
-          return prev + 1;
+          if (prev < steps.length - 1) return prev + 1;
+          setIsPlaying(false);
+          return prev;
         });
       }, speedMs);
-    } else if (timerRef.current) {
-      clearInterval(timerRef.current);
+    } else {
+      if (timerRef.current) clearInterval(timerRef.current);
     }
-
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [isPlaying, steps.length, speedMs]);
 
-  const handleTogglePlay = () => {
-    if (steps.length === 0) return;
-    if (!isPlaying && stepIdx >= steps.length - 1) {
-      setStepIdx(0);
+  // Derive active CallStack and RecursionTree from current step index
+  const { stack, treeNodes, currentNodeId, executionPhase, activeLine } = useMemo(() => {
+    if (stepIdx < 0 || steps.length === 0) {
+      return { stack: [], treeNodes: [], currentNodeId: null, executionPhase: null, activeLine: null };
     }
-    setIsPlaying(!isPlaying);
-  };
 
-  const handleStepNext = () => {
-    if (stepIdx < steps.length - 1) {
-      setStepIdx((prev) => prev + 1);
+    const currentStack: StackFrame[] = [];
+    const nodeMap: Record<number, TreeNodeData> = {};
+
+    let curId: number | null = null;
+    let curPhase: "calling" | "returning" | null = null;
+
+    for (let i = 0; i <= stepIdx; i++) {
+      const step = steps[i];
+
+      if (step.type === "call") {
+        curId = step.nodeId;
+        curPhase = "calling";
+        currentStack.push({
+          id: step.nodeId,
+          label: step.label,
+          params: step.params,
+          isBaseCase: step.isBaseCase
+        });
+
+        nodeMap[step.nodeId] = {
+          id: step.nodeId,
+          parentId: step.parentId,
+          label: step.label,
+          params: step.params,
+          isBaseCase: step.isBaseCase,
+          phase: "calling"
+        };
+      } else if (step.type === "return") {
+        curId = step.nodeId;
+        curPhase = "returning";
+        const frame = currentStack.find(f => f.id === step.nodeId);
+        if (frame) {
+          frame.returned = true;
+          frame.returnValue = step.value;
+        }
+
+        if (nodeMap[step.nodeId]) {
+          nodeMap[step.nodeId].returnValue = step.value;
+          nodeMap[step.nodeId].phase = "returning";
+        }
+
+        // Pop from stack
+        const stackIdx = currentStack.findIndex(f => f.id === step.nodeId);
+        if (stackIdx !== -1) {
+          currentStack.splice(stackIdx, 1);
+        }
+      }
     }
-  };
 
-  const handleStepPrev = () => {
-    if (stepIdx > 0) {
-      setStepIdx((prev) => prev - 1);
+    // Active line estimation based on current step
+    let line: number | null = null;
+    const currentStep = steps[stepIdx];
+    const lines = code.split("\n");
+
+    if (currentStep) {
+      if (currentStep.type === "call" && currentStep.isBaseCase) {
+        line = lines.findIndex(l => l.includes("return 1") || l.includes("return 0") || l.includes("return -1") || l.includes("return;"));
+      } else if (currentStep.type === "call") {
+        line = lines.findIndex(l => l.includes("factorial(") || l.includes("fibonacci(") || l.includes("binarySearch(") || l.includes("power(") || l.includes("mergeSort("));
+      } else if (currentStep.type === "return") {
+        line = lines.findIndex(l => l.includes("return"));
+      }
+      if (line !== -1 && line !== null) line = line + 1; // 1-indexed
     }
-  };
 
-  const handleReset = () => {
-    setIsPlaying(false);
-    setStepIdx(0);
-  };
+    return {
+      stack: currentStack,
+      treeNodes: Object.values(nodeMap),
+      currentNodeId: curId,
+      executionPhase: curPhase,
+      activeLine: line
+    };
+  }, [stepIdx, steps, code]);
 
-  const handlePresetSelect = (presetKey: string) => {
-    setSelectedPreset(presetKey);
-    const preset = DEFAULT_JAVA_PRESETS[presetKey];
-    if (preset) {
-      setCode(preset.code);
-      setCallStr(preset.call);
-      runCode(preset.code, preset.call);
-    }
-  };
+  const currentStep = steps[stepIdx];
 
   return (
     <div className="space-y-6">
-      {/* Top Banner & Preset Selector */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-card border border-border/70 shadow-xs">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/30">
-              AST Call Stack & Tree Engine
-            </Badge>
-            <span className="text-xs text-muted-foreground">• Pure Java Execution</span>
-          </div>
-          <h3 className="text-lg font-bold text-foreground font-heading">
-            Java Code Execution & Recursion Call Stack Trace
-          </h3>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            {description || "Observe JVM call frames, active stack depth, parameter scopes, and return unwinding in real time."}
-          </p>
+      {/* Preset & Language Selector */}
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-card p-3.5 rounded-2xl border border-border/80 shadow-xs">
+        {/* Preset buttons */}
+        <div className="flex flex-wrap items-center gap-1.5">
+          <span className="text-xs font-bold text-muted-foreground mr-1.5 font-heading">Algorithms:</span>
+          {RECURSION_EXAMPLES.map((ex) => (
+            <Button
+              key={ex.id}
+              variant={selectedExampleId === ex.id ? "default" : "outline"}
+              size="sm"
+              onClick={() => handleSelectPreset(ex.id)}
+              className="h-7 text-xs font-bold rounded-xl"
+            >
+              {ex.name}
+            </Button>
+          ))}
         </div>
 
-        {/* Presets */}
-        <div className="flex flex-wrap items-center gap-1.5 self-start sm:self-center">
-          {Object.entries(DEFAULT_JAVA_PRESETS).map(([key, item]) => (
+        {/* Language selector */}
+        <div className="flex items-center gap-1 bg-muted/60 p-1 rounded-xl border border-border/60">
+          {(["java", "python", "cpp", "js"] as const).map((lang) => (
             <Button
-              key={key}
+              key={lang}
+              variant={language === lang ? "default" : "ghost"}
               size="sm"
-              variant={selectedPreset === key ? "default" : "outline"}
-              onClick={() => handlePresetSelect(key)}
-              className="text-xs h-7.5"
+              onClick={() => handleLanguageChange(lang)}
+              className="h-6 text-[11px] font-mono uppercase px-2 font-bold"
             >
-              {item.title}
+              {lang}
             </Button>
           ))}
         </div>
       </div>
 
+      {/* Error Alert */}
       {errorMsg && (
-        <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-xs text-red-500 font-mono">
-          ⚠️ {errorMsg}
+        <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-500 text-xs font-mono flex items-start gap-2.5">
+          <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <span className="font-bold block">Transpilation or Execution Notice:</span>
+            <pre className="whitespace-pre-wrap">{errorMsg}</pre>
+          </div>
         </div>
       )}
 
-      {/* Playback Controls & Timeline */}
-      <Card className="border-border bg-card/80 backdrop-blur-md p-4 shadow-xs">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          {/* Action buttons */}
-          <div className="flex items-center gap-2">
-            <Button
-              size="sm"
-              onClick={handleTogglePlay}
-              disabled={steps.length === 0}
-              className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 font-bold shadow-xs"
-            >
-              {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-              <span>{isPlaying ? "Pause" : "Play Trace"}</span>
-            </Button>
-            <Button size="sm" variant="outline" onClick={handleStepPrev} disabled={stepIdx <= 0} className="text-xs gap-1">
-              <ChevronLeft className="h-4 w-4" /> Prev
-            </Button>
-            <Button size="sm" variant="outline" onClick={handleStepNext} disabled={stepIdx >= steps.length - 1} className="text-xs gap-1">
-              Next <ChevronRight className="h-4 w-4" />
-            </Button>
-            <Button size="sm" variant="ghost" onClick={handleReset} className="text-xs gap-1">
-              <RotateCcw className="h-3.5 w-3.5" /> Reset
-            </Button>
-          </div>
+      {/* Playback Controls & Progress Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-4 bg-card p-4 rounded-2xl border border-border/80 shadow-xs">
+        <div className="flex items-center gap-2">
+          <Button
+            size="sm"
+            onClick={() => setIsPlaying(!isPlaying)}
+            disabled={steps.length === 0}
+            className="h-8 gap-1.5 text-xs font-bold bg-primary text-primary-foreground rounded-xl"
+          >
+            {isPlaying ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
+            <span>{isPlaying ? "Pause" : "Play Trace"}</span>
+          </Button>
 
-          {/* Timeline slider */}
-          <div className="flex-1 w-full max-w-md px-2 space-y-1">
-            <div className="flex justify-between text-[11px] font-mono text-muted-foreground">
-              <span>Step {stepIdx + 1} of {Math.max(steps.length, 1)}</span>
-              <span>{steps.length > 0 ? Math.round(((stepIdx + 1) / steps.length) * 100) : 0}% Done</span>
-            </div>
-            <input
-              type="range"
-              min={0}
-              max={Math.max(steps.length - 1, 0)}
-              value={Math.max(stepIdx, 0)}
-              onChange={(e) => { setIsPlaying(false); setStepIdx(Number(e.target.value)); }}
-              className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
-            />
-          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={stepIdx <= 0 || steps.length === 0}
+            onClick={() => {
+              setIsPlaying(false);
+              setStepIdx(prev => Math.max(0, prev - 1));
+            }}
+            className="h-8 w-8 p-0 rounded-xl"
+            title="Step Back"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={stepIdx >= steps.length - 1 || steps.length === 0}
+            onClick={() => {
+              setIsPlaying(false);
+              setStepIdx(prev => Math.min(steps.length - 1, prev + 1));
+            }}
+            className="h-8 w-8 p-0 rounded-xl"
+            title="Step Next"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setIsPlaying(false);
+              setStepIdx(0);
+            }}
+            className="h-8 w-8 p-0 rounded-xl"
+            title="Reset to Start"
+          >
+            <RotateCcw className="h-3.5 w-3.5" />
+          </Button>
 
           {/* Speed slider */}
-          <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground">
-            <Gauge className="h-4 w-4 text-primary" />
-            <span>Speed:</span>
-            <select
-              value={speedMs}
-              onChange={(e) => setSpeedMs(Number(e.target.value))}
-              className="bg-muted px-2 py-1 rounded text-xs border border-border text-foreground font-mono"
-            >
-              <option value={1400}>0.5x (Slow)</option>
-              <option value={800}>1.0x (Normal)</option>
-              <option value={400}>2.0x (Fast)</option>
-            </select>
+          <div className="hidden sm:flex items-center gap-2 ml-3 pl-3 border-l border-border/60">
+            <Gauge className="h-3.5 w-3.5 text-muted-foreground" />
+            <span className="text-[11px] font-mono text-muted-foreground">Speed:</span>
+            <input
+              type="range"
+              min="200"
+              max="1500"
+              step="100"
+              value={1700 - speedMs}
+              onChange={(e) => setSpeedMs(1700 - Number(e.target.value))}
+              className="w-20 h-1.5 bg-muted rounded-lg accent-primary cursor-pointer"
+            />
           </div>
         </div>
-      </Card>
 
-      {/* Main 3-Column Visualization Workspace (Equal Size Panels) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch">
-        {/* Panel 1: Java Code Display */}
-        <div className="h-[480px]">
-          <JavaCodeViewer
+        <div className="flex items-center gap-3 font-mono text-xs">
+          <span>
+            Step: <strong>{stepIdx >= 0 ? stepIdx + 1 : 0} / {steps.length}</strong>
+          </span>
+          <span>•</span>
+          <Badge variant="outline" className="text-[10px] bg-primary/10 text-primary border-primary/20">
+            Time: {currentPreset.time} | Space: {currentPreset.space}
+          </Badge>
+        </div>
+      </div>
+
+      {/* Main Studio Split Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Left Column: Code Editor / Viewer */}
+        <div className="lg:col-span-5 h-[480px]">
+          <CodeViewer
             code={code}
-            title="Java Source Code"
-            subtitle={`Entry Call: ${callStr}`}
-            badge="Java 17 / 21"
-            fileName={`${functionName || "Algorithm"}.java`}
+            language={language}
+            activeLine={activeLine}
+            onCodeChange={(newCode) => {
+              setCode(newCode);
+              runEngine(newCode, language, callStr);
+            }}
+            readOnly={false}
           />
         </div>
 
-        {/* Panel 2: JVM Call Stack */}
-        <div className="h-[480px]">
+        {/* Center/Right Column: Live SVG Recursion Tree */}
+        <div className="lg:col-span-4 h-[480px]">
+          <RecursionTreeEngine
+            nodes={treeNodes}
+            currentNodeId={currentNodeId}
+            executionPhase={executionPhase}
+            isExpanded={isTreeExpanded}
+            onToggleExpand={() => setIsTreeExpanded(!isTreeExpanded)}
+          />
+        </div>
+
+        {/* Right Column: LIFO Call Stack */}
+        <div className="lg:col-span-3 h-[480px]">
           <CallStack
-            stack={liveStack}
+            stack={stack}
             currentNodeId={currentNodeId}
-            executionPhase={executionPhase}
-          />
-        </div>
-
-        {/* Panel 3: Recursion Call Tree Diagram */}
-        <div className="h-[480px]">
-          <RecursionTree
-            nodes={liveNodes}
-            currentNodeId={currentNodeId}
-            executionPhase={executionPhase}
+            executionPhase={executionPhase || undefined}
           />
         </div>
       </div>
+
+      {/* Real-time State Card */}
+      {currentStep && (
+        <Card className="p-4 bg-muted/30 border-border/80 rounded-2xl">
+          <div className="flex items-center gap-2 mb-2 font-mono text-xs font-bold text-foreground">
+            <Sparkles className="h-4 w-4 text-amber-500" />
+            <span>Execution Trace Step {stepIdx + 1}:</span>
+            <Badge variant="outline" className={`text-[10px] ${currentStep.type === "call" ? "bg-amber-500/10 text-amber-500 border-amber-500/30" : "bg-emerald-500/10 text-emerald-500 border-emerald-500/30"}`}>
+              {currentStep.type.toUpperCase()}
+            </Badge>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+            <div className="p-3 bg-card rounded-xl border border-border/60">
+              <span className="text-[10px] font-mono text-muted-foreground uppercase block font-bold">Action</span>
+              <span className="font-mono text-foreground font-semibold mt-1 block">
+                {currentStep.type === "call" ? `Push Frame: ${currentStep.label}` : `Pop Frame: return ${(currentStep as StepReturn).value}`}
+              </span>
+            </div>
+            <div className="p-3 bg-card rounded-xl border border-border/60">
+              <span className="text-[10px] font-mono text-muted-foreground uppercase block font-bold">Parameters</span>
+              <span className="font-mono text-foreground mt-1 block">
+                {currentStep.type === "call" ? JSON.stringify(currentStep.params) : "Returning value"}
+              </span>
+            </div>
+            <div className="p-3 bg-card rounded-xl border border-border/60">
+              <span className="text-[10px] font-mono text-muted-foreground uppercase block font-bold">Condition</span>
+              <span className="font-mono text-emerald-500 font-bold mt-1 block">
+                {currentStep.isBaseCase ? "✓ Base Case Active" : "Recursive Step"}
+              </span>
+            </div>
+          </div>
+        </Card>
+      )}
     </div>
   );
 }

@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { RecursionVisualizerPanel } from "@/components/visualizer/recursion/recursion-visualizer-panel";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Code2, Sparkles, Layers, Cpu, Play, Plus, Trash2, BookOpen } from "lucide-react";
+import { Code2, Sparkles, Layers, Cpu, Play, Plus, Trash2, BookOpen, Terminal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -27,7 +27,7 @@ export default function CustomRecursionVisualizerPage() {
   const [activeCall, setActiveCall] = useState("factorial(4)");
   const [key, setKey] = useState(0);
 
-  // Load saved recursion state from localStorage
+  // Load saved recursion state from localStorage safely
   useEffect(() => {
     try {
       const saved = localStorage.getItem("dsa_custom_recursion_state");
@@ -41,7 +41,9 @@ export default function CustomRecursionVisualizerPage() {
         if (parsed.activeCode) setActiveGeneratedCode(parsed.activeCode);
         if (parsed.activeCall) setActiveCall(parsed.activeCall);
       }
-    } catch (e) {}
+    } catch (e) {
+      console.warn("LocalStorage load error:", e);
+    }
   }, []);
 
   const addParameter = () => {
@@ -61,7 +63,7 @@ export default function CustomRecursionVisualizerPage() {
 
   const handleApplyCustomCode = () => {
     const paramsStr = parameters.map((p) => `${p.type} ${p.name}`).join(", ");
-    const fullCode = `public static ${returnType} ${functionName}(${paramsStr}) {\n${codeBody}\n}`;
+    const fullCode = `public static ${returnType} ${functionName}(${paramsStr}) {\n${codeBody}\n}\n\n${functionCall};`;
     setActiveGeneratedCode(fullCode);
     setActiveCall(functionCall);
     setKey((prev) => prev + 1);
@@ -78,167 +80,62 @@ export default function CustomRecursionVisualizerPage() {
         activeCall: functionCall
       }));
 
-      // Mark custom-recursion as mastered in checklist
       const compSaved = localStorage.getItem("dsa_master_completed_topics");
       const compParsed = compSaved ? JSON.parse(compSaved) : {};
       compParsed["custom-recursion"] = true;
       localStorage.setItem("dsa_master_completed_topics", JSON.stringify(compParsed));
       window.dispatchEvent(new Event("storage"));
-    } catch (e) {}
-  };
-
-  const loadPreset = (preset: {
-    ret: string;
-    name: string;
-    params: { id: number; type: string; name: string }[];
-    body: string;
-    call: string;
-  }) => {
-    setReturnType(preset.ret);
-    setFunctionName(preset.name);
-    setParameters(preset.params);
-    setCodeBody(preset.body);
-    setFunctionCall(preset.call);
-
-    const paramsStr = preset.params.map((p) => `${p.type} ${p.name}`).join(", ");
-    const fullCode = `public static ${preset.ret} ${preset.name}(${paramsStr}) {\n${preset.body}\n}`;
-    setActiveGeneratedCode(fullCode);
-    setActiveCall(preset.call);
-    setKey((prev) => prev + 1);
+    } catch (e) {
+      console.warn("LocalStorage save error:", e);
+    }
   };
 
   return (
-    <div className="container mx-auto space-y-6 py-4">
+    <div className="container mx-auto space-y-6 py-6 max-w-7xl">
       {/* Header */}
       <div>
-        <div className="flex items-center gap-2 mb-2">
-          <Badge variant="outline" className="text-xs uppercase tracking-wider bg-[#1e88e5]/10 text-[#1e88e5] border-[#1e88e5]/30">
-            Custom Algorithm &amp; Method Studio
+        <div className="flex flex-wrap items-center gap-2 mb-2">
+          <Badge variant="outline" className="text-xs uppercase tracking-wider bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30">
+            Recursion Visualizer Studio
           </Badge>
           <Badge variant="secondary" className="text-xs">
-            Recursion Tree &amp; Call Stack
+            Dynamic SVG Tree &amp; JVM Call Stack
           </Badge>
-          <Badge variant="outline" className="text-xs bg-emerald-500/10 text-emerald-600 border-emerald-500/30">
-            Java Runtime AST Parser
+          <Badge variant="outline" className="text-xs bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30">
+            Multi-Language AST Runner (Java, Python, C++, JS)
           </Badge>
         </div>
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight font-heading text-foreground">
-          Custom Recursion &amp; Algorithm Visualizer
+          Custom Recursion &amp; Backtracking Visualizer
         </h1>
         <p className="text-muted-foreground text-sm max-w-3xl mt-1">
-          Build and execute custom recursive Java algorithms, inspect step-by-step tree branching, and observe JVM stack frames pushing and popping in real-time.
+          Explore recursive branching in real-time. Watch SVG trees expand, monitor LIFO call stack frames with return values, and step through algorithms across Java, Python, C++, and JavaScript.
         </p>
       </div>
 
-      {/* Preset Quick Selectors */}
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="text-xs font-semibold text-muted-foreground mr-1">Quick Presets:</span>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() =>
-            loadPreset({
-              ret: "int",
-              name: "factorial",
-              params: [{ id: 1, type: "int", name: "n" }],
-              body: "if (n <= 1) return 1;\nreturn n * factorial(n - 1);",
-              call: "factorial(4)"
-            })
-          }
-          className="text-xs h-8 rounded-xl"
-        >
-          Factorial (n!)
-        </Button>
+      {/* Main Execution Studio Panel */}
+      <RecursionVisualizerPanel
+        key={key}
+        initialCode={activeGeneratedCode}
+        functionName={functionName}
+        sampleCall={activeCall}
+        description={`Interactive simulation of ${functionName} with dynamic AST tracing, recursion tree visualization, and JVM call stack memory frames.`}
+      />
 
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() =>
-            loadPreset({
-              ret: "int",
-              name: "fib",
-              params: [{ id: 1, type: "int", name: "n" }],
-              body: "if (n <= 1) return n;\nreturn fib(n - 1) + fib(n - 2);",
-              call: "fib(4)"
-            })
-          }
-          className="text-xs h-8 rounded-xl"
-        >
-          Fibonacci Tree
-        </Button>
-
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() =>
-            loadPreset({
-              ret: "int",
-              name: "power",
-              params: [
-                { id: 1, type: "int", name: "base" },
-                { id: 2, type: "int", name: "exp" }
-              ],
-              body: "if (exp == 0) return 1;\nreturn base * power(base, exp - 1);",
-              call: "power(2, 4)"
-            })
-          }
-          className="text-xs h-8 rounded-xl"
-        >
-          Power (X^N)
-        </Button>
-
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() =>
-            loadPreset({
-              ret: "int",
-              name: "sumDigits",
-              params: [{ id: 1, type: "int", name: "n" }],
-              body: "if (n == 0) return 0;\nreturn (n % 10) + sumDigits(Math.floor(n / 10));",
-              call: "sumDigits(1234)"
-            })
-          }
-          className="text-xs h-8 rounded-xl"
-        >
-          Sum of Digits
-        </Button>
-
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() =>
-            loadPreset({
-              ret: "void",
-              name: "bubbleSort",
-              params: [
-                { id: 1, type: "int[]", name: "arr" },
-                { id: 2, type: "int", name: "n" }
-              ],
-              body: "if (n <= 1) return;\nfor (int i = 0; i < n - 1; i++) {\n    if (arr[i] > arr[i + 1]) {\n        int temp = arr[i]; arr[i] = arr[i + 1]; arr[i + 1] = temp;\n    }\n}\nbubbleSort(arr, n - 1);",
-              call: "bubbleSort(new int[]{64, 34, 25, 12, 22}, 5)"
-            })
-          }
-          className="text-xs h-8 rounded-xl"
-        >
-          Recursive Bubble Sort
-        </Button>
-      </div>
-
-      {/* Interactive Method Signature Builder */}
+      {/* Custom Method Signature Builder Accordion / Card */}
       <Card className="border-border/80 bg-card p-5 rounded-2xl shadow-xs space-y-4">
         <div className="flex items-center justify-between border-b border-border/60 pb-3">
           <div className="flex items-center gap-2">
-            <Code2 className="h-4 w-4 text-[#1e88e5]" />
-            <h3 className="text-sm font-bold text-foreground">Custom Java Method Signature Builder</h3>
+            <Terminal className="h-4 w-4 text-blue-500" />
+            <h3 className="text-sm font-bold text-foreground">Custom Java / C++ Signature Builder</h3>
           </div>
           <Button
             size="sm"
             onClick={handleApplyCustomCode}
-            className="bg-[#1e88e5] hover:bg-[#1976d2] text-white text-xs font-bold gap-1.5 rounded-xl shadow-md"
+            className="bg-primary text-primary-foreground text-xs font-bold gap-1.5 rounded-xl shadow-xs"
           >
             <Play className="h-3.5 w-3.5" />
-            Build &amp; Run Visualizer
+            Transpile &amp; Load into Studio
           </Button>
         </div>
 
@@ -250,7 +147,7 @@ export default function CustomRecursionVisualizerPage() {
             <Input
               value={returnType}
               onChange={(e) => setReturnType(e.target.value)}
-              className="font-mono text-xs h-9 bg-muted/30"
+              className="font-mono text-xs h-9 bg-muted/30 rounded-xl"
               placeholder="e.g. int"
             />
           </div>
@@ -262,7 +159,7 @@ export default function CustomRecursionVisualizerPage() {
             <Input
               value={functionName}
               onChange={(e) => setFunctionName(e.target.value)}
-              className="font-mono text-xs h-9 bg-muted/30"
+              className="font-mono text-xs h-9 bg-muted/30 rounded-xl"
               placeholder="e.g. factorial"
             />
           </div>
@@ -275,7 +172,7 @@ export default function CustomRecursionVisualizerPage() {
               <button
                 type="button"
                 onClick={addParameter}
-                className="text-[10px] font-mono font-bold text-[#1e88e5] hover:underline flex items-center gap-1"
+                className="text-[10px] font-mono font-bold text-blue-500 hover:underline flex items-center gap-1"
               >
                 <Plus className="h-3 w-3" /> Add Param
               </button>
@@ -289,12 +186,12 @@ export default function CustomRecursionVisualizerPage() {
                   <Input
                     value={p.type}
                     onChange={(e) => updateParameter(p.id, "type", e.target.value)}
-                    className="w-16 h-7 text-xs font-mono bg-card px-2 text-center"
+                    className="w-16 h-7 text-xs font-mono bg-card px-2 text-center rounded-lg"
                   />
                   <Input
                     value={p.name}
                     onChange={(e) => updateParameter(p.id, "name", e.target.value)}
-                    className="w-20 h-7 text-xs font-mono bg-card px-2"
+                    className="w-20 h-7 text-xs font-mono bg-card px-2 rounded-lg"
                   />
                   {parameters.length > 1 && (
                     <button
@@ -314,12 +211,12 @@ export default function CustomRecursionVisualizerPage() {
         {/* Function Body Editor */}
         <div className="space-y-1.5">
           <Label className="text-[10px] font-mono uppercase font-bold text-muted-foreground">
-            Method Body (Java Recursive Implementation)
+            Method Body (Recursive Logic)
           </Label>
           <Textarea
             value={codeBody}
             onChange={(e) => setCodeBody(e.target.value)}
-            rows={5}
+            rows={4}
             className="font-mono text-xs bg-slate-950 text-slate-100 p-3 rounded-xl border-slate-800 leading-relaxed shadow-inner"
             spellCheck={false}
           />
@@ -329,35 +226,26 @@ export default function CustomRecursionVisualizerPage() {
         <div className="flex flex-col sm:flex-row items-center gap-3">
           <div className="w-full sm:w-80 space-y-1">
             <Label className="text-[10px] font-mono uppercase font-bold text-muted-foreground">
-              Initial Invocation Call
+              Invocation Call
             </Label>
             <Input
               value={functionCall}
               onChange={(e) => setFunctionCall(e.target.value)}
-              className="font-mono text-xs h-9 bg-muted/30"
+              className="font-mono text-xs h-9 bg-muted/30 rounded-xl"
               placeholder="e.g. factorial(4)"
             />
           </div>
           <div className="pt-4 sm:pt-5 w-full sm:w-auto">
             <Button
               onClick={handleApplyCustomCode}
-              className="w-full sm:w-auto bg-[#1e88e5] hover:bg-[#1976d2] text-white text-xs font-bold gap-1.5 rounded-xl shadow-md h-9"
+              className="w-full sm:w-auto bg-primary text-primary-foreground text-xs font-bold gap-1.5 rounded-xl shadow-xs h-9"
             >
               <Play className="h-3.5 w-3.5" />
-              Execute Custom Algorithm
+              Apply &amp; Run
             </Button>
           </div>
         </div>
       </Card>
-
-      {/* Main Execution Studio Panel */}
-      <RecursionVisualizerPanel
-        key={key}
-        initialCode={activeGeneratedCode}
-        functionName={functionName}
-        sampleCall={activeCall}
-        description={`Interactive simulation of ${functionName} with dynamic AST tracing, recursion tree visualization, and JVM call stack memory frames.`}
-      />
     </div>
   );
 }
