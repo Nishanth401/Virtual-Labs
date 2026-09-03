@@ -27,6 +27,23 @@ export default function CustomRecursionVisualizerPage() {
   const [activeCall, setActiveCall] = useState("factorial(4)");
   const [key, setKey] = useState(0);
 
+  // Load saved recursion state from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("dsa_custom_recursion_state");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.ret) setReturnType(parsed.ret);
+        if (parsed.name) setFunctionName(parsed.name);
+        if (parsed.params) setParameters(parsed.params);
+        if (parsed.body) setCodeBody(parsed.body);
+        if (parsed.call) setFunctionCall(parsed.call);
+        if (parsed.activeCode) setActiveGeneratedCode(parsed.activeCode);
+        if (parsed.activeCall) setActiveCall(parsed.activeCall);
+      }
+    } catch (e) {}
+  }, []);
+
   const addParameter = () => {
     setParameters([
       ...parameters,
@@ -48,6 +65,26 @@ export default function CustomRecursionVisualizerPage() {
     setActiveGeneratedCode(fullCode);
     setActiveCall(functionCall);
     setKey((prev) => prev + 1);
+
+    // Persist to localStorage
+    try {
+      localStorage.setItem("dsa_custom_recursion_state", JSON.stringify({
+        ret: returnType,
+        name: functionName,
+        params: parameters,
+        body: codeBody,
+        call: functionCall,
+        activeCode: fullCode,
+        activeCall: functionCall
+      }));
+
+      // Mark custom-recursion as mastered in checklist
+      const compSaved = localStorage.getItem("dsa_master_completed_topics");
+      const compParsed = compSaved ? JSON.parse(compSaved) : {};
+      compParsed["custom-recursion"] = true;
+      localStorage.setItem("dsa_master_completed_topics", JSON.stringify(compParsed));
+      window.dispatchEvent(new Event("storage"));
+    } catch (e) {}
   };
 
   const loadPreset = (preset: {

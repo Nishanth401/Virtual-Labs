@@ -925,8 +925,56 @@ export function useSorting(
     setCurrentStepIndex(0);
   };
 
+  // Load saved array & speed from localStorage
+  useEffect(() => {
+    try {
+      const savedArr = localStorage.getItem(`dsa_sorting_array_${algorithm}`);
+      if (savedArr) {
+        const parsed = JSON.parse(savedArr);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setArrayInput(parsed);
+        }
+      }
+      const savedSpeed = localStorage.getItem("dsa_visualizer_speed");
+      if (savedSpeed) {
+        const speedVal = Number(savedSpeed);
+        if (!isNaN(speedVal) && speedVal > 0) {
+          setSpeedMs(speedVal);
+        }
+      }
+    } catch (e) {
+      // Ignore storage errors
+    }
+  }, [algorithm]);
+
+  // Automatically mark algorithm as mastered in checklist when sorting completes
+  useEffect(() => {
+    if (steps.length > 2 && currentStepIndex === steps.length - 1) {
+      try {
+        const saved = localStorage.getItem("dsa_master_completed_topics");
+        const parsed = saved ? JSON.parse(saved) : {};
+        const topicId = `${algorithm}-sort`;
+        if (!parsed[topicId]) {
+          parsed[topicId] = true;
+          localStorage.setItem("dsa_master_completed_topics", JSON.stringify(parsed));
+          window.dispatchEvent(new Event("storage"));
+        }
+      } catch (e) {}
+    }
+  }, [currentStepIndex, steps.length, algorithm]);
+
   const setCustomArray = (newArr: number[]) => {
     setArrayInput(newArr);
+    try {
+      localStorage.setItem(`dsa_sorting_array_${algorithm}`, JSON.stringify(newArr));
+    } catch (e) {}
+  };
+
+  const handleSpeedChange = (newSpeed: number) => {
+    setSpeedMs(newSpeed);
+    try {
+      localStorage.setItem("dsa_visualizer_speed", JSON.stringify(newSpeed));
+    } catch (e) {}
   };
 
   const randomize = (size: number = 8) => {
@@ -938,9 +986,15 @@ export function useSorting(
         [perm[i], perm[j]] = [perm[j], perm[i]];
       }
       setArrayInput(perm);
+      try {
+        localStorage.setItem(`dsa_sorting_array_${algorithm}`, JSON.stringify(perm));
+      } catch (e) {}
     } else {
       const randomArr = Array.from({ length: size }, () => Math.floor(Math.random() * 85) + 10);
       setArrayInput(randomArr);
+      try {
+        localStorage.setItem(`dsa_sorting_array_${algorithm}`, JSON.stringify(randomArr));
+      } catch (e) {}
     }
   };
 
@@ -967,7 +1021,7 @@ export function useSorting(
     totalSteps: steps.length,
     isPlaying,
     speedMs,
-    setSpeedMs,
+    setSpeedMs: handleSpeedChange,
     play,
     pause,
     stepNext,
