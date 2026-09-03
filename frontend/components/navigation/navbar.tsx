@@ -19,7 +19,9 @@ import {
   Network,
   BookOpen,
   ArrowRight,
-  MessageSquare
+  MessageSquare,
+  LogIn,
+  User as UserIcon
 } from "lucide-react";
 import {
   Dialog,
@@ -252,26 +254,49 @@ export function Navbar() {
               <Search className={`h-4 w-4 ${isDark ? "text-neutral-900" : "text-white"}`} />
             </button>
 
-            {/* Student Auth Avatar / Trigger Button */}
-            <button
-              type="button"
-              onClick={() => setAuthOpen(true)}
-              className={`hidden sm:flex items-center px-3.5 py-1.5 rounded-full backdrop-blur-md shadow-xs text-xs font-semibold hover:border-primary transition-colors cursor-pointer ${
-                isDark
-                  ? "bg-white/[0.90] text-neutral-900 border border-neutral-300/80"
-                  : "bg-[#09090b]/94 text-white border border-white/[0.18]"
-              }`}
-              suppressHydrationWarning
-            >
-              {mounted && (studentProfile || user) ? (
-                <span className="flex items-center gap-1.5 font-bold max-w-[140px] truncate">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0 inline-block" />
-                  {getUsername(studentProfile, user)}
-                </span>
-              ) : (
+            {/* Student Auth / Sign In Button */}
+            {mounted && (studentProfile || user) ? (
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setAuthOpen(true)}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-semibold shadow-xs transition-all cursor-pointer hover:border-primary ${
+                    isDark
+                      ? "bg-neutral-900 text-white border-neutral-700 hover:bg-neutral-800"
+                      : "bg-white text-neutral-900 border-neutral-300 hover:bg-neutral-50"
+                  }`}
+                  title="Click to view account profile or sign out"
+                  suppressHydrationWarning
+                >
+                  <div className="w-5 h-5 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-[10px] shrink-0">
+                    {(getUsername(studentProfile, user) || "U")[0].toUpperCase()}
+                  </div>
+                  <span className="font-bold max-w-[90px] sm:max-w-[130px] truncate">
+                    {getUsername(studentProfile, user)}
+                  </span>
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                </button>
+
+                <Link
+                  href="/dashboard"
+                  className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold bg-primary text-white hover:bg-primary/90 shadow-xs transition-all cursor-pointer"
+                  title="Go to Student Dashboard"
+                >
+                  <span>Dashboard</span>
+                  <ArrowRight className="h-3 w-3" />
+                </Link>
+              </div>
+            ) : (
+              <Link
+                href="/auth/login"
+                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-[#e11d48] to-[#dc2626] hover:from-[#f43f5e] hover:to-[#e11d48] text-white shadow-sm shadow-red-500/20 transition-all cursor-pointer hover:scale-105"
+                title="Sign in with Google"
+                suppressHydrationWarning
+              >
+                <LogIn className="h-3.5 w-3.5" />
                 <span>Sign In</span>
-              )}
-            </button>
+              </Link>
+            )}
 
             <ModeToggle />
 
