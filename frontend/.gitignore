@@ -35,12 +35,18 @@ yarn-error.log*
 # env files (allow .example templates)
 .env
 .env*.local
+.env.local
 .env.development.local
 .env.test.local
 .env.production.local
+*.key
+*.pem
+credentials.json
+
 !.env.example
 !.env*.example
 !.env.sample
+!.env.template
 
 # vercel & turbo
 .vercel

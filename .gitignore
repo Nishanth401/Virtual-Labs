@@ -49,18 +49,29 @@ target/
 # ===================================================
 .env
 .env*.local
+.env.local
 .env.development.local
 .env.test.local
 .env.production.local
 **/.env
 **/.env*.local
+**/.env.local
 **/.env.development.local
 **/.env.test.local
 **/.env.production.local
+
+# Private keys, tokens & credentials
+*.key
+*.pem
+credentials.json
+*serviceAccount*.json
+*service-account*.json
+
 # Allow template/example env files:
 !**/.env.example
 !**/.env*.example
 !**/.env.sample
+!**/.env.template
 
 # ===================================================
 # LOGS & DEBUGGING

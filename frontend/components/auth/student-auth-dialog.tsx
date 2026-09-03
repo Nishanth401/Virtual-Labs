@@ -113,9 +113,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
     setErrorMsg("");
     try {
       await loginWithGoogle();
-      // Pre-fill name from Google displayName if available
-      setGoogleName(""); // user will enter manually
-      setGoogleRegNoStep(true);
+      onOpenChange(false);
     } catch (err: any) {
       setErrorMsg("Google Sign-In was cancelled or failed.");
     }
