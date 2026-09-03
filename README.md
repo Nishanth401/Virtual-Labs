@@ -3,7 +3,7 @@
 [![Next.js 15](https://img.shields.io/badge/Next.js-15.x-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.3.2-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 [![Java 17](https://img.shields.io/badge/Java-17_LTS-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://openjdk.org/)
-[![Firebase](https://img.shields.io/badge/Firebase-Auth_%26_Firestore-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-Auth_%26_PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
@@ -20,10 +20,9 @@
 - [Repository Structure](#-repository-structure)
 - [Step-by-Step Setup Guide](#-step-by-step-setup-guide)
   - [Prerequisites](#prerequisites)
-  - [1. Firebase & Environment Configuration](#1-firebase--environment-configuration)
-  - [2. Cloud Firestore Rules Setup](#2-cloud-firestore-rules-setup)
-  - [3. Frontend Setup (Next.js)](#3-frontend-setup-nextjs)
-  - [4. Backend Setup (Spring Boot)](#4-backend-setup-spring-boot)
+  - [1. Supabase & Environment Configuration](#1-supabase--environment-configuration)
+  - [2. Frontend Setup (Next.js)](#2-frontend-setup-nextjs)
+  - [3. Backend Setup (Spring Boot)](#3-backend-setup-spring-boot)
 - [Authentication & Data Flow Diagram](#-authentication--data-flow-diagram)
 - [REST API Reference](#-rest-api-reference)
 - [Pre-Configured Test Credentials](#-pre-configured-test-credentials)
@@ -37,26 +36,25 @@
 graph TD
     subgraph Client ["Client Browser (Student / Faculty / Admin)"]
         UI["Next.js 15 App Router\n(React 19 + Tailwind + Framer Motion)"]
-        AUTH_CTX["AuthContext & State Manager\n(Local Storage + Session)"]
+        AUTH_CTX["AuthContext & State Manager\n(Supabase Client Session)"]
         API_CLIENT["REST API Client (lib/api.ts)"]
     end
 
-    subgraph FirebaseCloud ["Google Cloud & Firebase Infrastructure"]
-        FB_AUTH["Firebase Authentication\n(Google OAuth & Email/Password)"]
-        FIRESTORE["Cloud Firestore\n(/users, /students, /folders, /files, /notes, /teamMembers)"]
+    subgraph SupabaseCloud ["Supabase Infrastructure"]
+        SB_AUTH["Supabase Authentication\n(OAuth & Email/Password)"]
+        SB_DB["PostgreSQL Database\n(profiles, notes, folders, files, star_stories)"]
     end
 
     subgraph SpringBackend ["Enterprise Spring Boot 3.3.x Backend (:8080)"]
         SEC_FILTER["Dual-Auth Security Filter\n(JwtAuthenticationFilter)"]
-        FB_VERIFIER["Firebase Admin Token Verifier\n(FirebaseTokenVerifier.java)"]
         CONTROLLERS["REST Controllers\n(Labs, Experiments, Quizzes, Progress, Feedback)"]
         H2_DB[("Embedded H2 Database / PostgreSQL\n(JPA & Hibernate)")]
     end
 
     UI --> AUTH_CTX
-    AUTH_CTX <-->|Login / Register| FB_AUTH
-    AUTH_CTX <-->|Sync Profile & Notes| FIRESTORE
-    AUTH_CTX -->|Injects Firebase Bearer Token| API_CLIENT
+    AUTH_CTX <-->|Login / Register| SB_AUTH
+    AUTH_CTX <-->|Sync Profile & Data| SB_DB
+    AUTH_CTX -->|Injects Bearer Token| API_CLIENT
     API_CLIENT -->|HTTP REST Requests| SEC_FILTER
 
     SEC_FILTER -->|Verify Firebase Token| FB_VERIFIER
@@ -111,14 +109,14 @@ Every laboratory experiment follows an exhaustive 4-part educational workflow:
 ### Backend
 - **Framework**: Spring Boot 3.3.2
 - **Language**: Java 17 LTS / 21
-- **Security**: Spring Security + **Firebase Admin SDK 9.3.0** + `jjwt` 0.12.5
+- **Security**: Spring Security + JWT Authentication
 - **ORM & Data**: Spring Data JPA, Hibernate, H2 In-Memory Database (Embedded) / PostgreSQL
 - **Documentation**: SpringDoc OpenAPI 3 / Swagger UI (`/swagger-ui.html`)
 
 ### Database & Cloud Services
-- **Firebase Authentication**: Google OAuth 2.0 & Email/Password authentication
-- **Cloud Firestore**: Real-time NoSQL cloud database for student profiles, files, notes, and teams
-- **Firestore Security Rules**: Role and UID-based access control policies
+- **Supabase Authentication**: OAuth & Email/Password authentication
+- **Supabase PostgreSQL**: Cloud database for student profiles, files, notes, STAR stories, and SRS tracking
+- **Row-Level Security (RLS)**: Secure user data isolation
 
 ---
 
@@ -127,12 +125,12 @@ Every laboratory experiment follows an exhaustive 4-part educational workflow:
 ```
 clg dept/
 ├── backend/                               # Spring Boot 3.3 Java Backend
-│   ├── pom.xml                            # Maven dependencies (Firebase Admin, JPA, Security)
+│   ├── pom.xml                            # Maven dependencies (JPA, Security)
 │   ├── README.md                          # Backend REST API documentation
 │   └── src/main/
 │       ├── java/com/college/virtuallab/
 │       │   ├── VirtualLabApplication.java # Spring Boot entrypoint
-│       │   ├── config/                    # SecurityConfig, FirebaseConfig, FirebaseTokenVerifier, JwtFilter
+│       │   ├── config/                    # SecurityConfig, JwtFilter
 │       │   ├── auth/                      # Login/Register endpoints & AuthService
 │       │   ├── user/                      # User entity, Role enum, UserRepository
 │       │   ├── lab/                       # Lab entity, LabController, LabService
@@ -142,7 +140,7 @@ clg dept/
 │       │   ├── department/                # Engineering departments & courses
 │       │   └── feedback/                  # Student reviews & ratings
 │       └── resources/
-│           └── application.yml            # Server port (8080), DB config, JWT & Firebase properties
+│           └── application.yml            # Server port (8080), DB config, JWT properties
 │
 ├── frontend/                              # Next.js 15 App Router Frontend
 │   ├── app/                               # Route handlers & views
@@ -151,26 +149,24 @@ clg dept/
 │   │   ├── experiments/[id]/              # 4-part experiment workspace
 │   │   ├── visualizer/                    # Dedicated DSA visualization studio
 │   │   ├── dashboard/                     # Student profile, certificate & tabs
-│   │   └── auth/login/                    # Firebase authentication page
+│   │   └── auth/login/                    # Authentication page
 │   ├── components/                        # Modular React components
-│   │   ├── auth/                          # StudentAuthDialog modal (Google & Email)
+│   │   ├── auth/                          # StudentAuthDialog modal
 │   │   ├── dashboard/                     # ProgressCard, CertificateModal, Files, Notes, Team
 │   │   ├── navigation/                    # Navbar (VSB logo, theme toggle, profile menu), Footer
 │   │   ├── visualizer/                    # Dynamic animation controls & graph canvases
 │   │   └── ui/                            # Shadcn UI primitives (dialog, tabs, badge, card)
 │   ├── context/
-│   │   └── auth-context.tsx               # Firebase Auth state & user synchronization
+│   │   └── auth-context.tsx               # Supabase Auth state & user synchronization
 │   ├── lib/
-│   │   ├── firebase.ts                    # Firebase client initialization & Firestore helpers
+│   │   ├── supabase.ts                    # Supabase client initialization & database helpers
 │   │   ├── api.ts                         # Spring Boot REST API client
 │   │   ├── storage.ts                     # Local progress persistence fallback
 │   │   └── recursion-code-runner.ts       # JVM stack trace simulator
 │   ├── public/                            # Static images, icons, and logos
 │   ├── .env.local                         # Active environment variables
-│   ├── .env.local.example                 # Environment configuration template
-│   └── firestore.rules                    # Frontend Firestore security rules
+│   └── .env.local.example                 # Environment configuration template
 │
-├── firestore.rules                        # Root Firestore security rules
 ├── package.json                           # Root scripts and workspace config
 └── README.md                              # Main project documentation (this file)
 ```
@@ -188,74 +184,18 @@ Make sure you have the following installed on your machine:
 
 ---
 
-### 1. Firebase & Environment Configuration
+### 1. Supabase & Environment Configuration
 
 Create or verify the `.env.local` file inside the `frontend` folder:
 
 ```bash
 # Location: frontend/.env.local
 
-NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyAYS8N8C25-VWYUfCDh1OrUq__DxgVBgXk
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=virtual-lab-e7495.firebaseapp.com
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=virtual-lab-e7495
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=virtual-lab-e7495.firebasestorage.app
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=341602998056
-NEXT_PUBLIC_FIREBASE_APP_ID=1:341602998056:web:3e78ace74d2fd34680e21d
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.your-anon-key
 
 # Spring Boot REST API Base URL
 NEXT_PUBLIC_API_URL=http://localhost:8080/api/v1
-```
-
----
-
-### 2. Cloud Firestore Rules Setup
-
-Deploy the security rules from `firestore.rules` to your Firebase Console:
-
-```rules
-rules_version = '2';
-
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // 1. User document and nested subcollections (folders, files, notes, teamMembers)
-    match /users/{uid} {
-      allow read, write: if request.auth != null && (request.auth.uid == uid || resource.data.uid == request.auth.uid);
-      allow create: if request.auth != null;
-      
-      match /{allSubcollections=**} {
-        allow read, write: if request.auth != null;
-      }
-    }
-
-    // 2. Allow reading users collection for account validation
-    match /users/{document} {
-      allow read: if request.auth != null;
-    }
-
-    // 3. Students collection indexed by Register Number
-    match /students/{registerNumber} {
-      allow read: if true;
-      allow write, create, update, delete: if request.auth != null;
-    }
-
-    // 4. Announcements, Feedbacks, and Quizzes
-    match /announcements/{announcementId} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-
-    match /feedbacks/{feedbackId} {
-      allow read: if true;
-      allow create: if true;
-      allow update, delete: if request.auth != null;
-    }
-
-    match /quizzes/{quizId}/{document=**} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-  }
-}
 ```
 
 ---
@@ -308,22 +248,20 @@ sequenceDiagram
     autonumber
     actor Student as Student / User
     participant NextJS as Next.js 15 Client
-    participant Firebase as Firebase Auth & Firestore
+    participant Supabase as Supabase Auth & PostgreSQL
     participant Spring as Spring Boot Backend (:8080)
     participant Database as JPA Database (H2/Postgres)
 
     Student->>NextJS: Clicks "Continue with Google" / Email Login
-    NextJS->>Firebase: signInWithPopup(googleProvider)
-    Firebase-->>NextJS: Returns Firebase User + ID Token (JWT)
-    NextJS->>NextJS: Stores token in localStorage ("vlab_auth_token")
-    NextJS->>Firebase: Queries /users/{uid} or /students/{regNo}
-    Firebase-->>NextJS: Returns Student Profile & Cloud Notes
+    NextJS->>Supabase: signInWithOAuth / signInWithPassword
+    Supabase-->>NextJS: Returns Supabase User + Session Access Token
+    NextJS->>NextJS: Stores session in localStorage
+    NextJS->>Supabase: Queries profiles, notes, star_stories
+    Supabase-->>NextJS: Returns Student Profile & Cloud Notes
 
     Note over NextJS,Spring: When interacting with Backend REST Endpoints
-    NextJS->>Spring: GET /api/v1/progress (Header: Bearer <Firebase_ID_Token>)
+    NextJS->>Spring: GET /api/v1/progress (Header: Bearer <Supabase_Token>)
     Spring->>Spring: JwtAuthenticationFilter checks token
-    Spring->>Firebase: FirebaseTokenVerifier validates token signature
-    Firebase-->>Spring: Valid Token (UID, Email, Name)
     Spring->>Database: Finds or auto-creates Student User (JIT Provisioning)
     Database-->>Spring: User Record (ROLE_STUDENT)
     Spring->>Spring: Sets SecurityContextHolder Authentication
@@ -341,7 +279,7 @@ sequenceDiagram
 |---|---|---|---|
 | `POST` | `/api/v1/auth/login` | Native email & password login, returns JWT | Public |
 | `POST` | `/api/v1/auth/register` | Register new student or faculty account | Public |
-| `GET` | `/api/v1/auth/me` | Fetch currently authenticated user profile | Authenticated (Firebase / JWT) |
+| `GET` | `/api/v1/auth/me` | Fetch currently authenticated user profile | Authenticated (Supabase / JWT) |
 | `GET` | `/api/v1/departments` | List all engineering departments | Public |
 | `GET` | `/api/v1/courses` | List semester curriculum courses | Public |
 | `GET` | `/api/v1/labs` | List all Virtual Laboratories | Public |

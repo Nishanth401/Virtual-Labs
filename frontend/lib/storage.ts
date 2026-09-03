@@ -31,8 +31,8 @@ const STORAGE_KEY = "vlab_student_progress_v1";
 
 const DEFAULT_STATE: StudentProgressState = {
   role: "STUDENT",
-  studentName: "Anish R.",
-  studentRollNo: "922521104012",
+  studentName: "Student",
+  studentRollNo: "STUDENT",
   department: "Department of Artificial Intelligence & Data Science",
   completedExperiments: ["stack-operations"],
   quizAttempts: {

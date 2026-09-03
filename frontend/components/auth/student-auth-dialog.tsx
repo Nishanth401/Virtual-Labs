@@ -113,9 +113,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
     setErrorMsg("");
     try {
       await loginWithGoogle();
-      // Pre-fill name from Google displayName if available
-      setGoogleName(""); // user will enter manually
-      setGoogleRegNoStep(true);
+      onOpenChange(false);
     } catch (err: any) {
       setErrorMsg("Google Sign-In was cancelled or failed.");
     }
@@ -316,7 +314,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" /> Instructions:
               </p>
               <p className="pl-5">1. Check your email inbox (and spam folder).</p>
-              <p className="pl-5">2. Click the verification link from Firebase.</p>
+              <p className="pl-5">2. Click the verification link sent to your email.</p>
               <p className="pl-5">3. Click the Login button below to proceed.</p>
             </div>
 
@@ -419,8 +417,8 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                 <span className="text-[10px] uppercase font-bold text-muted-foreground block font-mono">
                   Auth Method
                 </span>
-                <span className="text-sm font-black text-amber-500 font-mono">
-                  Firebase
+                <span className="text-sm font-black text-emerald-500 font-mono">
+                  Supabase
                 </span>
               </div>
             </div>

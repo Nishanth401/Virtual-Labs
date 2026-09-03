@@ -22,6 +22,9 @@ import {
   HelpCircle,
   Info
 } from "lucide-react";
+import { AiReviewModal } from "@/components/prep-suite/ai-review-modal";
+import { evaluateStarStory, StarEvaluationResult } from "@/lib/ai-evaluation-engine";
+import { supabase, saveUserStarStory, getUserStarStories } from "@/lib/supabase";
 
 interface StarStory {
   id: string;
@@ -87,10 +90,37 @@ export function BehavioralStudio() {
   ]);
 
   const [copied, setCopied] = useState<boolean>(false);
+  const [isAiModalOpen, setIsAiModalOpen] = useState<boolean>(false);
+  const [starReviewResult, setStarReviewResult] = useState<StarEvaluationResult | null>(null);
 
-  const handleSaveStory = () => {
-    const newStory: StarStory = {
-      id: Date.now().toString(),
+  const handleRunAiReview = () => {
+    const resultEvaluation = evaluateStarStory(
+      situation,
+      task,
+      action,
+      result,
+      selectedCompany,
+      storyTag
+    );
+    setStarReviewResult(resultEvaluation);
+    setIsAiModalOpen(true);
+  };
+
+  React.useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      const uid = session?.user?.id || "guest_user";
+      getUserStarStories(uid).then((cloudList) => {
+        if (cloudList && cloudList.length > 0) {
+          setSavedStories(cloudList as StarStory[]);
+        }
+      });
+    });
+  }, []);
+
+  const handleSaveStory = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    const uid = session?.user?.id || "guest_user";
+    const newStoryData = {
       title: storyTitle || "Untitled Story",
       companyTag: selectedCompany,
       principle: storyTag,
@@ -99,7 +129,18 @@ export function BehavioralStudio() {
       action,
       result
     };
-    setSavedStories([newStory, ...savedStories]);
+    const saved = await saveUserStarStory(uid, newStoryData);
+    const storyItem: StarStory = {
+      id: saved.id || Date.now().toString(),
+      title: saved.title,
+      companyTag: saved.companyTag,
+      principle: saved.principle,
+      situation: saved.situation,
+      task: saved.task,
+      action: saved.action,
+      result: saved.result
+    };
+    setSavedStories((prev) => [storyItem, ...prev]);
   };
 
   const getFullStoryText = () => {
@@ -263,11 +304,22 @@ export function BehavioralStudio() {
               </div>
 
               {/* Actions Button */}
-              <div className="flex items-center justify-between pt-2">
-                <Button size="sm" onClick={handleSaveStory} className="gap-1.5 font-bold text-xs h-9">
-                  <Plus className="h-4 w-4" />
-                  Save to Story Bank
-                </Button>
+              <div className="flex flex-wrap items-center justify-between gap-2 pt-2">
+                <div className="flex items-center gap-2">
+                  <Button size="sm" onClick={handleSaveStory} className="gap-1.5 font-bold text-xs h-9">
+                    <Plus className="h-4 w-4" />
+                    Save to Story Bank
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={handleRunAiReview}
+                    className="gap-1.5 font-bold text-xs h-9 border-primary/40 text-primary hover:bg-primary/10"
+                  >
+                    <Sparkles className="h-3.5 w-3.5" />
+                    AI Rubric Evaluation
+                  </Button>
+                </div>
 
                 <Button size="sm" variant="outline" onClick={handleCopy} className="gap-1.5 text-xs h-9">
                   {copied ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : <Copy className="h-3.5 w-3.5" />}
@@ -410,6 +462,14 @@ export function BehavioralStudio() {
           </Card>
         </div>
       )}
+
+      {/* AI Behavioral STAR Review Modal */}
+      <AiReviewModal
+        isOpen={isAiModalOpen}
+        onClose={() => setIsAiModalOpen(false)}
+        reviewType="star"
+        starReview={starReviewResult || undefined}
+      />
     </div>
   );
 }
