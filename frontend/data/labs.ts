@@ -32,6 +32,16 @@ export interface LabTamilVideo {
   timestamps?: VideoTimestamp[];
 }
 
+export interface LabPlaylist {
+  title: string;
+  url: string;
+  embedUrl?: string;
+  channel?: string;
+  language: "Tamil" | "English" | "Bilingual";
+  videoCount?: string;
+  description?: string;
+}
+
 export interface Lab {
   id: string;
   code: string;
@@ -51,8 +61,9 @@ export interface Lab {
   tags: string[];
   bannerGradient: string;
   videoUrl: string;
-  videoParts: LabVideoPart[];
+  videoParts?: LabVideoPart[];
   tamilVideo?: LabTamilVideo;
+  playlists?: LabPlaylist[];
   semester: string;
   resources?: LabResourceLink[];
 }
@@ -101,46 +112,56 @@ export const LABS_DATA: Lab[] = [
     tags: ["NumPy", "Pandas", "Matplotlib", "Z-Test", "ANOVA", "Regression", "Time Series"],
     bannerGradient: "from-violet-700 via-indigo-950 to-slate-950",
     videoUrl: "https://www.youtube-nocookie.com/embed/QUT1VHiLmmI",
-    videoParts: [
+    tamilVideo: {
+      url: "https://www.youtube-nocookie.com/embed/k6HOBjkUkE4",
+      title: "Data Science & Analytics 18+ Hour Masterclass in Tamil (AI Coach John)",
+      description: "Complete 18+ hour masterclass in Tamil covering Python foundations, Pandas deep dive, data cleaning & visualization, statistics & hypothesis testing, Linear & Logistic Regression, Streamlit deployment, and K-Means clustering.",
+      duration: "18h 15m (21 Chapters)",
+      channel: "AI Coach John",
+      timestamps: [
+        { time: "00:00", seconds: 0, title: "Introduction", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4", category: "Course Overview" },
+        { time: "03:58", seconds: 238, title: "My Gift for You", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=238s", category: "Course Overview" },
+        { time: "10:36", seconds: 636, title: "Agenda of the Course", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=636s", category: "Course Overview" },
+        { time: "14:20", seconds: 860, title: "Who is AI Coach John?", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=860s", category: "Course Overview" },
+        { time: "31:29", seconds: 1889, title: "Python Installation and Exploration", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=1889s", category: "Python Foundations" },
+        { time: "46:58", seconds: 2818, title: "Python Basics + Data Types", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=2818s", category: "Python Foundations" },
+        { time: "1:05:32", seconds: 3932, title: "For Loop & While Loop", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=3932s", category: "Python Foundations" },
+        { time: "1:18:30", seconds: 4710, title: "Conditional Statements and Functions", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=4710s", category: "Python Foundations" },
+        { time: "2:03:35", seconds: 7415, title: "Python Libraries – Complete Explanation in Tamil", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=7415s", category: "Python Foundations" },
+        { time: "2:43:48", seconds: 9828, title: "Recap + Python Data Structures", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=9828s", category: "Python Foundations" },
+        { time: "4:30:29", seconds: 16229, title: "Data Analyst Tool – Pandas Deep Dive", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=16229s", category: "Data Analysis" },
+        { time: "6:35:48", seconds: 23748, title: "Data Cleaning Techniques", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=23748s", category: "Data Analysis" },
+        { time: "8:12:22", seconds: 29542, title: "Data Visualization", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=29542s", category: "Data Analysis" },
+        { time: "10:22:40", seconds: 37360, title: "Statistics", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=37360s", category: "Statistics & Math" },
+        { time: "11:30:45", seconds: 41445, title: "Hypothesis and Statistical Testing", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=41445s", category: "Statistics & Math" },
+        { time: "13:24:09", seconds: 48249, title: "Machine Learning Introduction", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=48249s", category: "Machine Learning Core" },
+        { time: "13:59:36", seconds: 50376, title: "Linear Regression in Tamil", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=50376s", category: "Machine Learning Core" },
+        { time: "15:34:20", seconds: 56060, title: "Logistic Regression", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=56060s", category: "Machine Learning Core" },
+        { time: "16:02:06", seconds: 57726, title: "Streamlit Deployment", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=57726s", category: "Deployment" },
+        { time: "17:16:45", seconds: 62205, title: "K-Means Clustering", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=62205s", category: "Unsupervised Learning" },
+        { time: "18:11:51", seconds: 65511, title: "Conclusion (Final Words)", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=65511s", category: "Summary & Wrap Up" }
+      ]
+    },
+    playlists: [
       {
-        id: "ds-part-1",
-        partNumber: 1,
-        title: "Part 1: NumPy & Multi-Dimensional Array Processing",
-        duration: "45 mins",
-        url: "https://www.youtube-nocookie.com/embed/QUT1VHiLmmI",
-        description: "Array indexing, multi-dimensional slicing, matrix multiplication, and vectorized ufuncs."
+        title: "Data Science & Analytics 18+ Hour Master Course (Tamil)",
+        url: "https://www.youtube.com/watch?v=k6HOBjkUkE4",
+        embedUrl: "https://www.youtube-nocookie.com/embed/k6HOBjkUkE4",
+        language: "Tamil",
+        channel: "AI Coach John",
+        videoCount: "21 Chapters",
+        description: "Python, Pandas, Data Cleaning, Visualization, Statistics, Regression, and Deployment."
       },
       {
-        id: "ds-part-2",
-        partNumber: 2,
-        title: "Part 2: Pandas DataFrames & Data Cleaning",
-        duration: "50 mins",
-        url: "https://www.youtube-nocookie.com/embed/vmEHCJofslg",
-        description: "Series, DataFrame manipulation, handling missing values with imputation, and GroupBy aggregations."
-      },
-      {
-        id: "ds-part-3",
-        partNumber: 3,
-        title: "Part 3: Matplotlib & Seaborn Data Visualization",
-        duration: "40 mins",
-        url: "https://www.youtube-nocookie.com/embed/UO98lJQ3QGI",
-        description: "Histograms, scatter plots, normal distribution curves, feature correlation heatmaps, and pair plots."
-      },
-      {
-        id: "ds-part-4",
-        partNumber: 4,
-        title: "Part 4: Hypothesis Testing & Predictive Models",
-        duration: "55 mins",
-        url: "https://www.youtube-nocookie.com/embed/LHBE6Q9XlzI",
-        description: "Formulation of Z-test, Student's T-test, One-way ANOVA, OLS Regression, and Time Series decomposition."
+        title: "Python Data Science, NumPy & Pandas Complete Tutorial (English)",
+        url: "https://www.youtube.com/watch?v=QUT1VHiLmmI",
+        embedUrl: "https://www.youtube-nocookie.com/embed/QUT1VHiLmmI",
+        language: "English",
+        channel: "FreeCodeCamp",
+        videoCount: "Full Course",
+        description: "Comprehensive statistical computing with NumPy arrays, Pandas DataFrames, and Matplotlib."
       }
     ],
-    tamilVideo: {
-      url: "https://www.youtube-nocookie.com/embed/fW4B07y04V4",
-      title: "Data Science & Python Full Course in Tamil",
-      description: "Comprehensive Tamil tutorial covering Python for data science, NumPy, Pandas, visualization, and statistical modeling.",
-      duration: "Full Course"
-    },
     semester: "Semester 4",
     resources: [
       {
@@ -192,46 +213,32 @@ export const LABS_DATA: Lab[] = [
     tags: ["tcpdump", "Wireshark", "TCP Sockets", "UDP DNS", "ARP/RARP", "Routing", "CRC"],
     bannerGradient: "from-amber-600 via-orange-950 to-slate-950",
     videoUrl: "https://www.youtube-nocookie.com/embed/IPvYjXCsTg8",
-    videoParts: [
-      {
-        id: "cn-part-1",
-        partNumber: 1,
-        title: "Part 1: Network Fundamentals & OSI Architecture",
-        duration: "45 mins",
-        url: "https://www.youtube-nocookie.com/embed/IPvYjXCsTg8",
-        description: "OSI 7-layer model, TCP/IP stack architecture, packet headers, and encapsulation."
-      },
-      {
-        id: "cn-part-2",
-        partNumber: 2,
-        title: "Part 2: Network Diagnostics & Wireshark Packet Analysis",
-        duration: "40 mins",
-        url: "https://www.youtube-nocookie.com/embed/lb1Dw0elw0Q",
-        description: "tcpdump, netstat, traceroute, and packet capture dissection in Wireshark."
-      },
-      {
-        id: "cn-part-3",
-        partNumber: 3,
-        title: "Part 3: TCP & UDP Socket Programming",
-        duration: "50 mins",
-        url: "https://www.youtube-nocookie.com/embed/3QhU9jd03a0",
-        description: "Client-server TCP streams, HTTP web clients, multi-client chat, and UDP DNS simulation."
-      },
-      {
-        id: "cn-part-4",
-        partNumber: 4,
-        title: "Part 4: Routing Protocols & CRC Error Detection",
-        duration: "45 mins",
-        url: "https://www.youtube-nocookie.com/embed/WlhT7Qsm4k8",
-        description: "Distance Vector Routing, Link State Dijkstra, and Cyclic Redundancy Check (CRC)."
-      }
-    ],
     tamilVideo: {
       url: "https://www.youtube-nocookie.com/embed/yiIpBNBl4bc",
       title: "Computer Networks Full Course in Tamil",
       description: "Complete Tamil tutorial covering OSI layers, TCP/IP, IP addressing, routing algorithms, socket programming, and Wireshark analysis.",
       duration: "Full Course"
     },
+    playlists: [
+      {
+        title: "Computer Networks Complete Lectures Playlist (English)",
+        url: "https://www.youtube.com/playlist?list=PLBlnK6fEyqRgMCUAG0XRw78UA8qnv6jEx",
+        embedUrl: "https://www.youtube-nocookie.com/embed/videoseries?list=PLBlnK6fEyqRgMCUAG0XRw78UA8qnv6jEx",
+        language: "English",
+        channel: "Neso Academy",
+        videoCount: "Full Playlist Series",
+        description: "OSI model, TCP/IP architecture, socket programming, flow control, and routing protocols."
+      },
+      {
+        title: "Computer Networks Tutorial Course (Tamil)",
+        url: "https://www.youtube.com/watch?v=yiIpBNBl4bc",
+        embedUrl: "https://www.youtube-nocookie.com/embed/yiIpBNBl4bc",
+        language: "Tamil",
+        channel: "Tamil Networks Track",
+        videoCount: "Full Course",
+        description: "OSI 7 layers, IP subnets, routing algorithms, and socket communication in Tamil."
+      }
+    ],
     semester: "Semester 5",
     resources: [
       {
@@ -282,71 +289,34 @@ export const LABS_DATA: Lab[] = [
     iconName: "BrainCircuit",
     tags: ["Candidate-Elimination", "ID3 Trees", "Backpropagation", "Naïve Bayes", "EM vs k-Means", "k-NN", "LWR"],
     bannerGradient: "from-blue-700 via-indigo-950 to-slate-950",
-    videoUrl: "https://www.youtube-nocookie.com/embed/coOTEc-0OGw",
-    videoParts: [
+    videoUrl: "https://www.youtube-nocookie.com/embed/GwIo3gDZCVQ",
+    tamilVideo: {
+      url: "https://www.youtube-nocookie.com/embed/videoseries?list=PLorkqpg7qgkw8xqc-RmuCgfCWRWCRnN-u",
+      title: "Machine Learning & Deep Learning Full Playlist in Tamil",
+      description: "Complete machine learning video series in Tamil covering supervised algorithms, decision trees, neural networks, Naïve Bayes, and unsupervised clustering.",
+      duration: "Full Playlist Series",
+      channel: "Machine Learning Tamil"
+    },
+    playlists: [
       {
-        id: "ml-part-1",
-        partNumber: 1,
-        title: "Part 1: Concept Learning & ID3 Decision Trees",
-        duration: "45 mins",
-        url: "https://www.youtube-nocookie.com/embed/coOTEc-0OGw",
-        description: "Candidate-Elimination version space boundary updates and ID3 entropy calculation."
+        title: "Machine Learning Complete Playlist (Tamil)",
+        url: "https://www.youtube.com/playlist?list=PLorkqpg7qgkw8xqc-RmuCgfCWRWCRnN-u",
+        embedUrl: "https://www.youtube-nocookie.com/embed/videoseries?list=PLorkqpg7qgkw8xqc-RmuCgfCWRWCRnN-u",
+        language: "Tamil",
+        channel: "Machine Learning Tamil",
+        videoCount: "Full Playlist",
+        description: "Supervised and unsupervised learning, mathematical formulations, and Python implementations in Tamil."
       },
       {
-        id: "ml-part-2",
-        partNumber: 2,
-        title: "Part 2: Artificial Neural Networks & Backpropagation",
-        duration: "55 mins",
-        url: "https://www.youtube-nocookie.com/embed/aircAruvnKk",
-        description: "Forward feed activation, loss gradient derivation, and backpropagation weight adjustments."
-      },
-      {
-        id: "ml-part-3",
-        partNumber: 3,
-        title: "Part 3: Naïve Bayes Classifiers & Bayesian Networks",
-        duration: "40 mins",
-        url: "https://www.youtube-nocookie.com/embed/O2L2Uv9pdDA",
-        description: "Gaussian Naïve Bayes on CSV data, text classification with NLP, and Bayesian networks."
-      },
-      {
-        id: "ml-part-4",
-        partNumber: 4,
-        title: "Part 4: Clustering & Instance-Based Learning (k-NN / EM)",
-        duration: "50 mins",
-        url: "https://www.youtube-nocookie.com/embed/i_LwzRVP7bg",
-        description: "Expectation-Maximization Gaussian Mixtures vs k-Means, k-NN on Iris, and Locally Weighted Regression."
+        title: "Machine Learning Course for Beginners (English)",
+        url: "https://www.youtube.com/watch?v=GwIo3gDZCVQ",
+        embedUrl: "https://www.youtube-nocookie.com/embed/GwIo3gDZCVQ",
+        language: "English",
+        channel: "FreeCodeCamp",
+        videoCount: "Full Course",
+        description: "Complete ML curriculum: linear regression, logistic regression, SVM, decision trees, and neural networks."
       }
     ],
-    tamilVideo: {
-      url: "https://www.youtube-nocookie.com/embed/k6HOBjkUkE4",
-      title: "Machine Learning & Data Science Full Course in Tamil (AI Coach John)",
-      description: "Complete 18+ hour masterclass in Tamil covering Python foundations, Pandas deep dive, data cleaning & visualization, statistics & hypothesis testing, Linear & Logistic Regression, Streamlit deployment, and K-Means clustering.",
-      duration: "18h 15m (21 Chapters)",
-      channel: "AI Coach John",
-      timestamps: [
-        { time: "00:00", seconds: 0, title: "Introduction", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4", category: "Course Overview" },
-        { time: "03:58", seconds: 238, title: "My Gift for You", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=238s", category: "Course Overview" },
-        { time: "10:36", seconds: 636, title: "Agenda of the Course", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=636s", category: "Course Overview" },
-        { time: "14:20", seconds: 860, title: "Who is AI Coach John?", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=860s", category: "Course Overview" },
-        { time: "31:29", seconds: 1889, title: "Python Installation and Exploration", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=1889s", category: "Python Foundations" },
-        { time: "46:58", seconds: 2818, title: "Python Basics + Data Types", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=2818s", category: "Python Foundations" },
-        { time: "1:05:32", seconds: 3932, title: "For Loop & While Loop", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=3932s", category: "Python Foundations" },
-        { time: "1:18:30", seconds: 4710, title: "Conditional Statements and Functions", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=4710s", category: "Python Foundations" },
-        { time: "2:03:35", seconds: 7415, title: "Python Libraries – Complete Explanation in Tamil", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=7415s", category: "Python Foundations" },
-        { time: "2:43:48", seconds: 9828, title: "Recap + Python Data Structures", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=9828s", category: "Python Foundations" },
-        { time: "4:30:29", seconds: 16229, title: "Data Analyst Tool – Pandas Deep Dive", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=16229s", category: "Data Analysis" },
-        { time: "6:35:48", seconds: 23748, title: "Data Cleaning Techniques", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=23748s", category: "Data Analysis" },
-        { time: "8:12:22", seconds: 29542, title: "Data Visualization", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=29542s", category: "Data Analysis" },
-        { time: "10:22:40", seconds: 37360, title: "Statistics", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=37360s", category: "Statistics & Math" },
-        { time: "11:30:45", seconds: 41445, title: "Hypothesis and Statistical Testing", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=41445s", category: "Statistics & Math" },
-        { time: "13:24:09", seconds: 48249, title: "Machine Learning Introduction", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=48249s", category: "Machine Learning Core" },
-        { time: "13:59:36", seconds: 50376, title: "Linear Regression in Tamil", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=50376s", category: "Machine Learning Core" },
-        { time: "15:34:20", seconds: 56060, title: "Logistic Regression", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=56060s", category: "Machine Learning Core" },
-        { time: "16:02:06", seconds: 57726, title: "Streamlit Deployment", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=57726s", category: "Deployment" },
-        { time: "17:16:45", seconds: 62205, title: "K-Means Clustering", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=62205s", category: "Unsupervised Learning" },
-        { time: "18:11:51", seconds: 65511, title: "Conclusion (Final Words)", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=65511s", category: "Summary & Wrap Up" }
-      ]
-    },
     semester: "Semester 4",
     resources: [
       {
@@ -397,47 +367,33 @@ export const LABS_DATA: Lab[] = [
     iconName: "Cpu",
     tags: ["CPU Scheduling", "System Calls", "Semaphores", "Banker's Algorithm", "Paging", "Disk Scheduling"],
     bannerGradient: "from-cyan-700 via-blue-950 to-slate-950",
-    videoUrl: "https://www.youtube-nocookie.com/embed/26QPDBe-NB8",
-    videoParts: [
-      {
-        id: "os-part-1",
-        partNumber: 1,
-        title: "Part 1: Process System Calls & Shell Scripting",
-        duration: "45 mins",
-        url: "https://www.youtube-nocookie.com/embed/26QPDBe-NB8",
-        description: "UNIX commands, shell scripts, fork(), exec(), getpid(), wait(), and exit() system calls."
-      },
-      {
-        id: "os-part-2",
-        partNumber: 2,
-        title: "Part 2: CPU Scheduling & Gantt Charts",
-        duration: "50 mins",
-        url: "https://www.youtube-nocookie.com/embed/ewp_mR0_vS8",
-        description: "FCFS, SJF, Priority, and Round Robin scheduling algorithms with waiting time metrics."
-      },
-      {
-        id: "os-part-3",
-        partNumber: 3,
-        title: "Part 3: Inter-Process Communication & Synchronization",
-        duration: "45 mins",
-        url: "https://www.youtube-nocookie.com/embed/ukM_zzrIeXs",
-        description: "Pipes, shared memory, message queues, and semaphore synchronization (Producer-Consumer)."
-      },
-      {
-        id: "os-part-4",
-        partNumber: 4,
-        title: "Part 4: Deadlocks, Memory Paging & Disk Scheduling",
-        duration: "55 mins",
-        url: "https://www.youtube-nocookie.com/embed/6i3NGkWxYlg",
-        description: "Banker's deadlock avoidance, FIFO/LRU/Optimal page replacement, and FCFS/SSTF/SCAN disk scheduling."
-      }
-    ],
+    videoUrl: "https://www.youtube-nocookie.com/embed/bkSWJJZNgf8",
     tamilVideo: {
       url: "https://www.youtube-nocookie.com/embed/bkSWJJZNgf8",
-      title: "Operating Systems Full Course in Tamil",
-      description: "Complete Tamil tutorial covering process lifecycles, CPU scheduling, semaphores, deadlocks, and virtual memory paging.",
+      title: "Operating Systems Full Course Tutorial",
+      description: "Comprehensive operating systems tutorial covering CPU scheduling, memory management, semaphore synchronization, deadlock handling, and page replacement policies.",
       duration: "Full Course"
     },
+    playlists: [
+      {
+        title: "Operating Systems Complete Gate Smashers Playlist (English)",
+        url: "https://www.youtube.com/playlist?list=PLxCzCOWd7aiGz9donHRrE9I3Mwn6XdP8p",
+        embedUrl: "https://www.youtube-nocookie.com/embed/videoseries?list=PLxCzCOWd7aiGz9donHRrE9I3Mwn6XdP8p",
+        language: "English",
+        channel: "Gate Smashers",
+        videoCount: "Full Playlist Series",
+        description: "Process scheduling, semaphores, Banker's deadlock algorithm, paging, and disk scheduling."
+      },
+      {
+        title: "Operating Systems Full Course Tutorial",
+        url: "https://www.youtube.com/watch?v=bkSWJJZNgf8",
+        embedUrl: "https://www.youtube-nocookie.com/embed/bkSWJJZNgf8",
+        language: "Bilingual",
+        channel: "OS Tutorial",
+        videoCount: "Full Course",
+        description: "UNIX commands, process lifecycles, CPU scheduling, semaphores, and memory management."
+      }
+    ],
     semester: "Semester 4",
     resources: [
       {
@@ -489,46 +445,32 @@ export const LABS_DATA: Lab[] = [
     tags: ["Java OOP", "Inheritance", "Polymorphism", "Recursion", "Collections", "JDBC Streams"],
     bannerGradient: "from-rose-700 via-red-950 to-slate-950",
     videoUrl: "https://www.youtube-nocookie.com/embed/A74TOX803D0",
-    videoParts: [
-      {
-        id: "java-part-1",
-        partNumber: 1,
-        title: "Part 1: Java OOP Foundations & Encapsulation",
-        duration: "45 mins",
-        url: "https://www.youtube-nocookie.com/embed/A74TOX803D0",
-        description: "Class creation, instance variables, methods, constructors, and encapsulation principles."
-      },
-      {
-        id: "java-part-2",
-        partNumber: 2,
-        title: "Part 2: Inheritance & Polymorphic Design",
-        duration: "50 mins",
-        url: "https://www.youtube-nocookie.com/embed/eIrMbAQSU34",
-        description: "Single, multilevel, hierarchical inheritance, method overriding, and dynamic method dispatch."
-      },
-      {
-        id: "java-part-3",
-        partNumber: 3,
-        title: "Part 3: Exception Handling & File I/O Streams",
-        duration: "40 mins",
-        url: "https://www.youtube-nocookie.com/embed/1W_kHlA6IUk",
-        description: "try-catch-finally, custom business exceptions, FileReader, and BufferedReader I/O."
-      },
-      {
-        id: "java-part-4",
-        partNumber: 4,
-        title: "Part 4: Collections Framework & JDBC Connectivity",
-        duration: "55 mins",
-        url: "https://www.youtube-nocookie.com/embed/vggeAELp_Yk",
-        description: "ArrayList, HashMap, Stream API filters, and JDBC PreparedStatement database CRUD."
-      }
-    ],
     tamilVideo: {
       url: "https://www.youtube-nocookie.com/embed/nqB3qAtDLKU",
       title: "Object Oriented Programming with Java in Tamil",
       description: "Complete Tamil tutorial covering classes, objects, inheritance, polymorphism, abstraction, exception handling, and Java collections.",
       duration: "Full Course"
     },
+    playlists: [
+      {
+        title: "Java Master Series Playlist (English)",
+        url: "https://www.youtube.com/playlist?list=PLsyeobzWxl7pe_IiTfNyr55kwJPWbgxB5",
+        embedUrl: "https://www.youtube-nocookie.com/embed/videoseries?list=PLsyeobzWxl7pe_IiTfNyr55kwJPWbgxB5",
+        language: "English",
+        channel: "Telusko",
+        videoCount: "Full Playlist Series",
+        description: "Complete Java programming from core fundamentals to OOP, exception handling, and Collections."
+      },
+      {
+        title: "Java OOP Complete Tutorial in Tamil",
+        url: "https://www.youtube.com/watch?v=nqB3qAtDLKU",
+        embedUrl: "https://www.youtube-nocookie.com/embed/nqB3qAtDLKU",
+        language: "Tamil",
+        channel: "Tamil Java Tutorial",
+        videoCount: "Full Course",
+        description: "Classes, objects, inheritance, polymorphism, abstraction, and interfaces in Tamil."
+      }
+    ],
     semester: "Semester 3",
     resources: [
       {
@@ -573,46 +515,32 @@ export const LABS_DATA: Lab[] = [
     tags: ["Linked Lists", "Stacks & Queues", "BST & AVL Tree", "B-Trees", "Graphs", "Sorting & Hashing"],
     bannerGradient: "from-purple-700 via-indigo-950 to-slate-950",
     videoUrl: "https://www.youtube-nocookie.com/embed/8hly31xKli0",
-    videoParts: [
-      {
-        id: "dsa-part-1",
-        partNumber: 1,
-        title: "Part 1: Linear Structures (Linked Lists & Stacks)",
-        duration: "50 mins",
-        url: "https://www.youtube-nocookie.com/embed/8hly31xKli0",
-        description: "Singly, Doubly, Circular Linked Lists, Infix-to-Postfix, and Stack Parentheses validation."
-      },
-      {
-        id: "dsa-part-2",
-        partNumber: 2,
-        title: "Part 2: Queues, Circular Buffers & Monotonic Deques",
-        duration: "40 mins",
-        url: "https://www.youtube-nocookie.com/embed/okr-XE8yTO8",
-        description: "Circular Queue implementation, Priority Queues, and Sliding Window Maximum with Deques."
-      },
-      {
-        id: "dsa-part-3",
-        partNumber: 3,
-        title: "Part 3: Search Trees & Balanced Structures (BST/AVL)",
-        duration: "55 mins",
-        url: "https://www.youtube-nocookie.com/embed/q4LwtVojPO0",
-        description: "Binary Search Tree insertion/deletion, AVL Tree balancing rotations, and Trie prefix trees."
-      },
-      {
-        id: "dsa-part-4",
-        partNumber: 4,
-        title: "Part 4: Graphs, Shortest Path & Sorting",
-        duration: "50 mins",
-        url: "https://www.youtube-nocookie.com/embed/09_LlHjoEiY",
-        description: "BFS/DFS traversals, Dijkstra shortest path, Minimum Spanning Trees, Quick/Merge Sort, and Hashing."
-      }
-    ],
     tamilVideo: {
       url: "https://www.youtube-nocookie.com/embed/YZVF4ehkn24",
       title: "Data Structures and Algorithms Complete Tutorial in Tamil",
       description: "Complete DSA lecture series in Tamil covering linear arrays, linked lists, stacks, queues, trees, graphs, and sorting algorithms.",
       duration: "Full Course"
     },
+    playlists: [
+      {
+        title: "Kunal Kushwaha Java DSA Complete Playlist (English)",
+        url: "https://www.youtube.com/playlist?list=PL9gnSGHSqcnr_DxHsP7mUtezP_URPSCWy",
+        embedUrl: "https://www.youtube-nocookie.com/embed/videoseries?list=PL9gnSGHSqcnr_DxHsP7mUtezP_URPSCWy",
+        language: "English",
+        channel: "Kunal Kushwaha",
+        videoCount: "60+ Lectures",
+        description: "World-class Java DSA tutorial: recursion, trees, graphs, dynamic programming, and sorting."
+      },
+      {
+        title: "Data Structures & Algorithms in Tamil",
+        url: "https://www.youtube.com/watch?v=YZVF4ehkn24",
+        embedUrl: "https://www.youtube-nocookie.com/embed/YZVF4ehkn24",
+        language: "Tamil",
+        channel: "Tamil Tech Tutorial",
+        videoCount: "Full Course",
+        description: "Comprehensive DSA course in Tamil explaining dynamic memory, linked lists, trees, and graphs."
+      }
+    ],
     semester: "Semester 3",
     resources: [
       {
@@ -657,46 +585,32 @@ export const LABS_DATA: Lab[] = [
     tags: ["SQL DDL/DML", "Joins & Subqueries", "Views & Indexes", "PL/SQL", "Procedures & Triggers", "ACID TCL"],
     bannerGradient: "from-emerald-700 via-teal-950 to-slate-950",
     videoUrl: "https://www.youtube-nocookie.com/embed/HXV3zeQKqGY",
-    videoParts: [
-      {
-        id: "dbms-part-1",
-        partNumber: 1,
-        title: "Part 1: Relational Modeling, DDL & Integrity Constraints",
-        duration: "45 mins",
-        url: "https://www.youtube-nocookie.com/embed/HXV3zeQKqGY",
-        description: "CREATE TABLE schemas, primary keys, foreign key cascading, and domain validation."
-      },
-      {
-        id: "dbms-part-2",
-        partNumber: 2,
-        title: "Part 2: SQL DML Queries, Aggregates & Group By",
-        duration: "50 mins",
-        url: "https://www.youtube-nocookie.com/embed/7S_tz1z_5bA",
-        description: "SELECT queries with WHERE filtering, GROUP BY aggregations, HAVING, and ORDER BY."
-      },
-      {
-        id: "dbms-part-3",
-        partNumber: 3,
-        title: "Part 3: Complex Multi-Table Joins & B-Tree Indexes",
-        duration: "45 mins",
-        url: "https://www.youtube-nocookie.com/embed/9yeOJ0ZMUYw",
-        description: "Inner, Left, Outer Joins, Correlated Subqueries, Views, and B-Tree EXPLAIN plans."
-      },
-      {
-        id: "dbms-part-4",
-        partNumber: 4,
-        title: "Part 4: PL/SQL Cursors, Procedures, Triggers & ACID",
-        duration: "55 mins",
-        url: "https://www.youtube-nocookie.com/embed/4yK_9s4O60A",
-        description: "PL/SQL Blocks, Explicit Cursors, Stored Procedures/Functions, Triggers, and TCL ACID transactions."
-      }
-    ],
     tamilVideo: {
       url: "https://www.youtube-nocookie.com/embed/wsYx5qOP_bI",
       title: "Database Management Systems Full Course in Tamil",
       description: "Complete Tamil DBMS tutorial covering SQL DDL/DML, joins, subqueries, relational normal forms, and PL/SQL programming.",
       duration: "Full Course"
     },
+    playlists: [
+      {
+        title: "DBMS & SQL Complete Playlist (English)",
+        url: "https://www.youtube.com/playlist?list=PLxCzCOWd7aiFAN6I8C9XdK_kVpOe_r007",
+        embedUrl: "https://www.youtube-nocookie.com/embed/videoseries?list=PLxCzCOWd7aiFAN6I8C9XdK_kVpOe_r007",
+        language: "English",
+        channel: "Gate Smashers",
+        videoCount: "Full Playlist Series",
+        description: "Relational algebra, normalization (1NF to BCNF), indexing, transactions, and concurrency."
+      },
+      {
+        title: "DBMS & SQL Complete Course (Tamil)",
+        url: "https://www.youtube.com/watch?v=wsYx5qOP_bI",
+        embedUrl: "https://www.youtube-nocookie.com/embed/wsYx5qOP_bI",
+        language: "Tamil",
+        channel: "Tamil Tech Tutorial",
+        videoCount: "Full Course",
+        description: "Relational modeling, SQL queries, joins, and PL/SQL stored procedures in Tamil."
+      }
+    ],
     semester: "Semester 3",
     resources: [
       {
@@ -741,46 +655,32 @@ export const LABS_DATA: Lab[] = [
     tags: ["C Programming", "Pointers", "malloc/free", "Structures", "File I/O", "Recursion", "Matrices"],
     bannerGradient: "from-cyan-700 via-blue-950 to-slate-950",
     videoUrl: "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
-    videoParts: [
-      {
-        id: "c-part-1",
-        partNumber: 1,
-        title: "Part 1: C Syntax, Formatted I/O & Control Flow",
-        duration: "45 mins",
-        url: "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
-        description: "printf, scanf, format specifiers, primitive types, if-else ladders, and switch-case branching."
-      },
-      {
-        id: "c-part-2",
-        partNumber: 2,
-        title: "Part 2: Loops, Prime Checking & Pattern Generation",
-        duration: "40 mins",
-        url: "https://www.youtube-nocookie.com/embed/irqbmMNs2Bo",
-        description: "for, while, do-while loops, prime number checking in O(sqrt(n)), and nested star pyramids."
-      },
-      {
-        id: "c-part-3",
-        partNumber: 3,
-        title: "Part 3: Arrays, Matrix Mathematics & Strings",
-        duration: "50 mins",
-        url: "https://www.youtube-nocookie.com/embed/vLnPwxZdW4Y",
-        description: "1D array statistics, 2D matrix multiplication, and null-terminated string functions."
-      },
-      {
-        id: "c-part-4",
-        partNumber: 4,
-        title: "Part 4: Pointers, Dynamic Memory & File Handling",
-        duration: "55 mins",
-        url: "https://www.youtube-nocookie.com/embed/zuegQmMdy8M",
-        description: "Pointer arithmetic, malloc/free heap management, typedef structures, and fopen/fprintf file I/O."
-      }
-    ],
     tamilVideo: {
       url: "https://www.youtube-nocookie.com/embed/Zi_n_mE3pEM",
       title: "C Programming Language Complete Tutorial in Tamil",
       description: "Complete C programming course in Tamil covering data types, control flow, functions, pointers, arrays, memory management, and file streams.",
       duration: "Full Course"
     },
+    playlists: [
+      {
+        title: "C Programming Complete Playlist (English)",
+        url: "https://www.youtube.com/playlist?list=PLBlnK6fEyqRggZZgYpPMUxdY1CYkZtARR",
+        embedUrl: "https://www.youtube-nocookie.com/embed/videoseries?list=PLBlnK6fEyqRggZZgYpPMUxdY1CYkZtARR",
+        language: "English",
+        channel: "Neso Academy",
+        videoCount: "80+ Lectures",
+        description: "Variables, pointers, dynamic memory management, arrays, structures, and file I/O."
+      },
+      {
+        title: "C Programming Language Full Course (Tamil)",
+        url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM",
+        embedUrl: "https://www.youtube-nocookie.com/embed/Zi_n_mE3pEM",
+        language: "Tamil",
+        channel: "Tamil C Series",
+        videoCount: "Full Course",
+        description: "Comprehensive C language fundamentals, pointers, malloc/free, and algorithms in Tamil."
+      }
+    ],
     semester: "Semester 1",
     resources: [
       {
@@ -818,47 +718,33 @@ export const LABS_DATA: Lab[] = [
     tags: ["Python", "OOP", "List Comprehensions", "Lambdas", "File I/O", "Exceptions", "Dictionaries"],
     bannerGradient: "from-emerald-700 via-teal-950 to-slate-950",
     videoUrl: "https://www.youtube-nocookie.com/embed/rfscVS0vtbw",
-    videoParts: [
-      {
-        id: "py-part-1",
-        partNumber: 1,
-        title: "Part 1: Python Basics, Dynamic Typing & Operators",
-        duration: "45 mins",
-        url: "https://www.youtube-nocookie.com/embed/rfscVS0vtbw",
-        description: "Dynamic variable binding, arbitrary precision integers, boolean logic, and formatted f-strings."
-      },
-      {
-        id: "py-part-2",
-        partNumber: 2,
-        title: "Part 2: Control Structures, Functions & Lambdas",
-        duration: "45 mins",
-        url: "https://www.youtube-nocookie.com/embed/8DvywoWv6fI",
-        description: "if-elif-else, range-based for loops, while, *args/**kwargs packing, and lambda expressions."
-      },
-      {
-        id: "py-part-3",
-        partNumber: 3,
-        title: "Part 3: Lists, Comprehensions, Tuples & Dictionaries",
-        duration: "50 mins",
-        url: "https://www.youtube-nocookie.com/embed/daefaLgNkw0",
-        description: "2D matrix transposition, list/dict comprehensions, set algebra, and word frequency histograms."
-      },
-      {
-        id: "py-part-4",
-        partNumber: 4,
-        title: "Part 4: Object Oriented Programming & File Handling",
-        duration: "50 mins",
-        url: "https://www.youtube-nocookie.com/embed/JeznW_7DlB0",
-        description: "Classes, super() inheritance, custom exceptions, and with open() CSV context managers."
-      }
-    ],
     tamilVideo: {
       url: "https://www.youtube-nocookie.com/embed/KCdbwcjyHvA",
       title: "Python Programming Complete Tutorial in Tamil",
       description: "Full Python course in Tamil covering language basics, data structures, list comprehensions, OOP principles, exception handling, and file operations.",
       duration: "Full Course"
     },
-    semester: "Semester 2",
+    playlists: [
+      {
+        title: "Python Programming Complete Tutorial Series (English)",
+        url: "https://www.youtube.com/playlist?list=PL-osiE80TeTt2d9bfVyTiXJA-UTHn6WwU",
+        embedUrl: "https://www.youtube-nocookie.com/embed/videoseries?list=PL-osiE80TeTt2d9bfVyTiXJA-UTHn6WwU",
+        language: "English",
+        channel: "Corey Schafer",
+        videoCount: "Full Playlist Series",
+        description: "Variables, functions, list comprehensions, OOP class design, and file context managers."
+      },
+      {
+        title: "Python Programming Complete Course (Tamil)",
+        url: "https://www.youtube.com/watch?v=KCdbwcjyHvA",
+        embedUrl: "https://www.youtube-nocookie.com/embed/KCdbwcjyHvA",
+        language: "Tamil",
+        channel: "Tamil Python Track",
+        videoCount: "Full Course",
+        description: "Language syntax, data structures, list comprehensions, and OOP in Tamil."
+      }
+    ],
+    semester: "Semester 1",
     resources: [
       {
         title: "Python Programming Tutorial & Reference Manual",
@@ -894,47 +780,33 @@ export const LABS_DATA: Lab[] = [
     iconName: "Bot",
     tags: ["A* Search", "Minimax", "Alpha-Beta Pruning", "N-Queens", "Expert Systems"],
     bannerGradient: "from-purple-700 via-indigo-950 to-slate-950",
-    videoUrl: "https://www.youtube-nocookie.com/embed/Jc7vlAzOigA",
-    videoParts: [
-      {
-        id: "ai-part-1",
-        partNumber: 1,
-        title: "Part 1: Problem Formulation & State-Space Search",
-        duration: "45 mins",
-        url: "https://www.youtube-nocookie.com/embed/Jc7vlAzOigA",
-        description: "State-space graph traversal, puzzle formulation, and uninformed search strategies."
-      },
-      {
-        id: "ai-part-2",
-        partNumber: 2,
-        title: "Part 2: Informed A* Search & Manhattan Heuristics",
-        duration: "40 mins",
-        url: "https://www.youtube-nocookie.com/embed/d3b0_5P2v80",
-        description: "Evaluation function f(n) = g(n) + h(n), priority queues, and 8-puzzle optimal solvers."
-      },
-      {
-        id: "ai-part-3",
-        partNumber: 3,
-        title: "Part 3: Adversarial Minimax & Alpha-Beta Pruning",
-        duration: "45 mins",
-        url: "https://www.youtube-nocookie.com/embed/l-hh51ncgDI",
-        description: "Game tree evaluation, zero-sum utilities, and alpha-beta branch pruning optimization."
-      },
-      {
-        id: "ai-part-4",
-        partNumber: 4,
-        title: "Part 4: Constraint Satisfaction & Knowledge Systems",
-        duration: "50 mins",
-        url: "https://www.youtube-nocookie.com/embed/V4vY3g2_f4w",
-        description: "N-Queens backtracking CSP solvers, forward/backward chaining inference engines."
-      }
-    ],
+    videoUrl: "https://www.youtube-nocookie.com/embed/5NgNicANyqM",
     tamilVideo: {
-      url: "https://www.youtube-nocookie.com/embed/k2gYQ9c9Yl4",
-      title: "Artificial Intelligence & Search Algorithms in Tamil",
-      description: "Complete Tamil guide covering state space search, A* heuristic algorithms, Minimax, and knowledge representation.",
+      url: "https://www.youtube-nocookie.com/embed/QGAuolgCTHE",
+      title: "Artificial Intelligence Complete Course in Tamil",
+      description: "Full AI course in Tamil covering state space search, A* heuristic algorithms, Minimax game theory, CSP solvers, and knowledge representation.",
       duration: "Full Course"
     },
+    playlists: [
+      {
+        title: "Artificial Intelligence Complete Course (Tamil)",
+        url: "https://www.youtube.com/watch?v=QGAuolgCTHE",
+        embedUrl: "https://www.youtube-nocookie.com/embed/QGAuolgCTHE",
+        language: "Tamil",
+        channel: "AI Tamil Course",
+        videoCount: "Full Course",
+        description: "State-space graph search, A* heuristics, Minimax algorithms, and CSP solvers in Tamil."
+      },
+      {
+        title: "Artificial Intelligence Full Tutorial (English)",
+        url: "https://www.youtube.com/watch?v=5NgNicANyqM",
+        embedUrl: "https://www.youtube-nocookie.com/embed/5NgNicANyqM",
+        language: "English",
+        channel: "FreeCodeCamp",
+        videoCount: "Full Course",
+        description: "Search algorithms, heuristic optimization, game trees, and machine intelligence models."
+      }
+    ],
     semester: "Semester 5",
     resources: [
       {
@@ -965,46 +837,33 @@ export const LABS_DATA: Lab[] = [
     tags: ["Hadoop HDFS", "MapReduce", "Apache Spark", "PySpark", "NoSQL MongoDB"],
     bannerGradient: "from-amber-700 via-orange-950 to-slate-950",
     videoUrl: "https://www.youtube-nocookie.com/embed/1vbXmCrkT3Y",
-    videoParts: [
+    tamilVideo: {
+      url: "https://www.youtube-nocookie.com/embed/videoseries?list=PLfNKAsmI385ICtRCRhiwxT9rCfYxOmUD8",
+      title: "Big Data Analytics Complete Tamil Course (Playlist)",
+      description: "Complete Big Data course in Tamil covering Hadoop HDFS, MapReduce, Apache Spark, and NoSQL MongoDB.",
+      duration: "Full Playlist Series",
+      channel: "Tamil Big Data Series"
+    },
+    playlists: [
       {
-        id: "bd-part-1",
-        partNumber: 1,
-        title: "Part 1: Hadoop HDFS & Distributed Node Architecture",
-        duration: "45 mins",
-        url: "https://www.youtube-nocookie.com/embed/1vbXmCrkT3Y",
-        description: "NameNode metadata, DataNodes, 128MB block chunks, and 3x fault-tolerant replication."
+        title: "Big Data Analytics Complete Playlist (Tamil)",
+        url: "https://www.youtube.com/playlist?list=PLfNKAsmI385ICtRCRhiwxT9rCfYxOmUD8",
+        embedUrl: "https://www.youtube-nocookie.com/embed/videoseries?list=PLfNKAsmI385ICtRCRhiwxT9rCfYxOmUD8",
+        language: "Tamil",
+        channel: "Tamil Big Data Series",
+        videoCount: "Full Playlist",
+        description: "Hadoop HDFS, MapReduce paradigms, PySpark DataFrames, and MongoDB analytics in Tamil."
       },
       {
-        id: "bd-part-2",
-        partNumber: 2,
-        title: "Part 2: Distributed MapReduce Parallel Processing",
-        duration: "50 mins",
-        url: "https://www.youtube-nocookie.com/embed/bAymDD_c9_s",
-        description: "Map phase key-value emission, shuffle/sort partitioner, and Reducer aggregation."
-      },
-      {
-        id: "bd-part-3",
-        partNumber: 3,
-        title: "Part 3: Apache Spark RDDs & PySpark DataFrames",
-        duration: "50 mins",
-        url: "https://www.youtube-nocookie.com/embed/_C8kWso4ne4",
-        description: "In-memory distributed computing, DAG execution plans, and PySpark SQL aggregations."
-      },
-      {
-        id: "bd-part-4",
-        partNumber: 4,
-        title: "Part 4: NoSQL Databases & MongoDB Aggregations",
-        duration: "45 mins",
-        url: "https://www.youtube-nocookie.com/embed/ofme2o29ngU",
-        description: "BSON document schemas, multi-stage aggregation pipelines, and sharding."
+        title: "Big Data Analytics & Hadoop Full Course (English)",
+        url: "https://www.youtube.com/watch?v=1vbXmCrkT3Y",
+        embedUrl: "https://www.youtube-nocookie.com/embed/1vbXmCrkT3Y",
+        language: "English",
+        channel: "Edureka",
+        videoCount: "Full Course",
+        description: "Distributed storage architecture, HDFS namenodes, MapReduce execution, and Apache Spark."
       }
     ],
-    tamilVideo: {
-      url: "https://www.youtube-nocookie.com/embed/rR9aGkZ-RZs",
-      title: "Big Data Analytics & Hadoop Course in Tamil",
-      description: "Comprehensive Tamil tutorial covering HDFS, MapReduce paradigms, Apache Spark, and MongoDB.",
-      duration: "Full Course"
-    },
     semester: "Semester 7",
     resources: [
       {
@@ -1035,46 +894,33 @@ export const LABS_DATA: Lab[] = [
     tags: ["AWS EC2", "AWS S3", "Docker", "AWS Lambda", "Kubernetes"],
     bannerGradient: "from-teal-700 via-cyan-950 to-slate-950",
     videoUrl: "https://www.youtube-nocookie.com/embed/2LaAJq1lB1Q",
-    videoParts: [
+    tamilVideo: {
+      url: "https://www.youtube-nocookie.com/embed/8CnuGPfmOPs",
+      title: "Cloud Computing & AWS Complete Tutorial in Tamil",
+      description: "Comprehensive Tamil tutorial covering AWS cloud foundations, EC2 computing instances, S3 storage, Docker containerization, and cloud deployment.",
+      duration: "Full Course",
+      channel: "AWS Tamil Tutorial"
+    },
+    playlists: [
       {
-        id: "cloud-part-1",
-        partNumber: 1,
-        title: "Part 1: Cloud Foundations, AWS EC2 & Virtual Private Clouds",
-        duration: "45 mins",
-        url: "https://www.youtube-nocookie.com/embed/2LaAJq1lB1Q",
-        description: "Elastic Compute Cloud (EC2) virtual machines, VPC subnets, and Security Groups."
+        title: "Cloud Computing & AWS Complete Tutorial (Tamil)",
+        url: "https://www.youtube.com/watch?v=8CnuGPfmOPs",
+        embedUrl: "https://www.youtube-nocookie.com/embed/8CnuGPfmOPs",
+        language: "Tamil",
+        channel: "AWS Tamil",
+        videoCount: "Full Tutorial",
+        description: "AWS EC2, S3, IAM policies, and cloud infrastructure explained in Tamil."
       },
       {
-        id: "cloud-part-2",
-        partNumber: 2,
-        title: "Part 2: AWS S3 Scalable Storage & Lifecycle Policies",
-        duration: "40 mins",
-        url: "https://www.youtube-nocookie.com/embed/e6w9UP449Sg",
-        description: "Object storage buckets, IAM access control, and automated lifecycle archive transitions."
-      },
-      {
-        id: "cloud-part-3",
-        partNumber: 3,
-        title: "Part 3: Docker Containerization & Multi-Tier Compose",
-        duration: "50 mins",
-        url: "https://www.youtube-nocookie.com/embed/fqMOX6JJhGo",
-        description: "Building lightweight Docker images, multi-container Docker Compose networks, and port mapping."
-      },
-      {
-        id: "cloud-part-4",
-        partNumber: 4,
-        title: "Part 4: Serverless AWS Lambda & Kubernetes Orchestration",
-        duration: "55 mins",
-        url: "https://www.youtube-nocookie.com/embed/X48VuDVv0do",
-        description: "Event-driven serverless computing with Lambda, API Gateway, and Kubernetes Pod deployments."
+        title: "AWS Certified Solutions Architect & Cloud Course (English)",
+        url: "https://www.youtube.com/watch?v=2LaAJq1lB1Q",
+        embedUrl: "https://www.youtube-nocookie.com/embed/2LaAJq1lB1Q",
+        language: "English",
+        channel: "FreeCodeCamp",
+        videoCount: "Full Course",
+        description: "Complete cloud computing curriculum, VPC networking, Lambda, and Docker."
       }
     ],
-    tamilVideo: {
-      url: "https://www.youtube-nocookie.com/embed/aYhE1sC6mGg",
-      title: "Cloud Computing & AWS Masterclass in Tamil",
-      description: "Complete Tamil guide covering AWS cloud infrastructure, EC2 instances, S3 storage, Docker containerization, and Kubernetes.",
-      duration: "Full Course"
-    },
     semester: "Semester 8",
     resources: [
       {

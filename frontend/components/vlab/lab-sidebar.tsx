@@ -19,7 +19,6 @@ interface LabSidebarProps {
   onTabChange: (tab: LabTab) => void;
   experimentsCount?: number;
   resourcesCount?: number;
-  videoPartsCount?: number;
 }
 
 const TABS: { id: LabTab; label: string; icon: React.ElementType }[] = [
@@ -34,7 +33,7 @@ const TABS: { id: LabTab; label: string; icon: React.ElementType }[] = [
   { id: "feedback", label: "Feedback", icon: MessageSquareHeart },
 ];
 
-export function LabSidebar({ activeTab, onTabChange, experimentsCount = 6, resourcesCount = 6, videoPartsCount = 4 }: LabSidebarProps) {
+export function LabSidebar({ activeTab, onTabChange, experimentsCount = 6, resourcesCount = 6 }: LabSidebarProps) {
   return (
     <aside className="w-full lg:w-64 shrink-0">
       <div className="bg-card/70 backdrop-blur-md rounded-2xl border border-secondary/40 p-3 sticky top-24 shadow-sm">
@@ -73,7 +72,7 @@ export function LabSidebar({ activeTab, onTabChange, experimentsCount = 6, resou
                       isActive ? "bg-primary-foreground/20 text-primary-foreground" : "bg-primary/10 text-primary"
                     )}
                   >
-                    {videoPartsCount || 4} Parts
+                    2 Tracks
                   </span>
                 )}
 
