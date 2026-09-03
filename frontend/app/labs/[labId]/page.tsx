@@ -48,7 +48,6 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
   const [feedbackRating, setFeedbackRating] = useState<number>(5);
   const [feedbackText, setFeedbackText] = useState<string>("");
   const [feedbackSent, setFeedbackSent] = useState<boolean>(false);
-  const [selectedVideoPartIdx, setSelectedVideoPartIdx] = useState<number>(0);
   const [videoLanguageTab, setVideoLanguageTab] = useState<"english" | "tamil">("english");
   const [tamilVideoTime, setTamilVideoTime] = useState<number>(0);
   const [activeTamilTimestampIdx, setActiveTamilTimestampIdx] = useState<number | null>(null);
@@ -108,8 +107,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
               activeTab={activeTab}
               onTabChange={setActiveTab}
               experimentsCount={experiments.length}
-              resourcesCount={lab.resources?.length || 0}
-              videoPartsCount={lab.videoParts?.length || 4}
+              resourcesCount={lab.resources?.length || 6}
             />
 
             {/* Right Tab Content View */}
@@ -132,137 +130,99 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                       {lab.description}
                     </p>
 
-                    {/* LAB VIDEO TUTORIALS: SEPARATE ENGLISH & TAMIL SECTIONS */}
-                    <div className="py-2 my-4 space-y-4">
-                      {/* Language Selection Header */}
-                      <div className="flex items-center justify-between gap-2 p-1.5 bg-muted/60 rounded-xl border border-border">
-                        <div className="flex items-center gap-1.5">
+                  {/* LAB VIDEO TUTORIALS: SEPARATE ENGLISH & TAMIL SECTIONS */}
+                  <div className="py-2 my-4 space-y-4">
+                    {/* Language Selection Header */}
+                    <div className="flex items-center justify-between gap-2 p-1.5 bg-muted/60 rounded-xl border border-border">
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => setVideoLanguageTab("english")}
+                          className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+                            videoLanguageTab === "english"
+                              ? "bg-primary text-primary-foreground shadow-xs font-bold"
+                              : "text-muted-foreground hover:text-foreground"
+                          }`}
+                        >
+                          <span>🇬🇧 English Tutorial</span>
+                          <Badge variant="outline" className={`text-[9px] px-1.5 py-0 border-0 ${videoLanguageTab === "english" ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"}`}>
+                            Full Course
+                          </Badge>
+                        </button>
+                        {lab.tamilVideo && (
                           <button
                             type="button"
-                            onClick={() => setVideoLanguageTab("english")}
+                            onClick={() => setVideoLanguageTab("tamil")}
                             className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
-                              videoLanguageTab === "english"
-                                ? "bg-primary text-primary-foreground shadow-xs font-bold"
-                                : "text-muted-foreground hover:text-foreground"
+                              videoLanguageTab === "tamil"
+                                ? "bg-amber-600 text-white shadow-xs font-bold"
+                                : "text-muted-foreground hover:text-amber-500"
                             }`}
                           >
-                            <span>🇬🇧 English Tutorials</span>
-                            <Badge variant="outline" className={`text-[9px] px-1.5 py-0 border-0 ${videoLanguageTab === "english" ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"}`}>
-                              4 Parts
+                            <span>🇮🇳 தமிழ் Tutorial (Tamil)</span>
+                            <Badge variant="outline" className={`text-[9px] px-1.5 py-0 border-0 ${videoLanguageTab === "tamil" ? "bg-white/20 text-white" : "bg-amber-500/10 text-amber-600 dark:text-amber-400"}`}>
+                              {lab.tamilVideo.duration || "Full Course"}
                             </Badge>
                           </button>
-                          {lab.tamilVideo && (
-                            <button
-                              type="button"
-                              onClick={() => setVideoLanguageTab("tamil")}
-                              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
-                                videoLanguageTab === "tamil"
-                                  ? "bg-amber-600 text-white shadow-xs font-bold"
-                                  : "text-muted-foreground hover:text-amber-500"
-                              }`}
-                            >
-                              <span>🇮🇳 தமிழ் Tutorials (Tamil)</span>
-                              <Badge variant="outline" className={`text-[9px] px-1.5 py-0 border-0 ${videoLanguageTab === "tamil" ? "bg-white/20 text-white" : "bg-amber-500/10 text-amber-600 dark:text-amber-400"}`}>
-                                Full Course
-                              </Badge>
-                            </button>
-                          )}
-                        </div>
-                        <Badge variant="outline" className="hidden sm:inline-flex text-[10px] font-mono text-muted-foreground">
-                          {videoLanguageTab === "english" ? "English Video Modules" : "Tamil Video Track"}
-                        </Badge>
+                        )}
                       </div>
+                      <Badge variant="outline" className="hidden sm:inline-flex text-[10px] font-mono text-muted-foreground">
+                        {videoLanguageTab === "english" ? "English Video Track" : "Tamil Video Track"}
+                      </Badge>
+                    </div>
 
-                      {/* ENGLISH 4-PART VIDEO SECTION */}
-                      {videoLanguageTab === "english" && lab.videoParts && lab.videoParts.length > 0 && (
-                        <div className="space-y-3">
-                          {/* Part Selector Header & Buttons */}
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono flex items-center gap-1.5">
-                                <Video className="h-3.5 w-3.5 text-primary" /> English Demonstration Parts
-                              </span>
-                              <Badge variant="outline" className="text-[10px] font-mono bg-primary/10 text-primary border-primary/20">
-                                {lab.videoParts.length} Modules Available
+                    {/* ENGLISH VIDEO SECTION */}
+                    {videoLanguageTab === "english" && (
+                      <div className="space-y-4">
+                        <div className="aspect-video w-full rounded-2xl bg-black/90 border border-primary/30 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
+                          <iframe
+                            src={lab.videoUrl}
+                            title={`${lab.name} English Video Tutorial`}
+                            className="w-full h-full rounded-2xl border-0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          />
+                        </div>
+
+                        <div className="p-4 bg-primary/5 rounded-xl border border-primary/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              <Badge variant="outline" className="text-[10px] font-mono font-bold text-primary bg-primary/10 border-primary/30">
+                                🇬🇧 English Demonstration & Theory
                               </Badge>
+                              <span className="text-xs text-muted-foreground font-mono">
+                                • Full Course Video
+                              </span>
                             </div>
-
-                            {/* Separate Video Part Buttons */}
-                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                              {lab.videoParts.map((part, pIdx) => {
-                                const isSelected = selectedVideoPartIdx === pIdx;
-                                return (
-                                  <button
-                                    key={part.id}
-                                    type="button"
-                                    onClick={() => setSelectedVideoPartIdx(pIdx)}
-                                    className={`p-2.5 rounded-xl border text-left transition-all duration-200 flex flex-col justify-between ${
-                                      isSelected
-                                        ? "bg-primary text-primary-foreground border-primary shadow-md shadow-primary/25 font-bold"
-                                        : "bg-muted/40 hover:bg-muted/80 text-foreground border-border hover:border-primary/40"
-                                    }`}
-                                  >
-                                    <div className="flex items-center justify-between w-full mb-1">
-                                      <span className={`text-[10px] font-mono uppercase px-1.5 py-0.5 rounded font-bold ${
-                                        isSelected ? "bg-white/20 text-white" : "bg-primary/10 text-primary"
-                                      }`}>
-                                        Part {part.partNumber}
-                                      </span>
-                                      {part.duration && (
-                                        <span className={`text-[10px] font-mono ${isSelected ? "text-white/80" : "text-muted-foreground"}`}>
-                                          {part.duration}
-                                        </span>
-                                      )}
-                                    </div>
-                                    <span className="text-xs line-clamp-1 font-semibold leading-tight">
-                                      {part.title.replace(/^Part \d+:\s*/i, "")}
-                                    </span>
-                                  </button>
-                                );
-                              })}
-                            </div>
+                            <h4 className="text-sm font-bold text-foreground">
+                              {lab.name} — English Full Lecture & Practical Demonstration
+                            </h4>
+                            <p className="text-xs text-muted-foreground line-clamp-2">
+                              {lab.description}
+                            </p>
                           </div>
 
-                          {/* Selected Video Player Frame */}
-                          {(() => {
-                            const currentPart = lab.videoParts[selectedVideoPartIdx] || lab.videoParts[0];
-                            return (
-                              <div className="space-y-2">
-                                <div className="aspect-video w-full rounded-2xl bg-black/90 border border-primary/30 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
-                                  <iframe
-                                    key={currentPart.id}
-                                    src={currentPart.url}
-                                    title={currentPart.title}
-                                    className="w-full h-full rounded-2xl border-0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                  />
-                                </div>
-
-                                <div className="p-3 bg-muted/40 rounded-xl border border-border/50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                                  <div>
-                                    <h4 className="text-xs font-bold text-foreground">
-                                      {currentPart.title}
-                                    </h4>
-                                    <p className="text-[11px] text-muted-foreground mt-0.5">
-                                      {currentPart.description}
-                                    </p>
-                                  </div>
-                                  {currentPart.duration && (
-                                    <Badge variant="outline" className="self-start sm:self-center text-[10px] font-mono shrink-0">
-                                      Duration: {currentPart.duration}
-                                    </Badge>
-                                  )}
-                                </div>
-                              </div>
-                            );
-                          })()}
+                          <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
+                            <a
+                              href={lab.videoUrl.replace("youtube-nocookie.com/embed/", "youtube.com/watch?v=")}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-primary/30 text-xs font-semibold text-primary hover:bg-primary/10 transition-colors"
+                            >
+                              <span>Watch on YouTube</span>
+                              <ExternalLink className="h-3.5 w-3.5" />
+                            </a>
+                            <Button onClick={() => setActiveTab("experiments")} size="sm" className="text-xs font-bold gap-1.5 bg-primary hover:bg-primary/90 text-white">
+                              Practice Experiments <ChevronRight className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </div>
-                      )}
+                      </div>
+                    )}
 
-                      {/* TAMIL FULL COURSE VIDEO SECTION */}
-                      {videoLanguageTab === "tamil" && lab.tamilVideo && (
-                        <div className="space-y-4">
+                    {/* TAMIL FULL COURSE VIDEO SECTION */}
+                    {videoLanguageTab === "tamil" && lab.tamilVideo && (
+                      <div className="space-y-4">
                           <div className="aspect-video w-full rounded-2xl bg-black/90 border border-amber-500/30 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
                             <iframe
                               key={`tamil-overview-${tamilVideoTime}`}
@@ -344,9 +304,9 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 </Card>
               )}
 
-              {/* TAB: DEDICATED VIDEO TUTORIALS */}
+              {/* TAB: VIDEO TUTORIALS */}
               {activeTab === "video-tutorials" && (
-                <div className="space-y-6">
+                <div className="space-y-6 animate-in fade-in duration-300">
                   <Card className="border-border bg-card/80 backdrop-blur-xs shadow-sm">
                     <CardHeader className="pb-4 border-b border-border/50">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -356,14 +316,14 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                               Comprehensive Video Modules
                             </Badge>
                             <Badge variant="outline" className="text-xs font-mono">
-                              {videoLanguageTab === "english" ? `${lab.videoParts?.length || 4} Parts` : "Tamil Full Course"}
+                              {videoLanguageTab === "english" ? "English Full Course" : "Tamil Full Course"}
                             </Badge>
                           </div>
                           <CardTitle className="text-xl font-bold text-primary font-heading">
                             {lab.name} — Laboratory Video Suite
                           </CardTitle>
                           <CardDescription className="text-xs mt-1">
-                            Master every topic sequentially with hands-on video demonstrations and conceptual explanations.
+                            Master every topic with hands-on video demonstrations, code walkthroughs, and conceptual explanations.
                           </CardDescription>
                         </div>
 
@@ -380,7 +340,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                           >
                             <span>🇬🇧 English</span>
                             <Badge variant="outline" className={`text-[9px] px-1 py-0 border-0 ${videoLanguageTab === "english" ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"}`}>
-                              4 Parts
+                              Full Course
                             </Badge>
                           </button>
                           {lab.tamilVideo && (
@@ -395,7 +355,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             >
                               <span>🇮🇳 தமிழ் (Tamil)</span>
                               <Badge variant="outline" className={`text-[9px] px-1 py-0 border-0 ${videoLanguageTab === "tamil" ? "bg-white/20 text-white" : "bg-amber-500/10 text-amber-600 dark:text-amber-400"}`}>
-                                Full Course
+                                {lab.tamilVideo.duration || "Full Course"}
                               </Badge>
                             </button>
                           )}
@@ -407,122 +367,47 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                       {/* ENGLISH SECTION */}
                       {videoLanguageTab === "english" && (
                         <div className="space-y-6">
-                          {/* Video Part Switcher Buttons */}
-                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            {(lab.videoParts || []).map((part, pIdx) => {
-                              const isSelected = selectedVideoPartIdx === pIdx;
-                              return (
-                                <button
-                                  key={part.id}
-                                  type="button"
-                                  onClick={() => setSelectedVideoPartIdx(pIdx)}
-                                  className={`p-3.5 rounded-xl border text-left transition-all duration-200 flex flex-col justify-between ${
-                                    isSelected
-                                      ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/25 font-bold scale-[1.02]"
-                                      : "bg-muted/40 hover:bg-muted/80 text-foreground border-border hover:border-primary/40"
-                                  }`}
-                                >
-                                  <div className="flex items-center justify-between w-full mb-1.5">
-                                    <span className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-md font-bold ${
-                                      isSelected ? "bg-white/20 text-white" : "bg-primary/10 text-primary"
-                                    }`}>
-                                      Part {part.partNumber}
-                                    </span>
-                                    {part.duration && (
-                                      <span className={`text-[10px] font-mono ${isSelected ? "text-white/90" : "text-muted-foreground"}`}>
-                                        {part.duration}
-                                      </span>
-                                    )}
-                                  </div>
-                                  <h5 className="text-xs font-bold leading-snug line-clamp-2">
-                                    {part.title.replace(/^Part \d+:\s*/i, "")}
-                                  </h5>
-                                </button>
-                              );
-                            })}
+                          <div className="aspect-video w-full rounded-2xl bg-black/90 border border-primary/30 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
+                            <iframe
+                              src={lab.videoUrl}
+                              title={`${lab.name} English Video Suite`}
+                              className="w-full h-full rounded-2xl border-0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            />
                           </div>
 
-                          {/* Active Video Player */}
-                          {(() => {
-                            const currentPart = (lab.videoParts || [])[selectedVideoPartIdx] || (lab.videoParts || [])[0];
-                            if (!currentPart) return null;
-
-                            return (
-                              <div className="space-y-3">
-                                <div className="aspect-video w-full rounded-2xl bg-black/90 border border-primary/30 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
-                                  <iframe
-                                    key={currentPart.id}
-                                    src={currentPart.url}
-                                    title={currentPart.title}
-                                    className="w-full h-full rounded-2xl border-0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                  />
-                                </div>
-
-                                <div className="p-4 rounded-xl bg-card border border-border shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                                  <div className="space-y-1">
-                                    <div className="flex items-center gap-2">
-                                      <Badge variant="outline" className="text-[10px] font-mono font-bold text-primary bg-primary/10 border-primary/20">
-                                        Now Playing: Part {currentPart.partNumber}
-                                      </Badge>
-                                      {currentPart.duration && (
-                                        <span className="text-xs text-muted-foreground font-mono">
-                                          • {currentPart.duration}
-                                        </span>
-                                      )}
-                                    </div>
-                                    <h3 className="text-sm sm:text-base font-bold text-foreground">
-                                      {currentPart.title}
-                                    </h3>
-                                    <p className="text-xs text-muted-foreground">
-                                      {currentPart.description}
-                                    </p>
-                                  </div>
-
-                                  <Button onClick={() => setActiveTab("experiments")} size="sm" className="text-xs font-bold gap-1.5 shrink-0 self-start sm:self-center">
-                                    Practice Experiments <ChevronRight className="h-4 w-4" />
-                                  </Button>
-                                </div>
+                          <div className="p-5 bg-primary/5 rounded-2xl border border-primary/20 shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                            <div className="space-y-1.5">
+                              <div className="flex items-center gap-2">
+                                <Badge variant="outline" className="text-[10px] font-mono font-bold text-primary bg-primary/10 border-primary/30">
+                                  🇬🇧 English Lecture & Practical Demonstration
+                                </Badge>
+                                <span className="text-xs text-muted-foreground font-mono">
+                                  • Full Course Video
+                                </span>
                               </div>
-                            );
-                          })()}
+                              <h3 className="text-base font-bold text-foreground font-heading">
+                                {lab.name} — Full Laboratory Video Walkthrough
+                              </h3>
+                              <p className="text-xs text-muted-foreground leading-relaxed max-w-2xl">
+                                {lab.description}
+                              </p>
+                            </div>
 
-                          {/* All Parts Overview Grid */}
-                          <div className="pt-4 border-t border-border/50">
-                            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono mb-3">
-                              All Laboratory Video Modules
-                            </h4>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                              {(lab.videoParts || []).map((part, pIdx) => {
-                                const isSelected = selectedVideoPartIdx === pIdx;
-                                return (
-                                  <div
-                                    key={part.id}
-                                    onClick={() => setSelectedVideoPartIdx(pIdx)}
-                                    className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
-                                      isSelected
-                                        ? "bg-primary/10 border-primary shadow-xs"
-                                        : "bg-muted/30 hover:bg-muted/60 border-border"
-                                    }`}
-                                  >
-                                    <div className="flex items-center justify-between gap-2 mb-1">
-                                      <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                                        <PlayCircle className={`h-4 w-4 ${isSelected ? "text-primary" : "text-muted-foreground"}`} />
-                                        {part.title}
-                                      </span>
-                                      {part.duration && (
-                                        <Badge variant="outline" className="text-[10px] font-mono shrink-0">
-                                          {part.duration}
-                                        </Badge>
-                                      )}
-                                    </div>
-                                    <p className="text-[11px] text-muted-foreground line-clamp-2 pl-5">
-                                      {part.description}
-                                    </p>
-                                  </div>
-                                );
-                              })}
+                            <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
+                              <a
+                                href={lab.videoUrl.replace("youtube-nocookie.com/embed/", "youtube.com/watch?v=")}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-primary/30 text-xs font-semibold text-primary hover:bg-primary/10 transition-colors"
+                              >
+                                <span>Watch on YouTube</span>
+                                <ExternalLink className="h-3.5 w-3.5" />
+                              </a>
+                              <Button onClick={() => setActiveTab("experiments")} size="sm" className="text-xs font-bold gap-1.5 bg-primary hover:bg-primary/90 text-white">
+                                Practice Experiments <ChevronRight className="h-4 w-4" />
+                              </Button>
                             </div>
                           </div>
                         </div>
