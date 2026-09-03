@@ -86,7 +86,7 @@ export function LLDVisualizer() {
         ) : activePattern === "observer" ? (
           <div className="space-y-4 max-w-lg mx-auto text-center py-4">
             <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider font-bold">
-              Subject (Publisher) ───notify()───> Observers (Subscribers)
+              Subject (Publisher) ───notify()───→ Observers (Subscribers)
             </span>
             <div className="p-6 rounded-2xl bg-muted/30 border border-border space-y-4">
               <div className="p-3 bg-primary/20 border border-primary/40 rounded-xl text-primary font-mono text-xs font-bold">

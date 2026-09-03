@@ -323,7 +323,7 @@ function executeWithTracing(jsCode: string, definedNames: string[], entry: { nam
       const id = nodeId++;
       const parentId = stack.length ? stack[stack.length - 1] : null;
 
-      const clone = (v: any) => {
+      const clone = (v: any): any => {
         if (v === null || typeof v !== 'object') return v;
         if (Array.isArray(v)) return v.map(clone);
         return { ...v };
@@ -430,7 +430,7 @@ export function runCodeLocally(code: string, language: string = 'java', customCa
 export const PRESET_SIMULATORS: Record<string, (input: any) => ExecutionStep[]> = {
   factorial: (n: number) => {
     const steps: ExecutionStep[] = [];
-    const simulate = (val: number, nodeId: number, parentId: number | null) => {
+    const simulate = (val: number, nodeId: number, parentId: number | null): number => {
       const isBase = val <= 1;
       steps.push({ type: 'call', nodeId, parentId, label: `factorial(${val})`, params: { n: val }, isBaseCase: isBase });
       if (isBase) {
@@ -438,8 +438,8 @@ export const PRESET_SIMULATORS: Record<string, (input: any) => ExecutionStep[]> 
         return 1;
       }
       const childId = steps.length;
-      const r = simulate(val - 1, childId, nodeId);
-      const result = val * r;
+      const r: number = simulate(val - 1, childId, nodeId);
+      const result: number = val * r;
       steps.push({ type: 'return', nodeId, value: result, isBaseCase: false });
       return result;
     };

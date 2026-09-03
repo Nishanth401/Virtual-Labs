@@ -86,7 +86,7 @@ function layoutTree(root: (TreeNodeData & { children: any[] }) | null) {
       return nodeW;
     }
     const childWidths = children.map(computeWidth);
-    const totalChildSpan = childWidths.reduce((a, b) => a + b, 0) + SIBLING_GAP * (children.length - 1);
+    const totalChildSpan = childWidths.reduce((a: number, b: number) => a + b, 0) + SIBLING_GAP * (children.length - 1);
     subtreeWidth[node.id] = Math.max(nodeW, totalChildSpan);
     return subtreeWidth[node.id];
   };

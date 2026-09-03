@@ -52,6 +52,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
   const [videoLanguageTab, setVideoLanguageTab] = useState<"english" | "tamil">("english");
   const [tamilVideoTime, setTamilVideoTime] = useState<number>(0);
   const [activeTamilTimestampIdx, setActiveTamilTimestampIdx] = useState<number | null>(null);
+  const [resourceSourceFilter, setResourceSourceFilter] = useState<string>("ALL");
 
   const handleSelectTamilTimestamp = (seconds: number, idx: number) => {
     setTamilVideoTime(seconds);
