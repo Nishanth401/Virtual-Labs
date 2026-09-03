@@ -7,6 +7,7 @@ function Content() {
   return <div className="text-center text-2xl font-bold">To be implemented</div>
 }
 
+// Interactive Linked List Visualizer Page
 export default function LinkedListPage() {
   return <LinkedListVisualizer content={<Content />} />
 } 

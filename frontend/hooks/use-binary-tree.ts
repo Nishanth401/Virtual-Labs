@@ -2,10 +2,38 @@ import { useState } from "react"
 import { BinaryTreeNode } from "@/components/visualizer/binary-tree/types"
 
 // Add a counter for generating unique IDs
-let nodeIdCounter = 0;
+let nodeIdCounter = 1;
+
+function buildInitialBST(values: number[] = [50, 30, 70, 20, 40, 60, 80]): BinaryTreeNode | null {
+  let root: BinaryTreeNode | null = null;
+  const insertNode = (val: number) => {
+    const newNode: BinaryTreeNode = {
+      id: `node-${nodeIdCounter++}`,
+      value: val,
+      left: null,
+      right: null,
+    };
+    if (!root) {
+      root = newNode;
+      return;
+    }
+    const recurse = (curr: BinaryTreeNode): BinaryTreeNode => {
+      if (val <= curr.value) {
+        if (!curr.left) return { ...curr, left: newNode };
+        return { ...curr, left: recurse(curr.left) };
+      } else {
+        if (!curr.right) return { ...curr, right: newNode };
+        return { ...curr, right: recurse(curr.right) };
+      }
+    };
+    root = recurse(root);
+  };
+  values.forEach(insertNode);
+  return root;
+}
 
 export function useBinaryTree() {
-  const [tree, setTree] = useState<BinaryTreeNode | null>(null)
+  const [tree, setTree] = useState<BinaryTreeNode | null>(() => buildInitialBST())
   const [highlightedNodes, setHighlightedNodes] = useState<string[]>([])
   const [traversalHistory, setTraversalHistory] = useState<number[]>([])
   const [isAnimating, setIsAnimating] = useState(false)

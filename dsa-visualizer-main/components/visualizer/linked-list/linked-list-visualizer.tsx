@@ -16,7 +16,7 @@ const LIST_TYPES: { value: ListType; label: string }[] = [
 ]
 
 interface LinkedListVisualizerProps {
-  content: React.ReactNode
+  content?: React.ReactNode
 }
 
 export function LinkedListVisualizer({ content }: LinkedListVisualizerProps) {
@@ -64,6 +64,9 @@ function LinkedListContent({ type }: { type: ListType }) {
     deleteFront,
     deleteBack,
     reverse,
+    search,
+    clear,
+    loadSample,
   } = useLinkedList(type)
 
   return (
@@ -75,6 +78,9 @@ function LinkedListContent({ type }: { type: ListType }) {
           onDeleteFront={deleteFront}
           onDeleteBack={deleteBack}
           onReverse={reverse}
+          onSearch={search}
+          onClear={clear}
+          onSample={loadSample}
           isAnimating={isAnimating}
           isEmpty={!list.head}
         />
@@ -85,6 +91,7 @@ function LinkedListContent({ type }: { type: ListType }) {
           list={list}
           highlightedNodes={animationState.highlightedNodes}
           message={animationState.message}
+          onSample={loadSample}
         />
       </div>
     </div>

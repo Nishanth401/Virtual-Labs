@@ -1,13 +1,26 @@
 import { useState } from "react"
 import { HeapNode, HeapType } from "@/components/visualizer/heap/types"
 
-let nodeIdCounter = 0
+let nodeIdCounter = 1
+const DEFAULT_HEAP = [90, 75, 80, 45, 60, 55, 70]
 
 export function useHeap() {
-  const [heap, setHeap] = useState<HeapNode | null>(null)
-  const [heapArray, setHeapArray] = useState<number[]>([])
+  const [heapArray, setHeapArray] = useState<number[]>(DEFAULT_HEAP)
   const [heapType, setHeapType] = useState<HeapType>('max')
   const [highlightedNodes, setHighlightedNodes] = useState<string[]>([])
+
+  const arrayToTree = (array: number[], index: number = 0): HeapNode | null => {
+    if (index >= array.length) return null
+
+    return {
+      id: `node-${nodeIdCounter++}`,
+      value: array[index],
+      left: arrayToTree(array, 2 * index + 1),
+      right: arrayToTree(array, 2 * index + 2),
+    }
+  }
+
+  const [heap, setHeap] = useState<HeapNode | null>(() => arrayToTree(DEFAULT_HEAP))
 
   const shouldSwap = (parent: number, child: number): boolean => {
     if (heapType === 'max') {
@@ -26,16 +39,6 @@ export function useHeap() {
     }
   }
 
-  const arrayToTree = (array: number[], index: number = 0): HeapNode | null => {
-    if (index >= array.length) return null
-
-    return {
-      id: `node-${nodeIdCounter++}`,
-      value: array[index],
-      left: arrayToTree(array, 2 * index + 1),
-      right: arrayToTree(array, 2 * index + 2),
-    }
-  }
 
   const insert = (value: number) => {
     const newArray = [...heapArray, value]

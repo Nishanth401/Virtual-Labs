@@ -20,7 +20,7 @@ export function LinkedListOperations({ operations }: LinkedListOperationsProps) 
       case 'delete-back':
         return <ArrowRight className="h-4 w-4 text-red-500" />
       case 'reverse':
-        return <Repeat className="h-4 w-4 text-blue-500" />
+        return <Repeat className="h-4 w-4 text-teal-600" />
     }
   }
 
