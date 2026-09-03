@@ -564,7 +564,7 @@ export const LABS_DATA: Lab[] = [
       description: "Full Python course in Tamil covering language basics, data structures, list comprehensions, OOP principles, exception handling, and file operations.",
       duration: "Full Course"
     },
-    semester: "Semester 1",
+    semester: "Semester 2",
     resources: [
       {
         title: "Python Programming Tutorial & Reference Manual",

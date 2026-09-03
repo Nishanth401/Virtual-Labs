@@ -437,7 +437,7 @@ export const SYLLABUS_MAPPINGS_DATA: UniversitySyllabus[] = [
     university: "Anna University (Regulation 2021)",
     courseCode: "GE3171",
     courseTitle: "Problem Solving and Python Programming Laboratory",
-    semester: "Semester 1 (B.E / B.Tech All Branches)",
+    semester: "Semester 2 (B.E / B.Tech All Branches)",
     regulations: "R2021",
     units: [
       {
