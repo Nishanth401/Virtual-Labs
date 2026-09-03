@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { BookOpen, Target, ListTree, GraduationCap, MessageSquareHeart, FileQuestion, Sparkles, ExternalLink, Video } from "lucide-react";
+import { BookOpen, Target, ListTree, GraduationCap, MessageSquareHeart, FileQuestion, Sparkles, ExternalLink, Video, UploadCloud } from "lucide-react";
 
 export type LabTab =
   | "introduction"
@@ -10,6 +10,7 @@ export type LabTab =
   | "objective"
   | "experiments"
   | "quizzes"
+  | "record-upload"
   | "course-alignment"
   | "resources"
   | "feedback";
@@ -28,6 +29,7 @@ const TABS: { id: LabTab; label: string; icon: React.ElementType }[] = [
   { id: "objective", label: "Objective", icon: Target },
   { id: "experiments", label: "List of experiments", icon: ListTree },
   { id: "quizzes", label: "Self-Assessment Quiz", icon: FileQuestion },
+  { id: "record-upload", label: "Lab Record Upload", icon: UploadCloud },
   { id: "course-alignment", label: "Course Alignment", icon: GraduationCap },
   { id: "resources", label: "Resources & Tutorials", icon: ExternalLink },
   { id: "feedback", label: "Feedback", icon: MessageSquareHeart },
@@ -84,6 +86,17 @@ export function LabSidebar({ activeTab, onTabChange, experimentsCount = 6, resou
                     )}
                   >
                     {experimentsCount}
+                  </span>
+                )}
+
+                {tab.id === "record-upload" && (
+                  <span
+                    className={cn(
+                      "px-2 py-0.5 rounded text-xs font-mono font-bold",
+                      isActive ? "bg-primary-foreground/20 text-primary-foreground" : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                    )}
+                  >
+                    Cloud Vault
                   </span>
                 )}
 

@@ -10,9 +10,9 @@ export default function AppLayout({
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
+      <SidebarInset className="min-w-0 w-full overflow-x-hidden">
         <Breadcrumbs />
-        <main className="flex-1 p-3 sm:p-10">
+        <main className="flex-1 p-3 sm:p-6 lg:p-8 min-w-0 w-full overflow-x-hidden">
           {children}
         </main>
       </SidebarInset>

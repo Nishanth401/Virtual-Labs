@@ -13,6 +13,7 @@ import { MLPrerequisitesTrack } from "@/components/vlab/ml-prerequisites-track";
 import { DSARoadmap } from "@/components/vlab/dsa-roadmap";
 import { LAB_ROADMAPS_DATA } from "@/data/all-labs-roadmap-data";
 import { TamilVideoTimeline } from "@/components/vlab/tamil-video-timeline";
+import { LabRecordUploadPanel } from "@/components/vlab/lab-record-upload-panel";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -815,6 +816,11 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                     </div>
                   </Card>
                 </div>
+              )}
+
+              {/* TAB 4.5: LAB RECORD PDF UPLOAD & CLOUD STORAGE */}
+              {activeTab === "record-upload" && (
+                <LabRecordUploadPanel lab={lab} />
               )}
 
               {/* TAB 5: COURSE ALIGNMENT */}

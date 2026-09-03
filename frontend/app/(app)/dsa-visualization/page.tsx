@@ -131,7 +131,7 @@ export default function DSAVisualizationPage() {
   }, [searchQuery, selectedPhase, filterState, completedMap]);
 
   return (
-    <div className="container py-8 max-w-7xl mx-auto space-y-8">
+    <div className="w-full max-w-[1700px] mx-auto py-6 sm:py-8 space-y-8 px-2 sm:px-4 min-w-0">
       {/* Header Section */}
       <div className="flex flex-col items-center text-center space-y-3">
         <div className="flex items-center gap-3">
