@@ -15,7 +15,7 @@ export interface LinkedList {
 }
 
 export interface ListOperation {
-  type: 'insert-front' | 'insert-back' | 'delete-front' | 'delete-back' | 'reverse'
+  type: 'insert-front' | 'insert-back' | 'delete-front' | 'delete-back' | 'reverse' | 'search' | 'clear' | 'sample'
   value?: number
   timestamp: number
 }
