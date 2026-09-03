@@ -239,7 +239,7 @@ export const LABS_DATA: Lab[] = [
         description: "OSI 7 layers, IP subnets, routing algorithms, and socket communication in Tamil."
       }
     ],
-    semester: "Semester 5",
+    semester: "Semester 4",
     resources: [
       {
         title: "GeeksforGeeks Computer Networks Tutorial & Protocol Architecture",
@@ -864,7 +864,7 @@ export const LABS_DATA: Lab[] = [
         description: "Distributed storage architecture, HDFS namenodes, MapReduce execution, and Apache Spark."
       }
     ],
-    semester: "Semester 7",
+    semester: "Semester 5",
     resources: [
       {
         title: "GeeksforGeeks Big Data Tutorial — Full Architecture Guide",
@@ -921,7 +921,7 @@ export const LABS_DATA: Lab[] = [
         description: "Complete cloud computing curriculum, VPC networking, Lambda, and Docker."
       }
     ],
-    semester: "Semester 8",
+    semester: "Semester 5",
     resources: [
       {
         title: "GeeksforGeeks Cloud Computing Tutorial & Architecture",

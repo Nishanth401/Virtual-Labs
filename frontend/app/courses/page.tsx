@@ -180,20 +180,32 @@ export default function CoursesPage() {
         </div>
 
         {filteredCourses.length === 0 && (
-          <div className="text-center py-16 bg-card border rounded-2xl p-8">
-            <BookOpen className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-            <h3 className="text-lg font-bold text-foreground font-heading">No matching courses found</h3>
-            <p className="text-sm text-muted-foreground mt-1">Try adjusting your semester filter or search keywords.</p>
+          <div className="text-center py-16 bg-card/80 backdrop-blur-md border border-border rounded-2xl p-8 max-w-2xl mx-auto shadow-sm space-y-4">
+            <div className="h-14 w-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto text-primary">
+              <GraduationCap className="h-7 w-7" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-foreground font-heading">
+                {['6', '7', '8'].includes(selectedSem)
+                  ? `Semester ${selectedSem} — Electives & Project Phase`
+                  : "No matching courses found"}
+              </h3>
+              <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                {['6', '7', '8'].includes(selectedSem)
+                  ? `No mandatory laboratory courses scheduled for Semester ${selectedSem}. This semester is dedicated to Industrial Internships, Professional Electives, Open Electives, and Capstone Project work.`
+                  : "Try adjusting your semester filter or search keywords."}
+              </p>
+            </div>
             <Button
-              variant="outline"
+              variant="default"
               size="sm"
               onClick={() => {
                 setSelectedSem("all");
                 setSearchQuery("");
               }}
-              className="mt-4"
+              className="mt-2"
             >
-              Reset Filters
+              Explore Semesters 1 – 5 Courses
             </Button>
           </div>
         )}

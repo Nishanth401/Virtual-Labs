@@ -35,15 +35,15 @@ const TABS: { id: LabTab; label: string; icon: React.ElementType }[] = [
 
 export function LabSidebar({ activeTab, onTabChange, experimentsCount = 6, resourcesCount = 6 }: LabSidebarProps) {
   return (
-    <aside className="w-full lg:w-64 shrink-0">
-      <div className="bg-card/70 backdrop-blur-md rounded-2xl border border-secondary/40 p-3 sticky top-24 shadow-sm">
-        <div className="px-3 py-2 mb-2 border-b border-border/50">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+    <aside className="w-full lg:w-72 shrink-0">
+      <div className="bg-card/80 backdrop-blur-md rounded-2xl border border-secondary/40 p-4 sticky top-24 shadow-sm space-y-2">
+        <div className="px-3 py-2 border-b border-border/50">
+          <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono">
             Lab Navigation
           </span>
         </div>
 
-        <nav className="space-y-1">
+        <nav className="space-y-1.5">
           {TABS.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -54,21 +54,21 @@ export function LabSidebar({ activeTab, onTabChange, experimentsCount = 6, resou
                 type="button"
                 onClick={() => onTabChange(tab.id)}
                 className={cn(
-                  "w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all text-left",
+                  "w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-all text-left",
                   isActive
-                    ? "bg-primary text-primary-foreground shadow-sm shadow-primary/30 font-bold"
+                    ? "bg-primary text-primary-foreground shadow-md shadow-primary/30 font-bold"
                     : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
                 )}
               >
-                <div className="flex items-center gap-2.5">
-                  <Icon className={cn("h-4 w-4 shrink-0", isActive ? "text-primary-foreground" : "text-muted-foreground")} />
+                <div className="flex items-center gap-3">
+                  <Icon className={cn("h-4.5 w-4.5 shrink-0", isActive ? "text-primary-foreground" : "text-muted-foreground")} />
                   <span>{tab.label}</span>
                 </div>
 
                 {tab.id === "video-tutorials" && (
                   <span
                     className={cn(
-                      "px-1.5 py-0.5 rounded text-[10px] font-mono font-bold",
+                      "px-2 py-0.5 rounded text-xs font-mono font-bold",
                       isActive ? "bg-primary-foreground/20 text-primary-foreground" : "bg-primary/10 text-primary"
                     )}
                   >
@@ -79,7 +79,7 @@ export function LabSidebar({ activeTab, onTabChange, experimentsCount = 6, resou
                 {tab.id === "experiments" && (
                   <span
                     className={cn(
-                      "px-1.5 py-0.5 rounded text-[10px] font-mono",
+                      "px-2 py-0.5 rounded text-xs font-mono font-bold",
                       isActive ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground"
                     )}
                   >
@@ -90,7 +90,7 @@ export function LabSidebar({ activeTab, onTabChange, experimentsCount = 6, resou
                 {tab.id === "resources" && (
                   <span
                     className={cn(
-                      "px-1.5 py-0.5 rounded text-[10px] font-mono",
+                      "px-2 py-0.5 rounded text-xs font-mono font-bold",
                       isActive ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground"
                     )}
                   >
