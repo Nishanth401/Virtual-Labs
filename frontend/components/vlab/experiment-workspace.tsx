@@ -53,6 +53,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
   const [feedbackSubmitted, setFeedbackSubmitted] = useState<boolean>(false);
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
   const [simOutput, setSimOutput] = useState<string | null>(null);
+  const [expVideoLang, setExpVideoLang] = useState<"english" | "tamil">("english");
 
   const lab = LABS_DATA.find((l) => l.id === experiment.labId);
   const quiz = QUIZZES_DATA[experiment.quizId];
@@ -176,20 +177,52 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-6">
               {/* Left 7 Cols: Video Player */}
               <div className="lg:col-span-7 space-y-3">
-                <div className="flex items-center justify-between gap-2 px-1">
-                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono flex items-center gap-1.5">
-                    <Video className="h-3.5 w-3.5 text-primary" /> Concept Walkthrough &amp; Demonstration
-                  </span>
-                  <Badge variant="outline" className="text-[10px] font-mono bg-primary/10 text-primary border-primary/20">
-                    Video Guide
+                <div className="flex items-center justify-between gap-2 p-1.5 bg-muted/60 rounded-xl border border-border">
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setExpVideoLang("english")}
+                      className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+                        expVideoLang === "english"
+                          ? "bg-primary text-primary-foreground shadow-xs font-bold"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      🇬🇧 English
+                    </button>
+                    {lab?.tamilVideo && (
+                      <button
+                        type="button"
+                        onClick={() => setExpVideoLang("tamil")}
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+                          expVideoLang === "tamil"
+                            ? "bg-amber-600 text-white shadow-xs font-bold"
+                            : "text-muted-foreground hover:text-amber-500"
+                        }`}
+                      >
+                        🇮🇳 தமிழ் (Tamil)
+                      </button>
+                    )}
+                  </div>
+                  <Badge variant="outline" className="text-[10px] font-mono text-muted-foreground">
+                    {expVideoLang === "english" ? "Concept Walkthrough" : "Tamil Video Track"}
                   </Badge>
                 </div>
 
                 {/* Video Player Frame */}
                 <div className="aspect-video w-full rounded-xl bg-slate-950 border border-border overflow-hidden shadow-md">
                   <iframe
-                    src={experiment.sections.videoUrl || lab?.videoUrl || "https://www.youtube-nocookie.com/embed/8hly31xKli0"}
-                    title={experiment.sections.videoTitle || experiment.title}
+                    key={expVideoLang}
+                    src={
+                      expVideoLang === "english"
+                        ? (experiment.sections.videoUrl || lab?.videoUrl || "https://www.youtube-nocookie.com/embed/8hly31xKli0")
+                        : (lab?.tamilVideo?.url || "https://www.youtube-nocookie.com/embed/8hly31xKli0")
+                    }
+                    title={
+                      expVideoLang === "english"
+                        ? (experiment.sections.videoTitle || experiment.title)
+                        : (lab?.tamilVideo?.title || "Tamil Laboratory Video")
+                    }
                     className="w-full h-full border-0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
@@ -198,7 +231,9 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
 
                 <div className="flex items-center justify-between text-xs text-muted-foreground px-1">
                   <span className="font-semibold text-foreground">
-                    {experiment.sections.videoTitle || `${experiment.title} Full Tutorial`}
+                    {expVideoLang === "english"
+                      ? (experiment.sections.videoTitle || `${experiment.title} Full Tutorial`)
+                      : (lab?.tamilVideo?.title || "Tamil Video Lecture")}
                   </span>
                   <Badge variant="outline" className="text-[10px] font-mono text-muted-foreground">
                     {experiment.category}
