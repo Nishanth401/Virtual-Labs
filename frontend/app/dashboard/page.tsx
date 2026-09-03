@@ -27,12 +27,22 @@ import {
   Users,
   CheckCircle2
 } from "lucide-react";
+import { motion } from "framer-motion";
 import Link from "next/link";
 
 export default function StudentDashboardPage() {
   const router = useRouter();
-  const { user, logout, deleteAccount } = useAuth();
+  const { user, studentProfile, logout, deleteAccount } = useAuth();
   const { progress, isLoaded, resetProgress } = useStudentProgress();
+
+  const studentName =
+    studentProfile?.name ||
+    user?.displayName ||
+    (user?.email ? user.email.split("@")[0] : progress.studentName);
+
+  const studentRollNo =
+    studentProfile?.registerNumber ||
+    (user?.email ? user.email.split("@")[0].toUpperCase() : progress.studentRollNo);
 
   const handleLogout = async () => {
     await logout();
@@ -70,29 +80,91 @@ export default function StudentDashboardPage() {
       <Navbar />
       <main className="flex-1 bg-muted/20 py-8">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 space-y-8">
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2 mb-1.5">
+          {/* Animated Motion Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-2">
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="space-y-2"
+            >
+              <div className="flex flex-wrap items-center gap-2 mb-1">
                 <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/30">
                   Academic Progress Hub
                 </Badge>
-                <Badge variant="secondary" className="text-xs">
+                <Badge variant="secondary" className="text-xs font-mono">
                   Virtual Labs Nodal Center
                 </Badge>
+                {user && (
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                    <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                    Live Student Session
+                  </span>
+                )}
               </div>
-              <h1 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight font-heading">
-                Student Learning Dashboard
-              </h1>
-              <p className="text-sm font-bold text-[#e11d48] dark:text-[#f43f5e] flex items-center gap-1.5 mt-1 font-mono">
-                <span>Student: {progress.studentName} ({progress.studentRollNo})</span>
-              </p>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                Department of Artificial Intelligence &amp; Data Science • VSB Engineering College
-              </p>
-            </div>
 
-            <div className="flex items-center gap-2">
+              {/* Animated Welcome & Student Name */}
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <motion.h1
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                  className="text-2xl sm:text-3xl lg:text-4xl font-black text-foreground tracking-tight font-heading flex items-center gap-2 flex-wrap"
+                >
+                  <span>Welcome back,</span>
+                  <motion.span
+                    className="bg-gradient-to-r from-primary via-rose-500 to-amber-500 bg-clip-text text-transparent font-extrabold"
+                    animate={{
+                      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                    }}
+                    transition={{
+                      duration: 5,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                  >
+                    {studentName}
+                  </motion.span>
+                </motion.h1>
+
+                <motion.span
+                  className="inline-block text-2xl sm:text-3xl origin-[70%_70%] cursor-default"
+                  animate={{
+                    rotate: [0, 14, -8, 14, -4, 10, 0],
+                  }}
+                  transition={{
+                    duration: 2.5,
+                    repeat: Infinity,
+                    repeatDelay: 1,
+                    ease: "easeInOut",
+                  }}
+                >
+                  👋
+                </motion.span>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.25 }}
+                className="flex items-center gap-2 text-xs text-muted-foreground font-mono flex-wrap pt-0.5"
+              >
+                <span className="px-2.5 py-0.5 rounded-md bg-muted/80 text-foreground font-semibold border border-border/60">
+                  Roll No: {studentRollNo}
+                </span>
+                <span>•</span>
+                <span>Department of Artificial Intelligence &amp; Data Science</span>
+                <span>•</span>
+                <span className="text-slate-500">VSB Engineering College</span>
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="flex items-center gap-2 flex-wrap"
+            >
               <Button
                 variant="outline"
                 size="sm"
@@ -123,7 +195,7 @@ export default function StudentDashboardPage() {
               >
                 <Trash2 className="h-3.5 w-3.5" /> Delete Account
               </Button>
-            </div>
+            </motion.div>
           </div>
 
           {/* Progress Overview Card with Certificate Generator */}
