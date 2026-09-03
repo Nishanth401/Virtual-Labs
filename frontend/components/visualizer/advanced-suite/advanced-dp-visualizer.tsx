@@ -73,7 +73,7 @@ export function AdvancedDPVisualizer() {
       <Card className="p-6 bg-card border-border/80 rounded-2xl space-y-6">
         <div className="space-y-6 max-w-xl mx-auto py-2">
           <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider block text-center font-bold">
-            State Machine Transitions: HELD ──> SOLD ──> REST ──> HELD
+            State Machine Transitions: HELD ──→ SOLD ──→ REST ──→ HELD
           </span>
 
           <div className="grid grid-cols-3 gap-4">

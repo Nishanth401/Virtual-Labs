@@ -130,7 +130,7 @@ export function BitManipulationVisualizer() {
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs font-mono">
                 <span className="font-bold text-foreground">Register A = {numA} (Click bit to toggle)</span>
-                <span className="text-muted-foreground">MSB ──> LSB</span>
+                <span className="text-muted-foreground">MSB ──→ LSB</span>
               </div>
               <div className="grid grid-cols-8 gap-2">
                 {bitsA.map((bit, idx) => {
@@ -164,7 +164,7 @@ export function BitManipulationVisualizer() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-xs font-mono">
                   <span className="font-bold text-foreground">Register B = {numB} (Click bit to toggle)</span>
-                  <span className="text-muted-foreground">MSB ──> LSB</span>
+                  <span className="text-muted-foreground">MSB ──→ LSB</span>
                 </div>
                 <div className="grid grid-cols-8 gap-2">
                   {bitsB.map((bit, idx) => {

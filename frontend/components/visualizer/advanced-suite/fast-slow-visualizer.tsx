@@ -111,7 +111,7 @@ export function FastSlowVisualizer() {
       <Card className="p-6 bg-card border-border/80 rounded-2xl space-y-6">
         <div>
           <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider block mb-4">
-            Linked List Nodes (Cycle: Node 6 ──> Node 3)
+            Linked List Nodes (Cycle: Node 6 ──→ Node 3)
           </span>
 
           {/* Node Strip */}

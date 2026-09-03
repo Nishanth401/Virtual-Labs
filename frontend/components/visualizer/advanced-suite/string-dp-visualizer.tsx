@@ -74,7 +74,7 @@ export function StringDPVisualizer() {
               onClick={() => { setAlgo("edit"); setStepIdx(0); }}
               className="h-7 text-xs font-bold rounded-lg"
             >
-              Edit Distance ("HORSE" ──> "ROS")
+              Edit Distance ("HORSE" ──→ "ROS")
             </Button>
           </div>
 
@@ -154,7 +154,7 @@ export function StringDPVisualizer() {
                 <span className="text-xs font-mono text-muted-foreground uppercase font-bold">Levenshtein Edit Distance</span>
                 <span className="text-4xl font-black font-mono text-emerald-400">3 Edits</span>
                 <span className="text-xs font-mono text-muted-foreground mt-2">
-                  Replace 'H' with 'R' ──> Delete 'R' ──> Delete 'E'
+                  Replace 'H' with 'R' ──→ Delete 'R' ──→ Delete 'E'
                 </span>
               </div>
             </div>
