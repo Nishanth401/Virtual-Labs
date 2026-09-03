@@ -297,9 +297,20 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                               </p>
                             </div>
 
-                            <Button onClick={() => setActiveTab("experiments")} size="sm" className="text-xs font-bold gap-1.5 shrink-0 self-start sm:self-center bg-amber-600 hover:bg-amber-700 text-white">
-                              Practice Experiments <ChevronRight className="h-4 w-4" />
-                            </Button>
+                            <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
+                              <a
+                                href={lab.tamilVideo.url.replace("youtube-nocookie.com/embed/", "youtube.com/watch?v=")}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-500/30 text-xs font-semibold text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 transition-colors"
+                              >
+                                <span>Watch on YouTube</span>
+                                <ExternalLink className="h-3.5 w-3.5" />
+                              </a>
+                              <Button onClick={() => setActiveTab("experiments")} size="sm" className="text-xs font-bold gap-1.5 bg-amber-600 hover:bg-amber-700 text-white">
+                                Practice Experiments <ChevronRight className="h-4 w-4" />
+                              </Button>
+                            </div>
                           </div>
 
                           {lab.tamilVideo.timestamps && lab.tamilVideo.timestamps.length > 0 && (
@@ -554,9 +565,20 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                               </p>
                             </div>
 
-                            <Button onClick={() => setActiveTab("experiments")} size="sm" className="text-xs font-bold gap-1.5 shrink-0 self-start sm:self-center bg-amber-600 hover:bg-amber-700 text-white">
-                              Practice Experiments <ChevronRight className="h-4 w-4" />
-                            </Button>
+                            <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
+                              <a
+                                href={lab.tamilVideo.url.replace("youtube-nocookie.com/embed/", "youtube.com/watch?v=")}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-500/30 text-xs font-semibold text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 transition-colors"
+                              >
+                                <span>Watch on YouTube</span>
+                                <ExternalLink className="h-3.5 w-3.5" />
+                              </a>
+                              <Button onClick={() => setActiveTab("experiments")} size="sm" className="text-xs font-bold gap-1.5 bg-amber-600 hover:bg-amber-700 text-white">
+                                Practice Experiments <ChevronRight className="h-4 w-4" />
+                              </Button>
+                            </div>
                           </div>
 
                           {lab.tamilVideo.timestamps && lab.tamilVideo.timestamps.length > 0 && (
