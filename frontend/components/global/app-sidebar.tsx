@@ -53,7 +53,7 @@ import { NavProjects } from "@/components/navigation/nav-projects";
 
 const navItems = [
   {
-    title: "Home",
+    title: "Virtual Lab",
     url: "/",
     icon: Home,
   },

@@ -74,7 +74,7 @@ function getUsername(
 }
 
 const NAV_ITEMS = [
-  { name: "Home", href: "/" },
+  { name: "Virtual Lab", href: "/" },
   { name: "Labs", href: "/labs" },
   { name: "DSA Visualization", href: "/dsa-visualization" },
   { name: "ML Track", href: "/labs/ai-machine-learning" },
@@ -189,63 +189,173 @@ export function Navbar() {
           opacity: 1
         }}
         transition={{ type: "spring", stiffness: 380, damping: 28 }}
-        className="sticky top-3 z-50 w-full px-4 sm:px-6 pointer-events-none transition-all duration-300"
+        className="fixed top-3 inset-x-0 z-50 w-full px-4 sm:px-6 pointer-events-none transition-all duration-300"
       >
-        <div className="container max-w-7xl mx-auto flex items-center justify-between gap-3 pointer-events-auto relative">
-          <div />
-
-          {/* Center Floating Capsule Navbar: BLACK in Light Mode, WHITE in Dark Mode */}
-          <nav
+        <div className="w-full flex items-center justify-center pointer-events-auto relative">
+          {/* ========================================================================= */}
+          {/* FASTLANE MORPHING INNER CAPSULE: FULL WIDTH AT TOP -> CENTERED PILL ON SCROLL */}
+          {/* ========================================================================= */}
+          <motion.nav
+            layout
             onMouseLeave={() => setHoveredHref(null)}
-            className={`hidden md:flex items-center gap-1 rounded-full p-1.5 backdrop-blur-2xl absolute left-1/2 -translate-x-1/2 z-20 transition-all duration-300 ${
-              isDark
-                ? "bg-white/[0.90] text-neutral-900 border border-neutral-300/80 shadow-[0_12px_40px_rgba(0,0,0,0.6),0_0_20px_rgba(255,255,255,0.15)] ring-1 ring-black/10"
-                : "bg-[#09090b]/94 text-white border border-white/[0.18] shadow-[0_12px_40px_rgba(0,0,0,0.4)] ring-1 ring-white/10"
+            transition={{
+              layout: { type: "spring", stiffness: 280, damping: 28, mass: 0.8 },
+              duration: 0.4
+            }}
+            className={`hidden md:flex items-center mx-auto transition-colors duration-300 ${
+              isScrolled
+                ? "w-fit max-w-[820px] rounded-full p-1.5 backdrop-blur-2xl shadow-[0_16px_45px_rgba(0,0,0,0.38)] " +
+                  (isDark
+                    ? "bg-white/[0.90] text-neutral-900 border border-neutral-300/80 ring-1 ring-black/10"
+                    : "bg-[#09090b]/92 text-white border border-white/[0.18] ring-1 ring-white/10")
+                : "w-full max-w-7xl px-4 py-2 bg-transparent justify-between"
             }`}
+            style={{
+              backdropFilter: isScrolled ? "blur(10px) saturate(195%) brightness(1.05) contrast(1.05)" : "none",
+              WebkitBackdropFilter: isScrolled ? "blur(10px) saturate(195%) brightness(1.05) contrast(1.05)" : "none",
+            }}
           >
-            {NAV_ITEMS.map((item) => {
-              const active = isItemActive(item.href);
-              const isHovered = hoveredHref === item.href;
-              const isHighlighted = hoveredHref ? isHovered : active;
-
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onMouseEnter={() => setHoveredHref(item.href)}
-                  className={`relative px-4 py-1.5 rounded-full text-xs font-semibold transition-colors duration-200 z-10 select-none tracking-wide ${
-                    isHighlighted
-                      ? "text-white font-bold"
-                      : isDark
+            {/* Left Side: Virtual Lab Link */}
+            <div className="flex items-center shrink-0">
+              <Link
+                href="/"
+                onMouseEnter={() => setHoveredHref("/")}
+                className={`relative px-4 py-1.5 rounded-full text-xs font-semibold transition-colors duration-200 z-10 select-none tracking-wide ${
+                  isItemActive("/") || hoveredHref === "/"
+                    ? "text-white font-bold"
+                    : isScrolled
+                    ? isDark
                       ? "text-neutral-800 hover:text-black font-semibold"
                       : "text-neutral-300 hover:text-white"
-                  }`}
-                >
-                  {isHighlighted && (
-                    <motion.div
-                      layoutId="fastlane-navbar-active-pill"
-                      className="absolute inset-0 rounded-full bg-gradient-to-r from-[#ff2a5f] via-[#e11d48] to-[#dc2626] shadow-[0_0_24px_rgba(255,42,95,0.7),0_2px_10px_rgba(225,29,72,0.4)] -z-10"
-                      transition={{
-                        type: "spring",
-                        stiffness: 420,
-                        damping: 30,
-                      }}
-                    />
-                  )}
-                  <span>{item.name}</span>
-                </Link>
-              );
-            })}
-          </nav>
+                    : isDark
+                    ? "text-slate-900 hover:text-black font-bold"
+                    : "text-slate-800 hover:text-black font-bold"
+                }`}
+              >
+                {(isItemActive("/") || hoveredHref === "/") && (
+                  <motion.div
+                    layoutId="fastlane-navbar-active-pill"
+                    className="absolute inset-0 rounded-full bg-gradient-to-r from-[#ff2a5f] via-[#e11d48] to-[#dc2626] shadow-[0_0_24px_rgba(255,42,95,0.7),0_2px_10px_rgba(225,29,72,0.4)] -z-10"
+                    transition={{
+                      type: "spring",
+                      stiffness: 420,
+                      damping: 30,
+                    }}
+                  />
+                )}
+                <span>Virtual Lab</span>
+              </Link>
+            </div>
 
-          {/* Right Action Icons: Circular Search Button & Mode Toggle */}
-          <div className="flex items-center gap-2 shrink-0">
-            {/* Circular Search Button - Highly Visible with High Contrast in Both Modes */}
-            <button
-              type="button"
-              onClick={() => setSearchOpen(true)}
-              className={`w-9 h-9 rounded-full flex items-center justify-center hover:scale-105 transition-all shadow-md cursor-pointer backdrop-blur-md ${
+            {/* Right Side: Other Navigation Links + Actions */}
+            <div className="flex items-center gap-1 shrink-0">
+              {NAV_ITEMS.slice(1).map((item) => {
+                const active = isItemActive(item.href);
+                const isHovered = hoveredHref === item.href;
+                const isHighlighted = hoveredHref ? isHovered : active;
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onMouseEnter={() => setHoveredHref(item.href)}
+                    className={`relative px-3.5 py-1.5 rounded-full text-xs font-semibold transition-colors duration-200 z-10 select-none tracking-wide ${
+                      isHighlighted
+                        ? "text-white font-bold"
+                        : isScrolled
+                        ? isDark
+                          ? "text-neutral-800 hover:text-black font-semibold"
+                          : "text-neutral-300 hover:text-white"
+                        : isDark
+                        ? "text-slate-700 hover:text-black font-semibold"
+                        : "text-slate-700 hover:text-black font-semibold"
+                    }`}
+                  >
+                    {isHighlighted && (
+                      <motion.div
+                        layoutId="fastlane-navbar-active-pill"
+                        className="absolute inset-0 rounded-full bg-gradient-to-r from-[#ff2a5f] via-[#e11d48] to-[#dc2626] shadow-[0_0_24px_rgba(255,42,95,0.7),0_2px_10px_rgba(225,29,72,0.4)] -z-10"
+                        transition={{
+                          type: "spring",
+                          stiffness: 420,
+                          damping: 30,
+                        }}
+                      />
+                    )}
+                    <span>{item.name}</span>
+                  </Link>
+                );
+              })}
+
+              {/* Subtle Vertical Divider */}
+              <div
+                className={`h-4 w-[1px] mx-1 ${
+                  isScrolled
+                    ? isDark
+                      ? "bg-black/15"
+                      : "bg-white/20"
+                    : isDark
+                    ? "bg-neutral-300"
+                    : "bg-neutral-400/40"
+                }`}
+              />
+
+              {/* Integrated Action Buttons */}
+              <div className="flex items-center gap-1.5 pl-0.5">
+                <button
+                  type="button"
+                  onClick={() => setSearchOpen(true)}
+                  className={`w-7 h-7 rounded-full flex items-center justify-center hover:scale-105 transition-all cursor-pointer ${
+                    isScrolled
+                      ? isDark
+                        ? "text-neutral-800 hover:text-black hover:bg-black/5"
+                        : "text-neutral-300 hover:text-white hover:bg-white/10"
+                      : "text-slate-800 dark:text-neutral-200 hover:bg-black/5 dark:hover:bg-white/10"
+                  }`}
+                  title="Search labs & algorithms (Ctrl+K)"
+                >
+                  <Search className="h-3.5 w-3.5" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setAuthOpen(true)}
+                  className={`px-3 py-1 rounded-full text-[11px] font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    isScrolled
+                      ? isDark
+                        ? "bg-neutral-900 text-white hover:bg-black shadow-xs"
+                        : "bg-white text-neutral-900 hover:bg-neutral-200 shadow-xs"
+                      : "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 hover:opacity-90 shadow-xs"
+                  }`}
+                  suppressHydrationWarning
+                >
+                  {mounted && (studentProfile || user) ? (
+                    <span className="flex items-center gap-1 max-w-[100px] truncate">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0 inline-block" />
+                      {getUsername(studentProfile, user)}
+                    </span>
+                  ) : (
+                    <span>Sign In</span>
+                  )}
+                </button>
+
+                <ModeToggle />
+              </div>
+            </div>
+          </motion.nav>
+
+          {/* ======================================================== */}
+          {/* MOBILE VIEW (Centered Floating Capsule with Hamburger)   */}
+          {/* ======================================================== */}
+          <div className="md:hidden flex items-center justify-between w-full px-2">
+            <Link
+              href="/"
+              className={`px-3.5 py-1.5 rounded-full text-xs font-bold backdrop-blur-2xl ${
                 isDark
+<<<<<<< HEAD
+                  ? "bg-white/[0.90] text-neutral-900 border border-neutral-300/80 shadow-sm"
+                  : "bg-[#09090b]/94 text-white border border-white/[0.18] shadow-sm"
+=======
                   ? "bg-white/[0.90] text-neutral-900 border border-neutral-300/80 hover:border-red-500/60 shadow-black/30"
                   : "bg-[#09090b]/94 text-white border border-white/[0.18] hover:border-red-500/60 shadow-black/40"
               }`}
@@ -308,14 +418,41 @@ export function Navbar() {
                 isDark
                   ? "bg-white/[0.90] text-neutral-900 border border-neutral-300/80"
                   : "bg-[#09090b]/94 text-white border border-white/[0.18]"
+>>>>>>> upstream/main
               }`}
             >
-              {mobileMenuOpen ? (
-                <X className={`h-4 w-4 ${isDark ? "text-neutral-900" : "text-white"}`} />
-              ) : (
-                <Menu className={`h-4 w-4 ${isDark ? "text-neutral-900" : "text-white"}`} />
-              )}
-            </button>
+              Virtual Lab
+            </Link>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setSearchOpen(true)}
+                className={`w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md shadow-sm ${
+                  isDark
+                    ? "bg-white/[0.90] text-neutral-900 border border-neutral-300/80"
+                    : "bg-[#09090b]/94 text-white border border-white/[0.18]"
+                }`}
+              >
+                <Search className={`h-4 w-4 ${isDark ? "text-neutral-900" : "text-white"}`} />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className={`w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md shadow-sm ${
+                  isDark
+                    ? "bg-white/[0.90] text-neutral-900 border border-neutral-300/80"
+                    : "bg-[#09090b]/94 text-white border border-white/[0.18]"
+                }`}
+              >
+                {mobileMenuOpen ? (
+                  <X className={`h-4 w-4 ${isDark ? "text-neutral-900" : "text-white"}`} />
+                ) : (
+                  <Menu className={`h-4 w-4 ${isDark ? "text-neutral-900" : "text-white"}`} />
+                )}
+              </button>
+            </div>
           </div>
         </div>
 

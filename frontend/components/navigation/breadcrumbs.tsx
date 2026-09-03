@@ -15,7 +15,7 @@ import { usePathname } from "next/navigation"
 
 const routes = {
   "/": {
-    name: "Home",
+    name: "Virtual Lab",
     path: "/home",
   },
   "/visualizer": {
