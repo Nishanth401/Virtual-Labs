@@ -33,7 +33,8 @@ import {
   Database,
   Network,
   Video,
-  ExternalLink
+  ExternalLink,
+  ListTree
 } from "lucide-react";
 
 interface LabDetailPageProps {
@@ -284,6 +285,81 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                           )}
                         </div>
                       )}
+
+                      {/* CURATED YOUTUBE PLAYLISTS & COMPLETE VIDEO SERIES */}
+                      {lab.playlists && lab.playlists.length > 0 && (
+                        <div className="pt-4 mt-4 border-t border-border/60 space-y-3">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <ListTree className="h-4 w-4 text-primary" />
+                              <h4 className="text-xs font-bold uppercase tracking-wider text-foreground font-mono">
+                                Curated YouTube Playlists & Full Video Series
+                              </h4>
+                            </div>
+                            <Badge variant="outline" className="text-[10px] font-mono bg-primary/10 text-primary border-primary/20">
+                              {lab.playlists.length} Series Available
+                            </Badge>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            {lab.playlists.map((playlist, pIdx) => (
+                              <div
+                                key={pIdx}
+                                className="p-4 rounded-xl border border-border/80 bg-card/60 hover:bg-card/90 hover:border-primary/40 transition-all flex flex-col justify-between gap-3 group shadow-xs"
+                              >
+                                <div className="space-y-1.5">
+                                  <div className="flex items-center justify-between gap-2">
+                                    <Badge
+                                      variant="outline"
+                                      className={`text-[10px] font-mono font-bold ${
+                                        playlist.language === "Tamil"
+                                          ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30"
+                                          : "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30"
+                                      }`}
+                                    >
+                                      {playlist.language === "Tamil" ? "🇮🇳 தமிழ் Playlist" : "🇬🇧 English Playlist"}
+                                    </Badge>
+                                    {playlist.videoCount && (
+                                      <span className="text-[10px] font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded-md">
+                                        {playlist.videoCount}
+                                      </span>
+                                    )}
+                                  </div>
+
+                                  <h5 className="text-xs font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">
+                                    {playlist.title}
+                                  </h5>
+
+                                  {playlist.description && (
+                                    <p className="text-[11px] text-muted-foreground line-clamp-2 leading-relaxed">
+                                      {playlist.description}
+                                    </p>
+                                  )}
+
+                                  {playlist.channel && (
+                                    <p className="text-[10px] font-mono text-muted-foreground">
+                                      Channel: <span className="font-semibold text-foreground">{playlist.channel}</span>
+                                    </p>
+                                  )}
+                                </div>
+
+                                <div className="pt-2 border-t border-border/40 flex items-center justify-between">
+                                  <a
+                                    href={playlist.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline"
+                                  >
+                                    <span>Open Playlist on YouTube</span>
+                                    <ExternalLink className="h-3.5 w-3.5" />
+                                  </a>
+                                  <PlayCircle className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <div className="p-4 rounded-xl bg-primary/5 border border-primary/20 space-y-2 text-foreground">
@@ -475,6 +551,81 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                               compact={false}
                             />
                           )}
+                        </div>
+                      )}
+
+                      {/* CURATED YOUTUBE PLAYLISTS & COMPLETE VIDEO SERIES */}
+                      {lab.playlists && lab.playlists.length > 0 && (
+                        <div className="pt-6 border-t border-border/60 space-y-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <ListTree className="h-4 w-4 text-primary" />
+                              <h4 className="text-sm font-bold uppercase tracking-wider text-foreground font-mono">
+                                Curated YouTube Playlists & Full Video Series
+                              </h4>
+                            </div>
+                            <Badge variant="outline" className="text-xs font-mono bg-primary/10 text-primary border-primary/20">
+                              {lab.playlists.length} Complete Series
+                            </Badge>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {lab.playlists.map((playlist, pIdx) => (
+                              <div
+                                key={pIdx}
+                                className="p-4 rounded-xl border border-border bg-card hover:border-primary/40 transition-all flex flex-col justify-between gap-3 group shadow-xs hover:shadow-md"
+                              >
+                                <div className="space-y-2">
+                                  <div className="flex items-center justify-between gap-2">
+                                    <Badge
+                                      variant="outline"
+                                      className={`text-[10px] font-mono font-bold ${
+                                        playlist.language === "Tamil"
+                                          ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30"
+                                          : "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30"
+                                      }`}
+                                    >
+                                      {playlist.language === "Tamil" ? "🇮🇳 தமிழ் Playlist" : "🇬🇧 English Playlist"}
+                                    </Badge>
+                                    {playlist.videoCount && (
+                                      <span className="text-[10px] font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded-md">
+                                        {playlist.videoCount}
+                                      </span>
+                                    )}
+                                  </div>
+
+                                  <h5 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
+                                    {playlist.title}
+                                  </h5>
+
+                                  {playlist.description && (
+                                    <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                                      {playlist.description}
+                                    </p>
+                                  )}
+
+                                  {playlist.channel && (
+                                    <p className="text-[11px] font-mono text-muted-foreground">
+                                      Channel: <span className="font-semibold text-foreground">{playlist.channel}</span>
+                                    </p>
+                                  )}
+                                </div>
+
+                                <div className="pt-3 border-t border-border/40 flex items-center justify-between">
+                                  <a
+                                    href={playlist.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:underline"
+                                  >
+                                    <span>Open Playlist on YouTube</span>
+                                    <ExternalLink className="h-3.5 w-3.5" />
+                                  </a>
+                                  <PlayCircle className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       )}
                     </CardContent>
