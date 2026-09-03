@@ -6,7 +6,7 @@ import { EXPERIMENTS_DATA } from "@/data/experiments";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Clock, PlayCircle, ArrowRight, Star } from "lucide-react";
+import { CheckCircle2, Clock, PlayCircle, ArrowRight } from "lucide-react";
 
 interface AttemptsTableProps {
   progress: StudentProgressState;
@@ -76,8 +76,8 @@ export function AttemptsTable({ progress }: AttemptsTableProps) {
                         {feedback && (
                           <>
                             <span>•</span>
-                            <span className="flex items-center gap-0.5 text-amber-500 font-semibold">
-                              <Star className="h-3 w-3 fill-current" /> {feedback.rating}/5
+                            <span className="font-semibold text-primary">
+                              Rating: {feedback.rating}/5
                             </span>
                           </>
                         )}
