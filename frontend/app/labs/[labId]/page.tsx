@@ -12,13 +12,13 @@ import { CourseAlignmentCard } from "@/components/vlab/course-alignment-card";
 import { MLPrerequisitesTrack } from "@/components/vlab/ml-prerequisites-track";
 import { DSARoadmap } from "@/components/vlab/dsa-roadmap";
 import { LAB_ROADMAPS_DATA } from "@/data/all-labs-roadmap-data";
+import { TamilVideoTimeline } from "@/components/vlab/tamil-video-timeline";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import {
   FlaskConical,
-  Star,
   PlayCircle,
   CheckCircle2,
   Users,
@@ -48,9 +48,15 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
   const [feedbackRating, setFeedbackRating] = useState<number>(5);
   const [feedbackText, setFeedbackText] = useState<string>("");
   const [feedbackSent, setFeedbackSent] = useState<boolean>(false);
-  const [resourceSourceFilter, setResourceSourceFilter] = useState<string>("ALL");
   const [selectedVideoPartIdx, setSelectedVideoPartIdx] = useState<number>(0);
   const [videoLanguageTab, setVideoLanguageTab] = useState<"english" | "tamil">("english");
+  const [tamilVideoTime, setTamilVideoTime] = useState<number>(0);
+  const [activeTamilTimestampIdx, setActiveTamilTimestampIdx] = useState<number | null>(null);
+
+  const handleSelectTamilTimestamp = (seconds: number, idx: number) => {
+    setTamilVideoTime(seconds);
+    setActiveTamilTimestampIdx(idx);
+  };
 
   // Quiz State
   const [quizAnswers, setQuizAnswers] = useState<Record<string, number>>({});
@@ -91,14 +97,6 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 <p className="text-xs text-muted-foreground mt-1">
                   {lab.department} • {lab.semester}
                 </p>
-              </div>
-
-              <div className="flex items-center gap-2 self-start md:self-center">
-                <div className="flex items-center gap-1.5 text-amber-500 font-bold text-sm bg-amber-500/10 px-3.5 py-1.5 rounded-xl border border-amber-500/20">
-                  <Star className="h-4 w-4 fill-current" />
-                  <span>{lab.rating} / 5.0</span>
-                  <span className="text-xs text-muted-foreground font-normal">({lab.ratingsCount} reviews)</span>
-                </div>
               </div>
             </div>
           </div>
@@ -264,10 +262,11 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
 
                       {/* TAMIL FULL COURSE VIDEO SECTION */}
                       {videoLanguageTab === "tamil" && lab.tamilVideo && (
-                        <div className="space-y-3">
+                        <div className="space-y-4">
                           <div className="aspect-video w-full rounded-2xl bg-black/90 border border-amber-500/30 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
                             <iframe
-                              src={lab.tamilVideo.url}
+                              key={`tamil-overview-${tamilVideoTime}`}
+                              src={tamilVideoTime > 0 ? `${lab.tamilVideo.url}?start=${tamilVideoTime}&autoplay=1` : lab.tamilVideo.url}
                               title={lab.tamilVideo.title}
                               className="w-full h-full rounded-2xl border-0"
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -281,6 +280,11 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                 <Badge variant="outline" className="text-[10px] font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/30">
                                   தமிழ் Video Tutorial
                                 </Badge>
+                                {lab.tamilVideo.channel && (
+                                  <Badge variant="outline" className="text-[10px] font-mono border-amber-500/20 bg-background/50">
+                                    {lab.tamilVideo.channel}
+                                  </Badge>
+                                )}
                                 <span className="text-xs text-muted-foreground font-mono">
                                   • {lab.tamilVideo.duration || "Full Course"}
                                 </span>
@@ -297,6 +301,16 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                               Practice Experiments <ChevronRight className="h-4 w-4" />
                             </Button>
                           </div>
+
+                          {lab.tamilVideo.timestamps && lab.tamilVideo.timestamps.length > 0 && (
+                            <TamilVideoTimeline
+                              tamilVideo={lab.tamilVideo}
+                              activeTimestampIdx={activeTamilTimestampIdx}
+                              onSelectTimestamp={handleSelectTamilTimestamp}
+                              currentVideoTime={tamilVideoTime}
+                              compact={true}
+                            />
+                          )}
                         </div>
                       )}
                     </div>
@@ -508,7 +522,8 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                         <div className="space-y-6">
                           <div className="aspect-video w-full rounded-2xl bg-black/90 border border-amber-500/30 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
                             <iframe
-                              src={lab.tamilVideo.url}
+                              key={`tamil-tab-${tamilVideoTime}`}
+                              src={tamilVideoTime > 0 ? `${lab.tamilVideo.url}?start=${tamilVideoTime}&autoplay=1` : lab.tamilVideo.url}
                               title={lab.tamilVideo.title}
                               className="w-full h-full rounded-2xl border-0"
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -522,6 +537,11 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                 <Badge variant="outline" className="text-[10px] font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/30">
                                   தமிழ் Full Course Tutorial
                                 </Badge>
+                                {lab.tamilVideo.channel && (
+                                  <Badge variant="outline" className="text-[10px] font-mono border-amber-500/20 bg-background/50">
+                                    Channel: {lab.tamilVideo.channel}
+                                  </Badge>
+                                )}
                                 <span className="text-xs text-muted-foreground font-mono">
                                   • {lab.tamilVideo.duration || "Full Course"}
                                 </span>
@@ -538,6 +558,16 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                               Practice Experiments <ChevronRight className="h-4 w-4" />
                             </Button>
                           </div>
+
+                          {lab.tamilVideo.timestamps && lab.tamilVideo.timestamps.length > 0 && (
+                            <TamilVideoTimeline
+                              tamilVideo={lab.tamilVideo}
+                              activeTimestampIdx={activeTamilTimestampIdx}
+                              onSelectTimestamp={handleSelectTamilTimestamp}
+                              currentVideoTime={tamilVideoTime}
+                              compact={false}
+                            />
+                          )}
                         </div>
                       )}
                     </CardContent>
@@ -644,10 +674,6 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                               <span>•</span>
                               <span className="flex items-center gap-1">
                                 <Code2 className="h-3 w-3 text-indigo-400" /> Call Stack Trace
-                              </span>
-                              <span>•</span>
-                              <span className="flex items-center gap-1">
-                                <Star className="h-3 w-3 fill-amber-500 text-amber-500" /> {exp.rating}
                               </span>
                             </div>
                           </div>
@@ -909,20 +935,20 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                     ) : (
                       <form onSubmit={handleSendFeedback} className="space-y-4">
                         <div className="space-y-1.5">
-                          <label className="text-xs font-semibold">Laboratory Rating</label>
+                          <label className="text-xs font-semibold">Laboratory Rating (1 - 5)</label>
                           <div className="flex items-center gap-1.5">
                             {[1, 2, 3, 4, 5].map((s) => (
                               <button
                                 key={s}
                                 type="button"
                                 onClick={() => setFeedbackRating(s)}
-                                className="p-1 hover:scale-110 transition-transform"
+                                className={`h-8 w-8 rounded-lg text-xs font-bold border transition-all ${
+                                  s === feedbackRating
+                                    ? "bg-primary text-primary-foreground border-primary shadow-xs"
+                                    : "bg-muted/50 hover:bg-muted text-muted-foreground border-border"
+                                }`}
                               >
-                                <Star
-                                  className={`h-5 w-5 ${
-                                    s <= feedbackRating ? "text-amber-500 fill-amber-500" : "text-muted"
-                                  }`}
-                                />
+                                {s}
                               </button>
                             ))}
                           </div>

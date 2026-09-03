@@ -15,11 +15,21 @@ export interface LabVideoPart {
   description: string;
 }
 
+export interface VideoTimestamp {
+  time: string;
+  seconds: number;
+  title: string;
+  url: string;
+  category?: string;
+}
+
 export interface LabTamilVideo {
   url: string;
   title: string;
   description: string;
   duration?: string;
+  channel?: string;
+  timestamps?: VideoTimestamp[];
 }
 
 export interface Lab {
@@ -308,10 +318,34 @@ export const LABS_DATA: Lab[] = [
       }
     ],
     tamilVideo: {
-      url: "https://www.youtube-nocookie.com/embed/7eh4d6sabA0",
-      title: "Machine Learning Full Course in Tamil",
-      description: "Complete Tamil guide covering supervised learning, decision trees, neural networks, Naïve Bayes, and clustering.",
-      duration: "Full Course"
+      url: "https://www.youtube-nocookie.com/embed/k6HOBjkUkE4",
+      title: "Machine Learning & Data Science Full Course in Tamil (AI Coach John)",
+      description: "Complete 18+ hour masterclass in Tamil covering Python foundations, Pandas deep dive, data cleaning & visualization, statistics & hypothesis testing, Linear & Logistic Regression, Streamlit deployment, and K-Means clustering.",
+      duration: "18h 15m (21 Chapters)",
+      channel: "AI Coach John",
+      timestamps: [
+        { time: "00:00", seconds: 0, title: "Introduction", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4", category: "Course Overview" },
+        { time: "03:58", seconds: 238, title: "My Gift for You", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=238s", category: "Course Overview" },
+        { time: "10:36", seconds: 636, title: "Agenda of the Course", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=636s", category: "Course Overview" },
+        { time: "14:20", seconds: 860, title: "Who is AI Coach John?", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=860s", category: "Course Overview" },
+        { time: "31:29", seconds: 1889, title: "Python Installation and Exploration", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=1889s", category: "Python Foundations" },
+        { time: "46:58", seconds: 2818, title: "Python Basics + Data Types", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=2818s", category: "Python Foundations" },
+        { time: "1:05:32", seconds: 3932, title: "For Loop & While Loop", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=3932s", category: "Python Foundations" },
+        { time: "1:18:30", seconds: 4710, title: "Conditional Statements and Functions", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=4710s", category: "Python Foundations" },
+        { time: "2:03:35", seconds: 7415, title: "Python Libraries – Complete Explanation in Tamil", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=7415s", category: "Python Foundations" },
+        { time: "2:43:48", seconds: 9828, title: "Recap + Python Data Structures", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=9828s", category: "Python Foundations" },
+        { time: "4:30:29", seconds: 16229, title: "Data Analyst Tool – Pandas Deep Dive", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=16229s", category: "Data Analysis" },
+        { time: "6:35:48", seconds: 23748, title: "Data Cleaning Techniques", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=23748s", category: "Data Analysis" },
+        { time: "8:12:22", seconds: 29542, title: "Data Visualization", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=29542s", category: "Data Analysis" },
+        { time: "10:22:40", seconds: 37360, title: "Statistics", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=37360s", category: "Statistics & Math" },
+        { time: "11:30:45", seconds: 41445, title: "Hypothesis and Statistical Testing", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=41445s", category: "Statistics & Math" },
+        { time: "13:24:09", seconds: 48249, title: "Machine Learning Introduction", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=48249s", category: "Machine Learning Core" },
+        { time: "13:59:36", seconds: 50376, title: "Linear Regression in Tamil", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=50376s", category: "Machine Learning Core" },
+        { time: "15:34:20", seconds: 56060, title: "Logistic Regression", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=56060s", category: "Machine Learning Core" },
+        { time: "16:02:06", seconds: 57726, title: "Streamlit Deployment", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=57726s", category: "Deployment" },
+        { time: "17:16:45", seconds: 62205, title: "K-Means Clustering", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=62205s", category: "Unsupervised Learning" },
+        { time: "18:11:51", seconds: 65511, title: "Conclusion (Final Words)", url: "https://www.youtube.com/watch?v=k6HOBjkUkE4&t=65511s", category: "Summary & Wrap Up" }
+      ]
     },
     semester: "Semester 4",
     resources: [

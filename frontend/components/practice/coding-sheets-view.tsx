@@ -19,7 +19,7 @@ import { Progress } from "@/components/ui/progress";
 import {
   CheckCircle2,
   Circle,
-  Star,
+  Bookmark,
   ExternalLink,
   Search,
   BookOpen,
@@ -230,7 +230,9 @@ export function CodingSheetsView() {
             <div className="flex-1 space-y-1.5">
               <div className="flex justify-between text-xs font-bold font-mono">
                 <span className="text-[#1e88e5]">{stats.percent}% Completed</span>
-                <span className="text-amber-500 font-normal">{stats.starredCount} ⭐</span>
+                <span className="text-amber-500 font-normal flex items-center gap-1">
+                  <Bookmark className="h-3 w-3 fill-current" /> {stats.starredCount} Saved
+                </span>
               </div>
               <Progress value={stats.percent} className="h-2 bg-muted accent-[#1e88e5]" />
             </div>
@@ -450,7 +452,7 @@ export function CodingSheetsView() {
                 <option value="ALL">All Statuses</option>
                 <option value="SOLVED">✅ Solved Only</option>
                 <option value="UNSOLVED">⏳ Unsolved Only</option>
-                <option value="STARRED">⭐ Starred for Revision</option>
+                <option value="STARRED">📌 Bookmarked for Revision</option>
               </select>
             </div>
           </div>
@@ -579,7 +581,7 @@ export function CodingSheetsView() {
                         </button>
                       </td>
 
-                      {/* Star / Revision Column */}
+                      {/* Bookmark / Revision Column */}
                       <td className="py-2.5 px-2 text-center">
                         <button
                           type="button"
@@ -587,7 +589,7 @@ export function CodingSheetsView() {
                           className="p-1 rounded-md hover:bg-muted transition-colors cursor-pointer"
                           title={isStarred ? "Remove Bookmark" : "Bookmark for Revision"}
                         >
-                          <Star
+                          <Bookmark
                             className={`h-4 w-4 transition-colors ${
                               isStarred
                                 ? "text-amber-500 fill-amber-500"
@@ -669,8 +671,7 @@ export function CodingSheetsView() {
 
                       {/* Importance Rating (7.0 - 9.9) */}
                       <td className="py-2.5 px-2 text-center font-mono font-bold">
-                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-muted/40 text-foreground text-[10px]">
-                          <span className="text-amber-500 text-[10px]">★</span>
+                        <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-muted/40 text-foreground text-[10px]">
                           <span>{problem.importanceRating.toFixed(1)}</span>
                         </span>
                       </td>
