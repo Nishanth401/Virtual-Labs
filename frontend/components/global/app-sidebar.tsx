@@ -39,7 +39,8 @@ import {
   Repeat,
   Share2,
   Boxes,
-  Activity
+  Activity,
+  FileText
 } from "lucide-react";
 import {
   Sidebar,
@@ -62,6 +63,11 @@ const navItems = [
     icon: BrainCircuit,
     badge: "Core",
     badgeColor: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+  },
+  {
+    title: "DSA Practice Sheets",
+    url: "/dsa-visualization?tab=sheets",
+    icon: FileText,
   },
   {
     title: "Complexity Matrix",
