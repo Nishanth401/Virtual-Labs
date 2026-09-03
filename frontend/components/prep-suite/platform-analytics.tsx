@@ -21,6 +21,7 @@ import {
   Eye,
   Info
 } from "lucide-react";
+import { supabase, saveUserSrsProgress, getUserSrsProgress, getUserReadinessProfile } from "@/lib/supabase";
 
 interface PatternCard {
   id: string;
@@ -108,7 +109,10 @@ export function PlatformAnalytics() {
 
   const currentCard = deck[cardIdx];
 
-  const handleRateCard = (daysDelta: number) => {
+  const handleRateCard = async (daysDelta: number) => {
+    const { data: { session } } = await supabase.auth.getSession();
+    const uid = session?.user?.id || "guest_user";
+    saveUserSrsProgress(uid, currentCard.id, daysDelta);
     setIsFlipped(false);
     setCardIdx((prev) => (prev + 1) % deck.length);
   };

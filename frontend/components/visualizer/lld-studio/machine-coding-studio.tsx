@@ -25,8 +25,11 @@ import {
   Zap,
   Split,
   Copy,
-  Check
+  Check,
+  Sparkles
 } from "lucide-react";
+import { AiReviewModal } from "@/components/prep-suite/ai-review-modal";
+import { evaluateMachineCodingCode, CodeReviewResult } from "@/lib/ai-evaluation-engine";
 
 export type LldSubmode = "uml-builder" | "design-patterns" | "machine-coding";
 
@@ -478,6 +481,20 @@ export function MachineCodingStudio() {
   const [activePattern, setActivePattern] = useState<"strategy" | "observer" | "factory" | "singleton">("strategy");
   const [strategyOption, setStrategyOption] = useState<"credit-card" | "crypto" | "upi">("credit-card");
 
+  // AI Code Review Modal state
+  const [isAiModalOpen, setIsAiModalOpen] = useState<boolean>(false);
+  const [codeReviewResult, setCodeReviewResult] = useState<CodeReviewResult | null>(null);
+
+  const handleRunAiReview = () => {
+    const result = evaluateMachineCodingCode(
+      activeProblem.starterCode[selectedLang],
+      selectedLang,
+      activeProblem.title
+    );
+    setCodeReviewResult(result);
+    setIsAiModalOpen(true);
+  };
+
   useEffect(() => {
     if (isTimerRunning) {
       timerRef.current = setInterval(() => {
@@ -696,15 +713,25 @@ export function MachineCodingStudio() {
                   <span className="text-xs font-mono text-muted-foreground font-bold uppercase tracking-wider">
                     {selectedLang.toUpperCase()} Starter Boilerplate
                   </span>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handleCopyCode(activeProblem.starterCode[selectedLang])}
-                    className="h-7 text-xs font-mono gap-1"
-                  >
-                    {copied ? <Check className="h-3 w-3 text-emerald-500" /> : <Copy className="h-3 w-3" />}
-                    <span>{copied ? "Copied" : "Copy Code"}</span>
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      size="sm"
+                      onClick={handleRunAiReview}
+                      className="h-7 text-xs font-mono gap-1.5 bg-primary text-primary-foreground font-bold shadow-xs"
+                    >
+                      <Sparkles className="h-3.5 w-3.5" />
+                      <span>Run AI Review</span>
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleCopyCode(activeProblem.starterCode[selectedLang])}
+                      className="h-7 text-xs font-mono gap-1"
+                    >
+                      {copied ? <Check className="h-3 w-3 text-emerald-500" /> : <Copy className="h-3 w-3" />}
+                      <span>{copied ? "Copied" : "Copy Code"}</span>
+                    </Button>
+                  </div>
                 </div>
 
                 <div className="mt-4 p-4 rounded-xl bg-muted/40 border border-border font-mono text-xs overflow-x-auto max-h-[420px] text-foreground leading-relaxed">
@@ -880,6 +907,14 @@ export function MachineCodingStudio() {
           </Card>
         </div>
       )}
+
+      {/* AI Review Modal */}
+      <AiReviewModal
+        isOpen={isAiModalOpen}
+        onClose={() => setIsAiModalOpen(false)}
+        reviewType="code"
+        codeReview={codeReviewResult || undefined}
+      />
     </div>
   );
 }
