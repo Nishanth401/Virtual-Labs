@@ -120,26 +120,41 @@ export function Navbar() {
   const [authOpen, setAuthOpen] = useState(false);
   const [hoveredHref, setHoveredHref] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const isScrolledRef = React.useRef(false);
   const [scrollDirection, setScrollDirection] = useState<"up" | "down">("up");
   const lastScrollYRef = React.useRef(0);
 
   useEffect(() => {
     setMounted(true);
 
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setIsScrolled(currentScrollY > 15);
+    let rafId: number | null = null;
 
-      if (currentScrollY > lastScrollYRef.current && currentScrollY > 40) {
-        setScrollDirection("down");
-      } else if (currentScrollY < lastScrollYRef.current) {
-        setScrollDirection("up");
-      }
-      lastScrollYRef.current = currentScrollY;
+    const handleScroll = () => {
+      if (rafId !== null) return;
+      rafId = window.requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY;
+        const scrolled = currentScrollY > 20;
+
+        if (scrolled !== isScrolledRef.current) {
+          isScrolledRef.current = scrolled;
+          setIsScrolled(scrolled);
+        }
+
+        if (currentScrollY > lastScrollYRef.current && currentScrollY > 40) {
+          setScrollDirection("down");
+        } else if (currentScrollY < lastScrollYRef.current) {
+          setScrollDirection("up");
+        }
+        lastScrollYRef.current = currentScrollY;
+        rafId = null;
+      });
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafId !== null) window.cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const isDark = mounted ? (resolvedTheme === "dark" || theme === "dark") : false;
@@ -183,12 +198,12 @@ export function Navbar() {
       <motion.header
         initial={{ y: -25, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 320, damping: 26 }}
-        className="fixed top-3.5 inset-x-0 z-50 flex justify-center w-full px-3 sm:px-6 pointer-events-none"
+        transition={{ duration: 0.35, ease: "easeOut" }}
+        className="fixed top-3.5 inset-x-0 z-50 flex justify-center w-full px-3 sm:px-6 pointer-events-none transform-gpu"
       >
         <div className="w-full flex items-center justify-center pointer-events-auto">
           {/* ========================================================================= */}
-          {/* FASTLANE MORPHING FLOATING CAPSULE                                        */}
+          {/* FASTLANE MORPHING FLOATING CAPSULE (HARDWARE ACCELERATED)                 */}
           {/* Top: Full width with Left & Right sides spread out                       */}
           {/* Scroll: Left & Right titles glide together into centered frosted pill    */}
           {/* ========================================================================= */}
@@ -197,24 +212,22 @@ export function Navbar() {
             onMouseLeave={() => setHoveredHref(null)}
             transition={{
               layout: {
-                type: "spring",
-                stiffness: 240,
-                damping: 26,
-                mass: 0.75,
+                duration: 0.38,
+                ease: [0.16, 1, 0.3, 1],
               },
             }}
-            className={`hidden md:flex items-center transition-all duration-500 ease-out select-none border ${
+            className={`hidden md:flex items-center select-none border transform-gpu will-change-transform ${
               isScrolled
-                ? "w-fit max-w-[820px] px-3 py-1.5 rounded-full border-border/80 dark:border-neutral-800/80 bg-background/85 dark:bg-neutral-950/85 backdrop-blur-2xl shadow-[0_16px_45px_rgba(0,0,0,0.2)] dark:shadow-[0_16px_45px_rgba(0,0,0,0.6)] ring-1 ring-border/20 justify-center gap-3"
-                : "w-full max-w-6xl px-6 py-2.5 rounded-full border-border/40 dark:border-neutral-800/60 bg-background/45 dark:bg-neutral-950/45 backdrop-blur-xl shadow-sm justify-between"
+                ? "w-fit max-w-[820px] px-3.5 py-1.5 rounded-full border-border/80 dark:border-neutral-800/80 bg-background/90 dark:bg-neutral-950/90 backdrop-blur-2xl shadow-[0_16px_45px_rgba(0,0,0,0.2)] dark:shadow-[0_16px_45px_rgba(0,0,0,0.6)] ring-1 ring-border/20 justify-center gap-3"
+                : "w-full max-w-6xl px-6 py-2.5 rounded-full border-border/40 dark:border-neutral-800/60 bg-background/50 dark:bg-neutral-950/50 backdrop-blur-xl shadow-xs justify-between"
             }`}
-            style={{
-              backdropFilter: isScrolled ? "blur(24px) saturate(190%)" : "blur(12px) saturate(150%)",
-              WebkitBackdropFilter: isScrolled ? "blur(24px) saturate(190%)" : "blur(12px) saturate(150%)",
-            }}
           >
             {/* Left Side: Virtual Lab Title & Logo */}
-            <motion.div layout transition={{ type: "spring", stiffness: 240, damping: 26 }} className="flex items-center shrink-0">
+            <motion.div
+              layout
+              transition={{ layout: { duration: 0.38, ease: [0.16, 1, 0.3, 1] } }}
+              className="flex items-center shrink-0"
+            >
               <Link
                 href="/"
                 onMouseEnter={() => setHoveredHref("/")}
@@ -242,7 +255,11 @@ export function Navbar() {
             </motion.div>
 
             {/* Right Side: Navigation Links + Action Buttons */}
-            <motion.div layout transition={{ type: "spring", stiffness: 240, damping: 26 }} className="flex items-center gap-1.5 shrink-0">
+            <motion.div
+              layout
+              transition={{ layout: { duration: 0.38, ease: [0.16, 1, 0.3, 1] } }}
+              className="flex items-center gap-1.5 shrink-0"
+            >
               {/* Navigation Links */}
               <div className="flex items-center gap-1">
                 {NAV_ITEMS.map((item) => {
