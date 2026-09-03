@@ -907,19 +907,19 @@ export default function DSAVisualizationPage() {
                 return (
                   <div
                     key={item.id}
-                    className="transition-all duration-200 hover:-translate-y-1"
+                    className="transition-all duration-300 hover:-translate-y-1.5"
                   >
                     <Card
-                      className={`h-full border transition-all duration-200 flex flex-col justify-between relative overflow-hidden group ${
+                      className={`h-full border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group ${
                         isDone
-                          ? "bg-emerald-500/[0.04] border-emerald-500/40 shadow-xs"
-                          : "hover:bg-muted/40 hover:border-primary/40 shadow-xs"
+                          ? "bg-emerald-500/[0.04] border-emerald-500/40 shadow-xs hover:border-emerald-500/60 hover:shadow-md"
+                          : "hover:bg-muted/40 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 shadow-xs"
                       }`}
                     >
                       {/* Status Checkmark Ribbon Top-Right */}
                       {isDone && (
                         <div className="absolute top-0 right-0 w-12 h-12 overflow-hidden pointer-events-none">
-                          <div className="bg-emerald-500 text-white text-[9px] font-bold py-0.5 text-center transform rotate-45 translate-x-3 translate-y-1 shadow-xs">
+                          <div className="bg-emerald-500 text-white text-[9px] font-bold py-0.5 text-center transform rotate-45 translate-x-3 translate-y-1 shadow-xs animate-in fade-in zoom-in duration-200">
                             DONE
                           </div>
                         </div>
@@ -927,25 +927,34 @@ export default function DSAVisualizationPage() {
 
                       <CardHeader className="p-5 pb-2">
                         <div className="flex items-start justify-between gap-3">
-                          <Link href={item.href} className="flex items-center gap-3 group-hover:text-primary transition-colors flex-1 min-w-0">
-                            <div className={`p-2 rounded-xl border shrink-0 transition-transform group-hover:scale-105 ${
-                              isDone ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-500" : "bg-muted text-foreground border-border"
+                          <Link
+                            href={item.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-3 group-hover:text-primary transition-colors flex-1 min-w-0"
+                            title={`Open ${item.name} in new tab`}
+                          >
+                            <div className={`p-2 rounded-xl border shrink-0 transition-transform duration-300 group-hover:scale-110 ${
+                              isDone ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-500" : "bg-muted text-foreground border-border group-hover:border-primary/40 group-hover:bg-primary/10 group-hover:text-primary"
                             }`}>
                               <Icon className="h-5 w-5" />
                             </div>
-                            <CardTitle className="text-base font-bold tracking-tight line-clamp-1">
-                              {item.name}
-                            </CardTitle>
+                            <div className="min-w-0 flex-1">
+                              <CardTitle className="text-base font-bold tracking-tight line-clamp-1 flex items-center gap-1.5">
+                                <span>{item.name}</span>
+                                <span className="text-xs opacity-0 group-hover:opacity-70 transition-opacity font-mono text-muted-foreground">↗</span>
+                              </CardTitle>
+                            </div>
                           </Link>
 
                           {/* Interactive Checklist Checkbox */}
                           <button
                             onClick={(e) => toggleComplete(item.id, e)}
                             title={isDone ? "Mark as Incomplete" : "Mark as Mastered (Check off)"}
-                            className={`p-1.5 rounded-lg border transition-all shrink-0 ${
+                            className={`p-1.5 rounded-lg border transition-all duration-200 shrink-0 hover:scale-110 active:scale-95 ${
                               isDone
                                 ? "bg-emerald-500 text-white border-emerald-600 shadow-xs scale-105"
-                                : "bg-muted/50 border-border text-muted-foreground hover:border-emerald-500/50 hover:text-emerald-500"
+                                : "bg-muted/50 border-border text-muted-foreground hover:border-emerald-500/50 hover:text-emerald-500 hover:bg-emerald-500/10"
                             }`}
                           >
                             {isDone ? (
@@ -958,8 +967,14 @@ export default function DSAVisualizationPage() {
                       </CardHeader>
 
                       <CardContent className="p-5 pt-1 space-y-4">
-                        <Link href={item.href} className="block">
-                          <CardDescription className="text-xs leading-relaxed line-clamp-3 text-muted-foreground group-hover:text-foreground/80 transition-colors">
+                        <Link
+                          href={item.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block"
+                          title={`Open ${item.name} in new tab`}
+                        >
+                          <CardDescription className="text-xs leading-relaxed line-clamp-3 text-muted-foreground group-hover:text-foreground/90 transition-colors">
                             {item.description}
                           </CardDescription>
                         </Link>
@@ -967,7 +982,7 @@ export default function DSAVisualizationPage() {
                         {/* Tags & Complexity Row */}
                         <div className="pt-3 border-t border-border/50 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono">
                           <div className="flex items-center gap-1.5">
-                            <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-border text-muted-foreground">
+                            <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-border text-muted-foreground group-hover:border-primary/30 transition-colors">
                               {item.timeComplexity}
                             </Badge>
                           </div>
@@ -976,9 +991,14 @@ export default function DSAVisualizationPage() {
                             asChild
                             size="sm"
                             variant="ghost"
-                            className="h-6 text-[11px] font-semibold gap-1 text-primary group-hover:text-primary group-hover:bg-primary/10 px-2"
+                            className="h-6 text-[11px] font-semibold gap-1 text-primary group-hover:text-primary group-hover:bg-primary/10 px-2 transition-all"
                           >
-                            <Link href={item.href}>
+                            <Link
+                              href={item.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              title={`Open ${item.name} Studio in new tab`}
+                            >
                               <span>Launch Studio</span>
                               <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
                             </Link>

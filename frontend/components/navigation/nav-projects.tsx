@@ -79,20 +79,22 @@ export function NavProjects({
               <Link
                 key={item.url}
                 href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 prefetch={true}
                 title={item.description || item.name}
-                className={`group flex items-center justify-between rounded-xl px-2.5 py-2 text-xs font-heading font-semibold transition-all ${
+                className={`group flex items-center justify-between rounded-xl px-2.5 py-2 text-xs font-heading font-semibold transition-all duration-200 ${
                   isActive
                     ? "bg-blue-600 text-white font-bold shadow-md shadow-blue-600/30 dark:bg-gradient-to-r dark:from-blue-600/25 dark:to-indigo-600/15 dark:text-blue-300 dark:border dark:border-blue-500/40"
-                    : "text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800/60 dark:hover:text-white"
+                    : "text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800/60 dark:hover:text-white hover:translate-x-0.5"
                 }`}
               >
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div
-                    className={`p-1.5 rounded-lg border transition-all ${
+                    className={`p-1.5 rounded-lg border transition-all duration-200 ${
                       isActive
                         ? "bg-white/20 border-white/30 text-white dark:bg-blue-600 dark:text-white dark:border-blue-400 dark:shadow-sm"
-                        : "bg-slate-100 border-slate-200 text-slate-600 group-hover:border-slate-300 group-hover:text-blue-600 dark:bg-slate-900/80 dark:border-slate-800 dark:text-slate-400 dark:group-hover:border-slate-700 dark:group-hover:text-blue-400 dark:group-hover:bg-slate-800/80"
+                        : "bg-slate-100 border-slate-200 text-slate-600 group-hover:border-slate-300 group-hover:text-blue-600 dark:bg-slate-900/80 dark:border-slate-800 dark:text-slate-400 dark:group-hover:border-slate-700 dark:group-hover:text-blue-400 dark:group-hover:bg-slate-800/80 group-hover:scale-105"
                     }`}
                   >
                     <Icon className="h-3.5 w-3.5 shrink-0" />
@@ -100,9 +102,14 @@ export function NavProjects({
                   <span className="truncate font-heading">{item.name}</span>
                 </div>
 
-                {isActive && (
-                  <span className="h-1.5 w-1.5 rounded-full bg-white dark:bg-blue-400 animate-pulse shrink-0" />
-                )}
+                <div className="flex items-center gap-1.5 shrink-0">
+                  {isActive && (
+                    <span className="h-1.5 w-1.5 rounded-full bg-white dark:bg-blue-400 animate-pulse" />
+                  )}
+                  <span className="text-[10px] opacity-0 group-hover:opacity-60 transition-opacity font-mono">
+                    ↗
+                  </span>
+                </div>
               </Link>
             );
           })}
