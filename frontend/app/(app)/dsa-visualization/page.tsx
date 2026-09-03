@@ -15,7 +15,7 @@ import {
   RotateCcw,
   ArrowRight
 } from "lucide-react";
-import { FAANG_SECTIONS, TopicItem, PhaseSection } from "@/data/faang-dsa-sections";
+import { DSA_SECTIONS, TopicItem, PhaseSection } from "@/data/dsa-sections";
 
 export default function DSAVisualizationPage() {
   const [completedMap, setCompletedMap] = useState<Record<string, boolean>>({});
@@ -51,7 +51,7 @@ export default function DSAVisualizationPage() {
   };
 
   const resetAllProgress = () => {
-    if (confirm("Are you sure you want to reset your FAANG study checklist progress?")) {
+    if (confirm("Are you sure you want to reset your DSA study checklist progress?")) {
       setCompletedMap({});
       try {
         localStorage.removeItem("dsa_master_completed_topics");
@@ -61,7 +61,7 @@ export default function DSAVisualizationPage() {
 
   // Flattened total topic list
   const allTopics = useMemo(() => {
-    return FAANG_SECTIONS.flatMap((sec) => sec.items);
+    return DSA_SECTIONS.flatMap((sec) => sec.items);
   }, []);
 
   const totalCount = allTopics.length;
@@ -73,7 +73,7 @@ export default function DSAVisualizationPage() {
 
   // Readiness Tier
   const readinessTier = useMemo(() => {
-    if (progressPercentage >= 80) return { label: "FAANG / MAANG Master", color: "text-amber-500", bg: "bg-amber-500/10 border-amber-500/30" };
+    if (progressPercentage >= 80) return { label: "DSA Master", color: "text-amber-500", bg: "bg-amber-500/10 border-amber-500/30" };
     if (progressPercentage >= 50) return { label: "Interview Ready", color: "text-emerald-500", bg: "bg-emerald-500/10 border-emerald-500/30" };
     if (progressPercentage >= 20) return { label: "Intermediate", color: "text-blue-500", bg: "bg-blue-500/10 border-blue-500/30" };
     return { label: "Novice Preparation", color: "text-slate-500", bg: "bg-muted border-border" };
@@ -81,7 +81,7 @@ export default function DSAVisualizationPage() {
 
   // Filtered Sections
   const filteredSections = useMemo(() => {
-    return FAANG_SECTIONS.map((sec) => {
+    return DSA_SECTIONS.map((sec) => {
       if (selectedPhase !== "all" && sec.id !== selectedPhase) {
         return { ...sec, items: [] };
       }
@@ -114,7 +114,7 @@ export default function DSAVisualizationPage() {
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight font-heading">Data Structure Visualizer</h1>
         </div>
         <p className="text-muted-foreground text-base sm:text-lg max-w-3xl">
-          Comprehensive FAANG/MAANG data structures and algorithms visualizer suite.
+          Comprehensive data structures and algorithms visualizer suite.
           Explore interactive models, step through recursion trees, and master algorithmic patterns in real-time.
         </p>
       </div>
@@ -128,7 +128,7 @@ export default function DSAVisualizationPage() {
                 <Flame className="h-3.5 w-3.5 mr-1 inline animate-bounce" /> {readinessTier.label}
               </Badge>
               <Badge variant="secondary" className="font-mono text-xs">
-                FAANG / MAANG Syllabus Tracker
+                DSA Syllabus Tracker
               </Badge>
             </div>
             <div className="text-lg font-bold text-foreground flex items-center gap-2">

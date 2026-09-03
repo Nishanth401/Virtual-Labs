@@ -60,7 +60,7 @@ const navItems = [
     title: "DSA Visualization",
     url: "/dsa-visualization",
     icon: BrainCircuit,
-    badge: "FAANG",
+    badge: "Core",
     badgeColor: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
   },
   {

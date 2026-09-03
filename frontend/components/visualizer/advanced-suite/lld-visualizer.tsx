@@ -25,7 +25,7 @@ export function LLDVisualizer() {
           Low-Level Design (LLD) &amp; OOP Visualizer
         </h1>
         <p className="text-muted-foreground text-sm max-w-3xl mt-1">
-          Interactive architecture and machine-coding visualizer. Master SOLID design principles, UML class diagrams, and design patterns frequently tested in FAANG LLD interviews.
+          Interactive architecture and machine-coding visualizer. Master SOLID design principles, UML class diagrams, and design patterns frequently tested in technical LLD interviews.
         </p>
       </div>
 

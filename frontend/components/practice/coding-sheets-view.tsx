@@ -213,7 +213,7 @@ export function CodingSheetsView() {
               Master Coding Interview Sheets
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground max-w-3xl mt-1">
-              Structured interview practice roadmaps with Product (FAANG) &amp; Service companies tags, difficulty ratings (7.0 - 9.9), revision bookmarks, personal notes taking, and direct problem links.
+              Structured interview practice roadmaps with Product (Tier-1) &amp; Service companies tags, difficulty ratings (7.0 - 9.9), revision bookmarks, personal notes taking, and direct problem links.
             </p>
           </div>
 
@@ -538,7 +538,7 @@ export function CodingSheetsView() {
                 <th className="py-3 px-3 min-w-[130px]">Topic / Process</th>
                 <th className="py-3 px-2.5 text-center w-20">Difficulty</th>
                 <th className="py-3 px-2 text-center w-20">Rating / 10</th>
-                <th className="py-3 px-3 min-w-[170px]">Product Companies (FAANG)</th>
+                <th className="py-3 px-3 min-w-[170px]">Product Companies (Tier-1)</th>
                 <th className="py-3 px-3 min-w-[150px]">Service Companies</th>
                 <th className="py-3 px-2 text-center w-24">Practice Hubs</th>
                 <th className="py-3 px-3 text-center w-20">Notes</th>
