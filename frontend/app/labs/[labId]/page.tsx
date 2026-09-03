@@ -13,6 +13,7 @@ import { MLPrerequisitesTrack } from "@/components/vlab/ml-prerequisites-track";
 import { DSARoadmap } from "@/components/vlab/dsa-roadmap";
 import { LAB_ROADMAPS_DATA } from "@/data/all-labs-roadmap-data";
 import { TamilVideoTimeline } from "@/components/vlab/tamil-video-timeline";
+import { LabRecordUploadPanel } from "@/components/vlab/lab-record-upload-panel";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -81,22 +82,22 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-1 bg-muted/20 py-8">
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 space-y-6">
+        <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           {/* Header Banner */}
-          <div className="bg-card/80 backdrop-blur-md rounded-2xl border border-border p-6 shadow-sm">
+          <div className="bg-card/80 backdrop-blur-md rounded-2xl border border-border p-6 sm:p-8 shadow-sm">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
-                <div className="flex items-center gap-2 mb-1.5">
-                  <Badge variant="outline" className="text-xs text-primary border-primary/30 font-mono font-bold">
+                <div className="flex items-center gap-2.5 mb-2">
+                  <Badge variant="outline" className="text-xs sm:text-sm text-primary border-primary/30 font-mono font-bold px-3 py-1">
                     {lab.code} • {lab.shortTitle}
                   </Badge>
-                  <span className="text-xs text-muted-foreground font-mono">• {lab.institute}</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground font-mono">• {lab.institute}</span>
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-black text-foreground font-heading">
+                <h1 className="text-2xl sm:text-4xl font-black text-foreground font-heading tracking-tight">
                   {lab.name}
                 </h1>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {lab.department} • {lab.semester}
+                <p className="text-sm sm:text-base text-muted-foreground mt-1.5 font-medium">
+                  {lab.department} • <span className="text-primary font-semibold">{lab.semester}</span>
                 </p>
               </div>
             </div>
@@ -815,6 +816,11 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                     </div>
                   </Card>
                 </div>
+              )}
+
+              {/* TAB 4.5: LAB RECORD PDF UPLOAD & CLOUD STORAGE */}
+              {activeTab === "record-upload" && (
+                <LabRecordUploadPanel lab={lab} />
               )}
 
               {/* TAB 5: COURSE ALIGNMENT */}

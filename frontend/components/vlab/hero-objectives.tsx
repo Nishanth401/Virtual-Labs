@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ConstellationBackground } from "@/components/vlab/constellation-background";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -110,36 +109,57 @@ const ROLLING_CARDS = [
 
 export function HeroObjectives() {
   return (
-    <section className="relative min-h-[85vh] flex flex-col justify-between pt-4 pb-16 px-4 sm:px-6 bg-grid-pattern border-b border-border/40 overflow-hidden">
-      {/* Interactive Constellation Particle Canvas Mesh confined to this Hero Panel */}
-      <ConstellationBackground />
+    <section className="relative min-h-[85vh] flex flex-col justify-between pt-6 pb-16 px-4 sm:px-6 bg-gradient-to-b from-background via-background to-muted/30 border-b border-border/40 overflow-hidden">
+      {/* Ambient Lighting & Glow Backdrop (Fastlane aesthetic - No dot particles) */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-[#ff2a5f]/15 via-rose-500/10 to-primary/10 rounded-full blur-[120px] pointer-events-none -z-10" />
 
-      <div className="container max-w-5xl mx-auto text-center relative z-10 space-y-6 pt-2">
-        {/* Sleek Pill Badge matching Screenshot 1 */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#111113] text-white text-[11px] font-bold tracking-wider uppercase border border-white/10 shadow-md">
+      <div className="container max-w-5xl mx-auto text-center relative z-10 space-y-6 pt-4">
+        {/* Sleek Announcement Pill Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0d0d10] text-white text-[11px] font-bold tracking-wider uppercase border border-white/10 shadow-lg shadow-black/20"
+        >
+          <span className="w-2 h-2 rounded-full bg-[#ff2a5f] animate-pulse" />
           <span>Department of Artificial Intelligence &amp; Data Science • VSB Engineering College</span>
-        </div>
+        </motion.div>
 
-        {/* High-Impact Headline with Mixed Typography matching Screenshot 1 */}
-        <h1 className="text-4xl sm:text-6xl md:text-7xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.08] font-heading max-w-4xl mx-auto">
+        {/* High-Impact Headline with Editorial Italic Highlights */}
+        <motion.h1
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+          className="text-4xl sm:text-6xl md:text-7xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.08] font-heading max-w-4xl mx-auto"
+        >
           Simulate faster. <span className="font-serif-italic font-normal text-slate-600 dark:text-slate-400">Learn smarter.</span><br />
           Grow with<br />
-          <span className="text-[#e11d48] dark:text-[#f43f5e] font-black">
+          <span className="bg-gradient-to-r from-[#ff2a5f] via-[#e11d48] to-[#dc2626] bg-clip-text text-transparent font-black">
             interactive virtual labs.
           </span>
-        </h1>
+        </motion.h1>
 
         {/* Subtitle */}
-        <p className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed">
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+          className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed"
+        >
           We design, build, and simulate high-performance data structures in pure Java, machine learning models with NumPy/Pandas pipelines, relational SQL databases, and network protocols for ambitious engineers.
-        </p>
+        </motion.p>
 
-        {/* Dual Capsule CTA Buttons matching Screenshot 1 */}
-        <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+        {/* Dual Capsule CTA Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+          className="flex flex-wrap items-center justify-center gap-3 pt-2"
+        >
           <Button
             asChild
             size="lg"
-            className="bg-gradient-to-r from-[#e11d48] to-[#dc2626] hover:from-[#be123c] hover:to-[#b91c1c] text-white rounded-full px-8 py-6 font-bold shadow-xl shadow-rose-500/25 hover:scale-105 transition-all text-sm gap-2"
+            className="bg-gradient-to-r from-[#ff2a5f] to-[#dc2626] hover:from-[#e11d48] hover:to-[#b91c1c] text-white rounded-full px-8 py-6 font-bold shadow-xl shadow-rose-500/25 hover:scale-105 transition-all text-sm gap-2"
           >
             <Link href="/labs">
               <span>Let&apos;s explore &amp; simulate</span>
@@ -158,7 +178,7 @@ export function HeroObjectives() {
               <ExternalLink className="h-3.5 w-3.5" />
             </Link>
           </Button>
-        </div>
+        </motion.div>
       </div>
 
       {/* CONTINUOUS ROLLING / MARQUEE ANIMATED TITLE CARDS SHOWCASE (Replacing 5th Image) */}

@@ -33,6 +33,7 @@ import { Badge } from "@/components/ui/badge";
 import { ModeToggle } from "@/components/global/mode-toggle";
 import { useAuth } from "@/context/auth-context";
 import { StudentAuthDialog } from "@/components/auth/student-auth-dialog";
+import { useTheme } from "next-themes";
 
 /**
  * Returns a clean display username from auth state.
@@ -110,16 +111,37 @@ export function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const { user, studentProfile } = useAuth();
+  const { theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [hoveredHref, setHoveredHref] = useState<string | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollDirection, setScrollDirection] = useState<"up" | "down">("up");
+  const lastScrollYRef = React.useRef(0);
 
   useEffect(() => {
     setMounted(true);
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 15);
+
+      if (currentScrollY > lastScrollYRef.current && currentScrollY > 40) {
+        setScrollDirection("down");
+      } else if (currentScrollY < lastScrollYRef.current) {
+        setScrollDirection("up");
+      }
+      lastScrollYRef.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const isDark = mounted ? (resolvedTheme === "dark" || theme === "dark") : false;
 
   const isItemActive = (href: string) => {
     if (href === "/") {
@@ -157,14 +179,27 @@ export function Navbar() {
 
   return (
     <>
-      <header className="sticky top-3 z-50 w-full px-4 sm:px-6 pointer-events-none">
+      <motion.header
+        initial={{ y: -20, opacity: 0 }}
+        animate={{
+          y: scrollDirection === "down" && isScrolled ? -2 : 0,
+          scale: isScrolled ? 0.985 : 1,
+          opacity: 1
+        }}
+        transition={{ type: "spring", stiffness: 380, damping: 28 }}
+        className="sticky top-3 z-50 w-full px-4 sm:px-6 pointer-events-none transition-all duration-300"
+      >
         <div className="container max-w-7xl mx-auto flex items-center justify-between gap-3 pointer-events-auto relative">
           <div />
 
-          {/* Center Floating Dark Capsule Navbar - Mathematically & Visually Centered */}
+          {/* Center Floating Capsule Navbar: BLACK in Light Mode, WHITE in Dark Mode */}
           <nav
             onMouseLeave={() => setHoveredHref(null)}
-            className="hidden md:flex items-center gap-1 bg-[#121214] text-white rounded-full p-1.5 shadow-2xl border border-white/10 backdrop-blur-md absolute left-1/2 -translate-x-1/2 z-20"
+            className={`hidden md:flex items-center gap-1 rounded-full p-1.5 backdrop-blur-2xl absolute left-1/2 -translate-x-1/2 z-20 transition-all duration-300 ${
+              isDark
+                ? "bg-white/[0.90] text-neutral-900 border border-neutral-300/80 shadow-[0_12px_40px_rgba(0,0,0,0.6),0_0_20px_rgba(255,255,255,0.15)] ring-1 ring-black/10"
+                : "bg-[#09090b]/94 text-white border border-white/[0.18] shadow-[0_12px_40px_rgba(0,0,0,0.4)] ring-1 ring-white/10"
+            }`}
           >
             {NAV_ITEMS.map((item) => {
               const active = isItemActive(item.href);
@@ -176,20 +211,22 @@ export function Navbar() {
                   key={item.href}
                   href={item.href}
                   onMouseEnter={() => setHoveredHref(item.href)}
-                  className={`relative px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors duration-150 z-10 select-none ${
+                  className={`relative px-4 py-1.5 rounded-full text-xs font-semibold transition-colors duration-200 z-10 select-none tracking-wide ${
                     isHighlighted
                       ? "text-white font-bold"
-                      : "text-slate-300 hover:text-white"
+                      : isDark
+                      ? "text-neutral-800 hover:text-black font-semibold"
+                      : "text-neutral-300 hover:text-white"
                   }`}
                 >
                   {isHighlighted && (
                     <motion.div
-                      layoutId="navbar-hover-indicator"
-                      className="absolute inset-0 rounded-full bg-gradient-to-r from-[#e11d48] to-[#dc2626] shadow-md shadow-red-500/40 -z-10"
+                      layoutId="fastlane-navbar-active-pill"
+                      className="absolute inset-0 rounded-full bg-gradient-to-r from-[#ff2a5f] via-[#e11d48] to-[#dc2626] shadow-[0_0_24px_rgba(255,42,95,0.7),0_2px_10px_rgba(225,29,72,0.4)] -z-10"
                       transition={{
                         type: "spring",
-                        stiffness: 450,
-                        damping: 35,
+                        stiffness: 420,
+                        damping: 30,
                       }}
                     />
                   )}
@@ -201,25 +238,33 @@ export function Navbar() {
 
           {/* Right Action Icons: Circular Search Button & Mode Toggle */}
           <div className="flex items-center gap-2 shrink-0">
-            {/* Circular Search Button */}
+            {/* Circular Search Button - Highly Visible with High Contrast in Both Modes */}
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
-              className="w-9 h-9 rounded-full bg-[#121214] text-white flex items-center justify-center border border-white/10 hover:border-red-500/50 hover:scale-105 transition-all shadow-md cursor-pointer"
+              className={`w-9 h-9 rounded-full flex items-center justify-center hover:scale-105 transition-all shadow-md cursor-pointer backdrop-blur-md ${
+                isDark
+                  ? "bg-white/[0.90] text-neutral-900 border border-neutral-300/80 hover:border-red-500/60 shadow-black/30"
+                  : "bg-[#09090b]/94 text-white border border-white/[0.18] hover:border-red-500/60 shadow-black/40"
+              }`}
               title="Search labs & algorithms (Ctrl+K)"
             >
-              <Search className="h-4 w-4" />
+              <Search className={`h-4 w-4 ${isDark ? "text-neutral-900" : "text-white"}`} />
             </button>
 
             {/* Student Auth Avatar / Trigger Button */}
             <button
               type="button"
               onClick={() => setAuthOpen(true)}
-              className="hidden sm:flex items-center px-3.5 py-1.5 rounded-full bg-white/95 dark:bg-card/90 backdrop-blur-md border border-slate-200 dark:border-border shadow-xs text-xs font-medium text-slate-800 dark:text-slate-200 hover:border-primary transition-colors cursor-pointer"
+              className={`hidden sm:flex items-center px-3.5 py-1.5 rounded-full backdrop-blur-md shadow-xs text-xs font-semibold hover:border-primary transition-colors cursor-pointer ${
+                isDark
+                  ? "bg-white/[0.90] text-neutral-900 border border-neutral-300/80"
+                  : "bg-[#09090b]/94 text-white border border-white/[0.18]"
+              }`}
               suppressHydrationWarning
             >
               {mounted && (studentProfile || user) ? (
-                <span className="flex items-center gap-1.5 font-bold text-slate-900 dark:text-white max-w-[140px] truncate">
+                <span className="flex items-center gap-1.5 font-bold max-w-[140px] truncate">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0 inline-block" />
                   {getUsername(studentProfile, user)}
                 </span>
@@ -234,16 +279,30 @@ export function Navbar() {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center text-foreground"
+              className={`md:hidden w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md shadow-sm ${
+                isDark
+                  ? "bg-white/[0.90] text-neutral-900 border border-neutral-300/80"
+                  : "bg-[#09090b]/94 text-white border border-white/[0.18]"
+              }`}
             >
-              {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+              {mobileMenuOpen ? (
+                <X className={`h-4 w-4 ${isDark ? "text-neutral-900" : "text-white"}`} />
+              ) : (
+                <Menu className={`h-4 w-4 ${isDark ? "text-neutral-900" : "text-white"}`} />
+              )}
             </button>
           </div>
         </div>
 
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden mt-2 p-3 bg-[#121214] text-white rounded-2xl border border-white/10 shadow-2xl space-y-1.5 pointer-events-auto backdrop-blur-md">
+          <div
+            className={`md:hidden mt-2 p-3 rounded-2xl shadow-2xl space-y-1.5 pointer-events-auto backdrop-blur-2xl ${
+              isDark
+                ? "bg-white/[0.95] text-neutral-900 border border-neutral-300/80"
+                : "bg-[#09090b]/95 text-white border border-white/[0.18]"
+            }`}
+          >
             {NAV_ITEMS.map((item) => {
               const active = isItemActive(item.href);
               return (
@@ -253,8 +312,10 @@ export function Navbar() {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`block px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${
                     active
-                      ? "bg-gradient-to-r from-[#e11d48] to-[#dc2626] text-white shadow-md shadow-red-500/30 font-bold"
-                      : "text-slate-300 hover:text-white hover:bg-white/10"
+                      ? "bg-gradient-to-r from-[#ff2a5f] via-[#e11d48] to-[#dc2626] text-white shadow-md shadow-red-500/30 font-bold"
+                      : isDark
+                      ? "text-neutral-800 hover:text-black hover:bg-black/5"
+                      : "text-neutral-300 hover:text-white hover:bg-white/10"
                   }`}
                 >
                   {item.name}
@@ -277,7 +338,7 @@ export function Navbar() {
             </div>
           </div>
         )}
-      </header>
+      </motion.header>
 
       {/* Student Auth Dialog Modal */}
       <StudentAuthDialog open={authOpen} onOpenChange={setAuthOpen} />

@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { LABS_DATA } from "@/data/labs";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -24,9 +25,15 @@ const ICON_MAP: Record<string, React.ElementType> = {
 
 export function BroadAreasGrid() {
   return (
-    <section className="py-14 bg-muted/20 border-b border-border/40">
+    <section className="py-16 bg-muted/20 border-b border-border/40 overflow-hidden">
       <div className="container max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center max-w-2xl mx-auto mb-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="text-center max-w-2xl mx-auto mb-12"
+        >
           <Badge variant="outline" className="mb-2 text-xs uppercase tracking-wider bg-primary/10 text-primary border-primary/20 font-mono">
             Curriculum Core Domains
           </Badge>
@@ -36,16 +43,42 @@ export function BroadAreasGrid() {
           <p className="text-xs sm:text-sm text-muted-foreground mt-2">
             Explore our 8 core engineering virtual laboratories with simulation sandboxes, Java/Python/C code traces, and LeetCode assessments.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-          {LABS_DATA.map((lab) => {
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto [perspective:1200px]">
+          {LABS_DATA.map((lab, idx) => {
             const Icon = ICON_MAP[lab.iconName] || Code2;
+            const isLeft = idx % 2 === 0;
 
             return (
-              <div
+              <motion.div
                 key={lab.id}
-                className="transition-all duration-300 hover:-translate-y-1 hover:scale-[1.01]"
+                initial={{
+                  opacity: 0,
+                  x: isLeft ? -130 : 130,
+                  rotate: isLeft ? -7 : 7,
+                  scale: 0.92,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  x: 0,
+                  rotate: 0,
+                  scale: 1,
+                }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 220,
+                  damping: 22,
+                  delay: (idx % 2) * 0.08,
+                }}
+                whileHover={{
+                  y: -8,
+                  scale: 1.025,
+                  rotate: isLeft ? -1.5 : 1.5,
+                  transition: { type: "spring", stiffness: 400, damping: 25 },
+                }}
+                className="h-full transform-gpu"
               >
                 <Card className="h-full border-border bg-card/80 backdrop-blur-xs hover:border-primary/50 transition-all duration-200 shadow-xs hover:shadow-lg flex flex-col justify-between group">
                   <CardHeader className="pb-3">
@@ -98,7 +131,7 @@ export function BroadAreasGrid() {
                     </div>
                   </CardContent>
                 </Card>
-              </div>
+              </motion.div>
             );
           })}
         </div>
