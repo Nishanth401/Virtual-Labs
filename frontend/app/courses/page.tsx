@@ -76,14 +76,6 @@ export default function CoursesPage() {
               Filter by Semester
             </label>
             <div className="flex flex-wrap gap-2">
-              <Button
-                variant={selectedSem === "all" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedSem("all")}
-                className="text-xs"
-              >
-                All Semesters
-              </Button>
               {semesters.map((sem) => (
                 <Button
                   key={sem}
@@ -95,6 +87,14 @@ export default function CoursesPage() {
                   Sem {sem}
                 </Button>
               ))}
+              <Button
+                variant={selectedSem === "all" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedSem("all")}
+                className="text-xs"
+              >
+                All Semesters
+              </Button>
             </div>
           </div>
 
@@ -162,7 +162,7 @@ export default function CoursesPage() {
 
                   {course.isLab ? (
                     <Button asChild size="sm" variant="default" className="text-xs h-7 gap-1 bg-emerald-600 hover:bg-emerald-700 text-white">
-                      <Link href="/labs">
+                      <Link href={course.labUrl || "/labs"}>
                         <FlaskConical className="h-3.5 w-3.5" /> Virtual Lab
                       </Link>
                     </Button>
