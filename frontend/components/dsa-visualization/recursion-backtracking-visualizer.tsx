@@ -20,6 +20,7 @@ import {
   Compass,
   GitFork
 } from "lucide-react";
+import { NQueensVisualizer } from "@/components/visualizer/advanced-suite/n-queens-visualizer";
 
 export type RecBacktrackMode = "factorial" | "nqueens" | "hanoi" | "subsets" | "maze";
 
@@ -594,8 +595,12 @@ export function RecursionBacktrackingVisualizer({ defaultMode = "nqueens" }: { d
         </div>
       </div>
 
-      {/* Playback Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-4 bg-card/90 p-4 rounded-2xl border border-border shadow-xs">
+      {mode === "nqueens" ? (
+        <NQueensVisualizer />
+      ) : (
+        <>
+          {/* Playback Controls */}
+          <div className="flex flex-wrap items-center justify-between gap-4 bg-card/90 p-4 rounded-2xl border border-border shadow-xs">
         <div className="flex items-center gap-2">
           <Button
             size="sm"
@@ -681,7 +686,7 @@ export function RecursionBacktrackingVisualizer({ defaultMode = "nqueens" }: { d
           <span>Step: <strong>{currentStepIdx + 1}/{steps.length}</strong></span>
           <span>•</span>
           <Badge variant="outline" className="text-[10px] bg-primary/10 text-primary border-primary/20">
-            {mode === "factorial" ? "O(n) Stack" : mode === "nqueens" ? "O(n!) Backtracking" : mode === "hanoi" ? `O(2ⁿ) Moves (${Math.pow(2, hanoiDisksCount) - 1})` : mode === "subsets" ? "O(2ⁿ) Combinatorial" : "O(4ⁿ) Grid Backtrack"}
+            {mode === "factorial" ? "O(n) Stack" : mode === "hanoi" ? `O(2ⁿ) Moves (${Math.pow(2, hanoiDisksCount) - 1})` : mode === "subsets" ? "O(2ⁿ) Combinatorial" : "O(4ⁿ) Grid Backtrack"}
           </Badge>
         </div>
       </div>
@@ -721,72 +726,6 @@ export function RecursionBacktrackingVisualizer({ defaultMode = "nqueens" }: { d
           </div>
         )}
 
-        {/* VIEW 2: N-QUEENS CHESSBOARD WITH ATTACK RAY TRACING */}
-        {mode === "nqueens" && currentStep.queensBoard && (
-          <div className="flex flex-col items-center space-y-4 py-2">
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
-                4×4 Chessboard State Space Tree
-              </span>
-              {currentStep.conflictCell && (
-                <Badge variant="destructive" className="text-[10px] animate-pulse">
-                  Attacked Square: Row {currentStep.conflictCell.r}, Col {currentStep.conflictCell.c}
-                </Badge>
-              )}
-            </div>
-
-            <div className="relative border-4 border-slate-700/80 rounded-2xl overflow-hidden shadow-2xl bg-slate-900">
-              <div className="grid grid-cols-4">
-                {currentStep.queensBoard.map((row, r) =>
-                  row.map((cell, c) => {
-                    const isBlack = (r + c) % 2 === 1;
-                    const hasQueen = cell === 1;
-                    const isConflict = cell === -1;
-                    const isAttackedLine = currentStep.conflictLines?.some(p => p.r === r && p.c === c);
-
-                    return (
-                      <div
-                        key={`${r}-${c}`}
-                        className={`h-16 w-16 sm:h-20 sm:w-20 flex flex-col items-center justify-center transition-all relative border border-slate-700/40 ${
-                          hasQueen
-                            ? "bg-amber-500/25 border-2 border-amber-400 shadow-inner"
-                            : isConflict
-                            ? "bg-rose-600/40 border-2 border-rose-500 animate-pulse"
-                            : isAttackedLine
-                            ? "bg-rose-500/15"
-                            : isBlack
-                            ? "bg-slate-800/80"
-                            : "bg-slate-700/40"
-                        }`}
-                      >
-                        {/* Cell Coordinate Label */}
-                        <span className="absolute top-1 left-1.5 text-[9px] font-mono text-slate-400 select-none">
-                          {String.fromCharCode(65 + c)}{4 - r}
-                        </span>
-
-                        {/* Queen Icon */}
-                        {hasQueen && (
-                          <div className="flex flex-col items-center animate-in zoom-in-75 duration-200">
-                            <Crown className="h-8 w-8 sm:h-10 sm:w-10 text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
-                            <span className="text-[10px] font-bold font-mono text-amber-300">Q{r}</span>
-                          </div>
-                        )}
-
-                        {/* Conflict Icon */}
-                        {isConflict && (
-                          <div className="flex flex-col items-center animate-in zoom-in-50 duration-150">
-                            <XCircle className="h-8 w-8 sm:h-9 sm:w-9 text-rose-400 drop-shadow-[0_0_8px_rgba(244,63,94,0.6)]" />
-                            <span className="text-[9px] font-bold font-mono text-rose-300">COLLISION</span>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* VIEW 3: TOWER OF HANOI (PROPER DISK STACKING & BASE PEDESTAL) */}
         {mode === "hanoi" && currentStep.hanoiPegs && (
@@ -972,6 +911,8 @@ export function RecursionBacktrackingVisualizer({ defaultMode = "nqueens" }: { d
           </div>
         </div>
       </Card>
+        </>
+      )}
     </div>
   );
 }
