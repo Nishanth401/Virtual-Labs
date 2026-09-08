@@ -228,30 +228,38 @@ export function Navbar() {
               transition={{ layout: { duration: 0.38, ease: [0.16, 1, 0.3, 1] } }}
               className="flex items-center shrink-0"
             >
-              <Link
-                href="/"
-                onMouseEnter={() => setHoveredHref("/")}
-                className={`relative px-4 py-1.5 rounded-full text-xs font-semibold transition-colors duration-200 z-10 select-none tracking-wide ${
-                  isItemActive("/") || hoveredHref === "/"
-                    ? "text-white font-bold"
-                    : isScrolled
-                    ? "text-muted-foreground hover:text-foreground font-semibold"
-                    : "text-foreground hover:text-foreground font-bold"
-                }`}
-              >
-                {(isItemActive("/") || hoveredHref === "/") && (
-                  <motion.div
-                    layoutId="fastlane-navbar-active-pill"
-                    className="absolute inset-0 rounded-full bg-gradient-to-r from-[#ff2a5f] via-[#e11d48] to-[#dc2626] shadow-[0_2px_14px_rgba(225,29,72,0.45)] -z-10"
-                    transition={{
-                      type: "spring",
-                      stiffness: 420,
-                      damping: 30,
-                    }}
-                  />
-                )}
-                <span>Virtual Lab</span>
-              </Link>
+              {(() => {
+                const isBrandActive = isItemActive("/");
+                const isBrandHovered = hoveredHref === "/";
+                const isBrandHighlighted = hoveredHref ? isBrandHovered : isBrandActive;
+
+                return (
+                  <Link
+                    href="/"
+                    onMouseEnter={() => setHoveredHref("/")}
+                    className={`relative px-4 py-1.5 rounded-full text-xs font-semibold transition-colors duration-200 z-10 select-none tracking-wide ${
+                      isBrandHighlighted
+                        ? "text-white font-bold"
+                        : isScrolled
+                        ? "text-muted-foreground hover:text-foreground font-semibold"
+                        : "text-foreground hover:text-foreground font-bold"
+                    }`}
+                  >
+                    {isBrandHighlighted && (
+                      <motion.div
+                        layoutId="fastlane-navbar-active-pill"
+                        className="absolute inset-0 rounded-full bg-gradient-to-r from-[#ff2a5f] via-[#e11d48] to-[#dc2626] shadow-[0_2px_14px_rgba(225,29,72,0.45)] -z-10"
+                        transition={{
+                          type: "spring",
+                          stiffness: 420,
+                          damping: 30,
+                        }}
+                      />
+                    )}
+                    <span>Virtual Lab</span>
+                  </Link>
+                );
+              })()}
             </motion.div>
 
             {/* Right Side: Navigation Links + Action Buttons */}

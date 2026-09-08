@@ -127,6 +127,17 @@ export function Footer() {
                     Department Events
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    href="/admin"
+                    className="hover:text-white transition-colors block py-1 flex items-center justify-between group"
+                  >
+                    <span className="group-hover:text-rose-400 transition-colors">Admin Portal</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-rose-950/60 text-rose-400 border border-rose-800/60 font-semibold">
+                      Admin
+                    </span>
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>

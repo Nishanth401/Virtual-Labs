@@ -16,10 +16,14 @@ import {
   ArrowRight,
   FileText,
   BookOpen,
-  Sparkles
+  Sparkles,
+  Award,
+  HelpCircle
 } from "lucide-react";
 import { DSA_SECTIONS, TopicItem, PhaseSection } from "@/data/dsa-sections";
 import { CodingSheetsView } from "@/components/practice/coding-sheets-view";
+import { QUIZZES_DATA, Quiz } from "@/data/quizzes";
+import { QuizEngine } from "@/components/quiz/quiz-engine";
 
 export default function DSAVisualizationPage() {
   const [activeView, setActiveView] = useState<"visualizers" | "sheets">("visualizers");
@@ -27,6 +31,7 @@ export default function DSAVisualizationPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPhase, setSelectedPhase] = useState<string>("all");
   const [filterState, setFilterState] = useState<"all" | "completed" | "pending">("all");
+  const [activeQuizTopic, setActiveQuizTopic] = useState<TopicItem | null>(null);
 
   // Load persistence from localStorage & read URL query params
   useEffect(() => {
@@ -473,22 +478,36 @@ export default function DSAVisualizationPage() {
                                 </Badge>
                               </div>
 
-                              <Button
-                                asChild
-                                size="sm"
-                                variant="ghost"
-                                className="h-6 text-[11px] font-semibold gap-1 text-primary group-hover:text-primary group-hover:bg-primary/10 px-2 transition-all"
-                              >
-                                <Link
-                                  href={item.href}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  title={`Open ${item.name} Studio in new tab`}
+                              <div className="flex items-center gap-1.5">
+                                <Button
+                                  type="button"
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => setActiveQuizTopic(item)}
+                                  className="h-6 text-[10px] font-semibold gap-1 px-2 border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 transition-all"
+                                  title={`Take 5-question assessment on ${item.name}`}
                                 >
-                                  <span>Launch Studio</span>
-                                  <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
-                                </Link>
-                              </Button>
+                                  <Award className="h-3 w-3" />
+                                  <span>5-Q Quiz</span>
+                                </Button>
+
+                                <Button
+                                  asChild
+                                  size="sm"
+                                  variant="ghost"
+                                  className="h-6 text-[11px] font-semibold gap-1 text-primary group-hover:text-primary group-hover:bg-primary/10 px-2 transition-all"
+                                >
+                                  <Link
+                                    href={item.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    title={`Open ${item.name} Studio in new tab`}
+                                  >
+                                    <span>Launch Studio</span>
+                                    <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                                  </Link>
+                                </Button>
+                              </div>
                             </div>
                           </CardContent>
                         </Card>
@@ -498,6 +517,118 @@ export default function DSAVisualizationPage() {
                 </div>
               </section>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Interactive 5-Question DSA Assessment Modal */}
+      {activeQuizTopic && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+          <div className="w-full max-w-4xl bg-card border border-border rounded-2xl shadow-2xl overflow-hidden my-8 animate-in zoom-in-95 duration-200">
+            <div className="p-4 border-b border-border bg-muted/40 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Badge className="bg-amber-500/10 text-amber-500 border-amber-500/30 gap-1 text-xs">
+                  <Award className="h-3.5 w-3.5" /> 5-Question Self-Assessment
+                </Badge>
+                <span className="font-bold text-sm text-foreground">{activeQuizTopic.name}</span>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setActiveQuizTopic(null)}
+                className="h-8 w-8 p-0 rounded-full text-muted-foreground hover:text-foreground"
+              >
+                ✕
+              </Button>
+            </div>
+
+            <div className="p-6 max-h-[80vh] overflow-y-auto">
+              {(() => {
+                const topicId = activeQuizTopic.id;
+                const directQuiz =
+                  QUIZZES_DATA[`${topicId}-quiz`] ||
+                  QUIZZES_DATA[`dsa-${topicId}-quiz`] ||
+                  QUIZZES_DATA[topicId];
+
+                const activeQuiz: Quiz = directQuiz || {
+                  id: `dsa-${topicId}-quiz`,
+                  experimentId: topicId,
+                  title: `${activeQuizTopic.name} Assessment`,
+                  description: `Evaluate your core comprehension of ${activeQuizTopic.name} mechanics, edge conditions, and complexity bounds.`,
+                  passingScore: 4,
+                  timeLimitMinutes: 5,
+                  questions: [
+                    {
+                      id: `${topicId}-q1`,
+                      question: `What is the primary worst-case time complexity associated with ${activeQuizTopic.name}?`,
+                      options: [activeQuizTopic.timeComplexity || "O(n log n)", "O(n!)", "O(2^n)", "O(1)"],
+                      correctIndex: 0,
+                      explanation: `As specified in standard algorithmic complexity tables, ${activeQuizTopic.name} operates with a runtime profile of ${activeQuizTopic.timeComplexity}.`
+                    },
+                    {
+                      id: `${topicId}-q2`,
+                      question: `What is the auxiliary space complexity required by ${activeQuizTopic.name}?`,
+                      options: [activeQuizTopic.spaceComplexity || "O(1)", "O(n^2)", "O(n!)", "O(2^n)"],
+                      correctIndex: 0,
+                      explanation: `The algorithm utilizes ${activeQuizTopic.spaceComplexity} auxiliary memory space.`
+                    },
+                    {
+                      id: `${topicId}-q3`,
+                      question: `Which fundamental principle is demonstrated by the ${activeQuizTopic.name} visualizer?`,
+                      options: [
+                        activeQuizTopic.description.slice(0, 80) + "...",
+                        "Randomized memory partitioning without pointers",
+                        "Continuous heap fragmentation",
+                        "Non-deterministic polynomial time bounds"
+                      ],
+                      correctIndex: 0,
+                      explanation: `The core mechanism focuses on: ${activeQuizTopic.description}`
+                    },
+                    {
+                      id: `${topicId}-q4`,
+                      question: `What condition triggers boundary or termination handling in ${activeQuizTopic.name}?`,
+                      options: [
+                        "Empty input sequence or pointer index crossing boundary",
+                        "CPU cache warm-up complete",
+                        "Network socket timeout",
+                        "Database transaction commit"
+                      ],
+                      correctIndex: 0,
+                      explanation: `Boundary conditions occur when index pointers cross or when remaining elements in the search space reach zero.`
+                    },
+                    {
+                      id: `${topicId}-q5`,
+                      question: `In production software engineering, where is ${activeQuizTopic.name} most frequently applied?`,
+                      options: [
+                        "High-throughput data indexing, query optimization, and memory management",
+                        "Analog audio synthesis",
+                        "Hardware resistor calculation",
+                        "Printer toner estimation"
+                      ],
+                      correctIndex: 0,
+                      explanation: `Data structures and algorithms like ${activeQuizTopic.name} form the foundation of operating system kernels, databases, and high-performance backend pipelines.`
+                    }
+                  ]
+                };
+
+                return (
+                  <QuizEngine
+                    quiz={activeQuiz}
+                    onCompleted={(score) => {
+                      if (score >= activeQuiz.passingScore) {
+                        setCompletedMap((prev) => {
+                          const next = { ...prev, [topicId]: true };
+                          try {
+                            localStorage.setItem("dsa_master_completed_topics", JSON.stringify(next));
+                          } catch {}
+                          return next;
+                        });
+                      }
+                    }}
+                  />
+                );
+              })()}
+            </div>
           </div>
         </div>
       )}

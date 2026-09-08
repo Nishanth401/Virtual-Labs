@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Experiment, EXPERIMENTS_DATA } from "@/data/experiments";
 import { LABS_DATA } from "@/data/labs";
-import { QUIZZES_DATA } from "@/data/quizzes";
+import { QUIZZES_DATA, getQuizForExperiment } from "@/data/quizzes";
 import { useStudentProgress } from "@/hooks/use-student-progress";
 
 // Visualizer imports
@@ -63,7 +63,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
   };
 
   const lab = LABS_DATA.find((l) => l.id === experiment.labId);
-  const quiz = QUIZZES_DATA[experiment.quizId];
+  const quiz = QUIZZES_DATA[experiment.quizId] || getQuizForExperiment(experiment.id, experiment.title) || getQuizForExperiment(experiment.slug, experiment.title);
   const isCompleted = progress.completedExperiments.includes(experiment.id);
 
   // Find prev and next experiments

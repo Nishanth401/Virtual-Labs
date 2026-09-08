@@ -13,7 +13,8 @@ import { MLPrerequisitesTrack } from "@/components/vlab/ml-prerequisites-track";
 import { DSARoadmap } from "@/components/vlab/dsa-roadmap";
 import { LAB_ROADMAPS_DATA } from "@/data/all-labs-roadmap-data";
 import { TamilVideoTimeline } from "@/components/vlab/tamil-video-timeline";
-import { LabRecordUploadPanel } from "@/components/vlab/lab-record-upload-panel";
+import { QuizEngine } from "@/components/quiz/quiz-engine";
+import { QUIZZES_DATA, Quiz, getQuizForExperiment } from "@/data/quizzes";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -28,6 +29,10 @@ import {
   BookOpen,
   Send,
   Trophy,
+  Award,
+  HelpCircle,
+  FileQuestion,
+  Sparkles,
   ChevronRight,
   Code2,
   BrainCircuit,
@@ -66,6 +71,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
 
   // Filter experiments for this lab
   const experiments = EXPERIMENTS_DATA.filter((e) => e.labId === lab.id);
+  const [selectedQuizExpId, setSelectedQuizExpId] = useState<string>(experiments[0]?.id || "");
 
   const handleQuizOptionSelect = (questionId: string, optionIndex: number) => {
     if (quizSubmitted) return;
@@ -738,12 +744,26 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             </div>
                           </div>
 
-                          <Button asChild size="sm" className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 self-start sm:self-center font-bold shadow-xs">
-                            <Link href={`/experiments/${exp.slug}`}>
-                              <PlayCircle className="h-4 w-4" />
-                              <span>Start Experiment</span>
-                            </Link>
-                          </Button>
+                          <div className="flex items-center gap-2 self-start sm:self-center">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => {
+                                setSelectedQuizExpId(exp.id);
+                                setActiveTab("quizzes");
+                              }}
+                              className="text-xs gap-1.5 font-semibold border-primary/30 text-primary hover:bg-primary/10 shadow-2xs cursor-pointer"
+                            >
+                              <HelpCircle className="h-3.5 w-3.5" />
+                              <span>5-Q Quiz</span>
+                            </Button>
+                            <Button asChild size="sm" className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 font-bold shadow-xs">
+                              <Link href={`/experiments/${exp.slug}`}>
+                                <PlayCircle className="h-4 w-4" />
+                                <span>Start Experiment</span>
+                              </Link>
+                            </Button>
+                          </div>
                         </div>
                       ))}
                     </CardContent>
@@ -751,77 +771,142 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 </div>
               )}
 
+              {/* TAB 4: 5-QUESTION EXPERIMENT EVALUATION QUIZZES & LEETCODE PROBLEMS */}
+              {activeTab === "quizzes" && (() => {
+                const currentQuizExp = experiments.find((e) => e.id === selectedQuizExpId) || experiments[0];
+                const activeQuiz = currentQuizExp
+                  ? (QUIZZES_DATA[currentQuizExp.quizId] || getQuizForExperiment(currentQuizExp.id, currentQuizExp.title))
+                  : Object.values(QUIZZES_DATA)[0];
 
-
-              {/* TAB 4: SELF-ASSESSMENT & LEETCODE PROBLEMS */}
-              {activeTab === "quizzes" && (
-                <div className="space-y-6">
-                  {/* Part 1: Topic-Related LeetCode Practice Problems */}
-                  <Card className="border-border bg-card/80 backdrop-blur-xs shadow-sm p-6 space-y-4">
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <div>
-                        <CardTitle className="text-xl font-bold text-primary font-heading flex items-center gap-2">
-                          <Trophy className="h-5 w-5 text-amber-500" />
-                          <span>Topic-by-Topic LeetCode &amp; GFG Practice Problems</span>
-                        </CardTitle>
-                        <CardDescription className="text-xs mt-1">
-                          Solve these curated coding challenges directly on LeetCode to master {lab.name} topics for technical interview placement rounds.
-                        </CardDescription>
-                      </div>
-                      <Badge variant="outline" className="text-xs font-mono bg-amber-500/10 text-amber-500 border-amber-500/30">
-                        {LAB_ROADMAPS_DATA[lab.id]?.categories.flatMap(c => c.topics.flatMap(t => t.practiceProblems)).length || 10} Challenges
-                      </Badge>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
-                      {(LAB_ROADMAPS_DATA[lab.id]?.categories.flatMap(c => c.topics.flatMap(t => t.practiceProblems)) || [
-                        { title: "Two Sum", difficulty: "Easy", url: "https://leetcode.com/problems/two-sum/", platform: "LeetCode" },
-                        { title: "Reverse Linked List", difficulty: "Easy", url: "https://leetcode.com/problems/reverse-linked-list/", platform: "LeetCode" },
-                        { title: "Valid Parentheses", difficulty: "Easy", url: "https://leetcode.com/problems/valid-parentheses/", platform: "LeetCode" },
-                        { title: "Binary Search", difficulty: "Easy", url: "https://leetcode.com/problems/binary-search/", platform: "LeetCode" }
-                      ]).map((prob, idx) => (
-                        <a
-                          key={idx}
-                          href={prob.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/30 hover:bg-primary/5 hover:border-primary/40 transition-all group shadow-2xs"
-                        >
-                          <div className="space-y-1 min-w-0 pr-2">
-                            <div className="flex items-center gap-2">
-                              <span className="font-bold text-xs text-foreground group-hover:text-primary transition-colors truncate">
-                                {idx + 1}. {prob.title}
-                              </span>
-                            </div>
-                            <span className="text-[10px] text-muted-foreground font-mono">{prob.platform}</span>
-                          </div>
-
-                          <div className="flex items-center gap-2 shrink-0">
-                            <Badge
-                              variant="outline"
-                              className={
-                                prob.difficulty === "Easy"
-                                  ? "text-emerald-500 border-emerald-500/30 text-[10px]"
-                                  : prob.difficulty === "Medium"
-                                  ? "text-amber-500 border-amber-500/30 text-[10px]"
-                                  : "text-rose-500 border-rose-500/30 text-[10px]"
-                              }
-                            >
-                              {prob.difficulty}
+                return (
+                  <div className="space-y-8">
+                    {/* Section 1: Interactive 5-Question Lab Assessment */}
+                    <Card className="border-border bg-card/80 backdrop-blur-xs shadow-sm p-6 space-y-6">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-border/60 pb-4">
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <Badge variant="outline" className="text-xs font-mono bg-primary/10 text-primary border-primary/20">
+                              5-Question Assessment
                             </Badge>
-                            <ExternalLink className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
+                            <Badge variant="outline" className="text-xs font-mono text-emerald-500 border-emerald-500/30 bg-emerald-500/10">
+                              Passing: 80% (4/5)
+                            </Badge>
                           </div>
-                        </a>
-                      ))}
-                    </div>
-                  </Card>
-                </div>
-              )}
+                          <CardTitle className="text-xl font-bold text-primary font-heading flex items-center gap-2">
+                            <Sparkles className="h-5 w-5 text-amber-500" />
+                            <span>{lab.name} — Experiment Knowledge Quizzes</span>
+                          </CardTitle>
+                          <CardDescription className="text-xs mt-1">
+                            Select an experiment below to test your conceptual and complexity mastery with instant scoring synced to your student profile and faculty admin roster.
+                          </CardDescription>
+                        </div>
+                      </div>
 
-              {/* TAB 4.5: LAB RECORD PDF UPLOAD & CLOUD STORAGE */}
-              {activeTab === "record-upload" && (
-                <LabRecordUploadPanel lab={lab} />
-              )}
+                      {/* Experiment Selector Pills */}
+                      <div className="space-y-2">
+                        <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">
+                          Select Experiment to Test ({experiments.length} Available):
+                        </label>
+                        <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto pr-1">
+                          {experiments.map((exp, idx) => {
+                            const isSelected = (selectedQuizExpId || experiments[0]?.id) === exp.id;
+                            return (
+                              <button
+                                key={exp.id}
+                                type="button"
+                                onClick={() => setSelectedQuizExpId(exp.id)}
+                                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all border flex items-center gap-1.5 cursor-pointer ${
+                                  isSelected
+                                    ? "bg-primary text-white border-primary shadow-sm"
+                                    : "bg-muted/40 hover:bg-muted text-muted-foreground hover:text-foreground border-border"
+                                }`}
+                              >
+                                <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded-md ${
+                                  isSelected ? "bg-white/20 text-white" : "bg-muted text-foreground"
+                                }`}>
+                                  Exp {idx + 1}
+                                </span>
+                                <span>{exp.title}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Render Interactive Quiz Engine */}
+                      {activeQuiz ? (
+                        <div className="pt-2">
+                          <QuizEngine key={activeQuiz.id} quiz={activeQuiz} />
+                        </div>
+                      ) : (
+                        <div className="p-8 text-center text-sm text-muted-foreground bg-muted/20 rounded-xl border border-border">
+                          Select an experiment above to launch its 5-question evaluation quiz.
+                        </div>
+                      )}
+                    </Card>
+
+                    {/* Section 2: Topic-Related LeetCode Practice Problems */}
+                    <Card className="border-border bg-card/80 backdrop-blur-xs shadow-sm p-6 space-y-4">
+                      <div className="flex flex-wrap items-center justify-between gap-3">
+                        <div>
+                          <CardTitle className="text-xl font-bold text-primary font-heading flex items-center gap-2">
+                            <Trophy className="h-5 w-5 text-amber-500" />
+                            <span>Topic-by-Topic LeetCode &amp; GFG Practice Problems</span>
+                          </CardTitle>
+                          <CardDescription className="text-xs mt-1">
+                            Solve these curated coding challenges directly on LeetCode to master {lab.name} topics for technical interview placement rounds.
+                          </CardDescription>
+                        </div>
+                        <Badge variant="outline" className="text-xs font-mono bg-amber-500/10 text-amber-500 border-amber-500/30">
+                          {LAB_ROADMAPS_DATA[lab.id]?.categories.flatMap(c => c.topics.flatMap(t => t.practiceProblems)).length || 10} Challenges
+                        </Badge>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                        {(LAB_ROADMAPS_DATA[lab.id]?.categories.flatMap(c => c.topics.flatMap(t => t.practiceProblems)) || [
+                          { title: "Two Sum", difficulty: "Easy", url: "https://leetcode.com/problems/two-sum/", platform: "LeetCode" },
+                          { title: "Reverse Linked List", difficulty: "Easy", url: "https://leetcode.com/problems/reverse-linked-list/", platform: "LeetCode" },
+                          { title: "Valid Parentheses", difficulty: "Easy", url: "https://leetcode.com/problems/valid-parentheses/", platform: "LeetCode" },
+                          { title: "Binary Search", difficulty: "Easy", url: "https://leetcode.com/problems/binary-search/", platform: "LeetCode" }
+                        ]).map((prob, idx) => (
+                          <a
+                            key={idx}
+                            href={prob.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/30 hover:bg-primary/5 hover:border-primary/40 transition-all group shadow-2xs"
+                          >
+                            <div className="space-y-1 min-w-0 pr-2">
+                              <div className="flex items-center gap-2">
+                                <span className="font-bold text-xs text-foreground group-hover:text-primary transition-colors truncate">
+                                  {idx + 1}. {prob.title}
+                                </span>
+                              </div>
+                              <span className="text-[10px] text-muted-foreground font-mono">{prob.platform}</span>
+                            </div>
+
+                            <div className="flex items-center gap-2 shrink-0">
+                              <Badge
+                                variant="outline"
+                                className={
+                                  prob.difficulty === "Easy"
+                                    ? "text-emerald-500 border-emerald-500/30 text-[10px]"
+                                    : prob.difficulty === "Medium"
+                                    ? "text-amber-500 border-amber-500/30 text-[10px]"
+                                    : "text-rose-500 border-rose-500/30 text-[10px]"
+                                }
+                              >
+                                {prob.difficulty}
+                              </Badge>
+                              <ExternalLink className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
+                            </div>
+                          </a>
+                        ))}
+                      </div>
+                    </Card>
+                  </div>
+                );
+              })()}
 
               {/* TAB 5: COURSE ALIGNMENT */}
               {activeTab === "course-alignment" && (

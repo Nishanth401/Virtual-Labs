@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, XCircle, Award, RotateCcw, HelpCircle, Check, Sparkles } from "lucide-react";
 
+import { useAuth } from "@/context/auth-context";
+
 interface QuizEngineProps {
   quiz: Quiz;
   onCompleted?: (score: number) => void;
@@ -16,6 +18,12 @@ interface QuizEngineProps {
 
 export function QuizEngine({ quiz, onCompleted }: QuizEngineProps) {
   const { progress, saveQuiz } = useStudentProgress();
+  let auth: any = null;
+  try {
+    auth = useAuth();
+  } catch {
+    auth = null;
+  }
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
@@ -49,6 +57,15 @@ export function QuizEngine({ quiz, onCompleted }: QuizEngineProps) {
 
     // Save to localStorage
     saveQuiz(quiz.experimentId, calculatedScore, quiz.questions.length, quiz.passingScore);
+
+    // Also persist to Supabase if authenticated
+    if (auth && typeof auth.saveQuizScore === "function") {
+      try {
+        auth.saveQuizScore(quiz.experimentId, calculatedScore, quiz.questions.length);
+      } catch (err) {
+        console.warn("Could not sync quiz score to cloud profile:", err);
+      }
+    }
 
     // Celebrate if passed
     if (calculatedScore >= quiz.passingScore) {
