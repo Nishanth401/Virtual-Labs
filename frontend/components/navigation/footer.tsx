@@ -130,12 +130,9 @@ export function Footer() {
                 <li>
                   <Link
                     href="/admin"
-                    className="hover:text-white transition-colors block py-1 flex items-center justify-between group"
+                    className="text-red-500 hover:text-red-400 transition-colors block py-1 font-medium"
                   >
-                    <span className="group-hover:text-rose-400 transition-colors">Admin Portal</span>
-                    <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-rose-950/60 text-rose-400 border border-rose-800/60 font-semibold">
-                      Admin
-                    </span>
+                    Admin Portal
                   </Link>
                 </li>
               </ul>
