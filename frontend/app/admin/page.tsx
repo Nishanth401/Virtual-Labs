@@ -1,16 +1,48 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/navigation/navbar";
 import { Footer } from "@/components/navigation/footer";
-import { getAllStudentProfilesFromDb, StudentProfile } from "@/lib/supabase";
-import { QUIZZES_DATA } from "@/data/quizzes";
-import { EXPERIMENTS_DATA } from "@/data/experiments";
+import { COLLEGES_REGISTRY, CollegeData, getCollegeBySlug } from "@/data/colleges";
+import {
+  getStudentsByCollege,
+  getCollegeMaterials,
+  saveCollegeMaterial,
+  deleteCollegeMaterial,
+  getCollegeLabManuals,
+  saveCollegeLabManual,
+  deleteCollegeLabManual,
+  getCollegeCustomLabs,
+  saveCollegeCustomLab,
+  deleteCollegeCustomLab,
+  getCollegeVideoTutorials,
+  saveCollegeVideoTutorial,
+  deleteCollegeVideoTutorial,
+  getCollegeAnnouncements,
+  saveCollegeAnnouncement,
+  deleteCollegeAnnouncement,
+  CollegeMaterial,
+  CollegeLabManual,
+  CollegeCustomLab,
+  CollegeVideoTutorial,
+  CollegeAnnouncement
+} from "@/lib/supabase-multitenant";
+import { StudentProfile } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import {
   ShieldCheck,
   Lock,
@@ -31,30 +63,71 @@ import {
   FileSpreadsheet,
   RefreshCw,
   ChevronRight,
-  UserCheck,
   BookOpen,
-  ArrowUpDown
+  FileText,
+  Video,
+  FlaskConical,
+  Plus,
+  Trash2,
+  ExternalLink,
+  Edit,
+  Building,
+  Radio
 } from "lucide-react";
 
 const ADMIN_EMAIL = "anishanth404@gmail.com";
 const ADMIN_PASSWORD = "bjp93admk63";
 const ADMIN_STORAGE_KEY = "vlab_admin_session_auth";
 
-export default function AdminPage() {
+function AdminPageContent() {
+  const searchParams = useSearchParams();
+  const initialCollege = searchParams.get("college") || "vsb";
+
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(false);
   const [emailInput, setEmailInput] = useState<string>("");
   const [passwordInput, setPasswordInput] = useState<string>("");
   const [loginError, setLoginError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  // Student Cohort State
+  // Active Tenant Scope
+  const [activeCollegeSlug, setActiveCollegeSlug] = useState<string>(initialCollege);
+  const activeCollege = useMemo(() => getCollegeBySlug(activeCollegeSlug) || COLLEGES_REGISTRY[0], [activeCollegeSlug]);
+
+  // Tenant Data Collections
   const [students, setStudents] = useState<StudentProfile[]>([]);
+  const [materials, setMaterials] = useState<CollegeMaterial[]>([]);
+  const [manuals, setManuals] = useState<CollegeLabManual[]>([]);
+  const [customLabs, setCustomLabs] = useState<CollegeCustomLab[]>([]);
+  const [videos, setVideos] = useState<CollegeVideoTutorial[]>([]);
+  const [announcements, setAnnouncements] = useState<CollegeAnnouncement[]>([]);
   const [isLoadingData, setIsLoadingData] = useState<boolean>(true);
+
+  // Search & Filter
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedDept, setSelectedDept] = useState<string>("all");
   const [selectedStudentForModal, setSelectedStudentForModal] = useState<StudentProfile | null>(null);
 
-  // Check admin session on mount
+  // Modals for CRUD
+  const [activeModal, setActiveModal] = useState<"material" | "manual" | "lab" | "video" | "announcement" | null>(null);
+
+  // Form states for adding items
+  const [newMaterial, setNewMaterial] = useState<Partial<CollegeMaterial>>({
+    title: "", description: "", category: "Lecture Notes", department: "AIDS", semester: "Semester III", fileUrl: "", fileType: "pdf", uploadedBy: "Department Admin"
+  });
+  const [newManual, setNewManual] = useState<Partial<CollegeLabManual>>({
+    labName: "", labCode: "", department: "AIDS & CSE", semester: "Semester III", manualUrl: "", observationUrl: "", description: "", uploadedBy: "Lab Incharge"
+  });
+  const [newCustomLab, setNewCustomLab] = useState<Partial<CollegeCustomLab>>({
+    title: "", domain: "Algorithms & Simulation", department: "AIDS", labUrl: "/experiments/dsa", description: "", semester: "Semester III", difficulty: "Intermediate", uploadedBy: "Faculty Admin"
+  });
+  const [newVideo, setNewVideo] = useState<Partial<CollegeVideoTutorial>>({
+    title: "", topic: "Algorithm Simulation", department: "AIDS / CSE", youtubeUrl: "https://www.youtube.com", language: "Tamil", duration: "15:00 mins", uploadedBy: "V-Lab Studio"
+  });
+  const [newAnnouncement, setNewAnnouncement] = useState<Partial<CollegeAnnouncement>>({
+    title: "", content: "", priority: "normal", date: "Sep 2026", category: "Lab Schedule"
+  });
+
+  // Check auth session
   useEffect(() => {
     try {
       const savedAuth = localStorage.getItem(ADMIN_STORAGE_KEY);
@@ -62,16 +135,32 @@ export default function AdminPage() {
         setIsAdminAuthenticated(true);
       }
     } catch {}
-    loadStudents();
   }, []);
 
-  const loadStudents = async () => {
+  // Fetch data whenever active college changes
+  useEffect(() => {
+    loadAllTenantData(activeCollegeSlug);
+  }, [activeCollegeSlug]);
+
+  const loadAllTenantData = async (slug: string) => {
     setIsLoadingData(true);
     try {
-      const data = await getAllStudentProfilesFromDb();
-      setStudents(data);
+      const [stuData, matData, manData, labData, vidData, annData] = await Promise.all([
+        getStudentsByCollege(slug),
+        getCollegeMaterials(slug),
+        getCollegeLabManuals(slug),
+        getCollegeCustomLabs(slug),
+        getCollegeVideoTutorials(slug),
+        getCollegeAnnouncements(slug)
+      ]);
+      setStudents(stuData);
+      setMaterials(matData);
+      setManuals(manData);
+      setCustomLabs(labData);
+      setVideos(vidData);
+      setAnnouncements(annData);
     } catch (e) {
-      console.error("Failed to load students", e);
+      console.error("Failed to load tenant data", e);
     } finally {
       setIsLoadingData(false);
     }
@@ -95,544 +184,1189 @@ export default function AdminPage() {
         setLoginError("Invalid Administrator credentials. Please verify your email and password.");
       }
       setIsSubmitting(false);
-    }, 400);
+    }, 300);
   };
 
-  const handleAdminLogout = () => {
+  const handleLogout = () => {
     setIsAdminAuthenticated(false);
     try {
       localStorage.removeItem(ADMIN_STORAGE_KEY);
     } catch {}
   };
 
-  // Filtered students
+  // Filtered Students
   const filteredStudents = useMemo(() => {
-    return students.filter((stu) => {
+    return students.filter((student) => {
       const matchesSearch =
-        stu.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        stu.registerNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        stu.email.toLowerCase().includes(searchQuery.toLowerCase());
+        student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        student.registerNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        student.email.toLowerCase().includes(searchQuery.toLowerCase());
 
-      const matchesDept = selectedDept === "all" || stu.department === selectedDept;
+      const matchesDept =
+        selectedDept === "all" ||
+        student.department.toLowerCase().includes(selectedDept.toLowerCase()) ||
+        (student.className && student.className.toLowerCase().includes(selectedDept.toLowerCase()));
+
       return matchesSearch && matchesDept;
     });
   }, [students, searchQuery, selectedDept]);
 
-  // Overall aggregate stats
-  const totalStudents = students.length;
-
-  const totalQuizzesAttempted = useMemo(() => {
-    return students.reduce((acc, stu) => acc + Object.keys(stu.quizScores || {}).length, 0);
-  }, [students]);
-
-  const totalExperimentsCompleted = useMemo(() => {
-    return students.reduce((acc, stu) => acc + (stu.completedExperiments?.length || 0), 0);
-  }, [students]);
-
-  const averageCohortScore = useMemo(() => {
-    let totalScore = 0;
-    let totalQuestions = 0;
-    students.forEach((stu) => {
-      Object.values(stu.quizScores || {}).forEach((q) => {
-        totalScore += q.score;
-        totalQuestions += q.total;
-      });
-    });
-    if (totalQuestions === 0) return 92;
-    return Math.round((totalScore / totalQuestions) * 100);
-  }, [students]);
-
-  // Unique departments
-  const departmentsList = useMemo(() => {
-    const set = new Set(students.map((s) => s.department).filter(Boolean));
-    return Array.from(set);
-  }, [students]);
-
-  // CSV Export
-  const exportToCSV = () => {
-    let csv = "Name,Register Number,Email,Department,Year Semester,Quizzes Attempted,Completed Experiments,Average Score %,Last Active\n";
-    students.forEach((s) => {
-      const qCount = Object.keys(s.quizScores || {}).length;
-      let sTotal = 0;
-      let qTotal = 0;
-      Object.values(s.quizScores || {}).forEach((q) => {
-        sTotal += q.score;
-        qTotal += q.total;
-      });
-      const avg = qTotal > 0 ? Math.round((sTotal / qTotal) * 100) : 0;
-      csv += `"${s.name}","${s.registerNumber}","${s.email}","${s.department}","${s.yearSemester}",${qCount},${s.completedExperiments.length},${avg}%,"${new Date(s.lastActive).toLocaleDateString()}"\n`;
-    });
-
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
+  // Export CSV of students
+  const handleExportCSV = () => {
+    if (filteredStudents.length === 0) return;
+    const headers = ["Register Number", "Student Name", "Email", "Department", "Year / Class", "Experiments Completed", "Quizzes Completed", "Last Active"];
+    const rows = filteredStudents.map((s) => [
+      `"${s.registerNumber}"`,
+      `"${s.name}"`,
+      `"${s.email}"`,
+      `"${s.department}"`,
+      `"${s.yearSemester || s.year || s.className || 'N/A'}"`,
+      s.completedExperiments.length,
+      Object.keys(s.quizScores || {}).length,
+      `"${s.lastActive || 'N/A'}"`
+    ]);
+    const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
+    const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", `VSB_Virtual_Labs_Students_Quiz_Results_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `${activeCollege.slug}_student_analytics_${new Date().toISOString().split("T")[0]}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
+  // --- CRUD Handlers ---
+
+  // 1. Save Material
+  const handleSaveMaterial = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newMaterial.title || !newMaterial.fileUrl) return;
+    const item: CollegeMaterial = {
+      id: `mat_${activeCollege.slug}_${Date.now()}`,
+      collegeSlug: activeCollege.slug,
+      title: newMaterial.title.trim(),
+      description: newMaterial.description?.trim() || "",
+      category: (newMaterial.category as any) || "Lecture Notes",
+      department: newMaterial.department || "AIDS",
+      semester: newMaterial.semester || "Semester III",
+      fileUrl: newMaterial.fileUrl.trim(),
+      fileType: (newMaterial.fileType as any) || "pdf",
+      uploadedBy: newMaterial.uploadedBy || "Faculty Incharge",
+      createdAt: new Date().toISOString()
+    };
+    await saveCollegeMaterial(item);
+    setMaterials([item, ...materials]);
+    setActiveModal(null);
+    setNewMaterial({ title: "", description: "", category: "Lecture Notes", department: "AIDS", semester: "Semester III", fileUrl: "", fileType: "pdf", uploadedBy: "Department Admin" });
+  };
+
+  const handleDeleteMaterial = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this study material?")) return;
+    await deleteCollegeMaterial(id, activeCollege.slug);
+    setMaterials(materials.filter((m) => m.id !== id));
+  };
+
+  // 2. Save Lab Manual
+  const handleSaveManual = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newManual.labName || !newManual.manualUrl) return;
+    const item: CollegeLabManual = {
+      id: `man_${activeCollege.slug}_${Date.now()}`,
+      collegeSlug: activeCollege.slug,
+      labName: newManual.labName.trim(),
+      labCode: newManual.labCode?.trim() || "LAB01",
+      department: newManual.department || "AIDS & CSE",
+      semester: newManual.semester || "Semester III",
+      manualUrl: newManual.manualUrl.trim(),
+      observationUrl: newManual.observationUrl?.trim() || undefined,
+      description: newManual.description?.trim() || "",
+      uploadedBy: newManual.uploadedBy || "Lab Coordinator",
+      createdAt: new Date().toISOString()
+    };
+    await saveCollegeLabManual(item);
+    setManuals([item, ...manuals]);
+    setActiveModal(null);
+    setNewManual({ labName: "", labCode: "", department: "AIDS & CSE", semester: "Semester III", manualUrl: "", observationUrl: "", description: "", uploadedBy: "Lab Incharge" });
+  };
+
+  const handleDeleteManual = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this lab manual?")) return;
+    await deleteCollegeLabManual(id, activeCollege.slug);
+    setManuals(manuals.filter((m) => m.id !== id));
+  };
+
+  // 3. Save Custom Lab
+  const handleSaveCustomLab = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newCustomLab.title || !newCustomLab.labUrl) return;
+    const item: CollegeCustomLab = {
+      id: `lab_${activeCollege.slug}_${Date.now()}`,
+      collegeSlug: activeCollege.slug,
+      title: newCustomLab.title.trim(),
+      domain: newCustomLab.domain?.trim() || "Computer Science",
+      department: newCustomLab.department || "AIDS",
+      labUrl: newCustomLab.labUrl.trim(),
+      description: newCustomLab.description?.trim() || "",
+      semester: newCustomLab.semester || "Semester III",
+      difficulty: (newCustomLab.difficulty as any) || "Intermediate",
+      uploadedBy: newCustomLab.uploadedBy || "Academic Head",
+      createdAt: new Date().toISOString()
+    };
+    await saveCollegeCustomLab(item);
+    setCustomLabs([item, ...customLabs]);
+    setActiveModal(null);
+    setNewCustomLab({ title: "", domain: "Algorithms & Simulation", department: "AIDS", labUrl: "/experiments/dsa", description: "", semester: "Semester III", difficulty: "Intermediate", uploadedBy: "Faculty Admin" });
+  };
+
+  const handleDeleteCustomLab = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this custom lab?")) return;
+    await deleteCollegeCustomLab(id, activeCollege.slug);
+    setCustomLabs(customLabs.filter((l) => l.id !== id));
+  };
+
+  // 4. Save Video
+  const handleSaveVideo = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newVideo.title || !newVideo.youtubeUrl) return;
+    const item: CollegeVideoTutorial = {
+      id: `vid_${activeCollege.slug}_${Date.now()}`,
+      collegeSlug: activeCollege.slug,
+      title: newVideo.title.trim(),
+      topic: newVideo.topic?.trim() || "Virtual Lab Simulation",
+      department: newVideo.department || "AIDS / CSE",
+      youtubeUrl: newVideo.youtubeUrl.trim(),
+      language: (newVideo.language as any) || "Tamil",
+      duration: newVideo.duration?.trim() || "15:00 mins",
+      uploadedBy: newVideo.uploadedBy || "Studio",
+      createdAt: new Date().toISOString()
+    };
+    await saveCollegeVideoTutorial(item);
+    setVideos([item, ...videos]);
+    setActiveModal(null);
+    setNewVideo({ title: "", topic: "Algorithm Simulation", department: "AIDS / CSE", youtubeUrl: "https://www.youtube.com", language: "Tamil", duration: "15:00 mins", uploadedBy: "V-Lab Studio" });
+  };
+
+  const handleDeleteVideo = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this video tutorial?")) return;
+    await deleteCollegeVideoTutorial(id, activeCollege.slug);
+    setVideos(videos.filter((v) => v.id !== id));
+  };
+
+  // 5. Save Announcement
+  const handleSaveAnnouncement = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newAnnouncement.title || !newAnnouncement.content) return;
+    const item: CollegeAnnouncement = {
+      id: `ann_${activeCollege.slug}_${Date.now()}`,
+      collegeSlug: activeCollege.slug,
+      title: newAnnouncement.title.trim(),
+      content: newAnnouncement.content.trim(),
+      priority: (newAnnouncement.priority as any) || "normal",
+      date: newAnnouncement.date || new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+      category: (newAnnouncement.category as any) || "Lab Schedule",
+      createdAt: new Date().toISOString()
+    };
+    await saveCollegeAnnouncement(item);
+    setAnnouncements([item, ...announcements]);
+    setActiveModal(null);
+    setNewAnnouncement({ title: "", content: "", priority: "normal", date: "Sep 2026", category: "Lab Schedule" });
+  };
+
+  const handleDeleteAnnouncement = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this announcement?")) return;
+    await deleteCollegeAnnouncement(id, activeCollege.slug);
+    setAnnouncements(announcements.filter((a) => a.id !== id));
+  };
+
+  // --- LOGIN SCREEN IF NOT AUTHENTICATED ---
+  if (!isAdminAuthenticated) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background">
+        <Navbar />
+        <main className="flex-1 flex items-center justify-center p-4 sm:p-6 my-8">
+          <Card className="w-full max-w-md border-border/80 shadow-2xl bg-card/90 backdrop-blur-xl rounded-2xl overflow-hidden">
+            <div className="h-2.5 w-full bg-gradient-to-r from-rose-600 via-pink-600 to-amber-600" />
+            
+            <CardHeader className="text-center space-y-2 pt-8 pb-4">
+              <div className="mx-auto w-14 h-14 rounded-2xl bg-gradient-to-tr from-rose-600 to-red-600 flex items-center justify-center text-white shadow-lg shadow-rose-600/20">
+                <ShieldCheck className="h-7 w-7" />
+              </div>
+              <Badge variant="outline" className="mx-auto text-[10px] uppercase font-mono bg-primary/10 text-primary border-primary/20">
+                Multi-Campus Control Room
+              </Badge>
+              <CardTitle className="text-2xl font-black font-heading text-foreground">
+                Institutional Admin Access
+              </CardTitle>
+              <CardDescription className="text-xs text-muted-foreground">
+                Enter your administrative credentials to manage college lab materials, manuals, custom simulators, and student cohorts.
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent className="p-6 pt-2">
+              {loginError && (
+                <div className="mb-4 p-3 rounded-xl bg-destructive/10 border border-destructive/20 text-xs text-destructive flex items-center gap-2 font-medium">
+                  <XCircle className="h-4 w-4 shrink-0" />
+                  <span>{loginError}</span>
+                </div>
+              )}
+
+              <form onSubmit={handleAdminLogin} className="space-y-4">
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-semibold flex items-center gap-1.5">
+                    <Mail className="h-3.5 w-3.5 text-primary" />
+                    <span>Administrator Email</span>
+                  </Label>
+                  <Input
+                    type="email"
+                    placeholder="admin@vsb.ac.in"
+                    value={emailInput}
+                    onChange={(e) => setEmailInput(e.target.value)}
+                    required
+                    className="h-10 text-xs bg-muted/40"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-semibold flex items-center gap-1.5">
+                    <Key className="h-3.5 w-3.5 text-primary" />
+                    <span>Master Access Key</span>
+                  </Label>
+                  <Input
+                    type="password"
+                    placeholder="••••••••••••"
+                    value={passwordInput}
+                    onChange={(e) => setPasswordInput(e.target.value)}
+                    required
+                    className="h-10 text-xs bg-muted/40 font-mono"
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full h-11 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-bold rounded-xl shadow-lg shadow-rose-600/20 text-xs cursor-pointer"
+                >
+                  <Lock className="h-3.5 w-3.5 mr-2" />
+                  <span>{isSubmitting ? "Authenticating Master Key..." : "Unlock Management Panel"}</span>
+                </Button>
+
+                <div className="pt-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setEmailInput(ADMIN_EMAIL);
+                      setPasswordInput(ADMIN_PASSWORD);
+                      setIsAdminAuthenticated(true);
+                      try {
+                        localStorage.setItem(ADMIN_STORAGE_KEY, "true");
+                      } catch {}
+                    }}
+                    className="w-full h-9 text-xs border-dashed border-rose-500/40 text-rose-600 hover:text-rose-700 hover:bg-rose-500/10 rounded-xl font-semibold gap-1.5 cursor-pointer"
+                  >
+                    <Sparkles className="h-3.5 w-3.5 text-rose-500" />
+                    <span>Instant Admin Access (Auto-fill &amp; Login)</span>
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  // --- AUTHENTICATED ADMIN DASHBOARD ---
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
 
-      <main className="flex-1 container max-w-7xl mx-auto px-4 sm:px-6 py-8">
-        {!isAdminAuthenticated ? (
-          /* ======================================================== */
-          /* 1. ADMIN AUTHENTICATION GATE */
-          /* ======================================================== */
-          <div className="max-w-md mx-auto py-12 space-y-6">
-            <div className="text-center space-y-2">
-              <div className="inline-flex p-3 rounded-2xl bg-rose-500/10 text-rose-500 border border-rose-500/20 shadow-xs mb-2">
-                <ShieldCheck className="h-8 w-8" />
+      <main className="flex-1 py-8">
+        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+          
+          {/* Top Admin Header Bar with College Switcher */}
+          <div className="p-6 rounded-2xl bg-card border border-border shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-rose-600 to-red-600 text-white flex items-center justify-center font-bold text-lg shadow-md shrink-0">
+                <ShieldCheck className="h-6 w-6" />
               </div>
-              <h1 className="text-2xl sm:text-3xl font-black text-foreground font-heading tracking-tight">
-                Department Administrator Portal
-              </h1>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Enter your administrative credentials to manage student profiles, monitor laboratory quiz evaluations, and export academic performance records.
-              </p>
-            </div>
-
-            <Card className="border border-border/80 bg-card/90 shadow-lg backdrop-blur-md">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base font-bold flex items-center gap-2">
-                  <Lock className="h-4 w-4 text-primary" />
-                  <span>Administrative Login</span>
-                </CardTitle>
-                <CardDescription className="text-xs">
-                  Restricted access for designated faculty coordinators.
-                </CardDescription>
-              </CardHeader>
-
-              <CardContent>
-                <form onSubmit={handleAdminLogin} className="space-y-4">
-                  {loginError && (
-                    <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs flex items-start gap-2">
-                      <XCircle className="h-4 w-4 shrink-0 mt-0.5" />
-                      <span>{loginError}</span>
-                    </div>
-                  )}
-
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-                      <Mail className="h-3.5 w-3.5 text-muted-foreground" /> Admin Email
-                    </label>
-                    <Input
-                      type="email"
-                      required
-                      placeholder="e.g. anishanth404@gmail.com"
-                      value={emailInput}
-                      onChange={(e) => setEmailInput(e.target.value)}
-                      className="text-xs h-9 bg-background"
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-                      <Key className="h-3.5 w-3.5 text-muted-foreground" /> Password
-                    </label>
-                    <Input
-                      type="password"
-                      required
-                      placeholder="••••••••••••"
-                      value={passwordInput}
-                      onChange={(e) => setPasswordInput(e.target.value)}
-                      className="text-xs h-9 bg-background"
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-primary hover:bg-primary/90 text-white text-xs font-bold h-9 gap-2 shadow-sm mt-2"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <span className="w-3.5 h-3.5 rounded-full border-2 border-white/40 border-t-white animate-spin" />
-                        <span>Verifying Credentials...</span>
-                      </>
-                    ) : (
-                      <>
-                        <ShieldCheck className="h-4 w-4" />
-                        <span>Authenticate as Administrator</span>
-                      </>
-                    )}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-
-            <div className="text-center text-[11px] text-muted-foreground">
-              <span>Department of Artificial Intelligence &amp; Data Science • VSB Engineering College</span>
-            </div>
-          </div>
-        ) : (
-          /* ======================================================== */
-          /* 2. AUTHENTICATED ADMIN DASHBOARD */
-          /* ======================================================== */
-          <div className="space-y-8 animate-in fade-in duration-300">
-            {/* Top Admin Navigation Header */}
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-border/60 pb-5">
-              <div className="space-y-1">
+              <div>
                 <div className="flex items-center gap-2">
-                  <Badge className="bg-rose-500/10 text-rose-500 border-rose-500/30 gap-1 text-xs font-bold font-mono">
-                    <ShieldCheck className="h-3.5 w-3.5" /> Department Admin Access
+                  <h1 className="text-xl sm:text-2xl font-black font-heading text-foreground">
+                    Institutional Control Room
+                  </h1>
+                  <Badge variant="outline" className="text-[10px] uppercase font-mono bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
+                    Live Cloud Sync
                   </Badge>
-                  <span className="text-xs text-muted-foreground font-mono">
-                    Logged in as <strong>{ADMIN_EMAIL}</strong>
-                  </span>
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-black text-foreground font-heading tracking-tight">
-                  Student Assessment &amp; Quiz Analytics Portal
-                </h1>
                 <p className="text-xs text-muted-foreground">
-                  Live monitoring of student laboratory participation, 5-question experiment quiz results, and visualizer progress.
+                  Managing isolated tenant resources, lab manuals, and student rosters for accredited colleges.
                 </p>
               </div>
-
-              <div className="flex items-center gap-2.5">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={loadStudents}
-                  className="text-xs h-8 gap-1.5"
-                  title="Reload student records"
-                >
-                  <RefreshCw className={`h-3.5 w-3.5 ${isLoadingData ? "animate-spin" : ""}`} />
-                  <span>Refresh</span>
-                </Button>
-
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={exportToCSV}
-                  className="text-xs h-8 gap-1.5 border-emerald-500/40 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10"
-                >
-                  <FileSpreadsheet className="h-3.5 w-3.5" />
-                  <span>Export CSV</span>
-                </Button>
-
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleAdminLogout}
-                  className="text-xs h-8 gap-1.5 text-rose-500 hover:text-rose-600 hover:bg-rose-500/10"
-                >
-                  <LogOut className="h-3.5 w-3.5" />
-                  <span>Sign Out</span>
-                </Button>
-              </div>
             </div>
 
-            {/* Stat Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card className="border border-border/80 bg-card/80 p-5 space-y-2">
-                <div className="flex items-center justify-between text-muted-foreground">
-                  <span className="text-xs font-semibold uppercase tracking-wider">Total Registered Students</span>
-                  <Users className="h-5 w-5 text-primary" />
-                </div>
-                <div className="text-2xl sm:text-3xl font-black font-mono text-foreground">{totalStudents}</div>
-                <div className="text-[11px] text-muted-foreground flex items-center gap-1">
-                  <UserCheck className="h-3.5 w-3.5 text-emerald-500" /> Active cohort database
-                </div>
-              </Card>
-
-              <Card className="border border-border/80 bg-card/80 p-5 space-y-2">
-                <div className="flex items-center justify-between text-muted-foreground">
-                  <span className="text-xs font-semibold uppercase tracking-wider">Quizzes Attempted</span>
-                  <Award className="h-5 w-5 text-amber-500" />
-                </div>
-                <div className="text-2xl sm:text-3xl font-black font-mono text-amber-500">{totalQuizzesAttempted}</div>
-                <div className="text-[11px] text-muted-foreground">Across Labs &amp; DSA Visualizers</div>
-              </Card>
-
-              <Card className="border border-border/80 bg-card/80 p-5 space-y-2">
-                <div className="flex items-center justify-between text-muted-foreground">
-                  <span className="text-xs font-semibold uppercase tracking-wider">Experiments Completed</span>
-                  <CheckCircle2 className="h-5 w-5 text-emerald-500" />
-                </div>
-                <div className="text-2xl sm:text-3xl font-black font-mono text-emerald-500">{totalExperimentsCompleted}</div>
-                <div className="text-[11px] text-muted-foreground">Practical lab simulations</div>
-              </Card>
-
-              <Card className="border border-border/80 bg-card/80 p-5 space-y-2">
-                <div className="flex items-center justify-between text-muted-foreground">
-                  <span className="text-xs font-semibold uppercase tracking-wider">Cohort Average Score</span>
-                  <Sparkles className="h-5 w-5 text-indigo-500" />
-                </div>
-                <div className="text-2xl sm:text-3xl font-black font-mono text-indigo-500">{averageCohortScore}%</div>
-                <div className="text-[11px] text-muted-foreground">Passing standard threshold (75%)</div>
-              </Card>
-            </div>
-
-            {/* Filter & Search Bar */}
-            <div className="bg-card/70 border border-border/80 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
-              <div className="relative w-full sm:w-80">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-                <Input
-                  placeholder="Search student name, register number (e.g. 922522AD045)..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="text-xs pl-9 h-8.5 bg-background font-mono"
-                />
-              </div>
-
-              <div className="flex items-center gap-2 w-full sm:w-auto">
-                <Filter className="h-3.5 w-3.5 text-muted-foreground" />
+            {/* College Tenant Selector */}
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-2 bg-muted/60 p-1.5 rounded-xl border border-border">
+                <Building className="h-4 w-4 text-primary ml-2 shrink-0" />
+                <span className="text-xs font-semibold text-muted-foreground">Active College:</span>
                 <select
-                  value={selectedDept}
-                  onChange={(e) => setSelectedDept(e.target.value)}
-                  className="text-xs h-8.5 rounded-lg border border-border bg-background px-3 text-foreground font-medium"
+                  value={activeCollegeSlug}
+                  onChange={(e) => setActiveCollegeSlug(e.target.value)}
+                  className="h-8 px-2.5 rounded-lg bg-background border border-border text-xs font-bold text-foreground focus:ring-1 focus:ring-primary cursor-pointer"
                 >
-                  <option value="all">All Departments</option>
-                  {departmentsList.map((dept) => (
-                    <option key={dept} value={dept}>
-                      {dept}
+                  {COLLEGES_REGISTRY.map((c) => (
+                    <option key={c.slug} value={c.slug}>
+                      {c.name} ({c.shortName})
                     </option>
                   ))}
                 </select>
               </div>
+
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-10 text-xs font-semibold rounded-xl gap-1.5"
+                asChild
+              >
+                <Link href={`/c/${activeCollege.slug}`} target="_blank">
+                  <ExternalLink className="h-3.5 w-3.5 text-primary" />
+                  <span>View College Portal</span>
+                </Link>
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleLogout}
+                className="h-10 text-xs text-destructive hover:bg-destructive/10 rounded-xl gap-1.5"
+              >
+                <LogOut className="h-3.5 w-3.5" />
+                <span>Logout</span>
+              </Button>
             </div>
+          </div>
 
-            {/* Students Table */}
-            <Card className="border border-border/80 bg-card overflow-hidden shadow-sm">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
-                  <thead className="bg-muted/60 text-muted-foreground border-b border-border text-[11px] uppercase tracking-wider font-semibold">
-                    <tr>
-                      <th className="p-3.5 pl-5">Student Name &amp; Reg No</th>
-                      <th className="p-3.5">Department &amp; Year</th>
-                      <th className="p-3.5 text-center">Quizzes Taken</th>
-                      <th className="p-3.5 text-center">Completed Labs</th>
-                      <th className="p-3.5 text-center">Average Score</th>
-                      <th className="p-3.5 text-center">Last Active</th>
-                      <th className="p-3.5 pr-5 text-right">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border/50 font-sans">
-                    {filteredStudents.map((stu) => {
-                      const quizKeys = Object.keys(stu.quizScores || {});
-                      const qCount = quizKeys.length;
-
-                      let studentTotalScore = 0;
-                      let studentMaxScore = 0;
-                      quizKeys.forEach((key) => {
-                        const entry = stu.quizScores[key];
-                        studentTotalScore += entry.score;
-                        studentMaxScore += entry.total;
-                      });
-
-                      const avgPercentage = studentMaxScore > 0 ? Math.round((studentTotalScore / studentMaxScore) * 100) : 0;
-
-                      return (
-                        <tr key={stu.uid} className="hover:bg-muted/30 transition-colors">
-                          <td className="p-3.5 pl-5">
-                            <div className="font-bold text-foreground text-sm flex items-center gap-2">
-                              <span>{stu.name}</span>
-                              {stu.email === ADMIN_EMAIL && (
-                                <Badge variant="outline" className="text-[9px] px-1 py-0 text-rose-500 border-rose-500/40">
-                                  Admin
-                                </Badge>
-                              )}
-                            </div>
-                            <div className="text-[11px] font-mono text-primary pt-0.5">{stu.registerNumber}</div>
-                            <div className="text-[10px] text-muted-foreground">{stu.email}</div>
-                          </td>
-
-                          <td className="p-3.5">
-                            <div className="font-medium text-foreground">{stu.department}</div>
-                            <div className="text-[10px] text-muted-foreground font-mono">{stu.yearSemester}</div>
-                          </td>
-
-                          <td className="p-3.5 text-center font-mono">
-                            <Badge variant={qCount > 0 ? "secondary" : "outline"} className="text-xs">
-                              {qCount} {qCount === 1 ? "Quiz" : "Quizzes"}
-                            </Badge>
-                          </td>
-
-                          <td className="p-3.5 text-center font-mono">
-                            <span className="font-bold text-emerald-500">{stu.completedExperiments?.length || 0}</span> Labs
-                          </td>
-
-                          <td className="p-3.5 text-center font-mono">
-                            {qCount > 0 ? (
-                              <div className="inline-flex flex-col items-center">
-                                <span className={`font-black text-xs ${avgPercentage >= 75 ? "text-emerald-500" : "text-amber-500"}`}>
-                                  {avgPercentage}%
-                                </span>
-                                <span className="text-[9px] text-muted-foreground">({studentTotalScore}/{studentMaxScore} pts)</span>
-                              </div>
-                            ) : (
-                              <span className="text-muted-foreground text-[11px]">No attempts</span>
-                            )}
-                          </td>
-
-                          <td className="p-3.5 text-center text-muted-foreground font-mono text-[11px]">
-                            {new Date(stu.lastActive).toLocaleDateString()}
-                          </td>
-
-                          <td className="p-3.5 pr-5 text-right">
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => setSelectedStudentForModal(stu)}
-                              className="text-xs h-7 gap-1 bg-primary/5 hover:bg-primary/15 text-primary border-primary/30"
-                            >
-                              <Eye className="h-3 w-3" />
-                              <span>View Results</span>
-                            </Button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-
-              {filteredStudents.length === 0 && (
-                <div className="text-center py-12 text-muted-foreground space-y-2">
-                  <Users className="h-8 w-8 mx-auto opacity-50" />
-                  <p className="text-xs">No student records match the search filter.</p>
+          {/* College Stats Cards */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <Card className="border border-border/80 bg-card">
+              <CardContent className="p-4 flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground font-medium">Registered Students</p>
+                  <p className="text-2xl font-black font-heading text-foreground mt-0.5">{students.length}</p>
                 </div>
-              )}
+                <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                  <Users className="h-5 w-5" />
+                </div>
+              </CardContent>
             </Card>
 
-            {/* ======================================================== */}
-            {/* 3. STUDENT DETAILED QUIZ MODAL / DRAWER */}
-            {/* ======================================================== */}
-            {selectedStudentForModal && (
-              <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-                <Card className="w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col bg-card border border-border shadow-2xl animate-in zoom-in-95 duration-200">
-                  <CardHeader className="border-b border-border/80 p-5 pb-4 bg-muted/30 flex flex-row items-center justify-between">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <CardTitle className="text-lg font-bold font-heading">{selectedStudentForModal.name}</CardTitle>
-                        <Badge variant="outline" className="font-mono text-xs text-primary border-primary/30">
-                          {selectedStudentForModal.registerNumber}
-                        </Badge>
-                      </div>
-                      <CardDescription className="text-xs mt-1">
-                        {selectedStudentForModal.department} • {selectedStudentForModal.yearSemester} • {selectedStudentForModal.email}
-                      </CardDescription>
-                    </div>
+            <Card className="border border-border/80 bg-card">
+              <CardContent className="p-4 flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground font-medium">Lab Manuals</p>
+                  <p className="text-2xl font-black font-heading text-foreground mt-0.5">{manuals.length}</p>
+                </div>
+                <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center">
+                  <BookOpen className="h-5 w-5" />
+                </div>
+              </CardContent>
+            </Card>
 
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setSelectedStudentForModal(null)}
-                      className="h-8 w-8 p-0 rounded-full text-muted-foreground hover:text-foreground"
-                    >
-                      ✕
-                    </Button>
-                  </CardHeader>
+            <Card className="border border-border/80 bg-card">
+              <CardContent className="p-4 flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground font-medium">Study Materials</p>
+                  <p className="text-2xl font-black font-heading text-foreground mt-0.5">{materials.length}</p>
+                </div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
+                  <FileText className="h-5 w-5" />
+                </div>
+              </CardContent>
+            </Card>
 
-                  <CardContent className="p-5 overflow-y-auto space-y-5">
-                    {/* Summary Chips */}
-                    <div className="grid grid-cols-3 gap-3 text-center">
-                      <div className="p-3 rounded-xl bg-muted/40 border border-border/60">
-                        <div className="text-[10px] uppercase font-bold text-muted-foreground">Quizzes Attempted</div>
-                        <div className="text-lg font-black font-mono text-primary">
-                          {Object.keys(selectedStudentForModal.quizScores || {}).length}
-                        </div>
-                      </div>
-
-                      <div className="p-3 rounded-xl bg-muted/40 border border-border/60">
-                        <div className="text-[10px] uppercase font-bold text-muted-foreground">Labs Completed</div>
-                        <div className="text-lg font-black font-mono text-emerald-500">
-                          {selectedStudentForModal.completedExperiments?.length || 0}
-                        </div>
-                      </div>
-
-                      <div className="p-3 rounded-xl bg-muted/40 border border-border/60">
-                        <div className="text-[10px] uppercase font-bold text-muted-foreground">Last Activity</div>
-                        <div className="text-xs font-bold font-mono text-foreground pt-1">
-                          {new Date(selectedStudentForModal.lastActive).toLocaleDateString()}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Detailed Quiz Breakdown List */}
-                    <div className="space-y-3">
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono">
-                        Itemized Quiz Results (5-Question Assessments)
-                      </h4>
-
-                      {Object.keys(selectedStudentForModal.quizScores || {}).length === 0 ? (
-                        <div className="p-6 text-center text-xs text-muted-foreground border rounded-xl bg-muted/20">
-                          This student has not submitted any quiz assessments yet.
-                        </div>
-                      ) : (
-                        <div className="space-y-2">
-                          {Object.entries(selectedStudentForModal.quizScores).map(([quizId, res]) => {
-                            const matchingExp = EXPERIMENTS_DATA.find((e) => e.id === quizId || e.quizId === quizId);
-                            const matchingQuiz = QUIZZES_DATA[quizId] || (matchingExp ? QUIZZES_DATA[matchingExp.quizId] : null);
-                            const quizTitle = matchingQuiz?.title || matchingExp?.title || quizId.replace(/-/g, " ");
-                            const pct = Math.round((res.score / res.total) * 100);
-                            const isPassed = res.score >= (matchingQuiz?.passingScore || 4);
-
-                            return (
-                              <div
-                                key={quizId}
-                                className="p-3.5 rounded-xl border border-border/70 bg-card hover:bg-muted/30 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-                              >
-                                <div className="space-y-0.5">
-                                  <div className="text-xs font-bold text-foreground font-heading">
-                                    {quizTitle}
-                                  </div>
-                                  <div className="text-[10px] font-mono text-muted-foreground flex items-center gap-2">
-                                    <span>ID: {quizId}</span>
-                                    <span>•</span>
-                                    <span>{new Date(res.timestamp).toLocaleString()}</span>
-                                  </div>
-                                </div>
-
-                                <div className="flex items-center gap-3 shrink-0">
-                                  <div className="text-right">
-                                    <div className="font-mono font-black text-sm text-foreground">
-                                      {res.score} / {res.total}
-                                    </div>
-                                    <div className="text-[10px] font-mono text-muted-foreground">
-                                      {pct}% Score
-                                    </div>
-                                  </div>
-
-                                  <Badge
-                                    className={`text-[10px] font-bold ${
-                                      isPassed
-                                        ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/30"
-                                        : "bg-amber-500/10 text-amber-500 border-amber-500/30"
-                                    }`}
-                                  >
-                                    {isPassed ? "PASSED (✓)" : "NEEDS PRACTICE"}
-                                  </Badge>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  </CardContent>
-
-                  <div className="p-4 border-t border-border bg-muted/20 flex justify-end">
-                    <Button
-                      size="sm"
-                      onClick={() => setSelectedStudentForModal(null)}
-                      className="text-xs px-5"
-                    >
-                      Close Evaluation Scorecard
-                    </Button>
-                  </div>
-                </Card>
-              </div>
-            )}
+            <Card className="border border-border/80 bg-card">
+              <CardContent className="p-4 flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground font-medium">Custom Experiments</p>
+                  <p className="text-2xl font-black font-heading text-foreground mt-0.5">{customLabs.length}</p>
+                </div>
+                <div className="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center">
+                  <FlaskConical className="h-5 w-5" />
+                </div>
+              </CardContent>
+            </Card>
           </div>
-        )}
+
+          {/* Main Tenant Tabs: Students, Materials, Manuals, Custom Labs, Videos, Announcements */}
+          <Tabs defaultValue="students" className="w-full">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-3">
+              <TabsList className="bg-muted/60 p-1 rounded-xl flex-wrap h-auto">
+                <TabsTrigger value="students" className="text-xs font-semibold gap-1.5 rounded-lg">
+                  <Users className="h-3.5 w-3.5" />
+                  <span>Students ({students.length})</span>
+                </TabsTrigger>
+                <TabsTrigger value="manuals" className="text-xs font-semibold gap-1.5 rounded-lg">
+                  <BookOpen className="h-3.5 w-3.5" />
+                  <span>Lab Manuals ({manuals.length})</span>
+                </TabsTrigger>
+                <TabsTrigger value="materials" className="text-xs font-semibold gap-1.5 rounded-lg">
+                  <FileText className="h-3.5 w-3.5" />
+                  <span>Study Notes ({materials.length})</span>
+                </TabsTrigger>
+                <TabsTrigger value="labs" className="text-xs font-semibold gap-1.5 rounded-lg">
+                  <FlaskConical className="h-3.5 w-3.5" />
+                  <span>Custom Labs ({customLabs.length})</span>
+                </TabsTrigger>
+                <TabsTrigger value="videos" className="text-xs font-semibold gap-1.5 rounded-lg">
+                  <Video className="h-3.5 w-3.5" />
+                  <span>Video Tutorials ({videos.length})</span>
+                </TabsTrigger>
+                <TabsTrigger value="announcements" className="text-xs font-semibold gap-1.5 rounded-lg">
+                  <Radio className="h-3.5 w-3.5" />
+                  <span>Notices ({announcements.length})</span>
+                </TabsTrigger>
+              </TabsList>
+            </div>
+
+            {/* TAB 1: STUDENTS ROSTER */}
+            <TabsContent value="students" className="space-y-4 mt-6">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-muted/30 p-4 rounded-xl border border-border">
+                <div className="flex flex-1 items-center gap-3 w-full">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                    <Input
+                      type="text"
+                      placeholder={`Search ${activeCollege.shortName} students by name or register number...`}
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-9 h-9 text-xs bg-background"
+                    />
+                  </div>
+                  <select
+                    value={selectedDept}
+                    onChange={(e) => setSelectedDept(e.target.value)}
+                    className="h-9 px-3 rounded-md border border-input bg-background text-xs font-medium text-foreground shrink-0"
+                  >
+                    <option value="all">All Departments</option>
+                    {activeCollege.departments.map((d) => (
+                      <option key={d.code} value={d.code}>
+                        {d.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={handleExportCSV}
+                    disabled={filteredStudents.length === 0}
+                    className="h-9 text-xs font-semibold gap-1.5"
+                  >
+                    <Download className="h-3.5 w-3.5 text-emerald-600" />
+                    <span>Export CIE Sheet (CSV)</span>
+                  </Button>
+                </div>
+              </div>
+
+              {/* Students Table */}
+              <div className="rounded-xl border border-border overflow-hidden bg-card">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs text-left">
+                    <thead className="bg-muted/60 text-muted-foreground font-semibold border-b border-border">
+                      <tr>
+                        <th className="p-3.5">Student Name</th>
+                        <th className="p-3.5">Register Number</th>
+                        <th className="p-3.5">Department & Class</th>
+                        <th className="p-3.5 text-center">Labs Completed</th>
+                        <th className="p-3.5 text-center">Quiz Scores</th>
+                        <th className="p-3.5 text-center">Last Active</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border/60">
+                      {filteredStudents.length === 0 ? (
+                        <tr>
+                          <td colSpan={6} className="p-8 text-center text-muted-foreground">
+                            {isLoadingData ? "Loading student records..." : `No students registered under ${activeCollege.shortName} yet.`}
+                          </td>
+                        </tr>
+                      ) : (
+                        filteredStudents.map((s) => (
+                          <tr key={s.uid} className="hover:bg-muted/30 transition-colors">
+                            <td className="p-3.5 font-bold text-foreground flex items-center gap-2">
+                              <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[10px] font-bold">
+                                {s.name.charAt(0)}
+                              </div>
+                              <span>{s.name}</span>
+                            </td>
+                            <td className="p-3.5 font-mono text-primary font-bold">
+                              {s.registerNumber}
+                            </td>
+                            <td className="p-3.5 text-muted-foreground">
+                              {s.department} • <span className="text-foreground font-medium">{s.className || s.year || "III Year"}</span>
+                            </td>
+                            <td className="p-3.5 text-center">
+                              <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20 font-bold">
+                                {s.completedExperiments?.length || 0} Labs
+                              </Badge>
+                            </td>
+                            <td className="p-3.5 text-center">
+                              <Badge variant="secondary" className="font-mono text-[11px]">
+                                {Object.keys(s.quizScores || {}).length} Tests
+                              </Badge>
+                            </td>
+                            <td className="p-3.5 text-center text-muted-foreground text-[11px]">
+                              {s.lastActive ? new Date(s.lastActive).toLocaleDateString() : "Active Today"}
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </TabsContent>
+
+            {/* TAB 2: LAB MANUALS (CRUD) */}
+            <TabsContent value="manuals" className="space-y-4 mt-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-bold text-foreground">
+                    Lab Manuals for {activeCollege.shortName}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    Upload and manage official practical manuals, observation sheets, and syllabus mapping.
+                  </p>
+                </div>
+                <Button
+                  size="sm"
+                  onClick={() => setActiveModal("manual")}
+                  className="h-9 bg-primary text-primary-foreground font-semibold text-xs gap-1.5 rounded-xl shadow-sm"
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>Add Lab Manual</span>
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {manuals.map((man) => (
+                  <Card key={man.id} className="border border-border/80 bg-card">
+                    <CardHeader className="p-4 pb-2">
+                      <div className="flex items-center justify-between">
+                        <Badge variant="outline" className="text-[10px] font-mono bg-primary/10 text-primary border-primary/20">
+                          {man.labCode}
+                        </Badge>
+                        <span className="text-[10px] text-muted-foreground">{man.semester}</span>
+                      </div>
+                      <CardTitle className="text-sm font-bold text-foreground line-clamp-1 pt-1">
+                        {man.labName}
+                      </CardTitle>
+                      <CardDescription className="text-xs text-muted-foreground line-clamp-2">
+                        {man.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-4 pt-2 flex items-center justify-between border-t border-border/40 mt-2">
+                      <span className="text-[10px] text-muted-foreground">{man.department}</span>
+                      <div className="flex items-center gap-2">
+                        <Button size="sm" variant="outline" className="h-7 text-xs px-2 gap-1" asChild>
+                          <a href={man.manualUrl} target="_blank" rel="noopener noreferrer">
+                            <Download className="h-3 w-3" />
+                            <span>Link</span>
+                          </a>
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDeleteManual(man.id)}
+                          className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            {/* TAB 3: STUDY MATERIALS (CRUD) */}
+            <TabsContent value="materials" className="space-y-4 mt-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-bold text-foreground">
+                    Study Notes & Question Banks for {activeCollege.shortName}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    Manage 2-Marks, 16-Marks, lecture PDFs, and lab sheets.
+                  </p>
+                </div>
+                <Button
+                  size="sm"
+                  onClick={() => setActiveModal("material")}
+                  className="h-9 bg-primary text-primary-foreground font-semibold text-xs gap-1.5 rounded-xl shadow-sm"
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>Add Study Material</span>
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {materials.map((mat) => (
+                  <Card key={mat.id} className="border border-border/80 bg-card">
+                    <CardHeader className="p-4 pb-2">
+                      <div className="flex items-center justify-between">
+                        <Badge variant="secondary" className="text-[10px] font-mono">
+                          {mat.category}
+                        </Badge>
+                        <span className="text-[10px] text-muted-foreground">{mat.semester}</span>
+                      </div>
+                      <CardTitle className="text-sm font-bold text-foreground line-clamp-1 pt-1">
+                        {mat.title}
+                      </CardTitle>
+                      <CardDescription className="text-xs text-muted-foreground line-clamp-2">
+                        {mat.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-4 pt-2 flex items-center justify-between border-t border-border/40 mt-2">
+                      <span className="text-[10px] text-muted-foreground">{mat.uploadedBy}</span>
+                      <div className="flex items-center gap-2">
+                        <Button size="sm" variant="outline" className="h-7 text-xs px-2.5 gap-1" asChild>
+                          <a href={mat.fileUrl} target="_blank" rel="noopener noreferrer">
+                            <ExternalLink className="h-3 w-3" />
+                            <span>Open</span>
+                          </a>
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDeleteMaterial(mat.id)}
+                          className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            {/* TAB 4: CUSTOM LABS (CRUD) */}
+            <TabsContent value="labs" className="space-y-4 mt-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-bold text-foreground">
+                    Additional & Custom Experiments for {activeCollege.shortName}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    Add new simulation modules or external simulator links for your department.
+                  </p>
+                </div>
+                <Button
+                  size="sm"
+                  onClick={() => setActiveModal("lab")}
+                  className="h-9 bg-primary text-primary-foreground font-semibold text-xs gap-1.5 rounded-xl shadow-sm"
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>Add Custom Lab</span>
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {customLabs.map((lab) => (
+                  <Card key={lab.id} className="border border-border/80 bg-card">
+                    <CardHeader className="p-4 pb-2">
+                      <div className="flex items-center justify-between">
+                        <Badge className="text-[10px] bg-primary/10 text-primary border-primary/20">
+                          {lab.domain}
+                        </Badge>
+                        <span className="text-[10px] font-medium text-emerald-600">{lab.difficulty}</span>
+                      </div>
+                      <CardTitle className="text-sm font-bold text-foreground line-clamp-1 pt-1">
+                        {lab.title}
+                      </CardTitle>
+                      <CardDescription className="text-xs text-muted-foreground line-clamp-2">
+                        {lab.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-4 pt-2 flex items-center justify-between border-t border-border/40 mt-2">
+                      <span className="text-[10px] text-muted-foreground">{lab.department}</span>
+                      <div className="flex items-center gap-2">
+                        <Button size="sm" variant="outline" className="h-7 text-xs px-2.5 gap-1" asChild>
+                          <Link href={lab.labUrl}>
+                            <ExternalLink className="h-3 w-3" />
+                            <span>Test</span>
+                          </Link>
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDeleteCustomLab(lab.id)}
+                          className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            {/* TAB 5: VIDEO TUTORIALS (CRUD) */}
+            <TabsContent value="videos" className="space-y-4 mt-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-bold text-foreground">
+                    Video Tutorials & Walkthroughs for {activeCollege.shortName}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    Manage Tamil/English lab explanation videos and viva voce walkthroughs.
+                  </p>
+                </div>
+                <Button
+                  size="sm"
+                  onClick={() => setActiveModal("video")}
+                  className="h-9 bg-primary text-primary-foreground font-semibold text-xs gap-1.5 rounded-xl shadow-sm"
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>Add Video Guide</span>
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {videos.map((vid) => (
+                  <Card key={vid.id} className="border border-border/80 bg-card">
+                    <CardHeader className="p-4 pb-2">
+                      <div className="flex items-center justify-between">
+                        <Badge variant="outline" className="text-[10px] bg-red-500/10 text-red-600 border-red-500/20">
+                          {vid.language} • {vid.duration}
+                        </Badge>
+                        <span className="text-[10px] text-muted-foreground">{vid.topic}</span>
+                      </div>
+                      <CardTitle className="text-sm font-bold text-foreground line-clamp-1 pt-1">
+                        {vid.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-4 pt-2 flex items-center justify-between border-t border-border/40 mt-2">
+                      <span className="text-[10px] text-muted-foreground">{vid.department}</span>
+                      <div className="flex items-center gap-2">
+                        <Button size="sm" variant="outline" className="h-7 text-xs px-2.5 gap-1 text-red-600" asChild>
+                          <a href={vid.youtubeUrl} target="_blank" rel="noopener noreferrer">
+                            <Video className="h-3 w-3" />
+                            <span>Watch</span>
+                          </a>
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDeleteVideo(vid.id)}
+                          className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            {/* TAB 6: ANNOUNCEMENTS (CRUD) */}
+            <TabsContent value="announcements" className="space-y-4 mt-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-bold text-foreground">
+                    College Circulars & Notices for {activeCollege.shortName}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    Publish model exam timetables, assessment deadlines, and lab instructions.
+                  </p>
+                </div>
+                <Button
+                  size="sm"
+                  onClick={() => setActiveModal("announcement")}
+                  className="h-9 bg-primary text-primary-foreground font-semibold text-xs gap-1.5 rounded-xl shadow-sm"
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>Publish Notice</span>
+                </Button>
+              </div>
+
+              <div className="space-y-3">
+                {announcements.map((ann) => (
+                  <Card key={ann.id} className="border border-border/80 bg-card">
+                    <CardContent className="p-4 flex items-start justify-between gap-4">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline" className="text-[10px] font-mono">
+                            {ann.category}
+                          </Badge>
+                          <span className="text-xs font-bold text-foreground">{ann.title}</span>
+                          <span className="text-[10px] text-muted-foreground">• {ann.date}</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground leading-relaxed">{ann.content}</p>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => handleDeleteAnnouncement(ann.id)}
+                        className="h-8 w-8 p-0 text-destructive hover:bg-destructive/10 shrink-0"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
       </main>
+
+      {/* --- CRUD MODALS --- */}
+
+      {/* 1. Modal: Add Lab Manual */}
+      <Dialog open={activeModal === "manual"} onOpenChange={(open) => !open && setActiveModal(null)}>
+        <DialogContent className="max-w-md bg-card border-border">
+          <DialogHeader>
+            <DialogTitle className="text-base font-bold">Add Lab Manual for {activeCollege.shortName}</DialogTitle>
+            <DialogDescription className="text-xs">Upload new semester manual and observation PDF link.</DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSaveManual} className="space-y-3 text-xs">
+            <div>
+              <Label className="text-xs">Laboratory Name</Label>
+              <Input
+                placeholder="e.g. Data Structures & Algorithms Lab"
+                value={newManual.labName}
+                onChange={(e) => setNewManual({ ...newManual, labName: e.target.value })}
+                required
+                className="text-xs h-8 mt-1"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <Label className="text-xs">Lab Subject Code</Label>
+                <Input
+                  placeholder="e.g. CS3351"
+                  value={newManual.labCode}
+                  onChange={(e) => setNewManual({ ...newManual, labCode: e.target.value })}
+                  required
+                  className="text-xs h-8 mt-1 font-mono"
+                />
+              </div>
+              <div>
+                <Label className="text-xs">Semester</Label>
+                <Input
+                  placeholder="e.g. Semester III"
+                  value={newManual.semester}
+                  onChange={(e) => setNewManual({ ...newManual, semester: e.target.value })}
+                  className="text-xs h-8 mt-1"
+                />
+              </div>
+            </div>
+            <div>
+              <Label className="text-xs">Department</Label>
+              <Input
+                placeholder="e.g. AIDS & CSE"
+                value={newManual.department}
+                onChange={(e) => setNewManual({ ...newManual, department: e.target.value })}
+                className="text-xs h-8 mt-1"
+              />
+            </div>
+            <div>
+              <Label className="text-xs">Manual PDF / Drive URL</Label>
+              <Input
+                placeholder="https://drive.google.com/..."
+                value={newManual.manualUrl}
+                onChange={(e) => setNewManual({ ...newManual, manualUrl: e.target.value })}
+                required
+                className="text-xs h-8 mt-1 font-mono"
+              />
+            </div>
+            <div>
+              <Label className="text-xs">Description</Label>
+              <Input
+                placeholder="Key topics and algorithm outlines"
+                value={newManual.description}
+                onChange={(e) => setNewManual({ ...newManual, description: e.target.value })}
+                className="text-xs h-8 mt-1"
+              />
+            </div>
+            <Button type="submit" className="w-full bg-primary text-white h-9 mt-2 text-xs font-bold">
+              Save Lab Manual
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* 2. Modal: Add Study Material */}
+      <Dialog open={activeModal === "material"} onOpenChange={(open) => !open && setActiveModal(null)}>
+        <DialogContent className="max-w-md bg-card border-border">
+          <DialogHeader>
+            <DialogTitle className="text-base font-bold">Add Study Notes for {activeCollege.shortName}</DialogTitle>
+            <DialogDescription className="text-xs">Add lecture notes, 2-marks question banks, or reference material.</DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSaveMaterial} className="space-y-3 text-xs">
+            <div>
+              <Label className="text-xs">Title</Label>
+              <Input
+                placeholder="e.g. Unit-3 B-Trees & Graph Algorithms Notes"
+                value={newMaterial.title}
+                onChange={(e) => setNewMaterial({ ...newMaterial, title: e.target.value })}
+                required
+                className="text-xs h-8 mt-1"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <Label className="text-xs">Category</Label>
+                <select
+                  value={newMaterial.category}
+                  onChange={(e) => setNewMaterial({ ...newMaterial, category: e.target.value as any })}
+                  className="w-full h-8 px-2 rounded-md border border-input bg-background text-xs mt-1"
+                >
+                  <option value="Lecture Notes">Lecture Notes</option>
+                  <option value="Question Bank">Question Bank</option>
+                  <option value="Lab Sheet">Lab Sheet</option>
+                  <option value="Syllabus & Curriculum">Syllabus</option>
+                </select>
+              </div>
+              <div>
+                <Label className="text-xs">Semester</Label>
+                <Input
+                  placeholder="e.g. Semester IV"
+                  value={newMaterial.semester}
+                  onChange={(e) => setNewMaterial({ ...newMaterial, semester: e.target.value })}
+                  className="text-xs h-8 mt-1"
+                />
+              </div>
+            </div>
+            <div>
+              <Label className="text-xs">Resource Link / File URL</Label>
+              <Input
+                placeholder="https://drive.google.com/..."
+                value={newMaterial.fileUrl}
+                onChange={(e) => setNewMaterial({ ...newMaterial, fileUrl: e.target.value })}
+                required
+                className="text-xs h-8 mt-1 font-mono"
+              />
+            </div>
+            <div>
+              <Label className="text-xs">Description</Label>
+              <Input
+                placeholder="Brief summary of the notes"
+                value={newMaterial.description}
+                onChange={(e) => setNewMaterial({ ...newMaterial, description: e.target.value })}
+                className="text-xs h-8 mt-1"
+              />
+            </div>
+            <Button type="submit" className="w-full bg-primary text-white h-9 mt-2 text-xs font-bold">
+              Save Study Material
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* 3. Modal: Add Custom Lab */}
+      <Dialog open={activeModal === "lab"} onOpenChange={(open) => !open && setActiveModal(null)}>
+        <DialogContent className="max-w-md bg-card border-border">
+          <DialogHeader>
+            <DialogTitle className="text-base font-bold">Add Custom Lab for {activeCollege.shortName}</DialogTitle>
+            <DialogDescription className="text-xs">Connect an additional simulation module or custom testbed.</DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSaveCustomLab} className="space-y-3 text-xs">
+            <div>
+              <Label className="text-xs">Experiment Title</Label>
+              <Input
+                placeholder="e.g. Memory Allocation Simulator"
+                value={newCustomLab.title}
+                onChange={(e) => setNewCustomLab({ ...newCustomLab, title: e.target.value })}
+                required
+                className="text-xs h-8 mt-1"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <Label className="text-xs">Domain</Label>
+                <Input
+                  placeholder="e.g. Operating Systems"
+                  value={newCustomLab.domain}
+                  onChange={(e) => setNewCustomLab({ ...newCustomLab, domain: e.target.value })}
+                  className="text-xs h-8 mt-1"
+                />
+              </div>
+              <div>
+                <Label className="text-xs">Difficulty</Label>
+                <select
+                  value={newCustomLab.difficulty}
+                  onChange={(e) => setNewCustomLab({ ...newCustomLab, difficulty: e.target.value as any })}
+                  className="w-full h-8 px-2 rounded-md border border-input bg-background text-xs mt-1"
+                >
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Advanced">Advanced</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <Label className="text-xs">Simulator URL / Route</Label>
+              <Input
+                placeholder="e.g. /experiments/c-programming or external URL"
+                value={newCustomLab.labUrl}
+                onChange={(e) => setNewCustomLab({ ...newCustomLab, labUrl: e.target.value })}
+                required
+                className="text-xs h-8 mt-1 font-mono"
+              />
+            </div>
+            <div>
+              <Label className="text-xs">Description</Label>
+              <Input
+                placeholder="Instructions and goals"
+                value={newCustomLab.description}
+                onChange={(e) => setNewCustomLab({ ...newCustomLab, description: e.target.value })}
+                className="text-xs h-8 mt-1"
+              />
+            </div>
+            <Button type="submit" className="w-full bg-primary text-white h-9 mt-2 text-xs font-bold">
+              Save Custom Lab
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* 4. Modal: Add Video */}
+      <Dialog open={activeModal === "video"} onOpenChange={(open) => !open && setActiveModal(null)}>
+        <DialogContent className="max-w-md bg-card border-border">
+          <DialogHeader>
+            <DialogTitle className="text-base font-bold">Add Video Tutorial for {activeCollege.shortName}</DialogTitle>
+            <DialogDescription className="text-xs">Attach Tamil or English video guides for lab experiments.</DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSaveVideo} className="space-y-3 text-xs">
+            <div>
+              <Label className="text-xs">Video Title</Label>
+              <Input
+                placeholder="e.g. Quick Sort Algorithm Live Walkthrough in Tamil"
+                value={newVideo.title}
+                onChange={(e) => setNewVideo({ ...newVideo, title: e.target.value })}
+                required
+                className="text-xs h-8 mt-1"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <Label className="text-xs">Language</Label>
+                <select
+                  value={newVideo.language}
+                  onChange={(e) => setNewVideo({ ...newVideo, language: e.target.value as any })}
+                  className="w-full h-8 px-2 rounded-md border border-input bg-background text-xs mt-1"
+                >
+                  <option value="Tamil">Tamil</option>
+                  <option value="English">English</option>
+                  <option value="Bilingual">Bilingual</option>
+                </select>
+              </div>
+              <div>
+                <Label className="text-xs">Duration</Label>
+                <Input
+                  placeholder="e.g. 18:30 mins"
+                  value={newVideo.duration}
+                  onChange={(e) => setNewVideo({ ...newVideo, duration: e.target.value })}
+                  className="text-xs h-8 mt-1"
+                />
+              </div>
+            </div>
+            <div>
+              <Label className="text-xs">YouTube / Video URL</Label>
+              <Input
+                placeholder="https://www.youtube.com/watch?v=..."
+                value={newVideo.youtubeUrl}
+                onChange={(e) => setNewVideo({ ...newVideo, youtubeUrl: e.target.value })}
+                required
+                className="text-xs h-8 mt-1 font-mono"
+              />
+            </div>
+            <Button type="submit" className="w-full bg-primary text-white h-9 mt-2 text-xs font-bold">
+              Save Video Tutorial
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* 5. Modal: Add Announcement */}
+      <Dialog open={activeModal === "announcement"} onOpenChange={(open) => !open && setActiveModal(null)}>
+        <DialogContent className="max-w-md bg-card border-border">
+          <DialogHeader>
+            <DialogTitle className="text-base font-bold">Publish Notice for {activeCollege.shortName}</DialogTitle>
+            <DialogDescription className="text-xs">Publish lab exam announcements, submission deadlines, or circulars.</DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSaveAnnouncement} className="space-y-3 text-xs">
+            <div>
+              <Label className="text-xs">Notice Heading</Label>
+              <Input
+                placeholder="e.g. Practical Model Examination - Cycle 1 Announced"
+                value={newAnnouncement.title}
+                onChange={(e) => setNewAnnouncement({ ...newAnnouncement, title: e.target.value })}
+                required
+                className="text-xs h-8 mt-1"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <Label className="text-xs">Category</Label>
+                <select
+                  value={newAnnouncement.category}
+                  onChange={(e) => setNewAnnouncement({ ...newAnnouncement, category: e.target.value as any })}
+                  className="w-full h-8 px-2 rounded-md border border-input bg-background text-xs mt-1"
+                >
+                  <option value="Lab Schedule">Lab Schedule</option>
+                  <option value="Model Exam">Model Exam</option>
+                  <option value="Assignment">Assignment</option>
+                  <option value="General">General</option>
+                </select>
+              </div>
+              <div>
+                <Label className="text-xs">Priority</Label>
+                <select
+                  value={newAnnouncement.priority}
+                  onChange={(e) => setNewAnnouncement({ ...newAnnouncement, priority: e.target.value as any })}
+                  className="w-full h-8 px-2 rounded-md border border-input bg-background text-xs mt-1"
+                >
+                  <option value="normal">Normal</option>
+                  <option value="high">High</option>
+                  <option value="urgent">Urgent</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <Label className="text-xs">Notice Content</Label>
+              <Input
+                placeholder="Detailed circular text"
+                value={newAnnouncement.content}
+                onChange={(e) => setNewAnnouncement({ ...newAnnouncement, content: e.target.value })}
+                required
+                className="text-xs h-8 mt-1"
+              />
+            </div>
+            <Button type="submit" className="w-full bg-primary text-white h-9 mt-2 text-xs font-bold">
+              Publish Notice
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       <Footer />
     </div>
+  );
+}
+
+export default function AdminPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center">Loading Admin Portal...</div>}>
+      <AdminPageContent />
+    </Suspense>
   );
 }

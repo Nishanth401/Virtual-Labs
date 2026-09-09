@@ -101,19 +101,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session?.user) {
         await handleUserSession(session.user);
-      } else {
-        setUser(null);
-        setStudentProfile(null);
-        if (typeof window !== "undefined") {
-          localStorage.removeItem("vlab_auth_token");
-        }
         checkLocalFallback();
       }
       setLoading(false);
     });
 
+    // Listen to storage events for student form submissions
+    const handleStorageChange = () => {
+      checkLocalFallback();
+    };
+    if (typeof window !== "undefined") {
+      window.addEventListener("storage", handleStorageChange);
+    }
+
     return () => {
       subscription.unsubscribe();
+      if (typeof window !== "undefined") {
+        window.removeEventListener("storage", handleStorageChange);
+      }
     };
   }, []);
 
@@ -145,6 +150,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       lastActive: new Date().toISOString()
     };
 
+    let existing: StudentProfile | null = null;
+    try {
+      existing = await getStudentProfileFromDb(currentUser.id);
+    } catch {
+      // fallback
+    }
+
     const isProfileAlreadyCompleted = Boolean(
       existing?.profileCompleted || (
         existing?.registerNumber &&
@@ -160,25 +172,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         profileCompleted: isProfileAlreadyCompleted
       });
     } else {
-      const defaultProfile: StudentProfile = {
-        uid: currentUser.id,
-        name: displayName,
-        registerNumber: regNo.startsWith("STUDENT") ? "" : regNo,
-        email,
-        department: "Artificial Intelligence & Data Science",
-        yearSemester: "Year III / Semester VI",
-        year: "",
-        className: "",
-        profileCompleted: false,
-        completedExperiments: ["bubble-sort", "stack-operations"],
-        completedProblems: [],
-        starredProblems: [],
-        problemNotes: {},
-        quizScores: {},
-        feedbacks: {},
-        createdAt: new Date().toISOString(),
-        lastActive: new Date().toISOString()
-      };
       await saveStudentProfileToDb(defaultProfile);
       setStudentProfile(defaultProfile);
     }
@@ -186,7 +179,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const checkLocalFallback = () => {
     if (typeof window !== "undefined") {
+      const active = localStorage.getItem("vlab_active_student");
       const local = localStorage.getItem("vsb_student_profile_data");
+      if (active) {
+        try {
+          const act = JSON.parse(active);
+          setStudentProfile({
+            uid: `stu_${act.regNo || "active"}`,
+            name: act.name,
+            registerNumber: act.regNo,
+            department: act.department || "Artificial Intelligence & Data Science",
+            year: act.year || "3rd Year",
+            className: act.className || "Section A",
+            yearSemester: `${act.year || "3rd Year"} / ${act.className || "Section A"}`,
+            collegeSlug: act.collegeSlug,
+            collegeName: act.collegeName,
+            profileCompleted: true,
+            email: `${(act.regNo || "student").toLowerCase()}@college.edu`,
+            completedExperiments: ["bubble-sort", "stack-operations"],
+            completedProblems: [],
+            starredProblems: [],
+            problemNotes: {},
+            quizScores: {},
+            feedbacks: {},
+            createdAt: act.timestamp || new Date().toISOString(),
+            lastActive: new Date().toISOString(),
+          });
+          return;
+        } catch {}
+      }
       if (local) {
         try {
           setStudentProfile(JSON.parse(local));

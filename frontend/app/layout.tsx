@@ -1,18 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/global/theme-provider";
 import { AuthProvider } from "@/context/auth-context";
 import { ScrollSideController } from "@/components/navigation/scroll-side-controller";
 import { StudentOnboardingModal } from "@/components/auth/student-onboarding-modal";
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: "--font-inter",
-  display: "swap",
-  preload: true,
-});
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -40,7 +32,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://supabase.co" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://supabase.co" />
       </head>
-      <body className={`${inter.variable} font-sans min-h-screen bg-background text-foreground overflow-x-hidden antialiased`}>
+      <body className="font-sans min-h-screen bg-background text-foreground overflow-x-hidden antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

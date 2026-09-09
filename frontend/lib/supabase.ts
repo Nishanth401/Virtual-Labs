@@ -39,6 +39,9 @@ export interface StudentProfile {
   name: string;
   registerNumber: string;
   email: string;
+  collegeSlug?: string;
+  collegeName?: string;
+  collegeCode?: string;
   department: string;
   yearSemester: string;
   year?: string;
@@ -127,6 +130,9 @@ export async function saveStudentProfileToDb(profile: StudentProfile): Promise<v
         name: profile.name,
         register_number: profile.registerNumber,
         email: profile.email,
+        college_slug: profile.collegeSlug || "vsb",
+        college_name: profile.collegeName || "VSB Engineering College",
+        college_code: profile.collegeCode || "9225",
         department: profile.department,
         year_semester: profile.yearSemester,
         year: profile.year,
@@ -165,6 +171,9 @@ export async function getStudentProfileFromDb(uid: string): Promise<StudentProfi
         name: data.name,
         registerNumber: data.register_number,
         email: data.email,
+        collegeSlug: data.college_slug || "vsb",
+        collegeName: data.college_name || "VSB Engineering College",
+        collegeCode: data.college_code || "9225",
         department: data.department || "Artificial Intelligence & Data Science",
         yearSemester: data.year_semester || "Year III / Semester VI",
         year: data.year || undefined,

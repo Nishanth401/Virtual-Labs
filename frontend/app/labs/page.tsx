@@ -43,7 +43,7 @@ export default function LabsCataloguePage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-1 py-10 bg-muted/20">
+      <main className="flex-1 pt-24 pb-14 bg-muted/20">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 space-y-8">
           {/* Header Banner */}
           <div className="text-center max-w-3xl mx-auto space-y-3">
