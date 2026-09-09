@@ -28,7 +28,7 @@ export function Footer() {
           </div>
 
           {/* Columns 2-4: Links Categories (Cols 6-12) */}
-          <div className="md:col-span-7 grid grid-cols-3 gap-6 text-xs">
+          <div className="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-6 text-xs">
             {/* Column: GENERAL */}
             <div className="space-y-3">
               <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400 font-bold block">

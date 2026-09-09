@@ -381,10 +381,19 @@ export function SortingVisualizer({ algorithm, title, description }: SortingVisu
       </div>
 
       <Tabs defaultValue="visualization" className="w-full space-y-6">
-        <TabsList className="grid w-full grid-cols-3 max-w-lg">
-          <TabsTrigger value="visualization" className="text-xs font-bold">Simulator &amp; Timeline</TabsTrigger>
-          <TabsTrigger value="javacode" className="text-xs font-bold">Java Source Code</TabsTrigger>
-          <TabsTrigger value="pseudocode" className="text-xs font-bold">TC &amp; SC Complexity</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3 max-w-xl h-auto p-1 bg-muted/70 rounded-xl gap-0.5">
+          <TabsTrigger value="visualization" className="text-[10px] sm:text-xs font-bold py-2 px-1 sm:px-3 text-center whitespace-nowrap sm:whitespace-normal rounded-lg">
+            <span className="hidden sm:inline">Simulator &amp; Timeline</span>
+            <span className="sm:hidden">Simulator</span>
+          </TabsTrigger>
+          <TabsTrigger value="javacode" className="text-[10px] sm:text-xs font-bold py-2 px-1 sm:px-3 text-center whitespace-nowrap sm:whitespace-normal rounded-lg">
+            <span className="hidden sm:inline">Java Source Code</span>
+            <span className="sm:hidden">Java Code</span>
+          </TabsTrigger>
+          <TabsTrigger value="pseudocode" className="text-[10px] sm:text-xs font-bold py-2 px-1 sm:px-3 text-center whitespace-nowrap sm:whitespace-normal rounded-lg">
+            <span className="hidden sm:inline">TC &amp; SC Complexity</span>
+            <span className="sm:hidden">Complexity</span>
+          </TabsTrigger>
         </TabsList>
 
         {/* TAB 1: VISUALIZATION SIMULATOR */}

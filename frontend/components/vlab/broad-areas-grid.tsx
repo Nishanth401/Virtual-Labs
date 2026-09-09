@@ -55,9 +55,9 @@ export function BroadAreasGrid() {
                 key={lab.id}
                 initial={{
                   opacity: 0,
-                  x: isLeft ? -130 : 130,
-                  rotate: isLeft ? -7 : 7,
-                  scale: 0.92,
+                  x: isLeft ? -35 : 35,
+                  rotate: isLeft ? -3 : 3,
+                  scale: 0.96,
                 }}
                 whileInView={{
                   opacity: 1,
@@ -65,12 +65,12 @@ export function BroadAreasGrid() {
                   rotate: 0,
                   scale: 1,
                 }}
-                viewport={{ once: false, amount: 0.2 }}
+                viewport={{ once: false, amount: 0.15 }}
                 transition={{
                   type: "spring",
                   stiffness: 220,
                   damping: 22,
-                  delay: (idx % 2) * 0.08,
+                  delay: (idx % 2) * 0.05,
                 }}
                 whileHover={{
                   y: -8,

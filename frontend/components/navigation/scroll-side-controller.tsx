@@ -43,49 +43,52 @@ export function ScrollSideController() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.9 }}
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          className="fixed bottom-6 right-6 z-50 flex items-center gap-2 pointer-events-auto select-none"
+          className="fixed bottom-3 right-3 sm:bottom-6 sm:right-6 z-50 flex items-center gap-2 pointer-events-auto select-none max-w-[calc(100vw-1.5rem)]"
           aria-label="Floating page navigation"
         >
           {/* Main Floating Island Capsule */}
-          <div className="bg-slate-900/90 dark:bg-slate-950/95 text-slate-100 backdrop-blur-xl border border-slate-800 dark:border-slate-800 rounded-full p-2 shadow-2xl flex items-center gap-2 ring-1 ring-white/10">
+          <div className="bg-slate-900/95 dark:bg-slate-950/95 text-slate-100 backdrop-blur-xl border border-slate-800 dark:border-slate-800 rounded-full p-1.5 sm:p-2 shadow-2xl flex items-center gap-1 sm:gap-2 ring-1 ring-white/10">
             {/* Quick Link: Virtual Labs */}
             <button
               type="button"
               onClick={() => router.push("/labs")}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-all cursor-pointer group"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-full text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-all cursor-pointer group"
+              title="Virtual Labs"
             >
-              <FlaskConical className="h-3.5 w-3.5 text-rose-400 group-hover:scale-110 transition-transform" />
+              <FlaskConical className="h-3.5 w-3.5 text-rose-400 group-hover:scale-110 transition-transform shrink-0" />
               <span className="hidden sm:inline">Labs</span>
             </button>
 
-            <div className="w-[1px] h-4 bg-white/15" />
+            <div className="w-[1px] h-3.5 bg-white/15" />
 
             {/* Quick Link: Visualizer */}
             <button
               type="button"
               onClick={() => router.push("/visualizer")}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-all cursor-pointer group"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-full text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-all cursor-pointer group"
+              title="Visualizer Studio"
             >
-              <Code2 className="h-3.5 w-3.5 text-sky-400 group-hover:scale-110 transition-transform" />
+              <Code2 className="h-3.5 w-3.5 text-sky-400 group-hover:scale-110 transition-transform shrink-0" />
               <span className="hidden sm:inline">Visualizer</span>
             </button>
 
-            <div className="w-[1px] h-4 bg-white/15" />
+            <div className="w-[1px] h-3.5 bg-white/15" />
 
             {/* Quick Link: Dashboard */}
             <button
               type="button"
               onClick={() => router.push("/dashboard")}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-all cursor-pointer group"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-full text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-all cursor-pointer group"
+              title="Dashboard"
             >
-              <Award className="h-3.5 w-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
+              <Award className="h-3.5 w-3.5 text-amber-400 group-hover:scale-110 transition-transform shrink-0" />
               <span className="hidden sm:inline">Dashboard</span>
             </button>
 
-            <div className="w-[1px] h-4 bg-white/15" />
+            <div className="w-[1px] h-3.5 bg-white/15" />
 
             {/* Scroll Percentage Badge */}
-            <div className="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 font-mono text-[10px] font-bold border border-rose-500/30">
+            <div className="px-1.5 sm:px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 font-mono text-[9px] sm:text-[10px] font-bold border border-rose-500/30">
               {Math.round(scrollProgress)}%
             </div>
 
@@ -93,7 +96,7 @@ export function ScrollSideController() {
             <button
               type="button"
               onClick={scrollToTop}
-              className="relative w-10 h-10 rounded-full flex items-center justify-center bg-rose-600 hover:bg-rose-500 text-white transition-transform hover:scale-105 active:scale-95 shadow-lg shadow-rose-600/30 cursor-pointer group ml-1"
+              className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center bg-rose-600 hover:bg-rose-500 text-white transition-transform hover:scale-105 active:scale-95 shadow-lg shadow-rose-600/30 cursor-pointer group ml-0.5"
               title="Scroll to top"
             >
               {/* Progress Ring Overlay */}
@@ -118,7 +121,7 @@ export function ScrollSideController() {
                   fill="transparent"
                 />
               </svg>
-              <ArrowUp className="h-4 w-4 relative z-10 group-hover:-translate-y-0.5 transition-transform" />
+              <ArrowUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 relative z-10 group-hover:-translate-y-0.5 transition-transform" />
             </button>
           </div>
         </motion.aside>

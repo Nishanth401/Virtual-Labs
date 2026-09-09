@@ -119,10 +119,10 @@ export function HeroObjectives() {
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0d0d10] text-white text-[11px] font-bold tracking-wider uppercase border border-white/10 shadow-lg shadow-black/20"
+          className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-[#0d0d10] text-white text-[10px] sm:text-[11px] font-bold tracking-wider uppercase border border-white/10 shadow-lg shadow-black/20 max-w-full"
         >
-          <span className="w-2 h-2 rounded-full bg-[#ff2a5f] animate-pulse" />
-          <span>Department of Artificial Intelligence &amp; Data Science • VSB Engineering College</span>
+          <span className="w-2 h-2 rounded-full bg-[#ff2a5f] animate-pulse shrink-0" />
+          <span className="truncate">Department of Artificial Intelligence &amp; Data Science • VSB Engineering College</span>
         </motion.div>
 
         {/* High-Impact Headline with Editorial Italic Highlights */}
@@ -130,7 +130,7 @@ export function HeroObjectives() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-          className="text-4xl sm:text-6xl md:text-7xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.08] font-heading max-w-4xl mx-auto"
+          className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.12] sm:leading-[1.08] font-heading max-w-4xl mx-auto px-1"
         >
           Simulate faster. <span className="font-serif-italic font-normal text-slate-600 dark:text-slate-400">Learn smarter.</span><br />
           Grow with<br />
@@ -144,7 +144,7 @@ export function HeroObjectives() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-          className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed"
+          className="text-muted-foreground text-xs sm:text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed px-2"
         >
           We design, build, and simulate high-performance data structures in pure Java, machine learning models with NumPy/Pandas pipelines, relational SQL databases, and network protocols for ambitious engineers.
         </motion.p>
@@ -154,12 +154,12 @@ export function HeroObjectives() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-          className="flex flex-wrap items-center justify-center gap-3 pt-2"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 w-full max-w-md sm:max-w-none mx-auto px-2"
         >
           <Button
             asChild
             size="lg"
-            className="bg-gradient-to-r from-[#ff2a5f] to-[#dc2626] hover:from-[#e11d48] hover:to-[#b91c1c] text-white rounded-full px-8 py-6 font-bold shadow-xl shadow-rose-500/25 hover:scale-105 transition-all text-sm gap-2"
+            className="w-full sm:w-auto bg-gradient-to-r from-[#ff2a5f] to-[#dc2626] hover:from-[#e11d48] hover:to-[#b91c1c] text-white rounded-full px-7 py-5 sm:py-6 font-bold shadow-xl shadow-rose-500/25 hover:scale-105 transition-all text-xs sm:text-sm gap-2 cursor-pointer"
           >
             <Link href="/labs">
               <span>Let&apos;s explore &amp; simulate</span>
@@ -171,7 +171,7 @@ export function HeroObjectives() {
             asChild
             variant="outline"
             size="lg"
-            className="rounded-full px-7 py-6 text-sm font-semibold border-border bg-white/90 dark:bg-card/80 backdrop-blur-md hover:bg-muted transition-all gap-1.5 shadow-xs"
+            className="w-full sm:w-auto rounded-full px-6 py-5 sm:py-6 text-xs sm:text-sm font-semibold border-border bg-white/90 dark:bg-card/80 backdrop-blur-md hover:bg-muted transition-all gap-1.5 shadow-xs cursor-pointer"
           >
             <Link href="/dsa-visualization">
               <span>DSA Visualization Platform</span>

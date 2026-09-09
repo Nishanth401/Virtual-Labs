@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
@@ -11,24 +11,31 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   User,
-  Lock,
-  Mail,
-  CheckCircle2,
+  GraduationCap,
+  Calendar,
+  School,
   LogOut,
   ArrowRight,
   ShieldCheck,
-  MailCheck,
-  GraduationCap,
+  CheckCircle2,
   Trash2,
-  AlertTriangle
+  AlertTriangle,
+  AlertCircle,
+  FlaskConical,
+  Loader2
 } from "lucide-react";
+
+import {
+  saveStudentProfileToDb,
+  verifyEmailAndRegNoUnique,
+  StudentProfile
+} from "@/lib/supabase";
 
 interface StudentAuthDialogProps {
   open: boolean;
@@ -37,115 +44,147 @@ interface StudentAuthDialogProps {
 
 export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps) {
   const router = useRouter();
+  const auth = useAuth();
   const {
     user,
     studentProfile,
-    signInWithEmail,
-    signUpWithEmail,
-    updateStudentRegisterNumber,
-    updateStudentName,
+    isProfileComplete,
+    completeStudentProfile,
     loginWithGoogle,
     logout,
     deleteAccount,
     loading
-  } = useAuth();
+  } = auth || {};
 
-  const [authTab, setAuthTab] = useState<"login" | "register">("login");
-  const [email, setEmail] = useState("");
-  const [regNo, setRegNo] = useState("");
-  const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [regNo, setRegNo] = useState("");
+  const [year, setYear] = useState("III Year");
+  const [className, setClassName] = useState("AIDS - A");
+  const [customClass, setCustomClass] = useState("");
+  const [isCustomClass, setIsCustomClass] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
   const [confirmDeleteAccount, setConfirmDeleteAccount] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Google 2nd step state for Register Number
-  const [googleRegNoStep, setGoogleRegNoStep] = useState(false);
-  const [googleRegNo, setGoogleRegNo] = useState("");
-  const [googleName, setGoogleName] = useState("");
-
-  // Edit name state (for logged-in profile panel)
+  // Edit name state
   const [editingName, setEditingName] = useState(false);
   const [newName, setNewName] = useState("");
   const [nameSuccess, setNameSuccess] = useState(false);
 
   const isAuthenticated = Boolean(user || studentProfile);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMsg("");
-    if (!email.trim() || !password.trim() || !regNo.trim()) {
-      setErrorMsg("Please enter your email, register number, and password.");
-      return;
-    }
-    try {
-      const res = await signInWithEmail(email, password, regNo);
-      if (res.emailVerified) {
-        onOpenChange(false);
-        router.push("/dashboard");
+  useEffect(() => {
+    if (user) {
+      setName(user.displayName || studentProfile?.name || "");
+      if (studentProfile?.registerNumber && !studentProfile.registerNumber.startsWith("STUDENT")) {
+        setRegNo(studentProfile.registerNumber);
       }
-    } catch (err: any) {
-      if (err.code === "auth/email-not-verified" || err.message === "EMAIL_NOT_VERIFIED") {
-        setUnverifiedEmail(err.email || email.trim());
-        setErrorMsg("");
-        return;
+      if (studentProfile?.year) {
+        setYear(studentProfile.year);
       }
-      setErrorMsg(err.message || "Email, Register Number, or password is incorrect");
+      if (studentProfile?.className) {
+        setClassName(studentProfile.className);
+      }
     }
-  };
-
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMsg("");
-    if (!name.trim() || !email.trim() || !regNo.trim() || !password.trim()) {
-      setErrorMsg("Please fill in your name, email, register number, and password.");
-      return;
-    }
-    try {
-      const res = await signUpWithEmail(email, password, name, regNo);
-      setUnverifiedEmail(res.email);
-    } catch (err: any) {
-      setErrorMsg(err.message || "User already exists. Please sign in");
-    }
-  };
+  }, [user, studentProfile]);
 
   const handleGoogleSignIn = async () => {
     setErrorMsg("");
     try {
-      await loginWithGoogle();
+      if (typeof loginWithGoogle === "function") {
+        await loginWithGoogle();
+      }
       onOpenChange(false);
     } catch (err: any) {
       setErrorMsg("Google Sign-In was cancelled or failed.");
     }
   };
 
-  const handleGoogleRegNoSubmit = async (e: React.FormEvent) => {
+  const handleProfileCompletionSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
-    if (!googleName.trim()) {
-      setErrorMsg("Please enter your full name.");
+    if (!name.trim()) {
+      setErrorMsg("Please enter your full student name.");
       return;
     }
-    if (!googleRegNo.trim()) {
+    if (!regNo.trim()) {
       setErrorMsg("Please enter your official Register Number to proceed.");
       return;
     }
+
+    const selectedClass = isCustomClass ? customClass.trim() : className.trim();
+    if (!selectedClass) {
+      setErrorMsg("Please select or enter your class/section.");
+      return;
+    }
+
+    const cleanName = name.trim();
+    const cleanRegNo = regNo.trim().toUpperCase();
+    const cleanYear = year.trim();
+
+    setIsSubmitting(true);
     try {
-      await updateStudentRegisterNumber(googleRegNo, googleName.trim());
-      setGoogleRegNoStep(false);
+      if (typeof completeStudentProfile === "function") {
+        await completeStudentProfile({
+          name: cleanName,
+          registerNumber: cleanRegNo,
+          year: cleanYear,
+          className: selectedClass,
+          department: "Artificial Intelligence & Data Science"
+        });
+      } else {
+        const currentUid = user?.uid || studentProfile?.uid || "";
+        const email = user?.email || studentProfile?.email || "";
+        if (!currentUid) throw new Error("No active student session. Please sign in first.");
+
+        const uniqueCheck = await verifyEmailAndRegNoUnique(email, cleanRegNo, currentUid);
+        if (!uniqueCheck.regNoUnique) {
+          throw new Error("This Register Number is already registered with another student account.");
+        }
+
+        const updated: StudentProfile = {
+          ...(studentProfile || {
+            uid: currentUid,
+            email,
+            completedExperiments: ["bubble-sort", "stack-operations"],
+            completedProblems: [],
+            starredProblems: [],
+            problemNotes: {},
+            quizScores: {},
+            feedbacks: {},
+            createdAt: new Date().toISOString(),
+          }),
+          uid: currentUid,
+          name: cleanName,
+          registerNumber: cleanRegNo,
+          email,
+          department: "Artificial Intelligence & Data Science",
+          year: cleanYear,
+          className: selectedClass,
+          yearSemester: `${cleanYear} / ${selectedClass}`,
+          profileCompleted: true,
+          lastActive: new Date().toISOString()
+        };
+
+        await saveStudentProfileToDb(updated);
+        if (typeof window !== "undefined") {
+          localStorage.setItem(`vlab_student_${currentUid}`, JSON.stringify(updated));
+          localStorage.setItem("vsb_student_profile_data", JSON.stringify(updated));
+        }
+      }
+
       onOpenChange(false);
-      router.push("/");
+      router.push("/labs");
     } catch (err: any) {
-      setErrorMsg(err.message || "Failed to save details. Please try again.");
+      setErrorMsg(err?.message || "Failed to save details. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleLogout = async () => {
     await logout();
-    setUnverifiedEmail(null);
-    setGoogleRegNoStep(false);
     setConfirmDeleteAccount(false);
-    setAuthTab("login");
   };
 
   const handleDeleteAccount = async () => {
@@ -153,9 +192,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
     try {
       await deleteAccount();
       setConfirmDeleteAccount(false);
-      setGoogleRegNoStep(false);
-      setUnverifiedEmail(null);
-      setAuthTab("login");
+      onOpenChange(false);
       router.push("/");
     } catch (err: any) {
       setErrorMsg(err.message || "Failed to delete account. Please try again.");
@@ -168,16 +205,15 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
       onOpenChange={(val) => {
         onOpenChange(val);
         if (!val) {
-          setUnverifiedEmail(null);
-          setGoogleRegNoStep(false);
           setConfirmDeleteAccount(false);
+          setErrorMsg("");
         }
       }}
     >
       <DialogContent className="max-w-md p-0 overflow-hidden bg-white dark:bg-card/95 backdrop-blur-xl border border-border shadow-2xl rounded-2xl [&>button]:hidden sm:[&>button]:block">
         {confirmDeleteAccount ? (
           /* ============================================================== */
-          /* CONFIRM DELETE ACCOUNT SCREEN                                 */
+          /* 1. CONFIRM DELETE ACCOUNT SCREEN                               */
           /* ============================================================== */
           <div className="p-6 space-y-5">
             <DialogHeader className="space-y-1.5 text-center">
@@ -218,122 +254,160 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
               </Button>
             </div>
           </div>
-        ) : googleRegNoStep ? (
+        ) : isAuthenticated && !isProfileComplete ? (
           /* ============================================================== */
-          /* GOOGLE SIGN IN - REGISTER NUMBER STEP                         */
+          /* 2. GOOGLE AUTHENTICATED - PROFILE ONBOARDING FORM              */
           /* ============================================================== */
           <div className="p-6 space-y-5">
             <DialogHeader className="space-y-1.5 text-center">
-              <div className="mx-auto w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 mb-1">
-                <GraduationCap className="h-6 w-6" />
+              <div className="mx-auto w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#ff2a5f] to-[#dc2626] flex items-center justify-center text-white mb-1 shadow-lg shadow-red-500/20">
+                <FlaskConical className="h-6 w-6" />
               </div>
               <div className="flex justify-center">
-                <Badge variant="outline" className="text-[10px] font-mono uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30">
-                  Profile Completion
+                <Badge variant="outline" className="text-[10px] font-mono uppercase bg-primary/10 text-primary border-primary/25">
+                  Academic Profile Setup
                 </Badge>
               </div>
               <DialogTitle className="text-xl font-bold font-heading text-foreground">
-                Enter Student Register Number
+                Complete Student Details
               </DialogTitle>
-              <DialogDescription className="text-xs text-foreground/90 font-medium leading-relaxed pt-1">
-                Welcome <span className="font-bold text-primary">{studentProfile?.name || user?.displayName}</span>! Please enter your official college Register Number to activate your portal.
+              <DialogDescription className="text-xs text-muted-foreground leading-relaxed pt-0.5">
+                Please confirm your name, register number, year, and class to open the Virtual Labs.
               </DialogDescription>
             </DialogHeader>
 
             {errorMsg && (
-              <div className="p-2.5 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-500 text-xs font-medium">
-                {errorMsg}
+              <div className="p-2.5 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-xs font-medium flex items-center gap-2">
+                <AlertCircle className="h-4 w-4 shrink-0" />
+                <span>{errorMsg}</span>
               </div>
             )}
 
-            <form onSubmit={handleGoogleRegNoSubmit} className="space-y-4">
+            <form onSubmit={handleProfileCompletionSubmit} className="space-y-4 text-left font-sans">
+              {/* 1. Student Name */}
               <div className="space-y-1">
-                <Label className="text-xs font-semibold">Full Student Name</Label>
-                <div className="relative">
-                  <User className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    value={googleName}
-                    onChange={(e) => setGoogleName(e.target.value)}
-                    placeholder="e.g. Praveen S"
-                    className="pl-9 text-xs"
-                    required
-                    autoFocus
-                  />
-                </div>
+                <Label className="text-xs font-semibold flex items-center gap-1.5">
+                  <User className="h-3.5 w-3.5 text-primary" />
+                  <span>Student Full Name</span>
+                </Label>
+                <Input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="e.g. Rohith E"
+                  className="text-xs bg-muted/30 border-border"
+                  required
+                />
               </div>
+
+              {/* 2. Register Number */}
               <div className="space-y-1">
-                <Label className="text-xs font-semibold">Student Register Number</Label>
-                <div className="relative">
-                  <GraduationCap className="h-4 w-4 absolute left-3 top-2.5 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    value={googleRegNo}
-                    onChange={(e) => setGoogleRegNo(e.target.value)}
-                    placeholder="e.g. 922521104001"
-                    className="pl-9 text-xs font-mono"
-                    required
-                  />
+                <Label className="text-xs font-semibold flex items-center gap-1.5">
+                  <GraduationCap className="h-3.5 w-3.5 text-primary" />
+                  <span>Register Number</span>
+                </Label>
+                <Input
+                  type="text"
+                  value={regNo}
+                  onChange={(e) => setRegNo(e.target.value)}
+                  placeholder="e.g. 922521104001"
+                  className="text-xs font-mono uppercase bg-muted/30 border-border"
+                  required
+                />
+              </div>
+
+              {/* 3. Year of Study */}
+              <div className="space-y-1">
+                <Label className="text-xs font-semibold flex items-center gap-1.5">
+                  <Calendar className="h-3.5 w-3.5 text-primary" />
+                  <span>Year of Study</span>
+                </Label>
+                <div className="grid grid-cols-4 gap-1.5">
+                  {["I Year", "II Year", "III Year", "IV Year"].map((y) => (
+                    <button
+                      key={y}
+                      type="button"
+                      onClick={() => setYear(y)}
+                      className={`py-1.5 px-1 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
+                        year === y
+                          ? "bg-primary text-white border-primary shadow-xs font-bold"
+                          : "bg-muted/30 text-muted-foreground hover:text-foreground hover:bg-muted/60 border-border/70"
+                      }`}
+                    >
+                      {y}
+                    </button>
+                  ))}
                 </div>
               </div>
 
+              {/* 4. Class & Section */}
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <Label className="text-xs font-semibold flex items-center gap-1.5">
+                    <School className="h-3.5 w-3.5 text-primary" />
+                    <span>Class &amp; Section</span>
+                  </Label>
+                  <button
+                    type="button"
+                    onClick={() => setIsCustomClass(!isCustomClass)}
+                    className="text-[10px] text-primary hover:underline font-mono"
+                  >
+                    {isCustomClass ? "Choose preset" : "+ Custom class"}
+                  </button>
+                </div>
+
+                {isCustomClass ? (
+                  <Input
+                    type="text"
+                    value={customClass}
+                    onChange={(e) => setCustomClass(e.target.value)}
+                    placeholder="e.g. AIDS - A, CSE - B, IT..."
+                    className="text-xs bg-muted/30 border-border"
+                    required
+                  />
+                ) : (
+                  <div className="grid grid-cols-3 gap-1.5">
+                    {["AIDS - A", "AIDS - B", "CSE - A", "CSE - B", "IT", "ECE - A"].map((cls) => (
+                      <button
+                        key={cls}
+                        type="button"
+                        onClick={() => setClassName(cls)}
+                        className={`py-1.5 px-1 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
+                          className === cls
+                            ? "bg-primary text-white border-primary shadow-xs font-bold"
+                            : "bg-muted/30 text-muted-foreground hover:text-foreground hover:bg-muted/60 border-border/70"
+                        }`}
+                      >
+                        {cls}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Submit CTA */}
               <Button
                 type="submit"
-                disabled={loading}
-                className="w-full bg-primary hover:bg-primary/90 text-white text-xs font-bold py-2.5 cursor-pointer gap-2"
+                disabled={isSubmitting || loading}
+                className="w-full h-11 mt-2 bg-gradient-to-r from-[#ff2a5f] to-[#dc2626] hover:from-[#e11d48] hover:to-[#b91c1c] text-white text-xs font-bold rounded-xl shadow-lg shadow-red-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>Enter Virtual Labs Portal</span>
-                <ArrowRight className="h-3.5 w-3.5" />
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Activating Virtual Lab...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Save Details &amp; Open Virtual Lab</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </>
+                )}
               </Button>
             </form>
           </div>
-        ) : unverifiedEmail ? (
+        ) : isAuthenticated && isProfileComplete ? (
           /* ============================================================== */
-          /* EMAIL VERIFICATION SCREEN                                      */
-          /* ============================================================== */
-          <div className="p-6 space-y-5">
-            <DialogHeader className="space-y-1.5 text-center">
-              <div className="mx-auto w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 mb-1">
-                <MailCheck className="h-6 w-6" />
-              </div>
-              <div className="flex justify-center">
-                <Badge variant="outline" className="text-[10px] font-mono uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30">
-                  Email Verification Required
-                </Badge>
-              </div>
-              <DialogTitle className="text-xl font-bold font-heading text-foreground">
-                Verify Your Email
-              </DialogTitle>
-              <DialogDescription className="text-xs text-foreground/90 font-medium leading-relaxed pt-1">
-                We have sent you a verification email to <span className="font-bold text-primary font-mono">{unverifiedEmail}</span>. Please verify it and log in.
-              </DialogDescription>
-            </DialogHeader>
-
-            <div className="p-3.5 rounded-xl bg-muted/50 border border-border/60 text-left text-xs text-muted-foreground space-y-1 font-sans">
-              <p className="font-semibold text-foreground flex items-center gap-1.5">
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" /> Instructions:
-              </p>
-              <p className="pl-5">1. Check your email inbox (and spam folder).</p>
-              <p className="pl-5">2. Click the verification link sent to your email.</p>
-              <p className="pl-5">3. Click the Login button below to proceed.</p>
-            </div>
-
-            <Button
-              type="button"
-              onClick={() => {
-                setUnverifiedEmail(null);
-                setAuthTab("login");
-                setErrorMsg("");
-              }}
-              className="w-full bg-primary hover:bg-primary/90 text-white text-xs font-bold py-2.5 mt-2 cursor-pointer gap-2"
-            >
-              <span>Login</span>
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Button>
-          </div>
-        ) : isAuthenticated && open ? (
-          /* ============================================================== */
-          /* LOGGED IN STUDENT PROFILE VIEW                                */
+          /* 3. LOGGED IN STUDENT PROFILE VIEW (VERIFIED)                   */
           /* ============================================================== */
           <div className="p-6 space-y-5">
             <DialogHeader className="space-y-1">
@@ -341,8 +415,8 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                 <Badge variant="outline" className="text-xs bg-emerald-500/10 text-emerald-500 border-emerald-500/30 gap-1 font-mono">
                   <ShieldCheck className="h-3.5 w-3.5" /> Authenticated Student
                 </Badge>
-                <Badge variant="secondary" className="text-[10px] font-mono">
-                  VSB AI &amp; DS
+                <Badge variant="secondary" className="text-[10px] font-mono font-bold text-primary">
+                  {studentProfile?.registerNumber || "VERIFIED"}
                 </Badge>
               </div>
 
@@ -351,7 +425,14 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                   onSubmit={async (e) => {
                     e.preventDefault();
                     if (!newName.trim()) return;
-                    await updateStudentName(newName.trim());
+                    if (studentProfile) {
+                      await completeStudentProfile({
+                        name: newName.trim(),
+                        registerNumber: studentProfile.registerNumber,
+                        year: studentProfile.year || "III Year",
+                        className: studentProfile.className || "AIDS - A"
+                      });
+                    }
                     setEditingName(false);
                     setNameSuccess(true);
                     setTimeout(() => setNameSuccess(false), 3000);
@@ -384,7 +465,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                   <button
                     type="button"
                     onClick={() => { setNewName(studentProfile?.name || user?.displayName || ""); setEditingName(true); setNameSuccess(false); }}
-                    className="text-[10px] text-muted-foreground hover:text-primary border border-border rounded px-1.5 py-0.5 font-mono transition-colors"
+                    className="text-[10px] text-muted-foreground hover:text-primary border border-border rounded px-1.5 py-0.5 font-mono transition-colors cursor-pointer"
                     title="Edit your name"
                   >
                     ✎ edit
@@ -399,7 +480,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
               )}
 
               <DialogDescription className="text-xs text-muted-foreground font-mono">
-                Artificial Intelligence &amp; Data Science
+                {studentProfile?.year} • {studentProfile?.className} • AI &amp; DS
               </DialogDescription>
             </DialogHeader>
 
@@ -407,18 +488,18 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
             <div className="grid grid-cols-2 gap-3">
               <div className="p-3 rounded-xl bg-muted/50 border border-border/60">
                 <span className="text-[10px] uppercase font-bold text-muted-foreground block font-mono">
-                  Status
+                  Register Number
                 </span>
-                <span className="text-sm font-black text-primary font-mono">
-                  Verified User
+                <span className="text-xs font-black text-primary font-mono truncate block">
+                  {studentProfile?.registerNumber || "Verified"}
                 </span>
               </div>
               <div className="p-3 rounded-xl bg-muted/50 border border-border/60">
                 <span className="text-[10px] uppercase font-bold text-muted-foreground block font-mono">
-                  Auth Method
+                  Year &amp; Class
                 </span>
-                <span className="text-sm font-black text-emerald-500 font-mono">
-                  Supabase
+                <span className="text-xs font-black text-emerald-500 font-mono truncate block">
+                  {studentProfile?.year ? `${studentProfile.year} / ${studentProfile.className}` : "Active"}
                 </span>
               </div>
             </div>
@@ -427,11 +508,11 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
             <div className="space-y-2 pt-2">
               <Button
                 asChild
-                className="w-full bg-primary hover:bg-primary/90 text-white text-xs font-bold gap-2"
+                className="w-full bg-gradient-to-r from-[#ff2a5f] to-[#dc2626] hover:from-[#e11d48] hover:to-[#b91c1c] text-white text-xs font-bold gap-2 py-5 rounded-xl shadow-lg shadow-red-500/25 cursor-pointer"
                 onClick={() => onOpenChange(false)}
               >
-                <Link href="/dashboard">
-                  <span>Open Student Learning Dashboard</span>
+                <Link href="/labs">
+                  <span>Enter Virtual Labs</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               </Button>
@@ -457,23 +538,23 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
           </div>
         ) : (
           /* ============================================================== */
-          /* LOGIN / REGISTRATION MODAL                                    */
+          /* 4. LOGIN MODAL - CONTINUE WITH GOOGLE                          */
           /* ============================================================== */
           <div className="p-6 space-y-5">
-            <DialogHeader className="space-y-1.5">
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-full border border-yellow-400 p-0.5 bg-white shrink-0">
-                  <img src="/vsb-logo.png" alt="VSB College" className="w-full h-full object-contain" />
-                </div>
+            <DialogHeader className="space-y-1.5 text-center">
+              <div className="mx-auto w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#ff2a5f] to-[#dc2626] flex items-center justify-center text-white mb-1 shadow-lg shadow-red-500/20">
+                <FlaskConical className="h-6 w-6" />
+              </div>
+              <div className="flex justify-center">
                 <Badge variant="outline" className="text-[10px] font-mono uppercase bg-primary/10 text-primary border-primary/20">
                   Student Portal Authentication
                 </Badge>
               </div>
               <DialogTitle className="text-xl font-bold font-heading text-foreground">
-                VSB Virtual Labs Login
+                VSB Virtual Labs
               </DialogTitle>
               <DialogDescription className="text-xs text-muted-foreground leading-relaxed">
-                Please sign in with your Google account to enter the laboratory platform.
+                Continue with your Google account to access all interactive experiments.
               </DialogDescription>
             </DialogHeader>
 
@@ -491,7 +572,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
               disabled={loading}
               className="w-full py-5 rounded-xl border-border bg-white dark:bg-card hover:bg-muted font-bold text-xs flex items-center justify-center gap-2 shadow-xs cursor-pointer"
             >
-              <svg className="h-4 w-4" viewBox="0 0 24 24">
+              <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24">
                 <path
                   fill="#4285F4"
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"

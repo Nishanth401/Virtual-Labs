@@ -41,6 +41,9 @@ export interface StudentProfile {
   email: string;
   department: string;
   yearSemester: string;
+  year?: string;
+  className?: string;
+  profileCompleted?: boolean;
   completedExperiments: string[];
   completedProblems?: string[];
   starredProblems?: string[];
@@ -126,6 +129,9 @@ export async function saveStudentProfileToDb(profile: StudentProfile): Promise<v
         email: profile.email,
         department: profile.department,
         year_semester: profile.yearSemester,
+        year: profile.year,
+        class_name: profile.className,
+        profile_completed: profile.profileCompleted,
         completed_experiments: profile.completedExperiments,
         completed_problems: profile.completedProblems || [],
         starred_problems: profile.starredProblems || [],
@@ -159,8 +165,11 @@ export async function getStudentProfileFromDb(uid: string): Promise<StudentProfi
         name: data.name,
         registerNumber: data.register_number,
         email: data.email,
-        department: data.department || "Computer Science and Engineering",
-        yearSemester: data.year_semester || "Year 1 / Semester 2",
+        department: data.department || "Artificial Intelligence & Data Science",
+        yearSemester: data.year_semester || "Year III / Semester VI",
+        year: data.year || undefined,
+        className: data.class_name || undefined,
+        profileCompleted: data.profile_completed || Boolean(data.register_number && !data.register_number.startsWith("STUDENT") && data.class_name),
         completedExperiments: data.completed_experiments || [],
         completedProblems: data.completed_problems || [],
         starredProblems: data.starred_problems || [],

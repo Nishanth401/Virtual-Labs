@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/global/theme-provider";
 import { AuthProvider } from "@/context/auth-context";
 import { ScrollSideController } from "@/components/navigation/scroll-side-controller";
+import { StudentOnboardingModal } from "@/components/auth/student-onboarding-modal";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -12,6 +13,16 @@ const inter = Inter({
   display: "swap",
   preload: true,
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
+  ],
+};
 
 export const metadata: Metadata = {
   title: "Department Virtual Labs | AI & DS — VSB Engineering College",
@@ -43,6 +54,8 @@ export default function RootLayout({
               </div>
               {/* Creative Floating Animated Sidebar Scroll Controller */}
               <ScrollSideController />
+              {/* Mandatory Google Sign-In Student Profile Onboarding Modal */}
+              <StudentOnboardingModal />
             </div>
             <Toaster />
           </AuthProvider>

@@ -8,6 +8,8 @@ import { supabase } from "@/lib/supabase";
 import { Navbar } from "@/components/navigation/navbar";
 import { Footer } from "@/components/navigation/footer";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import {
   ShieldCheck,
@@ -16,13 +18,23 @@ import {
   Loader2,
   Database,
   Code2,
-  BookOpen
+  BookOpen,
+  User,
+  GraduationCap,
+  Calendar,
+  School,
+  CheckCircle2,
+  FlaskConical,
+  AlertCircle
 } from "lucide-react";
 
 export default function AuthLoginPage() {
   const router = useRouter();
   const {
     user,
+    studentProfile,
+    isProfileComplete,
+    completeStudentProfile,
     loginWithGoogle,
     logout,
     loading: authLoading
@@ -31,34 +43,29 @@ export default function AuthLoginPage() {
   const [signingIn, setSigningIn] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Automatically detect incoming session (from hash token or existing session) and forward to dashboard
+  // Form states for profile completion
+  const [name, setName] = useState("");
+  const [regNo, setRegNo] = useState("");
+  const [year, setYear] = useState("III Year");
+  const [className, setClassName] = useState("AIDS - A");
+  const [customClass, setCustomClass] = useState("");
+  const [isCustomClass, setIsCustomClass] = useState(false);
+  const [savingDetails, setSavingDetails] = useState(false);
+
   useEffect(() => {
-    let isMounted = true;
-
-    const checkExistingSession = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.user && isMounted) {
-          router.replace("/dashboard");
-        }
-      } catch (err) {
-        console.warn("Session check error:", err);
+    if (user) {
+      setName(user.displayName || studentProfile?.name || "");
+      if (studentProfile?.registerNumber && !studentProfile.registerNumber.startsWith("STUDENT")) {
+        setRegNo(studentProfile.registerNumber);
       }
-    };
-
-    checkExistingSession();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session?.user && isMounted) {
-        router.replace("/dashboard");
+      if (studentProfile?.year) {
+        setYear(studentProfile.year);
       }
-    });
-
-    return () => {
-      isMounted = false;
-      subscription.unsubscribe();
-    };
-  }, [router]);
+      if (studentProfile?.className) {
+        setClassName(studentProfile.className);
+      }
+    }
+  }, [user, studentProfile]);
 
   const handleGoogleSignIn = async () => {
     setErrorMsg("");
@@ -73,34 +80,65 @@ export default function AuthLoginPage() {
     }
   };
 
+  const handleProfileSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg("");
+
+    if (!name.trim()) {
+      setErrorMsg("Please enter your full student name.");
+      return;
+    }
+    if (!regNo.trim()) {
+      setErrorMsg("Please enter your official Register Number.");
+      return;
+    }
+
+    const selectedClass = isCustomClass ? customClass.trim() : className.trim();
+    if (!selectedClass) {
+      setErrorMsg("Please select or enter your class/section.");
+      return;
+    }
+
+    setSavingDetails(true);
+    try {
+      await completeStudentProfile({
+        name: name.trim(),
+        registerNumber: regNo.trim().toUpperCase(),
+        year: year.trim(),
+        className: selectedClass,
+        department: "Artificial Intelligence & Data Science"
+      });
+
+      // After saving profile, redirect to Virtual Labs!
+      router.push("/labs");
+    } catch (err: any) {
+      setErrorMsg(err?.message || "Failed to save profile details. Please try again.");
+    } finally {
+      setSavingDetails(false);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950">
       <Navbar />
 
-      <main className="flex-1 flex items-center justify-center py-16 px-4">
-        <div className="w-full max-w-md p-8 bg-white dark:bg-card border border-border shadow-xl rounded-2xl space-y-6">
+      <main className="flex-1 flex items-center justify-center py-20 px-4">
+        <div className="w-full max-w-md p-6 sm:p-8 bg-white dark:bg-card border border-border shadow-2xl rounded-2xl space-y-6">
           
           {/* Header Brand */}
           <div className="text-center space-y-2">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 mb-2">
-              <img
-                src="/vsb-logo.png"
-                alt="VSB College"
-                className="w-10 h-10 object-contain"
-                onError={(e) => {
-                  (e.target as HTMLElement).style.display = "none";
-                }}
-              />
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#ff2a5f] to-[#dc2626] text-white mb-1 shadow-lg shadow-red-500/20">
+              <FlaskConical className="h-7 w-7" />
             </div>
 
             <div className="flex justify-center">
               <Badge variant="outline" className="text-[10px] font-mono uppercase bg-primary/10 text-primary border-primary/20">
-                Supabase Cloud Authentication
+                Department Virtual Labs Portal
               </Badge>
             </div>
 
             <h1 className="text-2xl font-bold font-heading text-foreground">
-              Virtual Labs Portal
+              {user && !isProfileComplete ? "Complete Student Details" : "Student Authentication"}
             </h1>
             <p className="text-xs text-muted-foreground max-w-xs mx-auto leading-relaxed">
               V.S.B. Engineering College • Dept. of AI &amp; DS
@@ -109,35 +147,191 @@ export default function AuthLoginPage() {
 
           {/* Error message display if any */}
           {errorMsg && (
-            <div className="p-3 text-xs text-destructive bg-destructive/10 border border-destructive/20 rounded-lg text-center font-medium">
-              {errorMsg}
+            <div className="p-3 text-xs text-destructive bg-destructive/10 border border-destructive/20 rounded-xl text-center font-medium flex items-center gap-2">
+              <AlertCircle className="h-4 w-4 shrink-0" />
+              <span>{errorMsg}</span>
             </div>
           )}
 
-          {/* Conditional View: Logged In vs Ready to Sign In */}
-          {user ? (
-            <div className="space-y-4 pt-2">
-              <div className="p-4 rounded-xl bg-muted/50 border border-border space-y-1">
-                <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="text-xs bg-emerald-500/10 text-emerald-500 border-emerald-500/30 gap-1 font-mono">
-                    <ShieldCheck className="h-3.5 w-3.5" /> Authenticated
+          {/* ======================================================== */}
+          {/* 1. USER LOGGED IN BUT MISSING PROFILE DETAILS            */}
+          {/* ======================================================== */}
+          {user && !isProfileComplete ? (
+            <form onSubmit={handleProfileSubmit} className="space-y-4 pt-1 text-left font-sans">
+              <div className="p-3 bg-muted/40 border border-border/60 rounded-xl text-xs space-y-1">
+                <div className="flex items-center justify-between text-muted-foreground">
+                  <span>Google Account:</span>
+                  <Badge variant="outline" className="text-[10px] font-mono text-emerald-500 bg-emerald-500/10 border-emerald-500/25">
+                    Connected
                   </Badge>
-                  <span className="text-[11px] font-mono text-muted-foreground">Google</span>
                 </div>
-                <p className="text-sm font-bold text-foreground pt-1">
-                  {user.displayName || user.email?.split("@")[0] || "Active Student"}
-                </p>
-                <p className="text-xs text-muted-foreground font-mono truncate">
+                <p className="font-mono text-[11px] text-foreground font-semibold truncate">
                   {user.email}
                 </p>
               </div>
 
+              {/* 1. Student Name */}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-semibold flex items-center gap-1.5">
+                  <User className="h-3.5 w-3.5 text-primary" />
+                  <span>Student Full Name</span>
+                </Label>
+                <Input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="e.g. Rohith E"
+                  className="text-xs bg-muted/30 border-border"
+                  required
+                />
+              </div>
+
+              {/* 2. Register Number */}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-semibold flex items-center gap-1.5">
+                  <GraduationCap className="h-3.5 w-3.5 text-primary" />
+                  <span>Register Number</span>
+                </Label>
+                <Input
+                  type="text"
+                  value={regNo}
+                  onChange={(e) => setRegNo(e.target.value)}
+                  placeholder="e.g. 922521104001"
+                  className="text-xs font-mono uppercase bg-muted/30 border-border"
+                  required
+                />
+              </div>
+
+              {/* 3. Year of Study */}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-semibold flex items-center gap-1.5">
+                  <Calendar className="h-3.5 w-3.5 text-primary" />
+                  <span>Year of Study</span>
+                </Label>
+                <div className="grid grid-cols-4 gap-1.5">
+                  {["I Year", "II Year", "III Year", "IV Year"].map((y) => (
+                    <button
+                      key={y}
+                      type="button"
+                      onClick={() => setYear(y)}
+                      className={`py-2 px-1 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
+                        year === y
+                          ? "bg-primary text-white border-primary shadow-xs font-bold"
+                          : "bg-muted/30 text-muted-foreground hover:text-foreground hover:bg-muted/60 border-border/70"
+                      }`}
+                    >
+                      {y}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 4. Class & Section */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <Label className="text-xs font-semibold flex items-center gap-1.5">
+                    <School className="h-3.5 w-3.5 text-primary" />
+                    <span>Class &amp; Section</span>
+                  </Label>
+                  <button
+                    type="button"
+                    onClick={() => setIsCustomClass(!isCustomClass)}
+                    className="text-[10px] text-primary hover:underline font-mono"
+                  >
+                    {isCustomClass ? "Choose preset" : "+ Custom class"}
+                  </button>
+                </div>
+
+                {isCustomClass ? (
+                  <Input
+                    type="text"
+                    value={customClass}
+                    onChange={(e) => setCustomClass(e.target.value)}
+                    placeholder="e.g. AIDS - A, CSE - B, IT..."
+                    className="text-xs bg-muted/30 border-border"
+                    required
+                  />
+                ) : (
+                  <div className="grid grid-cols-3 gap-1.5">
+                    {["AIDS - A", "AIDS - B", "CSE - A", "CSE - B", "IT", "ECE - A"].map((cls) => (
+                      <button
+                        key={cls}
+                        type="button"
+                        onClick={() => setClassName(cls)}
+                        className={`py-2 px-1 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
+                          className === cls
+                            ? "bg-primary text-white border-primary shadow-xs font-bold"
+                            : "bg-muted/30 text-muted-foreground hover:text-foreground hover:bg-muted/60 border-border/70"
+                        }`}
+                      >
+                        {cls}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Submit CTA */}
+              <Button
+                type="submit"
+                disabled={savingDetails || authLoading}
+                className="w-full h-11 mt-2 bg-gradient-to-r from-[#ff2a5f] to-[#dc2626] hover:from-[#e11d48] hover:to-[#b91c1c] text-white text-xs font-bold rounded-xl shadow-lg shadow-red-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                {savingDetails ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Activating Virtual Lab...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Save Details &amp; Open Virtual Lab</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </>
+                )}
+              </Button>
+
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={async () => await logout()}
+                className="w-full text-xs text-muted-foreground hover:text-foreground"
+              >
+                Cancel / Sign in with different account
+              </Button>
+            </form>
+          ) : user && isProfileComplete ? (
+            /* ======================================================== */
+            /* 2. USER ALREADY COMPLETED DETAILS                        */
+            /* ======================================================== */
+            <div className="space-y-4 pt-2">
+              <div className="p-4 rounded-xl bg-muted/50 border border-border space-y-2">
+                <div className="flex items-center justify-between">
+                  <Badge variant="outline" className="text-xs bg-emerald-500/10 text-emerald-500 border-emerald-500/30 gap-1 font-mono">
+                    <ShieldCheck className="h-3.5 w-3.5" /> Authenticated Student
+                  </Badge>
+                  <span className="text-[11px] font-mono text-primary font-bold">
+                    {studentProfile?.registerNumber || "VERIFIED"}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-foreground">
+                    {studentProfile?.name || user.displayName || "Active Student"}
+                  </p>
+                  <p className="text-xs text-muted-foreground font-mono">
+                    {studentProfile?.year} • {studentProfile?.className}
+                  </p>
+                  <p className="text-[11px] text-muted-foreground font-mono truncate pt-0.5">
+                    {user.email}
+                  </p>
+                </div>
+              </div>
+
               <Button
                 asChild
-                className="w-full bg-primary hover:bg-primary/90 text-white text-xs font-bold gap-2 py-5"
+                className="w-full bg-gradient-to-r from-[#ff2a5f] to-[#dc2626] hover:from-[#e11d48] hover:to-[#b91c1c] text-white text-xs font-bold gap-2 py-5 rounded-xl shadow-lg shadow-red-500/25 cursor-pointer"
               >
-                <Link href="/dashboard">
-                  <span>Enter Dashboard</span>
+                <Link href="/labs">
+                  <span>Enter Virtual Labs</span>
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -153,9 +347,12 @@ export default function AuthLoginPage() {
               </Button>
             </div>
           ) : (
+            /* ======================================================== */
+            /* 3. READY TO SIGN IN WITH GOOGLE                          */
+            /* ======================================================== */
             <div className="space-y-6 pt-2">
-              <p className="text-xs text-center text-muted-foreground">
-                Sign in with your Google account to automatically synchronize your laboratory experiments, certificates, and DSA problem progress.
+              <p className="text-xs text-center text-muted-foreground leading-relaxed">
+                Sign in with your Google account to access all interactive laboratory experiments, Java simulators, and DSA problem assessments.
               </p>
 
               {/* Single Continue with Google Button */}
@@ -199,7 +396,7 @@ export default function AuthLoginPage() {
               {/* Data Persistence Features */}
               <div className="pt-2 border-t border-border/60 space-y-2">
                 <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground block text-center">
-                  Automatic Cloud Synchronization
+                  Automatic Student Record Linking
                 </span>
                 <div className="grid grid-cols-3 gap-2 text-center">
                   <div className="p-2 rounded-lg bg-muted/40 border border-border/40">
@@ -208,11 +405,11 @@ export default function AuthLoginPage() {
                   </div>
                   <div className="p-2 rounded-lg bg-muted/40 border border-border/40">
                     <Code2 className="h-4 w-4 mx-auto mb-1 text-emerald-500" />
-                    <span className="text-[10px] font-medium text-foreground block">DSA Sheet</span>
+                    <span className="text-[10px] font-medium text-foreground block">DSA Sheets</span>
                   </div>
                   <div className="p-2 rounded-lg bg-muted/40 border border-border/40">
                     <Database className="h-4 w-4 mx-auto mb-1 text-indigo-500" />
-                    <span className="text-[10px] font-medium text-foreground block">Supabase</span>
+                    <span className="text-[10px] font-medium text-foreground block">Cloud Verified</span>
                   </div>
                 </div>
               </div>
