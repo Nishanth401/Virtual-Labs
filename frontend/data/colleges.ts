@@ -294,8 +294,86 @@ export const COLLEGES_REGISTRY: CollegeData[] = [
   }
 ];
 
+export function registerCustomCollege(college: CollegeData): void {
+  if (typeof window === "undefined") return;
+  try {
+    const existing = localStorage.getItem("vlab_custom_colleges");
+    let list: CollegeData[] = existing ? JSON.parse(existing) : [];
+    list = [college, ...list.filter((c) => c.slug.toLowerCase() !== college.slug.toLowerCase())];
+    localStorage.setItem("vlab_custom_colleges", JSON.stringify(list));
+  } catch {}
+}
+
 export function getCollegeBySlug(slug: string): CollegeData | undefined {
   if (!slug) return undefined;
   const clean = slug.trim().toLowerCase();
-  return COLLEGES_REGISTRY.find((c) => c.slug.toLowerCase() === clean);
+
+  // 1. Check statically registered colleges
+  const staticMatch = COLLEGES_REGISTRY.find((c) => c.slug.toLowerCase() === clean);
+  if (staticMatch) return staticMatch;
+
+  // 2. Check dynamically created / booked college clones from localStorage
+  if (typeof window !== "undefined") {
+    try {
+      const customRaw = localStorage.getItem("vlab_custom_colleges");
+      if (customRaw) {
+        const customList: CollegeData[] = JSON.parse(customRaw);
+        const customMatch = customList.find((c) => c.slug.toLowerCase() === clean);
+        if (customMatch) return customMatch;
+      }
+    } catch {}
+  }
+
+  // 3. Graceful fallback for any on-demand institutional slug
+  const formattedName = clean
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+
+  return {
+    id: `col_${clean}_dynamic`,
+    slug: clean,
+    name: `${formattedName} Engineering Institution`,
+    shortName: formattedName,
+    code: "AUTO",
+    tagline: "Autonomous Virtual Laboratory Cloud Portal",
+    location: "Campus Cloud Network",
+    logo: "/icons/vsb-logo.png",
+    bannerGradient: "from-slate-900 via-rose-950 to-neutral-950",
+    accentColor: "#e11d48",
+    accreditation: ["AICTE Ready", "NBA Compliant", "Autonomous CBCS"],
+    affiliations: "Affiliated Technical University",
+    departments: [
+      {
+        code: "CSE",
+        name: "Computer Science & Engineering",
+        classes: ["CSE - A", "CSE - B"],
+        years: ["I Year", "II Year", "III Year", "IV Year"]
+      },
+      {
+        code: "AIDS",
+        name: "Artificial Intelligence & Data Science",
+        classes: ["AIDS - A"],
+        years: ["I Year", "II Year", "III Year", "IV Year"]
+      },
+      {
+        code: "ECE",
+        name: "Electronics & Communication Engineering",
+        classes: ["ECE - A"],
+        years: ["I Year", "II Year", "III Year", "IV Year"]
+      }
+    ],
+    curriculumInfo: {
+      regulation: "Autonomous Regulations 2023",
+      semesterFocus: "Comprehensive Engineering Laboratory Suite",
+      autonomousLabFeatures: [
+        "Dedicated College Sandbox & Isolated Student Data",
+        "Pre-Recommended Faculty Videos & Lab Observation PDFs",
+        "Automated Practical Examination & CIE Grading"
+      ]
+    },
+    subscriptionPlan: "Enterprise Campus",
+    status: "trial"
+  };
 }
+

@@ -1,56 +1,85 @@
-import React from "react";
-import Link from "next/link";
+"use client";
+
+import React, { useState } from "react";
 import { Navbar } from "@/components/navigation/navbar";
 import { Footer } from "@/components/navigation/footer";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
-
-export const metadata = {
-  title: "Virtual Labs Gateway | One Virtual Lab Platform. Customized for Every College.",
-  description: "Empower your institution with an accredited simulation environment for engineering students. Access your college's dedicated virtual lab portal.",
-};
+import {
+  HeroSection,
+  HowClonesWork,
+  InteractiveCloneSwitcher,
+  LabsDirectoryGrid,
+  StudentJourneyFlow,
+  SecurityAndIsolation,
+  AccreditationAndRoi,
+  PricingSection,
+  InstitutionalFaqSection,
+  CtaBanner,
+  BookDemoModal
+} from "@/components/landing-page";
 
 export default function HomePage() {
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+
+  const handleScrollToClones = () => {
+    const el = document.getElementById("college-clones");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <div className="flex flex-col min-h-screen">
-      <main className="flex-1 flex items-center justify-center py-20 px-4">
-        <div className="max-w-3xl mx-auto text-center space-y-6">
-          <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-foreground font-heading">
-            One Virtual Lab Platform. <br />
-            <span className="text-rose-600">Customized for Every College.</span>
-          </h1>
+    <div className="flex flex-col min-h-screen selection:bg-rose-500/20 selection:text-rose-500">
+      <Navbar />
 
-          <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
-            Empower your institution with an accredited, autonomous-ready simulation environment for engineering students. Access your college&apos;s dedicated virtual lab portal.
-          </p>
+      <main className="flex-1">
+        {/* 1. High-Converting B2B Hero Section */}
+        <HeroSection
+          onOpenDemoModal={() => setIsDemoModalOpen(true)}
+          onScrollToClones={handleScrollToClones}
+        />
 
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Button
-              asChild
-              size="lg"
-              className="h-12 px-8 bg-rose-600 hover:bg-rose-700 text-white text-sm font-bold rounded-xl shadow-md gap-2 cursor-pointer"
-            >
-              <Link href="/colleges">
-                <span>Select Your College</span>
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
+        {/* 2. The 4-Step Institutional Cloning Pipeline */}
+        <HowClonesWork />
 
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="h-12 px-6 border-border/80 text-foreground hover:bg-muted text-sm font-bold rounded-xl gap-2 cursor-pointer"
-            >
-              <Link href="/admin">
-                <span>Admin &amp; Faculty Access</span>
-              </Link>
-            </Button>
-          </div>
-        </div>
+        {/* 3. Live Interactive College Clone Switcher (VSB, CIT, PSG, SKCT, Anna Univ) */}
+        <InteractiveCloneSwitcher
+          onOpenDemoModal={() => setIsDemoModalOpen(true)}
+        />
+
+        {/* 4. Complete 12 Engineering Laboratories Showcase */}
+        <LabsDirectoryGrid />
+
+        {/* 5. Student Onboarding & Verification Flow */}
+        <StudentJourneyFlow />
+
+        {/* 6. Strict Multi-Tenant Security & Database Isolation */}
+        <SecurityAndIsolation />
+
+        {/* 7. NAAC / NBA Accreditation & CIE Automation */}
+        <AccreditationAndRoi />
+
+        {/* 8. Institutional Licensing & Pricing */}
+        <PricingSection
+          onOpenDemoModal={() => setIsDemoModalOpen(true)}
+        />
+
+        {/* 9. Administrative Leadership FAQs */}
+        <InstitutionalFaqSection />
+
+        {/* 10. High-Impact Closing CTA Banner */}
+        <CtaBanner
+          onOpenDemoModal={() => setIsDemoModalOpen(true)}
+        />
       </main>
 
+      {/* Global B2B Platform Footer */}
       <Footer />
+
+      {/* Interactive Institutional Free Demo Booking Modal */}
+      <BookDemoModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+      />
     </div>
   );
 }

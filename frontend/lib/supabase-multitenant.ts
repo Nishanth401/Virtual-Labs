@@ -734,3 +734,69 @@ export async function getStudentsByCollege(collegeSlug: string): Promise<Student
 
   return [];
 }
+
+// =========================================================================
+// 7. INSTITUTIONAL FREE DEMO BOOKINGS & ON-DEMAND COLLEGE CLONES
+// =========================================================================
+
+export interface DemoBooking {
+  id: string;
+  collegeName: string;
+  collegeSlug: string;
+  collegeCode?: string;
+  contactName: string;
+  email: string;
+  phone: string;
+  designation: string;
+  department: string;
+  studentStrength: string;
+  preferredSubdomain?: string;
+  message?: string;
+  status: "pending" | "trial_active" | "confirmed";
+  createdAt: string;
+}
+
+export async function saveDemoBooking(booking: DemoBooking): Promise<void> {
+  // 1. Attempt to save to Supabase
+  try {
+    await supabase.from("college_demo_bookings").insert({
+      id: booking.id,
+      college_name: booking.collegeName,
+      college_slug: booking.collegeSlug,
+      college_code: booking.collegeCode,
+      contact_name: booking.contactName,
+      email: booking.email,
+      phone: booking.phone,
+      designation: booking.designation,
+      department: booking.department,
+      student_strength: booking.studentStrength,
+      preferred_subdomain: booking.preferredSubdomain,
+      message: booking.message,
+      status: booking.status,
+      created_at: booking.createdAt,
+    });
+  } catch {}
+
+  // 2. Always persist locally for seamless demo/sandbox testing
+  if (typeof window !== "undefined") {
+    const existingKey = "vlab_all_demo_bookings";
+    let bookings: DemoBooking[] = [];
+    try {
+      const raw = localStorage.getItem(existingKey);
+      if (raw) bookings = JSON.parse(raw);
+    } catch {}
+    bookings = [booking, ...bookings.filter((b) => b.id !== booking.id)];
+    localStorage.setItem(existingKey, JSON.stringify(bookings));
+    localStorage.setItem(`vlab_latest_demo_booking`, JSON.stringify(booking));
+  }
+}
+
+export function getLocalDemoBookings(): DemoBooking[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem("vlab_all_demo_bookings");
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return [];
+}
+

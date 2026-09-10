@@ -24,9 +24,9 @@ const NAV_ITEMS = [
   { name: "Labs", href: "/labs" },
   { name: "DSA Visualizer", href: "/dsa-visualization" },
   { name: "Curriculum", href: "/courses" },
-  { name: "ML Track", href: "/labs/ai-machine-learning" },
-  { name: "Admin Portal", href: "/admin" },
+  { name: "College Clones", href: "/colleges" },
   { name: "Resources", href: "/resources" },
+  { name: "Admin", href: "/admin" },
 ];
 
 const SEARCH_ITEMS = [
@@ -170,7 +170,7 @@ export function Navbar() {
               className="flex items-center shrink-0"
             >
               <Link
-                href="/labs"
+                href="/"
                 className="flex items-center gap-2 px-2.5 sm:px-3 py-1 rounded-full text-foreground hover:text-rose-600 transition-colors group select-none hover:bg-muted/40"
               >
                 <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-gradient-to-tr from-rose-600 to-red-600 flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform shrink-0">
@@ -282,7 +282,7 @@ export function Navbar() {
 
           {/* Mobile Header View */}
           <div className="md:hidden w-full px-4 py-2 rounded-2xl border border-border/70 bg-background/90 backdrop-blur-xl shadow-md flex items-center justify-between">
-            <Link href="/labs" className="flex items-center gap-2 text-foreground">
+            <Link href="/" className="flex items-center gap-2 text-foreground">
               <div className="w-7 h-7 rounded-lg bg-rose-600 flex items-center justify-center text-white">
                 <FlaskConical className="h-3.5 w-3.5" />
               </div>
