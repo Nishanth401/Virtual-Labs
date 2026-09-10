@@ -1,17 +1,20 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/global/theme-provider";
 import { AuthProvider } from "@/context/auth-context";
 import { ScrollSideController } from "@/components/navigation/scroll-side-controller";
+import { StudentOnboardingModal } from "@/components/auth/student-onboarding-modal";
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: "--font-inter",
-  display: "swap",
-  preload: true,
-});
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
+  ],
+};
 
 export const metadata: Metadata = {
   title: "Department Virtual Labs | AI & DS — VSB Engineering College",
@@ -29,7 +32,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://supabase.co" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://supabase.co" />
       </head>
-      <body className={`${inter.variable} font-sans min-h-screen bg-background text-foreground overflow-x-hidden antialiased`}>
+      <body className="font-sans min-h-screen bg-background text-foreground overflow-x-hidden antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
@@ -43,6 +46,8 @@ export default function RootLayout({
               </div>
               {/* Creative Floating Animated Sidebar Scroll Controller */}
               <ScrollSideController />
+              {/* Mandatory Google Sign-In Student Profile Onboarding Modal */}
+              <StudentOnboardingModal />
             </div>
             <Toaster />
           </AuthProvider>

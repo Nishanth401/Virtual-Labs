@@ -101,7 +101,7 @@ export function SortingDisplay({
                 </div>
 
                 {/* Bars Container */}
-                <div className="h-full flex items-end justify-center gap-3 sm:gap-5 pl-10 pr-4 pb-6 pt-6 z-10">
+                <div className="h-full flex items-end justify-center gap-1.5 sm:gap-4 pl-7 sm:pl-10 pr-2 sm:pr-4 pb-6 pt-6 z-10 overflow-hidden">
                   {array.map((value, idx) => {
                     const isComparing = comparingIndices.includes(idx);
                     const isSwapped = swappedIndices.includes(idx);
@@ -120,9 +120,9 @@ export function SortingDisplay({
                     const heightPercentage = Math.max((value / maxValue) * 100, 10);
 
                     return (
-                      <div key={idx} className="flex-1 max-w-[56px] flex flex-col items-center justify-end h-full relative group">
+                      <div key={idx} className="flex-1 max-w-[56px] min-w-[14px] sm:min-w-[20px] flex flex-col items-center justify-end h-full relative group">
                         {/* Number Value On Top of Bar matching image.png */}
-                        <span className="text-xs sm:text-sm font-black font-mono text-foreground mb-1 drop-shadow-xs">
+                        <span className="text-[10px] sm:text-sm font-black font-mono text-foreground mb-1 drop-shadow-xs truncate">
                           {value}
                         </span>
 
@@ -132,11 +132,11 @@ export function SortingDisplay({
                           initial={{ height: 0 }}
                           animate={{ height: `${heightPercentage}%` }}
                           transition={{ type: "spring", stiffness: 350, damping: 25 }}
-                          className={`w-full rounded-t-xl transition-colors duration-200 shadow-sm ${barBg}`}
+                          className={`w-full rounded-t-lg sm:rounded-t-xl transition-colors duration-200 shadow-sm ${barBg}`}
                         />
 
                         {/* Index Label Underneath Bar matching image.png */}
-                        <span className="text-xs font-bold font-mono text-foreground pt-1.5 select-none">
+                        <span className="text-[10px] sm:text-xs font-bold font-mono text-foreground pt-1.5 select-none">
                           {idx}
                         </span>
                       </div>

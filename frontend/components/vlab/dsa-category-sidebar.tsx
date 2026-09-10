@@ -60,9 +60,6 @@ export function DSACategorySidebar({
               <BookOpen className="h-4.5 w-4.5 text-emerald-500" />
               <span>DSA Curriculum Roadmap</span>
             </h3>
-            <Badge variant="outline" className="text-xs font-mono bg-emerald-500/10 text-emerald-500 border-emerald-500/30 font-bold px-2 py-0.5">
-              Top to Bottom
-            </Badge>
           </div>
 
           <div className="relative">

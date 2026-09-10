@@ -17,318 +17,409 @@ export interface Quiz {
 }
 
 export const QUIZZES_DATA: Record<string, Quiz> = {
+  // ========================================================
+  // 1. DATA STRUCTURES (JAVA) EXPERIMENTS & VISUALIZERS
+  // ========================================================
   "stack-quiz": {
     id: "stack-quiz",
     experimentId: "stack-operations",
     title: "Stack Operations Self-Assessment",
     description: "Evaluate your understanding of Stack LIFO characteristics, push/pop/peek complexities, and boundary conditions.",
-    passingScore: 3,
+    passingScore: 4,
     timeLimitMinutes: 5,
     questions: [
       {
         id: "stq-1",
-        question: "Which of the following principles governs the operation of a Stack data structure?",
-        options: ["First-In, First-Out (FIFO)", "Last-In, First-Out (LIFO)", "First-In, Random-Out (FIRO)", "Priority-Based Order (PBO)"],
+        question: "Which principle strictly governs the insertion and deletion order in a Stack?",
+        options: ["First-In, First-Out (FIFO)", "Last-In, First-Out (LIFO)", "First-In, Random-Out (FIRO)", "Priority-Ordered Access"],
         correctIndex: 1,
-        explanation: "A stack strictly follows the LIFO (Last-In, First-Out) principle, where the element added most recently is the first one removed."
+        explanation: "A stack strictly operates on the LIFO (Last-In, First-Out) principle: the most recently pushed element is the first to be popped."
       },
       {
         id: "stq-2",
-        question: "What is the time complexity of the Push and Pop operations in an array-based stack (assuming no dynamic resizing)?",
+        question: "What is the time complexity of the Push, Pop, and Peek operations in an array-based stack?",
         options: ["O(n)", "O(log n)", "O(1)", "O(n log n)"],
         correctIndex: 2,
-        explanation: "Push and Pop modify only the top index pointer of the stack, which executes in constant time O(1)."
+        explanation: "Push, Pop, and Peek only modify the 'top' pointer index, completing in O(1) constant time."
       },
       {
         id: "stq-3",
-        question: "What condition occurs when a program attempts to pop an element from an empty stack?",
-        options: ["Stack Overflow", "Stack Underflow", "Memory Segmentation Fault", "Dangling Pointer Exception"],
+        question: "What condition occurs when a program attempts to remove an item from an empty stack?",
+        options: ["Stack Overflow", "Stack Underflow", "Segmentation Fault", "Dangling Reference"],
         correctIndex: 1,
-        explanation: "Stack Underflow occurs when an access or removal (pop/peek) is requested on a stack containing zero elements."
+        explanation: "Stack Underflow occurs when Pop or Peek is invoked on a stack that contains no elements (top == -1)."
       },
       {
         id: "stq-4",
-        question: "Which real-world computing mechanism relies directly on a stack data structure?",
-        options: ["Function Call Call-Stack & Recursion tracking", "Printer document spooling", "Breadth-First Search (BFS)", "Round-Robin CPU scheduling"],
+        question: "Which real-world computing mechanism is directly implemented using a system call stack?",
+        options: ["Recursive function call execution", "Printer spooling queue", "Breadth-First Search (BFS)", "Round-robin CPU time slicing"],
         correctIndex: 0,
-        explanation: "Call stacks maintain active subroutines, local variables, and return addresses during nested and recursive function calls."
+        explanation: "Nested and recursive function calls store activation records, local variables, and return addresses on the runtime call stack."
+      },
+      {
+        id: "stq-5",
+        question: "Which of the following problems is classic and solved efficiently in O(n) using a Stack?",
+        options: ["Shortest path in weighted graph", "Valid Parentheses Matching", "Finding minimum spanning tree", "Sorting in O(n log n)"],
+        correctIndex: 1,
+        explanation: "Matching balanced brackets and parentheses ('(', '{', '[') is solved in linear O(n) time by pushing openers and popping on closers."
       }
     ]
   },
+
   "queue-quiz": {
     id: "queue-quiz",
     experimentId: "queue-operations",
     title: "Queue Operations Self-Assessment",
     description: "Test your mastery of FIFO queues, front/rear pointer mechanics, and circular queue boundary conditions.",
-    passingScore: 3,
+    passingScore: 4,
     timeLimitMinutes: 5,
     questions: [
       {
         id: "quq-1",
-        question: "In a standard linear Queue, at which end are elements inserted (enqueued)?",
+        question: "In a standard linear Queue, at which end are new elements inserted (enqueued)?",
         options: ["Front pointer", "Rear pointer", "Middle index", "Top pointer"],
         correctIndex: 1,
-        explanation: "New elements are always added to the Rear end, while removals happen from the Front end in a FIFO queue."
+        explanation: "Elements enter at the Rear (tail) and exit from the Front (head) in a FIFO structure."
       },
       {
         id: "quq-2",
-        question: "What major limitation of a linear array-based queue is solved by a Circular Queue?",
+        question: "What major limitation of a linear array-based queue is resolved by a Circular Queue?",
         options: [
-          "Eliminating the O(1) dequeue time",
-          "False overflow where vacant spaces at the front cannot be reused",
+          "Eliminating O(1) dequeue time",
+          "False overflow where vacant spaces created by dequeue cannot be reused",
           "Requiring dynamic pointer allocation",
-          "Inability to hold integer data types"
+          "Inability to store negative integers"
         ],
         correctIndex: 1,
-        explanation: "In linear queues, dequeueing shifts the front forward, leaving empty spaces that cannot be reused without wrapping around via modulo arithmetic."
+        explanation: "In a linear queue, front moves forward, leaving unused front slots that cause false overflow; circular queues wrap pointers using modulo arithmetic."
       },
       {
         id: "quq-3",
         question: "In a circular queue of capacity N, how is the next rear position calculated upon enqueue?",
         options: ["rear = rear + 1", "rear = (rear + 1) % N", "rear = (rear - 1) % N", "rear = N - front"],
         correctIndex: 1,
-        explanation: "The modulo operator wraps the pointer back to index 0 once it reaches the end of the array: (rear + 1) % N."
+        explanation: "Modulo wrapping rear = (rear + 1) % N brings the pointer back to index 0 when it reaches the array boundary."
       },
       {
         id: "quq-4",
-        question: "Which algorithm natively utilizes a Queue for level-by-level traversal?",
-        options: ["Depth-First Search (DFS)", "Breadth-First Search (BFS)", "Quick Sort", "Binary Search"],
+        question: "Which fundamental graph traversal algorithm inherently uses a FIFO Queue?",
+        options: ["Depth-First Search (DFS)", "Breadth-First Search (BFS)", "Topological Sort via DFS", "Dijkstra with Array"],
         correctIndex: 1,
-        explanation: "BFS explores all neighboring nodes at the current depth before moving to nodes at the next depth level using a FIFO Queue."
+        explanation: "BFS explores all neighboring nodes at the current depth before moving deeper, relying on a FIFO queue."
+      },
+      {
+        id: "quq-5",
+        question: "What is the time complexity of the Dequeue operation in an optimized Circular Queue?",
+        options: ["O(n)", "O(log n)", "O(1)", "O(n^2)"],
+        correctIndex: 2,
+        explanation: "Updating the front pointer via front = (front + 1) % N executes in O(1) constant time."
       }
     ]
   },
+
   "linked-list-quiz": {
     id: "linked-list-quiz",
     experimentId: "singly-linked-list",
     title: "Singly Linked List Self-Assessment",
     description: "Evaluate your knowledge of dynamic memory nodes, pointer linkage, and traversal operations.",
-    passingScore: 3,
+    passingScore: 4,
     timeLimitMinutes: 5,
     questions: [
       {
         id: "llq-1",
-        question: "What are the two primary components that make up a Singly Linked List node?",
-        options: [
-          "Key and Priority",
-          "Data field and Next Pointer reference",
-          "Left child and Right child",
-          "Index and Hash value"
-        ],
+        question: "What are the two primary fields that construct a Singly Linked List node?",
+        options: ["Key and Priority", "Data value and Next node pointer reference", "Left child and Right child", "Index and Hash value"],
         correctIndex: 1,
-        explanation: "A singly linked list node contains the payload value (data) and a reference pointer pointing to the next node in the sequence."
+        explanation: "A singly linked list node encapsulates the stored data payload and a pointer linking to the successive node."
       },
       {
         id: "llq-2",
         question: "What is the time complexity to insert a new node at the head (beginning) of a Singly Linked List?",
         options: ["O(1)", "O(n)", "O(log n)", "O(n^2)"],
         correctIndex: 0,
-        explanation: "Inserting at the head simply requires setting new_node.next = head and updating head = new_node, which is an O(1) constant-time operation."
+        explanation: "Setting new_node.next = head and head = new_node is a constant-time O(1) operation."
       },
       {
         id: "llq-3",
-        question: "Why cannot Binary Search be efficiently applied to a standard Singly Linked List in O(log n) time?",
+        question: "Why can't Binary Search be executed in O(log n) time on a standard Singly Linked List?",
         options: [
-          "Linked lists cannot store sorted data",
-          "Linked list nodes do not support O(1) random direct indexing",
-          "Linked lists use too much cache space",
-          "Linked lists cannot contain duplicate values"
+          "Linked lists cannot store sorted values",
+          "Linked lists do not support O(1) random direct indexing to middle nodes",
+          "Linked lists consume excessive CPU cache lines",
+          "Pointers cannot be compared"
         ],
         correctIndex: 1,
-        explanation: "Binary search requires accessing the middle element in O(1). In a linked list, finding the middle requires traversing O(n/2) nodes sequentially."
+        explanation: "Binary search requires jumping to the midpoint in O(1). In a linked list, locating middle nodes requires sequential O(n) traversal."
       },
       {
         id: "llq-4",
-        question: "What indicates the end of a standard Singly Linked List?",
-        options: ["A node pointing back to head", "A node whose next pointer is NULL / None", "A node containing data value 0", "A detached pointer"],
+        question: "What condition identifies the terminal (tail) node of a standard Singly Linked List?",
+        options: ["node.next == head", "node.next == null", "node.data == 0", "node.next == node"],
         correctIndex: 1,
-        explanation: "The tail node of a linear singly linked list has its next pointer pointing to NULL (or None in Python/null in JS)."
+        explanation: "The tail node terminates the chain by holding null (or NULL) in its next pointer."
+      },
+      {
+        id: "llq-5",
+        question: "What algorithm is used to detect a cycle in a linked list in O(n) time and O(1) auxiliary space?",
+        options: ["Floyd's Tortoise and Hare algorithm (Two Pointers)", "Dijkstra's shortest path", "Binary Search", "Kadane's algorithm"],
+        correctIndex: 0,
+        explanation: "Floyd's cycle detection uses a slow pointer (1 step) and fast pointer (2 steps); if a loop exists, they must meet."
       }
     ]
   },
+
   "bubble-sort-quiz": {
     id: "bubble-sort-quiz",
     experimentId: "bubble-sort",
     title: "Bubble Sort Algorithm Self-Assessment",
     description: "Test your understanding of adjacent swapping, pass counts, time complexities, and stability.",
-    passingScore: 3,
+    passingScore: 4,
     timeLimitMinutes: 5,
     questions: [
       {
         id: "bsq-1",
-        question: "How does the Bubble Sort algorithm position elements in each pass?",
+        question: "How does the Bubble Sort algorithm place elements into their sorted positions?",
         options: [
           "By finding the minimum element and placing it at the front",
-          "By comparing adjacent pairs and bubbling the largest unsorted element to the end",
-          "By dividing the array into two halves recursively",
-          "By inserting elements into a binary heap"
+          "By repeatedly comparing adjacent pairs and swapping them if out of order",
+          "By dividing the array in half recursively",
+          "By inserting elements into a binary search tree"
         ],
         correctIndex: 1,
-        explanation: "In every pass, Bubble Sort compares adjacent pairs and swaps them if out of order, effectively bubbling the maximum unsorted element to its correct sorted position."
+        explanation: "In each pass, adjacent pairs are compared, bubbling the largest unsorted element to the end of the array."
       },
       {
         id: "bsq-2",
-        question: "What is the best-case time complexity of an optimized Bubble Sort algorithm on an already-sorted array?",
+        question: "What is the best-case time complexity of an optimized Bubble Sort on an already-sorted array?",
         options: ["O(n^2)", "O(n log n)", "O(n)", "O(1)"],
         correctIndex: 2,
-        explanation: "With a boolean swapped flag, if no swaps occur during the first pass, the algorithm terminates early in O(n) linear time."
+        explanation: "With a boolean swapped flag, if no swaps occur during the first pass, the algorithm terminates early in O(n) time."
       },
       {
         id: "bsq-3",
         question: "Is standard Bubble Sort a stable sorting algorithm?",
         options: [
           "Yes, because equal elements are never swapped past each other",
-          "No, because it swaps non-adjacent elements",
-          "Only when sorting integers",
-          "Only when using extra memory space"
+          "No, because it makes non-adjacent leaps",
+          "Stable only for descending datasets",
+          "Stable only when using extra arrays"
         ],
         correctIndex: 0,
-        explanation: "Bubble Sort is stable because adjacent elements with equal keys do not satisfy the strictly greater condition (arr[j] > arr[j+1]), preserving their relative order."
+        explanation: "Bubble sort is stable because arr[j] > arr[j+1] does not trigger a swap when elements are equal, preserving original relative order."
       },
       {
         id: "bsq-4",
-        question: "What is the total number of comparisons made by standard Bubble Sort on an array of size n in worst case?",
+        question: "What is the worst-case number of comparisons in standard Bubble Sort for size n?",
         options: ["n", "n(n - 1) / 2", "n log n", "2^n"],
         correctIndex: 1,
         explanation: "The sum of comparisons across (n-1) passes is (n-1) + (n-2) + ... + 1 = n(n-1)/2, which is O(n^2)."
+      },
+      {
+        id: "bsq-5",
+        question: "What is the auxiliary memory (space complexity) required by Bubble Sort?",
+        options: ["O(n)", "O(log n)", "O(1)", "O(n^2)"],
+        correctIndex: 2,
+        explanation: "Bubble sort sorts in-place using only a single temporary swap variable, requiring O(1) space."
       }
     ]
   },
+
   "selection-sort-quiz": {
     id: "selection-sort-quiz",
     experimentId: "selection-sort",
     title: "Selection Sort Algorithm Self-Assessment",
     description: "Evaluate your knowledge of minimum element selection, swap counts, and invariant properties.",
-    passingScore: 3,
+    passingScore: 4,
     timeLimitMinutes: 5,
     questions: [
       {
         id: "ssq-1",
-        question: "What is the core strategy of the Selection Sort algorithm?",
+        question: "What is the core mechanism of the Selection Sort algorithm?",
         options: [
-          "Repeatedly find the minimum element in the unsorted subarray and swap it with the first unsorted element",
-          "Insert each element into its correct sorted position by shifting larger elements",
-          "Partition the array around a chosen pivot",
-          "Merge two sorted halves iteratively"
+          "Finding the minimum element in the unsorted partition and swapping it with the first unsorted element",
+          "Shifting elements backward like a hand of cards",
+          "Partitioning elements around a pivot index",
+          "Merging two sorted halves recursively"
         ],
         correctIndex: 0,
-        explanation: "Selection Sort maintains sorted and unsorted partitions, repeatedly selecting the smallest element from the unsorted portion and placing it at the beginning."
+        explanation: "Selection sort scans the unsorted subarray to find the minimum value and swaps it to the front of that subarray."
       },
       {
         id: "ssq-2",
-        question: "What is the maximum number of memory swaps executed by Selection Sort on an array of size n?",
+        question: "What is the maximum number of memory swaps performed by Selection Sort on an array of size n?",
         options: ["O(n^2)", "At most n - 1 swaps", "O(n log n)", "O(2^n)"],
         correctIndex: 1,
-        explanation: "Selection Sort performs exactly one swap per outer loop pass, resulting in at most n - 1 swaps, making it advantageous when memory write operations are expensive."
+        explanation: "Selection sort performs at most one swap per outer pass, executing at most n - 1 swaps overall, ideal when write operations are costly."
       },
       {
         id: "ssq-3",
-        question: "What is the time complexity of Selection Sort in the best case (when the array is already sorted)?",
+        question: "What is the best-case time complexity of standard Selection Sort?",
         options: ["O(n)", "O(n log n)", "O(n^2)", "O(1)"],
         correctIndex: 2,
-        explanation: "Even if the array is sorted, Selection Sort must still scan the remaining unsorted subarray to confirm the minimum, always requiring O(n^2) comparisons."
+        explanation: "Selection sort always scans the full remaining unsorted partition to find the minimum, requiring O(n^2) comparisons regardless of initial order."
       },
       {
         id: "ssq-4",
-        question: "Is standard array-based Selection Sort stable?",
+        question: "Is standard array-based Selection Sort generally stable?",
         options: [
-          "Yes, always stable",
-          "No, long-distance swaps can reorder identical elements",
-          "Stable only for descending order",
-          "Stable only if array size is even"
+          "Yes, unconditionally stable",
+          "No, long-distance swaps can displace equal elements out of order",
+          "Stable only for positive integers",
+          "Stable only when array size is even"
         ],
         correctIndex: 1,
-        explanation: "Selection sort is generally unstable because swapping the minimum element with the first unsorted element can move an identical key past another duplicate."
+        explanation: "Long-distance swaps over intermediate identical elements make basic array-based Selection Sort unstable."
+      },
+      {
+        id: "ssq-5",
+        question: "What is the auxiliary space complexity of Selection Sort?",
+        options: ["O(1)", "O(n)", "O(log n)", "O(n^2)"],
+        correctIndex: 0,
+        explanation: "Selection Sort operates strictly in-place, requiring O(1) auxiliary memory."
       }
     ]
   },
+
   "insertion-sort-quiz": {
     id: "insertion-sort-quiz",
     experimentId: "insertion-sort",
     title: "Insertion Sort Algorithm Self-Assessment",
     description: "Test your understanding of online sorting, card-sorting analogy, and shift operations.",
-    passingScore: 3,
+    passingScore: 4,
     timeLimitMinutes: 5,
     questions: [
       {
         id: "isq-1",
-        question: "Which real-life analogy best describes how Insertion Sort works?",
+        question: "Which common real-world task mirrors the mechanics of Insertion Sort?",
         options: [
           "Sorting playing cards in your hand one by one",
-          "Finding the smallest fruit in a basket repeatedly",
-          "Splitting a deck of cards into two equal piles",
-          "Placing books on a shelf by their first letter"
+          "Finding the tallest person in a row",
+          "Splitting coins into equal piles",
+          "Binary search in a dictionary"
         ],
         correctIndex: 0,
-        explanation: "Insertion Sort mirrors sorting a hand of playing cards: you take one card at a time and insert it into its correct position among the already-sorted cards."
+        explanation: "Insertion sort mirrors arranging cards in hand: pick one card at a time and insert it into its sorted position among existing cards."
       },
       {
         id: "isq-2",
-        question: "What makes Insertion Sort particularly efficient for nearly sorted datasets?",
-        options: [
-          "It uses O(log n) extra memory",
-          "Inner loop shifts terminate immediately when an element is in correct place, achieving O(n) time",
-          "It divides the array into 4 parallel threads",
-          "It converts the array into a Red-Black tree"
-        ],
-        correctIndex: 1,
-        explanation: "For nearly sorted data, very few or zero shifts are needed per element, allowing Insertion Sort to run in adaptive O(n) linear time."
+        question: "What is the best-case time complexity of Insertion Sort when the array is already sorted?",
+        options: ["O(n^2)", "O(n log n)", "O(n)", "O(1)"],
+        correctIndex: 2,
+        explanation: "For sorted data, inner loop comparison fails on the first check with no shifts, running in O(n) linear time."
       },
       {
         id: "isq-3",
         question: "What is the auxiliary space complexity of Insertion Sort?",
         options: ["O(n)", "O(log n)", "O(1)", "O(n^2)"],
         correctIndex: 2,
-        explanation: "Insertion Sort sorts in-place using only a single temporary key variable, requiring O(1) auxiliary memory."
+        explanation: "Insertion sort sorts in-place using only a temporary key variable, requiring O(1) space."
       },
       {
         id: "isq-4",
-        question: "Why is Insertion Sort often used as the base-case sorting routine inside hybrid algorithms like Timsort or IntroSort?",
+        question: "Why is Insertion Sort widely used for small sub-arrays (e.g. n <= 16) in hybrid algorithms like Timsort?",
         options: [
-          "Low overhead and high performance on small sub-arrays (n < 16)",
-          "It guarantees O(n log n) worst-case time complexity",
-          "It requires O(n) extra heap allocation memory",
-          "It is a non-comparison based sorting algorithm"
+          "Low overhead, simple loops, and high CPU cache locality",
+          "Guaranteed O(n log n) worst-case time",
+          "Zero memory comparisons",
+          "Non-comparison based nature"
         ],
         correctIndex: 0,
-        explanation: "Due to low overhead and excellent CPU cache locality, Insertion Sort outperforms Quick Sort and Merge Sort on small sub-arrays."
+        explanation: "Low constant factors and cache locality make Insertion Sort faster than Quick Sort or Merge Sort on small sub-arrays."
+      },
+      {
+        id: "isq-5",
+        question: "Is Insertion Sort an online algorithm (can it sort a stream as elements arrive)?",
+        options: [
+          "Yes, it can insert new incoming items into an already sorted list in O(n)",
+          "No, it requires the entire dataset upfront",
+          "Only if data is pre-hashed",
+          "Only for string data types"
+        ],
+        correctIndex: 0,
+        explanation: "Insertion Sort is online: it seamlessly integrates new elements into an already sorted list as they arrive in real-time."
       }
     ]
   },
 
-  // ==========================================
-  // OPERATING SYSTEMS QUIZZES
-  // ==========================================
+  "binary-tree-quiz": {
+    id: "binary-tree-quiz",
+    experimentId: "binary-tree-traversal",
+    title: "Binary Tree Traversals Self-Assessment",
+    description: "Assess your mastery of Inorder, Preorder, Postorder, and Level-Order traversals.",
+    passingScore: 4,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "btq-1",
+        question: "Which traversal of a Binary Search Tree (BST) visits nodes in strictly ascending sorted order?",
+        options: ["Preorder (Root, Left, Right)", "Inorder (Left, Root, Right)", "Postorder (Left, Right, Root)", "Level-order (BFS)"],
+        correctIndex: 1,
+        explanation: "Inorder traversal (Left -> Root -> Right) on a valid BST outputs keys in strictly ascending sorted order."
+      },
+      {
+        id: "btq-2",
+        question: "What is the maximum number of nodes in a binary tree of depth (height) h (where root is height 1)?",
+        options: ["2^h - 1", "2^(h-1)", "2h", "h^2"],
+        correctIndex: 0,
+        explanation: "A full binary tree of height h has 1 + 2 + 4 + ... + 2^(h-1) = 2^h - 1 total nodes."
+      },
+      {
+        id: "btq-3",
+        question: "Which traversal order is most suitable for evaluating arithmetic expressions represented as an expression tree?",
+        options: ["Postorder Traversal", "Inorder Traversal", "Preorder Traversal", "Spiral Level Order"],
+        correctIndex: 0,
+        explanation: "Postorder traversal visits child operand nodes first and their parent operator last, matching Reverse Polish (Postfix) evaluation."
+      },
+      {
+        id: "btq-4",
+        question: "What is the time complexity to traverse all N nodes of a binary tree using recursive Inorder traversal?",
+        options: ["O(log N)", "O(N)", "O(N log N)", "O(N^2)"],
+        correctIndex: 1,
+        explanation: "Every node is visited exactly once, yielding an O(N) linear time complexity."
+      },
+      {
+        id: "btq-5",
+        question: "What data structure is utilized to implement Breadth-First Level-Order traversal of a Binary Tree iteratively?",
+        options: ["Stack", "Queue", "Priority Queue", "Disjoint Set Union"],
+        correctIndex: 1,
+        explanation: "A FIFO Queue enqueues child nodes level-by-level, processing current level nodes before moving to the next level."
+      }
+    ]
+  },
+
+  // ========================================================
+  // 2. OPERATING SYSTEMS (C) EXPERIMENTS
+  // ========================================================
   "cpu-scheduling-quiz": {
     id: "cpu-scheduling-quiz",
     experimentId: "cpu-scheduling-fcfs-sjf",
-    title: "CPU Scheduling Self-Assessment",
+    title: "CPU Scheduling Algorithms Self-Assessment",
     description: "Evaluate your understanding of FCFS, SJF, Gantt charts, and turnaround/waiting time calculations.",
-    passingScore: 3,
+    passingScore: 4,
     timeLimitMinutes: 5,
     questions: [
       {
         id: "csq-1",
         question: "Which CPU scheduling algorithm is provably optimal for minimizing average waiting time?",
-        options: ["First-Come First-Served (FCFS)", "Shortest Job First (SJF)", "Priority Scheduling", "Round Robin"],
+        options: ["First-Come First-Served (FCFS)", "Shortest Job First (SJF / SRTF)", "Priority Scheduling", "Round Robin"],
         correctIndex: 1,
-        explanation: "SJF (Shortest Job First) is provably optimal because scheduling the shortest CPU burst first results in the minimum average waiting time for a given set of processes."
+        explanation: "SJF (Shortest Job First) is provably optimal because scheduling shorter CPU bursts earlier minimizes the cumulative waiting time for all processes."
       },
       {
         id: "csq-2",
-        question: "What is the Convoy Effect in operating systems?",
+        question: "What is the 'Convoy Effect' in operating systems?",
         options: [
           "CPU switching between threads too quickly",
-          "Short processes waiting for a prolonged time behind one long CPU-bound process in FCFS",
-          "Deadlock occurring between multiple processes",
-          "Memory page swapping degradation"
+          "Short processes waiting a prolonged time behind one long CPU-bound process in FCFS",
+          "Deadlock occurring between circular processes",
+          "Memory page thrashing"
         ],
         correctIndex: 1,
-        explanation: "In FCFS, when a long CPU-intensive process executes first, all subsequent short I/O or CPU jobs must wait, leading to severe resource underutilization known as the Convoy Effect."
+        explanation: "In FCFS, when a long CPU-heavy process runs first, all short I/O-bound processes are blocked waiting behind it, causing poor device utilization."
       },
       {
         id: "csq-3",
-        question: "How is Turnaround Time (TAT) calculated for a process?",
+        question: "How is Turnaround Time (TAT) calculated for a process in CPU scheduling?",
         options: [
           "TAT = Completion Time - Arrival Time",
           "TAT = Waiting Time + Arrival Time",
@@ -336,16 +427,31 @@ export const QUIZZES_DATA: Record<string, Quiz> = {
           "TAT = Arrival Time - Burst Time"
         ],
         correctIndex: 0,
-        explanation: "Turnaround time measures total time spent from arrival to termination: TAT = Completion Time - Arrival Time."
+        explanation: "Turnaround time is the total duration elapsed between job submission (arrival) and its completion: TAT = Completion Time - Arrival Time."
+      },
+      {
+        id: "csq-4",
+        question: "How is Waiting Time (WT) derived from Turnaround Time (TAT) and Burst Time (BT)?",
+        options: ["WT = TAT - BT", "WT = TAT + BT", "WT = BT - TAT", "WT = Completion Time / BT"],
+        correctIndex: 0,
+        explanation: "Waiting time is the total time spent waiting in the ready queue: WT = Turnaround Time - Burst Time."
+      },
+      {
+        id: "csq-5",
+        question: "What scheduling algorithm assigns a fixed time quantum per process to guarantee responsiveness in interactive systems?",
+        options: ["Round Robin (RR)", "FCFS", "Non-preemptive Priority", "Longest Job First"],
+        correctIndex: 0,
+        explanation: "Round Robin allocates each process a slice of CPU time (time quantum) before context switching to the next ready process."
       }
     ]
   },
+
   "semaphores-quiz": {
     id: "semaphores-quiz",
     experimentId: "producer-consumer-semaphores",
     title: "Process Synchronization & Semaphores Quiz",
     description: "Test your knowledge of Producer-Consumer synchronization, counting semaphores, and race conditions.",
-    passingScore: 3,
+    passingScore: 4,
     timeLimitMinutes: 5,
     questions: [
       {
@@ -353,40 +459,55 @@ export const QUIZZES_DATA: Record<string, Quiz> = {
         question: "In the bounded-buffer Producer-Consumer problem, what is the initial value of the 'empty' counting semaphore?",
         options: ["0", "1", "Buffer Capacity N", "Infinity"],
         correctIndex: 2,
-        explanation: "The 'empty' semaphore is initialized to the capacity of the buffer (N) because initially all N slots are available for writing."
+        explanation: "The 'empty' semaphore is initialized to buffer capacity N because initially all N buffer slots are free for production."
       },
       {
         id: "sem-2",
-        question: "Which atomic operation decrements the value of a semaphore and blocks if the value is <= 0?",
+        question: "Which atomic system call decrements a semaphore value and blocks the calling thread if value <= 0?",
         options: ["sem_post() / signal()", "sem_wait() / wait()", "pthread_join()", "sem_init()"],
         correctIndex: 1,
-        explanation: "sem_wait() (or P() / wait()) decrements the semaphore counter and suspends the calling thread if no slots are available."
+        explanation: "sem_wait() (also known as P() or wait()) decrements the semaphore counter and suspends execution if the count is zero."
       },
       {
         id: "sem-3",
-        question: "Why is a Mutex lock used alongside counting semaphores in Producer-Consumer?",
+        question: "Why is a Mutex lock used alongside counting semaphores in bounded-buffer problems?",
         options: [
-          "To prevent CPU cache misses",
-          "To guarantee mutual exclusion when modifying shared buffer indices (in / out)",
+          "To avoid CPU cache invalidation",
+          "To guarantee mutual exclusion when writing/reading shared buffer indices (in / out)",
           "To allow multiple consumers to write simultaneously",
-          "To eliminate the need for memory allocation"
+          "To allocate heap memory dynamically"
         ],
         correctIndex: 1,
-        explanation: "The mutex ensures only one thread updates shared pointers (in and out) and writes to the memory buffer at any given millisecond."
+        explanation: "A binary mutex ensures only one thread updates shared index variables (in/out) and array memory at any single moment."
+      },
+      {
+        id: "sem-4",
+        question: "What initial value is assigned to the 'full' counting semaphore at startup in Producer-Consumer?",
+        options: ["0", "N", "1", "-1"],
+        correctIndex: 0,
+        explanation: "'full' starts at 0 because zero filled items exist in the buffer when the system starts."
+      },
+      {
+        id: "sem-5",
+        question: "What critical section issue arises when two concurrent threads access shared data without synchronization?",
+        options: ["Race Condition", "Paging Fault", "Belady's Anomaly", "Amdahl's Bottleneck"],
+        correctIndex: 0,
+        explanation: "A Race Condition occurs when multiple threads concurrently modify shared data, producing unpredictable results dependent on execution timing."
       }
     ]
   },
+
   "bankers-quiz": {
     id: "bankers-quiz",
     experimentId: "bankers-deadlock-algorithm",
-    title: "Banker's Deadlock Avoidance Quiz",
+    title: "Banker's Deadlock Avoidance Self-Assessment",
     description: "Assess your understanding of safe states, resource matrices, and deadlock avoidance.",
-    passingScore: 3,
+    passingScore: 4,
     timeLimitMinutes: 5,
     questions: [
       {
         id: "bnk-1",
-        question: "How is the Need matrix computed in Banker's Algorithm?",
+        question: "How is the Need matrix computed in Banker's Deadlock Avoidance Algorithm?",
         options: [
           "Need[i][j] = Allocation[i][j] - Max[i][j]",
           "Need[i][j] = Max[i][j] - Allocation[i][j]",
@@ -394,83 +515,119 @@ export const QUIZZES_DATA: Record<string, Quiz> = {
           "Need[i][j] = Max[i][j] + Available[j]"
         ],
         correctIndex: 1,
-        explanation: "Need represents the remaining resource units that process i may request: Need = Max - Allocation."
+        explanation: "Need represents the remaining resource units process i may request: Need = Max - Allocation."
       },
       {
         id: "bnk-2",
         question: "If a system is in an Unsafe State, does that guarantee that a Deadlock has already occurred?",
         options: [
           "Yes, unsafe state is synonymous with deadlock",
-          "No, an unsafe state only means that deadlock is possible depending on future process requests",
-          "Yes, all running processes are frozen",
+          "No, an unsafe state only means deadlock is possible if processes request maximum resources",
+          "Yes, all running processes are terminated",
           "No, it means memory is full"
         ],
         correctIndex: 1,
-        explanation: "An unsafe state is not necessarily a deadlock; it simply means the operating system cannot guarantee avoidance of a deadlock if all processes request their maximum resources."
-      }
-    ]
-  },
-  "page-replacement-quiz": {
-    id: "page-replacement-quiz",
-    experimentId: "page-replacement-lru-fifo",
-    title: "Page Replacement Algorithms Quiz",
-    description: "Evaluate your understanding of virtual memory demand paging, LRU, and Belady's anomaly.",
-    passingScore: 2,
-    timeLimitMinutes: 5,
-    questions: [
-      {
-        id: "prq-1",
-        question: "Which page replacement algorithm suffers from Belady's Anomaly (increasing frames can increase page faults)?",
-        options: ["Least Recently Used (LRU)", "Optimal Page Replacement (OPT)", "First-In First-Out (FIFO)", "Least Frequently Used (LFU)"],
-        correctIndex: 2,
-        explanation: "FIFO is susceptible to Belady's Anomaly because it is not a stack algorithm, unlike LRU and Optimal."
+        explanation: "An unsafe state is not necessarily deadlocked; it simply means the OS cannot guarantee avoiding deadlock if all processes claim their maximum declared needs."
       },
       {
-        id: "prq-2",
-        question: "What hardware support or software structure is commonly used to implement pure O(1) LRU eviction?",
+        id: "bnk-3",
+        question: "What are the four Coffman conditions necessary for a Deadlock to occur?",
         options: [
-          "Doubly Linked List combined with a Hash Map",
-          "Binary Search Tree",
-          "Single Array scanning from left to right",
-          "FIFO Circular Ring without timestamps"
+          "Mutual Exclusion, Hold & Wait, No Preemption, Circular Wait",
+          "Paging, Segmentation, Caching, Context Switching",
+          "FCFS, SJF, Round Robin, Priority",
+          "Thread, Process, Task, Fiber"
         ],
         correctIndex: 0,
-        explanation: "A Doubly Linked List enables O(1) node relocation and removal while a Hash Map allows O(1) key lookups."
-      }
-    ]
-  },
-  "file-allocation-quiz": {
-    id: "file-allocation-quiz",
-    experimentId: "file-allocation-table",
-    title: "File Allocation Methods Quiz",
-    description: "Check your knowledge of contiguous, linked, and indexed disk file allocation.",
-    passingScore: 2,
-    timeLimitMinutes: 5,
-    questions: [
+        explanation: "All four conditions (Mutual Exclusion, Hold and Wait, No Preemption, Circular Wait) must hold simultaneously for a deadlock to exist."
+      },
       {
-        id: "faq-1",
-        question: "What is the primary advantage of Indexed File Allocation over Linked Allocation?",
+        id: "bnk-4",
+        question: "In Banker's Algorithm, what happens when a process request is found to lead to a Safe State?",
         options: [
-          "Direct random access without traversing preceding block pointers",
-          "Zero index block memory overhead",
-          "Guaranteed contiguous physical sectors",
-          "Faster sequential tape reading"
+          "The resources are safely allocated immediately",
+          "The process is aborted",
+          "The OS enters kernel panic",
+          "The CPU is reset"
         ],
         correctIndex: 0,
-        explanation: "Indexed allocation brings all block pointers into an Index Block (Inode), enabling O(1) direct seeking to any offset of the file."
+        explanation: "If pretending to allocate resources keeps the system in a safe state with a valid execution sequence, the OS grants the request."
+      },
+      {
+        id: "bnk-5",
+        question: "What is the time complexity of the Safety Algorithm in Banker's Algorithm with n processes and m resource types?",
+        options: ["O(m * n^2)", "O(n + m)", "O(log n)", "O(2^n)"],
+        correctIndex: 0,
+        explanation: "Checking whether each of the n processes can finish across m resource types takes O(m * n^2) in worst-case."
       }
     ]
   },
 
-  // ==========================================
-  // ARTIFICIAL INTELLIGENCE QUIZZES
-  // ==========================================
+  "page-replacement-quiz": {
+    id: "page-replacement-quiz",
+    experimentId: "page-replacement-lru-fifo",
+    title: "Page Replacement Algorithms Self-Assessment",
+    description: "Evaluate your understanding of virtual memory demand paging, LRU, and Belady's anomaly.",
+    passingScore: 4,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "prq-1",
+        question: "Which page replacement algorithm exhibits Belady's Anomaly (allocating more frames can increase page faults)?",
+        options: ["Least Recently Used (LRU)", "Optimal Page Replacement (OPT)", "First-In First-Out (FIFO)", "Least Frequently Used (LFU)"],
+        correctIndex: 2,
+        explanation: "FIFO is prone to Belady's Anomaly because it is not a stack algorithm, unlike LRU and Optimal."
+      },
+      {
+        id: "prq-2",
+        question: "What optimal data structure combination achieves O(1) page access and O(1) page eviction in LRU Cache?",
+        options: [
+          "Doubly Linked List + Hash Map",
+          "Binary Search Tree + Array",
+          "Single Linear Array",
+          "Circular Queue without hashes"
+        ],
+        correctIndex: 0,
+        explanation: "A Hash Map provides O(1) key lookups, while a Doubly Linked List enables O(1) node detachment and relocation to the head."
+      },
+      {
+        id: "prq-3",
+        question: "What is a Page Fault in virtual memory systems?",
+        options: [
+          "A hardware corruption in RAM modules",
+          "An interrupt raised when a program accesses a page not currently mapped in physical RAM",
+          "A compilation syntax error",
+          "Exceeding maximum disk sector space"
+        ],
+        correctIndex: 1,
+        explanation: "A page fault occurs when the CPU references a valid virtual address whose page table entry is marked not present in RAM, triggering OS disk fetch."
+      },
+      {
+        id: "prq-4",
+        question: "What theoretical page replacement algorithm yields the minimum possible page faults?",
+        options: ["Optimal Page Replacement (OPT / Belady's Min)", "LRU", "FIFO", "Second Chance Clock"],
+        correctIndex: 0,
+        explanation: "Optimal replacement evicts the page that will not be used for the longest period in the future (used as theoretical benchmark)."
+      },
+      {
+        id: "prq-5",
+        question: "What term describes the system degradation where excessive page swapping consumes most CPU time?",
+        options: ["Thrashing", "Deadlock", "Starvation", "Paging Leak"],
+        correctIndex: 0,
+        explanation: "Thrashing occurs when total working set sizes exceed physical RAM, causing continuous disk I/O and near-zero CPU throughput."
+      }
+    ]
+  },
+
+  // ========================================================
+  // 3. ARTIFICIAL INTELLIGENCE EXPERIMENTS
+  // ========================================================
   "astar-search-quiz": {
     id: "astar-search-quiz",
     experimentId: "astar-search-8puzzle",
     title: "A* Heuristic Search Self-Assessment",
     description: "Test your mastery of A* search evaluation functions, admissible heuristics, and Manhattan distance.",
-    passingScore: 3,
+    passingScore: 4,
     timeLimitMinutes: 5,
     questions: [
       {
@@ -479,297 +636,646 @@ export const QUIZZES_DATA: Record<string, Quiz> = {
         options: [
           "h(n) must be strictly greater than the true remaining path cost",
           "h(n) must never overestimate the true cost to reach the goal",
-          "h(n) must equal 0 for all nodes",
-          "h(n) must be calculated using Euclidean geometry only"
+          "h(n) must equal 0 for every node",
+          "h(n) must be calculated using Euclidean metric only"
         ],
         correctIndex: 1,
-        explanation: "An admissible heuristic never overestimates the actual cost to reach the goal state, which guarantees that A* will find an optimal shortest path."
+        explanation: "An admissible heuristic never overestimates the actual cost to reach the goal state, guaranteeing that A* finds the optimal shortest path."
       },
       {
         id: "asq-2",
-        question: "What is the formula for the evaluation function f(n) in A* search?",
+        question: "What is the evaluation function formula f(n) in A* search?",
         options: ["f(n) = g(n) * h(n)", "f(n) = g(n) + h(n)", "f(n) = max(g(n), h(n))", "f(n) = g(n) - h(n)"],
         correctIndex: 1,
-        explanation: "f(n) = g(n) + h(n), where g(n) is the exact cost from start to node n, and h(n) is the heuristic estimate from n to the goal."
+        explanation: "f(n) = g(n) + h(n), where g(n) is exact cost from start to node n, and h(n) is estimated heuristic cost from n to goal."
+      },
+      {
+        id: "asq-3",
+        question: "In the 8-Puzzle problem, what is Manhattan Distance heuristic?",
+        options: [
+          "Sum of vertical and horizontal grid displacements of tiles from their target positions",
+          "Count of misplaced tiles only",
+          "Euclidean straight-line hypotenuse",
+          "Number of blank moves"
+        ],
+        correctIndex: 0,
+        explanation: "Manhattan distance calculates |x1 - x2| + |y1 - y2| for every tile, forming an admissible and consistent heuristic for grid movements."
+      },
+      {
+        id: "asq-4",
+        question: "What happens if h(n) = 0 for all nodes in A* Search?",
+        options: [
+          "A* degrades to Dijkstra's Uniform Cost Search (UCS)",
+          "A* degrades to Depth-First Search (DFS)",
+          "A* cannot terminate",
+          "A* runs in O(1) time"
+        ],
+        correctIndex: 0,
+        explanation: "When h(n) = 0, f(n) = g(n), making A* prioritize purely accumulated past cost, which is identical to Uniform Cost Search."
+      },
+      {
+        id: "asq-5",
+        question: "What data structure is used to maintain the OPEN list in A* search to retrieve the minimum f(n) node in O(log n)?",
+        options: ["Min-Heap / Priority Queue", "Stack", "FIFO Queue", "Unordered Array"],
+        correctIndex: 0,
+        explanation: "A Min-Heap priority queue allows extracting the lowest f(n) state in O(log n) time."
       }
     ]
   },
+
   "minimax-quiz": {
     id: "minimax-quiz",
     experimentId: "minimax-alpha-beta-tictactoe",
-    title: "Minimax & Alpha-Beta Pruning Quiz",
-    description: "Assess your knowledge of adversarial search trees and branch pruning cutoffs.",
-    passingScore: 2,
+    title: "Minimax & Alpha-Beta Pruning Self-Assessment",
+    description: "Assess your knowledge of adversarial search trees, utility values, and branch pruning cutoffs.",
+    passingScore: 4,
     timeLimitMinutes: 5,
     questions: [
       {
         id: "mmq-1",
-        question: "Under what condition does Alpha-Beta pruning discard (prune) remaining subtrees?",
-        options: ["alpha > 100", "beta <= alpha", "alpha == 0", "beta > alpha"],
-        correctIndex: 1,
-        explanation: "When beta <= alpha, the opponent already has a better or equal alternative elsewhere in the tree, so continuing exploration cannot influence the root decision."
-      }
-    ]
-  },
-  "nqueens-quiz": {
-    id: "nqueens-quiz",
-    experimentId: "nqueens-backtracking-csp",
-    title: "N-Queens CSP Quiz",
-    description: "Evaluate your understanding of constraint satisfaction, backtracking, and diagonal collision tests.",
-    passingScore: 2,
-    timeLimitMinutes: 5,
-    questions: [
-      {
-        id: "nqq-1",
-        question: "For a queen at row r and column c, which formula identifies its positive diagonal index?",
-        options: ["r * c", "r + c", "r - c", "|r - c|"],
-        correctIndex: 1,
-        explanation: "All cells on the same positive diagonal (bottom-left to top-right) have an invariant sum: r + c = constant."
-      }
-    ]
-  },
-  "expert-systems-quiz": {
-    id: "expert-systems-quiz",
-    experimentId: "expert-system-forward-chaining",
-    title: "Expert Systems & Inference Quiz",
-    description: "Test your understanding of rule-based systems, forward chaining, and knowledge bases.",
-    passingScore: 2,
-    timeLimitMinutes: 5,
-    questions: [
-      {
-        id: "esq-1",
-        question: "Forward Chaining in rule-based expert systems is also known as:",
-        options: ["Goal-driven reasoning", "Data-driven reasoning", "Exhaustive depth-first search", "Randomized inference"],
-        correctIndex: 1,
-        explanation: "Forward Chaining starts with known data/facts and moves forward through rules to reach conclusions, making it data-driven."
-      }
-    ]
-  },
-  "water-jug-quiz": {
-    id: "water-jug-quiz",
-    experimentId: "water-jug-problem-ai",
-    title: "Water Jug State Space Quiz",
-    description: "Check your knowledge of state space representation and solvable preconditions.",
-    passingScore: 2,
-    timeLimitMinutes: 5,
-    questions: [
-      {
-        id: "wjq-1",
-        question: "A Water Jug problem with capacities X and Y can measure target Z if and only if:",
-        options: ["Z <= max(X, Y) and Z is a multiple of gcd(X, Y)", "Z == X + Y", "Z is an odd number", "X and Y are both prime numbers"],
+        question: "Under what exact mathematical condition does Alpha-Beta pruning discard remaining child subtrees?",
+        options: ["beta <= alpha", "alpha > 100", "alpha == 0", "beta > alpha"],
         correctIndex: 0,
-        explanation: "According to Bezout's identity, integer combinations of X and Y can produce any multiple of gcd(X, Y) up to X + Y."
+        explanation: "When beta <= alpha, the opposing minimizer or maximizer has already established a superior alternative elsewhere, so exploring further cannot alter the root decision."
+      },
+      {
+        id: "mmq-2",
+        question: "What does the 'alpha' parameter represent in Alpha-Beta pruning?",
+        options: [
+          "The best (highest) value that the MAX player can guarantee so far along the path",
+          "The lowest value that MIN can guarantee",
+          "The depth of the search tree",
+          "The branch factor"
+        ],
+        correctIndex: 0,
+        explanation: "Alpha represents the maximum score that the maximizing player is guaranteed to achieve so far."
+      },
+      {
+        id: "mmq-3",
+        question: "What is the best-case time complexity of Alpha-Beta pruning with optimal move ordering (branching factor b, depth d)?",
+        options: ["O(b^(d/2))", "O(b^d)", "O(d * log b)", "O(1)"],
+        correctIndex: 0,
+        explanation: "With perfect move ordering, alpha-beta cuts the effective branching factor to sqrt(b), reducing runtime to O(b^(d/2))."
+      },
+      {
+        id: "mmq-4",
+        question: "In Tic-Tac-Toe, what utility value is traditionally returned when MAX (X) wins the board state?",
+        options: ["+1 (or +10)", "-1 (or -10)", "0", "Infinity"],
+        correctIndex: 0,
+        explanation: "Winning terminal states for MAX are assigned positive utility (+1, +10), while MIN wins are negative (-1, -10), and draws are 0."
+      },
+      {
+        id: "mmq-5",
+        question: "Does Alpha-Beta pruning alter the final move chosen compared to pure exhaustive Minimax?",
+        options: [
+          "No, Alpha-Beta returns the exact same optimal move as Minimax without evaluating irrelevant subtrees",
+          "Yes, it chooses a faster approximate move",
+          "Yes, it only works for symmetric games",
+          "No, but it increases memory usage by O(b^d)"
+        ],
+        correctIndex: 0,
+        explanation: "Alpha-Beta is an exact optimization: it prunes branches that mathematically cannot impact the final decision, guaranteeing identical results."
       }
     ]
   },
 
-  // ==========================================
-  // BIG DATA ANALYTICS QUIZZES
-  // ==========================================
+  // ========================================================
+  // 4. DATABASE MANAGEMENT SYSTEMS EXPERIMENTS
+  // ========================================================
+  "sql-ddl-dml-quiz": {
+    id: "sql-ddl-dml-quiz",
+    experimentId: "sql-ddl-dml-operations",
+    title: "SQL DDL & DML Operations Self-Assessment",
+    description: "Evaluate your understanding of schema creation, data manipulation, constraints, and transactions.",
+    passingScore: 4,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "sql-1",
+        question: "Which of the following SQL commands is classified as Data Definition Language (DDL)?",
+        options: ["CREATE TABLE", "INSERT INTO", "UPDATE", "DELETE FROM"],
+        correctIndex: 0,
+        explanation: "DDL commands define and modify database schema structures (CREATE, ALTER, DROP, TRUNCATE)."
+      },
+      {
+        id: "sql-2",
+        question: "What is the fundamental difference between DROP TABLE and TRUNCATE TABLE?",
+        options: [
+          "DROP removes data and table schema structure; TRUNCATE removes all rows while preserving table structure",
+          "TRUNCATE deletes the database entirely",
+          "DROP cannot be used on tables with primary keys",
+          "TRUNCATE is a DML command that logs every row deletion"
+        ],
+        correctIndex: 0,
+        explanation: "TRUNCATE empties all rows quickly by deallocating data pages while preserving table schema; DROP destroys both table data and schema."
+      },
+      {
+        id: "sql-3",
+        question: "Which SQL constraint enforces entity integrity by guaranteeing that a column has unique, non-null values?",
+        options: ["PRIMARY KEY", "FOREIGN KEY", "DEFAULT", "CHECK"],
+        correctIndex: 0,
+        explanation: "A PRIMARY KEY constraint uniquely identifies each record and strictly forbids NULL values."
+      },
+      {
+        id: "sql-4",
+        question: "Which clause is used to filter groups of records created by the GROUP BY clause?",
+        options: ["HAVING", "WHERE", "ORDER BY", "DISTINCT"],
+        correctIndex: 0,
+        explanation: "WHERE filters individual rows before grouping, whereas HAVING filters aggregated groups after GROUP BY."
+      },
+      {
+        id: "sql-5",
+        question: "What type of JOIN returns all records from the left table and matching records from the right table, filling nulls for mismatches?",
+        options: ["LEFT OUTER JOIN", "INNER JOIN", "CROSS JOIN", "NATURAL JOIN"],
+        correctIndex: 0,
+        explanation: "A LEFT OUTER JOIN preserves all rows from the left table regardless of whether a matching key exists in the right table."
+      }
+    ]
+  },
+
+  // ========================================================
+  // 5. MACHINE LEARNING EXPERIMENTS
+  // ========================================================
+  "ml-regression-quiz": {
+    id: "ml-regression-quiz",
+    experimentId: "scikit-learn-linear-regression",
+    title: "Linear Regression & Scikit-Learn Self-Assessment",
+    description: "Assess your knowledge of Ordinary Least Squares, cost functions, gradient descent, and R-squared metrics.",
+    passingScore: 4,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "reg-1",
+        question: "What objective loss function does Ordinary Least Squares (OLS) Linear Regression minimize?",
+        options: [
+          "Mean Squared Error (Sum of squared residual differences between actual and predicted values)",
+          "Cross-Entropy Loss",
+          "Hinge Loss",
+          "Gini Impurity"
+        ],
+        correctIndex: 0,
+        explanation: "Linear Regression minimizes the Mean Squared Error (MSE), measuring the average squared vertical distance between points and regression line."
+      },
+      {
+        id: "reg-2",
+        question: "What does an R-squared (Coefficient of Determination) value of 0.85 indicate?",
+        options: [
+          "85% of the variance in the target variable is explained by the independent feature variables",
+          "The model has an 85% classification accuracy",
+          "The learning rate is 0.85",
+          "85% of the dataset was used for training"
+        ],
+        correctIndex: 0,
+        explanation: "R² quantifies the proportion of total variance in the dependent variable explained by the regression model (1.0 = perfect fit)."
+      },
+      {
+        id: "reg-3",
+        question: "What regularization penalty is added to the cost function in Ridge Regression (L2 regularization)?",
+        options: [
+          "Sum of squared weights (lambda * sum(w_i^2))",
+          "Sum of absolute weights (lambda * sum(|w_i|))",
+          "Number of non-zero parameters",
+          "Entropy of predictions"
+        ],
+        correctIndex: 0,
+        explanation: "Ridge (L2) penalizes large coefficients by adding the sum of squared weights, preventing overfitting and multicollinearity."
+      },
+      {
+        id: "reg-4",
+        question: "Why must feature scaling (e.g. StandardScaler) be performed before Gradient Descent optimization?",
+        options: [
+          "To ensure features with large numerical magnitudes do not dominate gradient updates and create elongated contours",
+          "Because Scikit-Learn cannot run without scaling",
+          "To eliminate categorical features",
+          "To convert non-linear relationships into linear ones"
+        ],
+        correctIndex: 0,
+        explanation: "Feature scaling creates spherical loss surfaces, allowing Gradient Descent to converge much faster toward the global minimum."
+      },
+      {
+        id: "reg-5",
+        question: "Which Scikit-Learn method trains a model on training feature matrices X_train and target vector y_train?",
+        options: ["model.fit(X_train, y_train)", "model.predict(X_train)", "model.score(y_train)", "model.transform()"],
+        correctIndex: 0,
+        explanation: "The .fit() method calculates parameter weights (slope and intercept) by optimizing the loss function over training data."
+      }
+    ]
+  },
+
+  // ========================================================
+  // 6. BIG DATA ANALYTICS EXPERIMENTS
+  // ========================================================
   "hdfs-quiz": {
     id: "hdfs-quiz",
     experimentId: "hadoop-hdfs-cluster-management",
-    title: "Hadoop HDFS Architecture Quiz",
+    title: "Hadoop HDFS Distributed Architecture Quiz",
     description: "Evaluate your knowledge of HDFS block allocation, NameNode metadata, and rack awareness.",
-    passingScore: 2,
+    passingScore: 4,
     timeLimitMinutes: 5,
     questions: [
       {
         id: "hdq-1",
-        question: "What is the default block size in modern Apache Hadoop HDFS?",
+        question: "What is the standard default block size in modern Apache Hadoop HDFS clusters?",
         options: ["4 KB", "64 KB", "128 MB", "10 GB"],
         correctIndex: 2,
-        explanation: "HDFS uses a large default block size (128 MB or 256 MB) to minimize NameNode metadata overhead and enable high sequential streaming read throughput."
+        explanation: "HDFS uses large default block sizes (128 MB or 256 MB) to minimize NameNode RAM metadata footprint and maximize sequential disk streaming."
       },
       {
         id: "hdq-2",
-        question: "What is the primary role of the NameNode in HDFS?",
+        question: "What is the primary role of the NameNode in an HDFS cluster?",
         options: [
-          "Storing raw physical file bytes on disk",
-          "Maintaining file system namespace, directory hierarchy, and block location mappings in RAM",
-          "Executing SQL queries directly",
-          "Encrypting network packets between clients"
+          "Managing the file system namespace, directory hierarchy, and block location mappings in RAM",
+          "Storing the raw binary file chunks on local disk",
+          "Executing SQL transformations",
+          "Managing network firewalls"
         ],
-        correctIndex: 1,
-        explanation: "The NameNode acts as the master metadata coordinator, keeping directory structures and block distribution maps in active RAM."
-      }
-    ]
-  },
-  "mapreduce-quiz": {
-    id: "mapreduce-quiz",
-    experimentId: "mapreduce-wordcount-processing",
-    title: "MapReduce Framework Quiz",
-    description: "Assess your understanding of Map, Shuffle, Sort, and Reduce distributed processing.",
-    passingScore: 2,
-    timeLimitMinutes: 5,
-    questions: [
+        correctIndex: 0,
+        explanation: "The NameNode acts as master coordinator, retaining directory metadata and mapping block IDs to DataNode IP addresses in RAM."
+      },
       {
-        id: "mrq-1",
-        question: "Which phase of MapReduce automatically groups all values with the same key across worker nodes?",
-        options: ["Map Phase", "Shuffle and Sort Phase", "Reduce Phase", "Input Splitter Phase"],
+        id: "hdq-3",
+        question: "What is the default block replication factor in Apache Hadoop HDFS for fault tolerance?",
+        options: ["1", "3", "5", "10"],
         correctIndex: 1,
-        explanation: "The Shuffle and Sort phase transfers intermediate key-value pairs from Mappers to Reducers, grouping values by key."
-      }
-    ]
-  },
-  "pyspark-quiz": {
-    id: "pyspark-quiz",
-    experimentId: "pyspark-dataframe-ecommerce",
-    title: "PySpark & In-Memory Analytics Quiz",
-    description: "Check your knowledge of Spark RDDs, DataFrames, lazy evaluation, and DAG optimization.",
-    passingScore: 2,
-    timeLimitMinutes: 5,
-    questions: [
+        explanation: "HDFS replicates each block 3 times across different DataNodes and racks by default to withstand hardware failure."
+      },
       {
-        id: "psq-1",
-        question: "In Apache Spark, what triggers the actual physical execution of a series of transformations?",
-        options: ["Calling a Transformation (e.g. filter, select)", "Calling an Action (e.g. show, count, collect)", "Importing PySpark libraries", "Creating a SparkSession"],
-        correctIndex: 1,
-        explanation: "Spark uses Lazy Evaluation; transformations build an execution DAG graph, but computation runs only when an Action is invoked."
-      }
-    ]
-  },
-  "hive-quiz": {
-    id: "hive-quiz",
-    experimentId: "hive-data-warehousing-queries",
-    title: "Apache Hive Data Warehousing Quiz",
-    description: "Test your understanding of HiveQL, partitioned tables, and partition pruning.",
-    passingScore: 2,
-    timeLimitMinutes: 5,
-    questions: [
-      {
-        id: "hvq-1",
-        question: "Why is Table Partitioning used in Apache Hive?",
+        id: "hdq-4",
+        question: "How do DataNodes inform the active NameNode that they are alive and functioning properly?",
         options: [
-          "To convert SQL into C code",
-          "To enable Partition Pruning so queries read only relevant sub-directories instead of full table scans",
-          "To eliminate the need for HDFS storage",
-          "To restrict user access permissions"
+          "By sending periodic Heartbeat signals (every 3 seconds by default)",
+          "By uploading full copies of their disks daily",
+          "Via manual administrator commands",
+          "Through MapReduce job logs"
         ],
-        correctIndex: 1,
-        explanation: "Partitioning stores data in distinct directory paths, allowing Hive queries with WHERE filters to scan only matching folders."
-      }
-    ]
-  },
-  "mongodb-quiz": {
-    id: "mongodb-quiz",
-    experimentId: "mongodb-bigdata-aggregations",
-    title: "MongoDB NoSQL Aggregations Quiz",
-    description: "Evaluate your knowledge of document pipelines, sharding, and BSON indexing.",
-    passingScore: 2,
-    timeLimitMinutes: 5,
-    questions: [
+        correctIndex: 0,
+        explanation: "DataNodes send periodic heartbeats and block reports; if no heartbeat arrives for 10 minutes, the NameNode initiates block re-replication."
+      },
       {
-        id: "mgq-1",
-        question: "Which aggregation stage in MongoDB filters documents equivalent to the SQL WHERE clause?",
-        options: ["$group", "$match", "$project", "$unwind"],
-        correctIndex: 1,
-        explanation: "$match filters documents so that only those meeting specified query criteria pass to subsequent pipeline stages."
+        id: "hdq-5",
+        question: "What file system image and edit log are merged by the Secondary NameNode?",
+        options: ["fsimage and edits log", "hdfs.log and yarn.xml", "core-site.xml and mapred.xml", "hive.db and metastore"],
+        correctIndex: 0,
+        explanation: "The Secondary NameNode performs periodic checkpoints by merging the fsimage snapshot with the transaction edits log to prevent edit log bloat."
       }
     ]
   },
 
-  // ==========================================
-  // CLOUD SERVICE MANAGEMENT QUIZZES
-  // ==========================================
+  // ========================================================
+  // 7. CLOUD SERVICE MANAGEMENT EXPERIMENTS
+  // ========================================================
   "aws-ec2-quiz": {
     id: "aws-ec2-quiz",
     experimentId: "aws-ec2-vpc-infrastructure",
-    title: "AWS EC2 & VPC Infrastructure Quiz",
+    title: "AWS EC2 & VPC Infrastructure Self-Assessment",
     description: "Assess your knowledge of virtual compute instances, security groups, and VPC networking.",
-    passingScore: 2,
+    passingScore: 4,
     timeLimitMinutes: 5,
     questions: [
       {
         id: "ecq-1",
-        question: "What is the key characteristic of AWS Security Groups regarding traffic rules?",
+        question: "What is the key characteristic of AWS EC2 Security Groups regarding network traffic rules?",
         options: [
-          "They are stateless (return traffic must be explicitly allowed)",
-          "They are stateful (inbound traffic automatically allows return outbound traffic)",
-          "They operate at the subnet level only",
-          "They cannot block IP addresses"
+          "They are stateful (inbound allowed traffic automatically permits return outbound response traffic)",
+          "They are stateless (outbound return rules must be explicitly configured)",
+          "They can only block IP addresses, not allow them",
+          "They operate at the subnet level rather than instance level"
         ],
-        correctIndex: 1,
-        explanation: "Security Groups are stateful: if an inbound request is permitted, response traffic is automatically allowed regardless of outbound rules."
-      }
-    ]
-  },
-  "aws-s3-quiz": {
-    id: "aws-s3-quiz",
-    experimentId: "aws-s3-lifecycle-management",
-    title: "AWS S3 Cloud Storage Quiz",
-    description: "Test your understanding of object storage tiers, bucket versioning, and lifecycle policies.",
-    passingScore: 2,
-    timeLimitMinutes: 5,
-    questions: [
+        correctIndex: 0,
+        explanation: "Security Groups are stateful virtual firewalls: allowing an inbound port (e.g. 443) automatically permits return outbound response traffic."
+      },
       {
-        id: "s3q-1",
-        question: "Which AWS S3 storage class is best suited for long-term compliance data archived for years with rare retrieval?",
-        options: ["S3 Standard", "S3 Intelligent-Tiering", "S3 Glacier Deep Archive", "S3 Express One Zone"],
-        correctIndex: 2,
-        explanation: "S3 Glacier Deep Archive offers the lowest cost object storage tier in AWS designed for cold archives."
-      }
-    ]
-  },
-  "docker-quiz": {
-    id: "docker-quiz",
-    experimentId: "docker-multi-container-compose",
-    title: "Docker Containerization Quiz",
-    description: "Check your knowledge of container images, multi-container compose, and bridge networks.",
-    passingScore: 2,
-    timeLimitMinutes: 5,
-    questions: [
+        id: "ecq-2",
+        question: "Which AWS VPC component allows instances in a private subnet to access the internet while preventing inbound internet connections?",
+        options: ["NAT Gateway", "Internet Gateway (IGW)", "Virtual Private Gateway (VGW)", "Direct Connect"],
+        correctIndex: 0,
+        explanation: "A NAT (Network Address Translation) Gateway enables instances in private subnets to initiate outbound traffic (e.g. software updates) while blocking external inbound connections."
+      },
       {
-        id: "dkq-1",
-        question: "What is the primary difference between a Docker Container and a Virtual Machine (VM)?",
+        id: "ecq-3",
+        question: "What is the primary difference between AWS Network Access Control Lists (NACLs) and Security Groups?",
         options: [
-          "Containers include a full Guest Operating System kernel, while VMs share the host kernel",
-          "Containers share the host OS kernel and run as isolated processes, making them significantly lighter and faster than VMs",
-          "Containers can only run on Linux, while VMs run on any OS",
-          "Containers require dedicated physical hardware"
+          "NACLs are stateless and operate at the subnet boundary; Security Groups are stateful and operate at instance ENI level",
+          "NACLs can only inspect HTTP traffic",
+          "Security Groups are applied to VPC route tables",
+          "NACLs cannot have deny rules"
         ],
-        correctIndex: 1,
-        explanation: "Containers share the underlying host OS kernel while virtualizing user-space libraries, resulting in sub-second startup times and low RAM overhead."
-      }
-    ]
-  },
-  "serverless-quiz": {
-    id: "serverless-quiz",
-    experimentId: "aws-lambda-serverless-api",
-    title: "Serverless Architecture & AWS Lambda Quiz",
-    description: "Evaluate your understanding of event-driven execution, cold starts, and API Gateway integration.",
-    passingScore: 2,
-    timeLimitMinutes: 5,
-    questions: [
+        correctIndex: 0,
+        explanation: "NACLs provide stateless subnet-level packet filtering with numbered allow/deny rules; Security Groups provide stateful instance-level allow rules."
+      },
       {
-        id: "svq-1",
-        question: "What causes a 'Cold Start' in serverless computing (AWS Lambda)?",
+        id: "ecq-4",
+        question: "Which EC2 pricing model provides up to 90% discount by utilizing unused AWS spare compute capacity with interruption notice?",
+        options: ["Spot Instances", "On-Demand Instances", "Reserved Instances", "Dedicated Hosts"],
+        correctIndex: 0,
+        explanation: "Spot instances offer steep discounts on surplus EC2 capacity, suitable for fault-tolerant and stateless batch workloads."
+      },
+      {
+        id: "ecq-5",
+        question: "What is an Elastic IP address in AWS EC2?",
         options: [
-          "Running Lambda in sub-zero temperature datacenters",
-          "Initializing a new execution environment container and runtime before executing the handler code",
-          "Database connection timeouts",
-          "Exceeding maximum memory limits"
+          "A static, public IPv4 address designed for dynamic cloud remapping to any instance in your account",
+          "A private IPv6 address assigned automatically",
+          "A domain name managed by Route 53",
+          "A virtual MAC address"
         ],
-        correctIndex: 1,
-        explanation: "When a function hasn't been called recently or requires scaling up, the cloud provider provisions and downloads container layers, creating an initial latency spike known as a cold start."
+        correctIndex: 0,
+        explanation: "An Elastic IP is a fixed public IPv4 address that can be rapidly re-associated to another instance during failovers."
       }
     ]
   },
-  "kubernetes-quiz": {
-    id: "kubernetes-quiz",
-    experimentId: "kubernetes-pod-cluster-deployment",
-    title: "Kubernetes Cluster Orchestration Quiz",
-    description: "Test your mastery of Pods, Deployments, ReplicaSets, and Service load-balancing.",
-    passingScore: 2,
+
+  // ========================================================
+  // 8. COMPUTER NETWORKS EXPERIMENTS
+  // ========================================================
+  "crc-quiz": {
+    id: "crc-quiz",
+    experimentId: "crc-error-detection",
+    title: "CRC Error Detection & Framing Quiz",
+    description: "Evaluate your knowledge of polynomial division, checksums, and parity checking.",
+    passingScore: 4,
     timeLimitMinutes: 5,
     questions: [
       {
-        id: "kbq-1",
-        question: "What is the smallest deployable computing unit in a Kubernetes cluster?",
-        options: ["Node", "Pod", "ClusterIP", "Namespace"],
-        correctIndex: 1,
-        explanation: "A Pod represents a single instance of a running process in Kubernetes and can contain one or more tightly coupled containers."
+        id: "crc-1",
+        question: "In Cyclic Redundancy Check (CRC), what mathematical operation is performed on the data bits using generator polynomial?",
+        options: ["Modulo-2 Binary Division (XOR operations)", "Standard Base-10 Division", "Logical Bitwise AND", "Fast Fourier Transform"],
+        correctIndex: 0,
+        explanation: "CRC uses Modulo-2 binary polynomial division where subtraction is replaced with XOR operations without carries or borrows."
+      },
+      {
+        id: "crc-2",
+        question: "If the generator polynomial in CRC has degree 'k' (length k+1 bits), how many zero bits are appended to data before division?",
+        options: ["k zero bits", "k + 1 zero bits", "k - 1 zero bits", "2k zero bits"],
+        correctIndex: 0,
+        explanation: "Exactly k zeros (equal to generator polynomial degree) are appended to dividend bits to make space for remainder CRC checksum."
+      },
+      {
+        id: "crc-3",
+        question: "What condition at the receiver indicates that received frame bits are free of transmission errors?",
+        options: [
+          "The remainder after modulo-2 division by generator polynomial is all zeros",
+          "The quotient is an even integer",
+          "The remainder equals the generator polynomial",
+          "The checksum equals 1"
+        ],
+        correctIndex: 0,
+        explanation: "If no bits are corrupted in transit, dividing the transmitted codeword (data + CRC) by generator polynomial yields remainder 0."
+      },
+      {
+        id: "crc-4",
+        question: "At which OSI Reference Model layer does CRC frame error detection typically operate?",
+        options: ["Data Link Layer (Layer 2)", "Network Layer (Layer 3)", "Transport Layer (Layer 4)", "Application Layer (Layer 7)"],
+        correctIndex: 0,
+        explanation: "CRC is implemented in hardware at Data Link Layer inside the Frame Check Sequence (FCS) trailer of Ethernet frames."
+      },
+      {
+        id: "crc-5",
+        question: "What is a prominent capability of CRC compared to simple 1D parity checks?",
+        options: [
+          "High reliability detecting burst errors of length up to polynomial degree k",
+          "Automatic encryption of frame content",
+          "Compressing payload size by 50%",
+          "Guaranteeing zero latency"
+        ],
+        correctIndex: 0,
+        explanation: "CRC guarantees detection of all single-bit errors, double-bit errors, odd counts of errors, and burst errors of length <= k."
+      }
+    ]
+  },
+
+  // ========================================================
+  // 9. DSA VISUALIZER TOPIC QUIZZES (CORE SUITE)
+  // ========================================================
+  "dsa-binary-search-quiz": {
+    id: "dsa-binary-search-quiz",
+    experimentId: "binary-search",
+    title: "Binary Search Visualizer Self-Assessment",
+    description: "Master divide-and-conquer searching, midpoint overflow formulas, and search space boundary conditions.",
+    passingScore: 4,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "bs-1",
+        question: "What mandatory prerequisite must be satisfied before Binary Search can be applied to an array?",
+        options: ["The array elements must be sorted in monotonic order", "The array size must be a power of two", "All numbers must be positive", "The array must be dynamically allocated"],
+        correctIndex: 0,
+        explanation: "Binary Search relies on sorted order to eliminate half of the remaining search space in each comparison."
+      },
+      {
+        id: "bs-2",
+        question: "Which midpoint calculation safely prevents 32-bit integer arithmetic overflow when low and high are large?",
+        options: ["mid = low + (high - low) / 2", "mid = (low + high) / 2", "mid = (low + high) >> 2", "mid = high - low / 2"],
+        correctIndex: 0,
+        explanation: "low + (high - low) / 2 computes the exact same index as (low + high) / 2 without risking integer overflow when low + high exceeds 2^31 - 1."
+      },
+      {
+        id: "bs-3",
+        question: "What is the worst-case time complexity of Binary Search on an array of size n?",
+        options: ["O(log n)", "O(n)", "O(n log n)", "O(1)"],
+        correctIndex: 0,
+        explanation: "Because the search interval is halved at every iteration, the maximum number of steps is ceil(log2(n)) = O(log n)."
+      },
+      {
+        id: "bs-4",
+        question: "What value does Binary Search return when target element is not present in the array?",
+        options: ["-1 (or insertion index)", "0", "Array length", "Throws fatal exception"],
+        correctIndex: 0,
+        explanation: "Standard binary search returns -1 (or insertion index / lower bound) to indicate unsuccessful search."
+      },
+      {
+        id: "bs-5",
+        question: "What is the space complexity of iterative Binary Search?",
+        options: ["O(1)", "O(log n)", "O(n)", "O(n^2)"],
+        correctIndex: 0,
+        explanation: "Iterative binary search uses only pointers (low, high, mid) requiring O(1) auxiliary memory."
+      }
+    ]
+  },
+
+  "dsa-dijkstra-quiz": {
+    id: "dsa-dijkstra-quiz",
+    experimentId: "dijkstra",
+    title: "Dijkstra's Shortest Path Algorithm Quiz",
+    description: "Evaluate your understanding of single-source shortest path, greedy edge relaxation, and negative weight limitations.",
+    passingScore: 4,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "djk-1",
+        question: "What fundamental assumption does Dijkstra's Algorithm make regarding edge weights?",
+        options: ["All edge weights must be non-negative (>= 0)", "The graph must be a Directed Acyclic Graph (DAG)", "Edges must have unit weights", "The graph must be bipartite"],
+        correctIndex: 0,
+        explanation: "Dijkstra greedily marks nodes as finalized; negative edge weights invalidate this greedy assumption (requiring Bellman-Ford)."
+      },
+      {
+        id: "djk-2",
+        question: "What mathematical inequality defines the Edge Relaxation step for edge (u, v) with weight w?",
+        options: [
+          "if (dist[u] + w < dist[v]) { dist[v] = dist[u] + w; }",
+          "if (dist[u] * w < dist[v]) { dist[v] = dist[u] * w; }",
+          "if (dist[v] + w < dist[u]) { dist[u] = dist[v] + w; }",
+          "dist[v] = min(dist[u], w)"
+        ],
+        correctIndex: 0,
+        explanation: "Relaxation checks if reaching vertex v through intermediate vertex u yields a shorter path than current known dist[v]."
+      },
+      {
+        id: "djk-3",
+        question: "What is the time complexity of Dijkstra's Algorithm using a Min-Heap (Priority Queue) with V vertices and E edges?",
+        options: ["O((V + E) log V)", "O(V^2)", "O(E * V)", "O(V log E)"],
+        correctIndex: 0,
+        explanation: "With an adjacency list and binary min-heap, inserting and decreasing vertex keys yields O((V + E) log V)."
+      },
+      {
+        id: "djk-4",
+        question: "Which algorithm should be selected instead of Dijkstra when a graph contains negative edge weights?",
+        options: ["Bellman-Ford Algorithm", "Kruskal's Algorithm", "Breadth-First Search (BFS)", "Prim's Algorithm"],
+        correctIndex: 0,
+        explanation: "Bellman-Ford relaxes all edges V-1 times and successfully handles negative weights while detecting negative weight cycles."
+      },
+      {
+        id: "djk-5",
+        question: "In what real-world domain is Dijkstra's Algorithm widely deployed?",
+        options: ["OSPF Network Routing Protocol & GPS Mapping", "Video Compression", "Cryptographic Hashing", "CPU Register Allocation"],
+        correctIndex: 0,
+        explanation: "OSPF (Open Shortest Path First) routing and GPS pathfinding calculate lowest-latency network routes using Dijkstra."
+      }
+    ]
+  },
+
+  "dsa-avl-tree-quiz": {
+    id: "dsa-avl-tree-quiz",
+    experimentId: "avl-tree",
+    title: "AVL Self-Balancing Tree Self-Assessment",
+    description: "Assess your knowledge of Balance Factors, LL/RR/LR/RL tree rotations, and logarithmic search guarantees.",
+    passingScore: 4,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "avl-1",
+        question: "What is the permitted Balance Factor (BF = height(Left) - height(Right)) for every node in a valid AVL Tree?",
+        options: ["-1, 0, or +1", "-2 to +2", "Strictly 0", "Any positive integer"],
+        correctIndex: 0,
+        explanation: "An AVL Tree strictly requires that for every node, the difference in height between its left and right subtrees is in {-1, 0, +1}."
+      },
+      {
+        id: "avl-2",
+        question: "Which rotation is performed when an insertion occurs in the Left subtree of the Right child (RL imbalance)?",
+        options: ["Right Rotation followed by Left Rotation (RL Rotation)", "Single Left Rotation (RR)", "Single Right Rotation (LL)", "Left Rotation followed by Right Rotation (LR)"],
+        correctIndex: 0,
+        explanation: "An RL imbalance requires a Right rotation on the right child followed by a Left rotation on the unbalanced parent node."
+      },
+      {
+        id: "avl-3",
+        question: "What is the strictly guaranteed worst-case time complexity for Search, Insertion, and Deletion in an AVL tree with N nodes?",
+        options: ["O(log N)", "O(N)", "O(1)", "O(N log N)"],
+        correctIndex: 0,
+        explanation: "Because the tree height is strictly maintained at h <= 1.44 * log2(N), all primary tree operations run in O(log N) worst-case."
+      },
+      {
+        id: "avl-4",
+        question: "What is the maximum number of tree rotations needed to restore balance after a single node Insertion?",
+        options: ["At most 2 rotations (one single or one double rotation)", "O(log N) rotations", "N rotations", "Zero rotations"],
+        correctIndex: 0,
+        explanation: "A single rotation (LL/RR) or double rotation (LR/RL) at the lowest unbalanced ancestor completely restores the AVL property."
+      },
+      {
+        id: "avl-5",
+        question: "How does an AVL Tree compare with a Red-Black Tree in terms of search performance?",
+        options: [
+          "AVL Trees are more rigidly balanced, providing faster lookups/searches at the cost of slightly more rotation work during insertions/deletions",
+          "Red-Black trees have lower height",
+          "AVL trees do not support binary search",
+          "They have identical height bounds"
+        ],
+        correctIndex: 0,
+        explanation: "AVL trees have a stricter balance factor bound, resulting in smaller tree height and faster lookup queries."
       }
     ]
   }
 };
+
+export function getQuizForExperiment(expId: string, customTitle?: string): Quiz {
+  if (QUIZZES_DATA[expId]) return QUIZZES_DATA[expId];
+  if (QUIZZES_DATA[`${expId}-quiz`]) return QUIZZES_DATA[`${expId}-quiz`];
+  
+  const found = Object.values(QUIZZES_DATA).find(
+    (q) => q.experimentId === expId || q.id === expId || expId.includes(q.experimentId) || (q.experimentId && q.experimentId.includes(expId))
+  );
+  if (found) return found;
+
+  const displayTitle = customTitle || expId.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+
+  return {
+    id: `${expId}-quiz`,
+    experimentId: expId,
+    title: `${displayTitle} Evaluation Assessment`,
+    description: `Evaluate your core conceptual understanding, time/space complexity analysis, and implementation best practices for ${displayTitle}.`,
+    passingScore: 4,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: `${expId}-q1`,
+        question: `What is the primary algorithmic objective and core mechanism underlying ${displayTitle}?`,
+        options: [
+          "Optimizing asymptotic time and space resource utilization",
+          "Executing arbitrary recursive calls without base cases",
+          "Bypassing runtime bounds verification",
+          "Forcing linear worst-case overhead"
+        ],
+        correctIndex: 0,
+        explanation: `${displayTitle} is designed to solve computational tasks with optimal asymptotic runtime and predictable memory consumption.`
+      },
+      {
+        id: `${expId}-q2`,
+        question: `Which data representation or runtime condition is critical for the correct execution of ${displayTitle}?`,
+        options: [
+          "Preserving structural invariants and boundary termination criteria",
+          "Allowing unrestricted memory leaks",
+          "Unbounded thread contention",
+          "Ignoring array index bounds"
+        ],
+        correctIndex: 0,
+        explanation: "Correctness requires adhering to strict boundary checks, loop invariants, and valid pointer references."
+      },
+      {
+        id: `${expId}-q3`,
+        question: `What is the typical space complexity profile required for standard iterative implementations of ${displayTitle}?`,
+        options: [
+          "O(1) auxiliary space or O(N) when allocating dynamic structures",
+          "O(N!) factorial memory growth",
+          "O(2^N) exponential auxiliary stack",
+          "Unlimited dynamically expanding cache"
+        ],
+        correctIndex: 0,
+        explanation: "In-place or iterative algorithms typically maintain O(1) auxiliary variables, or O(N) when explicit buffers are allocated."
+      },
+      {
+        id: `${expId}-q4`,
+        question: `How are edge cases (such as empty inputs, null pointers, or single-element datasets) handled in ${displayTitle}?`,
+        options: [
+          "Explicit guard clauses and conditional base-case validation",
+          "Silent process termination",
+          "Raising unhandled runtime exceptions",
+          "Bypassing edge condition handling"
+        ],
+        correctIndex: 0,
+        explanation: "Robust implementations include front-loaded validation for null values, empty collections, and zero or single-item bounds."
+      },
+      {
+        id: `${expId}-q5`,
+        question: `In modern software engineering, why is ${displayTitle} widely applied in real-world systems?`,
+        options: [
+          "It provides predictable performance guarantees and clean modular design",
+          "It is incompatible with standard hardware architectures",
+          "It prevents deterministic testing",
+          "It increases codebase fragility"
+        ],
+        correctIndex: 0,
+        explanation: "Mastering fundamental algorithmic primitives enables software engineers to build scalable, high-throughput systems."
+      }
+    ]
+  };
+}
+

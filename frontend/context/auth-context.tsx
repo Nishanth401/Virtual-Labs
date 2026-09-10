@@ -19,11 +19,19 @@ interface AuthContextType {
   user: User | null;
   student: StudentProfile | null;
   studentProfile: StudentProfile | null;
+  isProfileComplete: boolean;
   loading: boolean;
   signInWithEmail: (email: string, pass: string, regNo?: string) => Promise<{ email: string; emailVerified: boolean }>;
   signUpWithEmail: (email: string, pass: string, name?: string, regNo?: string) => Promise<{ email: string; emailVerified: boolean }>;
   updateStudentRegisterNumber: (regNo: string, name?: string) => Promise<void>;
   updateStudentName: (name: string) => Promise<void>;
+  completeStudentProfile: (details: {
+    name: string;
+    registerNumber: string;
+    year: string;
+    className: string;
+    department?: string;
+  }) => Promise<void>;
   loginWithRegisterNumber: (regNoOrEmail: string, pass: string) => Promise<{ email: string; emailVerified: boolean }>;
   registerWithRegisterNumber: (
     name: string,
@@ -93,19 +101,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session?.user) {
         await handleUserSession(session.user);
-      } else {
-        setUser(null);
-        setStudentProfile(null);
-        if (typeof window !== "undefined") {
-          localStorage.removeItem("vlab_auth_token");
-        }
         checkLocalFallback();
       }
       setLoading(false);
     });
 
+    // Listen to storage events for student form submissions
+    const handleStorageChange = () => {
+      checkLocalFallback();
+    };
+    if (typeof window !== "undefined") {
+      window.addEventListener("storage", handleStorageChange);
+    }
+
     return () => {
       subscription.unsubscribe();
+      if (typeof window !== "undefined") {
+        window.removeEventListener("storage", handleStorageChange);
+      }
     };
   }, []);
 
@@ -137,9 +150,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       lastActive: new Date().toISOString()
     };
 
-    const existing = await getStudentProfileFromDb(currentUser.id);
+    let existing: StudentProfile | null = null;
+    try {
+      existing = await getStudentProfileFromDb(currentUser.id);
+    } catch {
+      // fallback
+    }
+
+    const isProfileAlreadyCompleted = Boolean(
+      existing?.profileCompleted || (
+        existing?.registerNumber &&
+        !existing.registerNumber.startsWith("STUDENT") &&
+        existing?.className &&
+        existing?.year
+      )
+    );
+
     if (existing) {
-      setStudentProfile(existing);
+      setStudentProfile({
+        ...existing,
+        profileCompleted: isProfileAlreadyCompleted
+      });
     } else {
       await saveStudentProfileToDb(defaultProfile);
       setStudentProfile(defaultProfile);
@@ -148,7 +179,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const checkLocalFallback = () => {
     if (typeof window !== "undefined") {
+      const active = localStorage.getItem("vlab_active_student");
       const local = localStorage.getItem("vsb_student_profile_data");
+      if (active) {
+        try {
+          const act = JSON.parse(active);
+          setStudentProfile({
+            uid: `stu_${act.regNo || "active"}`,
+            name: act.name,
+            registerNumber: act.regNo,
+            department: act.department || "Artificial Intelligence & Data Science",
+            year: act.year || "3rd Year",
+            className: act.className || "Section A",
+            yearSemester: `${act.year || "3rd Year"} / ${act.className || "Section A"}`,
+            collegeSlug: act.collegeSlug,
+            collegeName: act.collegeName,
+            profileCompleted: true,
+            email: `${(act.regNo || "student").toLowerCase()}@college.edu`,
+            completedExperiments: ["bubble-sort", "stack-operations"],
+            completedProblems: [],
+            starredProblems: [],
+            problemNotes: {},
+            quizScores: {},
+            feedbacks: {},
+            createdAt: act.timestamp || new Date().toISOString(),
+            lastActive: new Date().toISOString(),
+          });
+          return;
+        } catch {}
+      }
       if (local) {
         try {
           setStudentProfile(JSON.parse(local));
@@ -418,17 +477,88 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await saveProblemNoteInDb(studentProfile.uid, problemId, note);
   };
 
+  const completeStudentProfile = async (details: {
+    name: string;
+    registerNumber: string;
+    year: string;
+    className: string;
+    department?: string;
+  }) => {
+    setLoading(true);
+    try {
+      const cleanRegNo = details.registerNumber.trim().toUpperCase();
+      const cleanName = details.name.trim();
+      const cleanYear = details.year.trim();
+      const cleanClass = details.className.trim();
+      const dept = details.department || studentProfile?.department || "Artificial Intelligence & Data Science";
+      const currentUid = user?.uid || studentProfile?.uid || "";
+      const email = user?.email || studentProfile?.email || "";
+
+      if (!currentUid) throw new Error("No active student session. Please sign in with Google first.");
+
+      const uniqueCheck = await verifyEmailAndRegNoUnique(email, cleanRegNo, currentUid);
+      if (!uniqueCheck.regNoUnique) {
+        throw new Error("This Register Number is already registered with another student account.");
+      }
+
+      const updated: StudentProfile = {
+        ...(studentProfile || {
+          uid: currentUid,
+          email,
+          completedExperiments: ["bubble-sort", "stack-operations"],
+          completedProblems: [],
+          starredProblems: [],
+          problemNotes: {},
+          quizScores: {},
+          feedbacks: {},
+          createdAt: new Date().toISOString(),
+        }),
+        uid: currentUid,
+        name: cleanName,
+        registerNumber: cleanRegNo,
+        email,
+        department: dept,
+        year: cleanYear,
+        className: cleanClass,
+        yearSemester: `${cleanYear} / ${cleanClass}`,
+        profileCompleted: true,
+        lastActive: new Date().toISOString()
+      };
+
+      setStudentProfile(updated);
+      await saveStudentProfileToDb(updated);
+      if (typeof window !== "undefined") {
+        localStorage.setItem(`vlab_student_${currentUid}`, JSON.stringify(updated));
+        localStorage.setItem("vsb_student_profile_data", JSON.stringify(updated));
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const isProfileComplete = Boolean(
+    studentProfile?.profileCompleted || (
+      studentProfile?.registerNumber &&
+      !studentProfile.registerNumber.startsWith("STUDENT") &&
+      studentProfile?.className &&
+      studentProfile?.year &&
+      studentProfile?.name
+    )
+  );
+
   return (
     <AuthContext.Provider
       value={{
         user,
         student: studentProfile,
         studentProfile,
+        isProfileComplete,
         loading,
         signInWithEmail,
         signUpWithEmail,
         updateStudentRegisterNumber,
         updateStudentName,
+        completeStudentProfile,
         loginWithRegisterNumber,
         registerWithRegisterNumber,
         loginWithGoogle,

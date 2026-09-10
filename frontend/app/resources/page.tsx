@@ -7,22 +7,16 @@ import { RESOURCES_DATA, ResourceItem } from "@/data/resources";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, Search, Download, FolderOpen, Video, Code, BookOpen, Layers } from "lucide-react";
+import { FileText, Search, Download, FolderOpen, ExternalLink, BookOpen, Sparkles, GraduationCap, CheckCircle2 } from "lucide-react";
 
 export default function ResourcesPage() {
   const [selectedType, setSelectedType] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   const resourceTypes = [
-    "all",
-    "Notes",
-    "Videos",
-    "Papers",
-    "Code",
-    "PPTs",
-    "Books",
-    "Lab Manual",
-    "Assignments",
+    { key: "all", label: "All Resources" },
+    { key: "Lab Material", label: "Lab Material (GFG / W3Schools)" },
+    { key: "Lab Manual", label: "Lab Manual" },
   ];
 
   const filteredResources = RESOURCES_DATA.filter((res) => {
@@ -30,22 +24,38 @@ export default function ResourcesPage() {
     const matchesSearch =
       res.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       res.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      res.format.toLowerCase().includes(searchQuery.toLowerCase());
+      res.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      res.provider.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (res.tags && res.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase())));
     return matchesType && matchesSearch;
   });
 
-  const getFormatIcon = (format: string) => {
-    switch (format) {
-      case "Video":
-        return <Video className="h-4 w-4 text-rose-500" />;
-      case "Python":
-        return <Code className="h-4 w-4 text-emerald-500" />;
-      case "Book":
-        return <BookOpen className="h-4 w-4 text-cyan-500" />;
-      case "PPT":
-        return <Layers className="h-4 w-4 text-amber-500" />;
+  const getProviderBadge = (provider: string) => {
+    switch (provider) {
+      case "GeeksforGeeks":
+        return (
+          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+            GeeksforGeeks
+          </span>
+        );
+      case "W3Schools":
+        return (
+          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/30">
+            W3Schools
+          </span>
+        );
+      case "Virtual Labs Manual":
+        return (
+          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-primary/10 text-primary border border-primary/30">
+            Virtual Labs Manual
+          </span>
+        );
       default:
-        return <FileText className="h-4 w-4 text-primary" />;
+        return (
+          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-muted text-muted-foreground border">
+            {provider}
+          </span>
+        );
     }
   };
 
@@ -54,82 +64,115 @@ export default function ResourcesPage() {
       <Navbar />
       <main className="flex-1 container max-w-7xl mx-auto px-4 sm:px-6 py-10">
         {/* Header Banner */}
-        <div className="mb-10 text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold mb-3">
-            <FolderOpen className="h-4 w-4" />
-            <span>Official Academic Resource Repository</span>
+        <div className="mb-10 text-center max-w-3xl mx-auto space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold">
+            <GraduationCap className="h-4 w-4" />
+            <span>Curated Academic Repository</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground font-heading">
-            Department <span className="bg-gradient-to-r from-primary to-cyan-500 bg-clip-text text-transparent">Resource Vault</span>
+            Department <span className="bg-gradient-to-r from-primary via-rose-500 to-indigo-500 bg-clip-text text-transparent">Resource Vault</span>
           </h1>
-          <p className="mt-3 text-muted-foreground text-sm sm:text-base leading-relaxed">
-            Instant digital access to curated lecture notes, university exam question banks with answer keys, lab manuals, code notebooks, and textbook references.
+          <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+            Direct access to verified laboratory study materials from <strong>GeeksforGeeks</strong>, <strong>W3Schools</strong>, official documentation, and downloadable virtual lab manuals.
           </p>
         </div>
 
         {/* Filter Toolbar */}
-        <div className="bg-card/70 backdrop-blur-md border rounded-2xl p-4 sm:p-6 mb-8 space-y-4 shadow-sm">
+        <div className="bg-card/80 backdrop-blur-md border border-border rounded-2xl p-5 mb-8 space-y-4 shadow-sm">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search by subject, topic title, or file format (e.g., Deep Learning, SVM, Solved Question Paper)..."
+              placeholder="Search by subject, topic (e.g. Stack, Semaphores, SQL Joins, A* Search, AWS, Python)..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 text-sm bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground"
+              className="w-full pl-10 pr-4 py-2.5 text-sm bg-background border border-border/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/40 text-foreground shadow-xs"
             />
           </div>
 
-          <div className="flex flex-wrap gap-2 pt-2">
+          <div className="flex flex-wrap items-center gap-2 pt-1">
             {resourceTypes.map((type) => (
               <Button
-                key={type}
-                variant={selectedType === type ? "default" : "outline"}
+                key={type.key}
+                variant={selectedType === type.key ? "default" : "outline"}
                 size="sm"
-                onClick={() => setSelectedType(type)}
-                className="text-xs"
+                onClick={() => setSelectedType(type.key)}
+                className={`text-xs font-bold transition-all ${
+                  selectedType === type.key
+                    ? "bg-primary text-white shadow-xs"
+                    : "hover:bg-muted"
+                }`}
               >
-                {type === "all" ? "All Formats" : type}
+                {type.label}
               </Button>
             ))}
+            <span className="ml-auto text-xs text-muted-foreground font-mono">
+              Showing {filteredResources.length} items
+            </span>
           </div>
         </div>
 
         {/* Resources Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filteredResources.map((res, idx) => (
-            <Card key={idx} className="flex flex-col h-full hover:shadow-md transition-all hover:border-primary/40">
-              <CardHeader className="pb-3">
+            <Card
+              key={idx}
+              className="flex flex-col h-full border border-border bg-card/90 hover:border-primary/50 hover:shadow-md transition-all group"
+            >
+              <CardHeader className="p-5 pb-3 space-y-3">
                 <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <span className="p-2 rounded-lg bg-muted border">
-                      {getFormatIcon(res.format)}
+                  <div className="space-y-1">
+                    <span className="text-[11px] font-bold text-primary tracking-wide uppercase font-mono">
+                      {res.subject}
                     </span>
-                    <div>
-                      <div className="text-xs font-bold text-primary">{res.subject}</div>
-                      <div className="text-[10px] text-muted-foreground">
-                        {res.unit === "All" ? "Full Syllabus" : `Unit ${res.unit}`}
-                      </div>
+                    <div className="flex items-center gap-2 pt-0.5">
+                      {getProviderBadge(res.provider)}
                     </div>
                   </div>
-                  <Badge variant="secondary" className="text-[10px]">
-                    {res.format}
+                  <Badge variant="outline" className="text-[10px] font-mono shrink-0">
+                    {res.type}
                   </Badge>
                 </div>
-                <CardTitle className="text-sm font-bold text-foreground font-heading mt-3 leading-snug line-clamp-2">
+
+                <CardTitle className="text-sm font-bold text-foreground font-heading leading-snug line-clamp-2 group-hover:text-primary transition-colors">
                   {res.title}
                 </CardTitle>
+
+                <CardDescription className="text-xs text-muted-foreground leading-relaxed line-clamp-3">
+                  {res.description}
+                </CardDescription>
               </CardHeader>
-              <CardContent className="flex-1 flex flex-col justify-between pt-0 space-y-4">
-                <div className="flex items-center justify-between text-[11px] text-muted-foreground pt-3 border-t border-border/50">
-                  <span className="flex items-center gap-1">
-                    <Download className="h-3 w-3" /> {res.downloadCount || 100}+ downloads
+
+              <CardContent className="p-5 pt-0 flex-1 flex flex-col justify-end space-y-4">
+                {res.tags && res.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 pt-2">
+                    {res.tags.slice(0, 3).map((tag, tIdx) => (
+                      <span key={tIdx} className="text-[10px] px-2 py-0.5 rounded-md bg-muted/60 text-muted-foreground font-mono">
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between text-[11px] text-muted-foreground pt-3 border-t border-border/60">
+                  <span className="flex items-center gap-1 font-mono">
+                    <BookOpen className="h-3.5 w-3.5 text-primary" /> {res.downloadCount || 100}+ views
                   </span>
-                  <a href={res.fileUrl || "#"} target="_blank" rel="noopener noreferrer">
-                    <Button size="sm" variant="default" className="text-xs h-7 gap-1 bg-primary hover:bg-primary/90 text-white">
-                      <Download className="h-3 w-3" /> Download
-                    </Button>
-                  </a>
+
+                  {res.type === "Lab Manual" ? (
+                    <a href={res.fileUrl || "#"} target="_blank" rel="noopener noreferrer">
+                      <Button size="sm" variant="default" className="text-xs h-8 gap-1.5 bg-primary hover:bg-primary/90 text-white font-bold">
+                        <Download className="h-3.5 w-3.5" /> Lab Manual (PDF)
+                      </Button>
+                    </a>
+                  ) : (
+                    <a href={res.fileUrl} target="_blank" rel="noopener noreferrer">
+                      <Button size="sm" variant="default" className="text-xs h-8 gap-1.5 bg-primary hover:bg-primary/90 text-white font-bold shadow-xs">
+                        <span>Open Material</span>
+                        <ExternalLink className="h-3 w-3" />
+                      </Button>
+                    </a>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -137,10 +180,10 @@ export default function ResourcesPage() {
         </div>
 
         {filteredResources.length === 0 && (
-          <div className="text-center py-16 bg-card border rounded-2xl p-8">
-            <FolderOpen className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-            <h3 className="text-lg font-bold text-foreground font-heading">No resources match your search</h3>
-            <p className="text-sm text-muted-foreground mt-1">Try clearing your filters or search keywords.</p>
+          <div className="text-center py-16 bg-card border rounded-2xl p-8 space-y-3">
+            <FolderOpen className="h-10 w-10 text-muted-foreground mx-auto" />
+            <h3 className="text-lg font-bold text-foreground font-heading">No matching resources found</h3>
+            <p className="text-xs text-muted-foreground">Try clearing your search query or selecting &apos;All Resources&apos;.</p>
           </div>
         )}
       </main>
