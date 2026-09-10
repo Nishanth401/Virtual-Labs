@@ -24,9 +24,9 @@ const NAV_ITEMS = [
   { name: "Labs", href: "/labs" },
   { name: "DSA Visualizer", href: "/dsa-visualization" },
   { name: "Curriculum", href: "/courses" },
-  { name: "College Clones", href: "/colleges" },
+  { name: "ML Track", href: "/labs/ai-machine-learning" },
   { name: "Resources", href: "/resources" },
-  { name: "Admin", href: "/admin" },
+  { name: "Admin Portal", href: "/admin" },
 ];
 
 const SEARCH_ITEMS = [
