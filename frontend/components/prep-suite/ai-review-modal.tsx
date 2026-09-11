@@ -11,7 +11,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  Sparkles,
   Award,
   ShieldCheck,
   AlertTriangle,
@@ -53,7 +52,7 @@ export function AiReviewModal({
           <div className="flex items-center justify-between border-b border-border/60 pb-3">
             <div className="flex items-center gap-2">
               <div className="p-2 rounded-xl bg-primary/10 text-primary">
-                <Sparkles className="h-5 w-5" />
+                <Zap className="h-5 w-5" />
               </div>
               <div>
                 <DialogTitle className="text-lg font-bold font-heading text-foreground">

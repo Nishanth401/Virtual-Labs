@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
-  Sparkles,
+  Network,
   Shuffle,
   Filter,
   BarChart3,
@@ -104,7 +104,7 @@ export function ProbabilisticVisualizer({ initialModule = "bloom-filter" }: Prop
             onClick={() => setActiveModule("randomized-mst")}
             className="h-8 text-xs font-semibold rounded-lg"
           >
-            <Sparkles className="h-3.5 w-3.5 mr-1" />
+            <Network className="h-3.5 w-3.5 mr-1" />
             Rand MST
           </Button>
           <Button
@@ -305,7 +305,7 @@ export function ProbabilisticVisualizer({ initialModule = "bloom-filter" }: Prop
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-xl font-bold flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-cyan-500" />
+                  <Network className="h-5 w-5 text-cyan-500" />
                   Randomized MST (Karger-Klein-Tarjan)
                 </CardTitle>
                 <CardDescription>

@@ -25,8 +25,7 @@ import {
   Zap,
   Split,
   Copy,
-  Check,
-  Sparkles
+  Check
 } from "lucide-react";
 import { AiReviewModal } from "@/components/prep-suite/ai-review-modal";
 import { evaluateMachineCodingCode, CodeReviewResult } from "@/lib/ai-evaluation-engine";
@@ -719,7 +718,7 @@ export function MachineCodingStudio() {
                       onClick={handleRunAiReview}
                       className="h-7 text-xs font-mono gap-1.5 bg-primary text-primary-foreground font-bold shadow-xs"
                     >
-                      <Sparkles className="h-3.5 w-3.5" />
+                      <Zap className="h-3.5 w-3.5" />
                       <span>Run AI Review</span>
                     </Button>
                     <Button

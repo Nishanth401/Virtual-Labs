@@ -32,14 +32,14 @@ export function CodeViewer({
     <div className="flex flex-col h-full rounded-2xl border border-border/80 bg-slate-950 text-slate-100 overflow-hidden shadow-xs">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-2.5 bg-slate-900 border-b border-slate-800">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           <Code2 className="h-4 w-4 text-blue-400" />
-          <span className="text-xs font-mono font-bold text-slate-200 uppercase tracking-wider">
+          <span className="text-xs font-sans font-bold text-slate-200 uppercase tracking-wider">
             {language} Recursive Function
           </span>
-          <Badge variant="outline" className="text-[10px] font-mono border-blue-500/30 text-blue-400 bg-blue-500/10">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-sans font-semibold border border-blue-500/30 text-blue-400 bg-blue-500/10 shadow-2xs">
             AST Monitored
-          </Badge>
+          </span>
         </div>
 
         <button

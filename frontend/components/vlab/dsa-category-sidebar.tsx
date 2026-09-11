@@ -85,11 +85,11 @@ export function DSACategorySidebar({
             return (
               <div key={category.id} className="space-y-2">
                 <div className="flex items-center justify-between px-2 py-1">
-                  <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase font-mono tracking-wider">
+                  <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground font-sans tracking-tight">
                     <Icon className="h-4 w-4 text-primary" />
                     <span>{category.name}</span>
                   </div>
-                  <span className="text-xs text-muted-foreground font-mono font-bold bg-muted px-2 py-0.5 rounded">
+                  <span className="text-xs text-muted-foreground font-sans font-semibold bg-muted px-2 py-0.5 rounded-md">
                     {categoryCompletedCount}/{category.topics.length}
                   </span>
                 </div>
@@ -120,17 +120,16 @@ export function DSACategorySidebar({
                         </div>
 
                         {topic.visualizerType && (
-                          <Badge
-                            variant="outline"
+                          <span
                             className={cn(
-                              "text-[10px] px-1.5 py-0.5 h-4.5 shrink-0 font-mono font-bold",
+                              "text-[10px] px-1.5 py-0.5 rounded font-sans font-semibold tracking-wide shrink-0 border",
                               isActive
-                                ? "bg-white/20 text-white border-white/40"
+                                ? "bg-white/20 text-white border-white/30"
                                 : "bg-primary/10 text-primary border-primary/20"
                             )}
                           >
                             Sim
-                          </Badge>
+                          </span>
                         )}
                       </button>
                     );

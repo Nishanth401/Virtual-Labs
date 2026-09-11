@@ -37,7 +37,6 @@ import {
   Layers,
   BookOpen,
   Send,
-  Sparkles,
   Terminal
 } from "lucide-react";
 

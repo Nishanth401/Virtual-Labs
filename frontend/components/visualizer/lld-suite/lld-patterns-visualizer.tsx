@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import {
   Boxes,
   Layers,
-  Sparkles,
   Workflow,
   Share2,
   ShieldCheck,
@@ -106,7 +105,7 @@ export function LLDPatternsVisualizer({ initialModule = "strategy-pattern" }: Pr
             onClick={() => setActiveModule("decorator-pattern")}
             className="h-8 text-xs font-semibold rounded-lg"
           >
-            <Sparkles className="h-3.5 w-3.5 mr-1" />
+            <Layers className="h-3.5 w-3.5 mr-1" />
             Decorator
           </Button>
           <Button
@@ -316,7 +315,7 @@ export function LLDPatternsVisualizer({ initialModule = "strategy-pattern" }: Pr
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-xl font-bold flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-pink-500" />
+                  <Layers className="h-5 w-5 text-pink-500" />
                   Decorator Pattern: Dynamic Wrapping
                 </CardTitle>
                 <CardDescription>

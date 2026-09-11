@@ -12,8 +12,7 @@ import {
   Share2,
   Lock,
   Unlock,
-  Cpu,
-  Sparkles
+  Cpu
 } from "lucide-react";
 
 export type CryptoModule =

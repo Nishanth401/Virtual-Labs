@@ -32,7 +32,6 @@ import {
   Award,
   HelpCircle,
   FileQuestion,
-  Sparkles,
   ChevronRight,
   Code2,
   BrainCircuit,
@@ -94,10 +93,12 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2.5 mb-2">
-                  <Badge variant="outline" className="text-xs sm:text-sm text-primary border-primary/30 font-mono font-bold px-3 py-1">
-                    {lab.code} • {lab.shortTitle}
-                  </Badge>
-                  <span className="text-xs sm:text-sm text-muted-foreground font-mono">• {lab.institute}</span>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs sm:text-sm font-semibold tracking-wide shadow-2xs">
+                    <span>{lab.shortTitle}</span>
+                    <span className="w-1 h-1 rounded-full bg-primary/50" />
+                    <span className="font-mono text-xs sm:text-[13px] font-bold opacity-90">{lab.code}</span>
+                  </div>
+                  <span className="text-xs sm:text-sm text-muted-foreground font-medium">• {lab.institute}</span>
                 </div>
                 <h1 className="text-2xl sm:text-4xl font-black text-foreground font-heading tracking-tight">
                   {lab.name}
@@ -793,7 +794,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             </Badge>
                           </div>
                           <CardTitle className="text-xl font-bold text-primary font-heading flex items-center gap-2">
-                            <Sparkles className="h-5 w-5 text-amber-500" />
+                            <Award className="h-5 w-5 text-amber-500" />
                             <span>{lab.name} — Experiment Knowledge Quizzes</span>
                           </CardTitle>
                           <CardDescription className="text-xs mt-1">

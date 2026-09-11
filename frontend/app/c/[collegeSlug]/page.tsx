@@ -29,7 +29,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Building2,
   GraduationCap,
-  Sparkles,
   BookOpen,
   FileText,
   Video,
@@ -301,7 +300,7 @@ export default function CollegePortalPage({ params }: CollegePortalPageProps) {
               <Card className="border border-border/80 bg-card/70 backdrop-blur-md shadow-sm">
                 <CardHeader className="pb-3">
                   <div className="flex items-center gap-2 text-primary text-xs font-bold uppercase font-mono">
-                    <Sparkles className="h-4 w-4 text-amber-500" />
+                    <GraduationCap className="h-4 w-4 text-amber-500" />
                     <span>Curriculum & Lab Integration</span>
                   </div>
                   <CardTitle className="text-xl font-bold font-heading text-foreground">

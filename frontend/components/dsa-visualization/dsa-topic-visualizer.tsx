@@ -6,7 +6,6 @@ import { DSATopic } from "@/data/dsa-topic-data";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { 
-  Sparkles, 
   ExternalLink, 
   Layers, 
   Tv, 

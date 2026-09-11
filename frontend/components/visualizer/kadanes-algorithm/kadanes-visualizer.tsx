@@ -14,8 +14,7 @@ import {
   TrendingUp,
   Info,
   Code2,
-  Layers,
-  Sparkles
+  Layers
 } from "lucide-react";
 
 interface ExecutionStep {

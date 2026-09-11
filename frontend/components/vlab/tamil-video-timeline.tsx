@@ -12,7 +12,6 @@ import {
   ChevronLeft,
   ChevronRight,
   RotateCcw,
-  Sparkles,
   Layers,
   BookOpen
 } from "lucide-react";

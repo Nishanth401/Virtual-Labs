@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { SortingStep } from "@/hooks/use-sorting";
 import { soundFx } from "@/lib/sound-fx";
-import { Volume2, VolumeX, BarChart3, Clock, Database, Layers, Sparkles } from "lucide-react";
+import { Volume2, VolumeX, BarChart3, Clock, Database, Layers } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface SortingDisplayProps {

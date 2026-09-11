@@ -16,7 +16,7 @@ import {
   Layers,
   ArrowRight,
   Info,
-  Sparkles
+  Zap
 } from "lucide-react";
 
 interface ExecutionStep {
@@ -435,7 +435,7 @@ export function PrefixSumVisualizer() {
                 <div className="p-6 rounded-2xl bg-muted/80 border border-violet-500/40 space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
-                      <Sparkles className="h-4 w-4 text-violet-600 dark:text-violet-400" /> O(1) Range Formula Calculation
+                      <Zap className="h-4 w-4 text-violet-600 dark:text-violet-400" /> O(1) Range Formula Calculation
                     </span>
                     <Badge className="bg-violet-600 text-white font-mono text-xs font-bold">
                       Time Complexity: O(1)

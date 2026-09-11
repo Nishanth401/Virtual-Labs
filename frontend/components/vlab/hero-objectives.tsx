@@ -11,7 +11,6 @@ import {
   Database,
   Network,
   ArrowRight,
-  Sparkles,
   PlayCircle,
   CheckCircle2,
   ExternalLink,

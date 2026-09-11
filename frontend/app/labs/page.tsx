@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, FlaskConical, ArrowRight, Layers, Code2, BrainCircuit, Database, Network, Cpu, Bot, BarChart3, Cloud, Server, Sparkles, Terminal } from "lucide-react";
+import { Search, FlaskConical, ArrowRight, Layers, Code2, BrainCircuit, Database, Network, Cpu, Bot, BarChart3, Cloud, Server, Terminal } from "lucide-react";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Code2,
@@ -21,7 +21,6 @@ const ICON_MAP: Record<string, React.ElementType> = {
   BarChart3,
   Cloud,
   Server,
-  Sparkles,
   Terminal,
 };
 
@@ -84,13 +83,15 @@ export default function LabsCataloguePage() {
                 >
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between gap-2 mb-2">
-                      <div className="flex items-center gap-2">
-                        <div className="p-2 rounded-xl bg-primary/10 text-primary border border-primary/20 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                      <div className="flex items-center gap-2.5">
+                        <div className="p-2 rounded-xl bg-primary/10 text-primary border border-primary/20 group-hover:bg-primary group-hover:text-white transition-colors duration-300 shadow-2xs">
                           <Icon className="h-4 w-4" />
                         </div>
-                        <Badge variant="outline" className="text-xs font-mono font-bold text-primary border-primary/30">
-                          {lab.shortTitle} • {lab.code}
-                        </Badge>
+                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold tracking-wide">
+                          <span>{lab.shortTitle}</span>
+                          <span className="w-1 h-1 rounded-full bg-primary/50" />
+                          <span className="font-mono text-[11px] font-bold opacity-90">{lab.code}</span>
+                        </div>
                       </div>
                     </div>
 
@@ -117,10 +118,10 @@ export default function LabsCataloguePage() {
                       </div>
 
                       <div className="pt-3 border-t border-border/50 flex items-center justify-between">
-                        <span className="text-xs font-mono font-semibold text-foreground flex items-center gap-1.5">
-                          <Layers className="h-3.5 w-3.5 text-primary" />
-                          <span>{lab.experimentsCount} Experiments</span>
-                        </span>
+                        <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-muted/60 border border-border/60 text-xs font-medium text-muted-foreground">
+                          <Layers className="h-3.5 w-3.5 text-primary shrink-0" />
+                          <span><strong className="font-bold text-foreground">{lab.experimentsCount}</strong> Experiments</span>
+                        </div>
 
                         <Button asChild size="sm" className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 font-bold shadow-xs">
                           <Link href={`/labs/${lab.id}`} prefetch={true}>

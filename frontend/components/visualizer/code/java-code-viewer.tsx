@@ -13,7 +13,6 @@ import {
   Download,
   CheckCircle2,
   AlertCircle,
-  Sparkles,
   ArrowRight,
   Trash2,
   Wand2,
@@ -653,7 +652,7 @@ export function JavaCodeViewer({
       {subtitle && (
         <div className="px-4 py-2 bg-[#181818] border-b border-[#2d2d2d] text-xs font-mono text-[#9cdcfe] flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 truncate">
-            <Sparkles className="w-3.5 h-3.5 text-[#ffd700] shrink-0" />
+            <Code2 className="w-3.5 h-3.5 text-[#4ec9b0] shrink-0" />
             <span className="truncate">{subtitle}</span>
           </div>
           <span className="text-[11px] text-[#858585] font-sans hidden md:inline-block">

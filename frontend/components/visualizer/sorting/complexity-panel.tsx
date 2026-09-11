@@ -8,7 +8,7 @@ import {
   Check,
   ThumbsUp,
   ThumbsDown,
-  Sparkles,
+  Activity,
   GitBranch,
   ExternalLink,
   Award
@@ -535,7 +535,7 @@ export function ComplexityPanel({ algorithm }: ComplexityPanelProps) {
               </div>
             </div>
 
-            <Sparkles className="w-4 h-4 text-[#818cf8]" />
+            <Activity className="w-4 h-4 text-[#818cf8]" />
           </button>
 
           {/* TAB 2: MEMORY TAB */}
@@ -563,7 +563,7 @@ export function ComplexityPanel({ algorithm }: ComplexityPanelProps) {
               </div>
             </div>
 
-            <Sparkles className="w-4 h-4 text-[#818cf8]" />
+            <Activity className="w-4 h-4 text-[#818cf8]" />
           </button>
         </div>
 

@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import {
   FileCode,
   Search,
-  Sparkles,
   Play,
   RotateCcw,
   ArrowRight,
@@ -148,7 +147,7 @@ export function StringAlgosVisualizer({ initialModule = "z-algorithm" }: Props) 
             onClick={() => setActiveModule("manachers")}
             className="h-8 text-xs font-semibold rounded-lg"
           >
-            <Sparkles className="h-3.5 w-3.5 mr-1" />
+            <Search className="h-3.5 w-3.5 mr-1" />
             Manacher&apos;s
           </Button>
           <Button
@@ -363,7 +362,7 @@ export function StringAlgosVisualizer({ initialModule = "z-algorithm" }: Props) 
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-xl font-bold flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-amber-500" />
+                  <Search className="h-5 w-5 text-amber-500" />
                   Manacher&apos;s Algorithm: O(N) Palindromic Radius
                 </CardTitle>
                 <CardDescription>

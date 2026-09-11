@@ -18,7 +18,6 @@ import {
   HardDrive,
   ShieldCheck,
   Clock,
-  Sparkles,
   FileCheck,
   QrCode,
   X,

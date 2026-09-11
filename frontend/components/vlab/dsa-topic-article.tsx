@@ -37,10 +37,10 @@ export function DSATopicArticle({
       {/* Top Concise Banner Header */}
       <div className="bg-card/90 backdrop-blur-md border border-border p-6 rounded-2xl shadow-sm space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2 text-sm font-mono text-muted-foreground">
-            <span className="text-primary font-bold">{topic.categoryName}</span>
-            <span>/</span>
-            <span>{topic.title}</span>
+          <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+            <span className="text-primary font-semibold">{topic.categoryName}</span>
+            <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/60 shrink-0" />
+            <span className="text-foreground font-semibold truncate max-w-md">{topic.title}</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -48,7 +48,7 @@ export function DSATopicArticle({
               href={topic.gfgUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline bg-emerald-500/10 px-3.5 py-1.5 rounded-xl border border-emerald-500/20"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline bg-emerald-500/10 px-3.5 py-1.5 rounded-xl border border-emerald-500/20 shadow-2xs"
             >
               <span>GeeksforGeeks</span>
               <ExternalLink className="h-3.5 w-3.5" />
@@ -60,7 +60,7 @@ export function DSATopicArticle({
               onClick={() => onToggleCompleted(topic.id)}
               className={
                 isCompleted
-                  ? "bg-emerald-600 hover:bg-emerald-700 text-white text-xs gap-1.5 font-bold h-8 cursor-pointer"
+                  ? "bg-emerald-600 hover:bg-emerald-700 text-white text-xs gap-1.5 font-bold h-8 cursor-pointer shadow-xs"
                   : "text-xs gap-1.5 h-8 cursor-pointer"
               }
             >
@@ -81,12 +81,22 @@ export function DSATopicArticle({
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
-            <Badge variant="outline" className="text-xs font-mono bg-primary/10 text-primary border-primary/30 font-bold px-3 py-1">
-              {topic.difficulty}
-            </Badge>
-            <Badge variant="outline" className="text-xs font-mono px-3 py-1">
-              <Clock className="h-3.5 w-3.5 mr-1.5 text-muted-foreground" /> {topic.estimatedTime}
-            </Badge>
+            <div
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-wide border shadow-2xs ${
+                topic.difficulty === "Easy" || topic.difficulty === "Beginner"
+                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+                  : topic.difficulty === "Medium" || topic.difficulty === "Intermediate"
+                  ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30"
+                  : "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30"
+              }`}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-current opacity-80" />
+              <span>{topic.difficulty}</span>
+            </div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-muted/60 text-muted-foreground border border-border/60 text-xs font-medium shadow-2xs">
+              <Clock className="h-3.5 w-3.5 text-muted-foreground/80 shrink-0" />
+              <span>{topic.estimatedTime}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -97,7 +107,7 @@ export function DSATopicArticle({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {topic.keyPoints.map((pt, idx) => (
             <div key={idx} className="p-4 rounded-2xl border border-border/80 bg-card/80 flex items-start gap-3 shadow-xs">
-              <span className="flex items-center justify-center h-6 w-6 rounded-full bg-primary/10 text-primary font-bold text-xs shrink-0 mt-0.5 font-mono">
+              <span className="flex items-center justify-center h-6 w-6 rounded-full bg-primary/10 text-primary font-bold text-xs shrink-0 mt-0.5 font-sans">
                 {idx + 1}
               </span>
               <p className="text-sm text-muted-foreground leading-relaxed">
@@ -110,7 +120,7 @@ export function DSATopicArticle({
         {/* Asymptotic Complexity Quick Strip */}
         <Card className="border-border bg-card/80 p-5 space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold font-mono text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+            <span className="text-xs font-bold font-sans text-muted-foreground uppercase tracking-wider flex items-center gap-2">
               <Zap className="h-4 w-4 text-amber-500" /> Time &amp; Space Complexity Summary
             </span>
           </div>
@@ -134,7 +144,7 @@ export function DSATopicArticle({
                 Coding Practice Problems ({topic.practiceProblems.length})
               </CardTitle>
             </div>
-            <Badge variant="outline" className="text-xs font-mono bg-amber-500/10 text-amber-500 border-amber-500/30 font-bold px-2.5 py-0.5">
+            <Badge variant="outline" className="text-xs font-sans bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30 font-semibold px-2.5 py-0.5 rounded-full">
               LeetCode &amp; GFG
             </Badge>
           </div>

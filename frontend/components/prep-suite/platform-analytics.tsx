@@ -11,7 +11,6 @@ import {
   CheckCircle2,
   TrendingUp,
   Award,
-  Sparkles,
   Layers,
   ArrowRight,
   Activity,
@@ -174,7 +173,7 @@ export function PlatformAnalytics() {
                 <span className="text-lg font-bold font-heading text-foreground mt-1 block">High-Level System Design</span>
                 <span className="text-[11px] text-emerald-400 font-mono mt-0.5 block">92% score • Consistent Hashing &amp; Raft</span>
               </div>
-              <Sparkles className="h-10 w-10 text-primary/40" />
+              <Award className="h-10 w-10 text-primary/40" />
             </Card>
 
             <Card className="p-5 bg-card border-border/80 rounded-2xl shadow-xs flex items-center justify-between">

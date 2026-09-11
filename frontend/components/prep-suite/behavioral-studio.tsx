@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   MessageSquare,
-  Sparkles,
   BookOpen,
   CheckCircle2,
   AlertCircle,
@@ -173,7 +172,7 @@ export function BehavioralStudio() {
             onClick={() => setActiveTab("star-builder")}
             className="h-8 text-xs font-semibold rounded-lg"
           >
-            <Sparkles className="h-3.5 w-3.5 mr-1" />
+            <Target className="h-3.5 w-3.5 mr-1" />
             Interactive STAR Builder
           </Button>
           <Button
@@ -316,7 +315,7 @@ export function BehavioralStudio() {
                     onClick={handleRunAiReview}
                     className="gap-1.5 font-bold text-xs h-9 border-primary/40 text-primary hover:bg-primary/10"
                   >
-                    <Sparkles className="h-3.5 w-3.5" />
+                    <Zap className="h-3.5 w-3.5" />
                     AI Rubric Evaluation
                   </Button>
                 </div>

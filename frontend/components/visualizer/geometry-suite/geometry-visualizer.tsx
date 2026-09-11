@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   Compass,
-  Sparkles,
   Layers,
   Activity,
   Play,
@@ -89,7 +88,7 @@ export function ComputationalGeometryVisualizer({ initialModule = "graham-scan" 
             onClick={() => setActiveModule("jarvis-march")}
             className="h-8 text-xs font-semibold rounded-lg"
           >
-            <Sparkles className="h-3.5 w-3.5 mr-1" />
+            <Compass className="h-3.5 w-3.5 mr-1" />
             Jarvis March
           </Button>
           <Button
@@ -191,7 +190,7 @@ export function ComputationalGeometryVisualizer({ initialModule = "graham-scan" 
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-xl font-bold flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-amber-500" />
+                  <Compass className="h-5 w-5 text-amber-500" />
                   Convex Hull: Jarvis March (Gift Wrapping)
                 </CardTitle>
                 <CardDescription>

@@ -13,7 +13,6 @@ import {
   BrainCircuit,
   Database,
   Network,
-  Sparkles,
   Award,
   ShieldCheck,
   Github,
@@ -161,23 +160,10 @@ export function Footer() {
         </div>
 
         {/* Bottom Copyright Strip */}
-        <div className="pt-10 mt-10 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 font-sans">
+        <div className="pt-10 mt-10 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-center text-center gap-4 text-xs text-slate-500 font-sans">
           <p>
             &copy; {new Date().getFullYear()} Virtual Laboratories Platform. Designed &amp; Developed with ❤️ for V.S.B. Engineering College.
           </p>
-          <div className="flex items-center gap-4">
-            <Link href="/admin" className="hover:text-slate-300 transition-colors">
-              Admin Portal
-            </Link>
-            <span>•</span>
-            <Link href="/dashboard" className="hover:text-slate-300 transition-colors">
-              Student Dashboard
-            </Link>
-            <span>•</span>
-            <Link href="/labs" className="hover:text-slate-300 transition-colors">
-              All Laboratories
-            </Link>
-          </div>
         </div>
       </div>
     </footer>

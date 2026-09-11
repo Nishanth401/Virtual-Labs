@@ -58,7 +58,6 @@ import {
   Filter,
   Eye,
   LogOut,
-  Sparkles,
   GraduationCap,
   FileSpreadsheet,
   RefreshCw,
@@ -464,7 +463,7 @@ function AdminPageContent() {
                     }}
                     className="w-full h-9 text-xs border-dashed border-rose-500/40 text-rose-600 hover:text-rose-700 hover:bg-rose-500/10 rounded-xl font-semibold gap-1.5 cursor-pointer"
                   >
-                    <Sparkles className="h-3.5 w-3.5 text-rose-500" />
+                    <Key className="h-3.5 w-3.5 text-rose-500" />
                     <span>Instant Admin Access (Auto-fill &amp; Login)</span>
                   </Button>
                 </div>

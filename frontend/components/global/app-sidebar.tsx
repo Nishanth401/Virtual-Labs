@@ -32,7 +32,6 @@ import {
   Table,
   HardDrive,
   Sliders,
-  Sparkles,
   Server,
   Workflow,
   Compass,
@@ -151,7 +150,7 @@ const dynamicProgrammingGreedy = [
   { name: "String DP (LCS & Edit)", url: "/visualizer/string-dp", icon: Code2, description: "LCS & Levenshtein distance" },
   { name: "Advanced DP Patterns", url: "/visualizer/advanced-dp", icon: Layers, description: "Tree DP & bitmask TSP" },
   { name: "Activity Selection (Greedy)", url: "/visualizer/greedy-activity", icon: Zap, description: "Greedy interval scheduling" },
-  { name: "Advanced Greedy Patterns", url: "/visualizer/advanced-greedy", icon: Sparkles, description: "Merge intervals & jump game" },
+  { name: "Advanced Greedy Patterns", url: "/visualizer/advanced-greedy", icon: TrendingUp, description: "Merge intervals & jump game" },
 ];
 
 // Phase 6: Applied Systems, LLD & Engineering (7)
