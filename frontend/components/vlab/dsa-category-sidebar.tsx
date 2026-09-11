@@ -120,17 +120,16 @@ export function DSACategorySidebar({
                         </div>
 
                         {topic.visualizerType && (
-                          <Badge
-                            variant="outline"
+                          <span
                             className={cn(
-                              "text-[10px] px-1.5 py-0.5 h-4.5 shrink-0 font-mono font-bold",
+                              "text-[10px] px-1.5 py-0.5 rounded font-sans font-semibold tracking-wide shrink-0 border",
                               isActive
-                                ? "bg-white/20 text-white border-white/40"
+                                ? "bg-white/20 text-white border-white/30"
                                 : "bg-primary/10 text-primary border-primary/20"
                             )}
                           >
                             Sim
-                          </Badge>
+                          </span>
                         )}
                       </button>
                     );
