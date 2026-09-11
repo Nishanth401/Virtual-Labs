@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Home, ArrowLeft, BookOpen, Layers, Sparkles } from "lucide-react";
+import { Home, ArrowLeft, BookOpen, Layers } from "lucide-react";
 import { Navbar } from "@/components/navigation/navbar";
 import { Footer } from "@/components/navigation/footer";
 
@@ -14,7 +14,7 @@ export default function NotFound() {
       <main className="flex-1 flex items-center justify-center py-16 px-4">
         <div className="max-w-md w-full text-center space-y-6">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold">
-            <Sparkles className="h-3.5 w-3.5" />
+            <BookOpen className="h-3.5 w-3.5" />
             <span>Virtual Labs Academic Portal</span>
           </div>
 

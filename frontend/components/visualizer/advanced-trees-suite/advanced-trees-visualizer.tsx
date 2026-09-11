@@ -8,7 +8,6 @@ import {
   TreePine,
   GitBranch,
   Layers,
-  Sparkles,
   RotateCcw,
   Boxes,
   Activity,
@@ -102,7 +101,7 @@ export function AdvancedTreesVisualizer({ initialModule = "lca-standard" }: Prop
             onClick={() => setActiveModule("treap")}
             className="h-8 text-xs font-semibold rounded-lg"
           >
-            <Sparkles className="h-3.5 w-3.5 mr-1" />
+            <TreePine className="h-3.5 w-3.5 mr-1" />
             Treap
           </Button>
           <Button
@@ -320,7 +319,7 @@ export function AdvancedTreesVisualizer({ initialModule = "lca-standard" }: Prop
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-xl font-bold flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-amber-500" />
+                  <TreePine className="h-5 w-5 text-amber-500" />
                   Treap: Randomized Binary Search Tree + Heap
                 </CardTitle>
                 <CardDescription>

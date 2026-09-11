@@ -15,8 +15,7 @@ import {
   Trash2,
   Layers,
   Code2,
-  Info,
-  Sparkles
+  Info
 } from "lucide-react";
 
 interface RangeQuery {

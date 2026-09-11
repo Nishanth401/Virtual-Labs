@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  Sparkles,
   Building2,
   Briefcase,
   Calendar,
@@ -219,7 +218,7 @@ export function OnboardingQuiz() {
                 onClick={handleFinishDiagnostic}
                 className="gap-1.5 font-bold text-xs h-9 px-5 bg-emerald-600 hover:bg-emerald-700 text-white"
               >
-                <Sparkles className="h-4 w-4" />
+                <Zap className="h-4 w-4" />
                 <span>Generate Tailored Plan</span>
               </Button>
             )}

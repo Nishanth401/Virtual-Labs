@@ -10,7 +10,6 @@ import {
   Layers,
   Divide,
   Coins,
-  Sparkles,
   ArrowRight
 } from "lucide-react";
 

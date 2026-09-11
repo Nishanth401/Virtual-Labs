@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { GitMerge, Play, RotateCcw, ChevronRight, ChevronLeft, Info, Sparkles } from "lucide-react";
+import { GitMerge, Play, RotateCcw, ChevronRight, ChevronLeft, Info } from "lucide-react";
 
 export function SubsetsPermutationsVisualizer() {
   const [mode, setMode] = useState<"subsets" | "permutations">("subsets");

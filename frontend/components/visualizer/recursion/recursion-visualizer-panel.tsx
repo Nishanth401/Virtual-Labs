@@ -20,7 +20,7 @@ import {
   RotateCcw, 
   ChevronRight, 
   ChevronLeft, 
-  Sparkles, 
+  Activity,
   Code2, 
   Layers, 
   GitBranch, 
@@ -377,30 +377,53 @@ export function RecursionVisualizerPanel({
 
       {/* Real-time State Card */}
       {currentStep && (
-        <Card className="p-4 bg-muted/30 border-border/80 rounded-2xl">
-          <div className="flex items-center gap-2 mb-2 font-mono text-xs font-bold text-foreground">
-            <Sparkles className="h-4 w-4 text-amber-500" />
-            <span>Execution Trace Step {stepIdx + 1}:</span>
-            <Badge variant="outline" className={`text-[10px] ${currentStep.type === "call" ? "bg-amber-500/10 text-amber-500 border-amber-500/30" : "bg-emerald-500/10 text-emerald-500 border-emerald-500/30"}`}>
-              {currentStep.type.toUpperCase()}
-            </Badge>
+        <Card className="p-4 bg-card border-border/80 rounded-2xl shadow-xs space-y-3">
+          <div className="flex items-center justify-between gap-2 border-b border-border/50 pb-2.5">
+            <div className="flex items-center gap-2">
+              <Activity className="h-4 w-4 text-amber-500" />
+              <span className="text-xs font-bold font-sans text-foreground">
+                Execution Trace Step {stepIdx + 1}
+              </span>
+              <span
+                className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-sans font-semibold border ${
+                  currentStep.type === "call"
+                    ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30"
+                    : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+                }`}
+              >
+                {currentStep.type === "call" ? "Push Call" : "Return Value"}
+              </span>
+            </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-            <div className="p-3 bg-card rounded-xl border border-border/60">
-              <span className="text-[10px] font-mono text-muted-foreground uppercase block font-bold">Action</span>
-              <span className="font-mono text-foreground font-semibold mt-1 block">
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="p-3 bg-muted/40 rounded-xl border border-border/60 space-y-1">
+              <span className="text-[11px] font-sans font-semibold text-muted-foreground uppercase tracking-wide block">
+                Action
+              </span>
+              <span className="font-sans text-xs text-foreground font-semibold block">
                 {currentStep.type === "call" ? `Push Frame: ${currentStep.label}` : `Pop Frame: return ${(currentStep as StepReturn).value}`}
               </span>
             </div>
-            <div className="p-3 bg-card rounded-xl border border-border/60">
-              <span className="text-[10px] font-mono text-muted-foreground uppercase block font-bold">Parameters</span>
-              <span className="font-mono text-foreground mt-1 block">
+
+            <div className="p-3 bg-muted/40 rounded-xl border border-border/60 space-y-1">
+              <span className="text-[11px] font-sans font-semibold text-muted-foreground uppercase tracking-wide block">
+                Parameters
+              </span>
+              <span className="font-mono text-xs text-foreground block truncate">
                 {currentStep.type === "call" ? JSON.stringify(currentStep.params) : "Returning value"}
               </span>
             </div>
-            <div className="p-3 bg-card rounded-xl border border-border/60">
-              <span className="text-[10px] font-mono text-muted-foreground uppercase block font-bold">Condition</span>
-              <span className="font-mono text-emerald-500 font-bold mt-1 block">
+
+            <div className="p-3 bg-muted/40 rounded-xl border border-border/60 space-y-1">
+              <span className="text-[11px] font-sans font-semibold text-muted-foreground uppercase tracking-wide block">
+                Condition
+              </span>
+              <span
+                className={`font-sans text-xs font-bold block ${
+                  currentStep.isBaseCase ? "text-emerald-600 dark:text-emerald-400" : "text-blue-600 dark:text-blue-400"
+                }`}
+              >
                 {currentStep.isBaseCase ? "✓ Base Case Active" : "Recursive Step"}
               </span>
             </div>

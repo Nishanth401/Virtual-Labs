@@ -11,7 +11,6 @@ import {
   RotateCcw,
   ChevronRight,
   ChevronLeft,
-  Sparkles,
   CheckCircle2,
   Code2,
   Layers,
@@ -269,7 +268,7 @@ export function SlidingWindowVisualizer() {
                 onClick={() => generateSteps(mode, inputArrayStr, kInputStr)}
                 className="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold gap-1.5 cursor-pointer"
               >
-                <Sparkles className="h-4 w-4" /> Load &amp; Reset Window
+                <RotateCcw className="h-4 w-4" /> Load &amp; Reset Window
               </Button>
             </div>
           </div>

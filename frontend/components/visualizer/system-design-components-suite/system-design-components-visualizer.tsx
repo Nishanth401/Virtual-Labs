@@ -12,7 +12,6 @@ import {
   Cpu,
   KeyRound,
   RotateCcw,
-  Sparkles,
   Layers,
   Activity
 } from "lucide-react";

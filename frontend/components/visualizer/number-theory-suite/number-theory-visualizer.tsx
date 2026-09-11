@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import {
   Calculator,
   Hash,
-  Sparkles,
   Zap,
   KeyRound,
   Grid,
@@ -231,7 +230,7 @@ export function NumberTheoryVisualizer({ initialModule = "gcd-lcm" }: Props) {
             onClick={() => setActiveModule("prime-factorization")}
             className="h-8 text-xs font-semibold rounded-lg"
           >
-            <Sparkles className="h-3.5 w-3.5 mr-1" />
+            <Divide className="h-3.5 w-3.5 mr-1" />
             Factorization
           </Button>
           <Button
@@ -591,7 +590,7 @@ export function NumberTheoryVisualizer({ initialModule = "gcd-lcm" }: Props) {
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-xl font-bold flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-cyan-500" />
+                  <Divide className="h-5 w-5 text-cyan-500" />
                   Prime Factorization &amp; Divisor Tree
                 </CardTitle>
                 <CardDescription>

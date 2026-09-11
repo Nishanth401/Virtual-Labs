@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Sliders, Play, RotateCcw, Info, Sparkles, Binary } from "lucide-react";
+import { Sliders, Play, RotateCcw, Info, Binary } from "lucide-react";
 
 export function BitManipulationVisualizer() {
   const [numA, setNumA] = useState<number>(29); // 00011101

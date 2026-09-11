@@ -35,7 +35,6 @@ import {
   FileCode,
   FileSpreadsheet,
   Layers,
-  Sparkles,
   Loader2,
   FolderOpen
 } from "lucide-react";

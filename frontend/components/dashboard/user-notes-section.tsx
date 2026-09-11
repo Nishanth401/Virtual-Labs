@@ -26,7 +26,6 @@ import {
   Plus,
   Trash2,
   Calendar,
-  Sparkles,
   Loader2,
   BookOpenCheck
 } from "lucide-react";

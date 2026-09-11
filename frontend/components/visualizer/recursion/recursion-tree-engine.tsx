@@ -221,14 +221,14 @@ export function RecursionTreeEngine({
     <div className={`flex flex-col h-full bg-card rounded-2xl border border-border/80 overflow-hidden shadow-xs relative ${isExpanded ? "fixed inset-4 z-50 shadow-2xl bg-card" : ""}`}>
       {/* Header bar */}
       <div className="flex items-center justify-between px-4 py-2.5 bg-muted/40 border-b border-border/70">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           <GitBranch className="h-4 w-4 text-emerald-500" />
           <span className="text-xs font-bold text-foreground font-heading">
             Recursion Call Tree Visualizer
           </span>
-          <Badge variant="outline" className="text-[10px] font-mono bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-sans font-semibold border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 shadow-2xs whitespace-nowrap">
             {nodes.length} Nodes
-          </Badge>
+          </span>
         </div>
 
         {/* Pan / Zoom / Fullscreen controls */}

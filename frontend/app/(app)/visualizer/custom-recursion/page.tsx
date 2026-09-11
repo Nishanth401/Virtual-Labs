@@ -5,7 +5,7 @@ import { RecursionVisualizerPanel } from "@/components/visualizer/recursion/recu
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Code2, Sparkles, Layers, Cpu, Play, Plus, Trash2, BookOpen, Terminal } from "lucide-react";
+import { Code2, Layers, Cpu, Play, Plus, Trash2, BookOpen, Terminal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";

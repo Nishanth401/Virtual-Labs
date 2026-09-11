@@ -16,7 +16,6 @@ import {
   ArrowRight,
   FileText,
   BookOpen,
-  Sparkles,
   Award,
   HelpCircle
 } from "lucide-react";
@@ -348,7 +347,7 @@ export default function DSAVisualizationPage() {
                 <select
                   value={filterState}
                   onChange={(e) => setFilterState(e.target.value as any)}
-                  className="h-8 text-xs font-mono rounded-lg border border-border bg-card px-2.5 text-foreground"
+                  className="h-8 text-xs font-sans rounded-lg border border-border bg-card px-2.5 text-foreground focus:outline-none focus:border-primary/50 cursor-pointer"
                 >
                   <option value="all">Status: All</option>
                   <option value="completed">Status: Mastered (✓)</option>
@@ -358,10 +357,10 @@ export default function DSAVisualizationPage() {
                 <div className="relative w-48 sm:w-56">
                   <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
                   <Input
-                    placeholder="Filter topic..."
+                    placeholder="Filter topics..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="h-8 text-xs pl-8 font-mono bg-card"
+                    className="h-8 text-xs pl-8 font-sans bg-card"
                   />
                 </div>
               </div>
@@ -374,10 +373,10 @@ export default function DSAVisualizationPage() {
               <section key={section.id} className="space-y-5">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border/60 pb-3">
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <Badge variant="outline" className={`font-mono text-xs font-bold ${section.badgeColor}`}>
+                    <div className="flex items-center gap-2.5 flex-wrap">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-semibold font-sans border shadow-2xs ${section.badgeColor}`}>
                         {section.badge}
-                      </Badge>
+                      </span>
                       <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground font-heading">
                         {section.title}
                       </h2>
@@ -385,9 +384,11 @@ export default function DSAVisualizationPage() {
                     <p className="text-xs sm:text-sm text-muted-foreground">{section.description}</p>
                   </div>
 
-                  <Badge variant="secondary" className="font-mono text-xs self-start sm:self-auto">
-                    {section.items.filter((i) => completedMap[i.id]).length} / {section.items.length} Done
-                  </Badge>
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-muted/60 border border-border/60 text-xs font-medium text-muted-foreground self-start sm:self-auto">
+                    <span className="font-semibold text-foreground">{section.items.filter((i) => completedMap[i.id]).length}</span>
+                    <span>/</span>
+                    <span>{section.items.length} Mastered</span>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -425,8 +426,10 @@ export default function DSAVisualizationPage() {
                                 className="flex items-center gap-3 group-hover:text-primary transition-colors flex-1 min-w-0"
                                 title={`Open ${item.name} in new tab`}
                               >
-                                <div className={`p-2 rounded-xl border shrink-0 transition-transform duration-300 group-hover:scale-110 ${
-                                  isDone ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-500" : "bg-muted text-foreground border-border group-hover:border-primary/40 group-hover:bg-primary/10 group-hover:text-primary"
+                                <div className={`p-2.5 rounded-xl border shrink-0 transition-all duration-300 group-hover:scale-105 shadow-2xs ${
+                                  isDone
+                                    ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 shadow-emerald-500/10"
+                                    : "bg-primary/5 text-primary border-primary/20 group-hover:border-primary/50 group-hover:bg-primary/15 group-hover:shadow-xs"
                                 }`}>
                                   <Icon className="h-5 w-5" />
                                 </div>
@@ -471,31 +474,30 @@ export default function DSAVisualizationPage() {
                             </Link>
 
                             {/* Tags & Complexity Row */}
-                            <div className="pt-3 border-t border-border/50 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono">
+                            <div className="pt-3.5 border-t border-border/60 flex items-center justify-between gap-2">
                               <div className="flex items-center gap-1.5">
-                                <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-border text-muted-foreground group-hover:border-primary/30 transition-colors">
+                                <span className="inline-flex items-center px-2 py-0.5 rounded-md font-mono text-[11px] font-semibold bg-muted/60 text-muted-foreground border border-border/60">
                                   {item.timeComplexity}
-                                </Badge>
+                                </span>
                               </div>
 
-                              <div className="flex items-center gap-1.5">
+                              <div className="flex items-center gap-2">
                                 <Button
                                   type="button"
                                   size="sm"
                                   variant="outline"
                                   onClick={() => setActiveQuizTopic(item)}
-                                  className="h-6 text-[10px] font-semibold gap-1 px-2 border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 transition-all"
+                                  className="h-7 text-xs font-medium gap-1.5 px-2.5 rounded-lg border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300 hover:bg-amber-500/20 hover:border-amber-500/50 shadow-2xs transition-all cursor-pointer"
                                   title={`Take 5-question assessment on ${item.name}`}
                                 >
-                                  <Award className="h-3 w-3" />
+                                  <Award className="h-3.5 w-3.5 text-amber-500" />
                                   <span>5-Q Quiz</span>
                                 </Button>
 
                                 <Button
                                   asChild
                                   size="sm"
-                                  variant="ghost"
-                                  className="h-6 text-[11px] font-semibold gap-1 text-primary group-hover:text-primary group-hover:bg-primary/10 px-2 transition-all"
+                                  className="h-7 text-xs font-semibold gap-1.5 px-3 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground shadow-xs hover:shadow-sm transition-all group/btn cursor-pointer"
                                 >
                                   <Link
                                     href={item.href}
@@ -504,7 +506,7 @@ export default function DSAVisualizationPage() {
                                     title={`Open ${item.name} Studio in new tab`}
                                   >
                                     <span>Launch Studio</span>
-                                    <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                                    <ArrowRight className="h-3.5 w-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
                                   </Link>
                                 </Button>
                               </div>

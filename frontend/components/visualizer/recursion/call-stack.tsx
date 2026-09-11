@@ -26,9 +26,9 @@ export function CallStack({ stack, currentNodeId, executionPhase }: CallStackPro
       <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-center py-2.5 px-4 font-bold text-sm tracking-wide flex items-center justify-between shadow-xs">
         <div className="flex items-center gap-2">
           <Layers className="h-4 w-4" />
-          <span>JVM Call Stack (LIFO)</span>
+          <span className="font-heading">JVM Call Stack (LIFO)</span>
         </div>
-        <span className="text-xs font-bold bg-white/20 px-2.5 py-0.5 rounded-full font-mono">
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-sans font-semibold bg-white/20 text-white backdrop-blur-xs shadow-2xs">
           Depth: {stack.length}
         </span>
       </div>

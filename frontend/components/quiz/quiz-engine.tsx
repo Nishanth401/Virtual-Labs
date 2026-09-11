@@ -7,7 +7,7 @@ import { useStudentProgress } from "@/hooks/use-student-progress";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, XCircle, Award, RotateCcw, HelpCircle, Check, Sparkles } from "lucide-react";
+import { CheckCircle2, XCircle, Award, RotateCcw, HelpCircle, Check } from "lucide-react";
 
 import { useAuth } from "@/context/auth-context";
 

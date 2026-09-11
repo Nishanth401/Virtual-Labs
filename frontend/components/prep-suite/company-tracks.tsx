@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import {
   Building2,
   CheckCircle2,
-  Sparkles,
+  Lock,
   ExternalLink,
   Clock,
   Layers,

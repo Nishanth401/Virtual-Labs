@@ -11,7 +11,6 @@ import {
   RotateCcw,
   ChevronRight,
   ChevronLeft,
-  Sparkles,
   CheckCircle2,
   Code2,
   Layers,
@@ -391,7 +390,7 @@ export function TwoPointersVisualizer() {
                 onClick={() => generateSteps(mode, inputArrayStr, targetInputStr)}
                 className="w-full bg-primary hover:bg-primary/90 text-xs font-bold gap-1.5 cursor-pointer"
               >
-                <Sparkles className="h-4 w-4" /> Load &amp; Reset Simulation
+                <RotateCcw className="h-4 w-4" /> Load &amp; Reset Simulation
               </Button>
             </div>
           </div>

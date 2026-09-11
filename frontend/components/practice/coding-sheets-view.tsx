@@ -24,7 +24,6 @@ import {
   Search,
   BookOpen,
   FileText,
-  Sparkles,
   Trophy,
   Filter,
   Layers,
@@ -640,7 +639,7 @@ export function CodingSheetsView() {
                               className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 font-bold hover:bg-emerald-500/20 transition-colors"
                               title="Launch Interactive Step Visualizer Studio"
                             >
-                              <Sparkles className="h-2.5 w-2.5" />
+                              <Zap className="h-2.5 w-2.5" />
                               <span>Visualize</span>
                             </Link>
                           )}

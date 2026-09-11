@@ -85,11 +85,11 @@ export function DSACategorySidebar({
             return (
               <div key={category.id} className="space-y-2">
                 <div className="flex items-center justify-between px-2 py-1">
-                  <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase font-mono tracking-wider">
+                  <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground font-sans tracking-tight">
                     <Icon className="h-4 w-4 text-primary" />
                     <span>{category.name}</span>
                   </div>
-                  <span className="text-xs text-muted-foreground font-mono font-bold bg-muted px-2 py-0.5 rounded">
+                  <span className="text-xs text-muted-foreground font-sans font-semibold bg-muted px-2 py-0.5 rounded-md">
                     {categoryCompletedCount}/{category.topics.length}
                   </span>
                 </div>

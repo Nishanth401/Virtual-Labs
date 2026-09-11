@@ -12,7 +12,6 @@ import {
   Search,
   Building2,
   ArrowRight,
-  Sparkles,
   ShieldCheck,
   GraduationCap,
   Layers,
@@ -136,7 +135,7 @@ export function CollegeSelectorHero() {
           {/* Quick Slug Chips */}
           <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-border/40 text-xs text-muted-foreground">
             <span className="font-semibold text-foreground/80 flex items-center gap-1">
-              <Sparkles className="h-3 w-3 text-amber-500" /> Direct URLs:
+              <Globe2 className="h-3 w-3 text-amber-500" /> Direct URLs:
             </span>
             {COLLEGES_REGISTRY.map((c) => (
               <button

@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { BookOpen, Target, ListTree, GraduationCap, MessageSquareHeart, FileQuestion, Sparkles, ExternalLink, Video, UploadCloud } from "lucide-react";
+import { BookOpen, Target, ListTree, GraduationCap, MessageSquareHeart, FileQuestion, Layers, ExternalLink, Video, UploadCloud } from "lucide-react";
 
 export type LabTab =
   | "introduction"
@@ -24,7 +24,7 @@ interface LabSidebarProps {
 const TABS: { id: LabTab; label: string; icon: React.ElementType }[] = [
   { id: "introduction", label: "Introduction", icon: BookOpen },
   { id: "video-tutorials", label: "Video Tutorials", icon: Video },
-  { id: "dsa-roadmap", label: "Roadmap & Practice", icon: Sparkles },
+  { id: "dsa-roadmap", label: "Roadmap & Practice", icon: Layers },
   { id: "objective", label: "Objective", icon: Target },
   { id: "experiments", label: "List of experiments", icon: ListTree },
   { id: "quizzes", label: "Self-Assessment Quiz", icon: FileQuestion },
@@ -38,7 +38,7 @@ export function LabSidebar({ activeTab, onTabChange, experimentsCount = 6, resou
     <aside className="w-full lg:w-72 shrink-0">
       <div className="bg-card/80 backdrop-blur-md rounded-2xl border border-secondary/40 p-4 sticky top-24 shadow-sm space-y-2">
         <div className="px-3 py-2 border-b border-border/50">
-          <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground font-sans">
             Lab Navigation
           </span>
         </div>
@@ -68,8 +68,8 @@ export function LabSidebar({ activeTab, onTabChange, experimentsCount = 6, resou
                 {tab.id === "video-tutorials" && (
                   <span
                     className={cn(
-                      "px-2 py-0.5 rounded text-xs font-mono font-bold",
-                      isActive ? "bg-primary-foreground/20 text-primary-foreground" : "bg-primary/10 text-primary"
+                      "px-2.5 py-0.5 rounded-full text-[11px] font-sans font-semibold tracking-tight border",
+                      isActive ? "bg-primary-foreground/20 text-primary-foreground border-white/20" : "bg-primary/10 text-primary border-primary/20"
                     )}
                   >
                     2 Tracks
@@ -79,8 +79,8 @@ export function LabSidebar({ activeTab, onTabChange, experimentsCount = 6, resou
                 {tab.id === "experiments" && (
                   <span
                     className={cn(
-                      "px-2 py-0.5 rounded text-xs font-mono font-bold",
-                      isActive ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground"
+                      "px-2.5 py-0.5 rounded-full text-[11px] font-sans font-semibold border",
+                      isActive ? "bg-primary-foreground/20 text-primary-foreground border-white/20" : "bg-muted/80 text-foreground/80 border-border/60"
                     )}
                   >
                     {experimentsCount}
@@ -90,8 +90,8 @@ export function LabSidebar({ activeTab, onTabChange, experimentsCount = 6, resou
                 {tab.id === "quizzes" && (
                   <span
                     className={cn(
-                      "px-2 py-0.5 rounded text-xs font-mono font-bold",
-                      isActive ? "bg-primary-foreground/20 text-primary-foreground" : "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                      "px-2.5 py-0.5 rounded-full text-[11px] font-sans font-semibold border",
+                      isActive ? "bg-primary-foreground/20 text-primary-foreground border-white/20" : "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30"
                     )}
                   >
                     5-Q
@@ -101,8 +101,8 @@ export function LabSidebar({ activeTab, onTabChange, experimentsCount = 6, resou
                 {tab.id === "resources" && (
                   <span
                     className={cn(
-                      "px-2 py-0.5 rounded text-xs font-mono font-bold",
-                      isActive ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground"
+                      "px-2.5 py-0.5 rounded-full text-[11px] font-sans font-semibold border",
+                      isActive ? "bg-primary-foreground/20 text-primary-foreground border-white/20" : "bg-muted/80 text-foreground/80 border-border/60"
                     )}
                   >
                     {resourcesCount}

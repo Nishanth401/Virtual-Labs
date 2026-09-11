@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Check, Sparkles, Building, Award, Shield, ArrowRight, PhoneCall, CheckCircle2 } from "lucide-react";
+import { Check, Building, Award, Shield, ArrowRight, PhoneCall, CheckCircle2 } from "lucide-react";
 
 export function SaasPricingSection() {
   return (

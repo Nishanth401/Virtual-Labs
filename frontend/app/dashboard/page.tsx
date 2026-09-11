@@ -16,7 +16,6 @@ import { Badge } from "@/components/ui/badge";
 import {
   Award,
   RotateCcw,
-  Sparkles,
   BookOpen,
   Layers,
   ArrowRight,

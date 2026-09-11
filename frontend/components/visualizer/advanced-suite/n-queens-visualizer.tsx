@@ -15,7 +15,6 @@ import {
   Crown,
   CheckCircle2,
   XCircle,
-  Sparkles,
   Layers,
   Info,
   ShieldAlert,
@@ -673,7 +672,7 @@ export function NQueensVisualizer() {
 
             {currentStep.actionType === "solution" ? (
               <Badge className="bg-emerald-500 text-white font-mono font-bold animate-bounce gap-1">
-                <Sparkles className="h-3.5 w-3.5" />
+                <CheckCircle2 className="h-3.5 w-3.5" />
                 Solution #{currentStep.solutionNumber} Discovered!
               </Badge>
             ) : currentStep.conflictCell ? (

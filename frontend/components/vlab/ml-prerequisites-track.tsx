@@ -5,7 +5,7 @@ import { ML_PREREQUISITES_DATA, MLPrerequisiteTopic } from "@/data/experiments";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { PlayCircle, CheckCircle2, Clock, BookOpen, Layers, Sparkles, ChevronRight } from "lucide-react";
+import { PlayCircle, CheckCircle2, Clock, BookOpen, Layers, ChevronRight } from "lucide-react";
 
 export function MLPrerequisitesTrack() {
   const [selectedTopic, setSelectedTopic] = useState<MLPrerequisiteTopic>(ML_PREREQUISITES_DATA[0]);

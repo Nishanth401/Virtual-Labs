@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useState } from "react"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
-import { Plus, Trash2, ArrowRightLeft, Search, RefreshCw, Shuffle, Sparkles } from "lucide-react"
+import { Plus, Trash2, ArrowRightLeft, Search, RefreshCw, Shuffle } from "lucide-react";
 
 interface LinkedListControlsProps {
   onInsertFront: (value: number) => void
@@ -200,7 +200,7 @@ export function LinkedListControls({
                 size="sm"
                 className="text-xs border-primary/40 hover:bg-primary/5 text-primary"
               >
-                <Sparkles className="h-3.5 w-3.5 mr-1" />
+                <Shuffle className="h-3.5 w-3.5 mr-1" />
                 Sample [10..40]
               </Button>
               <Button 

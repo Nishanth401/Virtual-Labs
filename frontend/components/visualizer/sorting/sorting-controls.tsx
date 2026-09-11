@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Play, Pause, SkipForward, SkipBack, RotateCcw, Shuffle, Sparkles, FastForward } from "lucide-react";
+import { Play, Pause, SkipForward, SkipBack, RotateCcw, Shuffle, FastForward } from "lucide-react";
 
 interface SortingControlsProps {
   isPlaying: boolean;

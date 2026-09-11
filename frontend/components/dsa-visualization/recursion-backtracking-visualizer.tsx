@@ -17,7 +17,6 @@ import {
   Crown,
   Layers,
   ArrowRight,
-  Sparkles,
   Compass,
   GitFork,
   FastForward,

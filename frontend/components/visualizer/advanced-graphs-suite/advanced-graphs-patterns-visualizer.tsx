@@ -9,7 +9,6 @@ import {
   GitMerge,
   Activity,
   Layers,
-  Sparkles,
   Workflow,
   Share2,
   RefreshCw,
@@ -92,7 +91,7 @@ export function AdvancedGraphsPatternsVisualizer({ initialModule = "bridges-arti
             onClick={() => setActiveModule("hamiltonian-path")}
             className="h-8 text-xs font-semibold rounded-lg"
           >
-            <Sparkles className="h-3.5 w-3.5 mr-1" />
+            <Route className="h-3.5 w-3.5 mr-1" />
             Hamiltonian Path
           </Button>
           <Button
@@ -274,7 +273,7 @@ export function AdvancedGraphsPatternsVisualizer({ initialModule = "bridges-arti
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-xl font-bold flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-purple-500" />
+                  <Route className="h-5 w-5 text-purple-500" />
                   Hamiltonian Path &amp; Cycle (NP-Complete)
                 </CardTitle>
                 <CardDescription>

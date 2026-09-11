@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui/card"
 import { LinkedList } from "./types"
 import { motion, AnimatePresence } from "framer-motion"
-import { ArrowRight, ArrowLeft, Layers, CornerDownLeft, Sparkles, Activity, CheckCircle2 } from "lucide-react"
+import { ArrowRight, ArrowLeft, Layers, CornerDownLeft, Activity, CheckCircle2 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
@@ -130,7 +130,7 @@ export function LinkedListDisplay({
             </div>
             {onSample && (
               <Button onClick={onSample} size="sm" className="gap-2 bg-[#1e88e5] hover:bg-[#1976d2] text-white">
-                <Sparkles className="h-3.5 w-3.5" />
+                <Layers className="h-3.5 w-3.5" />
                 Load Sample List [10 → 20 → 30 → 40]
               </Button>
             )}

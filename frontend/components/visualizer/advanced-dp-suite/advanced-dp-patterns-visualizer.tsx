@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import {
   GitBranch,
   Layers,
-  Sparkles,
   Workflow,
   TrendingUp,
   Boxes,
@@ -111,7 +110,7 @@ export function AdvancedDPPatternsVisualizer({ initialModule = "interval-dp" }: 
             onClick={() => setActiveModule("bitmask-tsp")}
             className="h-8 text-xs font-semibold rounded-lg"
           >
-            <Sparkles className="h-3.5 w-3.5 mr-1" />
+            <Binary className="h-3.5 w-3.5 mr-1" />
             Bitmask TSP
           </Button>
         </div>
@@ -310,7 +309,7 @@ export function AdvancedDPPatternsVisualizer({ initialModule = "interval-dp" }: 
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-xl font-bold flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-yellow-500" />
+                  <Binary className="h-5 w-5 text-yellow-500" />
                   Bitmask DP: Travelling Salesperson Problem (TSP)
                 </CardTitle>
                 <CardDescription>

@@ -7,7 +7,7 @@ import { RESOURCES_DATA, ResourceItem } from "@/data/resources";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, Search, Download, FolderOpen, ExternalLink, BookOpen, Sparkles, GraduationCap, CheckCircle2 } from "lucide-react";
+import { FileText, Search, Download, FolderOpen, ExternalLink, BookOpen, GraduationCap, CheckCircle2 } from "lucide-react";
 
 export default function ResourcesPage() {
   const [selectedType, setSelectedType] = useState<string>("all");

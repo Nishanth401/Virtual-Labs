@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Workflow, Play, RotateCcw, Search, Edit3, Info, Sparkles } from "lucide-react";
+import { Workflow, Play, RotateCcw, Search, Edit3, Info } from "lucide-react";
 
 interface SegNode {
   id: number;

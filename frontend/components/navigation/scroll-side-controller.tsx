@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUp, ArrowDown, FlaskConical, Award, Code2, Sparkles, ChevronUp } from "lucide-react";
+import { ArrowUp, ArrowDown, FlaskConical, Award, Code2, ChevronUp } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export function ScrollSideController() {
