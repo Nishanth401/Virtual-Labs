@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VSB Virtual Labs | Next-Gen Cloud Laboratory Platform for Engineering Colleges</title>
+  <meta name="description" content="Empower your engineering institution with autonomous multi-tenant virtual labs. Cloud simulation suites for AI&DS, CSE, ECE, and IT. Book your institutional demo today.">
+  <link rel="icon" href="assets/vsb-logo.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Ambient Dynamic Mesh & Particle Canvas -->
+  <div class="ambient-bg-mesh"></div>
+  <canvas id="particlesCanvas"></canvas>
+
+  <!-- ==========================================================================
+       Floating Glass Pill Navigation Bar
+       ========================================================================== -->
+  <header class="navbar-wrapper">
+    <nav class="nav-pill" id="navbar">
+      <a href="#" class="nav-brand">
+        <img src="assets/vsb-logo.png" alt="VSB Virtual Labs Logo" class="nav-brand-logo">
+        <div class="nav-brand-text">
+          <div class="nav-brand-title">
+            VSB Virtual Labs
+            <span class="nav-brand-badge">Campus OS</span>
+          </div>
+          <span class="nav-brand-subtitle">AICTE & Anna University Aligned</span>
+        </div>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="#overview" class="nav-link">Overview</a></li>
+        <li><a href="#disconnect" class="nav-link">Disconnect</a></li>
+        <li><a href="#simulation" class="nav-link">Live Sim</a></li>
+        <li><a href="#clone-generator" class="nav-link">Clone Studio</a></li>
+        <li><a href="#roles" class="nav-link">Portals</a></li>
+        <li><a href="#curriculum" class="nav-link">Curriculum</a></li>
+        <li><a href="#faq" class="nav-link">FAQ</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div class="nav-status-indicator">
+          <span class="status-dot"></span>
+          <span>48+ Campuses</span>
+        </div>
+        <button class="btn-pill-primary" id="navBookDemoBtn" onclick="openBookingModal()">
+          Book Demo ➔
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ==========================================================================
+       Hero Section
+       ========================================================================== -->
+  <section class="hero-section" id="overview">
+    <!-- Levitating Badges -->
+    <div class="floating-badge b-top-left">
+      <span class="badge-icon">⚡</span>
+      <span>AI & Data Science Simulations</span>
+    </div>
+    <div class="floating-badge b-top-right">
+      <span class="badge-icon">🏛️</span>
+      <span>Anna Univ CBCS 2021/23</span>
+    </div>
+    <div class="floating-badge b-bottom-left">
+      <span class="badge-icon">🔒</span>
+      <span>Isolated Tenant Databases</span>
+    </div>
+    <div class="floating-badge b-bottom-right">
+      <span class="badge-icon">💻</span>
+      <span>Zero Physical Server Costs</span>
+    </div>
+
+    <div class="container hero-content">
+      <!-- Announcement Pill -->
+      <div class="hero-announcement" onclick="scrollToSection('clone-generator')">
+        <span class="hero-announcement-tag">NEW 2026</span>
+        <span class="hero-announcement-text">
+          Autonomous College Virtual Lab Clones Now Live <span>➔</span>
+        </span>
+      </div>
+
+      <!-- Kinetic Main Headline -->
+      <h1 class="hero-title">
+        One Platform to Connect & Empower<br>
+        Your Entire <span class="kinetic-word-wrapper" id="kineticWords">
+          <span class="kinetic-word active">Engineering Labs.</span>
+          <span class="kinetic-word">Autonomous Campus.</span>
+          <span class="kinetic-word">AI & DS Curricula.</span>
+          <span class="kinetic-word">Faculty Workflows.</span>
+          <span class="kinetic-word">Student Innovations.</span>
+        </span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Eliminate physical lab constraints with self-paced, cloud-native simulations, automated observation evaluations, and isolated student databases. Purpose-built by the <strong>Department of AI & Data Science at VSB Engineering College</strong> for institutions across India.
+      </p>
+
+      <!-- Action Group -->
+      <div class="hero-cta-group">
+        <button class="btn-pill-primary btn-large" onclick="openBookingModal()">
+          <span>Book Institutional Demo</span>
+          <span>➔</span>
+        </button>
+        <button class="btn-pill-secondary btn-large" onclick="scrollToSection('simulation')">
+          <span>⚡ Test-Drive Simulation</span>
+        </button>
+      </div>
+
+      <!-- Quick Metrics Counter Bar -->
+      <div class="hero-metrics-pill-grid">
+        <div class="metric-pill">
+          <div class="metric-num" data-target="50000">50,000+</div>
+          <div class="metric-label">Active Engineering Students</div>
+        </div>
+        <div class="metric-pill">
+          <div class="metric-num" data-target="120">120+</div>
+          <div class="metric-label">Interactive Lab Experiments</div>
+        </div>
+        <div class="metric-pill">
+          <div class="metric-num" data-target="18">18+</div>
+          <div class="metric-label">Autonomous College Tenants</div>
+        </div>
+        <div class="metric-pill">
+          <div class="metric-num">₹0</div>
+          <div class="metric-label">Hardware Maintenance Cost</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Continuous Crimson Wavy Ribbon Banner
+       ========================================================================== -->
+  <div class="wavy-ribbon-wrapper">
+    <div class="wavy-ribbon">
+      <div class="ribbon-track" id="ribbonTrack">
+        <div class="ribbon-item">
+          <span>AICTE & ANNA UNIVERSITY ALIGNED</span>
+          <span class="star-divider">✦</span>
+        </div>
+        <div class="ribbon-item">
+          <span>5 STAKEHOLDER PORTALS</span>
+          <span class="star-divider">✦</span>
+        </div>
+        <div class="ribbon-item">
+          <span>12 ACADEMIC ENGINEERING MODULES</span>
+          <span class="star-divider">✦</span>
+        </div>
+        <div class="ribbon-item">
+          <span>INSTANT SUBDOMAIN DEPLOYMENT</span>
+          <span class="star-divider">✦</span>
+        </div>
+        <div class="ribbon-item">
+          <span>ZERO HARDWARE OVERHEAD</span>
+          <span class="star-divider">✦</span>
+        </div>
+        <div class="ribbon-item">
+          <span>CONTINUOUS INTERNAL EVALUATION (CIE)</span>
+          <span class="star-divider">✦</span>
+        </div>
+        <div class="ribbon-item">
+          <span>MULTI-TENANT ISOLATED DATABASES</span>
+          <span class="star-divider">✦</span>
+        </div>
+        <div class="ribbon-item">
+          <span>24/7 STUDENT SELF-PACED ACCESS</span>
+          <span class="star-divider">✦</span>
+        </div>
+        <!-- Duplicated for seamless loop -->
+        <div class="ribbon-item">
+          <span>AICTE & ANNA UNIVERSITY ALIGNED</span>
+          <span class="star-divider">✦</span>
+        </div>
+        <div class="ribbon-item">
+          <span>5 STAKEHOLDER PORTALS</span>
+          <span class="star-divider">✦</span>
+        </div>
+        <div class="ribbon-item">
+          <span>12 ACADEMIC ENGINEERING MODULES</span>
+          <span class="star-divider">✦</span>
+        </div>
+        <div class="ribbon-item">
+          <span>INSTANT SUBDOMAIN DEPLOYMENT</span>
+          <span class="star-divider">✦</span>
+        </div>
+        <div class="ribbon-item">
+          <span>ZERO HARDWARE OVERHEAD</span>
+          <span class="star-divider">✦</span>
+        </div>
+        <div class="ribbon-item">
+          <span>CONTINUOUS INTERNAL EVALUATION (CIE)</span>
+          <span class="star-divider">✦</span>
+        </div>
+        <div class="ribbon-item">
+          <span>MULTI-TENANT ISOLATED DATABASES</span>
+          <span class="star-divider">✦</span>
+        </div>
+        <div class="ribbon-item">
+          <span>24/7 STUDENT SELF-PACED ACCESS</span>
+          <span class="star-divider">✦</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       Pillar Value Proposition Cards (Inspired by Reference Image 2)
+       ========================================================================== */
+  <section class="pillars-section">
+    <div class="container">
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <div class="pillar-icon-box">🏛️</div>
+          <h3 class="pillar-title">One Campus</h3>
+          <p class="pillar-description">
+            Unify all engineering departments under your college's branded digital ecosystem. Custom subdomain, logos, and academic regulations in one click.
+          </p>
+        </div>
+
+        <div class="pillar-card">
+          <div class="pillar-icon-box">👥</div>
+          <h3 class="pillar-title">Every Role</h3>
+          <p class="pillar-description">
+            Dedicated connected workspaces for Principals, HODs, Lab Faculty, and Students. Role-based access control with granular permissions.
+          </p>
+        </div>
+
+        <div class="pillar-card">
+          <div class="pillar-icon-box">⚙️</div>
+          <h3 class="pillar-title">Every Workflow</h3>
+          <p class="pillar-description">
+            From pre-lab theory and interactive simulation execution to automated observation checking, digital viva questions, and CIE internal marks.
+          </p>
+        </div>
+
+        <div class="pillar-card">
+          <div class="pillar-icon-box">🚀</div>
+          <h3 class="pillar-title">One Experience</h3>
+          <p class="pillar-description">
+            Zero installations, zero driver mismatches. Accessible directly from any standard browser on campus desktop labs, student laptops, or tablets.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       The Campus Disconnect vs VSB Solution (Inspired by Reference Image 3)
+       ========================================================================== -->
+  <section class="disconnect-section" id="disconnect">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">⚠️ THE LAB INFRASTRUCTURE CHALLENGE</div>
+        <h2 class="section-title">
+          Engineering Labs Shouldn't Run on <span>Fragmented, Costly Systems.</span>
+        </h2>
+        <p class="section-subtitle">
+          Engineering colleges waste lakhs annually replacing damaged electronic apparatus, debugging mismatched compiler setups, and handling manual paper observation records. VSB Virtual Labs modernizes your entire laboratory curriculum.
+        </p>
+      </div>
+
+      <div class="problems-solutions-grid">
+        <!-- Card 1 -->
+        <div class="comparison-card">
+          <div class="comparison-card-top">
+            <span class="problem-badge">Physical Limitation</span>
+            <div class="problem-icon-wrapper">💸</div>
+          </div>
+          <h4 class="comparison-title">Massive Hardware Costs</h4>
+          <p class="comparison-text">
+            Outdated PC hardware, fried trainer kits, and GPU shortages stall critical AI and machine learning practicals.
+          </p>
+          <div class="vs-divider">VSB Solution</div>
+          <div class="solution-box">
+            <div class="solution-box-title">✓ 100% Cloud-Simulated</div>
+            <div class="solution-box-desc">Zero hardware depreciation. Infinite runs without equipment wear or safety risks.</div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="comparison-card">
+          <div class="comparison-card-top">
+            <span class="problem-badge">Scheduling Bottleneck</span>
+            <div class="problem-icon-wrapper">⏳</div>
+          </div>
+          <h4 class="comparison-title">Inflexible Lab Hours</h4>
+          <p class="comparison-text">
+            Students are restricted to 2-hour lab periods weekly. Slow learners struggle, while fast learners run out of challenging problems.
+          </p>
+          <div class="vs-divider">VSB Solution</div>
+          <div class="solution-box">
+            <div class="solution-box-title">✓ 24/7 Unlimited Access</div>
+            <div class="solution-box-desc">Self-paced re-runs from dorms, library, or home with step-by-step guidance.</div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="comparison-card">
+          <div class="comparison-card-top">
+            <span class="problem-badge">Faculty Burnout</span>
+            <div class="problem-icon-wrapper">📝</div>
+          </div>
+          <h4 class="comparison-title">Manual Paper Grading</h4>
+          <p class="comparison-text">
+            Faculty spend 20+ hours weekly manually checking physical record notebooks, calculating CIE marks, and signing slips.
+          </p>
+          <div class="vs-divider">VSB Solution</div>
+          <div class="solution-box">
+            <div class="solution-box-title">✓ 1-Click Digital Evaluation</div>
+            <div class="solution-box-desc">Automated test case verification, plagiarism checks, and digital rubric calculation.</div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="comparison-card">
+          <div class="comparison-card-top">
+            <span class="problem-badge">Audit Panic</span>
+            <div class="problem-icon-wrapper">📊</div>
+          </div>
+          <h4 class="comparison-title">Scattered Audit Data</h4>
+          <p class="comparison-text">
+            During NAAC or NBA accreditations, pulling verified student lab attendance, rubrics, and outcome attainments takes weeks.
+          </p>
+          <div class="vs-divider">VSB Solution</div>
+          <div class="solution-box">
+            <div class="solution-box-title">✓ Instant NAAC/NBA Exports</div>
+            <div class="solution-box-desc">Comprehensive CSV, Excel, and PDF outcome attainment reports ready with one click.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Playable Live Simulation Studio
+       ========================================================================== -->
+  <section class="simulation-studio-section" id="simulation">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">⚡ LIVE INTERACTIVE DEMO</div>
+        <h2 class="section-title">
+          Experience the <span>Interactive Algorithm Visualizer</span> Live.
+        </h2>
+        <p class="section-subtitle">
+          Don't just take our word for it. Interact with the live Dijkstra Shortest Path graph simulation below. Click to add nodes, run step-by-step relaxation, and observe real-time algorithmic complexity.
+        </p>
+      </div>
+
+      <div class="sim-studio-container">
+        <!-- Studio Header -->
+        <div class="sim-studio-header">
+          <div class="sim-studio-title-group">
+            <div class="sim-studio-dots">
+              <span class="sim-dot"></span>
+              <span class="sim-dot"></span>
+              <span class="sim-dot"></span>
+            </div>
+            <div class="sim-studio-name">Dijkstra's Algorithm — Shortest Path Visualizer</div>
+            <span class="sim-studio-tag">Lab Module: CS8391 / AD3351</span>
+          </div>
+
+          <div class="sim-studio-controls">
+            <button class="sim-btn" id="simRunBtn" onclick="runGraphSimulation()">
+              ▶ Run Dijkstra Path
+            </button>
+            <button class="sim-btn sim-btn-outline" id="simStepBtn" onclick="stepGraphSimulation()">
+              ⏭ Step Next
+            </button>
+            <button class="sim-btn sim-btn-outline" onclick="randomizeGraphNodes()">
+              🎲 Randomize Graph
+            </button>
+            <button class="sim-btn sim-btn-outline" onclick="resetGraphSimulation()">
+              ↺ Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Studio Body -->
+        <div class="sim-studio-body">
+          <div class="sim-canvas-viewport">
+            <div class="sim-canvas-overlay-banner">
+              <span>💡 <strong>Tip:</strong> Click anywhere on the canvas to add a new graph node! Drag nodes to reposition them.</span>
+            </div>
+            <canvas id="graphSimCanvas"></canvas>
+          </div>
+
+          <!-- Studio Sidebar Log -->
+          <div class="sim-sidebar">
+            <div class="sim-sidebar-title">
+              <span>Terminal Execution Log</span>
+            </div>
+            <div class="sim-log-terminal" id="simTerminalLog">
+              <div class="sim-log-line">> Initialized Graph with 6 vertices & 9 weighted edges.</div>
+              <div class="sim-log-line">> Ready for execution. Click 'Run Dijkstra Path'.</div>
+            </div>
+
+            <div class="sim-complexity-grid">
+              <div class="sim-complexity-card">
+                <div class="sim-complexity-label">Time Complexity</div>
+                <div class="sim-complexity-val">O((V + E) log V)</div>
+              </div>
+              <div class="sim-complexity-card">
+                <div class="sim-complexity-label">Space Complexity</div>
+                <div class="sim-complexity-val">O(V + E)</div>
+              </div>
+            </div>
+
+            <button class="btn-pill-primary" style="width: 100%; justify-content: center;" onclick="openBookingModal()">
+              Request Full 120+ Lab Suite ➔
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Instant College Clone Generator (Live Sandbox Studio)
+       ========================================================================== -->
+  <section class="clone-generator-section" id="clone-generator">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">🚀 INSTANT TENANT PROVISIONING</div>
+        <h2 class="section-title">
+          Provision Your College's <span>Virtual Lab Clone in 5 Seconds.</span>
+        </h2>
+        <p class="section-subtitle">
+          Every institution receives an isolated, customized digital laboratory portal complete with custom colors, department configurations, and autonomous curricula.
+        </p>
+      </div>
+
+      <div class="clone-generator-box">
+        <!-- Form Side -->
+        <div class="generator-form-side">
+          <h3>Test-Drive Your <span>Institutional Sandbox</span></h3>
+          <p>
+            Choose from existing partner institutions or type your college's name below to see your dedicated URL and branded portal generate immediately.
+          </p>
+
+          <div class="quick-college-pills">
+            <button class="quick-college-btn active" onclick="selectCollegePreset('vsb')">VSB Engg College</button>
+            <button class="quick-college-btn" onclick="selectCollegePreset('cit')">CIT Coimbatore</button>
+            <button class="quick-college-btn" onclick="selectCollegePreset('psg')">PSG Tech</button>
+            <button class="quick-college-btn" onclick="selectCollegePreset('anna')">Anna University CEG</button>
+            <button class="quick-college-btn" onclick="selectCollegePreset('skct')">SKCT Coimbatore</button>
+          </div>
+
+          <div class="input-with-button">
+            <input type="text" id="customCollegeInput" class="college-name-input" placeholder="Type your college name (e.g. Kumaraguru, REC, MIT)..." oninput="handleCustomCollegeInput(event)">
+            <button class="btn-pill-primary" onclick="openBookingModalWithPreset()">
+              Launch Clone Demo ➔
+            </button>
+          </div>
+        </div>
+
+        <!-- Preview Card Side -->
+        <div class="generator-preview-side">
+          <div class="clone-preview-card" id="clonePreviewCard">
+            <div class="clone-card-header" id="cloneCardHeader">
+              <span class="clone-card-badge" id="cloneCardBadge">AICTE Code: 9225 • Autonomous</span>
+              <h4 class="clone-card-name" id="cloneCardName">VSB Engineering College</h4>
+              <div class="clone-card-subdomain" id="cloneCardSubdomain">https://vsb.virtuallabs.cloud</div>
+            </div>
+
+            <div class="clone-card-body">
+              <div class="clone-specs-list">
+                <div class="clone-spec-item">
+                  <span class="clone-spec-label">Database Isolation:</span>
+                  <span class="clone-spec-val active-tag">Tenant Encrypted (AES-256)</span>
+                </div>
+                <div class="clone-spec-item">
+                  <span class="clone-spec-label">Configured Departments:</span>
+                  <span class="clone-spec-val" id="cloneSpecDepts">AI&DS, CSE, IT, ECE</span>
+                </div>
+                <div class="clone-spec-item">
+                  <span class="clone-spec-label">Curriculum Regulation:</span>
+                  <span class="clone-spec-val" id="cloneSpecRegulation">Autonomous CBCS 2021/23</span>
+                </div>
+                <div class="clone-spec-item">
+                  <span class="clone-spec-label">Student Capacity:</span>
+                  <span class="clone-spec-val" id="cloneSpecCapacity">4,800 Concurrent Learners</span>
+                </div>
+              </div>
+
+              <button class="btn-pill-secondary" style="width: 100%; justify-content: center;" onclick="openBookingModalWithPreset()">
+                Claim This Institutional Subdomain ➔
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Role-Based Workspaces (Inspired by Reference Image 4)
+       ========================================================================== -->
+  <section class="roles-section" id="roles">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">👥 ROLE-BASED ARCHITECTURE</div>
+        <h2 class="section-title">
+          One Platform. Four <span>Purpose-Built Workspaces.</span>
+        </h2>
+        <p class="section-subtitle">
+          Designed to cater specifically to every stakeholder in the engineering campus hierarchy.
+        </p>
+      </div>
+
+      <!-- Role Nav Tabs -->
+      <div class="role-tabs-nav">
+        <button class="role-tab-btn active" onclick="switchRoleTab('student')">
+          <span>🎓 Student Portal</span>
+          <span class="role-tab-badge">Learners</span>
+        </button>
+        <button class="role-tab-btn" onclick="switchRoleTab('faculty')">
+          <span>👨‍🏫 Faculty Portal</span>
+          <span class="role-tab-badge">Mentors</span>
+        </button>
+        <button class="role-tab-btn" onclick="switchRoleTab('hod')">
+          <span>🏛️ HOD Portal</span>
+          <span class="role-tab-badge">Leadership</span>
+        </button>
+        <button class="role-tab-btn" onclick="switchRoleTab('dean')">
+          <span>📜 Principal & Dean</span>
+          <span class="role-tab-badge">Governance</span>
+        </button>
+      </div>
+
+      <!-- Dynamic Tab Content Card -->
+      <div class="role-content-card" id="roleContentCard">
+        <div class="role-info-side">
+          <span class="role-badge-pill" id="roleBadgePill">For Engineering Students</span>
+          <h3 id="roleTitle">Hands-On Interactive Simulation Workspace</h3>
+          <p id="roleDescription">
+            Empower students with zero-friction access to high-fidelity algorithms, AI models, and circuit simulations. Run code, visualize pointer adjustments, inspect memory states, and generate instant observation reports.
+          </p>
+
+          <div class="role-features-list" id="roleFeaturesList">
+            <div class="role-feature-item">
+              <span class="check-circle">✓</span>
+              <span>Visual step-through execution for trees, graphs, sorting, and neural networks.</span>
+            </div>
+            <div class="role-feature-item">
+              <span class="check-circle">✓</span>
+              <span>Automated digital observation manual with real-time test case validation.</span>
+            </div>
+            <div class="role-feature-item">
+              <span class="check-circle">✓</span>
+              <span>Instant AI-driven syntax and logic debugging tips when simulation fails.</span>
+            </div>
+          </div>
+
+          <button class="btn-pill-primary" onclick="openBookingModal()">
+            Schedule Live Institutional Demo ➔
+          </button>
+        </div>
+
+        <div class="role-mockup-side">
+          <div class="mockup-window-header">
+            <span class="mock-indicator"></span>
+            <span class="mock-indicator"></span>
+            <span class="mock-indicator"></span>
+            <span style="font-size: 0.75rem; font-weight: 700; color: var(--red-900); margin-left: auto;" id="mockHeaderTitle">
+              student.virtuallabs.cloud
+            </span>
+          </div>
+
+          <div class="mockup-screen-content">
+            <div class="mock-stat-bar">
+              <div class="mock-mini-box">
+                <div class="mock-mini-box-title">Experiments Completed</div>
+                <div class="mock-mini-box-val" id="mockStat1">14 / 16</div>
+              </div>
+              <div class="mock-mini-box">
+                <div class="mock-mini-box-title">Average Score</div>
+                <div class="mock-mini-box-val" id="mockStat2">94.8%</div>
+              </div>
+              <div class="mock-mini-box">
+                <div class="mock-mini-box-title">Viva Readiness</div>
+                <div class="mock-mini-box-val" id="mockStat3">Level 5 ★</div>
+              </div>
+            </div>
+
+            <div style="background: var(--red-50); border: 1px solid var(--red-200); border-radius: 8px; padding: 14px;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 700; color: var(--red-900); margin-bottom: 6px;">
+                <span>Active Experiment: AVL Tree Self-Balancing</span>
+                <span style="color: #16a34a;">● Auto-Evaluated</span>
+              </div>
+              <div style="height: 8px; background: var(--white); border-radius: 4px; overflow: hidden;">
+                <div style="width: 88%; height: 100%; background: var(--red-600);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Disciplines & Lab Suite Matrix
+       ========================================================================== -->
+  <section class="disciplines-section" id="curriculum">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">📚 COMPREHENSIVE CURRICULUM</div>
+        <h2 class="section-title">
+          6 Core Disciplines. <span>120+ Interactive Lab Modules.</span>
+        </h2>
+        <p class="section-subtitle">
+          Fully mapped to AICTE Model Curricula, Anna University 2021/2023 Regulations, and Autonomous CBCS Syllabi.
+        </p>
+      </div>
+
+      <div class="disciplines-grid">
+        <!-- Card 1 -->
+        <div class="discipline-card">
+          <div class="discipline-icon-badge">🧠</div>
+          <h4 class="discipline-name">AI & Machine Learning</h4>
+          <p class="discipline-desc">
+            Visual neural network backpropagation, Decision Trees, K-Means clustering, and loss curve optimization studios.
+          </p>
+          <div class="discipline-tags">
+            <span class="discipline-tag">Backprop Sim</span>
+            <span class="discipline-tag">PCA 3D</span>
+            <span class="discipline-tag">CNN Feature Maps</span>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="discipline-card">
+          <div class="discipline-icon-badge">🌲</div>
+          <h4 class="discipline-name">Data Structures & Algorithms</h4>
+          <p class="discipline-desc">
+            Interactive BST rotations, Heap trees, Dijkstra & Prim's graphs, Infix-to-Postfix stacks, and sorting benchmarks.
+          </p>
+          <div class="discipline-tags">
+            <span class="discipline-tag">AVL Balance</span>
+            <span class="discipline-tag">Dijkstra Shortest</span>
+            <span class="discipline-tag">Hash Collisions</span>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="discipline-card">
+          <div class="discipline-icon-badge">🌐</div>
+          <h4 class="discipline-name">Computer Networks</h4>
+          <p class="discipline-desc">
+            Packet routing simulation, TCP sliding window flow control, Subnet mask calculators, and DNS lookup traceroutes.
+          </p>
+          <div class="discipline-tags">
+            <span class="discipline-tag">Sliding Window</span>
+            <span class="discipline-tag">Distance Vector</span>
+            <span class="discipline-tag">CRC Check</span>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="discipline-card">
+          <div class="discipline-icon-badge">💾</div>
+          <h4 class="discipline-name">Database Systems (DBMS)</h4>
+          <p class="discipline-desc">
+            Visual B+ Tree indexing, Relational Algebra tree evaluator, ER diagram to schema mapper, and real-time SQL console.
+          </p>
+          <div class="discipline-tags">
+            <span class="discipline-tag">B+ Tree Split</span>
+            <span class="discipline-tag">SQL Sandbox</span>
+            <span class="discipline-tag">Normal Form Check</span>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="discipline-card">
+          <div class="discipline-icon-badge">⚡</div>
+          <h4 class="discipline-name">Digital Electronics</h4>
+          <p class="discipline-desc">
+            Interactive logic gate breadboards, Flip-Flop state timing diagrams, Karnaugh Map (K-Map) solvers, and multiplexers.
+          </p>
+          <div class="discipline-tags">
+            <span class="discipline-tag">K-Map Minimizer</span>
+            <span class="discipline-tag">JK Flip Flop</span>
+            <span class="discipline-tag">Oscilloscope UI</span>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="discipline-card">
+          <div class="discipline-icon-badge">💻</div>
+          <h4 class="discipline-name">Operating Systems</h4>
+          <p class="discipline-desc">
+            Visual CPU scheduling (Round Robin, SJF, Priority), Banker's Deadlock avoidance algorithm, and Page Replacement sim.
+          </p>
+          <div class="discipline-tags">
+            <span class="discipline-tag">Round Robin Gantt</span>
+            <span class="discipline-tag">Banker's Algorithm</span>
+            <span class="discipline-tag">LRU Page Faults</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Institutional Demo Booking Section & Form
+       ========================================================================== -->
+  <section class="booking-section" id="booking">
+    <div class="container">
+      <div class="booking-card-wrapper">
+        <!-- Info Side -->
+        <div class="booking-info-side">
+          <h2>Ready to Transform Your Campus Labs?</h2>
+          <p>
+            Book a dedicated 30-minute institutional walkthrough. We will provision a personalized trial sandbox with your college branding, regulation syllabus, and sample student accounts.
+          </p>
+
+          <div class="booking-guarantees">
+            <div class="guarantee-item">
+              <span class="guarantee-icon">✓</span>
+              <span>100% Free 30-Day Institutional Trial</span>
+            </div>
+            <div class="guarantee-item">
+              <span class="guarantee-icon">✓</span>
+              <span>Custom Subdomain & College Logo Integration</span>
+            </div>
+            <div class="guarantee-item">
+              <span class="guarantee-icon">✓</span>
+              <span>Isolated Database with Anna University Regulation Mapping</span>
+            </div>
+            <div class="guarantee-item">
+              <span class="guarantee-icon">✓</span>
+              <span>Faculty Orientation & Hands-On Workshop Included</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Box -->
+        <div class="booking-form-box">
+          <h3>Request Institutional Demo</h3>
+          <p>Fill out the institutional details below to reserve your sandbox.</p>
+
+          <form id="institutionalBookingForm" onsubmit="handleBookingSubmit(event)">
+            <div class="form-grid">
+              <div class="form-group full-width">
+                <label class="form-label" for="instCollegeName">Institution / College Name *</label>
+                <input type="text" id="instCollegeName" class="form-input" placeholder="e.g. Coimbatore Institute of Technology" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="instCode">AICTE / Counseling Code *</label>
+                <input type="text" id="instCode" class="form-input" placeholder="e.g. 7176" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="instDesignation">Your Designation *</label>
+                <select id="instDesignation" class="form-select" required>
+                  <option value="">Select Designation...</option>
+                  <option value="Principal">Principal / Director</option>
+                  <option value="Dean">Dean / Academic Director</option>
+                  <option value="HOD">Head of Department (HOD)</option>
+                  <option value="Faculty">Lab In-Charge / Professor</option>
+                  <option value="Management">College Management / Trustee</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="instEmail">Official College Email *</label>
+                <input type="email" id="instEmail" class="form-input" placeholder="name@college.ac.in" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="instPhone">Contact / WhatsApp Phone *</label>
+                <input type="tel" id="instPhone" class="form-input" placeholder="+91 98765 43210" required>
+              </div>
+
+              <div class="form-group full-width">
+                <label class="form-label" for="instDepts">Primary Departments for Trial *</label>
+                <select id="instDepts" class="form-select" required>
+                  <option value="AIDS-CSE">AI & Data Science + Computer Science</option>
+                  <option value="ALL-CIRCUIT">All Circuit Branches (CSE, AIDS, IT, ECE)</option>
+                  <option value="CAMPUS-WIDE">Entire Campus (All Engineering Departments)</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-submit-booking">
+              <span>Reserve College Sandbox & Demo</span>
+              <span>➔</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Institutional FAQ Accordion
+       ========================================================================== -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">❓ FREQUENTLY ASKED QUESTIONS</div>
+        <h2 class="section-title">
+          Answers for <span>Deans, Principals & HODs.</span>
+        </h2>
+        <p class="section-subtitle">
+          Everything you need to know about adopting VSB Virtual Labs across your autonomous institution.
+        </p>
+      </div>
+
+      <div class="faq-list">
+        <!-- FAQ 1 -->
+        <div class="faq-item active">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>How does VSB Virtual Labs align with Anna University & Autonomous syllabi?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-answer" style="max-height: 200px;">
+            <div class="faq-answer-inner">
+              Our platform strictly adheres to Anna University Regulation 2021 & 2023 CBCS guidelines. For autonomous institutions, we configure custom lab lists, rubrics, and observation sheets aligned with your Board of Studies (BoS) requirements.
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>Are our student data and scores isolated from other institutions?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Yes. Every institutional tenant is configured with row-level security and isolated database schemas. Student registers, marks, faculty feedback, and attendance records are never cross-accessible across different colleges.
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>What hardware or software requirements are needed for student PCs?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Zero software installation is required! The platform operates seamlessly in modern web browsers (Chrome, Edge, Firefox, Safari). Even low-spec Intel i3/Celeron systems with 4GB RAM can run all simulation modules smoothly.
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>How fast can our college clone and subdomain be provisioned?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Standard institutional trial sandboxes are provisioned within minutes of demo booking. Complete production deployment—including student batch CSV roster dispatch and custom BoS syllabus mapping—takes less than 24 business hours.
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ 5 -->
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>Can faculty track real-time student attendance and continuous evaluation (CIE)?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Yes! The Faculty Portal provides one-tap period attendance, instant time-stamped run histories, automated test case evaluations, and instant exportable spreadsheets formatted for Anna University CIE audits.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Grand Institutional Footer
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top-grid">
+        <div class="footer-brand-side">
+          <div class="nav-brand">
+            <img src="assets/vsb-logo.png" alt="VSB Logo" class="nav-brand-logo" style="filter: brightness(0) invert(1);">
+            <div class="nav-brand-text">
+              <div class="nav-brand-title" style="color: var(--white);">
+                VSB Virtual Labs
+                <span class="nav-brand-badge" style="background: var(--red-800); color: var(--white);">Institutional</span>
+              </div>
+              <span class="nav-brand-subtitle" style="color: var(--red-200);">Department of AI & Data Science</span>
+            </div>
+          </div>
+          <p>
+            An autonomous cloud laboratory platform engineered by VSB Engineering College (Karur, Tamil Nadu) to democratize high-quality engineering education across India.
+          </p>
+          <div style="font-size: 0.8rem; color: var(--red-200);">
+            Affiliated to Anna University | Approved by AICTE | NAAC A Grade
+          </div>
+        </div>
+
+        <div>
+          <h5 class="footer-col-title">Platform</h5>
+          <ul class="footer-links">
+            <li><a href="#overview" class="footer-link">Overview</a></li>
+            <li><a href="#simulation" class="footer-link">Live Algorithm Studio</a></li>
+            <li><a href="#clone-generator" class="footer-link">College Clone Studio</a></li>
+            <li><a href="#roles" class="footer-link">Stakeholder Portals</a></li>
+            <li><a href="#curriculum" class="footer-link">Curriculum Matrix</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="footer-col-title">Governance</h5>
+          <ul class="footer-links">
+            <li><a href="#booking" class="footer-link">Book Free Demo</a></li>
+            <li><a href="#faq" class="footer-link">Accreditation FAQ</a></li>
+            <li><a href="#disconnect" class="footer-link">CIE Compliance</a></li>
+            <li><a href="#" class="footer-link">Security & Privacy</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="footer-col-title">Department Contacts</h5>
+          <p style="font-size: 0.88rem; color: var(--red-200); line-height: 1.6; margin-bottom: 12px;">
+            Department of AI & DS<br>
+            VSB Engineering College<br>
+            NH-67, Covai Road, Karur, Tamil Nadu – 639 111.
+          </p>
+          <div style="font-size: 0.82rem; color: var(--white); font-weight: 700;">
+            Email: virtuallabs@vsbec.com<br>
+            Helpline: +91 4324 290142
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div>
+          © 2026 VSB Engineering College — Department of Artificial Intelligence & Data Science. All rights reserved.
+        </div>
+        <div style="display: flex; gap: 20px;">
+          <span>System Status: <strong style="color: #4ade80;">● 99.98% Operational</strong></span>
+          <span>Security: <strong style="color: var(--white);">AES-256 Multi-Tenant</strong></span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       Booking Modal Popup
+       ========================================================================== -->
+  <div class="modal-backdrop" id="bookingModalBackdrop" onclick="handleModalBackdropClick(event)">
+    <div class="modal-container">
+      <button class="modal-close-btn" onclick="closeBookingModal()">✕</button>
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+        <span class="hero-announcement-tag">FREE DEMO</span>
+        <span style="font-size: 0.8rem; font-weight: 700; color: var(--red-700);">INSTANT PROVISIONING</span>
+      </div>
+      <h3 style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 800; color: var(--slate-900); margin-bottom: 6px;">
+        Book Institutional Sandbox
+      </h3>
+      <p style="font-size: 0.88rem; color: var(--slate-500); margin-bottom: 24px;">
+        Experience the full VSB Virtual Lab suite for your department or campus with pre-loaded students and evaluation manuals.
+      </p>
+
+      <form id="modalBookingForm" onsubmit="handleModalSubmit(event)">
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label class="form-label" for="modalInstName">College / University Name *</label>
+            <input type="text" id="modalInstName" class="form-input" placeholder="e.g. PSG College of Technology" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="modalCounselingCode">College Code *</label>
+            <input type="text" id="modalCounselingCode" class="form-input" placeholder="e.g. 7177" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="modalRole">Your Role *</label>
+            <select id="modalRole" class="form-select" required>
+              <option value="HOD">HOD</option>
+              <option value="Principal">Principal</option>
+              <option value="Dean">Dean</option>
+              <option value="Faculty">Lab In-Charge</option>
+            </select>
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label" for="modalEmail">Official Email *</label>
+            <input type="email" id="modalEmail" class="form-input" placeholder="hod.aids@college.edu.in" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit-booking" style="margin-top: 10px;">
+          <span>Generate Sandbox & Schedule Call</span>
+          <span>➔</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
