@@ -20,14 +20,10 @@ import {
   getCollegeVideoTutorials,
   saveCollegeVideoTutorial,
   deleteCollegeVideoTutorial,
-  getCollegeAnnouncements,
-  saveCollegeAnnouncement,
-  deleteCollegeAnnouncement,
   CollegeMaterial,
   CollegeLabManual,
   CollegeCustomLab,
   CollegeVideoTutorial,
-  CollegeAnnouncement
 } from "@/lib/supabase-multitenant";
 import { StudentProfile } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -71,7 +67,12 @@ import {
   ExternalLink,
   Edit,
   Building,
-  Radio
+  Play,
+  Pencil,
+  Upload,
+  FileUp,
+  FileCode,
+  Paperclip
 } from "lucide-react";
 
 const ADMIN_EMAIL = "anishanth404@gmail.com";
@@ -98,33 +99,42 @@ function AdminPageContent() {
   const [manuals, setManuals] = useState<CollegeLabManual[]>([]);
   const [customLabs, setCustomLabs] = useState<CollegeCustomLab[]>([]);
   const [videos, setVideos] = useState<CollegeVideoTutorial[]>([]);
-  const [announcements, setAnnouncements] = useState<CollegeAnnouncement[]>([]);
   const [isLoadingData, setIsLoadingData] = useState<boolean>(true);
 
   // Search & Filter
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedDept, setSelectedDept] = useState<string>("all");
-  const [selectedStudentForModal, setSelectedStudentForModal] = useState<StudentProfile | null>(null);
+  const [labSearchQuery, setLabSearchQuery] = useState<string>("");
+  const [labFilterDept, setLabFilterDept] = useState<string>("all");
 
-  // Modals for CRUD
-  const [activeModal, setActiveModal] = useState<"material" | "manual" | "lab" | "video" | "announcement" | null>(null);
+  // Modals for CRUD (Add & Edit)
+  const [activeModal, setActiveModal] = useState<
+    "manual" | "edit-manual" | "material" | "edit-material" | "lab" | "edit-lab" | "video" | "edit-video" | null
+  >(null);
 
   // Form states for adding items
-  const [newMaterial, setNewMaterial] = useState<Partial<CollegeMaterial>>({
-    title: "", description: "", category: "Lecture Notes", department: "AIDS", semester: "Semester III", fileUrl: "", fileType: "pdf", uploadedBy: "Department Admin"
-  });
   const [newManual, setNewManual] = useState<Partial<CollegeLabManual>>({
     labName: "", labCode: "", department: "AIDS & CSE", semester: "Semester III", manualUrl: "", observationUrl: "", description: "", uploadedBy: "Lab Incharge"
   });
+  const [newMaterial, setNewMaterial] = useState<Partial<CollegeMaterial>>({
+    title: "", description: "", category: "Lecture Notes", department: "AIDS & CSE", semester: "Semester III", fileUrl: "", fileType: "pdf", uploadedBy: "Department Faculty"
+  });
   const [newCustomLab, setNewCustomLab] = useState<Partial<CollegeCustomLab>>({
-    title: "", domain: "Algorithms & Simulation", department: "AIDS", labUrl: "/experiments/dsa", description: "", semester: "Semester III", difficulty: "Intermediate", uploadedBy: "Faculty Admin"
+    title: "", domain: "Core Computing", department: "AIDS & CSE", labUrl: "/labs/data-structures", description: "", semester: "Semester III", difficulty: "Intermediate", uploadedBy: "Academic Head"
   });
   const [newVideo, setNewVideo] = useState<Partial<CollegeVideoTutorial>>({
     title: "", topic: "Algorithm Simulation", department: "AIDS / CSE", youtubeUrl: "https://www.youtube.com", language: "Tamil", duration: "15:00 mins", uploadedBy: "V-Lab Studio"
   });
-  const [newAnnouncement, setNewAnnouncement] = useState<Partial<CollegeAnnouncement>>({
-    title: "", content: "", priority: "normal", date: "Sep 2026", category: "Lab Schedule"
-  });
+
+  // Form states for editing items
+  const [editingManual, setEditingManual] = useState<CollegeLabManual | null>(null);
+  const [editingMaterial, setEditingMaterial] = useState<CollegeMaterial | null>(null);
+  const [editingLab, setEditingLab] = useState<CollegeCustomLab | null>(null);
+  const [editingVideo, setEditingVideo] = useState<CollegeVideoTutorial | null>(null);
+
+  // Uploaded File Helper State
+  const [uploadedManualFileName, setUploadedManualFileName] = useState<string>("");
+  const [uploadedMaterialFileName, setUploadedMaterialFileName] = useState<string>("");
 
   // Check auth session
   useEffect(() => {
@@ -144,20 +154,18 @@ function AdminPageContent() {
   const loadAllTenantData = async (slug: string) => {
     setIsLoadingData(true);
     try {
-      const [stuData, matData, manData, labData, vidData, annData] = await Promise.all([
+      const [stuData, matData, manData, labData, vidData] = await Promise.all([
         getStudentsByCollege(slug),
         getCollegeMaterials(slug),
         getCollegeLabManuals(slug),
         getCollegeCustomLabs(slug),
         getCollegeVideoTutorials(slug),
-        getCollegeAnnouncements(slug)
       ]);
       setStudents(stuData);
       setMaterials(matData);
       setManuals(manData);
       setCustomLabs(labData);
       setVideos(vidData);
-      setAnnouncements(annData);
     } catch (e) {
       console.error("Failed to load tenant data", e);
     } finally {
@@ -210,6 +218,23 @@ function AdminPageContent() {
     });
   }, [students, searchQuery, selectedDept]);
 
+  // Filtered Labs
+  const filteredLabs = useMemo(() => {
+    return customLabs.filter((lab) => {
+      const matchesSearch =
+        lab.title.toLowerCase().includes(labSearchQuery.toLowerCase()) ||
+        lab.domain.toLowerCase().includes(labSearchQuery.toLowerCase()) ||
+        lab.description.toLowerCase().includes(labSearchQuery.toLowerCase()) ||
+        lab.labUrl.toLowerCase().includes(labSearchQuery.toLowerCase());
+
+      const matchesDept =
+        labFilterDept === "all" ||
+        lab.department.toLowerCase().includes(labFilterDept.toLowerCase());
+
+      return matchesSearch && matchesDept;
+    });
+  }, [customLabs, labSearchQuery, labFilterDept]);
+
   // Export CSV of students
   const handleExportCSV = () => {
     if (filteredStudents.length === 0) return;
@@ -234,38 +259,37 @@ function AdminPageContent() {
     document.body.removeChild(link);
   };
 
-  // --- CRUD Handlers ---
-
-  // 1. Save Material
-  const handleSaveMaterial = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newMaterial.title || !newMaterial.fileUrl) return;
-    const item: CollegeMaterial = {
-      id: `mat_${activeCollege.slug}_${Date.now()}`,
-      collegeSlug: activeCollege.slug,
-      title: newMaterial.title.trim(),
-      description: newMaterial.description?.trim() || "",
-      category: (newMaterial.category as any) || "Lecture Notes",
-      department: newMaterial.department || "AIDS",
-      semester: newMaterial.semester || "Semester III",
-      fileUrl: newMaterial.fileUrl.trim(),
-      fileType: (newMaterial.fileType as any) || "pdf",
-      uploadedBy: newMaterial.uploadedBy || "Faculty Incharge",
-      createdAt: new Date().toISOString()
-    };
-    await saveCollegeMaterial(item);
-    setMaterials([item, ...materials]);
-    setActiveModal(null);
-    setNewMaterial({ title: "", description: "", category: "Lecture Notes", department: "AIDS", semester: "Semester III", fileUrl: "", fileType: "pdf", uploadedBy: "Department Admin" });
+  // --- File Upload Handler for Lab Manuals ---
+  const handleManualFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadedManualFileName(file.name);
+    // Create a local blob/URL for demonstration and direct viewing
+    const fileUrl = URL.createObjectURL(file);
+    setNewManual((prev) => ({
+      ...prev,
+      manualUrl: fileUrl,
+      labName: prev.labName || file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "),
+    }));
   };
 
-  const handleDeleteMaterial = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this study material?")) return;
-    await deleteCollegeMaterial(id, activeCollege.slug);
-    setMaterials(materials.filter((m) => m.id !== id));
+  // --- File Upload Handler for Lab Materials ---
+  const handleMaterialFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadedMaterialFileName(file.name);
+    const fileUrl = URL.createObjectURL(file);
+    setNewMaterial((prev) => ({
+      ...prev,
+      fileUrl: fileUrl,
+      title: prev.title || file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " "),
+      fileType: "pdf"
+    }));
   };
 
-  // 2. Save Lab Manual
+  // --- CRUD HANDLERS ---
+
+  // 1. Save / Upload Lab Manual
   const handleSaveManual = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newManual.labName || !newManual.manualUrl) return;
@@ -273,7 +297,7 @@ function AdminPageContent() {
       id: `man_${activeCollege.slug}_${Date.now()}`,
       collegeSlug: activeCollege.slug,
       labName: newManual.labName.trim(),
-      labCode: newManual.labCode?.trim() || "LAB01",
+      labCode: newManual.labCode?.trim() || "AD8381",
       department: newManual.department || "AIDS & CSE",
       semester: newManual.semester || "Semester III",
       manualUrl: newManual.manualUrl.trim(),
@@ -285,7 +309,17 @@ function AdminPageContent() {
     await saveCollegeLabManual(item);
     setManuals([item, ...manuals]);
     setActiveModal(null);
+    setUploadedManualFileName("");
     setNewManual({ labName: "", labCode: "", department: "AIDS & CSE", semester: "Semester III", manualUrl: "", observationUrl: "", description: "", uploadedBy: "Lab Incharge" });
+  };
+
+  const handleUpdateManual = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingManual || !editingManual.labName || !editingManual.manualUrl) return;
+    await saveCollegeLabManual(editingManual);
+    setManuals(manuals.map((m) => (m.id === editingManual.id ? editingManual : m)));
+    setActiveModal(null);
+    setEditingManual(null);
   };
 
   const handleDeleteManual = async (id: string) => {
@@ -294,7 +328,46 @@ function AdminPageContent() {
     setManuals(manuals.filter((m) => m.id !== id));
   };
 
-  // 3. Save Custom Lab
+  // 2. Save / Upload Lab Material
+  const handleSaveMaterial = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newMaterial.title || !newMaterial.fileUrl) return;
+    const item: CollegeMaterial = {
+      id: `mat_${activeCollege.slug}_${Date.now()}`,
+      collegeSlug: activeCollege.slug,
+      title: newMaterial.title.trim(),
+      description: newMaterial.description?.trim() || "",
+      category: (newMaterial.category as any) || "Lecture Notes",
+      department: newMaterial.department || "AIDS & CSE",
+      semester: newMaterial.semester || "Semester III",
+      fileUrl: newMaterial.fileUrl.trim(),
+      fileType: (newMaterial.fileType as any) || "pdf",
+      uploadedBy: newMaterial.uploadedBy || "Department Faculty",
+      createdAt: new Date().toISOString()
+    };
+    await saveCollegeMaterial(item);
+    setMaterials([item, ...materials]);
+    setActiveModal(null);
+    setUploadedMaterialFileName("");
+    setNewMaterial({ title: "", description: "", category: "Lecture Notes", department: "AIDS & CSE", semester: "Semester III", fileUrl: "", fileType: "pdf", uploadedBy: "Department Faculty" });
+  };
+
+  const handleUpdateMaterial = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingMaterial || !editingMaterial.title || !editingMaterial.fileUrl) return;
+    await saveCollegeMaterial(editingMaterial);
+    setMaterials(materials.map((m) => (m.id === editingMaterial.id ? editingMaterial : m)));
+    setActiveModal(null);
+    setEditingMaterial(null);
+  };
+
+  const handleDeleteMaterial = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this study material?")) return;
+    await deleteCollegeMaterial(id, activeCollege.slug);
+    setMaterials(materials.filter((m) => m.id !== id));
+  };
+
+  // 3. Save / Insert Virtual Lab
   const handleSaveCustomLab = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newCustomLab.title || !newCustomLab.labUrl) return;
@@ -302,8 +375,8 @@ function AdminPageContent() {
       id: `lab_${activeCollege.slug}_${Date.now()}`,
       collegeSlug: activeCollege.slug,
       title: newCustomLab.title.trim(),
-      domain: newCustomLab.domain?.trim() || "Computer Science",
-      department: newCustomLab.department || "AIDS",
+      domain: newCustomLab.domain?.trim() || "Core Computing",
+      department: newCustomLab.department || "AIDS & CSE",
       labUrl: newCustomLab.labUrl.trim(),
       description: newCustomLab.description?.trim() || "",
       semester: newCustomLab.semester || "Semester III",
@@ -314,16 +387,25 @@ function AdminPageContent() {
     await saveCollegeCustomLab(item);
     setCustomLabs([item, ...customLabs]);
     setActiveModal(null);
-    setNewCustomLab({ title: "", domain: "Algorithms & Simulation", department: "AIDS", labUrl: "/experiments/dsa", description: "", semester: "Semester III", difficulty: "Intermediate", uploadedBy: "Faculty Admin" });
+    setNewCustomLab({ title: "", domain: "Core Computing", department: "AIDS & CSE", labUrl: "/labs/data-structures", description: "", semester: "Semester III", difficulty: "Intermediate", uploadedBy: "Academic Head" });
+  };
+
+  const handleUpdateCustomLab = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingLab || !editingLab.title || !editingLab.labUrl) return;
+    await saveCollegeCustomLab(editingLab);
+    setCustomLabs(customLabs.map((l) => (l.id === editingLab.id ? editingLab : l)));
+    setActiveModal(null);
+    setEditingLab(null);
   };
 
   const handleDeleteCustomLab = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this custom lab?")) return;
+    if (!confirm("Are you sure you want to delete this virtual lab from the active college?")) return;
     await deleteCollegeCustomLab(id, activeCollege.slug);
     setCustomLabs(customLabs.filter((l) => l.id !== id));
   };
 
-  // 4. Save Video
+  // 4. Save / Insert Video
   const handleSaveVideo = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newVideo.title || !newVideo.youtubeUrl) return;
@@ -345,36 +427,19 @@ function AdminPageContent() {
     setNewVideo({ title: "", topic: "Algorithm Simulation", department: "AIDS / CSE", youtubeUrl: "https://www.youtube.com", language: "Tamil", duration: "15:00 mins", uploadedBy: "V-Lab Studio" });
   };
 
+  const handleUpdateVideo = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingVideo || !editingVideo.title || !editingVideo.youtubeUrl) return;
+    await saveCollegeVideoTutorial(editingVideo);
+    setVideos(videos.map((v) => (v.id === editingVideo.id ? editingVideo : v)));
+    setActiveModal(null);
+    setEditingVideo(null);
+  };
+
   const handleDeleteVideo = async (id: string) => {
     if (!confirm("Are you sure you want to delete this video tutorial?")) return;
     await deleteCollegeVideoTutorial(id, activeCollege.slug);
     setVideos(videos.filter((v) => v.id !== id));
-  };
-
-  // 5. Save Announcement
-  const handleSaveAnnouncement = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newAnnouncement.title || !newAnnouncement.content) return;
-    const item: CollegeAnnouncement = {
-      id: `ann_${activeCollege.slug}_${Date.now()}`,
-      collegeSlug: activeCollege.slug,
-      title: newAnnouncement.title.trim(),
-      content: newAnnouncement.content.trim(),
-      priority: (newAnnouncement.priority as any) || "normal",
-      date: newAnnouncement.date || new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
-      category: (newAnnouncement.category as any) || "Lab Schedule",
-      createdAt: new Date().toISOString()
-    };
-    await saveCollegeAnnouncement(item);
-    setAnnouncements([item, ...announcements]);
-    setActiveModal(null);
-    setNewAnnouncement({ title: "", content: "", priority: "normal", date: "Sep 2026", category: "Lab Schedule" });
-  };
-
-  const handleDeleteAnnouncement = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this announcement?")) return;
-    await deleteCollegeAnnouncement(id, activeCollege.slug);
-    setAnnouncements(announcements.filter((a) => a.id !== id));
   };
 
   // --- LOGIN SCREEN IF NOT AUTHENTICATED ---
@@ -397,7 +462,7 @@ function AdminPageContent() {
                 Institutional Admin Access
               </CardTitle>
               <CardDescription className="text-xs text-muted-foreground">
-                Enter your administrative credentials to manage college lab materials, manuals, custom simulators, and student cohorts.
+                Enter your administrative credentials to manage college laboratories, verified manuals, custom simulators, and student cohorts.
               </CardDescription>
             </CardHeader>
 
@@ -500,7 +565,7 @@ function AdminPageContent() {
                   </Badge>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Managing isolated tenant resources, lab manuals, and student rosters for accredited colleges.
+                  Customizing and uploading laboratory manuals, verified study materials, simulators, and video tutorials for accredited colleges.
                 </p>
               </div>
             </div>
@@ -548,88 +613,436 @@ function AdminPageContent() {
           </div>
 
           {/* College Stats Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3.5">
             <Card className="border border-border/80 bg-card">
-              <CardContent className="p-4 flex items-center justify-between">
+              <CardContent className="p-3.5 flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-muted-foreground font-medium">Registered Students</p>
-                  <p className="text-2xl font-black font-heading text-foreground mt-0.5">{students.length}</p>
+                  <p className="text-[11px] text-muted-foreground font-medium">Students</p>
+                  <p className="text-xl font-black font-heading text-foreground mt-0.5">{students.length}</p>
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-                  <Users className="h-5 w-5" />
+                <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                  <Users className="h-4 w-4" />
                 </div>
               </CardContent>
             </Card>
 
             <Card className="border border-border/80 bg-card">
-              <CardContent className="p-4 flex items-center justify-between">
+              <CardContent className="p-3.5 flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-muted-foreground font-medium">Lab Manuals</p>
-                  <p className="text-2xl font-black font-heading text-foreground mt-0.5">{manuals.length}</p>
+                  <p className="text-[11px] text-muted-foreground font-medium">Lab Manuals</p>
+                  <p className="text-xl font-black font-heading text-foreground mt-0.5">{manuals.length}</p>
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center">
-                  <BookOpen className="h-5 w-5" />
+                <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 flex items-center justify-center">
+                  <BookOpen className="h-4 w-4" />
                 </div>
               </CardContent>
             </Card>
 
             <Card className="border border-border/80 bg-card">
-              <CardContent className="p-4 flex items-center justify-between">
+              <CardContent className="p-3.5 flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-muted-foreground font-medium">Study Materials</p>
-                  <p className="text-2xl font-black font-heading text-foreground mt-0.5">{materials.length}</p>
+                  <p className="text-[11px] text-muted-foreground font-medium">Lab Materials</p>
+                  <p className="text-xl font-black font-heading text-foreground mt-0.5">{materials.length}</p>
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
-                  <FileText className="h-5 w-5" />
+                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
+                  <FileText className="h-4 w-4" />
                 </div>
               </CardContent>
             </Card>
 
             <Card className="border border-border/80 bg-card">
-              <CardContent className="p-4 flex items-center justify-between">
+              <CardContent className="p-3.5 flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-muted-foreground font-medium">Custom Experiments</p>
-                  <p className="text-2xl font-black font-heading text-foreground mt-0.5">{customLabs.length}</p>
+                  <p className="text-[11px] text-muted-foreground font-medium">Virtual Labs</p>
+                  <p className="text-xl font-black font-heading text-foreground mt-0.5">{customLabs.length}</p>
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center">
-                  <FlaskConical className="h-5 w-5" />
+                <div className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-600 flex items-center justify-center">
+                  <FlaskConical className="h-4 w-4" />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border border-border/80 bg-card">
+              <CardContent className="p-3.5 flex items-center justify-between">
+                <div>
+                  <p className="text-[11px] text-muted-foreground font-medium">Video Tutorials</p>
+                  <p className="text-xl font-black font-heading text-foreground mt-0.5">{videos.length}</p>
+                </div>
+                <div className="w-8 h-8 rounded-lg bg-red-500/10 text-red-600 flex items-center justify-center">
+                  <Video className="h-4 w-4" />
                 </div>
               </CardContent>
             </Card>
           </div>
 
-          {/* Main Tenant Tabs: Students, Materials, Manuals, Custom Labs, Videos, Announcements */}
-          <Tabs defaultValue="students" className="w-full">
+          {/* Main Tenant Tabs: Students, Lab Manuals, Lab Materials, Virtual Labs, Video Tutorials */}
+          <Tabs defaultValue="manuals" className="w-full">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-3">
               <TabsList className="bg-muted/60 p-1 rounded-xl flex-wrap h-auto">
-                <TabsTrigger value="students" className="text-xs font-semibold gap-1.5 rounded-lg">
-                  <Users className="h-3.5 w-3.5" />
-                  <span>Students ({students.length})</span>
-                </TabsTrigger>
                 <TabsTrigger value="manuals" className="text-xs font-semibold gap-1.5 rounded-lg">
                   <BookOpen className="h-3.5 w-3.5" />
                   <span>Lab Manuals ({manuals.length})</span>
                 </TabsTrigger>
                 <TabsTrigger value="materials" className="text-xs font-semibold gap-1.5 rounded-lg">
                   <FileText className="h-3.5 w-3.5" />
-                  <span>Study Notes ({materials.length})</span>
+                  <span>Lab Materials ({materials.length})</span>
                 </TabsTrigger>
                 <TabsTrigger value="labs" className="text-xs font-semibold gap-1.5 rounded-lg">
                   <FlaskConical className="h-3.5 w-3.5" />
-                  <span>Custom Labs ({customLabs.length})</span>
+                  <span>Virtual Labs ({customLabs.length})</span>
                 </TabsTrigger>
                 <TabsTrigger value="videos" className="text-xs font-semibold gap-1.5 rounded-lg">
                   <Video className="h-3.5 w-3.5" />
                   <span>Video Tutorials ({videos.length})</span>
                 </TabsTrigger>
-                <TabsTrigger value="announcements" className="text-xs font-semibold gap-1.5 rounded-lg">
-                  <Radio className="h-3.5 w-3.5" />
-                  <span>Notices ({announcements.length})</span>
+                <TabsTrigger value="students" className="text-xs font-semibold gap-1.5 rounded-lg">
+                  <Users className="h-3.5 w-3.5" />
+                  <span>Students ({students.length})</span>
                 </TabsTrigger>
               </TabsList>
             </div>
 
-            {/* TAB 1: STUDENTS ROSTER */}
+            {/* TAB 1: LAB MANUALS (UPLOAD, INSERT, UPDATE, DELETE) */}
+            <TabsContent value="manuals" className="space-y-4 mt-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <h3 className="text-sm font-bold text-foreground">
+                    Lab Manuals Customization for {activeCollege.shortName}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    Upload official PDF manuals, observation sheets, edit subject codes, and manage curriculum links.
+                  </p>
+                </div>
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    setUploadedManualFileName("");
+                    setActiveModal("manual");
+                  }}
+                  className="h-9 bg-primary text-primary-foreground font-semibold text-xs gap-1.5 rounded-xl shadow-sm"
+                >
+                  <Upload className="h-3.5 w-3.5" />
+                  <span>Upload / Add Lab Manual</span>
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {manuals.map((man) => (
+                  <Card key={man.id} className="border border-border/80 bg-card hover:border-primary/40 transition-all flex flex-col justify-between rounded-2xl">
+                    <CardHeader className="p-4 pb-2">
+                      <div className="flex items-center justify-between">
+                        <Badge variant="outline" className="text-[10px] font-mono bg-primary/10 text-primary border-primary/20">
+                          {man.labCode}
+                        </Badge>
+                        <span className="text-[10px] text-muted-foreground">{man.semester}</span>
+                      </div>
+                      <CardTitle className="text-sm font-bold text-foreground line-clamp-1 pt-1">
+                        {man.labName}
+                      </CardTitle>
+                      <CardDescription className="text-xs text-muted-foreground line-clamp-2">
+                        {man.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-4 pt-2 flex items-center justify-between border-t border-border/40 mt-2">
+                      <span className="text-[10px] text-muted-foreground font-medium">{man.department}</span>
+                      <div className="flex items-center gap-1.5">
+                        <Button size="sm" variant="outline" className="h-7 text-xs px-2.5 gap-1" asChild>
+                          <a href={man.manualUrl} target="_blank" rel="noopener noreferrer">
+                            <ExternalLink className="h-3 w-3 text-primary" />
+                            <span>View Link</span>
+                          </a>
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => {
+                            setEditingManual(man);
+                            setActiveModal("edit-manual");
+                          }}
+                          className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground hover:bg-muted"
+                          title="Edit Lab Manual"
+                        >
+                          <Pencil className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDeleteManual(man.id)}
+                          className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
+                          title="Delete Lab Manual"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            {/* TAB 2: LAB MATERIALS (UPLOAD, INSERT, UPDATE, DELETE) */}
+            <TabsContent value="materials" className="space-y-4 mt-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <h3 className="text-sm font-bold text-foreground">
+                    Lab Materials &amp; Study Notes Customization for {activeCollege.shortName}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    Upload lecture PDFs, GeeksforGeeks/W3Schools references, 2-mark question banks, and lab observation sheets.
+                  </p>
+                </div>
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    setUploadedMaterialFileName("");
+                    setActiveModal("material");
+                  }}
+                  className="h-9 bg-primary text-primary-foreground font-semibold text-xs gap-1.5 rounded-xl shadow-sm"
+                >
+                  <Upload className="h-3.5 w-3.5" />
+                  <span>Upload / Add Lab Material</span>
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {materials.map((mat) => (
+                  <Card key={mat.id} className="border border-border/80 bg-card hover:border-primary/40 transition-all flex flex-col justify-between rounded-2xl">
+                    <CardHeader className="p-4 pb-2">
+                      <div className="flex items-center justify-between">
+                        <Badge variant="secondary" className="text-[10px] font-mono">
+                          {mat.category}
+                        </Badge>
+                        <span className="text-[10px] text-muted-foreground">{mat.semester}</span>
+                      </div>
+                      <CardTitle className="text-sm font-bold text-foreground line-clamp-1 pt-1">
+                        {mat.title}
+                      </CardTitle>
+                      <CardDescription className="text-xs text-muted-foreground line-clamp-2">
+                        {mat.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-4 pt-2 flex items-center justify-between border-t border-border/40 mt-2">
+                      <span className="text-[10px] text-muted-foreground font-medium">{mat.department}</span>
+                      <div className="flex items-center gap-1.5">
+                        <Button size="sm" variant="outline" className="h-7 text-xs px-2.5 gap-1" asChild>
+                          <a href={mat.fileUrl} target="_blank" rel="noopener noreferrer">
+                            <ExternalLink className="h-3 w-3 text-primary" />
+                            <span>Open</span>
+                          </a>
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => {
+                            setEditingMaterial(mat);
+                            setActiveModal("edit-material");
+                          }}
+                          className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground hover:bg-muted"
+                          title="Edit Material"
+                        >
+                          <Pencil className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDeleteMaterial(mat.id)}
+                          className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
+                          title="Delete Material"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            {/* TAB 3: VIRTUAL LABS & SIMULATORS (INSERT, UPDATE, DELETE) */}
+            <TabsContent value="labs" className="space-y-4 mt-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <h3 className="text-sm font-bold text-foreground">
+                    Virtual Laboratories &amp; Simulators for {activeCollege.shortName}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    Manage all core department labs, interactive visualizers, simulation testbeds, and custom experiments.
+                  </p>
+                </div>
+                <Button
+                  size="sm"
+                  onClick={() => setActiveModal("lab")}
+                  className="h-9 bg-primary text-primary-foreground font-semibold text-xs gap-1.5 rounded-xl shadow-sm"
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>Add Laboratory / Simulation</span>
+                </Button>
+              </div>
+
+              {/* Labs Search & Dept Filter */}
+              <div className="flex flex-col sm:flex-row items-center gap-3 bg-muted/30 p-3 rounded-xl border border-border">
+                <div className="relative flex-1 w-full">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    placeholder="Search labs by title, domain, or route..."
+                    value={labSearchQuery}
+                    onChange={(e) => setLabSearchQuery(e.target.value)}
+                    className="pl-9 h-8 text-xs bg-background"
+                  />
+                </div>
+                <select
+                  value={labFilterDept}
+                  onChange={(e) => setLabFilterDept(e.target.value)}
+                  className="h-8 px-2.5 rounded-md border border-input bg-background text-xs font-medium text-foreground shrink-0 w-full sm:w-auto"
+                >
+                  <option value="all">All Disciplines / Depts</option>
+                  <option value="AIDS">AIDS</option>
+                  <option value="CSE">CSE</option>
+                  <option value="IT">IT</option>
+                  <option value="First Year">First Years</option>
+                </select>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filteredLabs.map((lab) => (
+                  <Card key={lab.id} className="border border-border/80 bg-card hover:border-primary/40 transition-all flex flex-col justify-between rounded-2xl">
+                    <CardHeader className="p-4 pb-2">
+                      <div className="flex items-center justify-between">
+                        <Badge className="text-[10px] bg-primary/10 text-primary border-primary/20">
+                          {lab.domain}
+                        </Badge>
+                        <div className="flex items-center gap-1.5">
+                          <Badge variant="outline" className="text-[10px] text-muted-foreground">
+                            {lab.semester}
+                          </Badge>
+                          <span className="text-[10px] font-semibold text-emerald-600 bg-emerald-500/10 px-1.5 py-0.5 rounded">
+                            {lab.difficulty}
+                          </span>
+                        </div>
+                      </div>
+                      <CardTitle className="text-sm font-bold text-foreground line-clamp-1 pt-1">
+                        {lab.title}
+                      </CardTitle>
+                      <CardDescription className="text-xs text-muted-foreground line-clamp-2">
+                        {lab.description}
+                      </CardDescription>
+                      <div className="pt-1">
+                        <span className="text-[10px] font-mono text-muted-foreground bg-muted/60 px-1.5 py-0.5 rounded">
+                          {lab.labUrl}
+                        </span>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="p-4 pt-2 flex items-center justify-between border-t border-border/40 mt-2">
+                      <span className="text-[10px] text-muted-foreground font-medium">{lab.department}</span>
+                      <div className="flex items-center gap-1.5">
+                        <Button size="sm" variant="outline" className="h-7 text-xs px-2.5 gap-1 text-primary hover:bg-primary/10" asChild>
+                          <Link href={lab.labUrl} target="_blank">
+                            <Play className="h-3 w-3" />
+                            <span>Launch</span>
+                          </Link>
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => {
+                            setEditingLab(lab);
+                            setActiveModal("edit-lab");
+                          }}
+                          className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground hover:bg-muted"
+                          title="Edit Lab"
+                        >
+                          <Pencil className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDeleteCustomLab(lab.id)}
+                          className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
+                          title="Delete Lab"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            {/* TAB 4: VIDEO TUTORIALS (INSERT, UPDATE, DELETE) */}
+            <TabsContent value="videos" className="space-y-4 mt-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <h3 className="text-sm font-bold text-foreground">
+                    Video Tutorials &amp; Walkthroughs Customization for {activeCollege.shortName}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    Manage Tamil/English lab explanation videos, YouTube lecture links, and viva voce walkthroughs.
+                  </p>
+                </div>
+                <Button
+                  size="sm"
+                  onClick={() => setActiveModal("video")}
+                  className="h-9 bg-primary text-primary-foreground font-semibold text-xs gap-1.5 rounded-xl shadow-sm"
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>Add Video Guide</span>
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {videos.map((vid) => (
+                  <Card key={vid.id} className="border border-border/80 bg-card flex flex-col justify-between rounded-2xl">
+                    <CardHeader className="p-4 pb-2">
+                      <div className="flex items-center justify-between">
+                        <Badge variant="outline" className="text-[10px] bg-red-500/10 text-red-600 border-red-500/20">
+                          {vid.language} • {vid.duration}
+                        </Badge>
+                        <span className="text-[10px] text-muted-foreground">{vid.topic}</span>
+                      </div>
+                      <CardTitle className="text-sm font-bold text-foreground line-clamp-1 pt-1">
+                        {vid.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-4 pt-2 flex items-center justify-between border-t border-border/40 mt-2">
+                      <span className="text-[10px] text-muted-foreground font-medium">{vid.department}</span>
+                      <div className="flex items-center gap-1.5">
+                        <Button size="sm" variant="outline" className="h-7 text-xs px-2.5 gap-1 text-red-600" asChild>
+                          <a href={vid.youtubeUrl} target="_blank" rel="noopener noreferrer">
+                            <Video className="h-3 w-3" />
+                            <span>Watch</span>
+                          </a>
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => {
+                            setEditingVideo(vid);
+                            setActiveModal("edit-video");
+                          }}
+                          className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground hover:bg-muted"
+                          title="Edit Video"
+                        >
+                          <Pencil className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDeleteVideo(vid.id)}
+                          className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
+                          title="Delete Video"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            {/* TAB 5: STUDENTS ROSTER */}
             <TabsContent value="students" className="space-y-4 mt-6">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-muted/30 p-4 rounded-xl border border-border">
                 <div className="flex flex-1 items-center gap-3 w-full">
@@ -679,7 +1092,7 @@ function AdminPageContent() {
                       <tr>
                         <th className="p-3.5">Student Name</th>
                         <th className="p-3.5">Register Number</th>
-                        <th className="p-3.5">Department & Class</th>
+                        <th className="p-3.5">Department &amp; Class</th>
                         <th className="p-3.5 text-center">Labs Completed</th>
                         <th className="p-3.5 text-center">Quiz Scores</th>
                         <th className="p-3.5 text-center">Last Active</th>
@@ -728,314 +1141,35 @@ function AdminPageContent() {
                 </div>
               </div>
             </TabsContent>
-
-            {/* TAB 2: LAB MANUALS (CRUD) */}
-            <TabsContent value="manuals" className="space-y-4 mt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm font-bold text-foreground">
-                    Lab Manuals for {activeCollege.shortName}
-                  </h3>
-                  <p className="text-xs text-muted-foreground">
-                    Upload and manage official practical manuals, observation sheets, and syllabus mapping.
-                  </p>
-                </div>
-                <Button
-                  size="sm"
-                  onClick={() => setActiveModal("manual")}
-                  className="h-9 bg-primary text-primary-foreground font-semibold text-xs gap-1.5 rounded-xl shadow-sm"
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  <span>Add Lab Manual</span>
-                </Button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {manuals.map((man) => (
-                  <Card key={man.id} className="border border-border/80 bg-card">
-                    <CardHeader className="p-4 pb-2">
-                      <div className="flex items-center justify-between">
-                        <Badge variant="outline" className="text-[10px] font-mono bg-primary/10 text-primary border-primary/20">
-                          {man.labCode}
-                        </Badge>
-                        <span className="text-[10px] text-muted-foreground">{man.semester}</span>
-                      </div>
-                      <CardTitle className="text-sm font-bold text-foreground line-clamp-1 pt-1">
-                        {man.labName}
-                      </CardTitle>
-                      <CardDescription className="text-xs text-muted-foreground line-clamp-2">
-                        {man.description}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="p-4 pt-2 flex items-center justify-between border-t border-border/40 mt-2">
-                      <span className="text-[10px] text-muted-foreground">{man.department}</span>
-                      <div className="flex items-center gap-2">
-                        <Button size="sm" variant="outline" className="h-7 text-xs px-2 gap-1" asChild>
-                          <a href={man.manualUrl} target="_blank" rel="noopener noreferrer">
-                            <Download className="h-3 w-3" />
-                            <span>Link</span>
-                          </a>
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => handleDeleteManual(man.id)}
-                          className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-
-            {/* TAB 3: STUDY MATERIALS (CRUD) */}
-            <TabsContent value="materials" className="space-y-4 mt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm font-bold text-foreground">
-                    Study Notes & Question Banks for {activeCollege.shortName}
-                  </h3>
-                  <p className="text-xs text-muted-foreground">
-                    Manage 2-Marks, 16-Marks, lecture PDFs, and lab sheets.
-                  </p>
-                </div>
-                <Button
-                  size="sm"
-                  onClick={() => setActiveModal("material")}
-                  className="h-9 bg-primary text-primary-foreground font-semibold text-xs gap-1.5 rounded-xl shadow-sm"
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  <span>Add Study Material</span>
-                </Button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {materials.map((mat) => (
-                  <Card key={mat.id} className="border border-border/80 bg-card">
-                    <CardHeader className="p-4 pb-2">
-                      <div className="flex items-center justify-between">
-                        <Badge variant="secondary" className="text-[10px] font-mono">
-                          {mat.category}
-                        </Badge>
-                        <span className="text-[10px] text-muted-foreground">{mat.semester}</span>
-                      </div>
-                      <CardTitle className="text-sm font-bold text-foreground line-clamp-1 pt-1">
-                        {mat.title}
-                      </CardTitle>
-                      <CardDescription className="text-xs text-muted-foreground line-clamp-2">
-                        {mat.description}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="p-4 pt-2 flex items-center justify-between border-t border-border/40 mt-2">
-                      <span className="text-[10px] text-muted-foreground">{mat.uploadedBy}</span>
-                      <div className="flex items-center gap-2">
-                        <Button size="sm" variant="outline" className="h-7 text-xs px-2.5 gap-1" asChild>
-                          <a href={mat.fileUrl} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink className="h-3 w-3" />
-                            <span>Open</span>
-                          </a>
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => handleDeleteMaterial(mat.id)}
-                          className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-
-            {/* TAB 4: CUSTOM LABS (CRUD) */}
-            <TabsContent value="labs" className="space-y-4 mt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm font-bold text-foreground">
-                    Additional & Custom Experiments for {activeCollege.shortName}
-                  </h3>
-                  <p className="text-xs text-muted-foreground">
-                    Add new simulation modules or external simulator links for your department.
-                  </p>
-                </div>
-                <Button
-                  size="sm"
-                  onClick={() => setActiveModal("lab")}
-                  className="h-9 bg-primary text-primary-foreground font-semibold text-xs gap-1.5 rounded-xl shadow-sm"
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  <span>Add Custom Lab</span>
-                </Button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {customLabs.map((lab) => (
-                  <Card key={lab.id} className="border border-border/80 bg-card">
-                    <CardHeader className="p-4 pb-2">
-                      <div className="flex items-center justify-between">
-                        <Badge className="text-[10px] bg-primary/10 text-primary border-primary/20">
-                          {lab.domain}
-                        </Badge>
-                        <span className="text-[10px] font-medium text-emerald-600">{lab.difficulty}</span>
-                      </div>
-                      <CardTitle className="text-sm font-bold text-foreground line-clamp-1 pt-1">
-                        {lab.title}
-                      </CardTitle>
-                      <CardDescription className="text-xs text-muted-foreground line-clamp-2">
-                        {lab.description}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="p-4 pt-2 flex items-center justify-between border-t border-border/40 mt-2">
-                      <span className="text-[10px] text-muted-foreground">{lab.department}</span>
-                      <div className="flex items-center gap-2">
-                        <Button size="sm" variant="outline" className="h-7 text-xs px-2.5 gap-1" asChild>
-                          <Link href={lab.labUrl}>
-                            <ExternalLink className="h-3 w-3" />
-                            <span>Test</span>
-                          </Link>
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => handleDeleteCustomLab(lab.id)}
-                          className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-
-            {/* TAB 5: VIDEO TUTORIALS (CRUD) */}
-            <TabsContent value="videos" className="space-y-4 mt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm font-bold text-foreground">
-                    Video Tutorials & Walkthroughs for {activeCollege.shortName}
-                  </h3>
-                  <p className="text-xs text-muted-foreground">
-                    Manage Tamil/English lab explanation videos and viva voce walkthroughs.
-                  </p>
-                </div>
-                <Button
-                  size="sm"
-                  onClick={() => setActiveModal("video")}
-                  className="h-9 bg-primary text-primary-foreground font-semibold text-xs gap-1.5 rounded-xl shadow-sm"
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  <span>Add Video Guide</span>
-                </Button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {videos.map((vid) => (
-                  <Card key={vid.id} className="border border-border/80 bg-card">
-                    <CardHeader className="p-4 pb-2">
-                      <div className="flex items-center justify-between">
-                        <Badge variant="outline" className="text-[10px] bg-red-500/10 text-red-600 border-red-500/20">
-                          {vid.language} • {vid.duration}
-                        </Badge>
-                        <span className="text-[10px] text-muted-foreground">{vid.topic}</span>
-                      </div>
-                      <CardTitle className="text-sm font-bold text-foreground line-clamp-1 pt-1">
-                        {vid.title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-4 pt-2 flex items-center justify-between border-t border-border/40 mt-2">
-                      <span className="text-[10px] text-muted-foreground">{vid.department}</span>
-                      <div className="flex items-center gap-2">
-                        <Button size="sm" variant="outline" className="h-7 text-xs px-2.5 gap-1 text-red-600" asChild>
-                          <a href={vid.youtubeUrl} target="_blank" rel="noopener noreferrer">
-                            <Video className="h-3 w-3" />
-                            <span>Watch</span>
-                          </a>
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => handleDeleteVideo(vid.id)}
-                          className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-
-            {/* TAB 6: ANNOUNCEMENTS (CRUD) */}
-            <TabsContent value="announcements" className="space-y-4 mt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm font-bold text-foreground">
-                    College Circulars & Notices for {activeCollege.shortName}
-                  </h3>
-                  <p className="text-xs text-muted-foreground">
-                    Publish model exam timetables, assessment deadlines, and lab instructions.
-                  </p>
-                </div>
-                <Button
-                  size="sm"
-                  onClick={() => setActiveModal("announcement")}
-                  className="h-9 bg-primary text-primary-foreground font-semibold text-xs gap-1.5 rounded-xl shadow-sm"
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  <span>Publish Notice</span>
-                </Button>
-              </div>
-
-              <div className="space-y-3">
-                {announcements.map((ann) => (
-                  <Card key={ann.id} className="border border-border/80 bg-card">
-                    <CardContent className="p-4 flex items-start justify-between gap-4">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="text-[10px] font-mono">
-                            {ann.category}
-                          </Badge>
-                          <span className="text-xs font-bold text-foreground">{ann.title}</span>
-                          <span className="text-[10px] text-muted-foreground">• {ann.date}</span>
-                        </div>
-                        <p className="text-xs text-muted-foreground leading-relaxed">{ann.content}</p>
-                      </div>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => handleDeleteAnnouncement(ann.id)}
-                        className="h-8 w-8 p-0 text-destructive hover:bg-destructive/10 shrink-0"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
           </Tabs>
         </div>
       </main>
 
       {/* --- CRUD MODALS --- */}
 
-      {/* 1. Modal: Add Lab Manual */}
+      {/* 1. Modal: Upload / Add Lab Manual */}
       <Dialog open={activeModal === "manual"} onOpenChange={(open) => !open && setActiveModal(null)}>
         <DialogContent className="max-w-md bg-card border-border">
           <DialogHeader>
-            <DialogTitle className="text-base font-bold">Add Lab Manual for {activeCollege.shortName}</DialogTitle>
-            <DialogDescription className="text-xs">Upload new semester manual and observation PDF link.</DialogDescription>
+            <DialogTitle className="text-base font-bold">Upload &amp; Add Lab Manual for {activeCollege.shortName}</DialogTitle>
+            <DialogDescription className="text-xs">Upload PDF file from local system or specify manual documentation URL.</DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSaveManual} className="space-y-3 text-xs">
+            {/* File Upload Box */}
+            <div className="p-3 border-2 border-dashed border-primary/30 rounded-xl bg-primary/5 text-center space-y-1.5">
+              <Upload className="h-6 w-6 text-primary mx-auto" />
+              <div className="text-xs font-semibold text-foreground">
+                {uploadedManualFileName ? `Selected: ${uploadedManualFileName}` : "Upload Local PDF Manual"}
+              </div>
+              <p className="text-[11px] text-muted-foreground">Drag and drop or click to choose .pdf / .docx</p>
+              <input
+                type="file"
+                accept=".pdf,.doc,.docx"
+                onChange={handleManualFileUpload}
+                className="text-xs file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-white hover:file:bg-primary/90 cursor-pointer"
+              />
+            </div>
+
             <div>
               <Label className="text-xs">Laboratory Name</Label>
               <Input
@@ -1050,7 +1184,7 @@ function AdminPageContent() {
               <div>
                 <Label className="text-xs">Lab Subject Code</Label>
                 <Input
-                  placeholder="e.g. CS3351"
+                  placeholder="e.g. AD8381"
                   value={newManual.labCode}
                   onChange={(e) => setNewManual({ ...newManual, labCode: e.target.value })}
                   required
@@ -1077,12 +1211,21 @@ function AdminPageContent() {
               />
             </div>
             <div>
-              <Label className="text-xs">Manual PDF / Drive URL</Label>
+              <Label className="text-xs">Manual PDF / Documentation Link</Label>
               <Input
-                placeholder="https://drive.google.com/..."
+                placeholder="https://www.geeksforgeeks.org/data-structures/ or file URL"
                 value={newManual.manualUrl}
                 onChange={(e) => setNewManual({ ...newManual, manualUrl: e.target.value })}
                 required
+                className="text-xs h-8 mt-1 font-mono"
+              />
+            </div>
+            <div>
+              <Label className="text-xs">Observation / Interactive Sheet URL (Optional)</Label>
+              <Input
+                placeholder="https://www.w3schools.com/dsa/"
+                value={newManual.observationUrl || ""}
+                onChange={(e) => setNewManual({ ...newManual, observationUrl: e.target.value })}
                 className="text-xs h-8 mt-1 font-mono"
               />
             </div>
@@ -1096,24 +1239,117 @@ function AdminPageContent() {
               />
             </div>
             <Button type="submit" className="w-full bg-primary text-white h-9 mt-2 text-xs font-bold">
-              Save Lab Manual
+              Save &amp; Publish Lab Manual
             </Button>
           </form>
         </DialogContent>
       </Dialog>
 
-      {/* 2. Modal: Add Study Material */}
+      {/* 1b. Modal: Edit Lab Manual */}
+      <Dialog open={activeModal === "edit-manual"} onOpenChange={(open) => !open && setActiveModal(null)}>
+        <DialogContent className="max-w-md bg-card border-border">
+          <DialogHeader>
+            <DialogTitle className="text-base font-bold">Edit Lab Manual</DialogTitle>
+            <DialogDescription className="text-xs">Update laboratory manual title, subject code, or documentation URL.</DialogDescription>
+          </DialogHeader>
+          {editingManual && (
+            <form onSubmit={handleUpdateManual} className="space-y-3 text-xs">
+              <div>
+                <Label className="text-xs">Laboratory Name</Label>
+                <Input
+                  value={editingManual.labName}
+                  onChange={(e) => setEditingManual({ ...editingManual, labName: e.target.value })}
+                  required
+                  className="text-xs h-8 mt-1"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label className="text-xs">Lab Subject Code</Label>
+                  <Input
+                    value={editingManual.labCode}
+                    onChange={(e) => setEditingManual({ ...editingManual, labCode: e.target.value })}
+                    required
+                    className="text-xs h-8 mt-1 font-mono"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs">Semester</Label>
+                  <Input
+                    value={editingManual.semester}
+                    onChange={(e) => setEditingManual({ ...editingManual, semester: e.target.value })}
+                    className="text-xs h-8 mt-1"
+                  />
+                </div>
+              </div>
+              <div>
+                <Label className="text-xs">Department</Label>
+                <Input
+                  value={editingManual.department}
+                  onChange={(e) => setEditingManual({ ...editingManual, department: e.target.value })}
+                  className="text-xs h-8 mt-1"
+                />
+              </div>
+              <div>
+                <Label className="text-xs">Manual URL / Live Link</Label>
+                <Input
+                  value={editingManual.manualUrl}
+                  onChange={(e) => setEditingManual({ ...editingManual, manualUrl: e.target.value })}
+                  required
+                  className="text-xs h-8 mt-1 font-mono"
+                />
+              </div>
+              <div>
+                <Label className="text-xs">Observation Sheet URL (Optional)</Label>
+                <Input
+                  value={editingManual.observationUrl || ""}
+                  onChange={(e) => setEditingManual({ ...editingManual, observationUrl: e.target.value })}
+                  className="text-xs h-8 mt-1 font-mono"
+                />
+              </div>
+              <div>
+                <Label className="text-xs">Description</Label>
+                <Input
+                  value={editingManual.description}
+                  onChange={(e) => setEditingManual({ ...editingManual, description: e.target.value })}
+                  className="text-xs h-8 mt-1"
+                />
+              </div>
+              <Button type="submit" className="w-full bg-primary text-white h-9 mt-2 text-xs font-bold">
+                Update Lab Manual
+              </Button>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* 2. Modal: Upload / Add Lab Material */}
       <Dialog open={activeModal === "material"} onOpenChange={(open) => !open && setActiveModal(null)}>
         <DialogContent className="max-w-md bg-card border-border">
           <DialogHeader>
-            <DialogTitle className="text-base font-bold">Add Study Notes for {activeCollege.shortName}</DialogTitle>
-            <DialogDescription className="text-xs">Add lecture notes, 2-marks question banks, or reference material.</DialogDescription>
+            <DialogTitle className="text-base font-bold">Upload &amp; Add Lab Material for {activeCollege.shortName}</DialogTitle>
+            <DialogDescription className="text-xs">Upload study notes, GFG/W3Schools reference guides, or question banks.</DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSaveMaterial} className="space-y-3 text-xs">
+            {/* File Upload Box */}
+            <div className="p-3 border-2 border-dashed border-emerald-500/30 rounded-xl bg-emerald-500/5 text-center space-y-1.5">
+              <Upload className="h-6 w-6 text-emerald-600 mx-auto" />
+              <div className="text-xs font-semibold text-foreground">
+                {uploadedMaterialFileName ? `Selected: ${uploadedMaterialFileName}` : "Upload Local PDF Notes / Sheet"}
+              </div>
+              <p className="text-[11px] text-muted-foreground">Drag and drop or click to choose .pdf / .zip</p>
+              <input
+                type="file"
+                accept=".pdf,.doc,.docx,.zip"
+                onChange={handleMaterialFileUpload}
+                className="text-xs file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 cursor-pointer"
+              />
+            </div>
+
             <div>
-              <Label className="text-xs">Title</Label>
+              <Label className="text-xs">Material Title</Label>
               <Input
-                placeholder="e.g. Unit-3 B-Trees & Graph Algorithms Notes"
+                placeholder="e.g. Data Structures Complete Question Bank & Notes"
                 value={newMaterial.title}
                 onChange={(e) => setNewMaterial({ ...newMaterial, title: e.target.value })}
                 required
@@ -1132,12 +1368,13 @@ function AdminPageContent() {
                   <option value="Question Bank">Question Bank</option>
                   <option value="Lab Sheet">Lab Sheet</option>
                   <option value="Syllabus & Curriculum">Syllabus</option>
+                  <option value="Reference Book">Reference Material</option>
                 </select>
               </div>
               <div>
                 <Label className="text-xs">Semester</Label>
                 <Input
-                  placeholder="e.g. Semester IV"
+                  placeholder="e.g. Semester III"
                   value={newMaterial.semester}
                   onChange={(e) => setNewMaterial({ ...newMaterial, semester: e.target.value })}
                   className="text-xs h-8 mt-1"
@@ -1145,9 +1382,18 @@ function AdminPageContent() {
               </div>
             </div>
             <div>
+              <Label className="text-xs">Department</Label>
+              <Input
+                placeholder="e.g. AIDS & CSE"
+                value={newMaterial.department}
+                onChange={(e) => setNewMaterial({ ...newMaterial, department: e.target.value })}
+                className="text-xs h-8 mt-1"
+              />
+            </div>
+            <div>
               <Label className="text-xs">Resource Link / File URL</Label>
               <Input
-                placeholder="https://drive.google.com/..."
+                placeholder="https://www.geeksforgeeks.org/... or local file URL"
                 value={newMaterial.fileUrl}
                 onChange={(e) => setNewMaterial({ ...newMaterial, fileUrl: e.target.value })}
                 required
@@ -1157,31 +1403,106 @@ function AdminPageContent() {
             <div>
               <Label className="text-xs">Description</Label>
               <Input
-                placeholder="Brief summary of the notes"
+                placeholder="Brief summary of the study material"
                 value={newMaterial.description}
                 onChange={(e) => setNewMaterial({ ...newMaterial, description: e.target.value })}
                 className="text-xs h-8 mt-1"
               />
             </div>
-            <Button type="submit" className="w-full bg-primary text-white h-9 mt-2 text-xs font-bold">
-              Save Study Material
+            <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white h-9 mt-2 text-xs font-bold">
+              Save &amp; Publish Lab Material
             </Button>
           </form>
         </DialogContent>
       </Dialog>
 
-      {/* 3. Modal: Add Custom Lab */}
+      {/* 2b. Modal: Edit Lab Material */}
+      <Dialog open={activeModal === "edit-material"} onOpenChange={(open) => !open && setActiveModal(null)}>
+        <DialogContent className="max-w-md bg-card border-border">
+          <DialogHeader>
+            <DialogTitle className="text-base font-bold">Edit Lab Material</DialogTitle>
+            <DialogDescription className="text-xs">Update study material title, category, or resource URL.</DialogDescription>
+          </DialogHeader>
+          {editingMaterial && (
+            <form onSubmit={handleUpdateMaterial} className="space-y-3 text-xs">
+              <div>
+                <Label className="text-xs">Title</Label>
+                <Input
+                  value={editingMaterial.title}
+                  onChange={(e) => setEditingMaterial({ ...editingMaterial, title: e.target.value })}
+                  required
+                  className="text-xs h-8 mt-1"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label className="text-xs">Category</Label>
+                  <select
+                    value={editingMaterial.category}
+                    onChange={(e) => setEditingMaterial({ ...editingMaterial, category: e.target.value as any })}
+                    className="w-full h-8 px-2 rounded-md border border-input bg-background text-xs mt-1"
+                  >
+                    <option value="Lecture Notes">Lecture Notes</option>
+                    <option value="Question Bank">Question Bank</option>
+                    <option value="Lab Sheet">Lab Sheet</option>
+                    <option value="Syllabus & Curriculum">Syllabus</option>
+                    <option value="Reference Book">Reference Material</option>
+                  </select>
+                </div>
+                <div>
+                  <Label className="text-xs">Semester</Label>
+                  <Input
+                    value={editingMaterial.semester}
+                    onChange={(e) => setEditingMaterial({ ...editingMaterial, semester: e.target.value })}
+                    className="text-xs h-8 mt-1"
+                  />
+                </div>
+              </div>
+              <div>
+                <Label className="text-xs">Department</Label>
+                <Input
+                  value={editingMaterial.department}
+                  onChange={(e) => setEditingMaterial({ ...editingMaterial, department: e.target.value })}
+                  className="text-xs h-8 mt-1"
+                />
+              </div>
+              <div>
+                <Label className="text-xs">Resource Link / File URL</Label>
+                <Input
+                  value={editingMaterial.fileUrl}
+                  onChange={(e) => setEditingMaterial({ ...editingMaterial, fileUrl: e.target.value })}
+                  required
+                  className="text-xs h-8 mt-1 font-mono"
+                />
+              </div>
+              <div>
+                <Label className="text-xs">Description</Label>
+                <Input
+                  value={editingMaterial.description}
+                  onChange={(e) => setEditingMaterial({ ...editingMaterial, description: e.target.value })}
+                  className="text-xs h-8 mt-1"
+                />
+              </div>
+              <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white h-9 mt-2 text-xs font-bold">
+                Update Material
+              </Button>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* 3. Modal: Add Virtual Lab */}
       <Dialog open={activeModal === "lab"} onOpenChange={(open) => !open && setActiveModal(null)}>
         <DialogContent className="max-w-md bg-card border-border">
           <DialogHeader>
-            <DialogTitle className="text-base font-bold">Add Custom Lab for {activeCollege.shortName}</DialogTitle>
-            <DialogDescription className="text-xs">Connect an additional simulation module or custom testbed.</DialogDescription>
+            <DialogTitle className="text-base font-bold">Add Laboratory / Simulator for {activeCollege.shortName}</DialogTitle>
+            <DialogDescription className="text-xs">Register an existing lab module, simulation route, or custom experiment.</DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSaveCustomLab} className="space-y-3 text-xs">
             <div>
-              <Label className="text-xs">Experiment Title</Label>
+              <Label className="text-xs">Laboratory / Experiment Title</Label>
               <Input
-                placeholder="e.g. Memory Allocation Simulator"
+                placeholder="e.g. Data Structures & Algorithms Laboratory"
                 value={newCustomLab.title}
                 onChange={(e) => setNewCustomLab({ ...newCustomLab, title: e.target.value })}
                 required
@@ -1190,9 +1511,9 @@ function AdminPageContent() {
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <Label className="text-xs">Domain</Label>
+                <Label className="text-xs">Domain / Subject Category</Label>
                 <Input
-                  placeholder="e.g. Operating Systems"
+                  placeholder="e.g. Core Computing / AI"
                   value={newCustomLab.domain}
                   onChange={(e) => setNewCustomLab({ ...newCustomLab, domain: e.target.value })}
                   className="text-xs h-8 mt-1"
@@ -1211,10 +1532,30 @@ function AdminPageContent() {
                 </select>
               </div>
             </div>
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <Label className="text-xs">Department</Label>
+                <Input
+                  placeholder="e.g. AIDS & CSE"
+                  value={newCustomLab.department}
+                  onChange={(e) => setNewCustomLab({ ...newCustomLab, department: e.target.value })}
+                  className="text-xs h-8 mt-1"
+                />
+              </div>
+              <div>
+                <Label className="text-xs">Semester</Label>
+                <Input
+                  placeholder="e.g. Semester III"
+                  value={newCustomLab.semester}
+                  onChange={(e) => setNewCustomLab({ ...newCustomLab, semester: e.target.value })}
+                  className="text-xs h-8 mt-1"
+                />
+              </div>
+            </div>
             <div>
-              <Label className="text-xs">Simulator URL / Route</Label>
+              <Label className="text-xs">Simulator Route / URL</Label>
               <Input
-                placeholder="e.g. /experiments/c-programming or external URL"
+                placeholder="e.g. /labs/data-structures or /experiments/dsa"
                 value={newCustomLab.labUrl}
                 onChange={(e) => setNewCustomLab({ ...newCustomLab, labUrl: e.target.value })}
                 required
@@ -1224,16 +1565,99 @@ function AdminPageContent() {
             <div>
               <Label className="text-xs">Description</Label>
               <Input
-                placeholder="Instructions and goals"
+                placeholder="Instructions, algorithm goals, and simulation scope"
                 value={newCustomLab.description}
                 onChange={(e) => setNewCustomLab({ ...newCustomLab, description: e.target.value })}
                 className="text-xs h-8 mt-1"
               />
             </div>
             <Button type="submit" className="w-full bg-primary text-white h-9 mt-2 text-xs font-bold">
-              Save Custom Lab
+              Save Laboratory Module
             </Button>
           </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* 3b. Modal: Edit Virtual Lab */}
+      <Dialog open={activeModal === "edit-lab"} onOpenChange={(open) => !open && setActiveModal(null)}>
+        <DialogContent className="max-w-md bg-card border-border">
+          <DialogHeader>
+            <DialogTitle className="text-base font-bold">Edit Laboratory / Simulation</DialogTitle>
+            <DialogDescription className="text-xs">Update laboratory title, domain, route, or difficulty.</DialogDescription>
+          </DialogHeader>
+          {editingLab && (
+            <form onSubmit={handleUpdateCustomLab} className="space-y-3 text-xs">
+              <div>
+                <Label className="text-xs">Laboratory Title</Label>
+                <Input
+                  value={editingLab.title}
+                  onChange={(e) => setEditingLab({ ...editingLab, title: e.target.value })}
+                  required
+                  className="text-xs h-8 mt-1"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label className="text-xs">Domain</Label>
+                  <Input
+                    value={editingLab.domain}
+                    onChange={(e) => setEditingLab({ ...editingLab, domain: e.target.value })}
+                    className="text-xs h-8 mt-1"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs">Difficulty</Label>
+                  <select
+                    value={editingLab.difficulty}
+                    onChange={(e) => setEditingLab({ ...editingLab, difficulty: e.target.value as any })}
+                    className="w-full h-8 px-2 rounded-md border border-input bg-background text-xs mt-1"
+                  >
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                  </select>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label className="text-xs">Department</Label>
+                  <Input
+                    value={editingLab.department}
+                    onChange={(e) => setEditingLab({ ...editingLab, department: e.target.value })}
+                    className="text-xs h-8 mt-1"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs">Semester</Label>
+                  <Input
+                    value={editingLab.semester}
+                    onChange={(e) => setEditingLab({ ...editingLab, semester: e.target.value })}
+                    className="text-xs h-8 mt-1"
+                  />
+                </div>
+              </div>
+              <div>
+                <Label className="text-xs">Simulator Route / URL</Label>
+                <Input
+                  value={editingLab.labUrl}
+                  onChange={(e) => setEditingLab({ ...editingLab, labUrl: e.target.value })}
+                  required
+                  className="text-xs h-8 mt-1 font-mono"
+                />
+              </div>
+              <div>
+                <Label className="text-xs">Description</Label>
+                <Input
+                  value={editingLab.description}
+                  onChange={(e) => setEditingLab({ ...editingLab, description: e.target.value })}
+                  className="text-xs h-8 mt-1"
+                />
+              </div>
+              <Button type="submit" className="w-full bg-primary text-white h-9 mt-2 text-xs font-bold">
+                Update Laboratory Module
+              </Button>
+            </form>
+          )}
         </DialogContent>
       </Dialog>
 
@@ -1295,65 +1719,60 @@ function AdminPageContent() {
         </DialogContent>
       </Dialog>
 
-      {/* 5. Modal: Add Announcement */}
-      <Dialog open={activeModal === "announcement"} onOpenChange={(open) => !open && setActiveModal(null)}>
+      {/* 4b. Modal: Edit Video */}
+      <Dialog open={activeModal === "edit-video"} onOpenChange={(open) => !open && setActiveModal(null)}>
         <DialogContent className="max-w-md bg-card border-border">
           <DialogHeader>
-            <DialogTitle className="text-base font-bold">Publish Notice for {activeCollege.shortName}</DialogTitle>
-            <DialogDescription className="text-xs">Publish lab exam announcements, submission deadlines, or circulars.</DialogDescription>
+            <DialogTitle className="text-base font-bold">Edit Video Tutorial</DialogTitle>
+            <DialogDescription className="text-xs">Update video title, YouTube URL, or language settings.</DialogDescription>
           </DialogHeader>
-          <form onSubmit={handleSaveAnnouncement} className="space-y-3 text-xs">
-            <div>
-              <Label className="text-xs">Notice Heading</Label>
-              <Input
-                placeholder="e.g. Practical Model Examination - Cycle 1 Announced"
-                value={newAnnouncement.title}
-                onChange={(e) => setNewAnnouncement({ ...newAnnouncement, title: e.target.value })}
-                required
-                className="text-xs h-8 mt-1"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-2">
+          {editingVideo && (
+            <form onSubmit={handleUpdateVideo} className="space-y-3 text-xs">
               <div>
-                <Label className="text-xs">Category</Label>
-                <select
-                  value={newAnnouncement.category}
-                  onChange={(e) => setNewAnnouncement({ ...newAnnouncement, category: e.target.value as any })}
-                  className="w-full h-8 px-2 rounded-md border border-input bg-background text-xs mt-1"
-                >
-                  <option value="Lab Schedule">Lab Schedule</option>
-                  <option value="Model Exam">Model Exam</option>
-                  <option value="Assignment">Assignment</option>
-                  <option value="General">General</option>
-                </select>
+                <Label className="text-xs">Video Title</Label>
+                <Input
+                  value={editingVideo.title}
+                  onChange={(e) => setEditingVideo({ ...editingVideo, title: e.target.value })}
+                  required
+                  className="text-xs h-8 mt-1"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <Label className="text-xs">Language</Label>
+                  <select
+                    value={editingVideo.language}
+                    onChange={(e) => setEditingVideo({ ...editingVideo, language: e.target.value as any })}
+                    className="w-full h-8 px-2 rounded-md border border-input bg-background text-xs mt-1"
+                  >
+                    <option value="Tamil">Tamil</option>
+                    <option value="English">English</option>
+                    <option value="Bilingual">Bilingual</option>
+                  </select>
+                </div>
+                <div>
+                  <Label className="text-xs">Duration</Label>
+                  <Input
+                    value={editingVideo.duration}
+                    onChange={(e) => setEditingVideo({ ...editingVideo, duration: e.target.value })}
+                    className="text-xs h-8 mt-1"
+                  />
+                </div>
               </div>
               <div>
-                <Label className="text-xs">Priority</Label>
-                <select
-                  value={newAnnouncement.priority}
-                  onChange={(e) => setNewAnnouncement({ ...newAnnouncement, priority: e.target.value as any })}
-                  className="w-full h-8 px-2 rounded-md border border-input bg-background text-xs mt-1"
-                >
-                  <option value="normal">Normal</option>
-                  <option value="high">High</option>
-                  <option value="urgent">Urgent</option>
-                </select>
+                <Label className="text-xs">YouTube URL</Label>
+                <Input
+                  value={editingVideo.youtubeUrl}
+                  onChange={(e) => setEditingVideo({ ...editingVideo, youtubeUrl: e.target.value })}
+                  required
+                  className="text-xs h-8 mt-1 font-mono"
+                />
               </div>
-            </div>
-            <div>
-              <Label className="text-xs">Notice Content</Label>
-              <Input
-                placeholder="Detailed circular text"
-                value={newAnnouncement.content}
-                onChange={(e) => setNewAnnouncement({ ...newAnnouncement, content: e.target.value })}
-                required
-                className="text-xs h-8 mt-1"
-              />
-            </div>
-            <Button type="submit" className="w-full bg-primary text-white h-9 mt-2 text-xs font-bold">
-              Publish Notice
-            </Button>
-          </form>
+              <Button type="submit" className="w-full bg-primary text-white h-9 mt-2 text-xs font-bold">
+                Update Video Tutorial
+              </Button>
+            </form>
+          )}
         </DialogContent>
       </Dialog>
 

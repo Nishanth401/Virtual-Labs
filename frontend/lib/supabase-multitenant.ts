@@ -87,7 +87,7 @@ const INITIAL_MATERIALS_SEED: CollegeMaterial[] = [
     category: "Question Bank",
     department: "AIDS",
     semester: "Semester III",
-    fileUrl: "https://drive.google.com/drive/folders/vsb-ds-manual",
+    fileUrl: "https://www.geeksforgeeks.org/data-structures/",
     fileType: "pdf",
     uploadedBy: "Prof. Murugan (HOD AIDS)",
     createdAt: new Date(Date.now() - 86400000 * 5).toISOString()
@@ -100,7 +100,7 @@ const INITIAL_MATERIALS_SEED: CollegeMaterial[] = [
     category: "Lab Sheet",
     department: "AIDS",
     semester: "Semester IV",
-    fileUrl: "https://drive.google.com/drive/folders/vsb-mldl-record",
+    fileUrl: "https://www.geeksforgeeks.org/machine-learning/",
     fileType: "zip",
     uploadedBy: "Dr. K. Senthil",
     createdAt: new Date(Date.now() - 86400000 * 3).toISOString()
@@ -141,11 +141,11 @@ const INITIAL_MANUALS_SEED: CollegeLabManual[] = [
     id: "man_vsb_01",
     collegeSlug: "vsb",
     labName: "Data Structures & Algorithms Laboratory",
-    labCode: "AD3381",
+    labCode: "AD8381",
     department: "AIDS & CSE",
     semester: "Semester III",
-    manualUrl: "https://drive.google.com/file/d/vsb-dsa-manual.pdf",
-    observationUrl: "https://drive.google.com/file/d/vsb-dsa-obs.pdf",
+    manualUrl: "https://www.geeksforgeeks.org/data-structures/",
+    observationUrl: "https://www.w3schools.com/dsa/",
     description: "Official VSB Autonomous Lab Manual covering Stack, Queue, Trees, Graphs, Sorting & Hashing.",
     uploadedBy: "Department Lab Coordinator",
     createdAt: new Date(Date.now() - 86400000 * 10).toISOString()
@@ -154,13 +154,53 @@ const INITIAL_MANUALS_SEED: CollegeLabManual[] = [
     id: "man_vsb_02",
     collegeSlug: "vsb",
     labName: "Machine Learning & Deep Learning Laboratory",
-    labCode: "AD3481",
+    labCode: "AD8481",
     department: "AIDS",
     semester: "Semester IV",
-    manualUrl: "https://drive.google.com/file/d/vsb-ml-manual.pdf",
+    manualUrl: "https://www.geeksforgeeks.org/machine-learning/",
+    observationUrl: "https://www.w3schools.com/python/python_ml_getting_started.asp",
     description: "Python scikit-learn & PyTorch simulation manual with step-by-step algorithms.",
     uploadedBy: "AIDS Lab Coordinator",
     createdAt: new Date(Date.now() - 86400000 * 6).toISOString()
+  },
+  {
+    id: "man_vsb_03",
+    collegeSlug: "vsb",
+    labName: "Database Management Systems Laboratory",
+    labCode: "AD8382",
+    department: "AIDS & CSE",
+    semester: "Semester III",
+    manualUrl: "https://www.geeksforgeeks.org/dbms/",
+    observationUrl: "https://www.w3schools.com/sql/",
+    description: "Relational Schemas, Complex SQL Queries, Joins, Views, Indexes, PL/SQL Procedures & Triggers.",
+    uploadedBy: "DBMS Lab Incharge",
+    createdAt: new Date(Date.now() - 86400000 * 5).toISOString()
+  },
+  {
+    id: "man_vsb_04",
+    collegeSlug: "vsb",
+    labName: "Operating Systems Laboratory",
+    labCode: "CS3461",
+    department: "AIDS & CSE",
+    semester: "Semester IV",
+    manualUrl: "https://www.geeksforgeeks.org/operating-systems/",
+    observationUrl: "https://www.w3schools.com/linux/index.php",
+    description: "POSIX System Calls, CPU Scheduling (FCFS/SJF/RR), Semaphores, and Banker's Deadlock Algorithm.",
+    uploadedBy: "OS Lab Coordinator",
+    createdAt: new Date(Date.now() - 86400000 * 4).toISOString()
+  },
+  {
+    id: "man_vsb_05",
+    collegeSlug: "vsb",
+    labName: "Object Oriented Programming System (Java)",
+    labCode: "CS3351",
+    department: "AIDS & CSE",
+    semester: "Semester III",
+    manualUrl: "https://www.geeksforgeeks.org/java/",
+    observationUrl: "https://www.w3schools.com/java/",
+    description: "Java OOP, Classes, Inheritance hierarchies, Polymorphism, Exceptions, Collections Framework.",
+    uploadedBy: "OOPs Coordinator",
+    createdAt: new Date(Date.now() - 86400000 * 3).toISOString()
   },
   // CIT
   {
@@ -170,10 +210,22 @@ const INITIAL_MANUALS_SEED: CollegeLabManual[] = [
     labCode: "20CS41",
     department: "CSE",
     semester: "Semester IV",
-    manualUrl: "https://cit.edu.in/manuals/os-kernel.pdf",
+    manualUrl: "https://www.geeksforgeeks.org/operating-systems/",
     description: "POSIX Threads, CPU Scheduling, IPC and memory simulation manual.",
     uploadedBy: "CIT Lab Administrator",
     createdAt: new Date(Date.now() - 86400000 * 8).toISOString()
+  },
+  {
+    id: "man_cit_02",
+    collegeSlug: "cit",
+    labName: "Data Structures & Algorithms Laboratory",
+    labCode: "20CS31",
+    department: "CSE",
+    semester: "Semester III",
+    manualUrl: "https://www.geeksforgeeks.org/data-structures/",
+    description: "Linear allocations, tree traversals, shortest path algorithms, and sorting.",
+    uploadedBy: "CIT DAA Incharge",
+    createdAt: new Date(Date.now() - 86400000 * 7).toISOString()
   }
 ];
 
@@ -182,15 +234,171 @@ const INITIAL_CUSTOM_LABS_SEED: CollegeCustomLab[] = [
   {
     id: "lab_vsb_01",
     collegeSlug: "vsb",
-    title: "VSB Autonomous C-Programming Pointer & Memory Visualizer",
+    title: "Data Structures & Algorithms Laboratory",
+    domain: "Core Computing",
+    department: "AIDS & CSE",
+    labUrl: "/labs/data-structures",
+    description: "Interactive visual simulation of Stacks, Queues, BSTs, AVL balancing, Graph traversals, and Sorting algorithms.",
+    semester: "Semester III",
+    difficulty: "Intermediate",
+    uploadedBy: "Academic Committee",
+    createdAt: new Date(Date.now() - 86400000 * 12).toISOString()
+  },
+  {
+    id: "lab_vsb_02",
+    collegeSlug: "vsb",
+    title: "Database Management System (DBMS) Studio",
+    domain: "Databases & Storage",
+    department: "AIDS & CSE",
+    labUrl: "/labs/dbms-lab",
+    description: "Live SQL query console, schema builder, ER diagrams, PL/SQL procedures, and ACID transaction simulator.",
+    semester: "Semester III",
+    difficulty: "Intermediate",
+    uploadedBy: "DBMS Faculty",
+    createdAt: new Date(Date.now() - 86400000 * 11).toISOString()
+  },
+  {
+    id: "lab_vsb_03",
+    collegeSlug: "vsb",
+    title: "Machine Learning & Deep Learning Laboratory",
+    domain: "Artificial Intelligence",
+    department: "AIDS",
+    labUrl: "/labs/ai-machine-learning",
+    description: "Candidate-Elimination, ID3 Decision Trees, Backpropagation ANN, Naïve Bayes, and EM vs k-Means clustering.",
+    semester: "Semester IV",
+    difficulty: "Advanced",
+    uploadedBy: "AI Faculty Incharge",
+    createdAt: new Date(Date.now() - 86400000 * 10).toISOString()
+  },
+  {
+    id: "lab_vsb_04",
+    collegeSlug: "vsb",
+    title: "Operating Systems Laboratory",
+    domain: "Systems & Architecture",
+    department: "AIDS & CSE",
+    labUrl: "/labs/operating-systems",
+    description: "CPU Scheduling policies (FCFS/SJF/RR), Semaphore synchronization, Banker's deadlock safety, and Page replacement.",
+    semester: "Semester IV",
+    difficulty: "Intermediate",
+    uploadedBy: "OS Department Incharge",
+    createdAt: new Date(Date.now() - 86400000 * 9).toISOString()
+  },
+  {
+    id: "lab_vsb_05",
+    collegeSlug: "vsb",
+    title: "Object Oriented Programming (Java) Laboratory",
+    domain: "Software Engineering",
+    department: "AIDS & CSE",
+    labUrl: "/labs/oops-java",
+    description: "Encapsulation, inheritance hierarchies, polymorphism, custom exceptions, Collections, and JDBC simulation.",
+    semester: "Semester III",
+    difficulty: "Intermediate",
+    uploadedBy: "Java Faculty",
+    createdAt: new Date(Date.now() - 86400000 * 8).toISOString()
+  },
+  {
+    id: "lab_vsb_06",
+    collegeSlug: "vsb",
+    title: "Data Science & Analytics Laboratory",
+    domain: "Analytics & Statistics",
+    department: "AIDS",
+    labUrl: "/labs/data-science-analytics",
+    description: "Statistical hypothesis testing (Z-test, T-test, ANOVA), NumPy/Pandas pipelines, and regression models.",
+    semester: "Semester IV",
+    difficulty: "Intermediate",
+    uploadedBy: "Analytics Faculty",
+    createdAt: new Date(Date.now() - 86400000 * 7).toISOString()
+  },
+  {
+    id: "lab_vsb_07",
+    collegeSlug: "vsb",
+    title: "Computer Networks Laboratory",
+    domain: "Networks & Security",
+    department: "AIDS & CSE",
+    labUrl: "/labs/computer-networks",
+    description: "Packet sniffing, TCP/UDP sockets, DNS resolution, ARP/RARP translation, and routing algorithms.",
+    semester: "Semester IV",
+    difficulty: "Intermediate",
+    uploadedBy: "Networks Incharge",
+    createdAt: new Date(Date.now() - 86400000 * 6).toISOString()
+  },
+  {
+    id: "lab_vsb_08",
+    collegeSlug: "vsb",
+    title: "C Programming & Pointer Memory Visualizer",
     domain: "Foundational Programming",
     department: "All First Years",
-    labUrl: "/experiments/c-programming",
-    description: "Interactive visualizer for stack frames, heap allocation, and pointer arithmetic tailored for VSB syllabus.",
+    labUrl: "/labs/c-programming",
+    description: "Interactive visualizer for stack frames, heap allocation (malloc/free), and pointer arithmetic.",
     semester: "Semester I / II",
     difficulty: "Beginner",
-    uploadedBy: "VSB Academic Committee",
-    createdAt: new Date(Date.now() - 86400000 * 12).toISOString()
+    uploadedBy: "First Year Cell",
+    createdAt: new Date(Date.now() - 86400000 * 5).toISOString()
+  },
+  {
+    id: "lab_vsb_09",
+    collegeSlug: "vsb",
+    title: "Python Programming Laboratory",
+    domain: "Foundational Programming",
+    department: "All First Years",
+    labUrl: "/labs/python-programming",
+    description: "Dynamic typing, list/dict comprehensions, lambdas, OOP class models, and exception handling.",
+    semester: "Semester I",
+    difficulty: "Beginner",
+    uploadedBy: "Python Incharge",
+    createdAt: new Date(Date.now() - 86400000 * 4).toISOString()
+  },
+  {
+    id: "lab_vsb_10",
+    collegeSlug: "vsb",
+    title: "Artificial Intelligence Heuristic Search Lab",
+    domain: "Artificial Intelligence",
+    department: "AIDS",
+    labUrl: "/labs/artificial-intelligence",
+    description: "A* Search, Minimax adversarial game trees with Alpha-Beta pruning, and N-Queens CSP solvers.",
+    semester: "Semester V",
+    difficulty: "Advanced",
+    uploadedBy: "AI Research Cell",
+    createdAt: new Date(Date.now() - 86400000 * 3).toISOString()
+  },
+  {
+    id: "lab_vsb_11",
+    collegeSlug: "vsb",
+    title: "Big Data Analytics & MapReduce Lab",
+    domain: "Distributed Computing",
+    department: "AIDS",
+    labUrl: "/labs/big-data-analytics",
+    description: "Hadoop HDFS cluster replication, MapReduce batch pipelines, PySpark DataFrames, and MongoDB NoSQL.",
+    semester: "Semester V",
+    difficulty: "Advanced",
+    uploadedBy: "Big Data Incharge",
+    createdAt: new Date(Date.now() - 86400000 * 2).toISOString()
+  },
+  {
+    id: "lab_vsb_12",
+    collegeSlug: "vsb",
+    title: "Cloud Service Management & DevOps Lab",
+    domain: "Cloud Infrastructure",
+    department: "AIDS & CSE",
+    labUrl: "/labs/cloud-service-management",
+    description: "AWS EC2/S3 cloud provisioning, Docker containerization, AWS Lambda serverless microservices, and Kubernetes.",
+    semester: "Semester V",
+    difficulty: "Advanced",
+    uploadedBy: "Cloud Incharge",
+    createdAt: new Date(Date.now() - 86400000 * 1).toISOString()
+  },
+  {
+    id: "lab_vsb_13",
+    collegeSlug: "vsb",
+    title: "Interactive DSA Visualizer Engine",
+    domain: "Algorithms & Simulation",
+    department: "AIDS & CSE",
+    labUrl: "/dsa-visualization",
+    description: "Step-by-step visual execution of sorting algorithms, BST operations, and stack/queue data structures.",
+    semester: "Semester III",
+    difficulty: "Beginner",
+    uploadedBy: "V-Lab Studio",
+    createdAt: new Date(Date.now() - 86400000 * 1).toISOString()
   },
   // CIT
   {
@@ -199,12 +407,25 @@ const INITIAL_CUSTOM_LABS_SEED: CollegeCustomLab[] = [
     title: "CIT Cloud Distributed Systems Simulation Lab",
     domain: "Distributed Computing",
     department: "CSE & IT",
-    labUrl: "/experiments/cen",
+    labUrl: "/labs/cloud-service-management",
     description: "Raft Consensus and network socket simulation engine for CIT Autonomous track.",
     semester: "Semester VI",
     difficulty: "Advanced",
     uploadedBy: "CIT Cloud Lab Head",
     createdAt: new Date(Date.now() - 86400000 * 4).toISOString()
+  },
+  {
+    id: "lab_cit_02",
+    collegeSlug: "cit",
+    title: "CIT Data Structures & Visualizer Lab",
+    domain: "Core Computing",
+    department: "CSE",
+    labUrl: "/labs/data-structures",
+    description: "Interactive visual simulation for Trees, Graphs, Sorting and Dynamic Memory.",
+    semester: "Semester III",
+    difficulty: "Intermediate",
+    uploadedBy: "CIT Lab Administrator",
+    createdAt: new Date(Date.now() - 86400000 * 3).toISOString()
   }
 ];
 
@@ -404,7 +625,20 @@ export async function getCollegeLabManuals(collegeSlug: string): Promise<College
   if (typeof window !== "undefined") {
     const local = localStorage.getItem(getLocalKey(cleanSlug, "manuals"));
     if (local) {
-      try { return JSON.parse(local); } catch {}
+      try {
+        const parsed: CollegeLabManual[] = JSON.parse(local);
+        // If parsed contains broken placeholder drive links, sanitize them
+        const hasBrokenLinks = parsed.some((m) => m.manualUrl && m.manualUrl.includes("drive.google.com/file/d/vsb-"));
+        if (hasBrokenLinks || parsed.length < 3) {
+          const defaultSeed = INITIAL_MANUALS_SEED.filter((m) => m.collegeSlug === cleanSlug);
+          // Merge user-created ones that don't have broken URLs with the rich seed
+          const cleanUserItems = parsed.filter((m) => !m.manualUrl?.includes("drive.google.com/file/d/vsb-") && !defaultSeed.some((s) => s.id === m.id));
+          const merged = [...defaultSeed, ...cleanUserItems];
+          localStorage.setItem(getLocalKey(cleanSlug, "manuals"), JSON.stringify(merged));
+          return merged;
+        }
+        return parsed;
+      } catch {}
     }
   }
   return INITIAL_MANUALS_SEED.filter((m) => m.collegeSlug === cleanSlug);
@@ -481,7 +715,17 @@ export async function getCollegeCustomLabs(collegeSlug: string): Promise<College
   if (typeof window !== "undefined") {
     const local = localStorage.getItem(getLocalKey(cleanSlug, "custom_labs"));
     if (local) {
-      try { return JSON.parse(local); } catch {}
+      try {
+        const parsed: CollegeCustomLab[] = JSON.parse(local);
+        const defaultSeed = INITIAL_CUSTOM_LABS_SEED.filter((m) => m.collegeSlug === cleanSlug);
+        if (parsed.length < defaultSeed.length) {
+          const userAdded = parsed.filter((p) => !defaultSeed.some((s) => s.id === p.id));
+          const merged = [...defaultSeed, ...userAdded];
+          localStorage.setItem(getLocalKey(cleanSlug, "custom_labs"), JSON.stringify(merged));
+          return merged;
+        }
+        return parsed;
+      } catch {}
     }
   }
   return INITIAL_CUSTOM_LABS_SEED.filter((m) => m.collegeSlug === cleanSlug);
