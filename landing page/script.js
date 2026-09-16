@@ -5,14 +5,13 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initKineticWords();
-  initParticleCanvas();
-  initGraphSimulation();
   initMetricsCounter();
   initScrollSpy();
+  initScrollAnimations();
 });
 
 /* ==========================================================================
-   1. Kinetic Word Flipper
+   1. Kinetic Word Flipper (Smooth Dissolve Cross-Fade)
    ========================================================================== */
 function initKineticWords() {
   const container = document.getElementById('kineticWords');
@@ -31,16 +30,50 @@ function initKineticWords() {
     currentIndex = (currentIndex + 1) % words.length;
     const nextWord = words[currentIndex];
 
+    // Smooth dissolve crossfade
     setTimeout(() => {
       currentWord.classList.remove('leaving');
       nextWord.classList.add('active');
-    }, 250);
+    }, 380);
   }, 3200);
 }
 
 /* ==========================================================================
-   2. Background Ambient Particle Mesh Canvas
+   2. Feature Stat Number Count-up Animation
    ========================================================================== */
+function initMetricsCounter() {
+  const statValues = document.querySelectorAll('.metric-num');
+  if (!statValues.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const text = el.innerText.trim();
+        const numMatch = text.match(/^(\d+)([%+]?)$/);
+        if (numMatch) {
+          const target = parseInt(numMatch[1], 10);
+          const suffix = numMatch[2] || '';
+          let current = 0;
+          const step = Math.max(1, Math.floor(target / 25));
+          const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+              current = target;
+              el.innerText = current + suffix;
+              clearInterval(timer);
+            } else {
+              el.innerText = current + suffix;
+            }
+          }, 35);
+        }
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  statValues.forEach(el => observer.observe(el));
+}
 function initParticleCanvas() {
   const canvas = document.getElementById('particlesCanvas');
   if (!canvas) return;
@@ -410,7 +443,7 @@ function initGraphSimulation() {
         ctx.shadowBlur = 0;
 
         // Node ID Text
-        ctx.font = 'bold 13px Plus Jakarta Sans, sans-serif';
+        ctx.font = 'bold 13px Inter, sans-serif';
         ctx.fillStyle = (isVisited || isCurrent || isStart || isDest) ? '#ffffff' : '#1e293b';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -774,41 +807,6 @@ function switchRoleTab(roleKey) {
   }
 }
 
-/* ==========================================================================
-   6. Metrics Counter Observer
-   ========================================================================== */
-function initMetricsCounter() {
-  const counters = document.querySelectorAll('.metric-num[data-target]');
-  if (!counters.length) return;
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const el = entry.target;
-        const target = parseInt(el.getAttribute('data-target'), 10);
-        animateCounter(el, target);
-        observer.unobserve(el);
-      }
-    });
-  }, { threshold: 0.5 });
-
-  counters.forEach(c => observer.observe(c));
-}
-
-function animateCounter(el, target) {
-  let current = 0;
-  const increment = target / 50;
-  const timer = setInterval(() => {
-    current += increment;
-    if (current >= target) {
-      current = target;
-      clearInterval(timer);
-      el.textContent = target.toLocaleString() + '+';
-    } else {
-      el.textContent = Math.floor(current).toLocaleString() + '+';
-    }
-  }, 25);
-}
 
 /* ==========================================================================
    7. FAQ Accordion
@@ -987,4 +985,91 @@ function initScrollSpy() {
       }
     });
   });
+}
+
+/* ==========================================================================
+   10. Bi-Directional Scroll Animations (Scroll Down & Up Fluidity)
+   ========================================================================== */
+function initScrollAnimations() {
+  const animatedElements = document.querySelectorAll(
+    '.section-header, .pillar-card, .comparison-card, .discipline-card, .metric-pill, .role-content-card, .booking-card-wrapper, .faq-item, .hero-cta-group'
+  );
+
+  animatedElements.forEach(el => el.classList.add('scroll-reveal'));
+
+  let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+  const observer = new IntersectionObserver((entries) => {
+    const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+    const isScrollingDown = currentScrollY >= lastScrollY;
+
+    entries.forEach(entry => {
+      const el = entry.target;
+      const rect = entry.boundingClientRect;
+
+      if (entry.isIntersecting) {
+        if (!isScrollingDown && rect.top < window.innerHeight * 0.4) {
+          el.classList.add('scroll-from-top');
+        } else {
+          el.classList.remove('scroll-from-top');
+        }
+        el.classList.remove('scroll-off-top', 'scroll-off-bottom');
+        el.classList.add('is-visible');
+      } else {
+        // Element left viewport: re-prime for both down and up scroll
+        if (rect.top > window.innerHeight) {
+          el.classList.remove('is-visible', 'scroll-from-top');
+          el.classList.add('scroll-off-bottom');
+        } else if (rect.bottom < 0) {
+          el.classList.remove('is-visible');
+          el.classList.add('scroll-from-top', 'scroll-off-top');
+        }
+      }
+    });
+
+    lastScrollY = currentScrollY;
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -25px 0px'
+  });
+
+  animatedElements.forEach(el => observer.observe(el));
+
+  // Initialize Glassy Title Bar Scroll Reactor & Top Glowing Scroll Progress Bar
+  const navContainer = document.querySelector('.nav-container');
+  let progressBar = document.querySelector('.scroll-progress-bar');
+  if (!progressBar) {
+    progressBar = document.createElement('div');
+    progressBar.className = 'scroll-progress-bar';
+    document.body.prepend(progressBar);
+  }
+
+  let scrollTicking = false;
+  window.addEventListener('scroll', () => {
+    if (!scrollTicking) {
+      window.requestAnimationFrame(() => {
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+        // Title bar glass elevation toggle
+        if (navContainer) {
+          if (scrollY > 30) {
+            navContainer.classList.add('scrolled');
+          } else {
+            navContainer.classList.remove('scrolled');
+          }
+        }
+
+
+        // Scroll Progress Bar calculation
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (docHeight > 0 && progressBar) {
+          const progress = Math.min(100, Math.max(0, (scrollY / docHeight) * 100));
+          progressBar.style.width = `${progress}%`;
+        }
+
+        scrollTicking = false;
+      });
+      scrollTicking = true;
+    }
+  }, { passive: true });
 }
