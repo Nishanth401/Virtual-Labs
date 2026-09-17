@@ -3,90 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VSB Virtual Labs | Next-Gen Cloud Laboratory Platform for Engineering Colleges</title>
+  <title>FastLab | Next-Gen Cloud Laboratory Platform for Engineering Colleges</title>
   <meta name="description" content="Empower your engineering institution with autonomous multi-tenant virtual labs. Cloud simulation suites for AI&DS, CSE, ECE, and IT. Book your institutional demo today.">
-  <link rel="icon" href="assets/vsb-logo.png" type="image/png">
+
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,400;1,600&family=Raleway:wght@500;600;700;800;900&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Ubuntu:wght@400;500;700&family=Work+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=ranade@400,500,600,700,800&display=swap">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <!-- Ambient Dynamic Mesh & Particle Canvas -->
+  <!-- Ambient Dynamic Mesh Background -->
   <div class="ambient-bg-mesh"></div>
-  <canvas id="particlesCanvas"></canvas>
 
   <!-- ==========================================================================
-       Floating Glass Pill Navigation Bar
+       Glassy Overlay Navigation Bar (Like Reference Picture 3)
        ========================================================================== -->
-  <header class="navbar-wrapper">
-    <nav class="nav-pill" id="navbar">
+  <header class="navbar-wrapper" id="navbarWrapper">
+    <div class="nav-container">
       <a href="#" class="nav-brand">
-        <img src="assets/vsb-logo.png" alt="VSB Virtual Labs Logo" class="nav-brand-logo">
-        <div class="nav-brand-text">
-          <div class="nav-brand-title">
-            VSB Virtual Labs
-            <span class="nav-brand-badge">Campus OS</span>
-          </div>
-          <span class="nav-brand-subtitle">AICTE & Anna University Aligned</span>
+        <div class="nav-brand-icon-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="4"/>
+            <path d="M7 8h10"/>
+            <path d="M7 12h6"/>
+            <path d="M7 16h8"/>
+          </svg>
         </div>
+        <span class="nav-brand-title">FastLab</span>
       </a>
 
       <ul class="nav-menu">
-        <li><a href="#overview" class="nav-link">Overview</a></li>
-        <li><a href="#disconnect" class="nav-link">Disconnect</a></li>
-        <li><a href="#simulation" class="nav-link">Live Sim</a></li>
-        <li><a href="#clone-generator" class="nav-link">Clone Studio</a></li>
-        <li><a href="#roles" class="nav-link">Portals</a></li>
-        <li><a href="#curriculum" class="nav-link">Curriculum</a></li>
+        <li><a href="#overview" class="nav-link active">Overview</a></li>
+        <li><a href="#workflow" class="nav-link">Workflow</a></li>
+        <li><a href="#curriculum" class="nav-link">Lab Modules</a></li>
+        <li><a href="#disconnect" class="nav-link">Why FastLab</a></li>
         <li><a href="#faq" class="nav-link">FAQ</a></li>
       </ul>
 
       <div class="nav-actions">
-        <div class="nav-status-indicator">
-          <span class="status-dot"></span>
-          <span>48+ Campuses</span>
-        </div>
-        <button class="btn-pill-primary" id="navBookDemoBtn" onclick="openBookingModal()">
-          Book Demo ➔
+        <button class="nav-cta-btn" id="navBookDemoBtn" onclick="openBookingModal()">
+          <span>Book Demo</span>
+          <span class="nav-cta-arrow-circle">➔</span>
         </button>
       </div>
-    </nav>
+    </div>
   </header>
 
   <!-- ==========================================================================
        Hero Section
        ========================================================================== -->
   <section class="hero-section" id="overview">
-    <!-- Levitating Badges -->
-    <div class="floating-badge b-top-left">
-      <span class="badge-icon">⚡</span>
-      <span>AI & Data Science Simulations</span>
-    </div>
-    <div class="floating-badge b-top-right">
-      <span class="badge-icon">🏛️</span>
-      <span>Anna Univ CBCS 2021/23</span>
-    </div>
-    <div class="floating-badge b-bottom-left">
-      <span class="badge-icon">🔒</span>
-      <span>Isolated Tenant Databases</span>
-    </div>
-    <div class="floating-badge b-bottom-right">
-      <span class="badge-icon">💻</span>
-      <span>Zero Physical Server Costs</span>
-    </div>
-
     <div class="container hero-content">
       <!-- Announcement Pill -->
-      <div class="hero-announcement" onclick="scrollToSection('clone-generator')">
+      <div class="hero-announcement" onclick="scrollToSection('workflow')">
         <span class="hero-announcement-tag">NEW 2026</span>
         <span class="hero-announcement-text">
-          Autonomous College Virtual Lab Clones Now Live <span>➔</span>
+          Autonomous Cloud Virtual Labs Platform <span>➔</span>
         </span>
       </div>
 
       <!-- Kinetic Main Headline -->
       <h1 class="hero-title">
         One Platform to Connect & Empower<br>
-        Your Entire <span class="kinetic-word-wrapper" id="kineticWords">
+        Your Entire<br>
+        <span class="kinetic-word-wrapper" id="kineticWords">
           <span class="kinetic-word active">Engineering Labs.</span>
           <span class="kinetic-word">Autonomous Campus.</span>
           <span class="kinetic-word">AI & DS Curricula.</span>
@@ -96,7 +79,7 @@
       </h1>
 
       <p class="hero-subtitle">
-        Eliminate physical lab constraints with self-paced, cloud-native simulations, automated observation evaluations, and isolated student databases. Purpose-built by the <strong>Department of AI & Data Science at VSB Engineering College</strong> for institutions across India.
+        Eliminate physical lab constraints with self-paced, cloud-native simulations, automated observation evaluations, and isolated student databases. Purpose-built by <strong>FastLab Technologies</strong> for engineering institutions across India.
       </p>
 
       <!-- Action Group -->
@@ -105,28 +88,36 @@
           <span>Book Institutional Demo</span>
           <span>➔</span>
         </button>
-        <button class="btn-pill-secondary btn-large" onclick="scrollToSection('simulation')">
-          <span>⚡ Test-Drive Simulation</span>
+        <button class="btn-pill-secondary btn-large" onclick="scrollToSection('curriculum')">
+          <span>Explore Lab Modules</span>
+          <span>➔</span>
         </button>
       </div>
 
-      <!-- Quick Metrics Counter Bar -->
+      <!-- Key Platform Metrics Bar (4 Cards, Original Compact Size) -->
       <div class="hero-metrics-pill-grid">
-        <div class="metric-pill">
-          <div class="metric-num" data-target="50000">50,000+</div>
-          <div class="metric-label">Active Engineering Students</div>
+        <!-- 1) 50+ Lab Experiments -->
+        <div class="metric-pill" style="--i: 1;">
+          <div class="metric-num">50+</div>
+          <div class="metric-label">Lab Experiments</div>
         </div>
-        <div class="metric-pill">
-          <div class="metric-num" data-target="120">120+</div>
-          <div class="metric-label">Interactive Lab Experiments</div>
+
+        <!-- 2) Full DSA Visualizer -->
+        <div class="metric-pill" style="--i: 2;">
+          <div class="metric-num">Full</div>
+          <div class="metric-label">DSA Visualizer</div>
         </div>
-        <div class="metric-pill">
-          <div class="metric-num" data-target="18">18+</div>
-          <div class="metric-label">Autonomous College Tenants</div>
+
+        <!-- 3) Customizable as per Customer -->
+        <div class="metric-pill" style="--i: 3;">
+          <div class="metric-num">100%</div>
+          <div class="metric-label">Customizable as per Customer</div>
         </div>
-        <div class="metric-pill">
-          <div class="metric-num">₹0</div>
-          <div class="metric-label">Hardware Maintenance Cost</div>
+
+        <!-- 4) 100+ Materials -->
+        <div class="metric-pill" style="--i: 4;">
+          <div class="metric-num">100+</div>
+          <div class="metric-label">Materials</div>
         </div>
       </div>
     </div>
@@ -209,12 +200,19 @@
 
   <!-- ==========================================================================
        Pillar Value Proposition Cards (Inspired by Reference Image 2)
-       ========================================================================== */
-  <section class="pillars-section">
+       ========================================================================== -->
+  <section class="pillars-section" id="workflow">
     <div class="container">
       <div class="pillars-grid">
         <div class="pillar-card">
-          <div class="pillar-icon-box">🏛️</div>
+          <div class="pillar-icon-box">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 21h18"/>
+              <path d="M5 21V10l7-5 7 5v11"/>
+              <path d="M9 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4"/>
+              <path d="M10 9h4"/>
+            </svg>
+          </div>
           <h3 class="pillar-title">One Campus</h3>
           <p class="pillar-description">
             Unify all engineering departments under your college's branded digital ecosystem. Custom subdomain, logos, and academic regulations in one click.
@@ -222,7 +220,14 @@
         </div>
 
         <div class="pillar-card">
-          <div class="pillar-icon-box">👥</div>
+          <div class="pillar-icon-box">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
           <h3 class="pillar-title">Every Role</h3>
           <p class="pillar-description">
             Dedicated connected workspaces for Principals, HODs, Lab Faculty, and Students. Role-based access control with granular permissions.
@@ -230,7 +235,12 @@
         </div>
 
         <div class="pillar-card">
-          <div class="pillar-icon-box">⚙️</div>
+          <div class="pillar-icon-box">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </div>
           <h3 class="pillar-title">Every Workflow</h3>
           <p class="pillar-description">
             From pre-lab theory and interactive simulation execution to automated observation checking, digital viva questions, and CIE internal marks.
@@ -238,7 +248,14 @@
         </div>
 
         <div class="pillar-card">
-          <div class="pillar-icon-box">🚀</div>
+          <div class="pillar-icon-box">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+              <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+              <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+              <path d="M12 9V4s3.03.55 4 2c1.08 1.62 0 5 0 5"/>
+            </svg>
+          </div>
           <h3 class="pillar-title">One Experience</h3>
           <p class="pillar-description">
             Zero installations, zero driver mismatches. Accessible directly from any standard browser on campus desktop labs, student laptops, or tablets.
@@ -249,252 +266,133 @@
   </section>
 
   <!-- ==========================================================================
-       The Campus Disconnect vs VSB Solution (Inspired by Reference Image 3)
+       The Campus Disconnect vs FastLab Solution
        ========================================================================== -->
   <section class="disconnect-section" id="disconnect">
     <div class="container">
       <div class="section-header">
-        <div class="section-tag">⚠️ THE LAB INFRASTRUCTURE CHALLENGE</div>
+        <div class="section-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          THE LAB INFRASTRUCTURE CHALLENGE
+        </div>
         <h2 class="section-title">
           Engineering Labs Shouldn't Run on <span>Fragmented, Costly Systems.</span>
         </h2>
         <p class="section-subtitle">
-          Engineering colleges waste lakhs annually replacing damaged electronic apparatus, debugging mismatched compiler setups, and handling manual paper observation records. VSB Virtual Labs modernizes your entire laboratory curriculum.
+          Engineering colleges waste lakhs annually replacing damaged electronic apparatus, debugging mismatched compiler setups, and handling manual paper observation records. FastLab modernizes your entire laboratory curriculum.
         </p>
       </div>
 
       <div class="problems-solutions-grid">
         <!-- Card 1 -->
         <div class="comparison-card">
-          <div class="comparison-card-top">
-            <span class="problem-badge">Physical Limitation</span>
-            <div class="problem-icon-wrapper">💸</div>
-          </div>
-          <h4 class="comparison-title">Massive Hardware Costs</h4>
-          <p class="comparison-text">
-            Outdated PC hardware, fried trainer kits, and GPU shortages stall critical AI and machine learning practicals.
-          </p>
-          <div class="vs-divider">VSB Solution</div>
-          <div class="solution-box">
-            <div class="solution-box-title">✓ 100% Cloud-Simulated</div>
-            <div class="solution-box-desc">Zero hardware depreciation. Infinite runs without equipment wear or safety risks.</div>
+          <div class="comparison-card-inner">
+            <div class="comparison-card-top">
+              <span class="problem-badge">Physical Limitation</span>
+              <div class="problem-icon-wrapper">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="5" width="20" height="14" rx="2"/>
+                  <line x1="2" y1="10" x2="22" y2="10"/>
+                </svg>
+              </div>
+            </div>
+            <h4 class="comparison-title">Massive Hardware Costs</h4>
+            <p class="comparison-text">
+              Outdated PC hardware, fried trainer kits, and GPU shortages stall critical AI and machine learning practicals.
+            </p>
+            <div class="vs-divider">FastLab Solution</div>
+            <div class="solution-box">
+              <div class="solution-box-title">✓ 100% Cloud-Simulated</div>
+              <div class="solution-box-desc">Zero hardware depreciation. Infinite runs without equipment wear or safety risks.</div>
+            </div>
           </div>
         </div>
 
         <!-- Card 2 -->
         <div class="comparison-card">
-          <div class="comparison-card-top">
-            <span class="problem-badge">Scheduling Bottleneck</span>
-            <div class="problem-icon-wrapper">⏳</div>
-          </div>
-          <h4 class="comparison-title">Inflexible Lab Hours</h4>
-          <p class="comparison-text">
-            Students are restricted to 2-hour lab periods weekly. Slow learners struggle, while fast learners run out of challenging problems.
-          </p>
-          <div class="vs-divider">VSB Solution</div>
-          <div class="solution-box">
-            <div class="solution-box-title">✓ 24/7 Unlimited Access</div>
-            <div class="solution-box-desc">Self-paced re-runs from dorms, library, or home with step-by-step guidance.</div>
+          <div class="comparison-card-inner">
+            <div class="comparison-card-top">
+              <span class="problem-badge">Scheduling Bottleneck</span>
+              <div class="problem-icon-wrapper">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+            </div>
+            <h4 class="comparison-title">Inflexible Lab Hours</h4>
+            <p class="comparison-text">
+              Students are restricted to 2-hour lab periods weekly. Slow learners struggle, while fast learners run out of challenging problems.
+            </p>
+            <div class="vs-divider">FastLab Solution</div>
+            <div class="solution-box">
+              <div class="solution-box-title">✓ 24/7 Unlimited Access</div>
+              <div class="solution-box-desc">Self-paced re-runs from dorms, library, or home with step-by-step guidance.</div>
+            </div>
           </div>
         </div>
 
         <!-- Card 3 -->
         <div class="comparison-card">
-          <div class="comparison-card-top">
-            <span class="problem-badge">Faculty Burnout</span>
-            <div class="problem-icon-wrapper">📝</div>
-          </div>
-          <h4 class="comparison-title">Manual Paper Grading</h4>
-          <p class="comparison-text">
-            Faculty spend 20+ hours weekly manually checking physical record notebooks, calculating CIE marks, and signing slips.
-          </p>
-          <div class="vs-divider">VSB Solution</div>
-          <div class="solution-box">
-            <div class="solution-box-title">✓ 1-Click Digital Evaluation</div>
-            <div class="solution-box-desc">Automated test case verification, plagiarism checks, and digital rubric calculation.</div>
+          <div class="comparison-card-inner">
+            <div class="comparison-card-top">
+              <span class="problem-badge">Faculty Burnout</span>
+              <div class="problem-icon-wrapper">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                  <polyline points="10 9 9 9 8 9"/>
+                </svg>
+              </div>
+            </div>
+            <h4 class="comparison-title">Manual Paper Grading</h4>
+            <p class="comparison-text">
+              Faculty spend 20+ hours weekly manually checking physical record notebooks, calculating CIE marks, and signing slips.
+            </p>
+            <div class="vs-divider">FastLab Solution</div>
+            <div class="solution-box">
+              <div class="solution-box-title">✓ 1-Click Digital Evaluation</div>
+              <div class="solution-box-desc">Automated test case verification, plagiarism checks, and digital rubric calculation.</div>
+            </div>
           </div>
         </div>
 
         <!-- Card 4 -->
         <div class="comparison-card">
-          <div class="comparison-card-top">
-            <span class="problem-badge">Audit Panic</span>
-            <div class="problem-icon-wrapper">📊</div>
-          </div>
-          <h4 class="comparison-title">Scattered Audit Data</h4>
-          <p class="comparison-text">
-            During NAAC or NBA accreditations, pulling verified student lab attendance, rubrics, and outcome attainments takes weeks.
-          </p>
-          <div class="vs-divider">VSB Solution</div>
-          <div class="solution-box">
-            <div class="solution-box-title">✓ Instant NAAC/NBA Exports</div>
-            <div class="solution-box-desc">Comprehensive CSV, Excel, and PDF outcome attainment reports ready with one click.</div>
+          <div class="comparison-card-inner">
+            <div class="comparison-card-top">
+              <span class="problem-badge">Audit Panic</span>
+              <div class="problem-icon-wrapper">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="20" x2="18" y2="10"/>
+                  <line x1="12" y1="20" x2="12" y2="4"/>
+                  <line x1="6" y1="20" x2="6" y2="14"/>
+                </svg>
+              </div>
+            </div>
+            <h4 class="comparison-title">Scattered Audit Data</h4>
+            <p class="comparison-text">
+              During NAAC or NBA accreditations, pulling verified student lab attendance, rubrics, and outcome attainments takes weeks.
+            </p>
+            <div class="vs-divider">FastLab Solution</div>
+            <div class="solution-box">
+              <div class="solution-box-title">✓ Instant NAAC/NBA Exports</div>
+              <div class="solution-box-desc">Comprehensive CSV, Excel, and PDF outcome attainment reports ready with one click.</div>
+            </div>
           </div>
         </div>
       </div>
+
     </div>
   </section>
 
-  <!-- ==========================================================================
-       Playable Live Simulation Studio
-       ========================================================================== -->
-  <section class="simulation-studio-section" id="simulation">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-tag">⚡ LIVE INTERACTIVE DEMO</div>
-        <h2 class="section-title">
-          Experience the <span>Interactive Algorithm Visualizer</span> Live.
-        </h2>
-        <p class="section-subtitle">
-          Don't just take our word for it. Interact with the live Dijkstra Shortest Path graph simulation below. Click to add nodes, run step-by-step relaxation, and observe real-time algorithmic complexity.
-        </p>
-      </div>
 
-      <div class="sim-studio-container">
-        <!-- Studio Header -->
-        <div class="sim-studio-header">
-          <div class="sim-studio-title-group">
-            <div class="sim-studio-dots">
-              <span class="sim-dot"></span>
-              <span class="sim-dot"></span>
-              <span class="sim-dot"></span>
-            </div>
-            <div class="sim-studio-name">Dijkstra's Algorithm — Shortest Path Visualizer</div>
-            <span class="sim-studio-tag">Lab Module: CS8391 / AD3351</span>
-          </div>
-
-          <div class="sim-studio-controls">
-            <button class="sim-btn" id="simRunBtn" onclick="runGraphSimulation()">
-              ▶ Run Dijkstra Path
-            </button>
-            <button class="sim-btn sim-btn-outline" id="simStepBtn" onclick="stepGraphSimulation()">
-              ⏭ Step Next
-            </button>
-            <button class="sim-btn sim-btn-outline" onclick="randomizeGraphNodes()">
-              🎲 Randomize Graph
-            </button>
-            <button class="sim-btn sim-btn-outline" onclick="resetGraphSimulation()">
-              ↺ Reset
-            </button>
-          </div>
-        </div>
-
-        <!-- Studio Body -->
-        <div class="sim-studio-body">
-          <div class="sim-canvas-viewport">
-            <div class="sim-canvas-overlay-banner">
-              <span>💡 <strong>Tip:</strong> Click anywhere on the canvas to add a new graph node! Drag nodes to reposition them.</span>
-            </div>
-            <canvas id="graphSimCanvas"></canvas>
-          </div>
-
-          <!-- Studio Sidebar Log -->
-          <div class="sim-sidebar">
-            <div class="sim-sidebar-title">
-              <span>Terminal Execution Log</span>
-            </div>
-            <div class="sim-log-terminal" id="simTerminalLog">
-              <div class="sim-log-line">> Initialized Graph with 6 vertices & 9 weighted edges.</div>
-              <div class="sim-log-line">> Ready for execution. Click 'Run Dijkstra Path'.</div>
-            </div>
-
-            <div class="sim-complexity-grid">
-              <div class="sim-complexity-card">
-                <div class="sim-complexity-label">Time Complexity</div>
-                <div class="sim-complexity-val">O((V + E) log V)</div>
-              </div>
-              <div class="sim-complexity-card">
-                <div class="sim-complexity-label">Space Complexity</div>
-                <div class="sim-complexity-val">O(V + E)</div>
-              </div>
-            </div>
-
-            <button class="btn-pill-primary" style="width: 100%; justify-content: center;" onclick="openBookingModal()">
-              Request Full 120+ Lab Suite ➔
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ==========================================================================
-       Instant College Clone Generator (Live Sandbox Studio)
-       ========================================================================== -->
-  <section class="clone-generator-section" id="clone-generator">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-tag">🚀 INSTANT TENANT PROVISIONING</div>
-        <h2 class="section-title">
-          Provision Your College's <span>Virtual Lab Clone in 5 Seconds.</span>
-        </h2>
-        <p class="section-subtitle">
-          Every institution receives an isolated, customized digital laboratory portal complete with custom colors, department configurations, and autonomous curricula.
-        </p>
-      </div>
-
-      <div class="clone-generator-box">
-        <!-- Form Side -->
-        <div class="generator-form-side">
-          <h3>Test-Drive Your <span>Institutional Sandbox</span></h3>
-          <p>
-            Choose from existing partner institutions or type your college's name below to see your dedicated URL and branded portal generate immediately.
-          </p>
-
-          <div class="quick-college-pills">
-            <button class="quick-college-btn active" onclick="selectCollegePreset('vsb')">VSB Engg College</button>
-            <button class="quick-college-btn" onclick="selectCollegePreset('cit')">CIT Coimbatore</button>
-            <button class="quick-college-btn" onclick="selectCollegePreset('psg')">PSG Tech</button>
-            <button class="quick-college-btn" onclick="selectCollegePreset('anna')">Anna University CEG</button>
-            <button class="quick-college-btn" onclick="selectCollegePreset('skct')">SKCT Coimbatore</button>
-          </div>
-
-          <div class="input-with-button">
-            <input type="text" id="customCollegeInput" class="college-name-input" placeholder="Type your college name (e.g. Kumaraguru, REC, MIT)..." oninput="handleCustomCollegeInput(event)">
-            <button class="btn-pill-primary" onclick="openBookingModalWithPreset()">
-              Launch Clone Demo ➔
-            </button>
-          </div>
-        </div>
-
-        <!-- Preview Card Side -->
-        <div class="generator-preview-side">
-          <div class="clone-preview-card" id="clonePreviewCard">
-            <div class="clone-card-header" id="cloneCardHeader">
-              <span class="clone-card-badge" id="cloneCardBadge">AICTE Code: 9225 • Autonomous</span>
-              <h4 class="clone-card-name" id="cloneCardName">VSB Engineering College</h4>
-              <div class="clone-card-subdomain" id="cloneCardSubdomain">https://vsb.virtuallabs.cloud</div>
-            </div>
-
-            <div class="clone-card-body">
-              <div class="clone-specs-list">
-                <div class="clone-spec-item">
-                  <span class="clone-spec-label">Database Isolation:</span>
-                  <span class="clone-spec-val active-tag">Tenant Encrypted (AES-256)</span>
-                </div>
-                <div class="clone-spec-item">
-                  <span class="clone-spec-label">Configured Departments:</span>
-                  <span class="clone-spec-val" id="cloneSpecDepts">AI&DS, CSE, IT, ECE</span>
-                </div>
-                <div class="clone-spec-item">
-                  <span class="clone-spec-label">Curriculum Regulation:</span>
-                  <span class="clone-spec-val" id="cloneSpecRegulation">Autonomous CBCS 2021/23</span>
-                </div>
-                <div class="clone-spec-item">
-                  <span class="clone-spec-label">Student Capacity:</span>
-                  <span class="clone-spec-val" id="cloneSpecCapacity">4,800 Concurrent Learners</span>
-                </div>
-              </div>
-
-              <button class="btn-pill-secondary" style="width: 100%; justify-content: center;" onclick="openBookingModalWithPreset()">
-                Claim This Institutional Subdomain ➔
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- ==========================================================================
        Role-Based Workspaces (Inspired by Reference Image 4)
@@ -502,7 +400,7 @@
   <section class="roles-section" id="roles">
     <div class="container">
       <div class="section-header">
-        <div class="section-tag">👥 ROLE-BASED ARCHITECTURE</div>
+        <div class="section-tag">ROLE-BASED ARCHITECTURE</div>
         <h2 class="section-title">
           One Platform. Four <span>Purpose-Built Workspaces.</span>
         </h2>
@@ -514,19 +412,19 @@
       <!-- Role Nav Tabs -->
       <div class="role-tabs-nav">
         <button class="role-tab-btn active" onclick="switchRoleTab('student')">
-          <span>🎓 Student Portal</span>
+          <span>Student Portal</span>
           <span class="role-tab-badge">Learners</span>
         </button>
         <button class="role-tab-btn" onclick="switchRoleTab('faculty')">
-          <span>👨‍🏫 Faculty Portal</span>
+          <span>Faculty Portal</span>
           <span class="role-tab-badge">Mentors</span>
         </button>
         <button class="role-tab-btn" onclick="switchRoleTab('hod')">
-          <span>🏛️ HOD Portal</span>
+          <span>HOD Portal</span>
           <span class="role-tab-badge">Leadership</span>
         </button>
         <button class="role-tab-btn" onclick="switchRoleTab('dean')">
-          <span>📜 Principal & Dean</span>
+          <span>Principal & Dean</span>
           <span class="role-tab-badge">Governance</span>
         </button>
       </div>
@@ -602,24 +500,33 @@
   </section>
 
   <!-- ==========================================================================
-       Disciplines & Lab Suite Matrix
+       Disciplines & Lab Suite Matrix (Interactive Rummy Card Deck)
        ========================================================================== -->
   <section class="disciplines-section" id="curriculum">
     <div class="container">
       <div class="section-header">
-        <div class="section-tag">📚 COMPREHENSIVE CURRICULUM</div>
+        <div class="section-tag">COMPREHENSIVE LAB MODULES</div>
         <h2 class="section-title">
           6 Core Disciplines. <span>120+ Interactive Lab Modules.</span>
         </h2>
-        <p class="section-subtitle">
-          Fully mapped to AICTE Model Curricula, Anna University 2021/2023 Regulations, and Autonomous CBCS Syllabi.
-        </p>
+        <div class="rummy-deck-badge">
+          <span class="rummy-deck-pulse"></span>
+          <span>ENTERPRISE LAB DECK • HOVER TO DRAW & INSPECT</span>
+        </div>
       </div>
 
-      <div class="disciplines-grid">
-        <!-- Card 1 -->
-        <div class="discipline-card">
-          <div class="discipline-icon-badge">🧠</div>
+      <div class="disciplines-grid rummy-deck-grid" id="disciplinesDeck">
+        <!-- Card 1: AI & ML -->
+        <div class="discipline-card rummy-card" data-card="1" style="--card-idx: 0; --fan-deg: -3.5deg; --fan-y: 6px;">
+          <div class="rummy-card-header">
+            <div class="discipline-icon-badge">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a5 5 0 0 1 5 5v1a5 5 0 0 1-3.5 4.8V15h-3v-2.2A5 5 0 0 1 7 8V7a5 5 0 0 1 5-5z"/>
+                <path d="M9 18h6"/><path d="M10 22h4"/>
+              </svg>
+            </div>
+            <span class="card-suite-tag">SUITE #01 • AI/DS</span>
+          </div>
           <h4 class="discipline-name">AI & Machine Learning</h4>
           <p class="discipline-desc">
             Visual neural network backpropagation, Decision Trees, K-Means clustering, and loss curve optimization studios.
@@ -629,11 +536,20 @@
             <span class="discipline-tag">PCA 3D</span>
             <span class="discipline-tag">CNN Feature Maps</span>
           </div>
+          <div class="rummy-card-glare"></div>
         </div>
 
-        <!-- Card 2 -->
-        <div class="discipline-card">
-          <div class="discipline-icon-badge">🌲</div>
+        <!-- Card 2: DSA -->
+        <div class="discipline-card rummy-card" data-card="2" style="--card-idx: 1; --fan-deg: -1.5deg; --fan-y: 0px;">
+          <div class="rummy-card-header">
+            <div class="discipline-icon-badge">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="5" r="3"/><circle cx="6" cy="19" r="3"/><circle cx="18" cy="19" r="3"/>
+                <path d="M12 8v4"/><path d="M12 12l-4 4"/><path d="M12 12l4 4"/>
+              </svg>
+            </div>
+            <span class="card-suite-tag">SUITE #02 • CSE</span>
+          </div>
           <h4 class="discipline-name">Data Structures & Algorithms</h4>
           <p class="discipline-desc">
             Interactive BST rotations, Heap trees, Dijkstra & Prim's graphs, Infix-to-Postfix stacks, and sorting benchmarks.
@@ -643,11 +559,20 @@
             <span class="discipline-tag">Dijkstra Shortest</span>
             <span class="discipline-tag">Hash Collisions</span>
           </div>
+          <div class="rummy-card-glare"></div>
         </div>
 
-        <!-- Card 3 -->
-        <div class="discipline-card">
-          <div class="discipline-icon-badge">🌐</div>
+        <!-- Card 3: Networks -->
+        <div class="discipline-card rummy-card" data-card="3" style="--card-idx: 2; --fan-deg: 2deg; --fan-y: 4px;">
+          <div class="rummy-card-header">
+            <div class="discipline-icon-badge">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+            </div>
+            <span class="card-suite-tag">SUITE #03 • IT/CSE</span>
+          </div>
           <h4 class="discipline-name">Computer Networks</h4>
           <p class="discipline-desc">
             Packet routing simulation, TCP sliding window flow control, Subnet mask calculators, and DNS lookup traceroutes.
@@ -657,11 +582,20 @@
             <span class="discipline-tag">Distance Vector</span>
             <span class="discipline-tag">CRC Check</span>
           </div>
+          <div class="rummy-card-glare"></div>
         </div>
 
-        <!-- Card 4 -->
-        <div class="discipline-card">
-          <div class="discipline-icon-badge">💾</div>
+        <!-- Card 4: DBMS -->
+        <div class="discipline-card rummy-card" data-card="4" style="--card-idx: 3; --fan-deg: -2.5deg; --fan-y: 5px;">
+          <div class="rummy-card-header">
+            <div class="discipline-icon-badge">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+              </svg>
+            </div>
+            <span class="card-suite-tag">SUITE #04 • DATA</span>
+          </div>
           <h4 class="discipline-name">Database Systems (DBMS)</h4>
           <p class="discipline-desc">
             Visual B+ Tree indexing, Relational Algebra tree evaluator, ER diagram to schema mapper, and real-time SQL console.
@@ -671,11 +605,19 @@
             <span class="discipline-tag">SQL Sandbox</span>
             <span class="discipline-tag">Normal Form Check</span>
           </div>
+          <div class="rummy-card-glare"></div>
         </div>
 
-        <!-- Card 5 -->
-        <div class="discipline-card">
-          <div class="discipline-icon-badge">⚡</div>
+        <!-- Card 5: Electronics -->
+        <div class="discipline-card rummy-card" data-card="5" style="--card-idx: 4; --fan-deg: 0deg; --fan-y: 0px;">
+          <div class="rummy-card-header">
+            <div class="discipline-icon-badge">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+            </div>
+            <span class="card-suite-tag">SUITE #05 • ECE/EEE</span>
+          </div>
           <h4 class="discipline-name">Digital Electronics</h4>
           <p class="discipline-desc">
             Interactive logic gate breadboards, Flip-Flop state timing diagrams, Karnaugh Map (K-Map) solvers, and multiplexers.
@@ -685,11 +627,19 @@
             <span class="discipline-tag">JK Flip Flop</span>
             <span class="discipline-tag">Oscilloscope UI</span>
           </div>
+          <div class="rummy-card-glare"></div>
         </div>
 
-        <!-- Card 6 -->
-        <div class="discipline-card">
-          <div class="discipline-icon-badge">💻</div>
+        <!-- Card 6: Operating Systems -->
+        <div class="discipline-card rummy-card" data-card="6" style="--card-idx: 5; --fan-deg: 3deg; --fan-y: 6px;">
+          <div class="rummy-card-header">
+            <div class="discipline-icon-badge">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+            </div>
+            <span class="card-suite-tag">SUITE #06 • CORE</span>
+          </div>
           <h4 class="discipline-name">Operating Systems</h4>
           <p class="discipline-desc">
             Visual CPU scheduling (Round Robin, SJF, Priority), Banker's Deadlock avoidance algorithm, and Page Replacement sim.
@@ -699,10 +649,11 @@
             <span class="discipline-tag">Banker's Algorithm</span>
             <span class="discipline-tag">LRU Page Faults</span>
           </div>
-        </div>
+          <div class="rummy-card-glare"></div>
       </div>
     </div>
   </section>
+
 
   <!-- ==========================================================================
        Institutional Demo Booking Section & Form
@@ -802,12 +753,19 @@
   <section class="faq-section" id="faq">
     <div class="container">
       <div class="section-header">
-        <div class="section-tag">❓ FREQUENTLY ASKED QUESTIONS</div>
+        <div class="section-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          FREQUENTLY ASKED QUESTIONS
+        </div>
         <h2 class="section-title">
           Answers for <span>Deans, Principals & HODs.</span>
         </h2>
         <p class="section-subtitle">
-          Everything you need to know about adopting VSB Virtual Labs across your autonomous institution.
+          Everything you need to know about adopting FastLab across your autonomous institution.
         </p>
       </div>
 
@@ -815,7 +773,7 @@
         <!-- FAQ 1 -->
         <div class="faq-item active">
           <button class="faq-question" onclick="toggleFaq(this)">
-            <span>How does VSB Virtual Labs align with Anna University & Autonomous syllabi?</span>
+            <span>How does FastLab align with Anna University & Autonomous syllabi?</span>
             <span class="faq-toggle-icon">+</span>
           </button>
           <div class="faq-answer" style="max-height: 200px;">
@@ -887,21 +845,20 @@
     <div class="container">
       <div class="footer-top-grid">
         <div class="footer-brand-side">
-          <div class="nav-brand">
-            <img src="assets/vsb-logo.png" alt="VSB Logo" class="nav-brand-logo" style="filter: brightness(0) invert(1);">
+          <div class="nav-brand" style="margin-bottom: 16px;">
             <div class="nav-brand-text">
-              <div class="nav-brand-title" style="color: var(--white);">
-                VSB Virtual Labs
-                <span class="nav-brand-badge" style="background: var(--red-800); color: var(--white);">Institutional</span>
+              <div class="nav-brand-title" style="color: var(--pure-white); font-size: 1.15rem;">
+                FastLab
+                <span class="nav-brand-badge" style="background: var(--deep-red); color: var(--pure-white);">Cloud</span>
               </div>
-              <span class="nav-brand-subtitle" style="color: var(--red-200);">Department of AI & Data Science</span>
+              <span class="nav-brand-subtitle" style="color: var(--warm-cream); font-size: 0.76rem;">Virtual Laboratory Platform</span>
             </div>
           </div>
           <p>
-            An autonomous cloud laboratory platform engineered by VSB Engineering College (Karur, Tamil Nadu) to democratize high-quality engineering education across India.
+            An autonomous cloud laboratory platform engineered by FastLab Technologies to democratize high-quality, zero-overhead engineering education across institutions worldwide.
           </p>
-          <div style="font-size: 0.8rem; color: var(--red-200);">
-            Affiliated to Anna University | Approved by AICTE | NAAC A Grade
+          <div style="font-size: 0.8rem; color: var(--warm-cream); opacity: 0.85;">
+            Anna University CBCS Aligned | AICTE Approved Lab Suites | Multi-Tenant Architecture
           </div>
         </div>
 
@@ -909,10 +866,10 @@
           <h5 class="footer-col-title">Platform</h5>
           <ul class="footer-links">
             <li><a href="#overview" class="footer-link">Overview</a></li>
-            <li><a href="#simulation" class="footer-link">Live Algorithm Studio</a></li>
-            <li><a href="#clone-generator" class="footer-link">College Clone Studio</a></li>
-            <li><a href="#roles" class="footer-link">Stakeholder Portals</a></li>
-            <li><a href="#curriculum" class="footer-link">Curriculum Matrix</a></li>
+            <li><a href="#workflow" class="footer-link">Workflow</a></li>
+            <li><a href="#curriculum" class="footer-link">Lab Modules Matrix</a></li>
+            <li><a href="#disconnect" class="footer-link">Why FastLab</a></li>
+            <li><a href="#booking" class="footer-link">Book Institutional Demo</a></li>
           </ul>
         </div>
 
@@ -927,26 +884,22 @@
         </div>
 
         <div>
-          <h5 class="footer-col-title">Department Contacts</h5>
-          <p style="font-size: 0.88rem; color: var(--red-200); line-height: 1.6; margin-bottom: 12px;">
-            Department of AI & DS<br>
-            VSB Engineering College<br>
-            NH-67, Covai Road, Karur, Tamil Nadu – 639 111.
+          <h5 class="footer-col-title">Enterprise Support</h5>
+          <p style="font-size: 0.88rem; color: var(--warm-cream); line-height: 1.6; margin-bottom: 12px; opacity: 0.9;">
+            FastLab Technologies Inc.<br>
+            Enterprise Cloud & Simulation Solutions<br>
+            Bangalore & Chennai, India
           </p>
-          <div style="font-size: 0.82rem; color: var(--white); font-weight: 700;">
-            Email: virtuallabs@vsbec.com<br>
-            Helpline: +91 4324 290142
+          <div style="font-size: 0.82rem; color: var(--pure-white); font-weight: 700;">
+            Email: support@fastlab.cloud<br>
+            Helpline: +91 80 4123 5678
           </div>
         </div>
       </div>
 
       <div class="footer-bottom-bar">
         <div>
-          © 2026 VSB Engineering College — Department of Artificial Intelligence & Data Science. All rights reserved.
-        </div>
-        <div style="display: flex; gap: 20px;">
-          <span>System Status: <strong style="color: #4ade80;">● 99.98% Operational</strong></span>
-          <span>Security: <strong style="color: var(--white);">AES-256 Multi-Tenant</strong></span>
+          © 2026 FastLab Technologies Inc. All rights reserved.
         </div>
       </div>
     </div>
@@ -966,7 +919,7 @@
         Book Institutional Sandbox
       </h3>
       <p style="font-size: 0.88rem; color: var(--slate-500); margin-bottom: 24px;">
-        Experience the full VSB Virtual Lab suite for your department or campus with pre-loaded students and evaluation manuals.
+        Experience the full FastLab Cloud suite for your department or campus with pre-loaded students and evaluation manuals.
       </p>
 
       <form id="modalBookingForm" onsubmit="handleModalSubmit(event)">

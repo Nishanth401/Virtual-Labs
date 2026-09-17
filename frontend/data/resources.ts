@@ -3,16 +3,269 @@ export interface ResourceItem {
   subject: string;
   title: string;
   unit: number | 'All';
-  type: 'Lab Material' | 'Lab Manual';
-  provider: 'GeeksforGeeks' | 'W3Schools' | 'Official Docs' | 'Virtual Labs Manual';
-  format: 'Web Guide' | 'Interactive Tutorial' | 'PDF Manual' | 'Documentation';
+  type: 'Lab Material' | 'Lab Manual' | 'Video Tutorial' | 'Virtual Lab';
+  provider: 'GeeksforGeeks' | 'W3Schools' | 'Official Docs' | 'Virtual Labs Manual' | 'YouTube Video' | 'Simulation Studio';
+  format: 'Web Guide' | 'Interactive Tutorial' | 'PDF Manual' | 'Documentation' | 'Video Guide' | 'Interactive Simulator';
   fileUrl: string;
   description: string;
   downloadCount?: number;
   tags?: string[];
+  duration?: string;
+  language?: string;
+  difficulty?: string;
 }
 
 export const RESOURCES_DATA: ResourceItem[] = [
+  // ==========================================
+  // VIDEO TUTORIALS & WALKTHROUGHS
+  // ==========================================
+  {
+    subject: 'Data Structures & Algorithms',
+    title: 'Data Structures & Algorithms Complete Masterclass in Tamil',
+    unit: 'All',
+    type: 'Video Tutorial',
+    provider: 'YouTube Video',
+    format: 'Video Guide',
+    fileUrl: 'https://www.youtube.com/watch?v=YZVF4ehkn24',
+    description: 'Comprehensive DSA video lecture series explaining linear memory, linked lists, stacks, queues, trees, graphs, and sorting in Tamil.',
+    downloadCount: 3100,
+    duration: 'Full Course',
+    language: 'Tamil',
+    tags: ['DSA', 'Tamil Tutorial', 'Sorting', 'Trees', 'Graphs']
+  },
+  {
+    subject: 'Data Science & Analytics',
+    title: 'Data Science & Analytics 18+ Hour Masterclass in Tamil (AI Coach John)',
+    unit: 'All',
+    type: 'Video Tutorial',
+    provider: 'YouTube Video',
+    format: 'Video Guide',
+    fileUrl: 'https://www.youtube.com/watch?v=k6HOBjkUkE4',
+    description: 'Complete 18+ hour masterclass in Tamil covering Python foundations, Pandas deep dive, statistics & hypothesis testing, regression models, and Streamlit.',
+    downloadCount: 4200,
+    duration: '18h 15m',
+    language: 'Tamil',
+    tags: ['Data Science', 'Pandas', 'Z-Test', 'Regression', 'Tamil']
+  },
+  {
+    subject: 'Machine Learning',
+    title: 'Machine Learning & Deep Learning Full Video Series in Tamil',
+    unit: 'All',
+    type: 'Video Tutorial',
+    provider: 'YouTube Video',
+    format: 'Video Guide',
+    fileUrl: 'https://www.youtube.com/playlist?list=PLorkqpg7qgkw8xqc-RmuCgfCWRWCRnN-u',
+    description: 'Supervised and unsupervised learning, mathematical formulations, Candidate-Elimination, ID3 Trees, and Backpropagation in Tamil.',
+    downloadCount: 2850,
+    duration: 'Full Playlist',
+    language: 'Tamil',
+    tags: ['Machine Learning', 'Neural Networks', 'Decision Trees', 'Tamil']
+  },
+  {
+    subject: 'Database Management Systems',
+    title: 'DBMS & SQL Complete Step-by-Step Course in Tamil',
+    unit: 'All',
+    type: 'Video Tutorial',
+    provider: 'YouTube Video',
+    format: 'Video Guide',
+    fileUrl: 'https://www.youtube.com/watch?v=wsYx5qOP_bI',
+    description: 'Relational modeling, SQL DDL/DML, complex joins, views, triggers, and PL/SQL stored procedures explained in Tamil.',
+    downloadCount: 2900,
+    duration: 'Full Course',
+    language: 'Tamil',
+    tags: ['DBMS', 'SQL', 'PL/SQL', 'Joins', 'Tamil']
+  },
+  {
+    subject: 'Operating Systems',
+    title: 'Operating Systems Complete Gate Smashers Playlist (English)',
+    unit: 'All',
+    type: 'Video Tutorial',
+    provider: 'YouTube Video',
+    format: 'Video Guide',
+    fileUrl: 'https://www.youtube.com/playlist?list=PLxCzCOWd7aiGz9donHRrE9I3Mwn6XdP8p',
+    description: 'CPU scheduling algorithms (FCFS/SJF/RR), Semaphores, Banker\'s deadlock avoidance, paging, and disk scheduling.',
+    downloadCount: 5100,
+    duration: 'Full Series',
+    language: 'English',
+    tags: ['OS', 'Scheduling', 'Deadlocks', 'Semaphores']
+  },
+  {
+    subject: 'Java OOP',
+    title: 'Object Oriented Programming with Java Full Course in Tamil',
+    unit: 'All',
+    type: 'Video Tutorial',
+    provider: 'YouTube Video',
+    format: 'Video Guide',
+    fileUrl: 'https://www.youtube.com/watch?v=nqB3qAtDLKU',
+    description: 'Classes, Objects, Inheritance, Polymorphism, Abstraction, Exception Handling, and Java Collections in Tamil.',
+    downloadCount: 3400,
+    duration: 'Full Course',
+    language: 'Tamil',
+    tags: ['Java', 'OOP', 'Collections', 'Tamil']
+  },
+  {
+    subject: 'C Programming',
+    title: 'C Programming Language Complete Course in Tamil',
+    unit: 'All',
+    type: 'Video Tutorial',
+    provider: 'YouTube Video',
+    format: 'Video Guide',
+    fileUrl: 'https://www.youtube.com/watch?v=Zi_n_mE3pEM',
+    description: 'C pointers, malloc/free dynamic memory allocation, structs, recursion, and file I/O operations in Tamil.',
+    downloadCount: 3200,
+    duration: 'Full Course',
+    language: 'Tamil',
+    tags: ['C Programming', 'Pointers', 'Memory', 'Tamil']
+  },
+  {
+    subject: 'Computer Networks',
+    title: 'Computer Networks Full Course in Tamil',
+    unit: 'All',
+    type: 'Video Tutorial',
+    provider: 'YouTube Video',
+    format: 'Video Guide',
+    fileUrl: 'https://www.youtube.com/watch?v=yiIpBNBl4bc',
+    description: 'OSI 7 layers, TCP/IP architecture, socket programming, routing algorithms, and Wireshark packet capture.',
+    downloadCount: 2600,
+    duration: 'Full Course',
+    language: 'Tamil',
+    tags: ['Networks', 'TCP/IP', 'Routing', 'Tamil']
+  },
+
+  // ==========================================
+  // VIRTUAL LABS & SIMULATORS (DIRECT LAUNCH)
+  // ==========================================
+  {
+    subject: 'Data Structures & Algorithms',
+    title: 'Interactive DSA Simulator & Visualizer Suite',
+    unit: 'All',
+    type: 'Virtual Lab',
+    provider: 'Simulation Studio',
+    format: 'Interactive Simulator',
+    fileUrl: '/labs/data-structures',
+    description: 'Interactive real-time execution engine for Singly/Doubly Linked Lists, Stacks, Queues, BSTs, AVL Rotations, and Sorting.',
+    downloadCount: 4800,
+    difficulty: 'Intermediate',
+    tags: ['DSA Simulator', 'Visualizer', 'Trees', 'Sorting']
+  },
+  {
+    subject: 'Database Management Systems',
+    title: 'DBMS Live SQL Console & Query Simulation Studio',
+    unit: 'All',
+    type: 'Virtual Lab',
+    provider: 'Simulation Studio',
+    format: 'Interactive Simulator',
+    fileUrl: '/labs/dbms-lab',
+    description: 'Browser-based SQL engine with live table relations, join visualizers, PL/SQL cursors, and ACID transaction tests.',
+    downloadCount: 4100,
+    difficulty: 'Intermediate',
+    tags: ['SQL Studio', 'DBMS Lab', 'Query Engine']
+  },
+  {
+    subject: 'Machine Learning',
+    title: 'Machine Learning & Neural Network Interactive Simulator',
+    unit: 'All',
+    type: 'Virtual Lab',
+    provider: 'Simulation Studio',
+    format: 'Interactive Simulator',
+    fileUrl: '/labs/ai-machine-learning',
+    description: 'Live interactive models for Candidate-Elimination, ID3 Decision Trees, Backpropagation ANN, and Naïve Bayes classifiers.',
+    downloadCount: 3950,
+    difficulty: 'Advanced',
+    tags: ['ML Lab', 'Neural Nets', 'Decision Trees']
+  },
+  {
+    subject: 'Operating Systems',
+    title: 'Operating Systems CPU Scheduling & Deadlock Simulator',
+    unit: 'All',
+    type: 'Virtual Lab',
+    provider: 'Simulation Studio',
+    format: 'Interactive Simulator',
+    fileUrl: '/labs/operating-systems',
+    description: 'Gantt chart CPU scheduling (FCFS, SJF, RR), Semaphore race condition debugger, and Banker\'s safety vector generator.',
+    downloadCount: 3800,
+    difficulty: 'Intermediate',
+    tags: ['OS Simulator', 'Scheduling', 'Bankers Algorithm']
+  },
+  {
+    subject: 'Data Science & Analytics',
+    title: 'Data Science NumPy & Pandas Vectorized Computing Lab',
+    unit: 'All',
+    type: 'Virtual Lab',
+    provider: 'Simulation Studio',
+    format: 'Interactive Simulator',
+    fileUrl: '/labs/data-science-analytics',
+    description: 'Statistical hypothesis testing suite (Z-test, T-test, ANOVA), Pandas DataFrame pipeline, and regression analysis.',
+    downloadCount: 3600,
+    difficulty: 'Intermediate',
+    tags: ['Data Science', 'Statistics', 'Z-Test', 'NumPy']
+  },
+  {
+    subject: 'Java OOP',
+    title: 'Java Object-Oriented Programming Interactive Sandbox',
+    unit: 'All',
+    type: 'Virtual Lab',
+    provider: 'Simulation Studio',
+    format: 'Interactive Simulator',
+    fileUrl: '/labs/oops-java',
+    description: 'Class hierarchy visualizer, inheritance models, exception handling sandbox, and Collections Framework testbed.',
+    downloadCount: 4200,
+    difficulty: 'Intermediate',
+    tags: ['Java Lab', 'OOP Sandbox', 'Collections']
+  },
+  {
+    subject: 'C Programming',
+    title: 'C Pointer & Memory Layout Visualizer Studio',
+    unit: 'All',
+    type: 'Virtual Lab',
+    provider: 'Simulation Studio',
+    format: 'Interactive Simulator',
+    fileUrl: '/labs/c-programming',
+    description: 'Stack frame inspector, heap allocation (malloc/free) tracker, and pointer dereference visualizer.',
+    downloadCount: 3750,
+    difficulty: 'Beginner',
+    tags: ['C Visualizer', 'Pointers', 'Memory Allocation']
+  },
+  {
+    subject: 'Computer Networks',
+    title: 'Computer Networks Packet Sniffer & Socket Lab',
+    unit: 'All',
+    type: 'Virtual Lab',
+    provider: 'Simulation Studio',
+    format: 'Interactive Simulator',
+    fileUrl: '/labs/computer-networks',
+    description: 'Packet dissection, TCP/UDP client-server simulator, ARP/RARP translation, and Dijkstra shortest path routing.',
+    downloadCount: 3300,
+    difficulty: 'Intermediate',
+    tags: ['Networks Lab', 'Sockets', 'Routing']
+  },
+  {
+    subject: 'Artificial Intelligence',
+    title: 'AI Heuristic Search & Minimax Game Tree Studio',
+    unit: 'All',
+    type: 'Virtual Lab',
+    provider: 'Simulation Studio',
+    format: 'Interactive Simulator',
+    fileUrl: '/labs/artificial-intelligence',
+    description: 'A* Search on 8-puzzle with Manhattan distance, Minimax with Alpha-Beta pruning, and N-Queens backtracking solver.',
+    downloadCount: 3100,
+    difficulty: 'Advanced',
+    tags: ['AI Studio', 'A* Search', 'Minimax', 'CSP']
+  },
+  {
+    subject: 'DSA Visualizer',
+    title: 'Step-by-Step Interactive DSA Visualizer Engine',
+    unit: 'All',
+    type: 'Virtual Lab',
+    provider: 'Simulation Studio',
+    format: 'Interactive Simulator',
+    fileUrl: '/dsa-visualization',
+    description: 'Animated step-by-step visualizer for Bubble/Quick/Merge Sort, Stack/Queue operations, and BST traversals.',
+    downloadCount: 5200,
+    difficulty: 'Beginner',
+    tags: ['DSA Visualizer', 'Animations', 'Sorting']
+  },
+
   // ==========================================
   // DATA STRUCTURES & ALGORITHMS (JAVA)
   // ==========================================

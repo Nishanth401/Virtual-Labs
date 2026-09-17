@@ -1,32 +1,155 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
+import Link from "next/link";
 import { Navbar } from "@/components/navigation/navbar";
 import { Footer } from "@/components/navigation/footer";
 import { RESOURCES_DATA, ResourceItem } from "@/data/resources";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, Search, Download, FolderOpen, ExternalLink, BookOpen, GraduationCap, CheckCircle2 } from "lucide-react";
+import {
+  FileText,
+  Search,
+  Download,
+  FolderOpen,
+  ExternalLink,
+  BookOpen,
+  GraduationCap,
+  CheckCircle2,
+  Video,
+  FlaskConical,
+  Play,
+  Layers,
+  Sparkles
+} from "lucide-react";
 
 export default function ResourcesPage() {
   const [selectedType, setSelectedType] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [tenantResources, setTenantResources] = useState<ResourceItem[]>([]);
+
+  // Load any dynamically uploaded/added resources from Admin Panel
+  useEffect(() => {
+    try {
+      const dynamicItems: ResourceItem[] = [];
+      const collegeSlug = "vsb";
+
+      // 1. Dynamic Materials
+      const rawMats = localStorage.getItem(`vlab_tenant_${collegeSlug}_materials`);
+      if (rawMats) {
+        const mats = JSON.parse(rawMats);
+        mats.forEach((m: any) => {
+          if (!RESOURCES_DATA.some((r) => r.title === m.title || r.fileUrl === m.fileUrl)) {
+            dynamicItems.push({
+              id: m.id,
+              subject: m.department || "Academic Material",
+              title: m.title,
+              unit: "All",
+              type: "Lab Material",
+              provider: "Official Docs",
+              format: m.fileType === "pdf" ? "PDF Manual" : "Web Guide",
+              fileUrl: m.fileUrl,
+              description: m.description || "Faculty uploaded reference material.",
+              tags: [m.category || "Study Material", m.semester || "Semester"],
+            });
+          }
+        });
+      }
+
+      // 2. Dynamic Manuals
+      const rawMans = localStorage.getItem(`vlab_tenant_${collegeSlug}_manuals`);
+      if (rawMans) {
+        const mans = JSON.parse(rawMans);
+        mans.forEach((m: any) => {
+          if (!RESOURCES_DATA.some((r) => r.title === m.labName || r.fileUrl === m.manualUrl)) {
+            dynamicItems.push({
+              id: m.id,
+              subject: `${m.labCode || "LAB"} — ${m.department || "Department"}`,
+              title: m.labName,
+              unit: "All",
+              type: "Lab Manual",
+              provider: "Virtual Labs Manual",
+              format: "PDF Manual",
+              fileUrl: m.manualUrl,
+              description: m.description || "Official institutional laboratory manual.",
+              tags: [m.labCode || "Manual", m.semester || "Semester"],
+            });
+          }
+        });
+      }
+
+      // 3. Dynamic Custom Labs
+      const rawLabs = localStorage.getItem(`vlab_tenant_${collegeSlug}_custom_labs`);
+      if (rawLabs) {
+        const labs = JSON.parse(rawLabs);
+        labs.forEach((l: any) => {
+          if (!RESOURCES_DATA.some((r) => r.title === l.title || r.fileUrl === l.labUrl)) {
+            dynamicItems.push({
+              id: l.id,
+              subject: l.domain || "Virtual Simulation",
+              title: l.title,
+              unit: "All",
+              type: "Virtual Lab",
+              provider: "Simulation Studio",
+              format: "Interactive Simulator",
+              fileUrl: l.labUrl,
+              description: l.description || "Interactive browser simulation module.",
+              difficulty: l.difficulty || "Intermediate",
+              tags: [l.domain || "Simulation", l.department || "Dept"],
+            });
+          }
+        });
+      }
+
+      // 4. Dynamic Videos
+      const rawVids = localStorage.getItem(`vlab_tenant_${collegeSlug}_videos`);
+      if (rawVids) {
+        const vids = JSON.parse(rawVids);
+        vids.forEach((v: any) => {
+          if (!RESOURCES_DATA.some((r) => r.title === v.title || r.fileUrl === v.youtubeUrl)) {
+            dynamicItems.push({
+              id: v.id,
+              subject: v.topic || "Video Tutorial",
+              title: v.title,
+              unit: "All",
+              type: "Video Tutorial",
+              provider: "YouTube Video",
+              format: "Video Guide",
+              fileUrl: v.youtubeUrl,
+              description: `${v.department} • Walkthrough simulation tutorial.`,
+              duration: v.duration || "15 mins",
+              language: v.language || "Tamil",
+              tags: [v.language || "Tamil", v.topic || "Tutorial"],
+            });
+          }
+        });
+      }
+
+      setTenantResources(dynamicItems);
+    } catch {}
+  }, []);
+
+  const allCombinedResources = useMemo(() => {
+    return [...RESOURCES_DATA, ...tenantResources];
+  }, [tenantResources]);
 
   const resourceTypes = [
-    { key: "all", label: "All Resources" },
-    { key: "Lab Material", label: "Lab Material (GFG / W3Schools)" },
-    { key: "Lab Manual", label: "Lab Manual" },
+    { key: "all", label: "All Resources", icon: Layers },
+    { key: "Lab Material", label: "Lab Material (GFG / W3Schools)", icon: FileText },
+    { key: "Lab Manual", label: "Lab Manual", icon: BookOpen },
+    { key: "Video Tutorial", label: "Video Tutorials", icon: Video },
+    { key: "Virtual Lab", label: "Virtual Labs", icon: FlaskConical },
   ];
 
-  const filteredResources = RESOURCES_DATA.filter((res) => {
+  const filteredResources = allCombinedResources.filter((res) => {
     const matchesType = selectedType === "all" || res.type === selectedType;
     const matchesSearch =
       res.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       res.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
       res.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       res.provider.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (res.tags && res.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase())));
+      (res.tags && res.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase())));
     return matchesType && matchesSearch;
   });
 
@@ -48,6 +171,20 @@ export default function ResourcesPage() {
         return (
           <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-primary/10 text-primary border border-primary/30">
             Virtual Labs Manual
+          </span>
+        );
+      case "YouTube Video":
+        return (
+          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/30 flex items-center gap-1">
+            <Video className="h-3 w-3" />
+            <span>Video Guide</span>
+          </span>
+        );
+      case "Simulation Studio":
+        return (
+          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/30 flex items-center gap-1">
+            <FlaskConical className="h-3 w-3" />
+            <span>Interactive Simulator</span>
           </span>
         );
       default:
@@ -73,7 +210,7 @@ export default function ResourcesPage() {
             Department <span className="bg-gradient-to-r from-primary via-rose-500 to-indigo-500 bg-clip-text text-transparent">Resource Vault</span>
           </h1>
           <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-            Direct access to verified laboratory study materials from <strong>GeeksforGeeks</strong>, <strong>W3Schools</strong>, official documentation, and downloadable virtual lab manuals.
+            Direct access to verified laboratory study materials from <strong>GeeksforGeeks</strong>, <strong>W3Schools</strong>, official documentation, step-by-step video tutorials, and interactive virtual laboratories.
           </p>
         </div>
 
@@ -91,21 +228,26 @@ export default function ResourcesPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-2 pt-1">
-            {resourceTypes.map((type) => (
-              <Button
-                key={type.key}
-                variant={selectedType === type.key ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedType(type.key)}
-                className={`text-xs font-bold transition-all ${
-                  selectedType === type.key
-                    ? "bg-primary text-white shadow-xs"
-                    : "hover:bg-muted"
-                }`}
-              >
-                {type.label}
-              </Button>
-            ))}
+            {resourceTypes.map((type) => {
+              const IconComp = type.icon;
+              const isActive = selectedType === type.key;
+              return (
+                <Button
+                  key={type.key}
+                  variant={isActive ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedType(type.key)}
+                  className={`text-xs font-bold transition-all gap-1.5 rounded-xl ${
+                    isActive
+                      ? "bg-primary text-white shadow-xs"
+                      : "hover:bg-muted"
+                  }`}
+                >
+                  <IconComp className="h-3.5 w-3.5" />
+                  <span>{type.label}</span>
+                </Button>
+              );
+            })}
             <span className="ml-auto text-xs text-muted-foreground font-mono">
               Showing {filteredResources.length} items
             </span>
@@ -117,7 +259,7 @@ export default function ResourcesPage() {
           {filteredResources.map((res, idx) => (
             <Card
               key={idx}
-              className="flex flex-col h-full border border-border bg-card/90 hover:border-primary/50 hover:shadow-md transition-all group"
+              className="flex flex-col h-full border border-border bg-card/90 hover:border-primary/50 hover:shadow-md transition-all group rounded-2xl overflow-hidden"
             >
               <CardHeader className="p-5 pb-3 space-y-3">
                 <div className="flex items-start justify-between gap-2">
@@ -141,6 +283,26 @@ export default function ResourcesPage() {
                 <CardDescription className="text-xs text-muted-foreground leading-relaxed line-clamp-3">
                   {res.description}
                 </CardDescription>
+
+                {(res.duration || res.language || res.difficulty) && (
+                  <div className="flex items-center gap-2 pt-1 text-[11px] font-semibold text-muted-foreground">
+                    {res.language && (
+                      <span className="bg-red-500/10 text-red-600 px-2 py-0.5 rounded-md text-[10px] font-mono">
+                        {res.language}
+                      </span>
+                    )}
+                    {res.duration && (
+                      <span className="bg-muted px-2 py-0.5 rounded-md text-[10px] font-mono">
+                        {res.duration}
+                      </span>
+                    )}
+                    {res.difficulty && (
+                      <span className="bg-emerald-500/10 text-emerald-600 px-2 py-0.5 rounded-md text-[10px] font-mono">
+                        {res.difficulty}
+                      </span>
+                    )}
+                  </div>
+                )}
               </CardHeader>
 
               <CardContent className="p-5 pt-0 flex-1 flex flex-col justify-end space-y-4">
@@ -154,38 +316,38 @@ export default function ResourcesPage() {
                   </div>
                 )}
 
-                <div className="flex items-center justify-between text-[11px] text-muted-foreground pt-3 border-t border-border/60">
-                  <span className="flex items-center gap-1 font-mono">
-                    <BookOpen className="h-3.5 w-3.5 text-primary" /> {res.downloadCount || 100}+ views
+                <div className="pt-2 border-t border-border/40 flex items-center justify-between">
+                  <span className="text-[11px] text-muted-foreground font-mono">
+                    {res.downloadCount ? `${res.downloadCount}+ views` : "Available Now"}
                   </span>
 
-                  {res.type === "Lab Manual" ? (
-                    <a href={res.fileUrl || "#"} target="_blank" rel="noopener noreferrer">
-                      <Button size="sm" variant="default" className="text-xs h-8 gap-1.5 bg-primary hover:bg-primary/90 text-white font-bold">
-                        <Download className="h-3.5 w-3.5" /> Lab Manual (PDF)
-                      </Button>
-                    </a>
+                  {res.type === "Virtual Lab" ? (
+                    <Button size="sm" className="h-8 text-xs font-bold gap-1.5 rounded-xl bg-primary text-white" asChild>
+                      <Link href={res.fileUrl}>
+                        <Play className="h-3 w-3" />
+                        <span>Launch Simulator</span>
+                      </Link>
+                    </Button>
+                  ) : res.type === "Video Tutorial" ? (
+                    <Button size="sm" variant="outline" className="h-8 text-xs font-bold gap-1.5 rounded-xl text-red-600 hover:bg-red-500/10 border-red-500/30" asChild>
+                      <a href={res.fileUrl} target="_blank" rel="noopener noreferrer">
+                        <Video className="h-3.5 w-3.5" />
+                        <span>Watch Video</span>
+                      </a>
+                    </Button>
                   ) : (
-                    <a href={res.fileUrl} target="_blank" rel="noopener noreferrer">
-                      <Button size="sm" variant="default" className="text-xs h-8 gap-1.5 bg-primary hover:bg-primary/90 text-white font-bold shadow-xs">
+                    <Button size="sm" className="h-8 text-xs font-bold gap-1.5 rounded-xl bg-primary text-white hover:bg-primary/90" asChild>
+                      <a href={res.fileUrl} target="_blank" rel="noopener noreferrer">
                         <span>Open Material</span>
-                        <ExternalLink className="h-3 w-3" />
-                      </Button>
-                    </a>
+                        <ExternalLink className="h-3 w-3 ml-0.5" />
+                      </a>
+                    </Button>
                   )}
                 </div>
               </CardContent>
             </Card>
           ))}
         </div>
-
-        {filteredResources.length === 0 && (
-          <div className="text-center py-16 bg-card border rounded-2xl p-8 space-y-3">
-            <FolderOpen className="h-10 w-10 text-muted-foreground mx-auto" />
-            <h3 className="text-lg font-bold text-foreground font-heading">No matching resources found</h3>
-            <p className="text-xs text-muted-foreground">Try clearing your search query or selecting &apos;All Resources&apos;.</p>
-          </div>
-        )}
       </main>
       <Footer />
     </div>
