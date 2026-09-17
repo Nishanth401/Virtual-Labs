@@ -5,11 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Plus, Search, RotateCcw, Hash, Info, ArrowRight } from "lucide-react";
+import { Plus, Search, RotateCcw, Hash, Info, ArrowRight, Play } from "lucide-react";
 
 export function HashingSuiteVisualizer({ defaultMode = "chaining" }: { defaultMode?: "chaining" | "linear-probing" } = {}) {
   const [method, setMethod] = useState<"chaining" | "linear-probing">(defaultMode);
   const [inputValue, setInputValue] = useState<string>("");
+  const [isPlayingDemo, setIsPlayingDemo] = useState<boolean>(false);
 
   // Chaining table: 10 buckets, each an array of numbers
   const [chainBuckets, setChainBuckets] = useState<number[][]>([
@@ -24,42 +25,57 @@ export function HashingSuiteVisualizer({ defaultMode = "chaining" }: { defaultMo
   const [activeBucket, setActiveBucket] = useState<number | null>(5);
   const [message, setMessage] = useState<string>("Hash function: hash(k) = k % 10. Key 25 hashes to bucket 5.");
 
+  const insertKey = (val: number, curMethod: "chaining" | "linear-probing") => {
+    const hash = val % 10;
+    if (curMethod === "chaining") {
+      setChainBuckets((prev) => {
+        const next = [...prev];
+        next[hash] = [...next[hash], val];
+        return next;
+      });
+      setActiveBucket(hash);
+      setMessage(`Inserted ${val} into bucket ${hash} (hash = ${val} % 10). ${val % 10 === 5 ? "Collision resolved via chained list!" : ""}`);
+    } else {
+      setProbeTable((prev) => {
+        let slot = hash;
+        let probes = 0;
+        const next = [...prev];
+        while (next[slot] !== null && probes < 10) {
+          probes++;
+          slot = (slot + 1) % 10;
+        }
+        if (probes < 10) {
+          next[slot] = val;
+          setActiveBucket(slot);
+          setMessage(probes > 0 ? `COLLISION at hash ${hash}! Linear probed forward ${probes} slot(s) to slot ${slot}.` : `Inserted ${val} at slot ${hash}.`);
+        }
+        return next;
+      });
+    }
+  };
+
+  const playCollisionDemo = () => {
+    if (isPlayingDemo) return;
+    setIsPlayingDemo(true);
+    setChainBuckets([[], [], [], [], [], [], [], [], [], []]);
+    setProbeTable([null, null, null, null, null, null, null, null, null, null]);
+    setActiveBucket(null);
+    setMessage(`Starting automated collision resolution demo for ${method === "chaining" ? "Separate Chaining" : "Linear Probing"}...`);
+
+    const collidingKeys = [15, 25, 35, 45, 12, 22];
+    collidingKeys.forEach((key, idx) => {
+      setTimeout(() => {
+        insertKey(key, method);
+        if (idx === collidingKeys.length - 1) {
+          setIsPlayingDemo(false);
+        }
+      }, (idx + 1) * 750);
+    });
+  };
+
   const handleInsert = () => {
     const val = parseInt(inputValue) || Math.floor(Math.random() * 90 + 10);
-    const hash = val % 10;
-
-    if (method === "chaining") {
-      const next = [...chainBuckets];
-      next[hash] = [...next[hash], val];
-      setChainBuckets(next);
-      setActiveBucket(hash);
-      if (next[hash].length > 1) {
-        setMessage(`COLLISION on bucket ${hash}! Key ${val} appended to chained linked list at bucket ${hash}.`);
-      } else {
-        setMessage(`Inserted ${val} into bucket ${hash} (hash = ${val} % 10).`);
-      }
-    } else {
-      // Linear Probing
-      let slot = hash;
-      let probes = 0;
-      const next = [...probeTable];
-      while (next[slot] !== null && probes < 10) {
-        probes++;
-        slot = (slot + 1) % 10;
-      }
-      if (probes >= 10) {
-        setMessage("Hash Table is completely full! Rehash / resize required.");
-      } else {
-        next[slot] = val;
-        setProbeTable(next);
-        setActiveBucket(slot);
-        if (probes > 0) {
-          setMessage(`COLLISION at hash ${hash}! Linear probed forward ${probes} step(s) to slot ${slot}.`);
-        } else {
-          setMessage(`Inserted ${val} directly at initial slot ${hash}.`);
-        }
-      }
-    }
+    insertKey(val, method);
     setInputValue("");
   };
 
@@ -76,7 +92,7 @@ export function HashingSuiteVisualizer({ defaultMode = "chaining" }: { defaultMo
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 pb-3">
         <div className="flex items-center gap-2">
           <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/30 font-mono">
-            Module 9
+            Phase 2: Core Data Structures
           </Badge>
           <span className="text-sm font-bold text-foreground">Hashing &amp; Collision Resolution Studio</span>
         </div>
@@ -110,27 +126,33 @@ export function HashingSuiteVisualizer({ defaultMode = "chaining" }: { defaultMo
       {/* Controls */}
       <div className="flex flex-wrap items-center justify-between gap-4 bg-card/90 p-4 rounded-xl border border-border shadow-xs">
         <div className="flex items-center gap-2">
+          <Button
+            size="sm"
+            onClick={playCollisionDemo}
+            disabled={isPlayingDemo}
+            className="h-9 font-bold text-xs gap-1.5 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90"
+          >
+            <Play className="h-3.5 w-3.5" />
+            <span>{isPlayingDemo ? "Simulating..." : "Play Collision Demo"}</span>
+          </Button>
           <Input
             type="number"
             placeholder="Key..."
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleInsert()}
             className="w-24 h-9 text-xs font-mono"
           />
-          <Button size="sm" onClick={handleInsert} className="h-9 gap-1 text-xs">
-            <Plus className="h-3.5 w-3.5" /> Insert Key
+          <Button size="sm" onClick={handleInsert} variant="outline" className="h-9 gap-1 text-xs">
+            <Plus className="h-3.5 w-3.5" /> Insert
           </Button>
-          <Button variant="outline" size="sm" onClick={handleReset} className="h-9 text-xs">
-            <RotateCcw className="h-3.5 w-3.5" />
+          <Button variant="outline" size="sm" onClick={handleReset} className="h-9 text-xs text-muted-foreground">
+            <RotateCcw className="h-3.5 w-3.5 mr-1" /> Reset
           </Button>
         </div>
 
         <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground">
           <span>Formula: <strong>hash(k) = k % 10</strong></span>
-          <span>•</span>
-          <Badge variant="outline" className="text-[10px] bg-primary/10 text-primary border-primary/20">
-            Average O(1) Lookup
-          </Badge>
         </div>
       </div>
 

@@ -12,8 +12,9 @@ import {
   ChevronLeft,
   ChevronRight,
   Zap,
-  Trophy,
+  BookOpen,
 } from "lucide-react";
+import { MultiLangCodeViewer } from "@/components/visualizer/code/multi-lang-code-viewer";
 
 interface DSATopicArticleProps {
   topic: DSATopic;
@@ -135,36 +136,79 @@ export function DSATopicArticle({
           </div>
         </Card>
 
-        {/* Extensive Practice Problems Section */}
+        {/* Interactive Source Code & Live Compiler Runner */}
+        <MultiLangCodeViewer
+          title={`${topic.title} - Implementation`}
+          subtitle="Interactive Multi-Language Source Code & Live Compiler Runner"
+          badge="Customizable IDE"
+          snippets={topic.codeSnippets || []}
+        />
+
+        {/* Curated Topic Resources & References Section */}
         <Card className="border-border bg-card/90 shadow-sm p-6 space-y-5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Trophy className="h-5 w-5 text-amber-500" />
-              <CardTitle className="text-lg font-bold font-heading">
-                Coding Practice Problems ({topic.practiceProblems.length})
-              </CardTitle>
+            <div className="flex items-center gap-2.5">
+              <div className="p-2 rounded-xl bg-primary/10 text-primary">
+                <BookOpen className="h-5 w-5" />
+              </div>
+              <div>
+                <CardTitle className="text-lg font-bold font-heading text-foreground">
+                  Curated Learning Resources ({topic.practiceProblems.length + (topic.gfgUrl ? 1 : 0)})
+                </CardTitle>
+                <p className="text-xs text-muted-foreground font-medium mt-0.5">
+                  Handpicked reference documentation, guides, and practical study problems for {topic.title}.
+                </p>
+              </div>
             </div>
-            <Badge variant="outline" className="text-xs font-sans bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30 font-semibold px-2.5 py-0.5 rounded-full">
-              LeetCode &amp; GFG
+            <Badge variant="outline" className="text-xs font-sans bg-primary/10 text-primary border-primary/20 font-semibold px-2.5 py-1 rounded-full hidden sm:inline-flex">
+              Study &amp; References
             </Badge>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
+            {topic.gfgUrl && (
+              <a
+                href={topic.gfgUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/30 hover:bg-card hover:border-emerald-500/40 hover:shadow-xs transition-all group shadow-2xs"
+              >
+                <div className="space-y-1 min-w-0 pr-2">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-sm text-foreground group-hover:text-emerald-500 transition-colors truncate">
+                      Complete {topic.title} Concept Handbook
+                    </span>
+                  </div>
+                  <span className="text-xs text-emerald-600 dark:text-emerald-400 font-mono">GeeksforGeeks Documentation</span>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <Badge
+                    variant="outline"
+                    className="text-emerald-500 border-emerald-500/30 text-xs font-mono font-semibold"
+                  >
+                    Handbook
+                  </Badge>
+                  <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-emerald-500 transition-colors" />
+                </div>
+              </a>
+            )}
+
             {topic.practiceProblems.map((prob, idx) => (
               <a
                 key={idx}
                 href={prob.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/30 hover:bg-primary/5 hover:border-primary/40 transition-all group shadow-xs"
+                className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/30 hover:bg-card hover:border-primary/40 hover:shadow-xs transition-all group shadow-2xs"
               >
                 <div className="space-y-1 min-w-0 pr-2">
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-sm text-foreground group-hover:text-primary transition-colors truncate">
-                      {idx + 1}. {prob.title}
+                      {prob.title}
                     </span>
                   </div>
-                  <span className="text-xs text-muted-foreground font-mono">{prob.platform}</span>
+                  <span className="text-xs text-muted-foreground font-mono">{prob.platform} Reference</span>
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
@@ -172,10 +216,10 @@ export function DSATopicArticle({
                     variant="outline"
                     className={
                       prob.difficulty === "Easy"
-                        ? "text-emerald-500 border-emerald-500/30 text-xs font-mono font-bold"
+                        ? "text-emerald-500 border-emerald-500/30 text-xs font-mono font-semibold"
                         : prob.difficulty === "Medium"
-                        ? "text-amber-500 border-amber-500/30 text-xs font-mono font-bold"
-                        : "text-rose-500 border-rose-500/30 text-xs font-mono font-bold"
+                        ? "text-amber-500 border-amber-500/30 text-xs font-mono font-semibold"
+                        : "text-rose-500 border-rose-500/30 text-xs font-mono font-semibold"
                     }
                   >
                     {prob.difficulty}

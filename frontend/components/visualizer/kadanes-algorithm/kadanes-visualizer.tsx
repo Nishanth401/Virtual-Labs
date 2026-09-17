@@ -16,6 +16,7 @@ import {
   Code2,
   Layers
 } from "lucide-react";
+import { MultiLangCodeViewer } from "@/components/visualizer/code/multi-lang-code-viewer";
 
 interface ExecutionStep {
   currentIndex: number;
@@ -423,69 +424,54 @@ export function KadanesVisualizer() {
           </Card>
         </div>
 
-        {/* Code & Pseudocode Side Panel */}
+        {/* Multi-Language Interactive Code Editor */}
         <div className="space-y-6">
-          <Card className="border-border shadow-sm h-full flex flex-col">
-            <CardHeader className="p-4 border-b border-border flex flex-row items-center justify-between">
-              <CardTitle className="text-sm font-bold text-foreground flex items-center gap-2">
-                <Code2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-                Algorithm Code Trace
-              </CardTitle>
+          <MultiLangCodeViewer
+            title="Kadane's Algorithm (Max Subarray Sum)"
+            subtitle="Dynamic Programming & Greedy Maximum Subarray algorithms in Java, Python, C++, JS, and TS."
+            badge="Customizable IDE"
+            snippets={{
+              java: JAVA_CODE,
+              python: `def max_sub_array(nums):
+    max_so_far = float('-inf')
+    current_max = 0
+    for x in nums:
+        current_max = max(x, current_max + x)
+        max_so_far = max(max_so_far, current_max)
+    return max_so_far`,
+              cpp: `#include <vector>
+#include <algorithm>
+using namespace std;
 
-              <div className="flex bg-muted p-1 rounded-lg border border-border">
-                <button
-                  onClick={() => setActiveTab("pseudocode")}
-                  className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${
-                    activeTab === "pseudocode"
-                      ? "bg-emerald-600 text-white shadow"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  Pseudocode
-                </button>
-                <button
-                  onClick={() => setActiveTab("java")}
-                  className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${
-                    activeTab === "java"
-                      ? "bg-emerald-600 text-white shadow"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  Java
-                </button>
-              </div>
-            </CardHeader>
-
-            <CardContent className="p-4 font-mono text-xs overflow-x-auto flex-1">
-              {activeTab === "pseudocode" ? (
-                <div className="space-y-1.5">
-                  {PSEUDOCODE.map((line, idx) => {
-                    const lineNo = idx + 1;
-                    const isActive = currentStep.codeLine === lineNo;
-                    return (
-                      <div
-                        key={idx}
-                        className={`p-2 rounded-lg transition-colors flex items-center gap-3 ${
-                          isActive
-                            ? "bg-emerald-500/20 text-emerald-950 dark:text-emerald-100 border-l-4 border-emerald-600 font-black"
-                            : "text-foreground hover:bg-muted font-medium"
-                        }`}
-                      >
-                        <span className="text-[10px] text-muted-foreground w-4 text-right select-none font-bold">
-                          {lineNo}
-                        </span>
-                        <span>{line}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
-                <pre className="text-foreground text-xs leading-relaxed overflow-x-auto font-mono">
-                  <code>{JAVA_CODE}</code>
-                </pre>
-              )}
-            </CardContent>
-          </Card>
+int maxSubArray(const vector<int>& nums) {
+    int maxSoFar = nums[0];
+    int currentMax = nums[0];
+    for (size_t i = 1; i < nums.size(); i++) {
+        currentMax = max(nums[i], currentMax + nums[i]);
+        maxSoFar = max(maxSoFar, currentMax);
+    }
+    return maxSoFar;
+}`,
+              javascript: `function maxSubArray(nums) {
+  let maxSoFar = nums[0];
+  let currentMax = nums[0];
+  for (let i = 1; i < nums.length; i++) {
+    currentMax = Math.max(nums[i], currentMax + nums[i]);
+    maxSoFar = Math.max(maxSoFar, currentMax);
+  }
+  return maxSoFar;
+}`,
+              typescript: `export function maxSubArray(nums: number[]): number {
+  let maxSoFar = nums[0];
+  let currentMax = nums[0];
+  for (let i = 1; i < nums.length; i++) {
+    currentMax = Math.max(nums[i], currentMax + nums[i]);
+    maxSoFar = Math.max(maxSoFar, currentMax);
+  }
+  return maxSoFar;
+}`
+            }}
+          />
         </div>
       </div>
     </div>

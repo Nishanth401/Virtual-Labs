@@ -30,53 +30,106 @@ export function UnionFindVisualizer() {
     return { root: curr, path };
   };
 
-  const handleUnion = () => {
-    if (unionU < 0 || unionU >= numElements || unionV < 0 || unionV >= numElements) return;
+  const [isPlayingDemo, setIsPlayingDemo] = useState<boolean>(false);
 
-    const find1 = findRoot(unionU);
-    const find2 = findRoot(unionV);
+  const performUnion = (u: number, v: number, pArr: number[], rArr: number[]) => {
+    const f1 = findRoot(u, pArr);
+    const f2 = findRoot(v, pArr);
 
-    if (find1.root === find2.root) {
+    if (f1.root === f2.root) {
       setHistory(prev => [
-        `Union(${unionU}, ${unionV}): Nodes ${unionU} and ${unionV} already belong to the same component (Root: ${find1.root}). No change.`,
+        `Union(${u}, ${v}): Nodes ${u} and ${v} already belong to root ${f1.root}.`,
         ...prev.slice(0, 8)
       ]);
-      return;
+      return { nextParent: pArr, nextRank: rArr };
     }
 
-    const nextParent = [...parent];
-    const nextRank = [...rank];
+    const nextP = [...pArr];
+    const nextR = [...rArr];
 
-    // Path compression on traversed nodes if enabled
     if (pathCompressionActive) {
-      find1.path.forEach(node => { nextParent[node] = find1.root; });
-      find2.path.forEach(node => { nextParent[node] = find2.root; });
+      f1.path.forEach(n => { nextP[n] = f1.root; });
+      f2.path.forEach(n => { nextP[n] = f2.root; });
     }
 
-    // Union by rank
-    if (nextRank[find1.root] < nextRank[find2.root]) {
-      nextParent[find1.root] = find2.root;
+    if (nextR[f1.root] < nextR[f2.root]) {
+      nextP[f1.root] = f2.root;
       setHistory(prev => [
-        `Union(${unionU}, ${unionV}): Root ${find1.root} (Rank ${nextRank[find1.root]}) attached under Root ${find2.root} (Rank ${nextRank[find2.root]}).`,
+        `Union(${u}, ${v}): Attached Root ${f1.root} under Root ${f2.root} (Rank ${nextR[f2.root]}).`,
         ...prev.slice(0, 8)
       ]);
-    } else if (nextRank[find1.root] > nextRank[find2.root]) {
-      nextParent[find2.root] = find1.root;
+    } else if (nextR[f1.root] > nextR[f2.root]) {
+      nextP[f2.root] = f1.root;
       setHistory(prev => [
-        `Union(${unionU}, ${unionV}): Root ${find2.root} (Rank ${nextRank[find2.root]}) attached under Root ${find1.root} (Rank ${nextRank[find1.root]}).`,
+        `Union(${u}, ${v}): Attached Root ${f2.root} under Root ${f1.root} (Rank ${nextR[f1.root]}).`,
         ...prev.slice(0, 8)
       ]);
     } else {
-      nextParent[find2.root] = find1.root;
-      nextRank[find1.root] += 1;
+      nextP[f2.root] = f1.root;
+      nextR[f1.root] += 1;
       setHistory(prev => [
-        `Union(${unionU}, ${unionV}): Ranks tied. Attached ${find2.root} under ${find1.root}. Incremented Rank[${find1.root}] to ${nextRank[find1.root]}.`,
+        `Union(${u}, ${v}): Ranks tied. Attached ${f2.root} under ${f1.root}. Incremented Rank[${f1.root}] to ${nextR[f1.root]}.`,
         ...prev.slice(0, 8)
       ]);
     }
 
-    setParent(nextParent);
-    setRank(nextRank);
+    return { nextParent: nextP, nextRank: nextR };
+  };
+
+  const playUnionFindDemo = () => {
+    if (isPlayingDemo) return;
+    setIsPlayingDemo(true);
+    let curP = [0, 1, 2, 3, 4, 5, 6];
+    let curR = [0, 0, 0, 0, 0, 0, 0];
+    setParent(curP);
+    setRank(curR);
+    setHistory(["Starting automated Disjoint Set Forest simulation..."]);
+
+    const demoSteps = [
+      () => {
+        const res = performUnion(0, 1, curP, curR);
+        curP = res.nextParent; curR = res.nextRank;
+        setParent(curP); setRank(curR);
+      },
+      () => {
+        const res = performUnion(1, 2, curP, curR);
+        curP = res.nextParent; curR = res.nextRank;
+        setParent(curP); setRank(curR);
+      },
+      () => {
+        const res = performUnion(3, 4, curP, curR);
+        curP = res.nextParent; curR = res.nextRank;
+        setParent(curP); setRank(curR);
+      },
+      () => {
+        const res = performUnion(2, 4, curP, curR);
+        curP = res.nextParent; curR = res.nextRank;
+        setParent(curP); setRank(curR);
+      },
+      () => {
+        const res = findRoot(0, curP);
+        setHistory(prev => [
+          `Find(0): Path compressed root lookup directly to root ${res.root}!`,
+          ...prev.slice(0, 8)
+        ]);
+      }
+    ];
+
+    demoSteps.forEach((step, idx) => {
+      setTimeout(() => {
+        step();
+        if (idx === demoSteps.length - 1) {
+          setIsPlayingDemo(false);
+        }
+      }, (idx + 1) * 800);
+    });
+  };
+
+  const handleUnion = () => {
+    if (unionU < 0 || unionU >= numElements || unionV < 0 || unionV >= numElements) return;
+    const res = performUnion(unionU, unionV, parent, rank);
+    setParent(res.nextParent);
+    setRank(res.nextRank);
   };
 
   const handleFind = () => {
@@ -137,7 +190,17 @@ export function UnionFindVisualizer() {
       {/* Control Panel */}
       <div className="flex flex-wrap items-center justify-between gap-4 bg-card p-4 rounded-2xl border border-border/80 shadow-xs">
         <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center gap-1.5 font-mono text-xs">
+          <Button
+            size="sm"
+            onClick={playUnionFindDemo}
+            disabled={isPlayingDemo}
+            className="h-8 font-bold text-xs gap-1.5 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90"
+          >
+            <Play className="h-3.5 w-3.5" />
+            <span>{isPlayingDemo ? "Merging..." : "Play Forest Demo"}</span>
+          </Button>
+
+          <div className="flex items-center gap-1.5 font-mono text-xs pl-2 border-l border-border/60">
             <span>Union(</span>
             <input
               type="number"
@@ -162,7 +225,7 @@ export function UnionFindVisualizer() {
             </Button>
           </div>
 
-          <div className="flex items-center gap-1.5 font-mono text-xs pl-3 border-l border-border/60">
+          <div className="flex items-center gap-1.5 font-mono text-xs pl-2 border-l border-border/60">
             <span>Find(</span>
             <input
               type="number"
@@ -194,10 +257,6 @@ export function UnionFindVisualizer() {
 
         <div className="flex items-center gap-2 font-mono text-xs">
           <span>Components: <strong>{Object.keys(components).length}</strong></span>
-          <span>•</span>
-          <Badge variant="outline" className="text-[10px] bg-primary/10 text-primary border-primary/20">
-            Inverse Ackermann O(α(n)) ≈ O(1)
-          </Badge>
         </div>
       </div>
 

@@ -1,34 +1,97 @@
-"use client";
-
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { Play, RotateCcw, Search, Code2, Info, CheckCircle2 } from "lucide-react";
+import { Play, Pause, RotateCcw, Search, Code2, Info, CheckCircle2, SkipForward, SkipBack } from "lucide-react";
 
 export function StringSuiteVisualizer({ defaultMode = "trie" }: { defaultMode?: "kmp" | "trie" } = {}) {
   const [mode, setMode] = useState<"kmp" | "trie">(defaultMode);
 
   // --- TRIE STATE ---
-  const [trieWords, setTrieWords] = useState<string[]>(["cat", "car", "can", "dog", "dot"]);
   const [trieSearchPrefix, setTrieSearchPrefix] = useState<string>("ca");
   const [trieMatches, setTrieMatches] = useState<string[]>(["cat", "car", "can"]);
   const [trieMessage, setTrieMessage] = useState<string>("Trie Prefix Tree: words 'cat', 'car', 'can' share path 'c' ──> 'a'. Instant O(L) prefix autocomplete.");
+  const [isPlayingTrieDemo, setIsPlayingTrieDemo] = useState<boolean>(false);
 
   // --- KMP STATE ---
   const pattern = "ABABAC";
   const lps = [0, 0, 1, 2, 3, 0];
-  const [kmpText] = useState<string>("ABABDABABACD");
-  const [kmpStep, setKmpStep] = useState<number>(0);
+  const kmpText = "ABABDABABACD";
+  const [kmpIndex, setKmpIndex] = useState<number>(0);
+  const [kmpPatternIdx, setKmpPatternIdx] = useState<number>(0);
+  const [isPlayingKmp, setIsPlayingKmp] = useState<boolean>(false);
   const [kmpMessage, setKmpMessage] = useState<string>("KMP avoids text pointer backtrack by pre-computing the Longest Prefix Suffix (LPS) table.");
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleTrieFilter = (prefix: string) => {
     setTrieSearchPrefix(prefix);
+    const trieWords = ["cat", "car", "can", "dog", "dot"];
     const results = trieWords.filter((w) => w.startsWith(prefix.toLowerCase()));
     setTrieMatches(results);
     setTrieMessage(`Autocomplete query '${prefix}': Found ${results.length} word(s) [${results.join(", ")}].`);
   };
+
+  const playTrieDemo = () => {
+    if (isPlayingTrieDemo) return;
+    setIsPlayingTrieDemo(true);
+    const queries = ["c", "ca", "cat", "car", "d", "do", "dog"];
+    queries.forEach((q, idx) => {
+      setTimeout(() => {
+        handleTrieFilter(q);
+        if (idx === queries.length - 1) {
+          setIsPlayingTrieDemo(false);
+        }
+      }, (idx + 1) * 700);
+    });
+  };
+
+  // KMP Step Simulation
+  const handleKmpStep = () => {
+    if (kmpIndex >= kmpText.length) {
+      setKmpMessage("KMP search scan completed through end of string!");
+      setIsPlayingKmp(false);
+      return;
+    }
+
+    if (kmpText[kmpIndex] === pattern[kmpPatternIdx]) {
+      const nextPatIdx = kmpPatternIdx + 1;
+      const nextTxtIdx = kmpIndex + 1;
+      if (nextPatIdx === pattern.length) {
+        setKmpMessage(`PATTERN MATCH FOUND! Full match '${pattern}' at index ${nextTxtIdx - pattern.length}.`);
+        setKmpIndex(nextTxtIdx);
+        setKmpPatternIdx(lps[nextPatIdx - 1]);
+      } else {
+        setKmpMessage(`Char matched: Text[${kmpIndex}]='${kmpText[kmpIndex]}' == Pattern[${kmpPatternIdx}]='${pattern[kmpPatternIdx]}'. Advancing pointers.`);
+        setKmpIndex(nextTxtIdx);
+        setKmpPatternIdx(nextPatIdx);
+      }
+    } else {
+      if (kmpPatternIdx !== 0) {
+        const fallback = lps[kmpPatternIdx - 1];
+        setKmpMessage(`Mismatch at Text[${kmpIndex}] ('${kmpText[kmpIndex]}') != Pattern[${kmpPatternIdx}] ('${pattern[kmpPatternIdx]}'). Falling back pattern pointer from ${kmpPatternIdx} to LPS=${fallback} without rewinding text.`);
+        setKmpPatternIdx(fallback);
+      } else {
+        setKmpMessage(`Mismatch at Pattern[0]. Advancing text index ${kmpIndex} -> ${kmpIndex + 1}.`);
+        setKmpIndex(kmpIndex + 1);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (isPlayingKmp) {
+      timerRef.current = setTimeout(() => {
+        if (kmpIndex < kmpText.length) {
+          handleKmpStep();
+        } else {
+          setIsPlayingKmp(false);
+        }
+      }, 900);
+    }
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [isPlayingKmp, kmpIndex, kmpPatternIdx]);
 
   return (
     <div className="space-y-6">
@@ -36,7 +99,7 @@ export function StringSuiteVisualizer({ defaultMode = "trie" }: { defaultMode?: 
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 pb-3">
         <div className="flex items-center gap-2">
           <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/30 font-mono">
-            Module 10
+            Phase 2: Core Data Structures
           </Badge>
           <span className="text-sm font-bold text-foreground">String Algorithms &amp; Trie Autocomplete</span>
         </div>
@@ -66,13 +129,22 @@ export function StringSuiteVisualizer({ defaultMode = "trie" }: { defaultMode?: 
         <div className="space-y-5">
           <div className="flex flex-wrap items-center justify-between gap-3 bg-card/90 p-4 rounded-xl border border-border shadow-xs">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-mono text-muted-foreground">Type Prefix:</span>
+              <Button
+                size="sm"
+                onClick={playTrieDemo}
+                disabled={isPlayingTrieDemo}
+                className="h-8 text-xs font-bold gap-1.5 bg-primary text-primary-foreground shadow-xs"
+              >
+                <Play className="h-3.5 w-3.5" />
+                <span>{isPlayingTrieDemo ? "Querying..." : "Play Autocomplete Demo"}</span>
+              </Button>
+              <span className="text-xs font-mono text-muted-foreground ml-2">Prefix:</span>
               <Input
                 type="text"
                 placeholder="Prefix (e.g. ca)..."
                 value={trieSearchPrefix}
                 onChange={(e) => handleTrieFilter(e.target.value)}
-                className="w-32 h-8 text-xs font-mono"
+                className="w-28 h-8 text-xs font-mono"
               />
             </div>
             <div className="text-xs font-mono text-muted-foreground">
@@ -131,12 +203,36 @@ export function StringSuiteVisualizer({ defaultMode = "trie" }: { defaultMode?: 
       {mode === "kmp" && (
         <div className="space-y-5">
           <div className="flex flex-wrap items-center justify-between gap-3 bg-card/90 p-4 rounded-xl border border-border shadow-xs">
-            <div className="text-xs font-mono text-muted-foreground">
-              Pattern: <strong>{pattern}</strong> ── Length M = <strong>6</strong>
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                onClick={() => setIsPlayingKmp(!isPlayingKmp)}
+                className="h-8 text-xs font-bold gap-1.5 bg-primary text-primary-foreground shadow-xs"
+              >
+                {isPlayingKmp ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
+                <span>{isPlayingKmp ? "Pause" : "Play KMP Matching"}</span>
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleKmpStep}
+                disabled={isPlayingKmp || kmpIndex >= kmpText.length}
+                className="h-8 text-xs gap-1"
+              >
+                <SkipForward className="h-3.5 w-3.5" /> Step
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => { setIsPlayingKmp(false); setKmpIndex(0); setKmpPatternIdx(0); setKmpMessage("Reset KMP text scanning."); }}
+                className="h-8 text-xs"
+              >
+                <RotateCcw className="h-3.5 w-3.5" />
+              </Button>
             </div>
-            <Badge variant="outline" className="text-xs font-mono bg-primary/10 text-primary border-primary/20">
-              O(N + M) Linear Time
-            </Badge>
+            <div className="text-xs font-mono text-muted-foreground">
+              Text: <strong>{kmpText}</strong>
+            </div>
           </div>
 
           <Card className="border-border bg-card/80 p-6 space-y-4">
@@ -148,7 +244,9 @@ export function StringSuiteVisualizer({ defaultMode = "trie" }: { defaultMode?: 
             <div className="flex items-center justify-center gap-2 py-2 overflow-x-auto">
               {pattern.split("").map((ch, idx) => (
                 <div key={idx} className="flex flex-col items-center space-y-1">
-                  <div className="h-12 w-14 rounded-xl border-2 border-primary bg-primary/10 flex items-center justify-center font-mono font-bold text-sm text-primary">
+                  <div className={`h-12 w-14 rounded-xl border-2 flex items-center justify-center font-mono font-bold text-sm transition-all ${
+                    idx === kmpPatternIdx ? "border-amber-500 bg-amber-500/20 text-amber-500 scale-105" : "border-primary bg-primary/10 text-primary"
+                  }`}>
                     {ch}
                   </div>
                   <div className="h-8 w-14 rounded-lg border border-border bg-card flex items-center justify-center font-mono text-xs font-bold text-emerald-400">
