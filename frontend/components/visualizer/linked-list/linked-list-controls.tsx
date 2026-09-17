@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useState } from "react"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
-import { Plus, Trash2, ArrowRightLeft, Search, RefreshCw, Shuffle } from "lucide-react";
+import { Plus, Trash2, ArrowRightLeft, Search, RefreshCw, Shuffle, Play } from "lucide-react";
 
 interface LinkedListControlsProps {
   onInsertFront: (value: number) => void
@@ -36,6 +36,31 @@ export function LinkedListControls({
   const [value, setValue] = useState("")
   const [searchValue, setSearchValue] = useState("")
   const [insertAtFront, setInsertAtFront] = useState(false)
+  const [isPlayingDemo, setIsPlayingDemo] = useState(false)
+
+  const handlePlayDemo = () => {
+    if (isAnimating || isPlayingDemo) return;
+    setIsPlayingDemo(true);
+    onClear();
+
+    const sequence = [
+      () => onInsertBack(10),
+      () => onInsertBack(25),
+      () => onInsertFront(5),
+      () => onInsertBack(40),
+      () => onSearch(25),
+      () => onReverse(),
+    ];
+
+    sequence.forEach((action, idx) => {
+      setTimeout(() => {
+        action();
+        if (idx === sequence.length - 1) {
+          setIsPlayingDemo(false);
+        }
+      }, (idx + 1) * 800);
+    });
+  };
 
   const handleInsert = () => {
     const num = Number(value)
@@ -72,7 +97,15 @@ export function LinkedListControls({
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-base font-bold tracking-tight">List Operations</CardTitle>
-            <span className="text-[11px] font-mono text-muted-foreground uppercase">Interactive</span>
+            <Button
+              size="sm"
+              onClick={handlePlayDemo}
+              disabled={isAnimating || isPlayingDemo}
+              className="h-7 text-xs font-bold gap-1.5 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90"
+            >
+              <Play className="h-3.5 w-3.5" />
+              <span>{isPlayingDemo ? "Playing..." : "Play Demo"}</span>
+            </Button>
           </div>
         </CardHeader>
         <CardContent className="space-y-5">

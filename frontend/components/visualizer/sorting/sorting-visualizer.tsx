@@ -6,7 +6,7 @@ import { SortingDisplay } from "@/components/visualizer/sorting/sorting-display"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { JavaCodeViewer } from "@/components/visualizer/code/java-code-viewer";
+import { MultiLangCodeViewer } from "@/components/visualizer/code/multi-lang-code-viewer";
 import { ComplexityPanel } from "@/components/visualizer/sorting/complexity-panel";
 
 interface SortingVisualizerProps {
@@ -484,17 +484,18 @@ export function SortingVisualizer({ algorithm, title, description }: SortingVisu
           </div>
         </TabsContent>
 
-        {/* TAB 2: PURE JAVA CODE TAB */}
+        {/* TAB 2: MULTI-LANG CODE TAB */}
         <TabsContent value="javacode" className="space-y-6">
-          <JavaCodeViewer
-            code={javaCode}
-            title={`${title} Java Implementation`}
-            subtitle="Production-ready Java implementation following standard academic curriculum."
-            badge="Java 17+"
-            fileName={`${title.replace(/\s+/g, "")}.java`}
-            maxHeight="600px"
-            onSendToVisualizer={(arr) => {
-              setCustomArray(arr);
+          <MultiLangCodeViewer
+            title={`${title} Implementation`}
+            subtitle="Interactive Multi-Language Source Code & Live Compiler Runner"
+            badge="Customizable IDE"
+            snippets={{
+              java: javaCode,
+              python: `def ${algorithm}_sort(arr):\n    # Python Implementation of ${title}\n    n = len(arr)\n    for i in range(n):\n        for j in range(0, n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n    return arr`,
+              cpp: `// C++ Implementation of ${title}\n#include <vector>\n#include <iostream>\nusing namespace std;\n\nvoid ${algorithm}Sort(vector<int>& arr) {\n    int n = arr.size();\n    for (int i = 0; i < n - 1; i++) {\n        for (int j = 0; j < n - i - 1; j++) {\n            if (arr[j] > arr[j + 1]) {\n                swap(arr[j], arr[j + 1]);\n            }\n        }\n    }\n}`,
+              javascript: `function ${algorithm}Sort(arr) {\n  const n = arr.length;\n  for (let i = 0; i < n - 1; i++) {\n    for (let j = 0; j < n - i - 1; j++) {\n      if (arr[j] > arr[j + 1]) {\n        const temp = arr[j];\n        arr[j] = arr[j + 1];\n        arr[j + 1] = temp;\n      }\n    }\n  }\n  return arr;\n}`,
+              typescript: `function ${algorithm}Sort(arr: number[]): number[] {\n  const n = arr.length;\n  for (let i = 0; i < n - 1; i++) {\n    for (let j = 0; j < n - i - 1; j++) {\n      if (arr[j] > arr[j + 1]) {\n        const temp = arr[j];\n        arr[j] = arr[j + 1];\n        arr[j + 1] = temp;\n      }\n    }\n  }\n  return arr;\n}`
             }}
           />
         </TabsContent>

@@ -54,28 +54,65 @@ export function SegmentTreeVisualizer() {
     return { tree: nodes, rootId: root };
   }, [array]);
 
-  const handleQuery = () => {
+  const [isPlayingDemo, setIsPlayingDemo] = useState<boolean>(false);
+
+  const runQuery = (ql: number, qr: number) => {
     const active: number[] = [];
-    const query = (nodeId: number, ql: number, qr: number): number => {
+    const query = (nodeId: number, l: number, r: number): number => {
       const node = tree[nodeId];
       if (!node) return 0;
-      if (node.l >= ql && node.r <= qr) {
+      if (node.l >= l && node.r <= r) {
         active.push(node.id);
         return node.sum;
       }
-      if (node.r < ql || node.l > qr) {
+      if (node.r < l || node.l > r) {
         return 0;
       }
       const mid = Math.floor((node.l + node.r) / 2);
       let s = 0;
-      if (node.leftId && ql <= mid) s += query(node.leftId, ql, qr);
-      if (node.rightId && qr > mid) s += query(node.rightId, ql, qr);
+      if (node.leftId && l <= mid) s += query(node.leftId, l, r);
+      if (node.rightId && r > mid) s += query(node.rightId, l, r);
       return s;
     };
 
-    const result = query(rootId, queryL, queryR);
+    const result = query(rootId, ql, qr);
     setHighlightedNodes(active);
-    setLogMsg(`Range Sum Query [${queryL}, ${queryR}] = ${result}. Highlighting minimal canonical nodes whose sum equals ${result}.`);
+    setLogMsg(`Range Sum Query [${ql}, ${qr}] = ${result}. Highlighting minimal canonical nodes whose sum equals ${result}.`);
+  };
+
+  const playSegmentTreeDemo = () => {
+    if (isPlayingDemo) return;
+    setIsPlayingDemo(true);
+    setArray([1, 3, 5, 7, 9, 11]);
+    setHighlightedNodes([]);
+    setLogMsg("Starting automated Segment Tree Range Query & Point Update Demo...");
+
+    const demoSteps = [
+      () => { setQueryL(1); setQueryR(4); runQuery(1, 4); },
+      () => { setQueryL(0); setQueryR(2); runQuery(0, 2); },
+      () => {
+        const next = [1, 3, 20, 7, 9, 11];
+        setArray(next);
+        setUpdateIdx(2);
+        setUpdateVal(20);
+        setHighlightedNodes([]);
+        setLogMsg("Point Update: Arr[2] changed from 5 -> 20. Recomputing affected ancestors in O(log N).");
+      },
+      () => { setQueryL(1); setQueryR(4); runQuery(1, 4); }
+    ];
+
+    demoSteps.forEach((step, idx) => {
+      setTimeout(() => {
+        step();
+        if (idx === demoSteps.length - 1) {
+          setIsPlayingDemo(false);
+        }
+      }, (idx + 1) * 900);
+    });
+  };
+
+  const handleQuery = () => {
+    runQuery(queryL, queryR);
   };
 
   const handleUpdate = () => {
@@ -111,8 +148,18 @@ export function SegmentTreeVisualizer() {
       {/* Control Panel */}
       <div className="flex flex-wrap items-center justify-between gap-4 bg-card p-4 rounded-2xl border border-border/80 shadow-xs">
         <div className="flex flex-wrap items-center gap-4">
+          <Button
+            size="sm"
+            onClick={playSegmentTreeDemo}
+            disabled={isPlayingDemo}
+            className="h-8 font-bold text-xs gap-1.5 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90"
+          >
+            <Play className="h-3.5 w-3.5" />
+            <span>{isPlayingDemo ? "Running..." : "Play Range Query Demo"}</span>
+          </Button>
+
           {/* Query Controls */}
-          <div className="flex items-center gap-1.5 font-mono text-xs">
+          <div className="flex items-center gap-1.5 font-mono text-xs pl-2 border-l border-border/60">
             <span className="font-bold">QuerySum[</span>
             <input
               type="number"

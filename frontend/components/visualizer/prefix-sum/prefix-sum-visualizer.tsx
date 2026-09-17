@@ -18,6 +18,7 @@ import {
   Info,
   Zap
 } from "lucide-react";
+import { MultiLangCodeViewer } from "@/components/visualizer/code/multi-lang-code-viewer";
 
 interface ExecutionStep {
   currentIndex: number;
@@ -465,69 +466,74 @@ export function PrefixSumVisualizer() {
           )}
         </div>
 
-        {/* Code Trace */}
+        {/* Multi-Language Interactive Code Editor */}
         <div className="space-y-6">
-          <Card className="border-border shadow-sm h-full flex flex-col">
-            <CardHeader className="p-4 border-b border-border flex flex-row items-center justify-between">
-              <CardTitle className="text-sm font-bold text-foreground flex items-center gap-2">
-                <Code2 className="h-4 w-4 text-violet-600 dark:text-violet-400" />
-                Algorithm Code Trace
-              </CardTitle>
+          <MultiLangCodeViewer
+            title="Prefix Sum Array Construction & O(1) Range Queries"
+            subtitle="Cumulative sums & range query implementations in Java, Python, C++, JS, and TS."
+            badge="Customizable IDE"
+            snippets={{
+              java: JAVA_CODE,
+              python: `def build_prefix_sum(arr):
+    n = len(arr)
+    prefix = [0] * n
+    prefix[0] = arr[0]
+    for i in range(1, n):
+        prefix[i] = prefix[i - 1] + arr[i]
+    return prefix
 
-              <div className="flex bg-muted p-1 rounded-lg border border-border">
-                <button
-                  onClick={() => setActiveTab("pseudocode")}
-                  className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${
-                    activeTab === "pseudocode"
-                      ? "bg-violet-600 text-white shadow"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  Pseudocode
-                </button>
-                <button
-                  onClick={() => setActiveTab("java")}
-                  className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${
-                    activeTab === "java"
-                      ? "bg-violet-600 text-white shadow"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  Java
-                </button>
-              </div>
-            </CardHeader>
+def query_range_sum(prefix, L, R):
+    """O(1) Range Sum Query [L, R]"""
+    if L == 0:
+        return prefix[R]
+    return prefix[R] - prefix[L - 1]`,
+              cpp: `#include <vector>
+using namespace std;
 
-            <CardContent className="p-4 font-mono text-xs overflow-x-auto flex-1">
-              {activeTab === "pseudocode" ? (
-                <div className="space-y-1.5">
-                  {PSEUDOCODE.map((line, idx) => {
-                    const lineNo = idx + 1;
-                    const isActive = mode === "construction" && currentStep.codeLine === lineNo;
-                    return (
-                      <div
-                        key={idx}
-                        className={`p-2 rounded-lg transition-colors flex items-center gap-3 ${
-                          isActive
-                            ? "bg-violet-500/20 text-violet-950 dark:text-violet-100 border-l-4 border-violet-600 font-black"
-                            : "text-foreground hover:bg-muted font-medium"
-                        }`}
-                      >
-                        <span className="text-[10px] text-muted-foreground w-4 text-right select-none font-bold">
-                          {lineNo}
-                        </span>
-                        <span>{line}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
-                <pre className="text-foreground text-xs leading-relaxed overflow-x-auto font-mono">
-                  <code>{JAVA_CODE}</code>
-                </pre>
-              )}
-            </CardContent>
-          </Card>
+vector<int> buildPrefixSum(const vector<int>& arr) {
+    int n = arr.size();
+    vector<int> prefix(n);
+    prefix[0] = arr[0];
+    for (int i = 1; i < n; i++) {
+        prefix[i] = prefix[i - 1] + arr[i];
+    }
+    return prefix;
+}
+
+int queryRangeSum(const vector<int>& prefix, int L, int R) {
+    if (L == 0) return prefix[R];
+    return prefix[R] - prefix[L - 1];
+}`,
+              javascript: `function buildPrefixSum(arr) {
+  const n = arr.length;
+  const prefix = new Array(n);
+  prefix[0] = arr[0];
+  for (let i = 1; i < n; i++) {
+    prefix[i] = prefix[i - 1] + arr[i];
+  }
+  return prefix;
+}
+
+function queryRangeSum(prefix, L, R) {
+  if (L === 0) return prefix[R];
+  return prefix[R] - prefix[L - 1];
+}`,
+              typescript: `export function buildPrefixSum(arr: number[]): number[] {
+  const n = arr.length;
+  const prefix = new Array(n);
+  prefix[0] = arr[0];
+  for (let i = 1; i < n; i++) {
+    prefix[i] = prefix[i - 1] + arr[i];
+  }
+  return prefix;
+}
+
+export function queryRangeSum(prefix: number[], L: number, R: number): number {
+  if (L === 0) return prefix[R];
+  return prefix[R] - prefix[L - 1];
+}`
+            }}
+          />
         </div>
       </div>
     </div>

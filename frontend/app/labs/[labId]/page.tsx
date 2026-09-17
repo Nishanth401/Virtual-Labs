@@ -845,66 +845,6 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                         </div>
                       )}
                     </Card>
-
-                    {/* Section 2: Topic-Related LeetCode Practice Problems */}
-                    <Card className="border-border bg-card/80 backdrop-blur-xs shadow-sm p-6 space-y-4">
-                      <div className="flex flex-wrap items-center justify-between gap-3">
-                        <div>
-                          <CardTitle className="text-xl font-bold text-primary font-heading flex items-center gap-2">
-                            <Trophy className="h-5 w-5 text-amber-500" />
-                            <span>Topic-by-Topic LeetCode &amp; GFG Practice Problems</span>
-                          </CardTitle>
-                          <CardDescription className="text-xs mt-1">
-                            Solve these curated coding challenges directly on LeetCode to master {lab.name} topics for technical interview placement rounds.
-                          </CardDescription>
-                        </div>
-                        <Badge variant="outline" className="text-xs font-mono bg-amber-500/10 text-amber-500 border-amber-500/30">
-                          {LAB_ROADMAPS_DATA[lab.id]?.categories.flatMap(c => c.topics.flatMap(t => t.practiceProblems)).length || 10} Challenges
-                        </Badge>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
-                        {(LAB_ROADMAPS_DATA[lab.id]?.categories.flatMap(c => c.topics.flatMap(t => t.practiceProblems)) || [
-                          { title: "Two Sum", difficulty: "Easy", url: "https://leetcode.com/problems/two-sum/", platform: "LeetCode" },
-                          { title: "Reverse Linked List", difficulty: "Easy", url: "https://leetcode.com/problems/reverse-linked-list/", platform: "LeetCode" },
-                          { title: "Valid Parentheses", difficulty: "Easy", url: "https://leetcode.com/problems/valid-parentheses/", platform: "LeetCode" },
-                          { title: "Binary Search", difficulty: "Easy", url: "https://leetcode.com/problems/binary-search/", platform: "LeetCode" }
-                        ]).map((prob, idx) => (
-                          <a
-                            key={idx}
-                            href={prob.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/30 hover:bg-primary/5 hover:border-primary/40 transition-all group shadow-2xs"
-                          >
-                            <div className="space-y-1 min-w-0 pr-2">
-                              <div className="flex items-center gap-2">
-                                <span className="font-bold text-xs text-foreground group-hover:text-primary transition-colors truncate">
-                                  {idx + 1}. {prob.title}
-                                </span>
-                              </div>
-                              <span className="text-[10px] text-muted-foreground font-mono">{prob.platform}</span>
-                            </div>
-
-                            <div className="flex items-center gap-2 shrink-0">
-                              <Badge
-                                variant="outline"
-                                className={
-                                  prob.difficulty === "Easy"
-                                    ? "text-emerald-500 border-emerald-500/30 text-[10px]"
-                                    : prob.difficulty === "Medium"
-                                    ? "text-amber-500 border-amber-500/30 text-[10px]"
-                                    : "text-rose-500 border-rose-500/30 text-[10px]"
-                                }
-                              >
-                                {prob.difficulty}
-                              </Badge>
-                              <ExternalLink className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
-                            </div>
-                          </a>
-                        ))}
-                      </div>
-                    </Card>
                   </div>
                 );
               })()}
@@ -1061,6 +1001,66 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                         </div>
                       </div>
                     </CardContent>
+                  </Card>
+
+                  {/* Curated Reference & Practice Material */}
+                  <Card className="border-border bg-card/80 backdrop-blur-xs shadow-sm p-6 space-y-4">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div>
+                        <CardTitle className="text-xl font-bold text-primary font-heading flex items-center gap-2">
+                          <BookOpen className="h-5 w-5 text-primary" />
+                          <span>Topic Reference Practice Problems</span>
+                        </CardTitle>
+                        <CardDescription className="text-xs mt-1">
+                          Curated problem sets and reference resources across {lab.name} topics from LeetCode &amp; GeeksforGeeks.
+                        </CardDescription>
+                      </div>
+                      <Badge variant="outline" className="text-xs font-mono bg-primary/10 text-primary border-primary/20">
+                        {LAB_ROADMAPS_DATA[lab.id]?.categories.flatMap(c => c.topics.flatMap(t => t.practiceProblems)).length || 10} Reference Problems
+                      </Badge>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                      {(LAB_ROADMAPS_DATA[lab.id]?.categories.flatMap(c => c.topics.flatMap(t => t.practiceProblems)) || [
+                        { title: "Two Sum", difficulty: "Easy", url: "https://leetcode.com/problems/two-sum/", platform: "LeetCode" },
+                        { title: "Reverse Linked List", difficulty: "Easy", url: "https://leetcode.com/problems/reverse-linked-list/", platform: "LeetCode" },
+                        { title: "Valid Parentheses", difficulty: "Easy", url: "https://leetcode.com/problems/valid-parentheses/", platform: "LeetCode" },
+                        { title: "Binary Search", difficulty: "Easy", url: "https://leetcode.com/problems/binary-search/", platform: "LeetCode" }
+                      ]).map((prob, idx) => (
+                        <a
+                          key={idx}
+                          href={prob.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/30 hover:bg-card hover:border-primary/40 transition-all group shadow-2xs"
+                        >
+                          <div className="space-y-1 min-w-0 pr-2">
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold text-xs text-foreground group-hover:text-primary transition-colors truncate">
+                                {idx + 1}. {prob.title}
+                              </span>
+                            </div>
+                            <span className="text-[10px] text-muted-foreground font-mono">{prob.platform} Reference</span>
+                          </div>
+
+                          <div className="flex items-center gap-2 shrink-0">
+                            <Badge
+                              variant="outline"
+                              className={
+                                prob.difficulty === "Easy"
+                                  ? "text-emerald-500 border-emerald-500/30 text-[10px]"
+                                  : prob.difficulty === "Medium"
+                                  ? "text-amber-500 border-amber-500/30 text-[10px]"
+                                  : "text-rose-500 border-rose-500/30 text-[10px]"
+                              }
+                            >
+                              {prob.difficulty}
+                            </Badge>
+                            <ExternalLink className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
+                          </div>
+                        </a>
+                      ))}
+                    </div>
                   </Card>
                 </div>
               )}

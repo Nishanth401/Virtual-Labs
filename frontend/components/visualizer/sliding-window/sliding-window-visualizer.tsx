@@ -18,6 +18,7 @@ import {
   Info,
   BookOpen
 } from "lucide-react";
+import { MultiLangCodeViewer } from "@/components/visualizer/code/multi-lang-code-viewer";
 
 export type SlidingWindowMode = "fixed-k" | "variable-sum";
 
@@ -419,78 +420,116 @@ export function SlidingWindowVisualizer() {
           </CardContent>
         </Card>
 
-        {/* Code & Pseudocode View Panel */}
-        <Card className="border-border/60 shadow-lg flex flex-col">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base font-bold flex items-center gap-2">
-              <Code2 className="h-4 w-4 text-emerald-500" /> Implementation &amp; Pseudocode
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="flex-1 space-y-4">
-            {/* Custom Tab Switcher (100% Reliable Click State) */}
-            <div className="flex border-b border-border/80 bg-muted/40 p-1 rounded-xl">
-              <button
-                type="button"
-                onClick={() => setActiveTab("pseudocode")}
-                className={`flex-1 py-1.5 text-xs font-bold font-mono rounded-lg transition-all cursor-pointer ${activeTab === "pseudocode"
-                  ? "bg-background text-foreground shadow-xs"
-                  : "text-muted-foreground hover:text-foreground"
-                  }`}
-              >
-                Pseudocode
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab("java")}
-                className={`flex-1 py-1.5 text-xs font-bold font-mono rounded-lg transition-all cursor-pointer ${activeTab === "java"
-                  ? "bg-background text-foreground shadow-xs"
-                  : "text-muted-foreground hover:text-foreground"
-                  }`}
-              >
-                Java Code
-              </button>
-            </div>
+        {/* Multi-Language Interactive Code Editor */}
+        <MultiLangCodeViewer
+          title={`Sliding Window (${mode === "fixed-k" ? "Fixed Size K" : "Variable Sum Target"})`}
+          subtitle="Multi-Language Two-Pointer Sliding Window algorithms in Java, Python, C++, JS, and TS."
+          badge="Customizable IDE"
+          snippets={{
+            java: mode === "fixed-k" ? JAVA_CODE_FIXED_K : JAVA_CODE_VARIABLE_SUM,
+            python: mode === "fixed-k" 
+              ? `def max_sum_subarray(arr, k):
+    n = len(arr)
+    if n < k:
+        return -1
+    window_sum = sum(arr[:k])
+    max_sum = window_sum
+    for i in range(k, n):
+        window_sum += arr[i] - arr[i - k]
+        max_sum = max(max_sum, window_sum)
+    return max_sum`
+              : `def min_subarray_len(target, arr):
+    n = len(arr)
+    window_sum = 0
+    min_len = float('inf')
+    left = 0
+    for right in range(n):
+        window_sum += arr[right]
+        while window_sum >= target:
+            min_len = min(min_len, right - left + 1)
+            window_sum -= arr[left]
+            left += 1
+    return min_len if min_len != float('inf') else 0`,
+            cpp: mode === "fixed-k"
+              ? `#include <vector>
+#include <algorithm>
+using namespace std;
 
-            {activeTab === "pseudocode" ? (
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs text-slate-300 space-y-1.5 min-h-[220px]">
-                {(PSEUDOCODE_MAP[mode] || []).map((line, idx) => {
-                  const isCurrent = idx + 1 === currentStep.codeLine;
-                  return (
-                    <div
-                      key={idx}
-                      className={`px-2 py-1 rounded transition-colors ${isCurrent
-                        ? "bg-emerald-600/30 text-emerald-300 border-l-4 border-emerald-500 font-bold"
-                        : "hover:bg-slate-900"
-                        }`}
-                    >
-                      {line}
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs text-emerald-300 overflow-x-auto min-h-[220px]">
-                <pre className="leading-relaxed">{JAVA_CODE_FIXED_K}</pre>
-              </div>
-            )}
+int maxSumSubarray(const vector<int>& arr, int k) {
+    int n = arr.size();
+    if (n < k) return -1;
+    int windowSum = 0;
+    for (int i = 0; i < k; i++) windowSum += arr[i];
+    int maxSum = windowSum;
+    for (int i = k; i < n; i++) {
+        windowSum += arr[i] - arr[i - k];
+        maxSum = max(maxSum, windowSum);
+    }
+    return maxSum;
+}`
+              : `#include <vector>
+#include <algorithm>
+using namespace std;
 
-            <div className="p-4 rounded-xl bg-card border border-border/60 space-y-2">
-              <div className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                <BookOpen className="h-3.5 w-3.5 text-emerald-400" /> Complexity Analysis
-              </div>
-              <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-                <div className="p-2 rounded bg-muted/40">
-                  <span className="text-muted-foreground block text-[10px]">Time Complexity</span>
-                  <span className="font-bold text-emerald-400">O(N) Linear</span>
-                </div>
-                <div className="p-2 rounded bg-muted/40">
-                  <span className="text-muted-foreground block text-[10px]">Space Complexity</span>
-                  <span className="font-bold text-blue-400">O(1) Auxiliary</span>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+int minSubArrayLen(int target, const vector<int>& nums) {
+    int n = nums.size(), left = 0, sum = 0, minLen = 1e9;
+    for (int right = 0; right < n; right++) {
+        sum += nums[right];
+        while (sum >= target) {
+            minLen = min(minLen, right - left + 1);
+            sum -= nums[left++];
+        }
+    }
+    return minLen == 1e9 ? 0 : minLen;
+}`,
+            javascript: mode === "fixed-k"
+              ? `function maxSumSubarray(arr, k) {
+  if (arr.length < k) return -1;
+  let windowSum = 0;
+  for (let i = 0; i < k; i++) windowSum += arr[i];
+  let maxSum = windowSum;
+  for (let i = k; i < arr.length; i++) {
+    windowSum += arr[i] - arr[i - k];
+    maxSum = Math.max(maxSum, windowSum);
+  }
+  return maxSum;
+}`
+              : `function minSubArrayLen(target, nums) {
+  let left = 0, sum = 0, minLen = Infinity;
+  for (let right = 0; right < nums.length; right++) {
+    sum += nums[right];
+    while (sum >= target) {
+      minLen = Math.min(minLen, right - left + 1);
+      sum -= nums[left++];
+    }
+  }
+  return minLen === Infinity ? 0 : minLen;
+}`,
+            typescript: mode === "fixed-k"
+              ? `export function maxSumSubarray(arr: number[], k: number): number {
+  if (arr.length < k) return -1;
+  let windowSum = 0;
+  for (let i = 0; i < k; i++) windowSum += arr[i];
+  let maxSum = windowSum;
+  for (let i = k; i < arr.length; i++) {
+    windowSum += arr[i] - arr[i - k];
+    maxSum = Math.max(maxSum, windowSum);
+  }
+  return maxSum;
+}`
+              : `export function minSubArrayLen(target: number, nums: number[]): number {
+  let left = 0, sum = 0, minLen = Infinity;
+  for (let right = 0; right < nums.length; right++) {
+    sum += nums[right];
+    while (sum >= target) {
+      minLen = Math.min(minLen, right - left + 1);
+      sum -= nums[left++];
+    }
+  }
+  return minLen === Infinity ? 0 : minLen;
+}`
+          }}
+        />
       </div>
     </div>
   );

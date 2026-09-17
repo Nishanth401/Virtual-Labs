@@ -473,43 +473,35 @@ export default function DSAVisualizationPage() {
                               </CardDescription>
                             </Link>
 
-                            {/* Tags & Complexity Row */}
+                            {/* Action Buttons Row */}
                             <div className="pt-3.5 border-t border-border/60 flex items-center justify-between gap-2">
-                              <div className="flex items-center gap-1.5">
-                                <span className="inline-flex items-center px-2 py-0.5 rounded-md font-mono text-[11px] font-semibold bg-muted/60 text-muted-foreground border border-border/60">
-                                  {item.timeComplexity}
-                                </span>
-                              </div>
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="outline"
+                                onClick={() => setActiveQuizTopic(item)}
+                                className="h-7 text-xs font-medium gap-1.5 px-2.5 rounded-lg border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300 hover:bg-amber-500/20 hover:border-amber-500/50 shadow-2xs transition-all cursor-pointer"
+                                title={`Take 5-question assessment on ${item.name}`}
+                              >
+                                <Award className="h-3.5 w-3.5 text-amber-500" />
+                                <span>5-Q Quiz</span>
+                              </Button>
 
-                              <div className="flex items-center gap-2">
-                                <Button
-                                  type="button"
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => setActiveQuizTopic(item)}
-                                  className="h-7 text-xs font-medium gap-1.5 px-2.5 rounded-lg border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300 hover:bg-amber-500/20 hover:border-amber-500/50 shadow-2xs transition-all cursor-pointer"
-                                  title={`Take 5-question assessment on ${item.name}`}
+                              <Button
+                                asChild
+                                size="sm"
+                                className="h-7 text-xs font-semibold gap-1.5 px-3 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground shadow-xs hover:shadow-sm transition-all group/btn cursor-pointer"
+                              >
+                                <Link
+                                  href={item.href}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  title={`Open ${item.name} Studio in new tab`}
                                 >
-                                  <Award className="h-3.5 w-3.5 text-amber-500" />
-                                  <span>5-Q Quiz</span>
-                                </Button>
-
-                                <Button
-                                  asChild
-                                  size="sm"
-                                  className="h-7 text-xs font-semibold gap-1.5 px-3 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground shadow-xs hover:shadow-sm transition-all group/btn cursor-pointer"
-                                >
-                                  <Link
-                                    href={item.href}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    title={`Open ${item.name} Studio in new tab`}
-                                  >
-                                    <span>Launch Studio</span>
-                                    <ArrowRight className="h-3.5 w-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
-                                  </Link>
-                                </Button>
-                              </div>
+                                  <span>Launch Studio</span>
+                                  <ArrowRight className="h-3.5 w-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
+                                </Link>
+                              </Button>
                             </div>
                           </CardContent>
                         </Card>

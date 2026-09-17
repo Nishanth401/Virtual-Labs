@@ -7,6 +7,7 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
 import { HeapType } from "./types"
+import { Play } from "lucide-react"
 
 interface HeapControlsProps {
   onInsert: (value: number) => void
@@ -25,10 +26,27 @@ export function HeapControls({
 }: HeapControlsProps) {
   const [value, setValue] = useState("")
   const [bulkInput, setBulkInput] = useState("")
+  const [isPlayingDemo, setIsPlayingDemo] = useState(false)
+
+  const handlePlayDemo = () => {
+    if (isPlayingDemo) return;
+    setIsPlayingDemo(true);
+    onClear();
+
+    const sample = [45, 20, 80, 15, 60, 95, 30];
+    sample.forEach((num, idx) => {
+      setTimeout(() => {
+        onInsert(num);
+        if (idx === sample.length - 1) {
+          setIsPlayingDemo(false);
+        }
+      }, (idx + 1) * 450);
+    });
+  };
 
   const handleInsert = () => {
     const num = Number(value)
-    if (!isNaN(num)) {
+    if (!isNaN(num) && value.trim() !== "") {
       onInsert(num)
       setValue("")
     }
@@ -43,17 +61,31 @@ export function HeapControls({
 
   return (
     <div className="space-y-4">
-      <Card className="bg-card/50 backdrop-blur-sm">
-        <CardHeader>
+      <Card className="bg-card/50 backdrop-blur-sm border-border/80">
+        <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg">Heap Controls</CardTitle>
+            <CardTitle className="text-base font-bold">Heap Controls</CardTitle>
+            <Button
+              size="sm"
+              onClick={handlePlayDemo}
+              disabled={isPlayingDemo}
+              className="h-7 text-xs font-bold gap-1.5 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90"
+            >
+              <Play className="h-3.5 w-3.5" />
+              <span>{isPlayingDemo ? "Heapifying..." : "Play Demo"}</span>
+            </Button>
+          </div>
+          <div className="flex items-center justify-between pt-2 border-t border-border/40">
+            <span className="text-xs text-muted-foreground font-mono">Heap Property Mode:</span>
             <div className="flex items-center space-x-2">
               <Switch
                 id="heap-type"
                 checked={heapType === 'max'}
                 onCheckedChange={onToggleType}
               />
-              <Label htmlFor="heap-type">Max Heap</Label>
+              <Label htmlFor="heap-type" className="text-xs font-bold font-mono">
+                {heapType === 'max' ? "Max Heap (Root is Max)" : "Min Heap (Root is Min)"}
+              </Label>
             </div>
           </div>
         </CardHeader>
