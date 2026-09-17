@@ -428,7 +428,7 @@ export function KadanesVisualizer() {
         <div className="space-y-6">
           <MultiLangCodeViewer
             title="Kadane's Algorithm (Max Subarray Sum)"
-            subtitle="Dynamic Programming & Greedy Maximum Subarray algorithms in Java, Python, C++, JS, and TS."
+            subtitle="Dynamic Programming & Greedy Maximum Subarray algorithms in Java, Python, and C++."
             badge="Customizable IDE"
             snippets={{
               java: JAVA_CODE,

@@ -261,7 +261,7 @@ export function LinkedListVisualizer({ content }: LinkedListVisualizerProps) {
         <TabsContent value="code" className="space-y-6">
           <MultiLangCodeViewer
             title="Linked List Implementation (SLL, DLL, Circular)"
-            subtitle="Pointer/Reference based dynamic memory chain operations in Java, Python, C++, JS, and TS."
+            subtitle="Pointer/Reference based dynamic memory chain operations in Java, Python, and C++."
             badge="Customizable IDE"
             snippets={LINKED_LIST_CODE_SNIPPETS}
           />

@@ -268,7 +268,7 @@ export function QueueVisualizer({ content }: QueueVisualizerProps) {
         <TabsContent value="code" className="space-y-6">
           <MultiLangCodeViewer
             title="Queue Implementation (FIFO / Circular Buffer)"
-            subtitle="Ring Buffer & Array backed Queue implementations in Java, Python, C++, JS, and TS."
+            subtitle="Ring Buffer & Array backed Queue implementations in Java, Python, and C++."
             badge="Customizable IDE"
             snippets={QUEUE_CODE_SNIPPETS}
           />

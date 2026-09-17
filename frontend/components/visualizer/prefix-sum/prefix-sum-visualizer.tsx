@@ -470,7 +470,7 @@ export function PrefixSumVisualizer() {
         <div className="space-y-6">
           <MultiLangCodeViewer
             title="Prefix Sum Array Construction & O(1) Range Queries"
-            subtitle="Cumulative sums & range query implementations in Java, Python, C++, JS, and TS."
+            subtitle="Cumulative sums & range query implementations in Java, Python, and C++."
             badge="Customizable IDE"
             snippets={{
               java: JAVA_CODE,
