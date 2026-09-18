@@ -312,8 +312,7 @@ export function HeapVisualizer({ content }: HeapVisualizerProps) {
         <TabsContent value="code" className="space-y-6">
           <MultiLangCodeViewer
             title={`${heapType === 'max' ? 'Max' : 'Min'} Binary Heap & Priority Queue`}
-            subtitle="Array-backed Complete Binary Tree heapify algorithms in Java, Python, C++, JS, and TS."
-            badge="Customizable IDE"
+            subtitle="Array-backed Complete Binary Tree heapify algorithms in Java, Python, and C++."
             snippets={HEAP_CODE_SNIPPETS}
           />
         </TabsContent>

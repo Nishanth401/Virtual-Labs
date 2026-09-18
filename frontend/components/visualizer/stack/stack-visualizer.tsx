@@ -246,8 +246,7 @@ export function StackVisualizer({ content }: StackVisualizerProps) {
         <TabsContent value="code" className="space-y-6">
           <MultiLangCodeViewer
             title="Stack Implementation (LIFO)"
-            subtitle="Generic Array & Vector backed Stack implementations in Java, Python, C++, JS, and TS."
-            badge="Customizable IDE"
+            subtitle="Generic Array & Vector backed Stack implementations in Java, Python, and C++."
             snippets={STACK_CODE_SNIPPETS}
           />
         </TabsContent>

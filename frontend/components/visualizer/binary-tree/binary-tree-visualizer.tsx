@@ -231,8 +231,7 @@ export function BinaryTreeVisualizer({ content }: BinaryTreeVisualizerProps) {
         <TabsContent value="code" className="space-y-6">
           <MultiLangCodeViewer
             title="Binary Search Tree & In-Order/Pre-Order Traversals"
-            subtitle="Recursive insertion, searching, and DFS traversals in Java, Python, C++, JS, and TS."
-            badge="Customizable IDE"
+            subtitle="Recursive insertion, searching, and DFS traversals in Java, Python, and C++."
             snippets={BINARY_TREE_CODE_SNIPPETS}
           />
         </TabsContent>

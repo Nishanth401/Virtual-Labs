@@ -489,7 +489,6 @@ export function SortingVisualizer({ algorithm, title, description }: SortingVisu
           <MultiLangCodeViewer
             title={`${title} Implementation`}
             subtitle="Interactive Multi-Language Source Code & Live Compiler Runner"
-            badge="Customizable IDE"
             snippets={{
               java: javaCode,
               python: `def ${algorithm}_sort(arr):\n    # Python Implementation of ${title}\n    n = len(arr)\n    for i in range(n):\n        for j in range(0, n - i - 1):\n            if arr[j] > arr[j + 1]:\n                arr[j], arr[j + 1] = arr[j + 1], arr[j]\n    return arr`,
