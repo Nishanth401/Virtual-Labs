@@ -262,7 +262,6 @@ export function LinkedListVisualizer({ content }: LinkedListVisualizerProps) {
           <MultiLangCodeViewer
             title="Linked List Implementation (SLL, DLL, Circular)"
             subtitle="Pointer/Reference based dynamic memory chain operations in Java, Python, and C++."
-            badge="Customizable IDE"
             snippets={LINKED_LIST_CODE_SNIPPETS}
           />
         </TabsContent>

@@ -390,7 +390,6 @@ export function AVLTreeVisualizer({ content }: AVLTreeVisualizerProps) {
           <MultiLangCodeViewer
             title="AVL Self-Balancing Binary Search Tree"
             subtitle="Rotations (LL, RR, LR, RL) and logarithmic self-balancing height maintenance in Java, Python, and C++."
-            badge="Customizable IDE"
             snippets={AVL_TREE_CODE_SNIPPETS}
           />
         </TabsContent>

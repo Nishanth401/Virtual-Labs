@@ -300,7 +300,6 @@ export function HuffmanVisualizer({ content }: HuffmanVisualizerProps) {
           <MultiLangCodeViewer
             title="Huffman Lossless Data Compression Algorithm"
             subtitle="Priority Queue (Min-Heap) Prefix Tree builder in Java, Python, and C++."
-            badge="Customizable IDE"
             snippets={HUFFMAN_CODE_SNIPPETS}
           />
         </TabsContent>

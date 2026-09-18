@@ -241,7 +241,6 @@ export function DijkstraVisualizer({ content }: DijkstraVisualizerProps) {
           <MultiLangCodeViewer
             title="Dijkstra's Single-Source Shortest Path Algorithm"
             subtitle="Priority Queue (Min-Heap) and Adjacency List graph implementations in Java, Python, and C++."
-            badge="Customizable IDE"
             snippets={DIJKSTRA_CODE_SNIPPETS}
           />
         </TabsContent>

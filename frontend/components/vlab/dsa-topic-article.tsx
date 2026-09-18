@@ -140,7 +140,6 @@ export function DSATopicArticle({
         <MultiLangCodeViewer
           title={`${topic.title} - Implementation`}
           subtitle="Interactive Multi-Language Source Code & Live Compiler Runner"
-          badge="Customizable IDE"
           snippets={topic.codeSnippets || []}
         />
 

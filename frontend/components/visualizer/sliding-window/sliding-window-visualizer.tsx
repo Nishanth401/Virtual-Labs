@@ -424,7 +424,6 @@ export function SlidingWindowVisualizer() {
         <MultiLangCodeViewer
           title={`Sliding Window (${mode === "fixed-k" ? "Fixed Size K" : "Variable Sum Target"})`}
           subtitle="Multi-Language Two-Pointer Sliding Window algorithms in Java, Python, and C++."
-          badge="Customizable IDE"
           snippets={{
             java: mode === "fixed-k" ? JAVA_CODE_FIXED_K : JAVA_CODE_VARIABLE_SUM,
             python: mode === "fixed-k" 

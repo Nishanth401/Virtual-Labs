@@ -147,7 +147,6 @@ export function PolynomialVisualizer({ content }: PolynomialVisualizerProps) {
           <MultiLangCodeViewer
             title="Polynomial Multiplication using Linked List & Hash Map"
             subtitle="Term degree addition & coefficient multiplication in Java, Python, and C++."
-            badge="Customizable IDE"
             snippets={POLYNOMIAL_CODE_SNIPPETS}
           />
         </TabsContent>

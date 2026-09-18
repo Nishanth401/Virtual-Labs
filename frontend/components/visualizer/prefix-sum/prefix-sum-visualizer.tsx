@@ -471,7 +471,6 @@ export function PrefixSumVisualizer() {
           <MultiLangCodeViewer
             title="Prefix Sum Array Construction & O(1) Range Queries"
             subtitle="Cumulative sums & range query implementations in Java, Python, and C++."
-            badge="Customizable IDE"
             snippets={{
               java: JAVA_CODE,
               python: `def build_prefix_sum(arr):

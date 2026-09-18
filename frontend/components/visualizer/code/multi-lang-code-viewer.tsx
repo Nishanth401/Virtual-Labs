@@ -8,11 +8,11 @@ import {
   Play,
   RotateCcw,
   SlidersHorizontal,
-  Wand2,
   Terminal,
   Maximize2,
   Minimize2,
   Edit3,
+  Code2,
   Eye,
   CheckCircle2,
   Clock,
@@ -616,7 +616,7 @@ function executeUserCode(code: string, lang: SupportedLang, customInput: string,
 export function MultiLangCodeViewer({
   title = "Algorithm Implementation",
   subtitle = "Interactive Source Code & Live IDE Compiler Runner",
-  badge = "Customizable IDE",
+  badge,
   snippets,
   activeLineMap,
 }: MultiLangCodeViewerProps) {
@@ -652,6 +652,7 @@ export function MultiLangCodeViewer({
   const [activeLang, setActiveLang] = useState<SupportedLang>("java");
   const [editedCodeMap, setEditedCodeMap] = useState<Record<string, string>>({});
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
+  const [showTopInput, setShowTopInput] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
@@ -893,10 +894,6 @@ export function MultiLangCodeViewer({
             <span>{LANG_META[activeLang].file}</span>
             {isCodeModified && <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" title="Unsaved edits" />}
           </div>
-
-          <Badge variant="outline" className="hidden md:inline-flex text-[10px] font-mono border-primary/30 text-primary bg-primary/10">
-            {badge}
-          </Badge>
         </div>
 
         {/* Right: Language Tabs (No Emojis) & Action Buttons */}
@@ -928,20 +925,41 @@ export function MultiLangCodeViewer({
             })}
           </div>
 
-          {/* Edit / View Toggle */}
+          {/* Custom Code / Edit Toggle */}
           <Button
             variant="outline"
             size="sm"
             onClick={() => setIsEditMode(!isEditMode)}
-            className="h-8 gap-1.5 text-xs font-sans border-border/60 hover:bg-white/10"
+            className="h-8 gap-1.5 text-xs font-sans border-border/60 hover:bg-white/10 cursor-pointer"
             style={{
-              borderColor: currentTheme.borderColor,
-              color: isEditMode ? "#f59e0b" : currentTheme.textColor,
-              backgroundColor: isEditMode ? "rgba(245, 158, 11, 0.15)" : "transparent",
+              borderColor: isEditMode ? "#3b82f6" : currentTheme.borderColor,
+              color: isEditMode ? "#60a5fa" : currentTheme.textColor,
+              backgroundColor: isEditMode ? "rgba(59, 130, 246, 0.15)" : "transparent",
             }}
+            title={isEditMode ? "Switch to Highlight Mode" : "Edit / Write Custom Code"}
           >
-            {isEditMode ? <Eye className="h-3.5 w-3.5 text-amber-400" /> : <Edit3 className="h-3.5 w-3.5 text-blue-400" />}
-            <span className="hidden sm:inline">{isEditMode ? "Highlighting Mode" : "Edit Code"}</span>
+            {isEditMode ? <Code2 className="h-3.5 w-3.5 text-sky-400" /> : <Edit3 className="h-3.5 w-3.5 text-sky-400" />}
+            <span className="hidden sm:inline">{isEditMode ? "Editing Custom Code" : "Custom Code"}</span>
+          </Button>
+
+          {/* Custom Input Toggle */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowTopInput(!showTopInput)}
+            className="h-8 gap-1.5 text-xs font-sans border-border/60 hover:bg-white/10 cursor-pointer"
+            style={{
+              borderColor: showTopInput || customStdin.trim() ? "#10b981" : currentTheme.borderColor,
+              color: showTopInput || customStdin.trim() ? "#34d399" : currentTheme.textColor,
+              backgroundColor: showTopInput ? "rgba(16, 185, 129, 0.15)" : "transparent",
+            }}
+            title="Toggle Custom Input (Stdin) Panel"
+          >
+            <CornerDownLeft className="h-3.5 w-3.5 text-emerald-400" />
+            <span className="hidden sm:inline">Custom Input</span>
+            {customStdin.trim().length > 0 && (
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 inline-block" />
+            )}
           </Button>
 
           {/* Run Code Button */}
@@ -965,18 +983,6 @@ export function MultiLangCodeViewer({
             title="IDE Settings"
           >
             <SlidersHorizontal className="h-3.5 w-3.5" />
-          </Button>
-
-          {/* Format */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleFormatCode}
-            className="h-8 w-8 p-0 hover:bg-white/10"
-            style={{ color: currentTheme.textColor }}
-            title="Format Code"
-          >
-            <Wand2 className="h-3.5 w-3.5" />
           </Button>
 
           {/* Reset */}
@@ -1028,6 +1034,64 @@ export function MultiLangCodeViewer({
           </Button>
         </div>
       </div>
+
+      {/* Top Custom Input Bar */}
+      {showTopInput && (
+        <div
+          className="px-4 py-2.5 border-b flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 font-sans text-xs transition-all duration-200"
+          style={{
+            backgroundColor: currentTheme.headerBg,
+            borderColor: currentTheme.borderColor,
+          }}
+        >
+          <div className="flex items-center gap-2 text-emerald-400 font-semibold shrink-0">
+            <CornerDownLeft className="h-3.5 w-3.5" />
+            <span>Custom Input (StdIn):</span>
+          </div>
+
+          <div className="flex-1 w-full flex items-center gap-2">
+            <input
+              type="text"
+              value={customStdin}
+              onChange={(e) => setCustomStdin(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleRunCode();
+                }
+              }}
+              placeholder="Enter custom input values (e.g. [50, 20, 80] or target = 40)..."
+              className="w-full px-3 py-1.5 rounded-lg border text-xs font-mono outline-none focus:ring-1 focus:ring-emerald-500 transition-all"
+              style={{
+                backgroundColor: currentTheme.bg,
+                borderColor: currentTheme.borderColor,
+                color: currentTheme.textColor,
+              }}
+            />
+
+            {customStdin.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setCustomStdin("")}
+                className="px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground rounded transition-colors cursor-pointer"
+                title="Clear Input"
+              >
+                Clear
+              </button>
+            )}
+
+            <Button
+              size="sm"
+              onClick={handleRunCode}
+              disabled={isRunning}
+              className="h-7 px-3 text-[11px] gap-1 bg-emerald-600 hover:bg-emerald-500 text-white font-medium shrink-0 shadow-xs cursor-pointer"
+            >
+              <Play className="h-2.5 w-2.5 fill-current" />
+              <span>Run with Input</span>
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Customizer Dropdown Settings Drawer */}
       {showSettings && (
@@ -1116,7 +1180,7 @@ export function MultiLangCodeViewer({
 
       {/* Main Code Editor / Highlighting View */}
       <div
-        className={`relative ${isFullscreen ? "flex-1 overflow-y-auto" : "max-h-[480px] min-h-[320px] overflow-y-auto"}`}
+        className={`relative ${isFullscreen ? "flex-1 overflow-auto" : "max-h-[480px] min-h-[320px] overflow-auto"}`}
         style={{
           fontSize,
           backgroundColor: currentTheme.bg,
@@ -1148,7 +1212,7 @@ export function MultiLangCodeViewer({
               onKeyUp={(e) => updateCursorInfo(e.currentTarget)}
               spellCheck={false}
               className={`flex-1 pl-4 bg-transparent font-mono outline-none resize-none leading-relaxed tracking-wide ${
-                wordWrap ? "whitespace-pre-wrap" : "whitespace-pre overflow-x-auto"
+                wordWrap ? "whitespace-pre-wrap" : "whitespace-pre"
               }`}
               style={{
                 fontSize,
@@ -1161,7 +1225,7 @@ export function MultiLangCodeViewer({
           </div>
         ) : (
           /* Tokenized Syntax Highlighting View with High Contrast */
-          <div className="py-3">
+          <div className="py-3 inline-block min-w-full">
             {codeLines.map((line, idx) => {
               const lineNumber = idx + 1;
               const isHighlighted = activeLine === lineNumber;
@@ -1189,7 +1253,7 @@ export function MultiLangCodeViewer({
                   )}
                   <pre
                     className={`pl-4 font-mono leading-relaxed tracking-wide ${
-                      wordWrap ? "whitespace-pre-wrap" : "whitespace-pre overflow-x-auto"
+                      wordWrap ? "whitespace-pre-wrap" : "whitespace-pre"
                     }`}
                     style={{
                       color: currentTheme.textColor,
