@@ -3,7 +3,7 @@
 import React, { useState, use } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { LABS_DATA } from "@/data/labs";
+import { LABS_DATA, VideoTimestamp } from "@/data/labs";
 import { EXPERIMENTS_DATA } from "@/data/experiments";
 import { Navbar } from "@/components/navigation/navbar";
 import { Footer } from "@/components/navigation/footer";
@@ -12,7 +12,7 @@ import { CourseAlignmentCard } from "@/components/vlab/course-alignment-card";
 import { MLPrerequisitesTrack } from "@/components/vlab/ml-prerequisites-track";
 import { DSARoadmap } from "@/components/vlab/dsa-roadmap";
 import { LAB_ROADMAPS_DATA } from "@/data/all-labs-roadmap-data";
-import { TamilVideoTimeline } from "@/components/vlab/tamil-video-timeline";
+import { VideoTimeline, TamilVideoTimeline } from "@/components/vlab/tamil-video-timeline";
 import { QuizEngine } from "@/components/quiz/quiz-engine";
 import { QUIZZES_DATA, Quiz, getQuizForExperiment } from "@/data/quizzes";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -57,11 +57,26 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
   const [videoLanguageTab, setVideoLanguageTab] = useState<"english" | "tamil">("english");
   const [tamilVideoTime, setTamilVideoTime] = useState<number>(0);
   const [activeTamilTimestampIdx, setActiveTamilTimestampIdx] = useState<number | null>(null);
+  const [selectedTamilVideoUrl, setSelectedTamilVideoUrl] = useState<string | null>(null);
+  const [englishVideoTime, setEnglishVideoTime] = useState<number>(0);
+  const [activeEnglishTimestampIdx, setActiveEnglishTimestampIdx] = useState<number | null>(null);
+  const [selectedEnglishVideoUrl, setSelectedEnglishVideoUrl] = useState<string | null>(null);
   const [resourceSourceFilter, setResourceSourceFilter] = useState<string>("ALL");
 
-  const handleSelectTamilTimestamp = (seconds: number, idx: number) => {
+  const handleSelectTamilTimestamp = (seconds: number, idx: number, item?: VideoTimestamp) => {
     setTamilVideoTime(seconds);
     setActiveTamilTimestampIdx(idx);
+    if (item?.embedUrl) {
+      setSelectedTamilVideoUrl(item.embedUrl);
+    }
+  };
+
+  const handleSelectEnglishTimestamp = (seconds: number, idx: number, item?: VideoTimestamp) => {
+    setEnglishVideoTime(seconds);
+    setActiveEnglishTimestampIdx(idx);
+    if (item?.embedUrl) {
+      setSelectedEnglishVideoUrl(item.embedUrl);
+    }
   };
 
   // Quiz State
@@ -156,7 +171,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                         >
                           <span>🇬🇧 English Tutorial</span>
                           <Badge variant="outline" className={`text-[9px] px-1.5 py-0 border-0 ${videoLanguageTab === "english" ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"}`}>
-                            Full Course
+                            {lab.englishVideo?.timestamps?.length ? `${lab.englishVideo.timestamps.length} Chapters` : (lab.englishVideo?.duration || "Full Course")}
                           </Badge>
                         </button>
                         {lab.tamilVideo && (
@@ -171,7 +186,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                           >
                             <span>🇮🇳 தமிழ் Tutorial (Tamil)</span>
                             <Badge variant="outline" className={`text-[9px] px-1.5 py-0 border-0 ${videoLanguageTab === "tamil" ? "bg-white/20 text-white" : "bg-amber-500/10 text-amber-600 dark:text-amber-400"}`}>
-                              {lab.tamilVideo.duration || "Full Course"}
+                              {lab.tamilVideo.timestamps?.length ? `${lab.tamilVideo.timestamps.length} Chapters` : (lab.tamilVideo.duration || "Full Course")}
                             </Badge>
                           </button>
                         )}
@@ -182,61 +197,97 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                     </div>
 
                     {/* ENGLISH VIDEO SECTION */}
-                    {videoLanguageTab === "english" && (
-                      <div className="space-y-4">
-                        <div className="aspect-video w-full rounded-2xl bg-black/90 border border-primary/30 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
-                          <iframe
-                            src={lab.videoUrl}
-                            title={`${lab.name} English Video Tutorial`}
-                            className="w-full h-full rounded-2xl border-0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                          />
-                        </div>
+                    {videoLanguageTab === "english" && (() => {
+                      const activeEnglishItem = activeEnglishTimestampIdx !== null && lab.englishVideo?.timestamps
+                        ? lab.englishVideo.timestamps[activeEnglishTimestampIdx]
+                        : null;
+                      const baseEnglishUrl = selectedEnglishVideoUrl || lab.englishVideo?.url || lab.videoUrl;
+                      const iframeEnglishSrc = englishVideoTime > 0
+                        ? `${baseEnglishUrl}${baseEnglishUrl.includes("?") ? "&" : "?"}start=${englishVideoTime}&autoplay=1`
+                        : `${baseEnglishUrl}${baseEnglishUrl.includes("?") ? "&" : "?"}autoplay=1`;
 
-                        <div className="p-4 bg-primary/5 rounded-xl border border-primary/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                          <div className="space-y-1">
-                            <div className="flex items-center gap-2">
-                              <Badge variant="outline" className="text-[10px] font-mono font-bold text-primary bg-primary/10 border-primary/30">
-                                🇬🇧 English Demonstration & Theory
-                              </Badge>
-                              <span className="text-xs text-muted-foreground font-mono">
-                                • Full Course Video
-                              </span>
+                      return (
+                        <div className="space-y-4">
+                          <div className="aspect-video w-full rounded-2xl bg-black/90 border border-primary/30 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
+                            <iframe
+                              key={`english-overview-${baseEnglishUrl}-${englishVideoTime}`}
+                              src={iframeEnglishSrc}
+                              title={`${lab.name} English Video Tutorial`}
+                              className="w-full h-full rounded-2xl border-0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            />
+                          </div>
+
+                          <div className="p-4 bg-primary/5 rounded-xl border border-primary/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-2">
+                                <Badge variant="outline" className="text-[10px] font-mono font-bold text-primary bg-primary/10 border-primary/30">
+                                  🇬🇧 {activeEnglishItem?.category || "English Video Tutorial & Theory"}
+                                </Badge>
+                                {lab.englishVideo?.channel && (
+                                  <Badge variant="outline" className="text-[10px] font-mono border-primary/20 bg-background/50">
+                                    {lab.englishVideo.channel}
+                                  </Badge>
+                                )}
+                                <span className="text-xs text-muted-foreground font-mono">
+                                  • {activeEnglishItem?.time || lab.englishVideo?.duration || "Full Course Video"}
+                                </span>
+                              </div>
+                              <h4 className="text-sm font-bold text-foreground">
+                                {activeEnglishItem?.title || lab.englishVideo?.title || `${lab.name} — English Full Lecture & Practical Demonstration`}
+                              </h4>
+                              <p className="text-xs text-muted-foreground line-clamp-2">
+                                {activeEnglishItem?.description || lab.englishVideo?.description || lab.description}
+                              </p>
                             </div>
-                            <h4 className="text-sm font-bold text-foreground">
-                              {lab.name} — English Full Lecture & Practical Demonstration
-                            </h4>
-                            <p className="text-xs text-muted-foreground line-clamp-2">
-                              {lab.description}
-                            </p>
+
+                            <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
+                              <a
+                                href={activeEnglishItem?.url || (lab.englishVideo?.url || lab.videoUrl).replace("youtube-nocookie.com/embed/", "youtube.com/watch?v=")}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-primary/30 text-xs font-semibold text-primary hover:bg-primary/10 transition-colors"
+                              >
+                                <span>Watch on YouTube</span>
+                                <ExternalLink className="h-3.5 w-3.5" />
+                              </a>
+                              <Button onClick={() => setActiveTab("experiments")} size="sm" className="text-xs font-bold gap-1.5 bg-primary hover:bg-primary/90 text-white">
+                                Practice Experiments <ChevronRight className="h-4 w-4" />
+                              </Button>
+                            </div>
                           </div>
 
-                          <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
-                            <a
-                              href={lab.videoUrl.replace("youtube-nocookie.com/embed/", "youtube.com/watch?v=")}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-primary/30 text-xs font-semibold text-primary hover:bg-primary/10 transition-colors"
-                            >
-                              <span>Watch on YouTube</span>
-                              <ExternalLink className="h-3.5 w-3.5" />
-                            </a>
-                            <Button onClick={() => setActiveTab("experiments")} size="sm" className="text-xs font-bold gap-1.5 bg-primary hover:bg-primary/90 text-white">
-                              Practice Experiments <ChevronRight className="h-4 w-4" />
-                            </Button>
-                          </div>
+                          {lab.englishVideo?.timestamps && lab.englishVideo.timestamps.length > 0 && (
+                            <VideoTimeline
+                              video={lab.englishVideo}
+                              activeTimestampIdx={activeEnglishTimestampIdx}
+                              onSelectTimestamp={handleSelectEnglishTimestamp}
+                              currentVideoTime={englishVideoTime}
+                              compact={false}
+                              accentColor="blue"
+                            />
+                          )}
                         </div>
-                      </div>
-                    )}
+                      );
+                    })()}
 
                     {/* TAMIL FULL COURSE VIDEO SECTION */}
-                    {videoLanguageTab === "tamil" && lab.tamilVideo && (
-                      <div className="space-y-4">
+                    {videoLanguageTab === "tamil" && lab.tamilVideo && (() => {
+                      const activeTamilItem = activeTamilTimestampIdx !== null && lab.tamilVideo?.timestamps
+                        ? lab.tamilVideo.timestamps[activeTamilTimestampIdx]
+                        : null;
+                      const baseTamilUrl = selectedTamilVideoUrl || lab.tamilVideo.url;
+                      const iframeTamilSrc = tamilVideoTime > 0
+                        ? `${baseTamilUrl}${baseTamilUrl.includes("?") ? "&" : "?"}start=${tamilVideoTime}&autoplay=1`
+                        : `${baseTamilUrl}${baseTamilUrl.includes("?") ? "&" : "?"}autoplay=1`;
+
+                      return (
+                        <div className="space-y-4">
                           <div className="aspect-video w-full rounded-2xl bg-black/90 border border-amber-500/30 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
                             <iframe
-                              key={`tamil-overview-${tamilVideoTime}`}
-                              src={tamilVideoTime > 0 ? `${lab.tamilVideo.url}?start=${tamilVideoTime}&autoplay=1` : lab.tamilVideo.url}
+                              key={`tamil-overview-${baseTamilUrl}-${tamilVideoTime}`}
+                              src={iframeTamilSrc}
                               title={lab.tamilVideo.title}
                               className="w-full h-full rounded-2xl border-0"
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -248,7 +299,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             <div className="space-y-1">
                               <div className="flex items-center gap-2">
                                 <Badge variant="outline" className="text-[10px] font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/30">
-                                  தமிழ் Video Tutorial
+                                  {activeTamilItem?.category || "தமிழ் Video Tutorial"}
                                 </Badge>
                                 {lab.tamilVideo.channel && (
                                   <Badge variant="outline" className="text-[10px] font-mono border-amber-500/20 bg-background/50">
@@ -256,20 +307,20 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                   </Badge>
                                 )}
                                 <span className="text-xs text-muted-foreground font-mono">
-                                  • {lab.tamilVideo.duration || "Full Course"}
+                                  • {activeTamilItem?.time || lab.tamilVideo.duration || "Full Course"}
                                 </span>
                               </div>
                               <h4 className="text-sm font-bold text-foreground">
-                                {lab.tamilVideo.title}
+                                {activeTamilItem?.title || lab.tamilVideo.title}
                               </h4>
                               <p className="text-xs text-muted-foreground">
-                                {lab.tamilVideo.description}
+                                {activeTamilItem?.description || lab.tamilVideo.description}
                               </p>
                             </div>
 
                             <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
                               <a
-                                href={lab.tamilVideo.url.replace("youtube-nocookie.com/embed/", "youtube.com/watch?v=")}
+                                href={activeTamilItem?.url || lab.tamilVideo.url.replace("youtube-nocookie.com/embed/", "youtube.com/watch?v=")}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-500/30 text-xs font-semibold text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 transition-colors"
@@ -289,11 +340,12 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                               activeTimestampIdx={activeTamilTimestampIdx}
                               onSelectTimestamp={handleSelectTamilTimestamp}
                               currentVideoTime={tamilVideoTime}
-                              compact={true}
+                              compact={false}
                             />
                           )}
                         </div>
-                      )}
+                      );
+                    })()}
 
                       {/* CURATED YOUTUBE PLAYLISTS & COMPLETE VIDEO SERIES */}
                       {lab.playlists && lab.playlists.length > 0 && (
@@ -425,7 +477,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                           >
                             <span>🇬🇧 English</span>
                             <Badge variant="outline" className={`text-[9px] px-1 py-0 border-0 ${videoLanguageTab === "english" ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"}`}>
-                              Full Course
+                              {lab.englishVideo?.timestamps?.length ? `${lab.englishVideo.timestamps.length} Chapters` : (lab.englishVideo?.duration || "Full Course")}
                             </Badge>
                           </button>
                           {lab.tamilVideo && (
@@ -440,7 +492,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             >
                               <span>🇮🇳 தமிழ் (Tamil)</span>
                               <Badge variant="outline" className={`text-[9px] px-1 py-0 border-0 ${videoLanguageTab === "tamil" ? "bg-white/20 text-white" : "bg-amber-500/10 text-amber-600 dark:text-amber-400"}`}>
-                                {lab.tamilVideo.duration || "Full Course"}
+                                {lab.tamilVideo.timestamps?.length ? `${lab.tamilVideo.timestamps.length} Chapters` : (lab.tamilVideo.duration || "Full Course")}
                               </Badge>
                             </button>
                           )}
@@ -450,118 +502,155 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
 
                     <CardContent className="p-6 space-y-6">
                       {/* ENGLISH SECTION */}
-                      {videoLanguageTab === "english" && (
-                        <div className="space-y-6">
-                          <div className="aspect-video w-full rounded-2xl bg-black/90 border border-primary/30 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
-                            <iframe
-                              src={lab.videoUrl}
-                              title={`${lab.name} English Video Suite`}
-                              className="w-full h-full rounded-2xl border-0"
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                              allowFullScreen
-                            />
-                          </div>
+                      {videoLanguageTab === "english" && (() => {
+                        const activeEnglishItem = activeEnglishTimestampIdx !== null && lab.englishVideo?.timestamps
+                          ? lab.englishVideo.timestamps[activeEnglishTimestampIdx]
+                          : null;
+                        const baseEnglishUrl = selectedEnglishVideoUrl || lab.englishVideo?.url || lab.videoUrl;
+                        const iframeEnglishSrc = englishVideoTime > 0
+                          ? `${baseEnglishUrl}${baseEnglishUrl.includes("?") ? "&" : "?"}start=${englishVideoTime}&autoplay=1`
+                          : `${baseEnglishUrl}${baseEnglishUrl.includes("?") ? "&" : "?"}autoplay=1`;
 
-                          <div className="p-5 bg-primary/5 rounded-2xl border border-primary/20 shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                            <div className="space-y-1.5">
-                              <div className="flex items-center gap-2">
-                                <Badge variant="outline" className="text-[10px] font-mono font-bold text-primary bg-primary/10 border-primary/30">
-                                  🇬🇧 English Lecture & Practical Demonstration
-                                </Badge>
-                                <span className="text-xs text-muted-foreground font-mono">
-                                  • Full Course Video
-                                </span>
+                        return (
+                          <div className="space-y-6">
+                            <div className="aspect-video w-full rounded-2xl bg-black/90 border border-primary/30 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
+                              <iframe
+                                key={`english-tab-${baseEnglishUrl}-${englishVideoTime}`}
+                                src={iframeEnglishSrc}
+                                title={`${lab.name} English Video Suite`}
+                                className="w-full h-full rounded-2xl border-0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                              />
+                            </div>
+
+                            <div className="p-5 bg-primary/5 rounded-2xl border border-primary/20 shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                              <div className="space-y-1.5">
+                                <div className="flex items-center gap-2">
+                                  <Badge variant="outline" className="text-[10px] font-mono font-bold text-primary bg-primary/10 border-primary/30">
+                                    🇬🇧 {activeEnglishItem?.category || "English Lecture & Practical Demonstration"}
+                                  </Badge>
+                                  {lab.englishVideo?.channel && (
+                                    <Badge variant="outline" className="text-[10px] font-mono border-primary/20 bg-background/50">
+                                      Channel: {lab.englishVideo.channel}
+                                    </Badge>
+                                  )}
+                                  <span className="text-xs text-muted-foreground font-mono">
+                                    • {activeEnglishItem?.time || lab.englishVideo?.duration || "Full Course"}
+                                  </span>
+                                </div>
+                                <h3 className="text-base font-bold text-foreground font-heading">
+                                  {activeEnglishItem?.title || lab.englishVideo?.title || `${lab.name} — Full Laboratory Video Walkthrough`}
+                                </h3>
+                                <p className="text-xs text-muted-foreground leading-relaxed max-w-2xl">
+                                  {activeEnglishItem?.description || lab.englishVideo?.description || lab.description}
+                                </p>
                               </div>
-                              <h3 className="text-base font-bold text-foreground font-heading">
-                                {lab.name} — Full Laboratory Video Walkthrough
-                              </h3>
-                              <p className="text-xs text-muted-foreground leading-relaxed max-w-2xl">
-                                {lab.description}
-                              </p>
+
+                              <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
+                                <a
+                                  href={activeEnglishItem?.url || (lab.englishVideo?.url || lab.videoUrl).replace("youtube-nocookie.com/embed/", "youtube.com/watch?v=")}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-primary/30 text-xs font-semibold text-primary hover:bg-primary/10 transition-colors"
+                                >
+                                  <span>Watch on YouTube</span>
+                                  <ExternalLink className="h-3.5 w-3.5" />
+                                </a>
+                                <Button onClick={() => setActiveTab("experiments")} size="sm" className="text-xs font-bold gap-1.5 bg-primary hover:bg-primary/90 text-white">
+                                  Practice Experiments <ChevronRight className="h-4 w-4" />
+                                </Button>
+                              </div>
                             </div>
 
-                            <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
-                              <a
-                                href={lab.videoUrl.replace("youtube-nocookie.com/embed/", "youtube.com/watch?v=")}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-primary/30 text-xs font-semibold text-primary hover:bg-primary/10 transition-colors"
-                              >
-                                <span>Watch on YouTube</span>
-                                <ExternalLink className="h-3.5 w-3.5" />
-                              </a>
-                              <Button onClick={() => setActiveTab("experiments")} size="sm" className="text-xs font-bold gap-1.5 bg-primary hover:bg-primary/90 text-white">
-                                Practice Experiments <ChevronRight className="h-4 w-4" />
-                              </Button>
-                            </div>
+                            {lab.englishVideo?.timestamps && lab.englishVideo.timestamps.length > 0 && (
+                              <VideoTimeline
+                                video={lab.englishVideo}
+                                activeTimestampIdx={activeEnglishTimestampIdx}
+                                onSelectTimestamp={handleSelectEnglishTimestamp}
+                                currentVideoTime={englishVideoTime}
+                                compact={false}
+                                accentColor="blue"
+                              />
+                            )}
                           </div>
-                        </div>
-                      )}
+                        );
+                      })()}
 
                       {/* TAMIL FULL COURSE SECTION */}
-                      {videoLanguageTab === "tamil" && lab.tamilVideo && (
-                        <div className="space-y-6">
-                          <div className="aspect-video w-full rounded-2xl bg-black/90 border border-amber-500/30 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
-                            <iframe
-                              key={`tamil-tab-${tamilVideoTime}`}
-                              src={tamilVideoTime > 0 ? `${lab.tamilVideo.url}?start=${tamilVideoTime}&autoplay=1` : lab.tamilVideo.url}
-                              title={lab.tamilVideo.title}
-                              className="w-full h-full rounded-2xl border-0"
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                              allowFullScreen
-                            />
-                          </div>
+                      {videoLanguageTab === "tamil" && lab.tamilVideo && (() => {
+                        const activeTamilItem = activeTamilTimestampIdx !== null && lab.tamilVideo?.timestamps
+                          ? lab.tamilVideo.timestamps[activeTamilTimestampIdx]
+                          : null;
+                        const baseTamilUrl = selectedTamilVideoUrl || lab.tamilVideo.url;
+                        const iframeTamilSrc = tamilVideoTime > 0
+                          ? `${baseTamilUrl}${baseTamilUrl.includes("?") ? "&" : "?"}start=${tamilVideoTime}&autoplay=1`
+                          : `${baseTamilUrl}${baseTamilUrl.includes("?") ? "&" : "?"}autoplay=1`;
 
-                          <div className="p-5 bg-amber-500/5 rounded-2xl border border-amber-500/20 shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                            <div className="space-y-1.5">
-                              <div className="flex items-center gap-2">
-                                <Badge variant="outline" className="text-[10px] font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/30">
-                                  தமிழ் Full Course Tutorial
-                                </Badge>
-                                {lab.tamilVideo.channel && (
-                                  <Badge variant="outline" className="text-[10px] font-mono border-amber-500/20 bg-background/50">
-                                    Channel: {lab.tamilVideo.channel}
+                        return (
+                          <div className="space-y-6">
+                            <div className="aspect-video w-full rounded-2xl bg-black/90 border border-amber-500/30 flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
+                              <iframe
+                                key={`tamil-tab-${baseTamilUrl}-${tamilVideoTime}`}
+                                src={iframeTamilSrc}
+                                title={lab.tamilVideo.title}
+                                className="w-full h-full rounded-2xl border-0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                              />
+                            </div>
+
+                            <div className="p-5 bg-amber-500/5 rounded-2xl border border-amber-500/20 shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                              <div className="space-y-1.5">
+                                <div className="flex items-center gap-2">
+                                  <Badge variant="outline" className="text-[10px] font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/30">
+                                    {activeTamilItem?.category || "தமிழ் Full Course Tutorial"}
                                   </Badge>
-                                )}
-                                <span className="text-xs text-muted-foreground font-mono">
-                                  • {lab.tamilVideo.duration || "Full Course"}
-                                </span>
+                                  {lab.tamilVideo.channel && (
+                                    <Badge variant="outline" className="text-[10px] font-mono border-amber-500/20 bg-background/50">
+                                      Channel: {lab.tamilVideo.channel}
+                                    </Badge>
+                                  )}
+                                  <span className="text-xs text-muted-foreground font-mono">
+                                    • {activeTamilItem?.time || lab.tamilVideo.duration || "Full Course"}
+                                  </span>
+                                </div>
+                                <h3 className="text-base font-bold text-foreground font-heading">
+                                  {activeTamilItem?.title || lab.tamilVideo.title}
+                                </h3>
+                                <p className="text-xs text-muted-foreground leading-relaxed max-w-2xl">
+                                  {activeTamilItem?.description || lab.tamilVideo.description}
+                                </p>
                               </div>
-                              <h3 className="text-base font-bold text-foreground font-heading">
-                                {lab.tamilVideo.title}
-                              </h3>
-                              <p className="text-xs text-muted-foreground leading-relaxed max-w-2xl">
-                                {lab.tamilVideo.description}
-                              </p>
+
+                              <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
+                                <a
+                                  href={activeTamilItem?.url || lab.tamilVideo.url.replace("youtube-nocookie.com/embed/", "youtube.com/watch?v=")}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-500/30 text-xs font-semibold text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 transition-colors"
+                                >
+                                  <span>Watch on YouTube</span>
+                                  <ExternalLink className="h-3.5 w-3.5" />
+                                </a>
+                                <Button onClick={() => setActiveTab("experiments")} size="sm" className="text-xs font-bold gap-1.5 bg-amber-600 hover:bg-amber-700 text-white">
+                                  Practice Experiments <ChevronRight className="h-4 w-4" />
+                                </Button>
+                              </div>
                             </div>
 
-                            <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
-                              <a
-                                href={lab.tamilVideo.url.replace("youtube-nocookie.com/embed/", "youtube.com/watch?v=")}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-500/30 text-xs font-semibold text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 transition-colors"
-                              >
-                                <span>Watch on YouTube</span>
-                                <ExternalLink className="h-3.5 w-3.5" />
-                              </a>
-                              <Button onClick={() => setActiveTab("experiments")} size="sm" className="text-xs font-bold gap-1.5 bg-amber-600 hover:bg-amber-700 text-white">
-                                Practice Experiments <ChevronRight className="h-4 w-4" />
-                              </Button>
-                            </div>
+                            {lab.tamilVideo.timestamps && lab.tamilVideo.timestamps.length > 0 && (
+                              <TamilVideoTimeline
+                                tamilVideo={lab.tamilVideo}
+                                activeTimestampIdx={activeTamilTimestampIdx}
+                                onSelectTimestamp={handleSelectTamilTimestamp}
+                                currentVideoTime={tamilVideoTime}
+                                compact={false}
+                              />
+                            )}
                           </div>
-
-                          {lab.tamilVideo.timestamps && lab.tamilVideo.timestamps.length > 0 && (
-                            <TamilVideoTimeline
-                              tamilVideo={lab.tamilVideo}
-                              activeTimestampIdx={activeTamilTimestampIdx}
-                              onSelectTimestamp={handleSelectTamilTimestamp}
-                              currentVideoTime={tamilVideoTime}
-                              compact={false}
-                            />
-                          )}
-                        </div>
-                      )}
+                        );
+                      })()}
 
                       {/* CURATED YOUTUBE PLAYLISTS & COMPLETE VIDEO SERIES */}
                       {lab.playlists && lab.playlists.length > 0 && (
