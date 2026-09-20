@@ -15,7 +15,7 @@ import { SortingVisualizer } from "@/components/visualizer/sorting/sorting-visua
 import { RecursionVisualizerPanel } from "@/components/visualizer/recursion/recursion-visualizer-panel";
 import { LeetCodePracticeCard } from "@/components/vlab/leetcode-practice-card";
 import { QuizEngine } from "@/components/quiz/quiz-engine";
-import { TamilVideoTimeline } from "@/components/vlab/tamil-video-timeline";
+import { VideoTimeline, TamilVideoTimeline } from "@/components/vlab/tamil-video-timeline";
 
 // UI Components
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -55,10 +55,17 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
   const [expVideoLang, setExpVideoLang] = useState<"english" | "tamil">("english");
   const [expTamilVideoTime, setExpTamilVideoTime] = useState<number>(0);
   const [activeExpTamilTimestampIdx, setActiveExpTamilTimestampIdx] = useState<number | null>(null);
+  const [expEnglishVideoTime, setExpEnglishVideoTime] = useState<number>(0);
+  const [activeExpEnglishTimestampIdx, setActiveExpEnglishTimestampIdx] = useState<number | null>(null);
 
   const handleSelectExpTamilTimestamp = (seconds: number, idx: number) => {
     setExpTamilVideoTime(seconds);
     setActiveExpTamilTimestampIdx(idx);
+  };
+
+  const handleSelectExpEnglishTimestamp = (seconds: number, idx: number) => {
+    setExpEnglishVideoTime(seconds);
+    setActiveExpEnglishTimestampIdx(idx);
   };
 
   const lab = LABS_DATA.find((l) => l.id === experiment.labId);
@@ -214,10 +221,12 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 {/* Video Player Frame */}
                 <div className="aspect-video w-full rounded-xl bg-slate-950 border border-border overflow-hidden shadow-md">
                   <iframe
-                    key={`${expVideoLang}-${expTamilVideoTime}`}
+                    key={`${expVideoLang}-${expVideoLang === "english" ? expEnglishVideoTime : expTamilVideoTime}`}
                     src={
                       expVideoLang === "english"
-                        ? (experiment.sections.videoUrl || lab?.videoUrl || "https://www.youtube-nocookie.com/embed/8hly31xKli0")
+                        ? (expEnglishVideoTime > 0
+                            ? `${lab?.englishVideo?.url || experiment.sections.videoUrl || lab?.videoUrl}?start=${expEnglishVideoTime}&autoplay=1`
+                            : (lab?.englishVideo?.url || experiment.sections.videoUrl || lab?.videoUrl || "https://www.youtube-nocookie.com/embed/8hly31xKli0"))
                         : (lab?.tamilVideo
                             ? (expTamilVideoTime > 0
                                 ? `${lab.tamilVideo.url}?start=${expTamilVideoTime}&autoplay=1`
@@ -226,7 +235,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                     }
                     title={
                       expVideoLang === "english"
-                        ? (experiment.sections.videoTitle || experiment.title)
+                        ? (lab?.englishVideo?.title || experiment.sections.videoTitle || experiment.title)
                         : (lab?.tamilVideo?.title || "Tamil Laboratory Video")
                     }
                     className="w-full h-full border-0"
@@ -238,13 +247,27 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 <div className="flex items-center justify-between text-xs text-muted-foreground px-1">
                   <span className="font-semibold text-foreground">
                     {expVideoLang === "english"
-                      ? (experiment.sections.videoTitle || `${experiment.title} Full Tutorial`)
+                      ? (lab?.englishVideo?.title || experiment.sections.videoTitle || `${experiment.title} Full Tutorial`)
                       : (lab?.tamilVideo?.title || "Tamil Video Lecture")}
                   </span>
                   <Badge variant="outline" className="text-[10px] font-mono text-muted-foreground">
                     {experiment.category}
                   </Badge>
                 </div>
+
+                {/* English Chapters in Experiment Workspace */}
+                {expVideoLang === "english" && lab?.englishVideo?.timestamps && lab.englishVideo.timestamps.length > 0 && (
+                  <div className="pt-2">
+                    <VideoTimeline
+                      video={lab.englishVideo}
+                      activeTimestampIdx={activeExpEnglishTimestampIdx}
+                      onSelectTimestamp={handleSelectExpEnglishTimestamp}
+                      currentVideoTime={expEnglishVideoTime}
+                      compact={true}
+                      accentColor="blue"
+                    />
+                  </div>
+                )}
 
                 {/* Tamil Chapters in Experiment Workspace */}
                 {expVideoLang === "tamil" && lab?.tamilVideo?.timestamps && lab.tamilVideo.timestamps.length > 0 && (
@@ -255,6 +278,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                       onSelectTimestamp={handleSelectExpTamilTimestamp}
                       currentVideoTime={expTamilVideoTime}
                       compact={true}
+                      accentColor="amber"
                     />
                   </div>
                 )}
