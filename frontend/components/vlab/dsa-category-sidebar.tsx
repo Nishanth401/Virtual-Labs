@@ -22,6 +22,7 @@ interface DSACategorySidebarProps {
   onSelectTopic: (topic: DSATopic) => void;
   completedTopicIds: string[];
   roadmapTitle?: string;
+  className?: string;
 }
 
 export function DSACategorySidebar({
@@ -30,6 +31,7 @@ export function DSACategorySidebar({
   onSelectTopic,
   completedTopicIds,
   roadmapTitle,
+  className,
 }: DSACategorySidebarProps) {
   const [searchQuery, setSearchQuery] = React.useState("");
 
@@ -64,8 +66,8 @@ export function DSACategorySidebar({
   })).filter((cat) => cat.topics.length > 0);
 
   return (
-    <aside className="w-full lg:w-[280px] xl:w-[310px] shrink-0 space-y-4">
-      <div className="bg-card/90 backdrop-blur-md rounded-2xl border border-border p-4 sm:p-5 shadow-sm space-y-4 sticky top-24">
+    <aside className={cn("w-full lg:w-[280px] xl:w-[310px] shrink-0", className)}>
+      <div className="bg-card/90 backdrop-blur-md rounded-2xl border border-border p-4 sm:p-5 shadow-sm space-y-3 sticky top-24 h-full flex flex-col justify-between">
         {/* Header & Search */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
