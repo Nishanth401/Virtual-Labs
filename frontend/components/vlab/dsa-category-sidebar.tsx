@@ -21,6 +21,7 @@ interface DSACategorySidebarProps {
   activeTopicId: string;
   onSelectTopic: (topic: DSATopic) => void;
   completedTopicIds: string[];
+  roadmapTitle?: string;
 }
 
 export function DSACategorySidebar({
@@ -28,8 +29,20 @@ export function DSACategorySidebar({
   activeTopicId,
   onSelectTopic,
   completedTopicIds,
+  roadmapTitle,
 }: DSACategorySidebarProps) {
   const [searchQuery, setSearchQuery] = React.useState("");
+
+  const firstCatId = categories[0]?.id || "";
+  const headerTitle =
+    roadmapTitle ||
+    (firstCatId.startsWith("dbms-")
+      ? "DBMS Curriculum Roadmap"
+      : firstCatId.startsWith("c-prog-")
+      ? "C Programming Roadmap"
+      : firstCatId.startsWith("ml-")
+      ? "ML Curriculum Roadmap"
+      : "DSA Curriculum Roadmap");
 
   const getIcon = (iconName: string) => {
     switch (iconName) {
@@ -51,14 +64,14 @@ export function DSACategorySidebar({
   })).filter((cat) => cat.topics.length > 0);
 
   return (
-    <aside className="w-full lg:w-[350px] shrink-0 space-y-4">
-      <div className="bg-card/90 backdrop-blur-md rounded-2xl border border-border p-5 shadow-sm space-y-4 sticky top-24">
+    <aside className="w-full lg:w-[280px] xl:w-[310px] shrink-0 space-y-4">
+      <div className="bg-card/90 backdrop-blur-md rounded-2xl border border-border p-4 sm:p-5 shadow-sm space-y-4 sticky top-24">
         {/* Header & Search */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <h3 className="font-heading font-black text-base text-foreground flex items-center gap-2">
               <BookOpen className="h-4.5 w-4.5 text-emerald-500" />
-              <span>DSA Curriculum Roadmap</span>
+              <span>{headerTitle}</span>
             </h3>
           </div>
 

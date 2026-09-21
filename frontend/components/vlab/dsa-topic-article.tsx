@@ -15,6 +15,7 @@ import {
   BookOpen,
 } from "lucide-react";
 import { MultiLangCodeViewer } from "@/components/visualizer/code/multi-lang-code-viewer";
+import { SqlCompiler } from "@/components/vlab/sql-compiler";
 
 interface DSATopicArticleProps {
   topic: DSATopic;
@@ -105,9 +106,9 @@ export function DSATopicArticle({
       {/* Main Content: Key Concepts, Complexities, & Practice Problems */}
       <div className="space-y-6">
         {/* Quick Key-Points Summary Cards (3 Bullet Points Max) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
           {topic.keyPoints.map((pt, idx) => (
-            <div key={idx} className="p-4 rounded-2xl border border-border/80 bg-card/80 flex items-start gap-3 shadow-xs">
+            <div key={idx} className="p-4 rounded-2xl border border-border/80 bg-card/80 flex items-start gap-3 shadow-xs h-full">
               <span className="flex items-center justify-center h-6 w-6 rounded-full bg-primary/10 text-primary font-bold text-xs shrink-0 mt-0.5 font-sans">
                 {idx + 1}
               </span>
@@ -119,15 +120,15 @@ export function DSATopicArticle({
         </div>
 
         {/* Asymptotic Complexity Quick Strip */}
-        <Card className="border-border bg-card/80 p-5 space-y-3">
+        <Card className="border-border bg-card/80 p-5 space-y-3 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold font-sans text-muted-foreground uppercase tracking-wider flex items-center gap-2">
               <Zap className="h-4 w-4 text-amber-500" /> Time &amp; Space Complexity Summary
             </span>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 font-mono text-sm">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 font-mono text-sm items-stretch">
             {topic.complexities.map((c, idx) => (
-              <div key={idx} className="p-3 rounded-xl bg-muted/40 border border-border/50 text-center">
+              <div key={idx} className="p-3 rounded-xl bg-muted/40 border border-border/50 text-center flex flex-col justify-center h-full">
                 <div className="text-xs text-muted-foreground font-sans truncate">{c.operation}</div>
                 <div className="font-bold text-emerald-500 mt-1 text-base">{c.avg || c.worst}</div>
                 <div className="text-xs text-teal-400 mt-0.5">{c.space}</div>
@@ -137,11 +138,24 @@ export function DSATopicArticle({
         </Card>
 
         {/* Interactive Source Code & Live Compiler Runner */}
-        <MultiLangCodeViewer
-          title={`${topic.title} - Implementation`}
-          subtitle="Interactive Multi-Language Source Code & Live Compiler Runner"
-          snippets={topic.codeSnippets || []}
-        />
+        {topic.categoryId?.startsWith("dbms-") || topic.id?.startsWith("dbms-") || topic.codeSnippets?.some((s) => s.language?.toLowerCase() === "sql") ? (
+          <SqlCompiler
+            title={`${topic.title}`}
+            subtitle="Interactive Relational SQL Studio & Live Query Execution Sandbox"
+            initialSql={
+              topic.codeSnippets?.find((s) => s.language?.toLowerCase() === "sql")?.code ||
+              topic.codeSnippets?.[0]?.code ||
+              ""
+            }
+            currentExperimentId={topic.id}
+          />
+        ) : (
+          <MultiLangCodeViewer
+            title={`${topic.title} - Implementation`}
+            subtitle="Interactive Multi-Language Source Code & Live Compiler Runner"
+            snippets={topic.codeSnippets || []}
+          />
+        )}
 
         {/* Curated Topic Resources & References Section */}
         <Card className="border-border bg-card/90 shadow-sm p-6 space-y-5">

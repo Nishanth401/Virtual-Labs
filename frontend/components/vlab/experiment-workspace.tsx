@@ -16,6 +16,7 @@ import { RecursionVisualizerPanel } from "@/components/visualizer/recursion/recu
 import { LeetCodePracticeCard } from "@/components/vlab/leetcode-practice-card";
 import { QuizEngine } from "@/components/quiz/quiz-engine";
 import { VideoTimeline, TamilVideoTimeline } from "@/components/vlab/tamil-video-timeline";
+import { SqlCompiler } from "@/components/vlab/sql-compiler";
 
 // UI Components
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -406,121 +407,118 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
         </TabsContent>
 
         {/* ============================================================== */}
-        {/* PART 2: INTERACTIVE JAVA DSA SIMULATOR */}
+        {/* ============================================================== */}
+        {/* PART 2: INTERACTIVE SIMULATOR / SQL STUDIO */}
         {/* ============================================================== */}
         <TabsContent value="simulation" className="space-y-6">
           <div className="p-4 rounded-2xl bg-card/80 backdrop-blur-md border border-border shadow-sm">
-            {experiment.simulator === "stack" && (
+            {experiment.labId === "dbms-lab" ? (
+              <SqlCompiler
+                title={experiment.title}
+                subtitle="Interactive Relational Schema & SQL Query Simulation Studio"
+                initialSql={experiment.sections.sampleCode.code}
+                currentExperimentId={experiment.id}
+              />
+            ) : experiment.simulator === "stack" ? (
               <StackVisualizer content={<p>Java Stack LIFO simulation sandbox.</p>} />
-            )}
-            {experiment.simulator === "queue" && (
+            ) : experiment.simulator === "queue" ? (
               <QueueVisualizer content={<p>Java Queue FIFO simulation sandbox.</p>} />
-            )}
-            {experiment.simulator === "linked-list" && (
+            ) : experiment.simulator === "linked-list" ? (
               <LinkedListVisualizer content={<p>Java Singly Linked List dynamic pointer visualizer.</p>} />
-            )}
-            {experiment.simulator === "bubble-sort" && (
+            ) : experiment.simulator === "bubble-sort" ? (
               <SortingVisualizer
                 algorithm="bubble"
                 title="Bubble Sort Simulation (Java)"
                 description="Observe adjacent comparison passes and bubbling of maximum unsorted values."
               />
-            )}
-            {experiment.simulator === "selection-sort" && (
+            ) : experiment.simulator === "selection-sort" ? (
               <SortingVisualizer
                 algorithm="selection"
                 title="Selection Sort Simulation (Java)"
                 description="Observe minimum index scanning across unsorted partition and minimal memory swaps."
               />
-            )}
-            {experiment.simulator === "insertion-sort" && (
+            ) : experiment.simulator === "insertion-sort" ? (
               <SortingVisualizer
                 algorithm="insertion"
                 title="Insertion Sort Simulation (Java)"
                 description="Observe element extraction, backward shifting, and adaptive linear performance."
               />
-            )}
-            {experiment.simulator !== "stack" &&
-              experiment.simulator !== "queue" &&
-              experiment.simulator !== "linked-list" &&
-              experiment.simulator !== "bubble-sort" &&
-              experiment.simulator !== "selection-sort" &&
-              experiment.simulator !== "insertion-sort" && (
-                <div className="space-y-6">
-                  <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-border/50">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <Terminal className="h-5 w-5 text-primary" />
-                        <h3 className="font-bold text-base text-foreground font-heading">
-                          {experiment.title} Interactive Simulation Sandbox
-                        </h3>
-                      </div>
-                      <p className="text-xs text-muted-foreground">
-                        Execute step-by-step algorithm trace, inspect memory state transitions, and verify outputs.
-                      </p>
+            ) : (
+              <div className="space-y-6">
+                <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-border/50">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Terminal className="h-5 w-5 text-primary" />
+                      <h3 className="font-bold text-base text-foreground font-heading">
+                        {experiment.title} Interactive Simulation Sandbox
+                      </h3>
                     </div>
-                    <Button
-                      onClick={handleRunSimulation}
-                      disabled={isSimulating}
-                      className="bg-primary hover:bg-primary/90 text-white text-xs font-bold gap-2 shadow-sm"
-                    >
-                      {isSimulating ? (
-                        <>
-                          <span className="w-3 h-3 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                          <span>Simulating Execution...</span>
-                        </>
-                      ) : (
-                        <>
-                          <PlayCircle className="h-4 w-4" />
-                          <span>Run Simulation Sandbox</span>
-                        </>
-                      )}
-                    </Button>
+                    <p className="text-xs text-muted-foreground">
+                      Execute step-by-step algorithm trace, inspect memory state transitions, and verify outputs.
+                    </p>
+                  </div>
+                  <Button
+                    onClick={handleRunSimulation}
+                    disabled={isSimulating}
+                    className="bg-primary hover:bg-primary/90 text-white text-xs font-bold gap-2 shadow-sm"
+                  >
+                    {isSimulating ? (
+                      <>
+                        <span className="w-3 h-3 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                        <span>Simulating Execution...</span>
+                      </>
+                    ) : (
+                      <>
+                        <PlayCircle className="h-4 w-4" />
+                        <span>Run Simulation Sandbox</span>
+                      </>
+                    )}
+                  </Button>
+                </div>
+
+                {/* Procedure Step Checklist */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-3 p-4 rounded-xl bg-muted/30 border border-border/60">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-primary font-mono flex items-center gap-1.5">
+                      <CheckCircle2 className="h-4 w-4" /> Execution Procedure Steps
+                    </h4>
+                    <div className="space-y-2">
+                      {experiment.sections.procedure.map((step, sIdx) => (
+                        <div key={sIdx} className="p-2.5 rounded-lg bg-card/90 border border-border/50 text-xs text-muted-foreground flex items-start gap-2">
+                          <span className="flex items-center justify-center h-4 w-4 rounded-full bg-primary/10 text-primary text-[10px] font-bold shrink-0 mt-0.5 font-mono">
+                            {sIdx + 1}
+                          </span>
+                          <span className="leading-snug">{step}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
-                  {/* Procedure Step Checklist */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-3 p-4 rounded-xl bg-muted/30 border border-border/60">
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-primary font-mono flex items-center gap-1.5">
-                        <CheckCircle2 className="h-4 w-4" /> Execution Procedure Steps
-                      </h4>
-                      <div className="space-y-2">
-                        {experiment.sections.procedure.map((step, sIdx) => (
-                          <div key={sIdx} className="p-2.5 rounded-lg bg-card/90 border border-border/50 text-xs text-muted-foreground flex items-start gap-2">
-                            <span className="flex items-center justify-center h-4 w-4 rounded-full bg-primary/10 text-primary text-[10px] font-bold shrink-0 mt-0.5 font-mono">
-                              {sIdx + 1}
-                            </span>
-                            <span className="leading-snug">{step}</span>
-                          </div>
-                        ))}
+                  {/* Live Output Terminal */}
+                  <div className="space-y-3 p-4 rounded-xl bg-slate-950 text-slate-100 border border-slate-800 shadow-inner flex flex-col justify-between">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                        <span className="text-[11px] font-mono text-slate-400 flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                          Simulation Console Stream
+                        </span>
+                        <Badge variant="outline" className="text-[10px] font-mono border-slate-700 text-slate-300">
+                          {experiment.sections.sampleCode.language.toUpperCase()} ENGINE
+                        </Badge>
                       </div>
+                      <pre className="font-mono text-xs text-emerald-400 whitespace-pre-wrap leading-relaxed max-h-60 overflow-y-auto p-2 bg-black/40 rounded-lg">
+                        {simOutput || experiment.sections.expectedOutput}
+                      </pre>
                     </div>
 
-                    {/* Live Output Terminal */}
-                    <div className="space-y-3 p-4 rounded-xl bg-slate-950 text-slate-100 border border-slate-800 shadow-inner flex flex-col justify-between">
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                          <span className="text-[11px] font-mono text-slate-400 flex items-center gap-1.5">
-                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                            Simulation Console Stream
-                          </span>
-                          <Badge variant="outline" className="text-[10px] font-mono border-slate-700 text-slate-300">
-                            {experiment.sections.sampleCode.language.toUpperCase()} ENGINE
-                          </Badge>
-                        </div>
-                        <pre className="font-mono text-xs text-emerald-400 whitespace-pre-wrap leading-relaxed max-h-60 overflow-y-auto p-2 bg-black/40 rounded-lg">
-                          {simOutput || experiment.sections.expectedOutput}
-                        </pre>
-                      </div>
-
-                      <div className="pt-2 text-[10px] text-slate-500 font-mono flex items-center justify-between border-t border-slate-800/60">
-                        <span>Status: 0 Errors | Memory Verified</span>
-                        <span>State: READY</span>
-                      </div>
+                    <div className="pt-2 text-[10px] text-slate-500 font-mono flex items-center justify-between border-t border-slate-800/60">
+                      <span>Status: 0 Errors | Memory Verified</span>
+                      <span>State: READY</span>
                     </div>
                   </div>
                 </div>
-              )}
+              </div>
+            )}
           </div>
 
           <div className="flex items-center justify-between pt-4 border-t border-border/60">
@@ -528,28 +526,41 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
               <ChevronLeft className="h-4 w-4" /> Back to Video &amp; Theory
             </Button>
             <Button onClick={() => setActiveTab("recursion-trace")} className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 font-bold">
-              <Code2 className="h-4 w-4" /> Next: Java Code &amp; Call Stack Trace <ChevronRight className="h-4 w-4" />
+              <Code2 className="h-4 w-4" />
+              <span>
+                {experiment.labId === "dbms-lab" ? "Next: SQL Studio & Query Runner" : "Next: Java Code & Call Stack Trace"}
+              </span>
+              <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
         </TabsContent>
 
         {/* ============================================================== */}
-        {/* PART 3: JAVA CODE & RECURSION CALL STACK TRACE */}
+        {/* PART 3: CODE & EXECUTION RUNNER */}
         {/* ============================================================== */}
         <TabsContent value="recursion-trace" className="space-y-6">
-          <RecursionVisualizerPanel
-            initialCode={experiment.sections.recursionPreset?.javaCode || experiment.sections.sampleCode.code}
-            functionName={experiment.sections.recursionPreset?.functionName}
-            sampleCall={experiment.sections.recursionPreset?.sampleCall}
-            description={experiment.sections.recursionPreset?.description}
-          />
+          {experiment.labId === "dbms-lab" ? (
+            <SqlCompiler
+              title={`${experiment.title} - SQL Studio`}
+              subtitle="Relational SQL Query Runner & Table Inspector"
+              initialSql={experiment.sections.sampleCode.code}
+              currentExperimentId={experiment.id}
+            />
+          ) : (
+            <RecursionVisualizerPanel
+              initialCode={experiment.sections.recursionPreset?.javaCode || experiment.sections.sampleCode.code}
+              functionName={experiment.sections.recursionPreset?.functionName}
+              sampleCall={experiment.sections.recursionPreset?.sampleCall}
+              description={experiment.sections.recursionPreset?.description}
+            />
+          )}
 
           <div className="flex items-center justify-between pt-4 border-t border-border/60">
             <Button variant="outline" onClick={() => setActiveTab("simulation")} className="text-xs gap-1.5">
               <ChevronLeft className="h-4 w-4" /> Back to Simulator
             </Button>
             <Button onClick={() => setActiveTab("leetcode-quiz")} className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 font-bold">
-              <Trophy className="h-4 w-4" /> Next: LeetCode &amp; Self-Assessment <ChevronRight className="h-4 w-4" />
+              <Trophy className="h-4 w-4" /> Next: Practice &amp; Self-Assessment <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
         </TabsContent>

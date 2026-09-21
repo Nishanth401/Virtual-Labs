@@ -393,40 +393,40 @@ export const SYLLABUS_MAPPINGS_DATA: UniversitySyllabus[] = [
     ]
   },
 
-  // 8. C PROGRAMMING LABORATORY
+  // 8. C PROGRAMMING LABORATORY (NPTEL 8-WEEK AI&DS TRACK)
   {
-    university: "Anna University (Regulation 2021)",
-    courseCode: "CS3151",
-    courseTitle: "C Programming Laboratory",
-    semester: "Semester 1 (B.E / B.Tech All Branches)",
-    regulations: "R2021",
+    university: "NPTEL SWAYAM & Anna University (Regulation 2021)",
+    courseCode: "CS3151 / NPTEL-C",
+    courseTitle: "NPTEL C Programming 8-Week AI&DS Laboratory",
+    semester: "Semester 1 (B.Tech AI & DS / Engineering)",
+    regulations: "NPTEL / R2021",
     units: [
       {
-        unit: "Unit I",
-        title: "I/O, Operators & Control Flow",
+        unit: "Weeks 1–2",
+        title: "C Fundamentals, Operators & Decision Making",
         topics: [
-          "Data types, format specifiers (%d, %f, %c, %lf), and formatted console I/O",
-          "Decision Making: if-else ladders, switch-case, leap year and quadratic roots",
-          "Iterative Loops: for, while, do-while, prime checking, and nested star pyramids"
+          "History, GCC 4-stage compilation pipeline (cpp, cc1, as, ld), data types, and formatted printf/scanf",
+          "Arithmetic, relational, logical operators, short-circuit evaluation, and operator precedence",
+          "Multi-branch decision logic: if-else ladders, nested conditions, and switch-case jump tables"
         ]
       },
       {
-        unit: "Unit II",
-        title: "Arrays, Strings & Modular Functions",
+        unit: "Weeks 3–5",
+        title: "Loops, Recursion, Arrays & *(a+i) Pointer Arithmetic",
         topics: [
-          "1D Arrays: min, max, average statistics, and Linear Search",
-          "2D Arrays: matrix addition, multiplication, and diagonal sum",
-          "Strings: null-terminated character buffers, custom strlen/strcpy, and palindromes",
-          "Functions: pass-by-value vs pass-by-reference pointers, factorial, and Euclidean GCD"
+          "Iterative control: for, while, do-while, break/continue, primes in O(sqrt(n)), and Student Mark Analysis",
+          "Modular functions, scope lifetimes (local, static, global), and recursive Euclidean GCD",
+          "1D/2D arrays, contiguous memory strides, *(a+i) pointer dereferencing, searching, sorting, and matrix algebra"
         ]
       },
       {
-        unit: "Unit III",
-        title: "Pointers, Structures & File Streams",
+        unit: "Weeks 6–8",
+        title: "Dynamic Memory, File Streams, Structures, Linked Lists & NPTEL Mock Exam",
         topics: [
-          "Pointers: pointer arithmetic, malloc, calloc, realloc, and free memory management",
-          "Structures & Unions: typedef student databases and memory footprint analysis",
-          "File Handling: fopen, fprintf, fscanf, fclose, and preprocessor macros"
+          "Dynamic heap memory: malloc, calloc, realloc, free, memory leak prevention, and dangling pointers",
+          "Disk file persistence: fopen, fclose, fprintf, fscanf, and student database storage",
+          "Heterogeneous composite structs, structure pointers (->), Singly Linked List dynamic node manipulation",
+          "7-Day NPTEL revision plan, mistake analysis, and comprehensive NPTEL Mock Examination"
         ]
       }
     ]

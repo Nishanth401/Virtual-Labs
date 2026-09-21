@@ -939,79 +939,76 @@ export const LABS_DATA: Lab[] = [
   },
 
   // ==========================================
-  // 8. C PROGRAMMING
+  // 8. C PROGRAMMING (NPTEL 8-WEEK AI&DS TRACK)
   // ==========================================
   {
     id: "c-programming",
     code: "CS3151",
-    name: "C Programming Laboratory",
+    name: "C Programming Laboratory (NPTEL 8-Week AI&DS Track)",
     shortTitle: "CPL",
     discipline: "Artificial Intelligence & Data Science",
     disciplineSlug: "aids",
-    shortDesc: "Master C procedural foundations: formatted I/O, control flow, loops, 1D/2D arrays, pointers, memory allocation (malloc/free), structs, and file streams.",
-    description: "Hands-on C Programming Virtual Laboratory providing an interactive workspace covering primitive data types, formatted I/O, conditionals, loops and pattern generation, 1D/2D array matrix mathematics, string manipulation, recursion and Euclidean GCD, pointer dereferencing, dynamic memory management (malloc, calloc, realloc, free), heterogeneous structures, and disk file I/O operations.",
+    shortDesc: "Official 8-Week NPTEL Study Plan & Certification Track for AI&DS students: Formatted I/O, Decision Trees, Loops, Recursion, *(a+i) Pointers, Dynamic Memory, Structs, and NPTEL Mock Exam.",
+    description: "The NPTEL C Programming 8-Week Study Plan is engineered specifically for AI&DS students to achieve NPTEL Certification and build an unshakeable programming foundation for Data Structures, AI/ML tensor computing, competitive coding, and engineering mini-projects. Features a structured Monday–Sunday weekly learning workflow, 8 weekly evaluation assessments, 6 AI&DS mini-projects, and the Faculty C Programming Champions initiative.",
     institute: "VSB Engineering College, Karur",
     department: "Department of Artificial Intelligence & Data Science",
     difficulty: "Beginner",
-    experimentsCount: 10,
-    rating: 4.94,
-    ratingsCount: 310,
+    experimentsCount: 8,
+    rating: 4.98,
+    ratingsCount: 360,
     iconName: "Code2",
-    tags: ["C Programming", "Pointers", "malloc/free", "Structures", "File I/O", "Recursion", "Matrices"],
+    tags: ["NPTEL C Certification", "AI&DS Engineering", "Pointers & *(a+i)", "malloc/free", "Structures & Linked Lists", "Recursion", "8-Week Plan"],
     bannerGradient: "from-cyan-700 via-blue-950 to-slate-950",
     videoUrl: "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
     englishVideo: {
       url: "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
-      title: "C Programming Complete Laboratory Video Tutorials (10 Experiments)",
-      description: "Master C procedural foundations: formatted I/O, control flow, loops, 1D/2D arrays, pointers, memory allocation (malloc/free), structs, and file streams.",
-      duration: "10 Experiment Tutorials (Full Course)",
-      channel: "C Programming Master Academy",
+      title: "NPTEL C Programming 8-Week Complete Lecture & Practical Series",
+      description: "Comprehensive 8-Week NPTEL curriculum video suite covering C compilation pipeline, operators, loops, recursion, *(a+i) pointer mechanics, dynamic memory, structures, and examination practice.",
+      duration: "8 Weekly Modules (Full Course)",
+      channel: "NPTEL / C Programming Master Academy",
       timestamps: [
-        { time: "Exp 1", seconds: 0, title: "Exp 1: Formatted I/O (printf/scanf) & Operators", url: "https://www.youtube.com/watch?v=KJgsSFOSQv0", embedUrl: "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0", category: "1. Fundamentals & Control Flow", description: "Data types, format specifiers (%d, %f, %c), and operator precedence." },
-        { time: "Exp 2", seconds: 0, title: "Exp 2: Conditionals: if-else, Nested if & switch-case", url: "https://www.youtube.com/watch?v=5bV_Q2u_0eA", embedUrl: "https://www.youtube-nocookie.com/embed/5bV_Q2u_0eA", category: "1. Fundamentals & Control Flow", description: "Branching decision trees, logical operators, and jump tables." },
-        { time: "Exp 3", seconds: 0, title: "Exp 3: Loops & Pyramid Pattern Printing", url: "https://www.youtube.com/watch?v=3gV_0qM2u-A", embedUrl: "https://www.youtube-nocookie.com/embed/3gV_0qM2u-A", category: "1. Fundamentals & Control Flow", description: "For, while, do-while iteration, nested loops, and pattern printing algorithms." },
-        { time: "Exp 4", seconds: 0, title: "Exp 4: 1D Arrays: Searching, Insertion & Deletion", url: "https://www.youtube.com/watch?v=2PgYwA_k4qY", embedUrl: "https://www.youtube-nocookie.com/embed/2PgYwA_k4qY", category: "2. Arrays, Strings & Functions", description: "Linear search, binary search, element shifting, and bounds checking." },
-        { time: "Exp 5", seconds: 0, title: "Exp 5: 2D Arrays & Matrix Multiplication", url: "https://www.youtube.com/watch?v=cex_Z8V3qY4", embedUrl: "https://www.youtube-nocookie.com/embed/cex_Z8V3qY4", category: "2. Arrays, Strings & Functions", description: "Matrix addition, transpose, and row-by-column matrix multiplication." },
-        { time: "Exp 6", seconds: 0, title: "Exp 6: String Manipulation Functions (string.h)", url: "https://www.youtube.com/watch?v=uHH7CabJ03Y", embedUrl: "https://www.youtube-nocookie.com/embed/uHH7CabJ03Y", category: "2. Arrays, Strings & Functions", description: "Null-terminated character arrays, strlen, strcpy, strcat, and strcmp." },
-        { time: "Exp 7", seconds: 0, title: "Exp 7: Functions & Recursive Euclidean GCD", url: "https://www.youtube.com/watch?v=r_P3nF98N1M", embedUrl: "https://www.youtube-nocookie.com/embed/r_P3nF98N1M", category: "2. Arrays, Strings & Functions", description: "Call by value, call by reference, base cases, and stack frame recurrence." },
-        { time: "Exp 8", seconds: 0, title: "Exp 8: Pointer Dereferencing & Pointer Arithmetic", url: "https://www.youtube.com/watch?v=MZvdVLbT-rM", embedUrl: "https://www.youtube-nocookie.com/embed/MZvdVLbT-rM", category: "3. Pointers, Memory & Files", description: "Memory addresses, dereference operator *, and pointer addition/subtraction." },
-        { time: "Exp 9", seconds: 0, title: "Exp 9: Dynamic Memory Allocation (malloc, calloc, free)", url: "https://www.youtube.com/watch?v=VCIVXPoiLpU", embedUrl: "https://www.youtube-nocookie.com/embed/VCIVXPoiLpU", category: "3. Pointers, Memory & Files", description: "Heap allocation, realloc resizing, memory leaks, and dangling pointers." },
-        { time: "Exp 10", seconds: 0, title: "Exp 10: Structures, Unions & File I/O Streams", url: "https://www.youtube.com/watch?v=TxjIlqW1wZc", embedUrl: "https://www.youtube-nocookie.com/embed/TxjIlqW1wZc", category: "3. Pointers, Memory & Files", description: "Heterogeneous struct records, fopen, fprintf, fscanf, and fclose." }
+        { time: "Week 1", seconds: 0, title: "Week 1: Introduction, Variables, Data Types & Formatted I/O", url: "https://www.youtube.com/watch?v=KJgsSFOSQv0", embedUrl: "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0", category: "Week 1: Fundamentals", description: "C program structure, GCC compilation pipeline, printf/scanf, and basic calculations." },
+        { time: "Week 2", seconds: 0, title: "Week 2: Operators, Precedence & Decision Making (if-else, switch)", url: "https://www.youtube.com/watch?v=5bV_Q2u_0eA", embedUrl: "https://www.youtube-nocookie.com/embed/5bV_Q2u_0eA", category: "Week 2: Operators & Logic", description: "Operator precedence, short-circuit evaluation, largest of three, and electricity bill calculation." },
+        { time: "Week 3", seconds: 0, title: "Week 3: Loop Constructs & Student Mark Analysis Mini Task", url: "https://www.youtube.com/watch?v=3gV_0qM2u-A", embedUrl: "https://www.youtube-nocookie.com/embed/3gV_0qM2u-A", category: "Week 3: Loops & Patterns", description: "For, while, do-while loops, primes in O(sqrt(n)), Fibonacci, and Student Mark Analysis." },
+        { time: "Week 4", seconds: 0, title: "Week 4: Functions, Parameter Scopes & Recursive Euclidean GCD", url: "https://www.youtube.com/watch?v=r_P3nF98N1M", embedUrl: "https://www.youtube-nocookie.com/embed/r_P3nF98N1M", category: "Week 4: Functions & Recursion", description: "Pass by value, static variables, activation records, and Euclidean GCD recursion." },
+        { time: "Week 5", seconds: 0, title: "Week 5: Arrays, *(a+i) Pointer Arithmetic & Matrix Multiplication", url: "https://www.youtube.com/watch?v=2PgYwA_k4qY", embedUrl: "https://www.youtube-nocookie.com/embed/2PgYwA_k4qY", category: "Week 5: Arrays & Pointers", description: "Contiguous arrays, *(a+i) address dereferencing, searching, sorting, and 2D matrix multiplication." },
+        { time: "Week 6", seconds: 0, title: "Week 6: Dynamic Memory Allocation (malloc/free) & Disk File I/O", url: "https://www.youtube.com/watch?v=VCIVXPoiLpU", embedUrl: "https://www.youtube-nocookie.com/embed/VCIVXPoiLpU", category: "Week 6: Memory & Files", description: "Heap allocation with malloc/calloc, memory leak prevention, fopen, fprintf, and fscanf." },
+        { time: "Week 7", seconds: 0, title: "Week 7: Structures, Typedef & Singly Linked List Implementation", url: "https://www.youtube.com/watch?v=TxjIlqW1wZc", embedUrl: "https://www.youtube-nocookie.com/embed/TxjIlqW1wZc", category: "Week 7: Structs & Lists", description: "Heterogeneous struct records, structure pointers (->), and Singly Linked List node insertion/deletion." },
+        { time: "Week 8", seconds: 0, title: "Week 8: Complete Revision & NPTEL Comprehensive Examination", url: "https://www.youtube.com/watch?v=MZvdVLbT-rM", embedUrl: "https://www.youtube-nocookie.com/embed/MZvdVLbT-rM", category: "Week 8: Exam Prep", description: "7-Day practice plan, high-yield diagnostic questions, mistake analysis, and NPTEL mock exam." }
       ]
     },
     tamilVideo: {
       url: "https://www.youtube-nocookie.com/embed/Zi_n_mE3pEM",
-      title: "C Programming Language Complete Tutorial in Tamil",
-      description: "Complete C programming course in Tamil covering data types, control flow, functions, pointers, arrays, memory management, and file streams.",
+      title: "NPTEL C Programming Complete Tutorial in Tamil",
+      description: "Complete C programming masterclass in Tamil aligned with NPTEL curriculum covering data types, control flow, functions, pointers, arrays, memory management, and file streams.",
       duration: "7h 45m (15 Chapters)",
       channel: "Tamil C Series",
       timestamps: [
-        { time: "00:00", seconds: 0, title: "Introduction to C & GCC Compilation Pipeline", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM", category: "C Basics" },
-        { time: "16:30", seconds: 990, title: "Data Types, Variables & Formatted printf/scanf", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=990s", category: "C Basics" },
-        { time: "38:45", seconds: 2325, title: "Operators, Precedence & Expression Evaluation", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=2325s", category: "C Basics" },
-        { time: "1:05:20", seconds: 3920, title: "Conditionals (if-else, Nested if, switch-case)", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=3920s", category: "Control Structures" },
-        { time: "1:34:10", seconds: 5650, title: "Loops (for, while, do-while) & Pattern Printing", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=5650s", category: "Control Structures" },
-        { time: "2:08:30", seconds: 7710, title: "1D Arrays: Searching, Insertion & Deletion", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=7710s", category: "Arrays & Strings" },
-        { time: "2:38:15", seconds: 9495, title: "2D Arrays & Matrix Mathematics (Add, Multiply)", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=9495s", category: "Arrays & Strings" },
-        { time: "3:09:40", seconds: 11380, title: "Strings & String Manipulation Functions (string.h)", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=11380s", category: "Arrays & Strings" },
-        { time: "3:42:20", seconds: 13340, title: "Functions & Call by Value vs Reference", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=13340s", category: "Functions & Recursion" },
-        { time: "4:14:50", seconds: 15290, title: "Recursion & Euclidean Greatest Common Divisor", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=15290s", category: "Functions & Recursion" },
-        { time: "4:48:30", seconds: 17310, title: "Pointers Concept, Dereferencing & Arithmetic", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=17310s", category: "Pointers & Memory" },
-        { time: "5:24:15", seconds: 19455, title: "Dynamic Memory (malloc, calloc, realloc, free)", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=19455s", category: "Pointers & Memory" },
-        { time: "6:01:40", seconds: 21700, title: "Structures, Unions & Array of Structs", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=21700s", category: "Structures & Files" },
-        { time: "6:36:20", seconds: 23780, title: "File Handling: fopen, fread, fwrite, fclose", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=23780s", category: "Structures & Files" },
-        { time: "7:10:00", seconds: 25800, title: "Command Line Arguments & Preprocessor Macros", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=25800s", category: "Structures & Files" }
+        { time: "00:00", seconds: 0, title: "Week 1: Introduction to C & GCC Compilation Pipeline", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM", category: "Week 1 Basics" },
+        { time: "16:30", seconds: 990, title: "Week 1: Data Types, Variables & Formatted printf/scanf", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=990s", category: "Week 1 Basics" },
+        { time: "38:45", seconds: 2325, title: "Week 2: Operators, Precedence & Expression Evaluation", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=2325s", category: "Week 2 Operators" },
+        { time: "1:05:20", seconds: 3920, title: "Week 2: Conditionals (if-else, Nested if, switch-case)", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=3920s", category: "Week 2 Control" },
+        { time: "1:34:10", seconds: 5650, title: "Week 3: Loops (for, while, do-while) & Pattern Printing", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=5650s", category: "Week 3 Loops" },
+        { time: "2:08:30", seconds: 7710, title: "Week 5: 1D Arrays: Searching, Insertion & Deletion", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=7710s", category: "Week 5 Arrays" },
+        { time: "2:38:15", seconds: 9495, title: "Week 5: 2D Arrays & Matrix Mathematics (Add, Multiply)", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=9495s", category: "Week 5 Arrays" },
+        { time: "3:42:20", seconds: 13340, title: "Week 4: Functions & Call by Value vs Reference", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=13340s", category: "Week 4 Functions" },
+        { time: "4:14:50", seconds: 15290, title: "Week 4: Recursion & Euclidean Greatest Common Divisor", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=15290s", category: "Week 4 Recursion" },
+        { time: "4:48:30", seconds: 17310, title: "Week 5: *(a+i) Pointer Arithmetic & Dereferencing", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=17310s", category: "Week 5 Pointers" },
+        { time: "5:24:15", seconds: 19455, title: "Week 6: Dynamic Memory Allocation (malloc, calloc, free)", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=19455s", category: "Week 6 Memory" },
+        { time: "6:01:40", seconds: 21700, title: "Week 7: Structures, Unions & Array of Structs", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=21700s", category: "Week 7 Structs" },
+        { time: "6:36:20", seconds: 23780, title: "Week 6: File Handling: fopen, fprintf, fscanf, fclose", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=23780s", category: "Week 6 Files" },
+        { time: "7:10:00", seconds: 25800, title: "Week 8: Comprehensive NPTEL Review & Best Practices", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=25800s", category: "Week 8 Review" }
       ]
     },
     playlists: [
       {
-        title: "C Programming Complete Playlist (English)",
+        title: "NPTEL C Programming Complete Course (English)",
         url: "https://www.youtube.com/playlist?list=PLBlnK6fEyqRggZZgYpPMUxdY1CYkZtARR",
         embedUrl: "https://www.youtube-nocookie.com/embed/videoseries?list=PLBlnK6fEyqRggZZgYpPMUxdY1CYkZtARR",
         language: "English",
-        channel: "Neso Academy",
-        videoCount: "15 Chapters",
-        description: "Variables, pointers, dynamic memory management, arrays, structures, and file I/O."
+        channel: "Neso Academy / NPTEL",
+        videoCount: "8 Weekly Chapters",
+        description: "Variables, operators, recursion, *(a+i) pointers, dynamic memory, structs, and file streams."
       },
       {
         title: "C Programming Language Full Course (Tamil)",
@@ -1026,7 +1023,14 @@ export const LABS_DATA: Lab[] = [
     semester: "Semester 1",
     resources: [
       {
-        title: "C Programming Tutorial — Complete Handbook",
+        title: "NPTEL Official Portal — Problem Solving through Programming in C",
+        source: "Official Docs",
+        url: "https://nptel.ac.in/courses/106104128",
+        description: "Official SWAYAM / NPTEL course notes, lecture slides, video transcripts, and assignment archives.",
+        category: "NPTEL Portal"
+      },
+      {
+        title: "C Programming Tutorial & Reference Handbook",
         source: "GeeksforGeeks",
         url: "https://www.geeksforgeeks.org/c-programming-language/",
         description: "Comprehensive guide covering C fundamentals, pointers, dynamic memory, structures, and file streams.",
@@ -1038,6 +1042,13 @@ export const LABS_DATA: Lab[] = [
         url: "https://www.geeksforgeeks.org/dynamic-memory-allocation-in-c-using-malloc-calloc-free-and-realloc/",
         description: "Heap allocation, pointer arithmetic, and memory leak prevention.",
         category: "Memory Management"
+      },
+      {
+        title: "W3Schools C Programming Interactive Editor",
+        source: "W3Schools",
+        url: "https://www.w3schools.com/c/index.php",
+        description: "Hands-on browser-based C syntax practice and interactive exercise suite.",
+        category: "Interactive Practice"
       }
     ]
   },

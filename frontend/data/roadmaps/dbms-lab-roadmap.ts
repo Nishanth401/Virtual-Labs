@@ -178,20 +178,26 @@ ORDER BY avg_gpa DESC;`
           {
             language: "sql",
             label: "SQL (Set Operators & Aggregates)",
-            code: `-- 1. UNION: Combine Students and Faculty Names
-SELECT name, 'Student' AS role FROM Students
+            code: `-- 1. UNION: Combine all distinct Faculty and Student names
+SELECT name, 'Faculty' AS designation FROM Employees
 UNION
-SELECT faculty_name, 'Faculty' AS role FROM Faculty;
+SELECT name, 'Student' AS designation FROM Students
+ORDER BY name ASC;
 
--- 2. INTERSECT: Students enrolled in both AI and Data Structures
-SELECT student_id FROM CourseEnrollment WHERE course_id = 'AD8481'
+-- 2. UNION ALL: Combine all names preserving duplicates
+SELECT name, 'Faculty' AS designation FROM Employees
+UNION ALL
+SELECT name, 'Student' AS designation FROM Students;
+
+-- 3. INTERSECT: Department IDs present in both Students and Employees relations
+SELECT dept_id FROM Students
 INTERSECT
-SELECT student_id FROM CourseEnrollment WHERE course_id = 'AD8381';
+SELECT dept_id FROM Employees;
 
--- 3. EXCEPT / MINUS: Students who completed coursework but haven't submitted Lab
-SELECT student_id FROM Students
+-- 4. EXCEPT / MINUS: Department IDs in Departments with no current student enrollments
+SELECT dept_id FROM Departments
 EXCEPT
-SELECT student_id FROM LabSubmissions;`
+SELECT dept_id FROM Students;`
           }
         ],
         practiceProblems: [
@@ -234,18 +240,32 @@ SELECT student_id FROM LabSubmissions;`
           {
             language: "sql",
             label: "SQL (Joins & Subqueries)",
-            code: `-- 1. Multi-Table Join
+            code: `-- 1. Multi-Table INNER JOIN: Student details with Department & Courses
 SELECT 
     s.student_id,
     s.name AS student_name,
     d.dept_name,
-    c.course_name
+    c.course_name,
+    e.grade,
+    e.semester
 FROM Students s
 INNER JOIN Departments d ON s.dept_id = d.dept_id
-LEFT JOIN CourseEnrollment ce ON s.student_id = ce.student_id
-LEFT JOIN Courses c ON ce.course_id = c.course_id;
+INNER JOIN Enrollments e ON s.student_id = e.student_id
+INNER JOIN Courses c ON e.course_id = c.course_id
+WHERE s.gpa >= 3.60
+ORDER BY s.gpa DESC;
 
--- 2. Correlated Subquery: Students with GPA higher than their Department Average
+-- 2. LEFT OUTER JOIN: All departments with associated students
+SELECT 
+    d.dept_id,
+    d.dept_name,
+    d.budget,
+    s.name AS student_name,
+    s.gpa
+FROM Departments d
+LEFT JOIN Students s ON d.dept_id = s.dept_id;
+
+-- 3. Correlated Subquery: Students with GPA higher than their Department Average
 SELECT s.student_id, s.name, s.dept_id, s.gpa
 FROM Students s
 WHERE s.gpa > (
