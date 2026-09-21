@@ -470,313 +470,323 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
             )}
           </div>
 
-          {/* Main 2-Column Layout: Left Sidebar + Right Content Area */}
-          <div className="flex flex-col lg:flex-row gap-8 items-start">
-            {/* Left Sidebar */}
-            <LabSidebar
-              activeTab={activeTab}
-              onTabChange={setActiveTab}
-              experimentsCount={experiments.length}
-              resourcesCount={lab.resources?.length || 6}
+          {/* Main Layout: If Roadmap tab, render the 3-block top row + centered compiler studio; otherwise render 2-column sidebar layout */}
+          {activeTab === "dsa-roadmap" ? (
+            <DSARoadmap
               labId={lab.id}
+              sidebar={
+                <LabSidebar
+                  activeTab={activeTab}
+                  onTabChange={setActiveTab}
+                  experimentsCount={experiments.length}
+                  resourcesCount={lab.resources?.length || 6}
+                  labId={lab.id}
+                  className="w-full h-full"
+                />
+              }
             />
+          ) : (
+            <div className="flex flex-col lg:flex-row gap-8 items-start">
+              {/* Left Sidebar */}
+              <LabSidebar
+                activeTab={activeTab}
+                onTabChange={setActiveTab}
+                experimentsCount={experiments.length}
+                resourcesCount={lab.resources?.length || 6}
+                labId={lab.id}
+              />
 
-            {/* Right Tab Content View */}
-            <div className="flex-1 w-full min-w-0">
-              {/* TAB: NPTEL 8-WEEK STUDY PLAN (C PROGRAMMING CORE) */}
-              {activeTab === "nptel-plan" && (
-                <div className="space-y-6">
-                  {/* Goal & Department Alignment Card */}
-                  <Card className="border-border bg-card/80 backdrop-blur-xs shadow-sm overflow-hidden border-l-4 border-l-primary">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="flex items-center gap-2">
-                          <Trophy className="h-5 w-5 text-amber-500" />
-                          <CardTitle className="text-xl font-bold text-primary font-heading">
-                            NPTEL C Programming – 8 Week Study Plan
-                          </CardTitle>
-                        </div>
-                        <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 font-mono text-xs">
-                          For AI&amp;DS Students (Engineering Level)
-                        </Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4 text-sm leading-relaxed">
-                      <div className="p-4 rounded-xl bg-primary/5 border border-primary/20">
-                        <p className="font-semibold text-foreground">
-                          <strong>Goal:</strong> To help AI&amp;DS students successfully complete NPTEL C Programming certification and build a strong programming foundation required for <strong>Data Structures, AI/ML programming, competitive coding, and projects</strong>.
-                        </p>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-                        <div className="p-3.5 rounded-xl bg-muted/40 border border-border space-y-1">
-                          <div className="flex items-center gap-2 text-primary font-bold text-xs">
-                            <BrainCircuit className="h-4 w-4" />
-                            <span>Memory Management</span>
+              {/* Right Tab Content View */}
+              <div className="flex-1 w-full min-w-0">
+                {/* TAB: NPTEL 8-WEEK STUDY PLAN (C PROGRAMMING CORE) */}
+                {activeTab === "nptel-plan" && (
+                  <div className="space-y-6">
+                    {/* Goal & Department Alignment Card */}
+                    <Card className="border-border bg-card/80 backdrop-blur-xs shadow-sm overflow-hidden border-l-4 border-l-primary">
+                      <CardHeader className="pb-3">
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="flex items-center gap-2">
+                            <Trophy className="h-5 w-5 text-amber-500" />
+                            <CardTitle className="text-xl font-bold text-primary font-heading">
+                              NPTEL C Programming – 8 Week Study Plan
+                            </CardTitle>
                           </div>
-                          <p className="text-xs text-muted-foreground">
-                            Understanding contiguous buffers, stack frames, and dynamic heap allocation.
+                          <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 font-mono text-xs">
+                            For AI&amp;DS Students (Engineering Level)
+                          </Badge>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-4 text-sm leading-relaxed">
+                        <div className="p-4 rounded-xl bg-primary/5 border border-primary/20">
+                          <p className="font-semibold text-foreground">
+                            <strong>Goal:</strong> To help AI&amp;DS students successfully complete NPTEL C Programming certification and build a strong programming foundation required for <strong>Data Structures, AI/ML programming, competitive coding, and projects</strong>.
                           </p>
                         </div>
 
-                        <div className="p-3.5 rounded-xl bg-muted/40 border border-border space-y-1">
-                          <div className="flex items-center gap-2 text-indigo-400 font-bold text-xs">
-                            <Cpu className="h-4 w-4" />
-                            <span>AI &amp; Tensor Foundation</span>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+                          <div className="p-3.5 rounded-xl bg-muted/40 border border-border space-y-1">
+                            <div className="flex items-center gap-2 text-primary font-bold text-xs">
+                              <BrainCircuit className="h-4 w-4" />
+                              <span>Memory Management</span>
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              Understanding contiguous buffers, stack frames, and dynamic heap allocation.
+                            </p>
                           </div>
-                          <p className="text-xs text-muted-foreground">
-                            Low-level C/C++ foundation powering PyTorch, TensorFlow XLA, and CUDA kernels.
-                          </p>
-                        </div>
 
-                        <div className="p-3.5 rounded-xl bg-muted/40 border border-border space-y-1">
-                          <div className="flex items-center gap-2 text-emerald-500 font-bold text-xs">
-                            <ShieldCheck className="h-4 w-4" />
-                            <span>NPTEL Certification</span>
+                          <div className="p-3.5 rounded-xl bg-muted/40 border border-border space-y-1">
+                            <div className="flex items-center gap-2 text-indigo-400 font-bold text-xs">
+                              <Cpu className="h-4 w-4" />
+                              <span>AI &amp; Tensor Foundation</span>
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              Low-level C/C++ foundation powering PyTorch, TensorFlow XLA, and CUDA kernels.
+                            </p>
                           </div>
-                          <p className="text-xs text-muted-foreground">
-                            Structured 8-week path to secure Elite / Gold NPTEL certification.
-                          </p>
+
+                          <div className="p-3.5 rounded-xl bg-muted/40 border border-border space-y-1">
+                            <div className="flex items-center gap-2 text-emerald-500 font-bold text-xs">
+                              <ShieldCheck className="h-4 w-4" />
+                              <span>NPTEL Certification</span>
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              Structured 8-week path to secure Elite / Gold NPTEL certification.
+                            </p>
+                          </div>
                         </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* 8 Weeks Accordion & Details View */}
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-lg font-bold text-foreground font-heading flex items-center gap-2">
+                          <ListTree className="h-5 w-5 text-primary" />
+                          <span>Week-by-Week Curriculum Breakdown (Weeks 1 – 8)</span>
+                        </h3>
+                        <span className="text-xs text-muted-foreground font-mono">
+                          Click any week to expand details
+                        </span>
                       </div>
-                    </CardContent>
-                  </Card>
 
-                  {/* 8 Weeks Accordion & Details View */}
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-bold text-foreground font-heading flex items-center gap-2">
-                        <ListTree className="h-5 w-5 text-primary" />
-                        <span>Week-by-Week Curriculum Breakdown (Weeks 1 – 8)</span>
-                      </h3>
-                      <span className="text-xs text-muted-foreground font-mono">
-                        Click any week to expand details
-                      </span>
-                    </div>
+                      <div className="space-y-3">
+                        {NPTEL_WEEKS_DATA.map((w) => {
+                          const isExpanded = expandedWeek === w.week;
 
-                    <div className="space-y-3">
-                      {NPTEL_WEEKS_DATA.map((w) => {
-                        const isExpanded = expandedWeek === w.week;
-
-                        return (
-                          <div
-                            key={w.week}
-                            className={`rounded-2xl border transition-all overflow-hidden ${
-                              isExpanded
-                                ? "bg-card border-primary/50 shadow-md ring-1 ring-primary/20"
-                                : "bg-card/70 border-border hover:border-border/80"
-                            }`}
-                          >
-                            {/* Week Header Row */}
-                            <button
-                              type="button"
-                              onClick={() => setExpandedWeek(isExpanded ? null : w.week)}
-                              className="w-full p-4.5 sm:p-5 flex items-center justify-between gap-4 text-left cursor-pointer"
+                          return (
+                            <div
+                              key={w.week}
+                              className={`rounded-2xl border transition-all overflow-hidden ${
+                                isExpanded
+                                  ? "bg-card border-primary/50 shadow-md ring-1 ring-primary/20"
+                                  : "bg-card/70 border-border hover:border-border/80"
+                              }`}
                             >
-                              <div className="flex items-center gap-3.5 min-w-0">
-                                <div className={`flex items-center justify-center h-10 w-10 rounded-xl font-bold text-sm shrink-0 font-mono shadow-xs ${
-                                  isExpanded ? "bg-primary text-white" : "bg-muted text-foreground"
-                                }`}>
-                                  W{w.week}
-                                </div>
-                                <div className="space-y-0.5 min-w-0">
-                                  <div className="flex items-center gap-2 flex-wrap">
-                                    <span className="font-bold text-sm sm:text-base text-foreground">
-                                      Week {w.week}: {w.title}
-                                    </span>
+                              {/* Week Header Row */}
+                              <button
+                                type="button"
+                                onClick={() => setExpandedWeek(isExpanded ? null : w.week)}
+                                className="w-full p-4.5 sm:p-5 flex items-center justify-between gap-4 text-left cursor-pointer"
+                              >
+                                <div className="flex items-center gap-3.5 min-w-0">
+                                  <div className={`flex items-center justify-center h-10 w-10 rounded-xl font-bold text-sm shrink-0 font-mono shadow-xs ${
+                                    isExpanded ? "bg-primary text-white" : "bg-muted text-foreground"
+                                  }`}>
+                                    W{w.week}
                                   </div>
-                                  <p className="text-xs text-muted-foreground truncate">
-                                    Assessment: <span className="font-semibold text-primary">{w.assessment}</span> • {w.programs.length} Practice Programs
-                                  </p>
-                                </div>
-                              </div>
-
-                              <div className="flex items-center gap-2.5 shrink-0">
-                                <Badge variant="outline" className="text-[11px] font-mono hidden sm:inline-flex">
-                                  {w.assessment}
-                                </Badge>
-                                <ChevronRight className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${
-                                  isExpanded ? "rotate-90 text-primary" : ""
-                                }`} />
-                              </div>
-                            </button>
-
-                            {/* Expanded Week Content */}
-                            {isExpanded && (
-                              <div className="px-5 pb-6 pt-2 border-t border-border/50 space-y-5 bg-muted/10">
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 pt-2">
-                                  {/* Topics */}
-                                  <div className="p-4 rounded-xl bg-card border border-border space-y-2.5 shadow-2xs">
-                                    <div className="flex items-center gap-2">
-                                      <CheckSquare className="h-4 w-4 text-primary" />
-                                      <h4 className="text-xs font-bold uppercase tracking-wider text-foreground font-mono">
-                                        Core Topics
-                                      </h4>
+                                  <div className="space-y-0.5 min-w-0">
+                                    <div className="flex items-center gap-2 flex-wrap">
+                                      <span className="font-bold text-sm sm:text-base text-foreground">
+                                        Week {w.week}: {w.title}
+                                      </span>
                                     </div>
-                                    <ul className="space-y-1.5 text-xs text-muted-foreground">
-                                      {w.topics.map((top, tIdx) => (
-                                        <li key={tIdx} className="flex items-start gap-2">
-                                          <span className="text-emerald-500 font-bold">✓</span>
-                                          <span className="text-foreground/90 font-medium">{top}</span>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-
-                                  {/* Programs to Practice */}
-                                  <div className="p-4 rounded-xl bg-card border border-border space-y-2.5 shadow-2xs">
-                                    <div className="flex items-center gap-2">
-                                      <Code2 className="h-4 w-4 text-indigo-400" />
-                                      <h4 className="text-xs font-bold uppercase tracking-wider text-foreground font-mono">
-                                        Programs to Practice
-                                      </h4>
-                                    </div>
-                                    <ul className="space-y-1.5 text-xs text-muted-foreground">
-                                      {w.programs.map((prog, pIdx) => (
-                                        <li key={pIdx} className="flex items-start gap-2">
-                                          <span className="text-indigo-400 font-mono font-bold">•</span>
-                                          <span className="text-foreground/90 font-semibold">{prog}</span>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                </div>
-
-                                {/* NPTEL Focus & AI&DS Connection */}
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                                  {/* NPTEL Preparation / Focus */}
-                                  <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/20 space-y-2">
-                                    <div className="flex items-center gap-2">
-                                      <Award className="h-4 w-4 text-amber-500" />
-                                      <h4 className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 font-mono">
-                                        NPTEL Focus &amp; Evaluation
-                                      </h4>
-                                    </div>
-                                    <ul className="space-y-1 text-xs text-muted-foreground">
-                                      {w.nptelFocus.map((foc, fIdx) => (
-                                        <li key={fIdx} className="flex items-start gap-2">
-                                          <span className="text-amber-500">★</span>
-                                          <span>{foc}</span>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                    {w.miniTask && (
-                                      <div className="mt-2.5 pt-2 border-t border-amber-500/20 text-xs font-medium text-foreground">
-                                        <strong className="text-amber-600 dark:text-amber-400">Mini Task:</strong> {w.miniTask}
-                                      </div>
-                                    )}
-                                  </div>
-
-                                  {/* AI&DS Connection */}
-                                  <div className="p-4 rounded-xl bg-primary/5 border border-primary/20 space-y-2">
-                                    <div className="flex items-center gap-2">
-                                      <BrainCircuit className="h-4 w-4 text-primary" />
-                                      <h4 className="text-xs font-bold uppercase tracking-wider text-primary font-mono">
-                                        AI&amp;DS Engineering Connection
-                                      </h4>
-                                    </div>
-                                    <p className="text-xs text-muted-foreground leading-relaxed">
-                                      {w.aidsConnection}
+                                    <p className="text-xs text-muted-foreground truncate">
+                                      Assessment: <span className="font-semibold text-primary">{w.assessment}</span> • {w.programs.length} Practice Programs
                                     </p>
                                   </div>
                                 </div>
 
-                                {/* Action Buttons */}
-                                <div className="flex items-center justify-between pt-2 border-t border-border/50">
-                                  <div className="text-xs text-muted-foreground">
-                                    Assessment: <strong className="text-foreground font-mono">{w.assessment}</strong>
-                                  </div>
-                                  <div className="flex items-center gap-2">
-                                    <Button
-                                      size="sm"
-                                      variant="outline"
-                                      onClick={() => {
-                                        setSelectedQuizExpId(w.expId);
-                                        setActiveTab("quizzes");
-                                      }}
-                                      className="text-xs gap-1.5 font-bold border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10"
-                                    >
-                                      <HelpCircle className="h-3.5 w-3.5" />
-                                      <span>Take {w.assessment}</span>
-                                    </Button>
+                                <div className="flex items-center gap-2.5 shrink-0">
+                                  <Badge variant="outline" className="text-[11px] font-mono hidden sm:inline-flex">
+                                    {w.assessment}
+                                  </Badge>
+                                  <ChevronRight className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${
+                                    isExpanded ? "rotate-90 text-primary" : ""
+                                  }`} />
+                                </div>
+                              </button>
 
-                                    <Button asChild size="sm" className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 font-bold shadow-xs">
-                                      <Link href={`/experiments/${w.slug}`}>
-                                        <PlayCircle className="h-4 w-4" />
-                                        <span>Start Week {w.week} Lab</span>
-                                      </Link>
-                                    </Button>
+                              {/* Expanded Week Content */}
+                              {isExpanded && (
+                                <div className="px-5 pb-6 pt-2 border-t border-border/50 space-y-5 bg-muted/10">
+                                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 pt-2">
+                                    {/* Topics */}
+                                    <div className="p-4 rounded-xl bg-card border border-border space-y-2.5 shadow-2xs">
+                                      <div className="flex items-center gap-2">
+                                        <CheckSquare className="h-4 w-4 text-primary" />
+                                        <h4 className="text-xs font-bold uppercase tracking-wider text-foreground font-mono">
+                                          Core Topics
+                                        </h4>
+                                      </div>
+                                      <ul className="space-y-1.5 text-xs text-muted-foreground">
+                                        {w.topics.map((top, tIdx) => (
+                                          <li key={tIdx} className="flex items-start gap-2">
+                                            <span className="text-emerald-500 font-bold">✓</span>
+                                            <span className="text-foreground/90 font-medium">{top}</span>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    </div>
+
+                                    {/* Programs to Practice */}
+                                    <div className="p-4 rounded-xl bg-card border border-border space-y-2.5 shadow-2xs">
+                                      <div className="flex items-center gap-2">
+                                        <Code2 className="h-4 w-4 text-indigo-400" />
+                                        <h4 className="text-xs font-bold uppercase tracking-wider text-foreground font-mono">
+                                          Programs to Practice
+                                        </h4>
+                                      </div>
+                                      <ul className="space-y-1.5 text-xs text-muted-foreground">
+                                        {w.programs.map((prog, pIdx) => (
+                                          <li key={pIdx} className="flex items-start gap-2">
+                                            <span className="text-indigo-400 font-mono font-bold">•</span>
+                                            <span className="text-foreground/90 font-semibold">{prog}</span>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    </div>
+                                  </div>
+
+                                  {/* NPTEL Focus & AI&DS Connection */}
+                                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                    {/* NPTEL Preparation / Focus */}
+                                    <div className="p-4 rounded-xl bg-amber-500/5 border border-amber-500/20 space-y-2">
+                                      <div className="flex items-center gap-2">
+                                        <Award className="h-4 w-4 text-amber-500" />
+                                        <h4 className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 font-mono">
+                                          NPTEL Focus &amp; Evaluation
+                                        </h4>
+                                      </div>
+                                      <ul className="space-y-1 text-xs text-muted-foreground">
+                                        {w.nptelFocus.map((foc, fIdx) => (
+                                          <li key={fIdx} className="flex items-start gap-2">
+                                            <span className="text-amber-500">★</span>
+                                            <span>{foc}</span>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                      {w.miniTask && (
+                                        <div className="mt-2.5 pt-2 border-t border-amber-500/20 text-xs font-medium text-foreground">
+                                          <strong className="text-amber-600 dark:text-amber-400">Mini Task:</strong> {w.miniTask}
+                                        </div>
+                                      )}
+                                    </div>
+
+                                    {/* AI&DS Connection */}
+                                    <div className="p-4 rounded-xl bg-primary/5 border border-primary/20 space-y-2">
+                                      <div className="flex items-center gap-2">
+                                        <BrainCircuit className="h-4 w-4 text-primary" />
+                                        <h4 className="text-xs font-bold uppercase tracking-wider text-primary font-mono">
+                                          AI&amp;DS Engineering Connection
+                                        </h4>
+                                      </div>
+                                      <p className="text-xs text-muted-foreground leading-relaxed">
+                                        {w.aidsConnection}
+                                      </p>
+                                    </div>
+                                  </div>
+
+                                  {/* Action Buttons */}
+                                  <div className="flex items-center justify-between pt-2 border-t border-border/50">
+                                    <div className="text-xs text-muted-foreground">
+                                      Assessment: <strong className="text-foreground font-mono">{w.assessment}</strong>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      <Button
+                                        size="sm"
+                                        variant="outline"
+                                        onClick={() => {
+                                          setSelectedQuizExpId(w.expId);
+                                          setActiveTab("quizzes");
+                                        }}
+                                        className="text-xs gap-1.5 font-bold border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10"
+                                      >
+                                        <HelpCircle className="h-3.5 w-3.5" />
+                                        <span>Take {w.assessment}</span>
+                                      </Button>
+
+                                      <Button asChild size="sm" className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 font-bold shadow-xs">
+                                        <Link href={`/experiments/${w.slug}`}>
+                                          <PlayCircle className="h-4 w-4" />
+                                          <span>Start Week {w.week} Lab</span>
+                                        </Link>
+                                      </Button>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* WEEKLY EVALUATION PATTERN TABLE */}
-                  <Card className="border-border bg-card/80 backdrop-blur-xs shadow-sm p-6 space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <CardTitle className="text-lg font-bold text-primary font-heading flex items-center gap-2">
-                          <CheckCircle2 className="h-5 w-5 text-emerald-500" />
-                          <span>Weekly Evaluation Pattern for Students</span>
-                        </CardTitle>
-                        <CardDescription className="text-xs mt-0.5">
-                          Weekly milestone assessments aligned directly with the NPTEL curriculum schedule.
-                        </CardDescription>
+                              )}
+                            </div>
+                          );
+                        })}
                       </div>
-                      <Badge variant="outline" className="text-xs font-mono bg-primary/10 text-primary border-primary/20">
-                        8 Weekly Tests
-                      </Badge>
                     </div>
 
-                    <div className="overflow-x-auto rounded-xl border border-border">
-                      <table className="w-full text-left text-xs border-collapse">
-                        <thead>
-                          <tr className="bg-muted/60 border-b border-border text-muted-foreground font-mono uppercase text-[11px]">
-                            <th className="p-3 font-bold">Week</th>
-                            <th className="p-3 font-bold">Assessment Name</th>
-                            <th className="p-3 font-bold">Core Topic Coverage</th>
-                            <th className="p-3 font-bold">Questions</th>
-                            <th className="p-3 font-bold text-right">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-border/60 text-foreground">
-                          {NPTEL_WEEKS_DATA.map((w) => (
-                            <tr key={w.week} className="hover:bg-muted/30 transition-colors">
-                              <td className="p-3 font-mono font-bold text-primary">Week {w.week}</td>
-                              <td className="p-3 font-bold">{w.assessment}</td>
-                              <td className="p-3 text-muted-foreground">{w.title}</td>
-                              <td className="p-3 font-mono text-muted-foreground">5 Questions</td>
-                              <td className="p-3 text-right">
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => {
-                                    setSelectedQuizExpId(w.expId);
-                                    setActiveTab("quizzes");
-                                  }}
-                                  className="text-xs py-1 h-7 font-bold border-primary/30 text-primary hover:bg-primary/10"
-                                >
-                                  Launch Test
-                                </Button>
-                              </td>
+                    {/* WEEKLY EVALUATION PATTERN TABLE */}
+                    <Card className="border-border bg-card/80 backdrop-blur-xs shadow-sm p-6 space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <CardTitle className="text-lg font-bold text-primary font-heading flex items-center gap-2">
+                            <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+                            <span>Weekly Evaluation Pattern for Students</span>
+                          </CardTitle>
+                          <CardDescription className="text-xs mt-0.5">
+                            Weekly milestone assessments aligned directly with the NPTEL curriculum schedule.
+                          </CardDescription>
+                        </div>
+                        <Badge variant="outline" className="text-xs font-mono bg-primary/10 text-primary border-primary/20">
+                          8 Weekly Tests
+                        </Badge>
+                      </div>
+
+                      <div className="overflow-x-auto rounded-xl border border-border">
+                        <table className="w-full text-left text-xs border-collapse">
+                          <thead>
+                            <tr className="bg-muted/60 border-b border-border text-muted-foreground font-mono uppercase text-[11px]">
+                              <th className="p-3 font-bold">Week</th>
+                              <th className="p-3 font-bold">Assessment Name</th>
+                              <th className="p-3 font-bold">Core Topic Coverage</th>
+                              <th className="p-3 font-bold">Questions</th>
+                              <th className="p-3 font-bold text-right">Action</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </Card>
-                </div>
-              )}
-
-              {/* TAB 0: ROADMAP & PRACTICE */}
-              {activeTab === "dsa-roadmap" && (
-                <DSARoadmap labId={lab.id} />
-              )}
+                          </thead>
+                          <tbody className="divide-y divide-border/60 text-foreground">
+                            {NPTEL_WEEKS_DATA.map((w) => (
+                              <tr key={w.week} className="hover:bg-muted/30 transition-colors">
+                                <td className="p-3 font-mono font-bold text-primary">Week {w.week}</td>
+                                <td className="p-3 font-bold">{w.assessment}</td>
+                                <td className="p-3 text-muted-foreground">{w.title}</td>
+                                <td className="p-3 font-mono text-muted-foreground">5 Questions</td>
+                                <td className="p-3 text-right">
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => {
+                                      setSelectedQuizExpId(w.expId);
+                                      setActiveTab("quizzes");
+                                    }}
+                                    className="text-xs py-1 h-7 font-bold border-primary/30 text-primary hover:bg-primary/10"
+                                  >
+                                    Launch Test
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </Card>
+                  </div>
+                )}
 
               {/* TAB: AI&DS MINI PROJECTS & FACULTY CHAMPIONS */}
               {activeTab === "mini-projects" && (
@@ -1764,6 +1774,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
               )}
             </div>
           </div>
+        )}
         </div>
       </main>
       <Footer />
