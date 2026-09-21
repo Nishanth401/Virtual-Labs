@@ -47,6 +47,7 @@ export function DSARoadmap({ labId = "data-structures" }: DSARoadmapProps) {
         activeTopicId={activeTopic ? activeTopic.id : ""}
         onSelectTopic={setActiveTopic}
         completedTopicIds={completedTopicIds}
+        roadmapTitle={labRoadmap?.title}
       />
 
       {/* Right Code & Practice View with Embedded Visualizers */}

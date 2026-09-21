@@ -1193,6 +1193,502 @@ export const QUIZZES_DATA: Record<string, Quiz> = {
         explanation: "AVL trees have a stricter balance factor bound, resulting in smaller tree height and faster lookup queries."
       }
     ]
+  },
+
+  // ========================================================
+  // 10. NPTEL C PROGRAMMING 8-WEEK EVALUATION ASSESSMENTS
+  // ========================================================
+  "quiz-c-1": {
+    id: "quiz-c-1",
+    experimentId: "c-exp-1",
+    title: "Week 1: Basic C Quiz",
+    description: "Evaluate your understanding of C syntax, GCC 4-stage compilation pipeline, primitive data types, and formatted console I/O.",
+    passingScore: 4,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "c1-q1",
+        question: "Which of the following is the correct order of phases in the GCC C compilation pipeline?",
+        options: [
+          "Preprocessing -> Compilation -> Assembly -> Linking",
+          "Compilation -> Preprocessing -> Linking -> Loading",
+          "Assembly -> Preprocessing -> Compilation -> Execution",
+          "Linking -> Preprocessing -> Assembly -> Compilation"
+        ],
+        correctIndex: 0,
+        explanation: "GCC first invokes the Preprocessor (cpp) to expand macros and headers, then Compiler (cc1) to assembly, Assembler (as) to object code, and Linker (ld) to an executable binary."
+      },
+      {
+        id: "c1-q2",
+        question: "What is the standard memory size allocated for 'char', 'int', 'float', and 'double' on standard 64-bit architectures?",
+        options: [
+          "char: 1 Byte, int: 4 Bytes, float: 4 Bytes, double: 8 Bytes",
+          "char: 2 Bytes, int: 2 Bytes, float: 4 Bytes, double: 4 Bytes",
+          "char: 1 Byte, int: 8 Bytes, float: 8 Bytes, double: 16 Bytes",
+          "char: 4 Bytes, int: 4 Bytes, float: 4 Bytes, double: 8 Bytes"
+        ],
+        correctIndex: 0,
+        explanation: "In standard C99/C11 x86-64 ABI: sizeof(char) = 1, sizeof(int) = 4, sizeof(float) = 4, and sizeof(double) = 8."
+      },
+      {
+        id: "c1-q3",
+        question: "Which format specifier must be used in printf to print a double precision floating-point value?",
+        options: ["%lf", "%d", "%c", "%s"],
+        correctIndex: 0,
+        explanation: "%lf (long float) is used for double values, while %f is standard for float, %d for integer, and %c for character."
+      },
+      {
+        id: "c1-q4",
+        question: "Why must the address-of operator '&' be supplied to non-pointer variables in scanf(\"%d\", &val)?",
+        options: [
+          "Because scanf requires the memory address to store the scanned value directly into the variable's memory location",
+          "Because & converts integer to string",
+          "Because scanf is a macro",
+          "To prevent stack overflow"
+        ],
+        correctIndex: 0,
+        explanation: "C functions pass arguments by value; to let scanf mutate an external variable, we must pass its memory address (&val)."
+      },
+      {
+        id: "c1-q5",
+        question: "Why is C programming a critical foundation for AI&DS students?",
+        options: [
+          "It provides deep understanding of low-level memory allocation used internally in AI tensor kernels and high-performance computing",
+          "It is the only language that runs neural networks",
+          "It eliminates the need for Python",
+          "It only runs on cloud servers"
+        ],
+        correctIndex: 0,
+        explanation: "C/C++ powers high-performance tensor computing backends (CUDA, PyTorch ATen, TensorFlow XLA) where memory efficiency and cache line locality are paramount."
+      }
+    ]
+  },
+
+  "quiz-c-2": {
+    id: "quiz-c-2",
+    experimentId: "c-exp-2",
+    title: "Week 2: Conditional Programming Test",
+    description: "Assess your mastery of operator precedence, short-circuit evaluation, nested if-else ladders, and switch-case jump tables.",
+    passingScore: 4,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "c2-q1",
+        question: "What is the evaluated result of the expression: 5 + 3 * 2 > 10 && 4 == 4?",
+        options: ["1 (true)", "0 (false)", "16", "Compilation Error"],
+        correctIndex: 0,
+        explanation: "* has higher precedence than + (3 * 2 = 6, 5 + 6 = 11); > has higher precedence than && (11 > 10 is 1); 4 == 4 is 1; 1 && 1 evaluates to 1."
+      },
+      {
+        id: "c2-q2",
+        question: "In C, what is the behavior of short-circuit evaluation in logical expressions like (a == 0 || ++b > 5) when a is 0?",
+        options: [
+          "The second operand (++b > 5) is never evaluated because the first operand is already true",
+          "Both operands are always evaluated concurrently",
+          "++b is evaluated first",
+          "It throws a runtime exception"
+        ],
+        correctIndex: 0,
+        explanation: "In logical OR (||), if the left operand evaluates to true (non-zero), the right operand is short-circuited and not evaluated."
+      },
+      {
+        id: "c2-q3",
+        question: "What happens if a 'break' statement is omitted from a matching case in a switch statement?",
+        options: [
+          "Execution falls through to subsequent case blocks until a break or end of switch is encountered",
+          "The program crashes immediately with segmentation fault",
+          "The compiler rejects the code",
+          "The switch restarts from the top"
+        ],
+        correctIndex: 0,
+        explanation: "Omission of break results in fall-through execution, running subsequent case blocks unconditionally."
+      },
+      {
+        id: "c2-q4",
+        question: "What is the correct logical condition in C to verify if a year is a Leap Year?",
+        options: [
+          "(year % 400 == 0) || (year % 4 == 0 && year % 100 != 0)",
+          "year % 4 == 0",
+          "year % 100 != 0",
+          "(year % 400 == 0) && (year % 100 == 0)"
+        ],
+        correctIndex: 0,
+        explanation: "A leap year must be divisible by 400, or divisible by 4 while not divisible by 100."
+      },
+      {
+        id: "c2-q5",
+        question: "Which data types are strictly valid as selector expressions in a C switch statement?",
+        options: [
+          "Integer types (int, char, short, enum)",
+          "Floating-point types (float, double)",
+          "Strings (char*)",
+          "Struct objects"
+        ],
+        correctIndex: 0,
+        explanation: "C switch-case statements require integral or enumeration types to construct static jump tables."
+      }
+    ]
+  },
+
+  "quiz-c-3": {
+    id: "quiz-c-3",
+    experimentId: "c-exp-3",
+    title: "Week 3: Loop Coding Challenge",
+    description: "Test your skills in loop tracing, termination criteria, prime checking optimization, pattern generation, and Student Mark Analysis.",
+    passingScore: 4,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "c3-q1",
+        question: "What is the fundamental difference between a while loop and a do-while loop in C?",
+        options: [
+          "do-while guarantees that the loop body executes at least once before testing the condition",
+          "while loops cannot use break statements",
+          "do-while loops do not require semicolons",
+          "while loops are exit-controlled"
+        ],
+        correctIndex: 0,
+        explanation: "while is entry-controlled (checks before first iteration); do-while is exit-controlled (executes once before checking)."
+      },
+      {
+        id: "c3-q2",
+        question: "Why is checking factors up to sqrt(N) sufficient to determine if N is a Prime Number?",
+        options: [
+          "If N has a factor greater than sqrt(N), it must also have a complementary factor smaller than sqrt(N)",
+          "Because sqrt(N) is always an integer",
+          "Because prime numbers only exist below 100",
+          "To avoid infinite recursion"
+        ],
+        correctIndex: 0,
+        explanation: "Any composite number N = a * b requires min(a, b) <= sqrt(N); testing up to sqrt(N) optimizes complexity to O(sqrt(N))."
+      },
+      {
+        id: "c3-q3",
+        question: "What is the output of: for (int i = 0; i < 5; i++) { if (i == 2) continue; printf(\"%d \", i); }?",
+        options: ["0 1 3 4 ", "0 1 2 3 4 ", "0 1 ", "2 3 4 "],
+        correctIndex: 0,
+        explanation: "continue skips the remainder of the current iteration when i == 2, printing 0 1 3 4."
+      },
+      {
+        id: "c3-q4",
+        question: "In the Student Mark Analysis Mini Task, what is the time complexity of computing class average, maximum, and minimum in a single pass?",
+        options: ["O(N) linear time", "O(N^2) quadratic time", "O(log N)", "O(1) constant time"],
+        correctIndex: 0,
+        explanation: "Iterating through the array of N marks once accumulates sum, updates max, and updates min in O(N) time."
+      },
+      {
+        id: "c3-q5",
+        question: "What is the number of stars printed by a nested loop printing a pyramid of height H?",
+        options: ["O(H^2) total stars", "O(H) stars", "O(log H) stars", "O(2^H) stars"],
+        correctIndex: 0,
+        explanation: "Row i prints 2*i - 1 stars; summing over H rows yields H^2 total stars, requiring O(H^2) operations."
+      }
+    ]
+  },
+
+  "quiz-c-4": {
+    id: "quiz-c-4",
+    experimentId: "c-exp-4",
+    title: "Week 4: Function & Recursion Test",
+    description: "Evaluate your understanding of function activation frames, pass-by-value, static variables, and recursive Euclidean GCD.",
+    passingScore: 4,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "c4-q1",
+        question: "What occurs in memory when a function is called in C?",
+        options: [
+          "A new stack frame (activation record) is pushed onto the call stack containing parameters, local variables, and return address",
+          "Memory is allocated in the global heap permanently",
+          "The program counter is reset to zero",
+          "Local variables are written to disk"
+        ],
+        correctIndex: 0,
+        explanation: "Each function invocation pushes a dedicated activation stack frame storing arguments, local variables, and the return address."
+      },
+      {
+        id: "c4-q2",
+        question: "What is the lifetime and visibility of a variable declared as 'static int counter = 0;' inside a function?",
+        options: [
+          "Lifetime: Entire program duration (stored in Data segment); Visibility: Local to the defining function",
+          "Lifetime: Destroyed on function return; Visibility: Global",
+          "Lifetime: Heap-allocated; Visibility: Entire file",
+          "Lifetime: Thread-local; Visibility: Anonymous"
+        ],
+        correctIndex: 0,
+        explanation: "static local variables persist in the data segment across function calls but remain scoped strictly inside the defining function."
+      },
+      {
+        id: "c4-q3",
+        question: "What is the base case condition in the recursive Euclidean Algorithm gcd(a, b)?",
+        options: ["b == 0 (returns a)", "a == 0 (returns b)", "a == b (returns 1)", "b == 1 (returns 0)"],
+        correctIndex: 0,
+        explanation: "When remainder b reaches 0, gcd(a, 0) = a, which serves as the terminating base case."
+      },
+      {
+        id: "c4-q4",
+        question: "What catastrophic runtime error occurs when a recursive function lacks a valid base case?",
+        options: ["Stack Overflow (Call stack exhaustion)", "Heap Out of Memory", "Compilation Warning", "Floating Point Exception"],
+        correctIndex: 0,
+        explanation: "Unbounded recursive calls continuously push stack frames until the OS-allocated thread call stack is exhausted, causing a Stack Overflow crash."
+      },
+      {
+        id: "c4-q5",
+        question: "What is the time complexity of the Euclidean GCD algorithm for two numbers a and b?",
+        options: ["O(log(min(a, b)))", "O(a + b)", "O(a * b)", "O(1)"],
+        correctIndex: 0,
+        explanation: "By Gabriel Lamé's Theorem, Euclidean GCD divides the remainder by at least half every two steps, running in logarithmic O(log min(a, b)) time."
+      }
+    ]
+  },
+
+  "quiz-c-5": {
+    id: "quiz-c-5",
+    experimentId: "c-exp-5",
+    title: "Week 5: Array & Pointer Challenge",
+    description: "Test your mastery of *(a+i) address dereferencing, pointer arithmetic, contiguous memory layouts, and 2D matrix multiplication.",
+    passingScore: 4,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "c5-q1",
+        question: "In C, which of the following expressions is syntactically and semantically identical to arr[i]?",
+        options: ["*(arr + i)", "*arr + i", "&arr + i", "*(i * arr)"],
+        correctIndex: 0,
+        explanation: "arr[i] is defined in C standard as *(arr + i), calculating base address offset by i element strides."
+      },
+      {
+        id: "c5-q2",
+        question: "If 'int *ptr = 0x2000;' on a 64-bit system (where sizeof(int) == 4), what is the value of 'ptr + 3'?",
+        options: ["0x200C (0x2000 + 3 * 4 = 12 bytes)", "0x2003", "0x2018", "0x2000"],
+        correctIndex: 0,
+        explanation: "Pointer arithmetic scales increments by the byte size of the pointed-to type: 0x2000 + 3 * 4 = 0x200C."
+      },
+      {
+        id: "c5-q3",
+        question: "What is the memory address calculation formula for a 2D array element arr[i][j] stored in Row-Major order with C columns?",
+        options: [
+          "Base_Address + (i * C + j) * sizeof(Type)",
+          "Base_Address + (j * R + i) * sizeof(Type)",
+          "Base_Address + (i + j) * sizeof(Type)",
+          "Base_Address + (i * j) * sizeof(Type)"
+        ],
+        correctIndex: 0,
+        explanation: "Row-Major layout stores consecutive rows in memory: row offset is i * C, and column offset is j."
+      },
+      {
+        id: "c5-q4",
+        question: "What condition must be met between Matrix A (dimensions R1 x C1) and Matrix B (dimensions R2 x C2) for Matrix Multiplication (A x B) to be valid?",
+        options: ["C1 == R2 (Columns of A must equal Rows of B)", "R1 == R2", "C1 == C2", "R1 * C1 == R2 * C2"],
+        correctIndex: 0,
+        explanation: "Matrix multiplication requires the number of columns in the left matrix to match the number of rows in the right matrix."
+      },
+      {
+        id: "c5-q5",
+        question: "Why are contiguous C arrays essential for AI/ML dataset tensors?",
+        options: [
+          "Contiguous buffers maximize CPU cache spatial locality and enable SIMD vectorized vector arithmetic",
+          "They prevent negative numbers",
+          "They do not require memory allocation",
+          "They cannot be sorted"
+        ],
+        correctIndex: 0,
+        explanation: "Contiguous row-major memory layouts ensure sequential CPU cache hits and allow AVX/CUDA SIMD vectorized operations."
+      }
+    ]
+  },
+
+  "quiz-c-6": {
+    id: "quiz-c-6",
+    experimentId: "c-exp-6",
+    title: "Week 6: File Handling Assignment",
+    description: "Assess your knowledge of dynamic heap memory (malloc, calloc, free), memory leak prevention, and disk stream file operations.",
+    passingScore: 4,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "c6-q1",
+        question: "What is the crucial difference between malloc() and calloc() in C?",
+        options: [
+          "calloc() initializes all allocated bytes to zero; malloc() leaves memory uninitialized with garbage values",
+          "malloc() allocates memory on the stack; calloc() allocates on the heap",
+          "malloc() cannot fail; calloc() can fail",
+          "calloc() only allocates characters"
+        ],
+        correctIndex: 0,
+        explanation: "malloc() allocates raw uninitialized memory, while calloc(n, size) initializes every byte to 0."
+      },
+      {
+        id: "c6-q2",
+        question: "What is a Memory Leak in C, and how is it prevented?",
+        options: [
+          "Heap memory allocated via malloc/calloc that is never deallocated with free(), causing RAM depletion",
+          "A stack variable going out of scope",
+          "A file opened in read-only mode",
+          "A recursive function base case"
+        ],
+        correctIndex: 0,
+        explanation: "A memory leak happens when heap allocations lose their pointers before free() is called; prevented by calling free(ptr) and assigning ptr = NULL."
+      },
+      {
+        id: "c6-q3",
+        question: "What file access mode should be passed to fopen() to append new student records without deleting existing content?",
+        options: ["\"a\"", "\"w\"", "\"r\"", "\"w+\""],
+        correctIndex: 0,
+        explanation: "Mode \"a\" (append) opens the file for writing and positions the stream pointer at the end of the file, preserving existing data."
+      },
+      {
+        id: "c6-q4",
+        question: "What return value from fopen() indicates that the file could not be opened or created?",
+        options: ["NULL", "-1", "0", "EOF"],
+        correctIndex: 0,
+        explanation: "fopen() returns a valid FILE* stream pointer on success, or NULL if the file cannot be opened (e.g. missing file or permission denied)."
+      },
+      {
+        id: "c6-q5",
+        question: "What is a Dangling Pointer, and what is the best practice to eliminate it?",
+        options: [
+          "A pointer referencing memory that has already been deallocated; eliminated by setting ptr = NULL immediately after free(ptr)",
+          "A pointer to a constant integer",
+          "A pointer with value NULL",
+          "An array index out of bounds"
+        ],
+        correctIndex: 0,
+        explanation: "After free(ptr), ptr still holds the old address (dangling); assigning ptr = NULL ensures subsequent accesses fail safely."
+      }
+    ]
+  },
+
+  "quiz-c-7": {
+    id: "quiz-c-7",
+    experimentId: "c-exp-7",
+    title: "Week 7: Mini Project & Structures Test",
+    description: "Evaluate your understanding of composite struct records, structure padding, pointer member access (->), and Singly Linked List mechanics.",
+    passingScore: 4,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "c7-q1",
+        question: "What is Structure Padding in C, and why does sizeof(struct { char c; int i; }) equal 8 Bytes instead of 5?",
+        options: [
+          "Compilers insert alignment padding bytes so that 4-byte integers align on 4-byte memory address boundaries for fast CPU bus access",
+          "To allow space for null terminators",
+          "Because char occupies 4 bytes in structs",
+          "It is a compiler bug"
+        ],
+        correctIndex: 0,
+        explanation: "Modern CPUs fetch data efficiently from aligned memory words; compilers insert padding bytes to maintain proper data alignment."
+      },
+      {
+        id: "c7-q2",
+        question: "Given a pointer to a struct 'Student *s;', which syntax correctly accesses the member 'cgpa'?",
+        options: ["s->cgpa (or (*s).cgpa)", "s.cgpa", "*s->cgpa", "&s.cgpa"],
+        correctIndex: 0,
+        explanation: "The arrow operator s->cgpa is the standard shorthand for dereferencing a structure pointer (*s).cgpa."
+      },
+      {
+        id: "c7-q3",
+        question: "What defines a Self-Referential Structure used in Linked Lists?",
+        options: [
+          "A structure definition that contains a pointer member to another structure of the exact same type (e.g. struct Node *next;)",
+          "A structure that calls itself recursively",
+          "A union with identical members",
+          "A global structure variable"
+        ],
+        correctIndex: 0,
+        explanation: "Self-referential structs contain pointer members pointing to structures of the same struct type, enabling dynamic chains like linked lists and trees."
+      },
+      {
+        id: "c7-q4",
+        question: "What is the time complexity of inserting a new Node at the Head of a Singly Linked List?",
+        options: ["O(1) constant time", "O(N) linear time", "O(log N)", "O(N^2)"],
+        correctIndex: 0,
+        explanation: "Head insertion only requires allocating a node, setting newNode->next = head, and updating head = newNode, executing in O(1) time."
+      },
+      {
+        id: "c7-q5",
+        question: "Why are Linked List node structures fundamental in AI&DS graph algorithms?",
+        options: [
+          "They represent dynamic graph adjacency lists where each vertex points to a variable list of neighbor edge nodes",
+          "They replace neural network weights",
+          "They prevent loss function convergence",
+          "They can only store positive numbers"
+        ],
+        correctIndex: 0,
+        explanation: "Graph adjacency lists in AI pathfinding (A*, BFS, DFS) represent sparse graph connections using dynamic linked chains."
+      }
+    ]
+  },
+
+  "quiz-c-8": {
+    id: "quiz-c-8",
+    experimentId: "c-exp-8",
+    title: "Week 8: NPTEL Mock Exam",
+    description: "Comprehensive 5-Question High-Yield NPTEL Certification Diagnostic Exam covering all core C topics and edge cases.",
+    passingScore: 4,
+    timeLimitMinutes: 5,
+    questions: [
+      {
+        id: "c8-q1",
+        question: "What will be the output of: int a = 5; printf(\"%d %d %d\", a, ++a, a++); in standard C?",
+        options: [
+          "Undefined Behavior (Modifying a variable multiple times without sequence points)",
+          "5 6 7",
+          "7 7 5",
+          "5 5 5"
+        ],
+        correctIndex: 0,
+        explanation: "In C, order of argument evaluation in printf is unspecified; modifying a variable multiple times between sequence points invokes Undefined Behavior."
+      },
+      {
+        id: "c8-q2",
+        question: "Given 'int arr[] = {10, 20, 30, 40}; int *p = arr;', what is the value of '*p++' vs '(*p)++'?",
+        options: [
+          "*p++ fetches arr[0] (10) and then increments pointer p; (*p)++ increments the value at arr[0] from 10 to 11",
+          "Both perform identical operations",
+          "*p++ causes compilation error",
+          "(*p)++ moves the pointer by 4 bytes"
+        ],
+        correctIndex: 0,
+        explanation: "Postfix ++ has higher precedence: *p++ dereferences first then advances pointer; (*p)++ increments the value pointed to."
+      },
+      {
+        id: "c8-q3",
+        question: "Which of the following creates a dynamically allocated 2D matrix of integers (R rows, C columns) in C?",
+        options: [
+          "int **mat = malloc(R * sizeof(int*)); for(int i=0; i<R; i++) mat[i] = malloc(C * sizeof(int));",
+          "int mat = malloc(R * C);",
+          "int mat[][] = malloc(sizeof(int));",
+          "int *mat = calloc(R, C);"
+        ],
+        correctIndex: 0,
+        explanation: "A dynamic 2D array allocates an array of row pointers (int**), followed by allocating C elements for each row pointer."
+      },
+      {
+        id: "c8-q4",
+        question: "What is the primary objective of the 7-Day NPTEL Exam Practice Plan?",
+        options: [
+          "Day 1-2 Concept review -> Day 3-4 Previous papers -> Day 5 Full Mock Test -> Day 6 Mistake Analysis -> Day 7 Final Review",
+          "Only reading textbook on Day 7",
+          "Memorizing code without understanding pointers",
+          "Skipping recursion practice"
+        ],
+        correctIndex: 0,
+        explanation: "The 7-day structured revision consolidates concept mastery, solves authentic NPTEL papers, diagnoses mistakes, and achieves Elite/Gold certification."
+      },
+      {
+        id: "c8-q5",
+        question: "How do AI&DS 'C Programming Champions' support department peers during NPTEL preparation?",
+        options: [
+          "By conducting weekly coding practice, doubt-clearing sessions, and mock quiz discussions",
+          "By writing exams for other students",
+          "By canceling lab sessions",
+          "By grading faculty assignments"
+        ],
+        correctIndex: 0,
+        explanation: "The 20–30 selected student champions lead peer study circles, mentor struggling peers, and host weekly NPTEL quiz discussions."
+      }
+    ]
   }
 };
 

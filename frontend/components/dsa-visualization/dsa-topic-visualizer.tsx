@@ -223,7 +223,26 @@ export function DSATopicVisualizer({ topic }: DSATopicVisualizerProps) {
       return <SortingSuiteVisualizer defaultAlgo="merge" />;
     }
 
-    if (topic.categoryId === "complexity-analysis") {
+    // NPTEL C Programming Weeks
+    if (topic.categoryId === "nptel-week-1" || topic.categoryId === "nptel-week-2") {
+      return <BasicDSVisualizer initialMode="array" />;
+    }
+    if (topic.categoryId === "nptel-week-3") {
+      return <BasicDSVisualizer initialMode="array" />;
+    }
+    if (topic.categoryId === "nptel-week-4") {
+      return <RecursionBacktrackingVisualizer defaultMode="factorial" />;
+    }
+    if (topic.categoryId === "nptel-week-5") {
+      return <BasicDSVisualizer initialMode="matrix" />;
+    }
+    if (topic.categoryId === "nptel-week-6") {
+      return <BasicDSVisualizer initialMode="array" />;
+    }
+    if (topic.categoryId === "nptel-week-7") {
+      return <LinkedListVisualizer />;
+    }
+    if (topic.categoryId === "nptel-week-8") {
       return <ComplexityComparator />;
     }
 

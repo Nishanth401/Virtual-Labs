@@ -32,7 +32,7 @@ export const COURSES_DATA: CourseItem[] = [
     sem: 1,
     credits: 1.5,
     type: 'Foundation',
-    desc: 'Hands-on C laboratory covering control flow, nested loops, matrix operations, pointer arithmetic, structures, and file I/O operations.',
+    desc: 'Official 8-Week NPTEL Study Plan & Certification Track for AI&DS students covering Weekly Workflows (Mon–Sun), formatted I/O, operators, loops, recursion, *(a+i) pointers, dynamic memory, structs, and mock exams.',
     resources: 26,
     icon: '💻',
     isLab: true,

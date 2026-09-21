@@ -196,23 +196,33 @@ ORDER BY avg_gpa DESC;`
       ],
       sampleCode: {
         language: "sql",
-        code: `-- UNION: Combine Student and Faculty directory names
-SELECT name, 'Student' AS role FROM Students
+        code: `-- 1. UNION: Combine Student and Faculty directory names
+SELECT name, 'Faculty' AS designation FROM Employees
 UNION
-SELECT 'Dr. Aris Thorne', 'Faculty' AS role;
+SELECT name, 'Student' AS designation FROM Students
+ORDER BY name ASC;
 
--- INTERSECT: Students enrolled in both Lab 1 and Lab 2
-SELECT student_id FROM CourseEnrollment WHERE course_id = 'AD8481'
+-- 2. INTERSECT: Department IDs present in both Students and Employees relations
+SELECT dept_id FROM Students
 INTERSECT
-SELECT student_id FROM CourseEnrollment WHERE course_id = 'AD8381';`
+SELECT dept_id FROM Employees;`
       },
-      expectedOutput: `+-----------------+---------+
-| name            | role    |
-+-----------------+---------+
-| Alice Johnson   | Student |
-| Bob Smith       | Student |
-| Dr. Aris Thorne | Faculty |
-+-----------------+---------+`,
+      expectedOutput: `+--------------------+-------------+
+| name               | designation |
++--------------------+-------------+
+| Aarav Sharma       | Student     |
+| Ananya Iyer        | Student     |
+| Diya Nair          | Student     |
+| Dr. A. Joseph      | Faculty     |
+| Dr. K. Raman       | Faculty     |
+| Karthik Raja       | Student     |
+| Prof. R. Chandran  | Faculty     |
+| Prof. S. Meena     | Faculty     |
+| Prof. V. Gupta     | Faculty     |
+| Rohan Varma        | Student     |
+| Sneha Reddy        | Student     |
+| Vikram Patel       | Student     |
++--------------------+-------------+`,
       leetcodeProblems: [],
       targetAudience: {
         ug: ["B.Tech AIDS", "B.E CSE"],

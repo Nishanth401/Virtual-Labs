@@ -77,11 +77,11 @@ export const LAB_ROADMAPS_DATA: Record<string, { title: string; badge: string; c
   },
 
   // ==========================================
-  // 8. C PROGRAMMING LABORATORY (10 EXPERIMENTS)
+  // 8. C PROGRAMMING LABORATORY (NPTEL 8-WEEK AI&DS TRACK)
   // ==========================================
   "c-programming": {
-    title: "C Programming Laboratory Roadmap",
-    badge: "10 Core Experiments • Formatted I/O / Loops / Pointers / malloc / Structs / Files",
+    title: "NPTEL C Programming 8-Week Roadmap",
+    badge: "8-Week NPTEL Study Plan • AI&DS Engineering Track • 8 Weekly Assessments",
     categories: C_PROGRAMMING_ROADMAP_CATEGORIES,
   },
 
