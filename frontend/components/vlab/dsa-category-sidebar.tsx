@@ -67,7 +67,7 @@ export function DSACategorySidebar({
 
   return (
     <aside className={cn("w-full lg:w-[280px] xl:w-[310px] shrink-0", className)}>
-      <div className="bg-card/90 backdrop-blur-md rounded-2xl border border-border p-4 sm:p-5 shadow-sm space-y-3 sticky top-24 h-full flex flex-col justify-between">
+      <div className="bg-card/90 backdrop-blur-md rounded-2xl border border-border p-4 sm:p-5 shadow-sm space-y-3 sticky top-24">
         {/* Header & Search */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
@@ -90,7 +90,7 @@ export function DSACategorySidebar({
         </div>
 
         {/* Category List */}
-        <div className="space-y-4 max-h-[calc(100vh-220px)] overflow-y-auto pr-1">
+        <div className="space-y-3.5 max-h-[380px] xl:max-h-[440px] overflow-y-auto pr-1">
           {filteredCategories.map((category) => {
             const Icon = getIcon(category.iconName);
             const categoryCompletedCount = category.topics.filter((t) =>

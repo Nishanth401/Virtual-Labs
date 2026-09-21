@@ -32,7 +32,7 @@ export function DSATopicOverview({
   className,
 }: DSATopicOverviewProps) {
   return (
-    <div className={cn("bg-card/90 backdrop-blur-md border border-border p-5 sm:p-6 rounded-2xl shadow-sm h-full flex flex-col justify-between space-y-4", className)}>
+    <div className={cn("bg-card/90 backdrop-blur-md border border-border p-5 sm:p-6 rounded-2xl shadow-sm space-y-4", className)}>
       {/* 1. Header with Breadcrumb, Links, and Actions */}
       <div className="space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
