@@ -26,6 +26,7 @@ import {
   CollegeVideoTutorial,
 } from "@/lib/supabase-multitenant";
 import { StudentProfile } from "@/lib/supabase";
+import { StudentAnalyticsModal } from "@/components/admin/student-analytics-modal";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -135,6 +136,10 @@ function AdminPageContent() {
   // Uploaded File Helper State
   const [uploadedManualFileName, setUploadedManualFileName] = useState<string>("");
   const [uploadedMaterialFileName, setUploadedMaterialFileName] = useState<string>("");
+
+  // Student Profile Analytics Modal State
+  const [selectedStudentForAnalytics, setSelectedStudentForAnalytics] = useState<StudentProfile | null>(null);
+  const [isAnalyticsModalOpen, setIsAnalyticsModalOpen] = useState<boolean>(false);
 
   // Check auth session
   useEffect(() => {
@@ -1096,23 +1101,32 @@ function AdminPageContent() {
                         <th className="p-3.5 text-center">Labs Completed</th>
                         <th className="p-3.5 text-center">Quiz Scores</th>
                         <th className="p-3.5 text-center">Last Active</th>
+                        <th className="p-3.5 text-right">Action</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border/60">
                       {filteredStudents.length === 0 ? (
                         <tr>
-                          <td colSpan={6} className="p-8 text-center text-muted-foreground">
+                          <td colSpan={7} className="p-8 text-center text-muted-foreground">
                             {isLoadingData ? "Loading student records..." : `No students registered under ${activeCollege.shortName} yet.`}
                           </td>
                         </tr>
                       ) : (
                         filteredStudents.map((s) => (
-                          <tr key={s.uid} className="hover:bg-muted/30 transition-colors">
+                          <tr
+                            key={s.uid}
+                            onClick={() => {
+                              setSelectedStudentForAnalytics(s);
+                              setIsAnalyticsModalOpen(true);
+                            }}
+                            className="hover:bg-primary/5 cursor-pointer transition-colors group"
+                            title={`Click to view detailed laboratory & DSA analytics for ${s.name}`}
+                          >
                             <td className="p-3.5 font-bold text-foreground flex items-center gap-2">
-                              <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[10px] font-bold">
+                              <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[10px] font-bold group-hover:scale-105 transition-transform">
                                 {s.name.charAt(0)}
                               </div>
-                              <span>{s.name}</span>
+                              <span className="group-hover:text-primary transition-colors">{s.name}</span>
                             </td>
                             <td className="p-3.5 font-mono text-primary font-bold">
                               {s.registerNumber}
@@ -1132,6 +1146,21 @@ function AdminPageContent() {
                             </td>
                             <td className="p-3.5 text-center text-muted-foreground text-[11px]">
                               {s.lastActive ? new Date(s.lastActive).toLocaleDateString() : "Active Today"}
+                            </td>
+                            <td className="p-3.5 text-right">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedStudentForAnalytics(s);
+                                  setIsAnalyticsModalOpen(true);
+                                }}
+                                className="h-7 text-[11px] font-semibold gap-1 px-2.5 bg-background group-hover:bg-primary group-hover:text-primary-foreground transition-colors border-border group-hover:border-primary shadow-2xs"
+                              >
+                                <Eye className="h-3 w-3" />
+                                <span>View Progress</span>
+                              </Button>
                             </td>
                           </tr>
                         ))
@@ -1775,6 +1804,13 @@ function AdminPageContent() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* 5. Modal: Student Analytics & Lab/DSA Progress Breakdown */}
+      <StudentAnalyticsModal
+        student={selectedStudentForAnalytics}
+        open={isAnalyticsModalOpen}
+        onOpenChange={setIsAnalyticsModalOpen}
+      />
 
       <Footer />
     </div>
