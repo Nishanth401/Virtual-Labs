@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { DSATopic } from "@/data/dsa-topic-data";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { MultiLangCodeViewer } from "@/components/visualizer/code/multi-lang-code-viewer";
 import { SqlCompiler } from "@/components/vlab/sql-compiler";
+import { MaterialReaderDialog } from "@/components/resources/material-reader-dialog";
 
 export interface DSATopicOverviewProps {
   topic: DSATopic;
@@ -31,6 +32,8 @@ export function DSATopicOverview({
   onToggleCompleted,
   className,
 }: DSATopicOverviewProps) {
+  const [isReaderOpen, setIsReaderOpen] = useState(false);
+
   return (
     <div className={cn("bg-card/90 backdrop-blur-md border border-border p-5 sm:p-6 rounded-2xl shadow-sm space-y-4", className)}>
       {/* 1. Header with Breadcrumb, Links, and Actions */}
@@ -44,15 +47,15 @@ export function DSATopicOverview({
 
           <div className="flex items-center gap-2 shrink-0">
             {topic.gfgUrl && (
-              <a
-                href={topic.gfgUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline bg-emerald-500/10 px-2.5 py-1 rounded-xl border border-emerald-500/20 shadow-2xs"
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsReaderOpen(true)}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 px-2.5 h-7.5 rounded-xl border border-emerald-500/20 shadow-2xs cursor-pointer"
               >
-                <span>Handbook</span>
-                <ExternalLink className="h-3 w-3" />
-              </a>
+                <BookOpen className="h-3.5 w-3.5" />
+                <span>In-App Handbook</span>
+              </Button>
             )}
 
             <Button
@@ -141,34 +144,51 @@ export function DSATopicOverview({
             <div className="p-2 rounded-lg bg-card border border-border/60 text-center">
               <div className="text-[10px] text-muted-foreground font-sans">Scope</div>
               <div className="font-bold text-foreground mt-0.5 text-[11px] truncate" title={topic.complexities[0]?.operation}>
-                {topic.complexities[0]?.operation}
+                {topic.complexities[0]?.operation || "Core Operation"}
               </div>
             </div>
-            <div className="p-2 rounded-lg bg-emerald-500/5 border border-emerald-500/20 text-center">
-              <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-sans">Avg Time</div>
-              <div className="font-bold text-emerald-500 mt-0.5 text-xs truncate">
-                {topic.complexities[0]?.avg || topic.complexities[0]?.best || "O(1)"}
+            <div className="p-2 rounded-lg bg-card border border-border/60 text-center">
+              <div className="text-[10px] text-muted-foreground font-sans">Best Time</div>
+              <div className="font-bold text-emerald-500 mt-0.5 text-[11px]">
+                {topic.complexities[0]?.bestTime || "O(1)"}
               </div>
             </div>
-            <div className="p-2 rounded-lg bg-amber-500/5 border border-amber-500/20 text-center">
-              <div className="text-[10px] text-amber-600 dark:text-amber-400 font-sans">Worst Time</div>
-              <div className="font-bold text-amber-500 mt-0.5 text-xs truncate">
-                {topic.complexities[0]?.worst || "O(N)"}
+            <div className="p-2 rounded-lg bg-card border border-border/60 text-center">
+              <div className="text-[10px] text-muted-foreground font-sans">Worst Time</div>
+              <div className="font-bold text-amber-500 mt-0.5 text-[11px]">
+                {topic.complexities[0]?.worstTime || "O(N)"}
               </div>
             </div>
-            <div className="p-2 rounded-lg bg-sky-500/5 border border-sky-500/20 text-center">
-              <div className="text-[10px] text-sky-600 dark:text-sky-400 font-sans">Space</div>
-              <div className="font-bold text-sky-500 mt-0.5 text-xs truncate">
+            <div className="p-2 rounded-lg bg-card border border-border/60 text-center">
+              <div className="text-[10px] text-muted-foreground font-sans">Space</div>
+              <div className="font-bold text-primary mt-0.5 text-[11px]">
                 {topic.complexities[0]?.space || "O(1)"}
               </div>
             </div>
           </div>
         ) : (
-          <div className="p-2 text-center text-[11px] text-muted-foreground">
+          <div className="p-2 text-center text-xs text-muted-foreground font-mono">
             Standard Relational Catalog Complexity
           </div>
         )}
       </div>
+
+      {/* In-App Reader Dialog */}
+      <MaterialReaderDialog
+        isOpen={isReaderOpen}
+        onClose={() => setIsReaderOpen(false)}
+        resource={{
+          subject: topic.categoryName,
+          title: topic.title,
+          unit: "All",
+          type: "Lab Material",
+          provider: "GeeksforGeeks",
+          format: "Web Guide",
+          fileUrl: topic.gfgUrl || "",
+          description: topic.quickSummary,
+          tags: [topic.categoryName, topic.difficulty]
+        }}
+      />
     </div>
   );
 }
@@ -178,6 +198,7 @@ export interface DSATopicResourcesProps {
 }
 
 export function DSATopicResources({ topic }: DSATopicResourcesProps) {
+  const [isReaderOpen, setIsReaderOpen] = useState(false);
   const resourceCount = topic.practiceProblems.length + (topic.gfgUrl ? 1 : 0);
 
   return (
@@ -203,11 +224,10 @@ export function DSATopicResources({ topic }: DSATopicResourcesProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-1 items-stretch">
         {topic.gfgUrl && (
-          <a
-            href={topic.gfgUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/30 hover:bg-card hover:border-emerald-500/40 hover:shadow-xs transition-all group shadow-2xs h-full min-h-[76px]"
+          <button
+            type="button"
+            onClick={() => setIsReaderOpen(true)}
+            className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/30 hover:bg-card hover:border-emerald-500/40 hover:shadow-xs transition-all group shadow-2xs h-full min-h-[76px] text-left cursor-pointer"
           >
             <div className="space-y-1 min-w-0 pr-3 flex-1">
               <div className="flex items-center gap-2">
@@ -215,7 +235,7 @@ export function DSATopicResources({ topic }: DSATopicResourcesProps) {
                   Complete {topic.title} Handbook
                 </span>
               </div>
-              <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono block">GeeksforGeeks Documentation</span>
+              <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono block">In-App GeeksforGeeks Material</span>
             </div>
 
             <div className="flex items-center gap-2 shrink-0">
@@ -223,12 +243,28 @@ export function DSATopicResources({ topic }: DSATopicResourcesProps) {
                 variant="outline"
                 className="text-emerald-500 border-emerald-500/30 text-[10px] font-mono font-semibold"
               >
-                Handbook
+                In-App
               </Badge>
-              <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-emerald-500 transition-colors" />
+              <BookOpen className="h-4 w-4 text-muted-foreground group-hover:text-emerald-500 transition-colors" />
             </div>
-          </a>
+          </button>
         )}
+
+        <MaterialReaderDialog
+          isOpen={isReaderOpen}
+          onClose={() => setIsReaderOpen(false)}
+          resource={{
+            subject: topic.categoryName,
+            title: topic.title,
+            unit: "All",
+            type: "Lab Material",
+            provider: "GeeksforGeeks",
+            format: "Web Guide",
+            fileUrl: topic.gfgUrl || "",
+            description: topic.quickSummary,
+            tags: [topic.categoryName, topic.difficulty]
+          }}
+        />
 
         {topic.practiceProblems.map((prob, idx) => (
           <a

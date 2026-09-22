@@ -8,12 +8,14 @@ import { RESOURCES_DATA, ResourceItem } from "@/data/resources";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { MaterialReaderDialog } from "@/components/resources/material-reader-dialog";
+import { VideoModal } from "@/components/resources/video-modal";
+import { LabManualDialog } from "@/components/resources/lab-manual-dialog";
 import {
   FileText,
   Search,
   Download,
   FolderOpen,
-  ExternalLink,
   BookOpen,
   GraduationCap,
   CheckCircle2,
@@ -21,13 +23,24 @@ import {
   FlaskConical,
   Play,
   Layers,
-  Sparkles
+  Sparkles,
+  Eye
 } from "lucide-react";
 
 export default function ResourcesPage() {
   const [selectedType, setSelectedType] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [tenantResources, setTenantResources] = useState<ResourceItem[]>([]);
+
+  // Modals state for in-app viewing
+  const [selectedMaterial, setSelectedMaterial] = useState<ResourceItem | null>(null);
+  const [isMaterialReaderOpen, setIsMaterialReaderOpen] = useState(false);
+
+  const [selectedVideo, setSelectedVideo] = useState<ResourceItem | null>(null);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+
+  const [selectedManual, setSelectedManual] = useState<ResourceItem | null>(null);
+  const [isManualModalOpen, setIsManualModalOpen] = useState(false);
 
   // Load any dynamically uploaded/added resources from Admin Panel
   useEffect(() => {
@@ -136,8 +149,8 @@ export default function ResourcesPage() {
 
   const resourceTypes = [
     { key: "all", label: "All Resources", icon: Layers },
-    { key: "Lab Material", label: "Lab Material (GFG / W3Schools)", icon: FileText },
-    { key: "Lab Manual", label: "Lab Manual", icon: BookOpen },
+    { key: "Lab Material", label: "Lab Material (In-App Guides)", icon: FileText },
+    { key: "Lab Manual", label: "Lab Manuals", icon: BookOpen },
     { key: "Video Tutorial", label: "Video Tutorials", icon: Video },
     { key: "Virtual Lab", label: "Virtual Labs", icon: FlaskConical },
   ];
@@ -152,6 +165,26 @@ export default function ResourcesPage() {
       (res.tags && res.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase())));
     return matchesType && matchesSearch;
   });
+
+  const handleOpenResource = (res: ResourceItem) => {
+    if (res.type === "Virtual Lab") {
+      // In-house simulator route
+      return;
+    }
+    if (res.type === "Video Tutorial") {
+      setSelectedVideo(res);
+      setIsVideoModalOpen(true);
+      return;
+    }
+    if (res.type === "Lab Manual") {
+      setSelectedManual(res);
+      setIsManualModalOpen(true);
+      return;
+    }
+    // Default: In-App Material Reader
+    setSelectedMaterial(res);
+    setIsMaterialReaderOpen(true);
+  };
 
   const getProviderBadge = (provider: string) => {
     switch (provider) {
@@ -204,13 +237,13 @@ export default function ResourcesPage() {
         <div className="mb-10 text-center max-w-3xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold">
             <GraduationCap className="h-4 w-4" />
-            <span>Curated Academic Repository</span>
+            <span>Curated In-App Academic Vault</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground font-heading">
             Department <span className="bg-gradient-to-r from-primary via-rose-500 to-indigo-500 bg-clip-text text-transparent">Resource Vault</span>
           </h1>
           <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-            Direct access to verified laboratory study materials from <strong>GeeksforGeeks</strong>, <strong>W3Schools</strong>, official documentation, step-by-step video tutorials, and interactive virtual laboratories.
+            Direct in-app access to verified academic study materials from <strong>GeeksforGeeks</strong>, <strong>W3Schools</strong>, official documentation, video masterclasses, and interactive virtual laboratories without external redirects.
           </p>
         </div>
 
@@ -259,7 +292,8 @@ export default function ResourcesPage() {
           {filteredResources.map((res, idx) => (
             <Card
               key={idx}
-              className="flex flex-col h-full border border-border bg-card/90 hover:border-primary/50 hover:shadow-md transition-all group rounded-2xl overflow-hidden"
+              className="flex flex-col h-full border border-border bg-card/90 hover:border-primary/50 hover:shadow-md transition-all group rounded-2xl overflow-hidden cursor-pointer"
+              onClick={() => handleOpenResource(res)}
             >
               <CardHeader className="p-5 pb-3 space-y-3">
                 <div className="flex items-start justify-between gap-2">
@@ -316,9 +350,9 @@ export default function ResourcesPage() {
                   </div>
                 )}
 
-                <div className="pt-2 border-t border-border/40 flex items-center justify-between">
+                <div className="pt-2 border-t border-border/40 flex items-center justify-between" onClick={(e) => e.stopPropagation()}>
                   <span className="text-[11px] text-muted-foreground font-mono">
-                    {res.downloadCount ? `${res.downloadCount}+ views` : "Available Now"}
+                    {res.downloadCount ? `${res.downloadCount}+ reads` : "In-App Guide"}
                   </span>
 
                   {res.type === "Virtual Lab" ? (
@@ -329,18 +363,42 @@ export default function ResourcesPage() {
                       </Link>
                     </Button>
                   ) : res.type === "Video Tutorial" ? (
-                    <Button size="sm" variant="outline" className="h-8 text-xs font-bold gap-1.5 rounded-xl text-red-600 hover:bg-red-500/10 border-red-500/30" asChild>
-                      <a href={res.fileUrl} target="_blank" rel="noopener noreferrer">
-                        <Video className="h-3.5 w-3.5" />
-                        <span>Watch Video</span>
-                      </a>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-8 text-xs font-bold gap-1.5 rounded-xl text-red-600 hover:bg-red-500/10 border-red-500/30"
+                      onClick={() => {
+                        setSelectedVideo(res);
+                        setIsVideoModalOpen(true);
+                      }}
+                    >
+                      <Video className="h-3.5 w-3.5" />
+                      <span>Watch in App</span>
+                    </Button>
+                  ) : res.type === "Lab Manual" ? (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-8 text-xs font-bold gap-1.5 rounded-xl text-primary border-primary/30 hover:bg-primary/10"
+                      onClick={() => {
+                        setSelectedManual(res);
+                        setIsManualModalOpen(true);
+                      }}
+                    >
+                      <BookOpen className="h-3.5 w-3.5" />
+                      <span>View Manual</span>
                     </Button>
                   ) : (
-                    <Button size="sm" className="h-8 text-xs font-bold gap-1.5 rounded-xl bg-primary text-white hover:bg-primary/90" asChild>
-                      <a href={res.fileUrl} target="_blank" rel="noopener noreferrer">
-                        <span>Open Material</span>
-                        <ExternalLink className="h-3 w-3 ml-0.5" />
-                      </a>
+                    <Button
+                      size="sm"
+                      className="h-8 text-xs font-bold gap-1.5 rounded-xl bg-primary text-white hover:bg-primary/90"
+                      onClick={() => {
+                        setSelectedMaterial(res);
+                        setIsMaterialReaderOpen(true);
+                      }}
+                    >
+                      <BookOpen className="h-3.5 w-3.5" />
+                      <span>Open Material</span>
                     </Button>
                   )}
                 </div>
@@ -349,6 +407,26 @@ export default function ResourcesPage() {
           ))}
         </div>
       </main>
+
+      {/* In-App Interactive Readers & Modals */}
+      <MaterialReaderDialog
+        isOpen={isMaterialReaderOpen}
+        onClose={() => setIsMaterialReaderOpen(false)}
+        resource={selectedMaterial}
+      />
+
+      <VideoModal
+        isOpen={isVideoModalOpen}
+        onClose={() => setIsVideoModalOpen(false)}
+        resource={selectedVideo}
+      />
+
+      <LabManualDialog
+        isOpen={isManualModalOpen}
+        onClose={() => setIsManualModalOpen(false)}
+        resource={selectedManual}
+      />
+
       <Footer />
     </div>
   );
