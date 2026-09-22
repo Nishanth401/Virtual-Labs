@@ -362,6 +362,8 @@ export function AVLTreeVisualizer({ content }: AVLTreeVisualizerProps) {
                 onTraversal={handleTraversal}
                 onClear={clear}
                 isAnimating={isAnimating}
+                traversalHistory={traversalHistory}
+                rotationHistory={rotationHistory}
               />
               <AVLTreeAnalysis 
                 tree={tree}
