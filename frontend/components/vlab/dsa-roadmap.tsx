@@ -52,36 +52,36 @@ export function DSARoadmap({ labId = "data-structures", sidebar }: DSARoadmapPro
     activeTopic?.codeSnippets?.some((s) => s.language?.toLowerCase() === "sql");
 
   return (
-    <div className="space-y-8 w-full min-w-0">
-      {/* 1. TOP ROW: 3 EVENLY ALIGNED BLOCKS (NAV + CATEGORIES + TOPIC OVERVIEW) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch w-full min-w-0">
+    <div className="space-y-6 w-full min-w-0">
+      {/* 1. TOP ROW: 3 SUITABLE & FLEXIBLE BLOCKS (NAV + CATEGORIES + TOPIC OVERVIEW) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start w-full min-w-0">
         {/* Block 1: Main Lab Navigation Sidebar */}
         {sidebar && (
-          <div className="lg:col-span-3 xl:col-span-3 flex flex-col min-w-0">
+          <div className="lg:col-span-3 xl:col-span-3 min-w-0">
             {sidebar}
           </div>
         )}
 
         {/* Block 2: Topic & Experiment Category Sidebar */}
-        <div className={sidebar ? "lg:col-span-4 xl:col-span-3 flex flex-col min-w-0" : "lg:col-span-4 flex flex-col min-w-0"}>
+        <div className={sidebar ? "lg:col-span-4 xl:col-span-3 min-w-0" : "lg:col-span-4 min-w-0"}>
           <DSACategorySidebar
             categories={categories}
             activeTopicId={activeTopic ? activeTopic.id : ""}
             onSelectTopic={setActiveTopic}
             completedTopicIds={completedTopicIds}
             roadmapTitle={labRoadmap?.title}
-            className="w-full h-full"
+            className="w-full"
           />
         </div>
 
         {/* Block 3: Topic Overview & Complexity Summary */}
-        <div className={sidebar ? "lg:col-span-5 xl:col-span-6 flex flex-col min-w-0" : "lg:col-span-8 flex flex-col min-w-0"}>
+        <div className={sidebar ? "lg:col-span-5 xl:col-span-6 min-w-0" : "lg:col-span-8 min-w-0"}>
           {activeTopic && (
             <DSATopicOverview
               topic={activeTopic}
               isCompleted={completedTopicIds.includes(activeTopic.id)}
               onToggleCompleted={handleToggleCompleted}
-              className="w-full h-full"
+              className="w-full"
             />
           )}
         </div>

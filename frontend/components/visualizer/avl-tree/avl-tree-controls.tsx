@@ -10,8 +10,8 @@ interface AVLTreeControlsProps {
   onInsert: (value: number) => void
   onClear: () => void
   onTraversal: (type: "inorder" | "preorder" | "postorder") => void
-  traversalHistory: number[]
-  rotationHistory: string[]
+  traversalHistory?: number[]
+  rotationHistory?: string[]
   isAnimating: boolean
 }
 
@@ -19,8 +19,8 @@ export function AVLTreeControls({
   onInsert,
   onClear,
   onTraversal,
-  traversalHistory,
-  rotationHistory,
+  traversalHistory = [],
+  rotationHistory = [],
   isAnimating
 }: AVLTreeControlsProps) {
   const [value, setValue] = useState("")

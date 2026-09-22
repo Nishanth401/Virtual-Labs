@@ -74,7 +74,7 @@ export function LabSidebar({
 
   return (
     <aside className={cn("w-full lg:w-72 shrink-0", className)}>
-      <div className="bg-card/80 backdrop-blur-md rounded-2xl border border-secondary/40 p-4 sticky top-24 shadow-sm space-y-2 h-full flex flex-col justify-between">
+      <div className="bg-card/80 backdrop-blur-md rounded-2xl border border-border p-4 sticky top-24 shadow-sm space-y-2.5">
         <div className="px-3 py-2 border-b border-border/50 flex items-center justify-between">
           <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground font-sans">
             {labId === "c-programming" ? "NPTEL AI&DS Navigation" : "Lab Navigation"}
