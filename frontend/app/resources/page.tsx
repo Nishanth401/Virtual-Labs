@@ -4,43 +4,27 @@ import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { Navbar } from "@/components/navigation/navbar";
 import { Footer } from "@/components/navigation/footer";
-import { RESOURCES_DATA, ResourceItem } from "@/data/resources";
+import { RESOURCES_DATA, ResourceItem, getResourceId } from "@/data/resources";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MaterialReaderDialog } from "@/components/resources/material-reader-dialog";
-import { VideoModal } from "@/components/resources/video-modal";
-import { LabManualDialog } from "@/components/resources/lab-manual-dialog";
 import {
   FileText,
   Search,
-  Download,
-  FolderOpen,
   BookOpen,
   GraduationCap,
-  CheckCircle2,
   Video,
   FlaskConical,
   Play,
   Layers,
-  Sparkles,
-  Eye
+  ArrowRight,
+  Sparkles
 } from "lucide-react";
 
 export default function ResourcesPage() {
   const [selectedType, setSelectedType] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [tenantResources, setTenantResources] = useState<ResourceItem[]>([]);
-
-  // Modals state for in-app viewing
-  const [selectedMaterial, setSelectedMaterial] = useState<ResourceItem | null>(null);
-  const [isMaterialReaderOpen, setIsMaterialReaderOpen] = useState(false);
-
-  const [selectedVideo, setSelectedVideo] = useState<ResourceItem | null>(null);
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-
-  const [selectedManual, setSelectedManual] = useState<ResourceItem | null>(null);
-  const [isManualModalOpen, setIsManualModalOpen] = useState(false);
 
   // Load any dynamically uploaded/added resources from Admin Panel
   useEffect(() => {
@@ -55,7 +39,7 @@ export default function ResourcesPage() {
         mats.forEach((m: any) => {
           if (!RESOURCES_DATA.some((r) => r.title === m.title || r.fileUrl === m.fileUrl)) {
             dynamicItems.push({
-              id: m.id,
+              id: m.id || getResourceId({ subject: m.department, title: m.title }),
               subject: m.department || "Academic Material",
               title: m.title,
               unit: "All",
@@ -77,7 +61,7 @@ export default function ResourcesPage() {
         mans.forEach((m: any) => {
           if (!RESOURCES_DATA.some((r) => r.title === m.labName || r.fileUrl === m.manualUrl)) {
             dynamicItems.push({
-              id: m.id,
+              id: m.id || getResourceId({ subject: m.department, title: m.labName }),
               subject: `${m.labCode || "LAB"} — ${m.department || "Department"}`,
               title: m.labName,
               unit: "All",
@@ -122,7 +106,7 @@ export default function ResourcesPage() {
         vids.forEach((v: any) => {
           if (!RESOURCES_DATA.some((r) => r.title === v.title || r.fileUrl === v.youtubeUrl)) {
             dynamicItems.push({
-              id: v.id,
+              id: v.id || getResourceId({ subject: v.topic, title: v.title }),
               subject: v.topic || "Video Tutorial",
               title: v.title,
               unit: "All",
@@ -149,7 +133,7 @@ export default function ResourcesPage() {
 
   const resourceTypes = [
     { key: "all", label: "All Resources", icon: Layers },
-    { key: "Lab Material", label: "Lab Material (In-App Guides)", icon: FileText },
+    { key: "Lab Material", label: "Lab Materials & Guides", icon: FileText },
     { key: "Lab Manual", label: "Lab Manuals", icon: BookOpen },
     { key: "Video Tutorial", label: "Video Tutorials", icon: Video },
     { key: "Virtual Lab", label: "Virtual Labs", icon: FlaskConical },
@@ -165,26 +149,6 @@ export default function ResourcesPage() {
       (res.tags && res.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase())));
     return matchesType && matchesSearch;
   });
-
-  const handleOpenResource = (res: ResourceItem) => {
-    if (res.type === "Virtual Lab") {
-      // In-house simulator route
-      return;
-    }
-    if (res.type === "Video Tutorial") {
-      setSelectedVideo(res);
-      setIsVideoModalOpen(true);
-      return;
-    }
-    if (res.type === "Lab Manual") {
-      setSelectedManual(res);
-      setIsManualModalOpen(true);
-      return;
-    }
-    // Default: In-App Material Reader
-    setSelectedMaterial(res);
-    setIsMaterialReaderOpen(true);
-  };
 
   const getProviderBadge = (provider: string) => {
     switch (provider) {
@@ -230,7 +194,7 @@ export default function ResourcesPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-background">
       <Navbar />
       <main className="flex-1 container max-w-7xl mx-auto px-4 sm:px-6 py-10">
         {/* Header Banner */}
@@ -289,143 +253,116 @@ export default function ResourcesPage() {
 
         {/* Resources Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filteredResources.map((res, idx) => (
-            <Card
-              key={idx}
-              className="flex flex-col h-full border border-border bg-card/90 hover:border-primary/50 hover:shadow-md transition-all group rounded-2xl overflow-hidden cursor-pointer"
-              onClick={() => handleOpenResource(res)}
-            >
-              <CardHeader className="p-5 pb-3 space-y-3">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="space-y-1">
-                    <span className="text-[11px] font-bold text-primary tracking-wide uppercase font-mono">
-                      {res.subject}
-                    </span>
-                    <div className="flex items-center gap-2 pt-0.5">
-                      {getProviderBadge(res.provider)}
+          {filteredResources.map((res, idx) => {
+            const targetUrl =
+              res.type === "Virtual Lab"
+                ? res.fileUrl
+                : `/resources/${getResourceId(res)}`;
+
+            return (
+              <Card
+                key={idx}
+                className="flex flex-col h-full border border-border bg-card/90 hover:border-primary/50 hover:shadow-md transition-all group rounded-2xl overflow-hidden"
+              >
+                <CardHeader className="p-5 pb-3 space-y-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="space-y-1">
+                      <span className="text-[11px] font-bold text-primary tracking-wide uppercase font-mono">
+                        {res.subject}
+                      </span>
+                      <div className="flex items-center gap-2 pt-0.5">
+                        {getProviderBadge(res.provider)}
+                      </div>
                     </div>
+                    <Badge variant="outline" className="text-[10px] font-mono shrink-0">
+                      {res.type}
+                    </Badge>
                   </div>
-                  <Badge variant="outline" className="text-[10px] font-mono shrink-0">
-                    {res.type}
-                  </Badge>
-                </div>
 
-                <CardTitle className="text-sm font-bold text-foreground font-heading leading-snug line-clamp-2 group-hover:text-primary transition-colors">
-                  {res.title}
-                </CardTitle>
+                  <CardTitle className="text-sm font-bold text-foreground font-heading leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+                    <Link href={targetUrl} className="hover:underline">
+                      {res.title}
+                    </Link>
+                  </CardTitle>
 
-                <CardDescription className="text-xs text-muted-foreground leading-relaxed line-clamp-3">
-                  {res.description}
-                </CardDescription>
+                  <CardDescription className="text-xs text-muted-foreground leading-relaxed line-clamp-3">
+                    {res.description}
+                  </CardDescription>
 
-                {(res.duration || res.language || res.difficulty) && (
-                  <div className="flex items-center gap-2 pt-1 text-[11px] font-semibold text-muted-foreground">
-                    {res.language && (
-                      <span className="bg-red-500/10 text-red-600 px-2 py-0.5 rounded-md text-[10px] font-mono">
-                        {res.language}
-                      </span>
-                    )}
-                    {res.duration && (
-                      <span className="bg-muted px-2 py-0.5 rounded-md text-[10px] font-mono">
-                        {res.duration}
-                      </span>
-                    )}
-                    {res.difficulty && (
-                      <span className="bg-emerald-500/10 text-emerald-600 px-2 py-0.5 rounded-md text-[10px] font-mono">
-                        {res.difficulty}
-                      </span>
-                    )}
-                  </div>
-                )}
-              </CardHeader>
-
-              <CardContent className="p-5 pt-0 flex-1 flex flex-col justify-end space-y-4">
-                {res.tags && res.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 pt-2">
-                    {res.tags.slice(0, 3).map((tag, tIdx) => (
-                      <span key={tIdx} className="text-[10px] px-2 py-0.5 rounded-md bg-muted/60 text-muted-foreground font-mono">
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                <div className="pt-2 border-t border-border/40 flex items-center justify-between" onClick={(e) => e.stopPropagation()}>
-                  <span className="text-[11px] text-muted-foreground font-mono">
-                    {res.downloadCount ? `${res.downloadCount}+ reads` : "In-App Guide"}
-                  </span>
-
-                  {res.type === "Virtual Lab" ? (
-                    <Button size="sm" className="h-8 text-xs font-bold gap-1.5 rounded-xl bg-primary text-white" asChild>
-                      <Link href={res.fileUrl}>
-                        <Play className="h-3 w-3" />
-                        <span>Launch Simulator</span>
-                      </Link>
-                    </Button>
-                  ) : res.type === "Video Tutorial" ? (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="h-8 text-xs font-bold gap-1.5 rounded-xl text-red-600 hover:bg-red-500/10 border-red-500/30"
-                      onClick={() => {
-                        setSelectedVideo(res);
-                        setIsVideoModalOpen(true);
-                      }}
-                    >
-                      <Video className="h-3.5 w-3.5" />
-                      <span>Watch in App</span>
-                    </Button>
-                  ) : res.type === "Lab Manual" ? (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="h-8 text-xs font-bold gap-1.5 rounded-xl text-primary border-primary/30 hover:bg-primary/10"
-                      onClick={() => {
-                        setSelectedManual(res);
-                        setIsManualModalOpen(true);
-                      }}
-                    >
-                      <BookOpen className="h-3.5 w-3.5" />
-                      <span>View Manual</span>
-                    </Button>
-                  ) : (
-                    <Button
-                      size="sm"
-                      className="h-8 text-xs font-bold gap-1.5 rounded-xl bg-primary text-white hover:bg-primary/90"
-                      onClick={() => {
-                        setSelectedMaterial(res);
-                        setIsMaterialReaderOpen(true);
-                      }}
-                    >
-                      <BookOpen className="h-3.5 w-3.5" />
-                      <span>Open Material</span>
-                    </Button>
+                  {(res.duration || res.language || res.difficulty) && (
+                    <div className="flex items-center gap-2 pt-1 text-[11px] font-semibold text-muted-foreground">
+                      {res.language && (
+                        <span className="bg-red-500/10 text-red-600 px-2 py-0.5 rounded-md text-[10px] font-mono">
+                          {res.language}
+                        </span>
+                      )}
+                      {res.duration && (
+                        <span className="bg-muted px-2 py-0.5 rounded-md text-[10px] font-mono">
+                          {res.duration}
+                        </span>
+                      )}
+                      {res.difficulty && (
+                        <span className="bg-emerald-500/10 text-emerald-600 px-2 py-0.5 rounded-md text-[10px] font-mono">
+                          {res.difficulty}
+                        </span>
+                      )}
+                    </div>
                   )}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardHeader>
+
+                <CardContent className="p-5 pt-0 flex-1 flex flex-col justify-end space-y-4">
+                  {res.tags && res.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 pt-2">
+                      {res.tags.slice(0, 3).map((tag, tIdx) => (
+                        <span key={tIdx} className="text-[10px] px-2 py-0.5 rounded-md bg-muted/60 text-muted-foreground font-mono">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="pt-2 border-t border-border/40 flex items-center justify-between">
+                    <span className="text-[11px] text-muted-foreground font-mono">
+                      {res.downloadCount ? `${res.downloadCount}+ reads` : "In-App Guide"}
+                    </span>
+
+                    {res.type === "Virtual Lab" ? (
+                      <Button size="sm" className="h-8 text-xs font-bold gap-1.5 rounded-xl bg-primary text-white hover:bg-primary/90" asChild>
+                        <Link href={res.fileUrl}>
+                          <Play className="h-3 w-3" />
+                          <span>Launch Simulator</span>
+                        </Link>
+                      </Button>
+                    ) : res.type === "Video Tutorial" ? (
+                      <Button size="sm" variant="outline" className="h-8 text-xs font-bold gap-1.5 rounded-xl text-red-600 hover:bg-red-500/10 border-red-500/30" asChild>
+                        <Link href={targetUrl}>
+                          <Video className="h-3.5 w-3.5" />
+                          <span>Watch in App</span>
+                        </Link>
+                      </Button>
+                    ) : res.type === "Lab Manual" ? (
+                      <Button size="sm" variant="outline" className="h-8 text-xs font-bold gap-1.5 rounded-xl text-primary border-primary/30 hover:bg-primary/10" asChild>
+                        <Link href={targetUrl}>
+                          <BookOpen className="h-3.5 w-3.5" />
+                          <span>View Manual</span>
+                        </Link>
+                      </Button>
+                    ) : (
+                      <Button size="sm" className="h-8 text-xs font-bold gap-1.5 rounded-xl bg-primary text-white hover:bg-primary/90" asChild>
+                        <Link href={targetUrl}>
+                          <BookOpen className="h-3.5 w-3.5" />
+                          <span>Open Material</span>
+                          <ArrowRight className="h-3 w-3 ml-0.5" />
+                        </Link>
+                      </Button>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </main>
-
-      {/* In-App Interactive Readers & Modals */}
-      <MaterialReaderDialog
-        isOpen={isMaterialReaderOpen}
-        onClose={() => setIsMaterialReaderOpen(false)}
-        resource={selectedMaterial}
-      />
-
-      <VideoModal
-        isOpen={isVideoModalOpen}
-        onClose={() => setIsVideoModalOpen(false)}
-        resource={selectedVideo}
-      />
-
-      <LabManualDialog
-        isOpen={isManualModalOpen}
-        onClose={() => setIsManualModalOpen(false)}
-        resource={selectedManual}
-      />
 
       <Footer />
     </div>

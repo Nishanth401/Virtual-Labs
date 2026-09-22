@@ -15,11 +15,20 @@ export interface ResourceItem {
   difficulty?: string;
 }
 
+export function getResourceId(res: { id?: string; subject?: string; title?: string }): string {
+  if (res.id) return res.id;
+  return `${res.subject || "material"}-${res.title || "guide"}`
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 export const RESOURCES_DATA: ResourceItem[] = [
   // ==========================================
   // VIDEO TUTORIALS & WALKTHROUGHS
   // ==========================================
   {
+    id: 'video-dsa-tamil-masterclass',
     subject: 'Data Structures & Algorithms',
     title: 'Data Structures & Algorithms Complete Masterclass in Tamil',
     unit: 'All',
@@ -34,6 +43,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['DSA', 'Tamil Tutorial', 'Sorting', 'Trees', 'Graphs']
   },
   {
+    id: 'video-datascience-tamil-masterclass',
     subject: 'Data Science & Analytics',
     title: 'Data Science & Analytics 18+ Hour Masterclass in Tamil (AI Coach John)',
     unit: 'All',
@@ -48,6 +58,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['Data Science', 'Pandas', 'Z-Test', 'Regression', 'Tamil']
   },
   {
+    id: 'video-ml-tamil-series',
     subject: 'Machine Learning',
     title: 'Machine Learning & Deep Learning Full Video Series in Tamil',
     unit: 'All',
@@ -62,6 +73,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['Machine Learning', 'Neural Networks', 'Decision Trees', 'Tamil']
   },
   {
+    id: 'video-dbms-sql-tamil',
     subject: 'Database Management Systems',
     title: 'DBMS & SQL Complete Step-by-Step Course in Tamil',
     unit: 'All',
@@ -76,6 +88,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['DBMS', 'SQL', 'PL/SQL', 'Joins', 'Tamil']
   },
   {
+    id: 'video-os-gatesmashers',
     subject: 'Operating Systems',
     title: 'Operating Systems Complete Gate Smashers Playlist (English)',
     unit: 'All',
@@ -90,6 +103,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['OS', 'Scheduling', 'Deadlocks', 'Semaphores']
   },
   {
+    id: 'video-java-oop-tamil',
     subject: 'Java OOP',
     title: 'Object Oriented Programming with Java Full Course in Tamil',
     unit: 'All',
@@ -104,6 +118,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['Java', 'OOP', 'Collections', 'Tamil']
   },
   {
+    id: 'video-c-programming-tamil',
     subject: 'C Programming',
     title: 'C Programming Language Complete Course in Tamil',
     unit: 'All',
@@ -118,6 +133,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['C Programming', 'Pointers', 'Memory', 'Tamil']
   },
   {
+    id: 'video-networks-tamil',
     subject: 'Computer Networks',
     title: 'Computer Networks Full Course in Tamil',
     unit: 'All',
@@ -136,6 +152,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   // VIRTUAL LABS & SIMULATORS (DIRECT LAUNCH)
   // ==========================================
   {
+    id: 'sim-dsa-suite',
     subject: 'Data Structures & Algorithms',
     title: 'Interactive DSA Simulator & Visualizer Suite',
     unit: 'All',
@@ -149,6 +166,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['DSA Simulator', 'Visualizer', 'Trees', 'Sorting']
   },
   {
+    id: 'sim-dbms-sql',
     subject: 'Database Management Systems',
     title: 'DBMS Live SQL Console & Query Simulation Studio',
     unit: 'All',
@@ -162,6 +180,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['SQL Studio', 'DBMS Lab', 'Query Engine']
   },
   {
+    id: 'sim-ai-ml',
     subject: 'Machine Learning',
     title: 'Machine Learning & Neural Network Interactive Simulator',
     unit: 'All',
@@ -175,6 +194,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['ML Lab', 'Neural Nets', 'Decision Trees']
   },
   {
+    id: 'sim-os-scheduling',
     subject: 'Operating Systems',
     title: 'Operating Systems CPU Scheduling & Deadlock Simulator',
     unit: 'All',
@@ -188,6 +208,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['OS Simulator', 'Scheduling', 'Bankers Algorithm']
   },
   {
+    id: 'sim-data-science',
     subject: 'Data Science & Analytics',
     title: 'Data Science NumPy & Pandas Vectorized Computing Lab',
     unit: 'All',
@@ -201,6 +222,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['Data Science', 'Statistics', 'Z-Test', 'NumPy']
   },
   {
+    id: 'sim-java-oop',
     subject: 'Java OOP',
     title: 'Java Object-Oriented Programming Interactive Sandbox',
     unit: 'All',
@@ -214,6 +236,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['Java Lab', 'OOP Sandbox', 'Collections']
   },
   {
+    id: 'sim-c-pointers',
     subject: 'C Programming',
     title: 'C Pointer & Memory Layout Visualizer Studio',
     unit: 'All',
@@ -227,6 +250,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['C Visualizer', 'Pointers', 'Memory Allocation']
   },
   {
+    id: 'sim-networks-sockets',
     subject: 'Computer Networks',
     title: 'Computer Networks Packet Sniffer & Socket Lab',
     unit: 'All',
@@ -240,6 +264,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['Networks Lab', 'Sockets', 'Routing']
   },
   {
+    id: 'sim-ai-search',
     subject: 'Artificial Intelligence',
     title: 'AI Heuristic Search & Minimax Game Tree Studio',
     unit: 'All',
@@ -253,6 +278,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['AI Studio', 'A* Search', 'Minimax', 'CSP']
   },
   {
+    id: 'sim-dsa-visualizer-engine',
     subject: 'DSA Visualizer',
     title: 'Step-by-Step Interactive DSA Visualizer Engine',
     unit: 'All',
@@ -270,6 +296,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   // DATA STRUCTURES & ALGORITHMS (JAVA)
   // ==========================================
   {
+    id: 'dsa-java-gfg',
     subject: 'Data Structures (Java)',
     title: 'GeeksforGeeks Data Structures Complete Tutorial & Algorithms Guide',
     unit: 'All',
@@ -282,6 +309,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['DSA', 'Arrays', 'Linked List', 'Trees', 'Graphs']
   },
   {
+    id: 'dsa-java-w3schools',
     subject: 'Data Structures (Java)',
     title: 'W3Schools Java Data Structures & Collections Framework Reference',
     unit: 'All',
@@ -294,6 +322,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['Java', 'Collections', 'ArrayList', 'HashMap']
   },
   {
+    id: 'dsa-lab-manual',
     subject: 'Data Structures Lab',
     title: 'Data Structures & Algorithms Virtual Laboratory Manual',
     unit: 'All',
@@ -310,6 +339,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   // OPERATING SYSTEMS (C)
   // ==========================================
   {
+    id: 'os-handbook-gfg',
     subject: 'Operating Systems',
     title: 'GeeksforGeeks Operating Systems Handbook — CPU Scheduling & Semaphores',
     unit: 'All',
@@ -322,6 +352,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['OS', 'Scheduling', 'Semaphores', 'Deadlock', 'LRU']
   },
   {
+    id: 'os-linux-w3schools',
     subject: 'Operating Systems',
     title: 'W3Schools Linux & UNIX Shell Scripting Interactive Handbook',
     unit: 1,
@@ -334,6 +365,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['Linux', 'Shell', 'POSIX', 'Commands']
   },
   {
+    id: 'os-lab-manual',
     subject: 'Operating Systems Lab',
     title: 'Operating Systems Virtual Laboratory Manual & C Code Experiments',
     unit: 'All',
@@ -350,6 +382,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   // DATABASE MANAGEMENT SYSTEMS (SQL)
   // ==========================================
   {
+    id: 'dbms-w3schools-sql',
     subject: 'Database Management Systems',
     title: 'W3Schools SQL Complete Tutorial & Interactive Query Editor',
     unit: 'All',
@@ -362,6 +395,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['SQL', 'DBMS', 'Joins', 'Queries', 'W3Schools']
   },
   {
+    id: 'dbms-gfg-guide',
     subject: 'Database Management Systems',
     title: 'GeeksforGeeks DBMS Complete Guide — ER Models & Normalization',
     unit: 'All',
@@ -374,6 +408,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['DBMS', 'ER Model', 'Normalization', 'PL/SQL', 'ACID']
   },
   {
+    id: 'dbms-lab-manual',
     subject: 'Database Management Systems Lab',
     title: 'DBMS Laboratory Manual — SQL & PL/SQL Stored Procedures',
     unit: 'All',
@@ -390,6 +425,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   // ARTIFICIAL INTELLIGENCE & MACHINE LEARNING
   // ==========================================
   {
+    id: 'ai-gfg-guide',
     subject: 'Artificial Intelligence',
     title: 'GeeksforGeeks Artificial Intelligence: Search & State Space Guide',
     unit: 'All',
@@ -402,6 +438,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['AI', 'A* Search', 'Minimax', 'N-Queens', 'Backtracking']
   },
   {
+    id: 'ai-w3schools-python',
     subject: 'Artificial Intelligence',
     title: 'W3Schools Python for AI & Machine Learning Tutorial',
     unit: 'All',
@@ -414,6 +451,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['AI', 'Python', 'Machine Learning', 'W3Schools']
   },
   {
+    id: 'ml-w3schools-numpy',
     subject: 'Machine Learning',
     title: 'W3Schools NumPy, Pandas & Data Science Tutorial',
     unit: 'All',
@@ -426,6 +464,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['NumPy', 'Pandas', 'Data Science', 'Python']
   },
   {
+    id: 'ml-gfg-sklearn',
     subject: 'Machine Learning',
     title: 'GeeksforGeeks Machine Learning with Scikit-Learn Handbook',
     unit: 'All',
@@ -438,6 +477,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['ML', 'Scikit-Learn', 'Regression', 'Classification']
   },
   {
+    id: 'ml-lab-manual',
     subject: 'AI & Machine Learning Lab',
     title: 'AI & Machine Learning Laboratory Manual with Python Jupyter Notebooks',
     unit: 'All',
@@ -454,6 +494,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   // BIG DATA ANALYTICS & NO-SQL
   // ==========================================
   {
+    id: 'bigdata-gfg-hadoop',
     subject: 'Big Data Analytics',
     title: 'GeeksforGeeks Apache Hadoop, HDFS & MapReduce Master Guide',
     unit: 'All',
@@ -466,6 +507,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['Big Data', 'Hadoop', 'HDFS', 'MapReduce', 'Spark']
   },
   {
+    id: 'bigdata-w3schools-mongodb',
     subject: 'Big Data Analytics',
     title: 'W3Schools MongoDB NoSQL Database & Aggregation Tutorial',
     unit: 'All',
@@ -478,6 +520,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['MongoDB', 'NoSQL', 'Aggregation', 'W3Schools']
   },
   {
+    id: 'bigdata-lab-manual',
     subject: 'Big Data Analytics Lab',
     title: 'Big Data Analytics Virtual Laboratory Manual',
     unit: 'All',
@@ -494,6 +537,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   // CLOUD SERVICE MANAGEMENT & DEVOPS
   // ==========================================
   {
+    id: 'cloud-gfg-guide',
     subject: 'Cloud Service Management',
     title: 'GeeksforGeeks Cloud Computing, AWS, Docker & Kubernetes Guide',
     unit: 'All',
@@ -506,6 +550,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['Cloud', 'AWS', 'Docker', 'Kubernetes', 'DevOps']
   },
   {
+    id: 'cloud-w3schools-aws',
     subject: 'Cloud Service Management',
     title: 'W3Schools AWS Cloud Services & Infrastructure Overview',
     unit: 'All',
@@ -518,6 +563,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['AWS', 'Cloud', 'Serverless', 'W3Schools']
   },
   {
+    id: 'cloud-lab-manual',
     subject: 'Cloud Service Management Lab',
     title: 'Cloud Computing & Containerization Laboratory Manual',
     unit: 'All',
@@ -534,6 +580,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   // COMPUTER NETWORKS
   // ==========================================
   {
+    id: 'networks-gfg-guide',
     subject: 'Computer Networks',
     title: 'GeeksforGeeks Computer Network Architecture & Protocols Guide',
     unit: 'All',
@@ -546,6 +593,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['Networks', 'TCP/IP', 'Routing', 'Dijkstra', 'Sockets']
   },
   {
+    id: 'networks-lab-manual',
     subject: 'Computer Networks Lab',
     title: 'Computer Networks Virtual Laboratory Manual & Socket Programs',
     unit: 'All',
@@ -562,6 +610,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   // PROGRAMMING FOUNDATIONS (C, PYTHON & JAVA)
   // ==========================================
   {
+    id: 'c-programming-gfg',
     subject: 'C Programming',
     title: 'GeeksforGeeks C Programming Language Complete Tutorial',
     unit: 'All',
@@ -574,6 +623,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['C', 'Pointers', 'Memory', 'Structures']
   },
   {
+    id: 'c-programming-w3schools',
     subject: 'C Programming',
     title: 'W3Schools C Programming Interactive Tutorial & Syntax Guide',
     unit: 'All',
@@ -586,6 +636,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['C', 'Syntax', 'Basics', 'W3Schools']
   },
   {
+    id: 'java-oop-w3schools',
     subject: 'Java OOP',
     title: 'W3Schools Java Object-Oriented Programming (OOP) Tutorial',
     unit: 'All',
@@ -598,6 +649,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['Java', 'OOP', 'Inheritance', 'Polymorphism']
   },
   {
+    id: 'python-w3schools',
     subject: 'Python Programming',
     title: 'W3Schools Python Full Tutorial with Interactive Code Sandbox',
     unit: 'All',
