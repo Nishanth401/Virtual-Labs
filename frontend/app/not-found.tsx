@@ -11,7 +11,7 @@ export default function NotFound() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-1 flex items-center justify-center py-16 px-4">
+      <main className="flex-1 flex items-center justify-center pt-24 sm:pt-28 pb-16 px-4">
         <div className="max-w-md w-full text-center space-y-6">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold">
             <BookOpen className="h-3.5 w-3.5" />

@@ -176,7 +176,7 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
       <Navbar />
 
       {/* Top Breadcrumbs & Back Navigation */}
-      <div className="border-b border-border/80 bg-card/50 backdrop-blur-md sticky top-16 z-30">
+      <div className="border-b border-border/80 bg-card/50 backdrop-blur-md pt-20 sm:pt-24 pb-3">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
           <div className="flex items-center gap-2 text-xs text-muted-foreground truncate">
             <Button variant="ghost" size="sm" className="h-7 px-2 text-xs font-bold gap-1 rounded-xl" asChild>

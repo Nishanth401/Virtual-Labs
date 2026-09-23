@@ -224,7 +224,7 @@ export default function CollegePortalPage({ params }: CollegePortalPageProps) {
       <Navbar />
 
       {/* College Branded Header Banner */}
-      <section className={`relative text-white py-12 md:py-16 bg-gradient-to-r ${college.bannerGradient} border-b border-border/40 overflow-hidden shadow-2xl`}>
+      <section className={`relative text-white pt-24 sm:pt-28 pb-12 md:pb-16 bg-gradient-to-r ${college.bannerGradient} border-b border-border/40 overflow-hidden shadow-2xl`}>
         <div className="absolute inset-0 bg-black/25 backdrop-blur-[1px]" />
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
