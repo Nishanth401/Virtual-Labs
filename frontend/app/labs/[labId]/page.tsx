@@ -8,6 +8,7 @@ import { EXPERIMENTS_DATA } from "@/data/experiments";
 import { Navbar } from "@/components/navigation/navbar";
 import { Footer } from "@/components/navigation/footer";
 import { LabSidebar, LabTab } from "@/components/vlab/lab-sidebar";
+import { LabHeaderBanner } from "@/components/vlab/lab-header-banner";
 import { CourseAlignmentCard } from "@/components/vlab/course-alignment-card";
 import { MLPrerequisitesTrack } from "@/components/vlab/ml-prerequisites-track";
 import { DSARoadmap } from "@/components/vlab/dsa-roadmap";
@@ -28,6 +29,7 @@ import {
   ArrowRight,
   BookOpen,
   Send,
+  GraduationCap,
   Trophy,
   Award,
   HelpCircle,
@@ -366,8 +368,15 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-1 bg-muted/20 pt-24 sm:pt-28 pb-14">
-        <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      <main className="flex-1 bg-muted/20 pt-20 sm:pt-24 pb-14">
+        {/* Discipline Breadcrumbs & Rating Header Banner matching Screenshots 112419 - 112512 */}
+        <LabHeaderBanner
+          discipline={lab.department || "Computer Science and Engineering"}
+          labName={lab.name}
+          labId={lab.id}
+        />
+
+        <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 pt-6">
           {/* Header Banner */}
           <div className="bg-card/80 backdrop-blur-md rounded-2xl border border-border p-6 sm:p-8 shadow-sm">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -1374,6 +1383,67 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             Direct problem solving on curated LeetCode challenges and self-assessment evaluations for placement readiness.
                           </p>
                         </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* TAB: TARGET AUDIENCE (Screenshot 112512) */}
+              {activeTab === "target-audience" && (
+                <Card className="border-border bg-card shadow-sm">
+                  <CardHeader>
+                    <CardTitle className="text-xl font-bold text-foreground font-heading">
+                      Target Audience
+                    </CardTitle>
+                    <CardDescription className="text-xs">
+                      Primary academic cohorts and engineering profiles benefiting from this laboratory.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4 text-sm leading-relaxed text-muted-foreground">
+                    <p className="text-foreground text-sm font-medium">
+                      The {lab.name} curriculum, algorithmic visualizations, and interactive sandboxes are designed for:
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                      <div className="p-4 rounded-xl bg-muted/40 border border-border space-y-2">
+                        <div className="flex items-center gap-2 text-primary font-bold text-sm">
+                          <GraduationCap className="h-4 w-4" />
+                          <span>Undergraduate Students</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          B.E. / B.Tech students in Computer Science &amp; Engineering, Artificial Intelligence &amp; Data Science, and Information Technology taking core laboratory courses.
+                        </p>
+                      </div>
+
+                      <div className="p-4 rounded-xl bg-muted/40 border border-border space-y-2">
+                        <div className="flex items-center gap-2 text-indigo-400 font-bold text-sm">
+                          <Users className="h-4 w-4" />
+                          <span>Postgraduate &amp; Research Scholars</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          M.E. / M.Tech and Ph.D. scholars requiring foundational computational simulation models, asymptotic complexity benchmarking, and data structures analysis.
+                        </p>
+                      </div>
+
+                      <div className="p-4 rounded-xl bg-muted/40 border border-border space-y-2">
+                        <div className="flex items-center gap-2 text-amber-500 font-bold text-sm">
+                          <Trophy className="h-4 w-4" />
+                          <span>Competitive Coders &amp; GATE Aspirants</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          Learners preparing for GATE CSE/DA, NPTEL Certification exams, LeetCode / HackerRank technical interview rounds, and university evaluations.
+                        </p>
+                      </div>
+
+                      <div className="p-4 rounded-xl bg-muted/40 border border-border space-y-2">
+                        <div className="flex items-center gap-2 text-emerald-500 font-bold text-sm">
+                          <BookOpen className="h-4 w-4" />
+                          <span>Faculty Educators &amp; Instructors</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          Academic faculty seeking classroom demonstration tools, live call stack visualizations, interactive algorithm walkthroughs, and automated rubric assessments.
+                        </p>
                       </div>
                     </div>
                   </CardContent>
