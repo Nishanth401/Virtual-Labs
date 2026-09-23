@@ -366,7 +366,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-1 bg-muted/20 py-8">
+      <main className="flex-1 bg-muted/20 pt-24 sm:pt-28 pb-14">
         <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           {/* Header Banner */}
           <div className="bg-card/80 backdrop-blur-md rounded-2xl border border-border p-6 sm:p-8 shadow-sm">

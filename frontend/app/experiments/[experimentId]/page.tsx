@@ -24,7 +24,7 @@ export default function ExperimentPage({ params }: ExperimentPageProps) {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-1 bg-muted/20 py-4">
+      <main className="flex-1 bg-muted/20 pt-24 sm:pt-28 pb-12">
         <ExperimentWorkspace experiment={experiment} />
       </main>
       <Footer />

@@ -452,7 +452,7 @@ function AdminPageContent() {
     return (
       <div className="min-h-screen flex flex-col bg-background">
         <Navbar />
-        <main className="flex-1 flex items-center justify-center p-4 sm:p-6 my-8">
+        <main className="flex-1 flex items-center justify-center p-4 sm:p-6 pt-24 sm:pt-28 pb-12">
           <Card className="w-full max-w-md border-border/80 shadow-2xl bg-card/90 backdrop-blur-xl rounded-2xl overflow-hidden">
             <div className="h-2.5 w-full bg-gradient-to-r from-rose-600 via-pink-600 to-amber-600" />
             
@@ -551,7 +551,7 @@ function AdminPageContent() {
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
 
-      <main className="flex-1 py-8">
+      <main className="flex-1 pt-24 sm:pt-28 pb-14">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           
           {/* Top Admin Header Bar with College Switcher */}
@@ -575,24 +575,8 @@ function AdminPageContent() {
               </div>
             </div>
 
-            {/* College Tenant Selector */}
+            {/* Header Action Buttons */}
             <div className="flex flex-wrap items-center gap-3">
-              <div className="flex items-center gap-2 bg-muted/60 p-1.5 rounded-xl border border-border">
-                <Building className="h-4 w-4 text-primary ml-2 shrink-0" />
-                <span className="text-xs font-semibold text-muted-foreground">Active College:</span>
-                <select
-                  value={activeCollegeSlug}
-                  onChange={(e) => setActiveCollegeSlug(e.target.value)}
-                  className="h-8 px-2.5 rounded-lg bg-background border border-border text-xs font-bold text-foreground focus:ring-1 focus:ring-primary cursor-pointer"
-                >
-                  {COLLEGES_REGISTRY.map((c) => (
-                    <option key={c.slug} value={c.slug}>
-                      {c.name} ({c.shortName})
-                    </option>
-                  ))}
-                </select>
-              </div>
-
               <Button
                 variant="outline"
                 size="sm"

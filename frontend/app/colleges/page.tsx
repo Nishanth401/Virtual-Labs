@@ -21,7 +21,7 @@ export default function CollegeSelectionPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-1 py-14 px-4 sm:px-6">
+      <main className="flex-1 pt-24 sm:pt-28 pb-14 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto space-y-8">
           <div className="text-center space-y-2">
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground font-heading">

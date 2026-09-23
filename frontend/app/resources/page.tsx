@@ -196,7 +196,7 @@ export default function ResourcesPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Navbar />
-      <main className="flex-1 container max-w-7xl mx-auto px-4 sm:px-6 py-10">
+      <main className="flex-1 container max-w-7xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-14">
         {/* Header Banner */}
         <div className="mb-10 text-center max-w-3xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold">

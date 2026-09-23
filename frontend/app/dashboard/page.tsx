@@ -63,7 +63,7 @@ export default function StudentDashboardPage() {
     return (
       <div className="flex flex-col min-h-screen">
         <Navbar />
-        <main className="flex-1 flex items-center justify-center">
+        <main className="flex-1 flex items-center justify-center pt-24 pb-12">
           <div className="text-center space-y-2">
             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary mx-auto" />
             <p className="text-xs text-muted-foreground">Loading student learning records...</p>
@@ -77,7 +77,7 @@ export default function StudentDashboardPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-1 bg-muted/20 py-8">
+      <main className="flex-1 bg-muted/20 pt-24 sm:pt-28 pb-14">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 space-y-8">
           {/* Animated Motion Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-2">
