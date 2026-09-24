@@ -24,7 +24,11 @@ import {
   ChevronRight,
   ArrowLeft,
   Printer,
-  Play
+  Play,
+  RefreshCw,
+  Globe,
+  ShieldCheck,
+  Layers
 } from "lucide-react";
 
 interface MaterialPageProps {
@@ -50,6 +54,8 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
   const [studentNotes, setStudentNotes] = useState<string>("");
   const [savedNoteMsg, setSavedNoteMsg] = useState(false);
   const [expandedVivaIdx, setExpandedVivaIdx] = useState<number | null>(0);
+  const [iframeLoading, setIframeLoading] = useState(true);
+  const [iframeKey, setIframeKey] = useState(0);
 
   useEffect(() => {
     // Check static resources or localStorage for dynamic tenant uploads
@@ -250,8 +256,11 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
             {resource.fileUrl && resource.fileUrl.startsWith("http") && (
               <button
                 type="button"
-                onClick={() => setViewMode("live-portal")}
-                className="inline-flex items-center gap-1.5 text-xs text-[#0284c7] hover:underline font-mono cursor-pointer"
+                onClick={() => {
+                  setViewMode("live-portal");
+                  setIframeLoading(true);
+                }}
+                className="inline-flex items-center gap-1.5 text-xs text-[#0284c7] hover:underline font-sans font-medium cursor-pointer"
               >
                 <span>Curriculum Reference: {resource.provider} (Open Inside Virtual Lab)</span>
                 <ExternalLink className="h-3.5 w-3.5" />
@@ -262,15 +271,26 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
 
         {/* CONDITION 1: IN-APP LIVE EMBEDDED GEEKSFORGEEKS / CURRICULUM PORTAL */}
         {viewMode === "live-portal" && resource.fileUrl && (
-          <div className="space-y-6">
-            <div className="p-4 bg-sky-500/5 rounded-2xl border border-[#0284c7]/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div className="space-y-0.5">
-                <span className="text-xs font-bold text-[#0284c7] font-mono block">
-                  In-App Live Curriculum Reader — {resource.provider}
-                </span>
-                <p className="text-xs text-muted-foreground">
-                  Browsing official documentation directly inside the Virtual Labs platform.
-                </p>
+          <div className="space-y-4">
+            {/* In-App Browser Navigation Bar */}
+            <div className="p-3.5 bg-card/90 backdrop-blur-md rounded-2xl border border-border flex flex-col md:flex-row md:items-center md:justify-between gap-3 shadow-xs">
+              <div className="flex items-center gap-2 min-w-0 flex-1">
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-muted/60 border border-border text-xs text-muted-foreground min-w-0 flex-1 max-w-xl font-sans">
+                  <ShieldCheck className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+                  <span className="truncate text-foreground font-medium">{resource.fileUrl}</span>
+                </div>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => {
+                    setIframeLoading(true);
+                    setIframeKey((k) => k + 1);
+                  }}
+                  className="h-8 w-8 p-0 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground"
+                  title="Reload Webpage"
+                >
+                  <RefreshCw className={`h-3.5 w-3.5 ${iframeLoading ? "animate-spin text-primary" : ""}`} />
+                </Button>
               </div>
 
               <div className="flex items-center gap-2 shrink-0">
@@ -278,14 +298,15 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
                   size="sm"
                   variant="outline"
                   onClick={() => setViewMode("handbook")}
-                  className="text-xs font-semibold gap-1.5 rounded-xl border-[#0284c7]/30 text-[#0284c7] hover:bg-sky-500/10"
+                  className="text-xs font-semibold gap-1.5 rounded-xl border-[#0284c7]/30 text-[#0284c7] hover:bg-sky-500/10 font-sans"
                 >
+                  <Layers className="h-3.5 w-3.5" />
                   <span>Switch to Structured Handbook</span>
                 </Button>
                 <Button
                   size="sm"
                   asChild
-                  className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1 rounded-xl shadow-xs"
+                  className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1 rounded-xl shadow-xs font-sans"
                 >
                   <a href={resource.fileUrl} target="_blank" rel="noopener noreferrer">
                     <span>New Tab</span>
@@ -295,14 +316,27 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
               </div>
             </div>
 
-            {/* Embedded Live Iframe View */}
+            {/* Embedded Live Iframe View (Via Server-Side Academic Proxy) */}
             <div className="w-full h-[850px] rounded-3xl overflow-hidden border border-border shadow-lg bg-card relative">
+              {iframeLoading && (
+                <div className="absolute inset-0 bg-background/80 backdrop-blur-xs flex flex-col items-center justify-center gap-3 z-10">
+                  <div className="h-8 w-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+                  <p className="text-xs text-muted-foreground font-medium font-sans">
+                    Loading {resource.provider} official curriculum inside Virtual Labs...
+                  </p>
+                </div>
+              )}
               <iframe
-                src={resource.fileUrl}
+                key={iframeKey}
+                src={
+                  resource.fileUrl.startsWith("http")
+                    ? `/api/proxy-resource?url=${encodeURIComponent(resource.fileUrl)}`
+                    : resource.fileUrl
+                }
                 title={`${resource.title} — ${resource.provider} Live Portal`}
                 className="w-full h-full border-0 rounded-3xl"
+                onLoad={() => setIframeLoading(false)}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
               />
             </div>
           </div>
@@ -314,7 +348,7 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
             {/* LEFT SIDEBAR: Table of Contents & Navigation (NO EMOJIS / NO ICONS) */}
             <aside className="lg:col-span-3 space-y-5 lg:sticky lg:top-32 hidden lg:block">
               <Card className="border border-border bg-card rounded-2xl p-4 shadow-xs">
-                <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono mb-3">
+                <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-sans mb-3">
                   Contents &amp; Navigation
                 </CardTitle>
                 <nav className="space-y-1 text-xs font-medium">
