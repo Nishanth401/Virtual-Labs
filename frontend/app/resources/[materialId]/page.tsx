@@ -47,15 +47,12 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
     RESOURCES_DATA[0];
 
   const [resource, setResource] = useState<ResourceItem | null>(initialResource);
-  const [viewMode, setViewMode] = useState<"handbook" | "live-portal">("handbook");
   const [activeCodeLang, setActiveCodeLang] = useState<string>("java");
   const [copiedCode, setCopiedCode] = useState(false);
   const [copiedAll, setCopiedAll] = useState(false);
   const [studentNotes, setStudentNotes] = useState<string>("");
   const [savedNoteMsg, setSavedNoteMsg] = useState(false);
   const [expandedVivaIdx, setExpandedVivaIdx] = useState<number | null>(0);
-  const [iframeLoading, setIframeLoading] = useState(true);
-  const [iframeKey, setIframeKey] = useState(0);
 
   useEffect(() => {
     // Check static resources or localStorage for dynamic tenant uploads
@@ -166,33 +163,19 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
-            {/* View Mode Toggle (In-App Handbook vs Live In-App Web Portal) */}
-            <div className="flex items-center p-0.5 bg-muted/60 rounded-xl border border-border">
-              <button
-                type="button"
-                onClick={() => setViewMode("handbook")}
-                className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
-                  viewMode === "handbook"
-                    ? "bg-[#0284c7] text-white shadow-xs font-bold"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
+            {resource.fileUrl && resource.fileUrl.startsWith("http") && (
+              <Button
+                size="sm"
+                variant="outline"
+                className="h-7.5 text-xs font-semibold gap-1.5 rounded-xl border-[#0284c7]/30 text-[#0284c7] hover:bg-sky-500/10"
+                asChild
               >
-                In-App Handbook
-              </button>
-              {resource.fileUrl && resource.fileUrl.startsWith("http") && (
-                <button
-                  type="button"
-                  onClick={() => setViewMode("live-portal")}
-                  className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
-                    viewMode === "live-portal"
-                      ? "bg-[#0284c7] text-white shadow-xs font-bold"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  Live {resource.provider} Webpage
-                </button>
-              )}
-            </div>
+                <a href={resource.fileUrl} target="_blank" rel="noopener noreferrer">
+                  <span>Official Reference</span>
+                  <ExternalLink className="h-3 w-3 ml-0.5" />
+                </a>
+              </Button>
+            )}
 
             <Button
               size="sm"
@@ -252,112 +235,36 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
               </Button>
             </div>
 
-            {/* In-App Live Webpage Redirection Trigger */}
+            {/* Official External Reference Link */}
             {resource.fileUrl && resource.fileUrl.startsWith("http") && (
-              <button
-                type="button"
-                onClick={() => {
-                  setViewMode("live-portal");
-                  setIframeLoading(true);
-                }}
-                className="inline-flex items-center gap-1.5 text-xs text-[#0284c7] hover:underline font-sans font-medium cursor-pointer"
+              <a
+                href={resource.fileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs text-[#0284c7] hover:underline font-sans font-medium"
               >
-                <span>Curriculum Reference: {resource.provider} (Open Inside Virtual Lab)</span>
+                <span>Curriculum Reference: {resource.provider} (Official Docs)</span>
                 <ExternalLink className="h-3.5 w-3.5" />
-              </button>
+              </a>
             )}
           </div>
         </div>
 
-        {/* CONDITION 1: IN-APP LIVE EMBEDDED GEEKSFORGEEKS / CURRICULUM PORTAL */}
-        {viewMode === "live-portal" && resource.fileUrl && (
-          <div className="space-y-4">
-            {/* In-App Browser Navigation Bar */}
-            <div className="p-3.5 bg-card/90 backdrop-blur-md rounded-2xl border border-border flex flex-col md:flex-row md:items-center md:justify-between gap-3 shadow-xs">
-              <div className="flex items-center gap-2 min-w-0 flex-1">
-                <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-muted/60 border border-border text-xs text-muted-foreground min-w-0 flex-1 max-w-xl font-sans">
-                  <ShieldCheck className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                  <span className="truncate text-foreground font-medium">{resource.fileUrl}</span>
-                </div>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => {
-                    setIframeLoading(true);
-                    setIframeKey((k) => k + 1);
-                  }}
-                  className="h-8 w-8 p-0 rounded-xl hover:bg-muted text-muted-foreground hover:text-foreground"
-                  title="Reload Webpage"
+        {/* STRUCTURED IN-APP CURRICULUM HANDBOOK */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* LEFT SIDEBAR: Table of Contents & Navigation */}
+          <aside className="lg:col-span-3 space-y-5 lg:sticky lg:top-32 hidden lg:block">
+            <Card className="border border-border bg-card rounded-2xl p-4 shadow-xs">
+              <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-sans mb-3">
+                Contents &amp; Navigation
+              </CardTitle>
+              <nav className="space-y-1 text-xs font-medium">
+                <a
+                  href="#overview"
+                  className="flex items-center p-2 rounded-xl text-foreground hover:text-[#ea580c] hover:bg-orange-500/10 transition-all font-semibold"
                 >
-                  <RefreshCw className={`h-3.5 w-3.5 ${iframeLoading ? "animate-spin text-primary" : ""}`} />
-                </Button>
-              </div>
-
-              <div className="flex items-center gap-2 shrink-0">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => setViewMode("handbook")}
-                  className="text-xs font-semibold gap-1.5 rounded-xl border-[#0284c7]/30 text-[#0284c7] hover:bg-sky-500/10 font-sans"
-                >
-                  <Layers className="h-3.5 w-3.5" />
-                  <span>Switch to Structured Handbook</span>
-                </Button>
-                <Button
-                  size="sm"
-                  asChild
-                  className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1 rounded-xl shadow-xs font-sans"
-                >
-                  <a href={resource.fileUrl} target="_blank" rel="noopener noreferrer">
-                    <span>New Tab</span>
-                    <ExternalLink className="h-3 w-3" />
-                  </a>
-                </Button>
-              </div>
-            </div>
-
-            {/* Embedded Live Iframe View (Via Server-Side Academic Proxy) */}
-            <div className="w-full h-[850px] rounded-3xl overflow-hidden border border-border shadow-lg bg-card relative">
-              {iframeLoading && (
-                <div className="absolute inset-0 bg-background/80 backdrop-blur-xs flex flex-col items-center justify-center gap-3 z-10">
-                  <div className="h-8 w-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
-                  <p className="text-xs text-muted-foreground font-medium font-sans">
-                    Loading {resource.provider} official curriculum inside Virtual Labs...
-                  </p>
-                </div>
-              )}
-              <iframe
-                key={iframeKey}
-                src={
-                  resource.fileUrl.startsWith("http")
-                    ? `/api/proxy-resource?url=${encodeURIComponent(resource.fileUrl)}`
-                    : resource.fileUrl
-                }
-                title={`${resource.title} — ${resource.provider} Live Portal`}
-                className="w-full h-full border-0 rounded-3xl"
-                onLoad={() => setIframeLoading(false)}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              />
-            </div>
-          </div>
-        )}
-
-        {/* CONDITION 2: STRUCTURED HANDBOOK VIEW */}
-        {viewMode === "handbook" && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* LEFT SIDEBAR: Table of Contents & Navigation (NO EMOJIS / NO ICONS) */}
-            <aside className="lg:col-span-3 space-y-5 lg:sticky lg:top-32 hidden lg:block">
-              <Card className="border border-border bg-card rounded-2xl p-4 shadow-xs">
-                <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-sans mb-3">
-                  Contents &amp; Navigation
-                </CardTitle>
-                <nav className="space-y-1 text-xs font-medium">
-                  <a
-                    href="#overview"
-                    className="flex items-center p-2 rounded-xl text-foreground hover:text-[#ea580c] hover:bg-orange-500/10 transition-all font-semibold"
-                  >
-                    <span>1. Overview &amp; Alignment</span>
-                  </a>
+                  <span>1. Overview &amp; Alignment</span>
+                </a>
                   <a
                     href="#outcomes"
                     className="flex items-center p-2 rounded-xl text-foreground hover:text-[#ea580c] hover:bg-orange-500/10 transition-all font-semibold"
@@ -756,10 +663,9 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
               </div>
             </div>
           </div>
-        )}
-      </main>
+        </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
   );
 }

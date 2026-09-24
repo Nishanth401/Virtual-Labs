@@ -71,31 +71,11 @@ export function DSATopicOverview({
           </div>
         </div>
 
-        {/* Title, Difficulty & Estimated Time */}
+        {/* Title */}
         <div className="space-y-1.5">
-          <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
-            <h2 className="text-xl sm:text-2xl font-bold text-[#0284c7] dark:text-[#38bdf8] font-heading tracking-tight">
-              {topic.title}
-            </h2>
-            <div className="flex items-center gap-2 shrink-0">
-              <span
-                className={cn(
-                  "inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium border",
-                  topic.difficulty === "Easy" || topic.difficulty === "Beginner"
-                    ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800"
-                    : topic.difficulty === "Medium" || topic.difficulty === "Intermediate"
-                    ? "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800"
-                    : "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/30 dark:text-rose-400 dark:border-rose-800"
-                )}
-              >
-                {topic.difficulty}
-              </span>
-              <span className="inline-flex items-center gap-1 text-xs text-muted-foreground font-sans">
-                <Clock className="h-3.5 w-3.5 text-muted-foreground/70" />
-                <span>{topic.estimatedTime}</span>
-              </span>
-            </div>
-          </div>
+          <h2 className="text-xl sm:text-2xl font-bold text-[#0284c7] dark:text-[#38bdf8] font-heading tracking-tight">
+            {topic.title}
+          </h2>
         </div>
       </div>
 
