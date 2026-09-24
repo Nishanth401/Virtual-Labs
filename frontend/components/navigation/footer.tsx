@@ -64,7 +64,7 @@ export function Footer() {
             
             {/* Column: PLATFORM */}
             <div className="space-y-3">
-              <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400 font-bold block">
+              <span className="font-sans text-[11px] uppercase tracking-wider text-slate-400 font-bold block">
                 PLATFORM
               </span>
               <ul className="space-y-2.5">
@@ -103,7 +103,7 @@ export function Footer() {
 
             {/* Column: LABS */}
             <div className="space-y-3">
-              <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400 font-bold block">
+              <span className="font-sans text-[11px] uppercase tracking-wider text-slate-400 font-bold block">
                 LABORATORIES
               </span>
               <ul className="space-y-2.5">
@@ -142,7 +142,7 @@ export function Footer() {
 
             {/* Column: INSTITUTION */}
             <div className="space-y-3">
-              <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400 font-bold block">
+              <span className="font-sans text-[11px] uppercase tracking-wider text-slate-400 font-bold block">
                 INSTITUTION
               </span>
               <ul className="space-y-2.5 text-slate-400">

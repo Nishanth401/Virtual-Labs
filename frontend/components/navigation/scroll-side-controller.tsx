@@ -49,7 +49,7 @@ export function ScrollSideController() {
           {/* Left Floating Island: Scroll Percentage & Scroll-To-Top Button (Virtual Labs Blue) */}
           <div className="bg-slate-900/95 dark:bg-slate-950/95 text-slate-100 backdrop-blur-xl border border-slate-800 rounded-full p-1.5 sm:p-2 shadow-2xl flex items-center gap-1.5 sm:gap-2 ring-1 ring-white/10 pointer-events-auto">
             {/* Scroll Percentage Badge */}
-            <div className="px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 font-mono text-[9px] sm:text-[10px] font-bold border border-sky-500/30">
+            <div className="px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 font-sans text-[9px] sm:text-[10px] font-bold border border-sky-500/30">
               {Math.round(scrollProgress)}%
             </div>
 

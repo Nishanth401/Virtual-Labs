@@ -180,7 +180,7 @@ export function Navbar() {
                   <span className="font-black text-xs sm:text-sm tracking-tight font-heading text-foreground whitespace-nowrap">
                     Virtual Lab
                   </span>
-                  <span className="text-[10px] font-mono text-muted-foreground uppercase font-bold tracking-wider hidden sm:inline">
+                  <span className="text-[10px] font-sans font-bold text-muted-foreground uppercase tracking-wider hidden sm:inline">
                     Studio
                   </span>
                 </div>
@@ -373,7 +373,7 @@ export function Navbar() {
                     <span className="text-xs font-bold text-foreground group-hover:text-rose-600 transition-colors">
                       {item.title}
                     </span>
-                    <Badge variant="outline" className="text-[10px] font-mono">
+                    <Badge variant="outline" className="text-[10px] font-sans font-medium">
                       {item.category}
                     </Badge>
                   </div>
