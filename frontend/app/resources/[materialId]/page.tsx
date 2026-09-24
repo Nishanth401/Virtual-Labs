@@ -163,20 +163,6 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
-            {resource.fileUrl && resource.fileUrl.startsWith("http") && (
-              <Button
-                size="sm"
-                variant="outline"
-                className="h-7.5 text-xs font-semibold gap-1.5 rounded-xl border-[#0284c7]/30 text-[#0284c7] hover:bg-sky-500/10"
-                asChild
-              >
-                <a href={resource.fileUrl} target="_blank" rel="noopener noreferrer">
-                  <span>Official Reference</span>
-                  <ExternalLink className="h-3 w-3 ml-0.5" />
-                </a>
-              </Button>
-            )}
-
             <Button
               size="sm"
               variant="outline"
@@ -199,8 +185,8 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
               <GraduationCap className="h-3.5 w-3.5 mr-1.5" />
               {resource.subject}
             </Badge>
-            <Badge variant="secondary" className="text-xs font-mono bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-3 py-1">
-              {resource.provider} Curriculum
+            <Badge variant="secondary" className="text-xs font-mono bg-sky-500/10 text-[#0284c7] dark:text-[#38bdf8] border border-sky-500/20 px-3 py-1">
+              Academic Curriculum
             </Badge>
             <span className="inline-flex items-center text-xs text-muted-foreground font-mono gap-1 ml-1">
               <Clock className="h-3.5 w-3.5" />
@@ -234,19 +220,6 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
                 <span>{copiedAll ? "Study Notes Copied!" : "Copy Full Study Guide"}</span>
               </Button>
             </div>
-
-            {/* Official External Reference Link */}
-            {resource.fileUrl && resource.fileUrl.startsWith("http") && (
-              <a
-                href={resource.fileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs text-[#0284c7] hover:underline font-sans font-medium"
-              >
-                <span>Curriculum Reference: {resource.provider} (Official Docs)</span>
-                <ExternalLink className="h-3.5 w-3.5" />
-              </a>
-            )}
           </div>
         </div>
 
