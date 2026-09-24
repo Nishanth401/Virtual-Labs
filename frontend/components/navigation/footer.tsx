@@ -23,8 +23,8 @@ export function Footer() {
   return (
     <footer className="bg-[#070709] text-slate-300 relative overflow-hidden border-t border-slate-800/80">
       {/* Background Accent Gradients */}
-      <div className="absolute -top-32 left-1/4 w-96 h-96 bg-rose-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-32 right-1/4 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -top-32 left-1/4 w-96 h-96 bg-sky-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-32 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Main Footer Directory */}
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 py-14 relative z-10">
@@ -33,18 +33,18 @@ export function Footer() {
           {/* Left: Creator Profile (Cols 1-5) */}
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-1.5 font-black text-2xl text-white font-heading tracking-tight">
-              <span>ROHITH E</span>
-              <span className="text-rose-500 text-3xl leading-none">.</span>
+              <span>Virtual Labs</span>
+              <span className="text-[#0284c7] text-3xl leading-none">.</span>
             </div>
             
             <p className="text-slate-400 text-xs sm:text-sm font-light max-w-md leading-relaxed">
-              I&apos;m Rohith — a full-stack engineer, product builder &amp; problem solver. Welcome to the official Virtual Laboratory Platform.
+              Official Virtual Laboratory Platform — experiential learning through interactive algorithmic simulations, execution traces, and self-assessment evaluations.
             </p>
 
             <div className="pt-2 flex items-center gap-3">
               <Link
                 href="/admin"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-rose-600/15 hover:bg-rose-600 text-rose-400 hover:text-white border border-rose-500/30 text-xs font-bold transition-all shadow-xs"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-sky-500/15 hover:bg-[#0284c7] text-[#0284c7] hover:text-white border border-[#0284c7]/30 text-xs font-bold transition-all shadow-xs"
               >
                 <ShieldCheck className="h-3.5 w-3.5" />
                 <span>Admin Portal</span>
@@ -147,11 +147,11 @@ export function Footer() {
               </span>
               <ul className="space-y-2.5 text-slate-400">
                 <li className="flex items-start gap-2">
-                  <MapPin className="h-3.5 w-3.5 text-rose-400 shrink-0 mt-0.5" />
+                  <MapPin className="h-3.5 w-3.5 text-sky-400 shrink-0 mt-0.5" />
                   <span>V.S.B. Engineering College, NH-67, Karur - 639 111, TN.</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Mail className="h-3.5 w-3.5 text-rose-400 shrink-0" />
+                  <Mail className="h-3.5 w-3.5 text-sky-400 shrink-0" />
                   <span>aids@vsb.ac.in</span>
                 </li>
               </ul>
