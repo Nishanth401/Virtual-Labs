@@ -2,9 +2,7 @@
 
 import React, { useState } from "react";
 import { DSATopic } from "@/data/dsa-topic-data";
-import { Card, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import {
   ExternalLink,
@@ -12,7 +10,6 @@ import {
   Clock,
   ChevronLeft,
   ChevronRight,
-  Zap,
   BookOpen,
 } from "lucide-react";
 import { MultiLangCodeViewer } from "@/components/visualizer/code/multi-lang-code-viewer";
@@ -35,14 +32,14 @@ export function DSATopicOverview({
   const [isReaderOpen, setIsReaderOpen] = useState(false);
 
   return (
-    <div className={cn("bg-card/90 backdrop-blur-md border border-border p-5 sm:p-6 rounded-2xl shadow-sm space-y-4", className)}>
-      {/* 1. Header with Breadcrumb, Links, and Actions */}
+    <div className={cn("bg-card border border-border/80 p-5 sm:p-6 rounded-xl shadow-xs space-y-5 font-sans", className)}>
+      {/* 1. Header with Breadcrumb and Actions */}
       <div className="space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground min-w-0">
-            <span className="text-primary font-semibold truncate">{topic.categoryName}</span>
-            <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/60 shrink-0" />
-            <span className="text-foreground font-semibold truncate max-w-xs">{topic.title}</span>
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground min-w-0">
+            <span className="text-[#0284c7] dark:text-[#38bdf8] font-medium truncate">{topic.categoryName}</span>
+            <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50 shrink-0" />
+            <span className="text-foreground font-medium truncate max-w-xs">{topic.title}</span>
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
@@ -51,7 +48,7 @@ export function DSATopicOverview({
                 variant="outline"
                 size="sm"
                 onClick={() => setIsReaderOpen(true)}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 px-2.5 h-7.5 rounded-xl border border-emerald-500/20 shadow-2xs cursor-pointer"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0284c7] dark:text-[#38bdf8] bg-sky-500/10 hover:bg-sky-500/20 px-2.5 h-8 rounded-lg border border-sky-500/20 cursor-pointer"
               >
                 <BookOpen className="h-3.5 w-3.5" />
                 <span>In-App Handbook</span>
@@ -64,8 +61,8 @@ export function DSATopicOverview({
               onClick={() => onToggleCompleted(topic.id)}
               className={
                 isCompleted
-                  ? "bg-emerald-600 hover:bg-emerald-700 text-white text-xs gap-1.5 font-bold h-7.5 px-2.5 cursor-pointer shadow-xs"
-                  : "text-xs gap-1.5 h-7.5 px-2.5 cursor-pointer"
+                  ? "bg-emerald-600 hover:bg-emerald-700 text-white text-xs gap-1.5 font-semibold h-8 px-2.5 cursor-pointer"
+                  : "text-xs gap-1.5 h-8 px-2.5 cursor-pointer text-foreground/80 hover:text-[#ea580c]"
               }
             >
               <CheckCircle2 className="h-3.5 w-3.5" />
@@ -74,104 +71,114 @@ export function DSATopicOverview({
           </div>
         </div>
 
-        {/* Title, Summary & Metadata badges */}
-        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-          <div className="space-y-1 flex-1 min-w-0">
-            <h2 className="text-lg sm:text-xl font-black text-foreground tracking-tight font-heading leading-tight">
+        {/* Title, Difficulty & Estimated Time */}
+        <div className="space-y-1.5">
+          <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+            <h2 className="text-xl sm:text-2xl font-bold text-[#0284c7] dark:text-[#38bdf8] font-heading tracking-tight">
               {topic.title}
             </h2>
-            <p className="text-xs text-muted-foreground font-medium leading-relaxed line-clamp-2">
-              {topic.quickSummary}
-            </p>
-          </div>
-
-          <div className="flex items-center gap-1.5 shrink-0">
-            <div
-              className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wide border shadow-2xs ${
-                topic.difficulty === "Easy" || topic.difficulty === "Beginner"
-                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
-                  : topic.difficulty === "Medium" || topic.difficulty === "Intermediate"
-                  ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30"
-                  : "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30"
-              }`}
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-current opacity-80" />
-              <span>{topic.difficulty}</span>
-            </div>
-            <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-muted/60 text-muted-foreground border border-border/60 text-[11px] font-medium shadow-2xs">
-              <Clock className="h-3 w-3 text-muted-foreground/80 shrink-0" />
-              <span>{topic.estimatedTime}</span>
+            <div className="flex items-center gap-2 shrink-0">
+              <span
+                className={cn(
+                  "inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium border",
+                  topic.difficulty === "Easy" || topic.difficulty === "Beginner"
+                    ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800"
+                    : topic.difficulty === "Medium" || topic.difficulty === "Intermediate"
+                    ? "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800"
+                    : "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/30 dark:text-rose-400 dark:border-rose-800"
+                )}
+              >
+                {topic.difficulty}
+              </span>
+              <span className="inline-flex items-center gap-1 text-xs text-muted-foreground font-sans">
+                <Clock className="h-3.5 w-3.5 text-muted-foreground/70" />
+                <span>{topic.estimatedTime}</span>
+              </span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 2. Core Concepts Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 items-stretch">
-        {topic.keyPoints.slice(0, 3).map((pt, idx) => (
-          <div
-            key={idx}
-            className="p-3 rounded-xl border border-border/80 bg-muted/30 hover:border-primary/40 flex flex-col justify-start space-y-1.5 shadow-2xs transition-all h-full"
-          >
-            <div className="flex items-center gap-1.5">
-              <span className="flex items-center justify-center h-5 w-5 rounded-md bg-primary/10 text-primary font-bold text-[10px] shrink-0 font-mono">
-                0{idx + 1}
-              </span>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground font-mono">
-                Concept 0{idx + 1}
-              </span>
-            </div>
-            <p className="text-[11px] text-muted-foreground leading-relaxed line-clamp-3">
-              {pt}
-            </p>
-          </div>
-        ))}
+      {/* 2. Learning Objective / Overview Section */}
+      <div className="space-y-2 pt-2 border-t border-border/60">
+        <h3 className="text-sm sm:text-base font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
+          Learning Objective &amp; Overview
+        </h3>
+        <p className="text-sm text-foreground/90 font-sans leading-relaxed">
+          {topic.quickSummary || topic.summary}
+        </p>
       </div>
 
-      {/* 3. Time & Space Complexity Summary */}
-      <div className="p-3 rounded-xl border border-border/80 bg-muted/20 space-y-2">
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] font-bold font-sans text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
-            <Zap className="h-3.5 w-3.5 text-amber-500" /> Time &amp; Space Complexity Summary
-          </span>
-          <Badge variant="outline" className="text-[9px] font-mono text-muted-foreground">
-            Performance Benchmark
-          </Badge>
+      {/* 3. Key Concepts & Principles Section */}
+      {topic.keyPoints && topic.keyPoints.length > 0 && (
+        <div className="space-y-2">
+          <h3 className="text-sm sm:text-base font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
+            Key Concepts &amp; Principles
+          </h3>
+          <ol className="list-decimal list-outside pl-5 space-y-1.5 text-sm text-foreground/90 font-sans leading-relaxed">
+            {topic.keyPoints.map((pt, idx) => {
+              const colonIdx = pt.indexOf(":");
+              if (colonIdx > 0 && colonIdx < 40) {
+                const title = pt.slice(0, colonIdx);
+                const desc = pt.slice(colonIdx + 1);
+                return (
+                  <li key={idx}>
+                    <strong className="text-foreground">{title}:</strong>{desc}
+                  </li>
+                );
+              }
+              return <li key={idx}>{pt}</li>;
+            })}
+          </ol>
         </div>
+      )}
 
+      {/* 4. Time & Space Complexity Summary Table */}
+      <div className="space-y-2">
+        <h3 className="text-sm sm:text-base font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
+          Time &amp; Space Complexity Summary
+        </h3>
         {topic.complexities && topic.complexities.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-xs items-stretch">
-            <div className="p-2 rounded-lg bg-card border border-border/60 text-center">
-              <div className="text-[10px] text-muted-foreground font-sans">Scope</div>
-              <div className="font-bold text-foreground mt-0.5 text-[11px] truncate" title={topic.complexities[0]?.operation}>
-                {topic.complexities[0]?.operation || "Core Operation"}
-              </div>
-            </div>
-            <div className="p-2 rounded-lg bg-card border border-border/60 text-center">
-              <div className="text-[10px] text-muted-foreground font-sans">Best Time</div>
-              <div className="font-bold text-emerald-500 mt-0.5 text-[11px]">
-                {topic.complexities[0]?.bestTime || "O(1)"}
-              </div>
-            </div>
-            <div className="p-2 rounded-lg bg-card border border-border/60 text-center">
-              <div className="text-[10px] text-muted-foreground font-sans">Worst Time</div>
-              <div className="font-bold text-amber-500 mt-0.5 text-[11px]">
-                {topic.complexities[0]?.worstTime || "O(N)"}
-              </div>
-            </div>
-            <div className="p-2 rounded-lg bg-card border border-border/60 text-center">
-              <div className="text-[10px] text-muted-foreground font-sans">Space</div>
-              <div className="font-bold text-primary mt-0.5 text-[11px]">
-                {topic.complexities[0]?.space || "O(1)"}
-              </div>
-            </div>
+          <div className="overflow-x-auto rounded-lg border border-border/80">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="bg-muted/60 border-b border-border text-muted-foreground uppercase text-[11px] font-semibold">
+                  <th className="p-2.5">Scope / Operation</th>
+                  <th className="p-2.5">Best Time</th>
+                  <th className="p-2.5">Average Time</th>
+                  <th className="p-2.5">Worst Time</th>
+                  <th className="p-2.5">Space</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border/60 text-foreground font-sans">
+                {topic.complexities.map((comp, cIdx) => (
+                  <tr key={cIdx} className="hover:bg-muted/30">
+                    <td className="p-2.5 font-semibold text-foreground">{comp.operation || "Core Operation"}</td>
+                    <td className="p-2.5 font-mono text-emerald-600 dark:text-emerald-400 font-semibold">{comp.best || (comp as any).bestTime || "O(1)"}</td>
+                    <td className="p-2.5 font-mono text-[#0284c7] dark:text-[#38bdf8]">{comp.avg || "-"}</td>
+                    <td className="p-2.5 font-mono text-amber-600 dark:text-amber-400 font-semibold">{comp.worst || (comp as any).worstTime || "O(N)"}</td>
+                    <td className="p-2.5 font-mono text-foreground font-semibold">{comp.space || "O(1)"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         ) : (
-          <div className="p-2 text-center text-xs text-muted-foreground font-mono">
-            Standard Relational Catalog Complexity
-          </div>
+          <p className="text-xs text-muted-foreground font-sans">Standard execution complexity benchmark.</p>
         )}
       </div>
+
+      {/* 5. Architecture Diagram (if present) */}
+      {topic.diagram && (
+        <div className="space-y-2">
+          <h3 className="text-sm sm:text-base font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
+            {topic.diagramTitle || "Architecture Diagram"}
+          </h3>
+          <pre className="p-3.5 rounded-lg bg-muted/40 border border-border/80 font-mono text-xs overflow-x-auto text-foreground/90 whitespace-pre leading-relaxed">
+            {topic.diagram}
+          </pre>
+        </div>
+      )}
 
       {/* In-App Reader Dialog */}
       <MaterialReaderDialog
@@ -199,54 +206,32 @@ export interface DSATopicResourcesProps {
 
 export function DSATopicResources({ topic }: DSATopicResourcesProps) {
   const [isReaderOpen, setIsReaderOpen] = useState(false);
-  const resourceCount = topic.practiceProblems.length + (topic.gfgUrl ? 1 : 0);
 
   return (
-    <Card className="border-border bg-card/90 shadow-sm p-5 sm:p-6 space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-primary/10 text-primary">
-            <BookOpen className="h-5 w-5" />
-          </div>
-          <div>
-            <CardTitle className="text-lg font-bold font-heading text-foreground">
-              Curated Learning Resources ({resourceCount})
-            </CardTitle>
-            <p className="text-xs text-muted-foreground font-medium mt-0.5">
-              Handpicked reference documentation, guides, and practical study problems for {topic.title}.
-            </p>
-          </div>
-        </div>
-        <Badge variant="outline" className="text-xs font-sans bg-primary/10 text-primary border-primary/20 font-semibold px-2.5 py-1 rounded-full hidden sm:inline-flex">
-          Study &amp; References
-        </Badge>
+    <div className="bg-card border border-border/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-4 font-sans">
+      <div className="space-y-1">
+        <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
+          References &amp; Learning Resources
+        </h3>
+        <p className="text-xs text-muted-foreground">
+          Textbooks, guides, and practical benchmark problem sets for {topic.title}.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-1 items-stretch">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 pt-1">
         {topic.gfgUrl && (
           <button
             type="button"
             onClick={() => setIsReaderOpen(true)}
-            className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/30 hover:bg-card hover:border-emerald-500/40 hover:shadow-xs transition-all group shadow-2xs h-full min-h-[76px] text-left cursor-pointer"
+            className="flex items-center justify-between p-3.5 rounded-lg border border-border bg-muted/20 hover:bg-card hover:border-[#0284c7]/50 transition-all text-left cursor-pointer group"
           >
-            <div className="space-y-1 min-w-0 pr-3 flex-1">
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-xs sm:text-sm text-foreground group-hover:text-emerald-500 transition-colors truncate">
-                  Complete {topic.title} Handbook
-                </span>
-              </div>
-              <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono block">In-App GeeksforGeeks Material</span>
+            <div className="space-y-1 min-w-0 pr-2">
+              <span className="font-semibold text-xs sm:text-sm text-foreground group-hover:text-[#0284c7] transition-colors truncate block">
+                {topic.title} Handbook
+              </span>
+              <span className="text-[11px] text-[#0284c7] dark:text-[#38bdf8] block">GeeksforGeeks In-App Guide</span>
             </div>
-
-            <div className="flex items-center gap-2 shrink-0">
-              <Badge
-                variant="outline"
-                className="text-emerald-500 border-emerald-500/30 text-[10px] font-mono font-semibold"
-              >
-                In-App
-              </Badge>
-              <BookOpen className="h-4 w-4 text-muted-foreground group-hover:text-emerald-500 transition-colors" />
-            </div>
+            <BookOpen className="h-4 w-4 text-muted-foreground group-hover:text-[#0284c7] shrink-0" />
           </button>
         )}
 
@@ -272,37 +257,24 @@ export function DSATopicResources({ topic }: DSATopicResourcesProps) {
             href={prob.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-between p-4 rounded-xl border border-border bg-muted/30 hover:bg-card hover:border-primary/40 hover:shadow-xs transition-all group shadow-2xs h-full min-h-[76px]"
+            className="flex items-center justify-between p-3.5 rounded-lg border border-border bg-muted/20 hover:bg-card hover:border-[#0284c7]/50 transition-all group"
           >
-            <div className="space-y-1 min-w-0 pr-3 flex-1">
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-xs sm:text-sm text-foreground group-hover:text-primary transition-colors truncate">
-                  {prob.title}
-                </span>
-              </div>
-              <span className="text-[11px] text-muted-foreground font-mono block">{prob.platform} Reference</span>
+            <div className="space-y-1 min-w-0 pr-2">
+              <span className="font-semibold text-xs sm:text-sm text-foreground group-hover:text-[#0284c7] transition-colors truncate block">
+                {prob.title}
+              </span>
+              <span className="text-[11px] text-muted-foreground block">{prob.platform} Reference</span>
             </div>
-
-            <div className="flex items-center gap-2 shrink-0">
-              <Badge
-                variant="outline"
-                className={cn(
-                  "text-[10px] font-mono font-semibold",
-                  prob.difficulty === "Easy"
-                    ? "text-emerald-500 border-emerald-500/30"
-                    : prob.difficulty === "Medium"
-                    ? "text-amber-500 border-amber-500/30"
-                    : "text-rose-500 border-rose-500/30"
-                )}
-              >
+            <div className="flex items-center gap-1.5 shrink-0">
+              <span className="text-[10px] text-muted-foreground font-medium px-1.5 py-0.5 rounded bg-muted border border-border">
                 {prob.difficulty}
-              </Badge>
-              <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+              </span>
+              <ExternalLink className="h-3.5 w-3.5 text-muted-foreground group-hover:text-[#0284c7]" />
             </div>
           </a>
         ))}
       </div>
-    </Card>
+    </div>
   );
 }
 
@@ -318,13 +290,13 @@ export function DSATopicNavigation({
   onSelectTopic,
 }: DSATopicNavigationProps) {
   return (
-    <div className="flex items-center justify-between p-4 bg-card/90 border border-border rounded-2xl shadow-sm text-sm font-semibold">
+    <div className="flex items-center justify-between p-4 bg-card border border-border/80 rounded-xl shadow-xs text-sm">
       {prevTopic ? (
         <Button
           variant="outline"
           size="sm"
           onClick={() => onSelectTopic(prevTopic)}
-          className="gap-2 text-xs sm:text-sm hover:bg-muted h-10 px-4 cursor-pointer"
+          className="gap-1.5 text-xs sm:text-sm h-9 px-3.5 cursor-pointer text-foreground hover:text-[#0284c7] hover:border-[#0284c7]/40"
         >
           <ChevronLeft className="h-4 w-4" />
           <span className="truncate max-w-[160px] sm:max-w-none">Prev: {prevTopic.title}</span>
@@ -337,7 +309,7 @@ export function DSATopicNavigation({
         <Button
           size="sm"
           onClick={() => onSelectTopic(nextTopic)}
-          className="bg-primary hover:bg-primary/90 text-white text-xs sm:text-sm gap-2 font-bold shadow-sm h-10 px-4 cursor-pointer"
+          className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs sm:text-sm gap-1.5 font-semibold h-9 px-4 cursor-pointer"
         >
           <span className="truncate max-w-[160px] sm:max-w-none">Next: {nextTopic.title}</span>
           <ChevronRight className="h-4 w-4" />
