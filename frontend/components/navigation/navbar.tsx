@@ -171,16 +171,16 @@ export function Navbar() {
             >
               <Link
                 href="/"
-                className="flex items-center gap-2 px-2.5 sm:px-3 py-1 rounded-full text-foreground hover:text-rose-600 transition-colors group select-none hover:bg-muted/40"
+                className="flex items-center gap-2 px-2.5 sm:px-3 py-1 rounded-full text-foreground hover:text-[#0284c7] transition-colors group select-none hover:bg-muted/40"
               >
-                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-gradient-to-tr from-rose-600 to-red-600 flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform shrink-0">
+                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-[#0284c7] flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform shrink-0">
                   <FlaskConical className="h-3.5 w-3.5" />
                 </div>
                 <div className="flex items-baseline gap-1.5">
                   <span className="font-black text-xs sm:text-sm tracking-tight font-heading text-foreground whitespace-nowrap">
                     Virtual Lab
                   </span>
-                  <span className="text-[10px] font-mono text-muted-foreground uppercase font-bold tracking-wider hidden sm:inline">
+                  <span className="text-[10px] font-sans font-bold text-muted-foreground uppercase tracking-wider hidden sm:inline">
                     Studio
                   </span>
                 </div>
@@ -193,7 +193,7 @@ export function Navbar() {
               transition={{ layout: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } }}
               className="flex items-center gap-1 sm:gap-1.5 shrink-0"
             >
-              {/* Navigation Links with animated glowing red hover pill */}
+              {/* Navigation Links with animated hover pill */}
               <div className="flex items-center gap-0.5 sm:gap-1">
                 {NAV_ITEMS.map((item) => {
                   const active = isItemActive(item.href);
@@ -214,7 +214,7 @@ export function Navbar() {
                       {isHighlighted && (
                         <motion.div
                           layoutId="fastlane-navbar-active-pill"
-                          className="absolute inset-0 rounded-full bg-gradient-to-r from-[#ff2a5f] via-[#e11d48] to-[#dc2626] shadow-[0_2px_16px_rgba(225,29,72,0.55)] -z-10"
+                          className="absolute inset-0 rounded-full bg-[#0284c7] shadow-sm -z-10"
                           transition={{
                             type: "spring",
                             stiffness: 450,
@@ -247,7 +247,7 @@ export function Navbar() {
                 {mounted && activeStudentName ? (
                   <div className="flex items-center gap-1">
                     <div className="flex items-center gap-1.5 px-2.5 py-0.5 sm:py-1 rounded-full border border-border/80 bg-muted/40 hover:bg-muted text-xs font-bold text-foreground transition-all cursor-pointer shadow-xs whitespace-nowrap">
-                      <div className="w-4 h-4 rounded-full bg-rose-600 text-white flex items-center justify-center text-[9px] font-bold shrink-0">
+                      <div className="w-4 h-4 rounded-full bg-[#0284c7] text-white flex items-center justify-center text-[9px] font-bold shrink-0">
                         {activeStudentName[0]?.toUpperCase() || "S"}
                       </div>
                       <span className="font-bold max-w-[80px] sm:max-w-[95px] truncate text-xs capitalize">
@@ -258,7 +258,7 @@ export function Navbar() {
 
                     <Link
                       href="/dashboard"
-                      className="hidden xl:flex items-center gap-1 px-2.5 py-0.5 sm:py-1 rounded-full text-xs font-bold bg-rose-600/10 hover:bg-rose-600 text-rose-600 hover:text-white border border-rose-600/25 transition-all cursor-pointer whitespace-nowrap"
+                      className="hidden xl:flex items-center gap-1 px-2.5 py-0.5 sm:py-1 rounded-full text-xs font-bold bg-sky-500/10 hover:bg-[#0284c7] text-[#0284c7] hover:text-white border border-[#0284c7]/30 transition-all cursor-pointer whitespace-nowrap"
                       title="Go to Student Dashboard"
                     >
                       <span>Dashboard</span>
@@ -268,7 +268,7 @@ export function Navbar() {
                 ) : (
                   <Link
                     href="/auth/login"
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-[#e11d48] to-[#dc2626] hover:from-[#f43f5e] hover:to-[#e11d48] text-white shadow-xs shadow-red-500/25 transition-all cursor-pointer hover:scale-105 whitespace-nowrap"
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#0284c7] hover:bg-[#0369a1] text-white shadow-xs transition-all cursor-pointer hover:scale-105 whitespace-nowrap"
                   >
                     <LogIn className="h-3.5 w-3.5" />
                     <span>Sign In</span>
@@ -283,7 +283,7 @@ export function Navbar() {
           {/* Mobile Header View */}
           <div className="md:hidden w-full px-4 py-2 rounded-2xl border border-border/70 bg-background/90 backdrop-blur-xl shadow-md flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2 text-foreground">
-              <div className="w-7 h-7 rounded-lg bg-rose-600 flex items-center justify-center text-white">
+              <div className="w-7 h-7 rounded-lg bg-[#0284c7] flex items-center justify-center text-white">
                 <FlaskConical className="h-3.5 w-3.5" />
               </div>
               <span className="font-black text-xs font-heading">Virtual Lab</span>
@@ -373,7 +373,7 @@ export function Navbar() {
                     <span className="text-xs font-bold text-foreground group-hover:text-rose-600 transition-colors">
                       {item.title}
                     </span>
-                    <Badge variant="outline" className="text-[10px] font-mono">
+                    <Badge variant="outline" className="text-[10px] font-sans font-medium">
                       {item.category}
                     </Badge>
                   </div>

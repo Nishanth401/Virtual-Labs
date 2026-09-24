@@ -62,12 +62,12 @@ export default {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		fontFamily: {
-  			sans: ["'General Sans'", "Inter", "-apple-system", "sans-serif"],
-  			heading: ["'General Sans'", "'Pilcrow Rounded'", "'Trench Slab'", "'Melodrama'", "sans-serif"],
-  			display: ["'Khand'", "'General Sans'", "sans-serif"],
-  			pilcrow: ["'Pilcrow Rounded'", "'General Sans'", "sans-serif"],
-  			serif: ["'Melodrama'", "'Boska'", "serif"],
-  			mono: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
+  			sans: ["'Plus Jakarta Sans'", "Inter", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "Roboto", "sans-serif"],
+  			heading: ["'Plus Jakarta Sans'", "Inter", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "sans-serif"],
+  			display: ["'Plus Jakarta Sans'", "Inter", "sans-serif"],
+  			pilcrow: ["'Plus Jakarta Sans'", "Inter", "sans-serif"],
+  			serif: ["Georgia", "serif"],
+  			mono: ["'JetBrains Mono'", "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
   		},
   		animation: {
   			'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',

@@ -45,12 +45,12 @@ export default function LabsCataloguePage() {
         <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           {/* Top Breadcrumb & Broad Areas Header (Screenshot 112326) */}
           <div className="bg-card border border-border/80 rounded-2xl p-5 sm:p-6 shadow-2xs space-y-3">
-            <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-muted-foreground font-mono">
+            <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-muted-foreground font-sans">
               <Link href="/" className="hover:text-primary transition-colors">
                 Home
               </Link>
               <span>/</span>
-              <span className="text-foreground">Broad Areas of Virtual Labs</span>
+              <span className="text-foreground font-medium">Broad Areas of Virtual Labs</span>
               <span>/</span>
               <span className="text-primary font-bold">Computer Science &amp; Engineering</span>
             </div>
@@ -83,7 +83,7 @@ export default function LabsCataloguePage() {
             {/* Left Column: Lab Cards List (8 Cols) */}
             <div className="lg:col-span-8 space-y-4">
               <div className="flex items-center justify-between px-1">
-                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono">
+                <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-sans">
                   Available Laboratories ({filteredLabs.length})
                 </span>
                 <span className="text-xs text-muted-foreground">
@@ -121,7 +121,7 @@ export default function LabsCataloguePage() {
                       <Bell className="h-4 w-4 text-primary" />
                       <span>Announcements</span>
                     </CardTitle>
-                    <Badge variant="outline" className="text-[10px] font-mono bg-primary/10 text-primary border-primary/20">
+                    <Badge variant="outline" className="text-[10px] font-sans font-semibold bg-primary/10 text-primary border-primary/20">
                       Live Updates
                     </Badge>
                   </div>
@@ -131,8 +131,8 @@ export default function LabsCataloguePage() {
                   {/* Notice 1 */}
                   <div className="p-3 rounded-xl bg-muted/40 border border-border/70 space-y-1.5 hover:border-primary/40 transition-colors">
                     <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-                      <span className="font-semibold text-primary font-mono">Upcoming Workshop</span>
-                      <span className="flex items-center gap-1 font-mono">
+                      <span className="font-semibold text-primary font-sans">Upcoming Workshop</span>
+                      <span className="flex items-center gap-1 font-sans font-medium">
                         <Calendar className="h-3 w-3" /> Oct 2026
                       </span>
                     </div>
@@ -147,8 +147,8 @@ export default function LabsCataloguePage() {
                   {/* Notice 2 */}
                   <div className="p-3 rounded-xl bg-muted/40 border border-border/70 space-y-1.5 hover:border-primary/40 transition-colors">
                     <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-                      <span className="font-semibold text-amber-600 dark:text-amber-400 font-mono">Curriculum Alignment</span>
-                      <span className="font-mono">AICTE / AU</span>
+                      <span className="font-semibold text-amber-600 dark:text-amber-400 font-sans">Curriculum Alignment</span>
+                      <span className="font-sans font-medium">AICTE / AU</span>
                     </div>
                     <p className="font-bold text-foreground leading-snug">
                       NPTEL 8-Week AI&amp;DS C Programming Track Live
@@ -161,8 +161,8 @@ export default function LabsCataloguePage() {
                   {/* Notice 3 */}
                   <div className="p-3 rounded-xl bg-muted/40 border border-border/70 space-y-1.5 hover:border-primary/40 transition-colors">
                     <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-                      <span className="font-semibold text-emerald-600 dark:text-emerald-400 font-mono">New Simulators</span>
-                      <span className="font-mono">v3.2</span>
+                      <span className="font-semibold text-emerald-600 dark:text-emerald-400 font-sans">New Simulators</span>
+                      <span className="font-sans font-medium">v3.2</span>
                     </div>
                     <p className="font-bold text-foreground leading-snug">
                       Interactive Call Stack &amp; Memory Buffer Visualizer
@@ -176,7 +176,7 @@ export default function LabsCataloguePage() {
 
               {/* NPTEL & Academic Credit Box */}
               <Card className="border-border bg-gradient-to-br from-primary/5 via-card to-card shadow-2xs p-4 space-y-3">
-                <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider font-mono">
+                <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider font-sans">
                   <GraduationCap className="h-4 w-4" />
                   <span>Academic Credit Mapping</span>
                 </div>

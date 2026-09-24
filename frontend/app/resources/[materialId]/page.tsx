@@ -16,29 +16,19 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  BookOpen,
-  Code2,
-  HelpCircle,
-  FlaskConical,
-  Edit3,
   Copy,
   Check,
   ExternalLink,
-  Sparkles,
   GraduationCap,
   Clock,
-  Layers,
   ChevronRight,
   ArrowLeft,
   Printer,
-  Lightbulb,
-  CheckCircle2,
   Play,
-  Share2,
-  Bookmark,
-  Zap,
-  Download,
-  FileCode2
+  RefreshCw,
+  Globe,
+  ShieldCheck,
+  Layers
 } from "lucide-react";
 
 interface MaterialPageProps {
@@ -60,10 +50,8 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
   const [activeCodeLang, setActiveCodeLang] = useState<string>("java");
   const [copiedCode, setCopiedCode] = useState(false);
   const [copiedAll, setCopiedAll] = useState(false);
-  const [fontSize, setFontSize] = useState<"sm" | "base" | "lg">("base");
   const [studentNotes, setStudentNotes] = useState<string>("");
   const [savedNoteMsg, setSavedNoteMsg] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
   const [expandedVivaIdx, setExpandedVivaIdx] = useState<number | null>(0);
 
   useEffect(() => {
@@ -111,9 +99,6 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
     if (materialId) {
       const savedNotes = localStorage.getItem(`vlab_page_notes_${materialId}`);
       if (savedNotes) setStudentNotes(savedNotes);
-
-      const bookmarked = localStorage.getItem(`vlab_bookmark_${materialId}`);
-      if (bookmarked === "true") setIsBookmarked(true);
     }
   }, [materialId]);
 
@@ -121,12 +106,6 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
     localStorage.setItem(`vlab_page_notes_${materialId}`, studentNotes);
     setSavedNoteMsg(true);
     setTimeout(() => setSavedNoteMsg(false), 2000);
-  };
-
-  const handleToggleBookmark = () => {
-    const next = !isBookmarked;
-    setIsBookmarked(next);
-    localStorage.setItem(`vlab_bookmark_${materialId}`, String(next));
   };
 
   const handleCopyCode = (code: string) => {
@@ -163,21 +142,13 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
     ? (activeCodeLang as keyof typeof material.codeSnippets)
     : codeLanguages[0] || "java";
 
-  const fontSizeClass =
-    fontSize === "sm" ? "text-xs sm:text-sm" : fontSize === "lg" ? "text-base sm:text-lg" : "text-sm sm:text-base";
-
-  // Related materials
-  const relatedMaterials = RESOURCES_DATA.filter(
-    (r) => r.type === "Lab Material" && getResourceId(r) !== materialId
-  ).slice(0, 3);
-
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Navbar />
 
-      {/* Top Breadcrumbs & Back Navigation */}
+      {/* Top Breadcrumbs & Mode Switcher Bar */}
       <div className="border-b border-border/80 bg-card/50 backdrop-blur-md pt-20 sm:pt-24 pb-3">
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
+        <div className="container max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-xs text-muted-foreground truncate">
             <Button variant="ghost" size="sm" className="h-7 px-2 text-xs font-bold gap-1 rounded-xl" asChild>
               <Link href="/resources">
@@ -186,58 +157,31 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
               </Link>
             </Button>
             <ChevronRight className="h-3.5 w-3.5 shrink-0 opacity-50" />
-            <span className="text-primary font-semibold truncate hidden sm:inline">{resource.subject}</span>
+            <span className="text-[#0284c7] font-semibold truncate hidden sm:inline">{resource.subject}</span>
             <ChevronRight className="h-3.5 w-3.5 shrink-0 opacity-50 hidden sm:inline" />
             <span className="text-foreground font-semibold truncate max-w-xs">{resource.title}</span>
           </div>
 
-          <div className="flex items-center gap-1.5 shrink-0">
-            {/* Font Size Adjuster */}
-            <div className="flex items-center border border-border rounded-xl p-0.5 bg-muted/40">
+          <div className="flex items-center gap-2 shrink-0">
+            {resource.fileUrl && resource.fileUrl.startsWith("http") && (
               <Button
                 size="sm"
-                variant="ghost"
-                onClick={() => setFontSize("sm")}
-                className={`h-6 px-2 text-xs font-bold rounded-lg ${fontSize === "sm" ? "bg-background text-primary shadow-xs" : "text-muted-foreground"}`}
-                title="Small text"
+                variant="outline"
+                className="h-7.5 text-xs font-semibold gap-1.5 rounded-xl border-[#0284c7]/30 text-[#0284c7] hover:bg-sky-500/10"
+                asChild
               >
-                A-
+                <a href={resource.fileUrl} target="_blank" rel="noopener noreferrer">
+                  <span>Official Reference</span>
+                  <ExternalLink className="h-3 w-3 ml-0.5" />
+                </a>
               </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => setFontSize("base")}
-                className={`h-6 px-2 text-xs font-bold rounded-lg ${fontSize === "base" ? "bg-background text-primary shadow-xs" : "text-muted-foreground"}`}
-                title="Normal text"
-              >
-                A
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => setFontSize("lg")}
-                className={`h-6 px-2 text-xs font-bold rounded-lg ${fontSize === "lg" ? "bg-background text-primary shadow-xs" : "text-muted-foreground"}`}
-                title="Large text"
-              >
-                A+
-              </Button>
-            </div>
-
-            <Button
-              size="sm"
-              variant={isBookmarked ? "default" : "outline"}
-              onClick={handleToggleBookmark}
-              className={`h-7.5 text-xs font-bold gap-1 rounded-xl ${isBookmarked ? "bg-primary text-white" : ""}`}
-            >
-              <Bookmark className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">{isBookmarked ? "Bookmarked" : "Bookmark"}</span>
-            </Button>
+            )}
 
             <Button
               size="sm"
               variant="outline"
               onClick={() => window.print()}
-              className="h-7.5 text-xs font-bold gap-1 rounded-xl hidden md:flex"
+              className="h-7.5 text-xs font-semibold gap-1.5 rounded-xl hidden md:flex"
             >
               <Printer className="h-3.5 w-3.5" />
               <span>Print</span>
@@ -278,7 +222,7 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
           <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
             <div className="flex flex-wrap items-center gap-2">
               {material.simulatorUrl && (
-                <Button size="sm" className="h-9 text-xs sm:text-sm font-bold rounded-xl bg-primary text-white gap-2 shadow-xs hover:bg-primary/90" asChild>
+                <Button size="sm" className="h-9 text-xs sm:text-sm font-bold rounded-xl bg-[#0284c7] hover:bg-[#0369a1] text-white gap-2 shadow-xs" asChild>
                   <Link href={material.simulatorUrl}>
                     <Play className="h-4 w-4" />
                     <span>Launch {material.simulatorName || "Virtual Lab Simulator"}</span>
@@ -291,471 +235,437 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
               </Button>
             </div>
 
-            {/* Reference info */}
+            {/* Official External Reference Link */}
             {resource.fileUrl && resource.fileUrl.startsWith("http") && (
               <a
                 href={resource.fileUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors underline font-mono"
+                className="inline-flex items-center gap-1.5 text-xs text-[#0284c7] hover:underline font-sans font-medium"
               >
-                <span>Curriculum Reference: {resource.provider}</span>
-                <ExternalLink className="h-3 w-3" />
+                <span>Curriculum Reference: {resource.provider} (Official Docs)</span>
+                <ExternalLink className="h-3.5 w-3.5" />
               </a>
             )}
           </div>
         </div>
 
-        {/* 2-Column Responsive Body Layout */}
+        {/* STRUCTURED IN-APP CURRICULUM HANDBOOK */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* LEFT SIDEBAR: Table of Contents & Navigation */}
           <aside className="lg:col-span-3 space-y-5 lg:sticky lg:top-32 hidden lg:block">
-            <Card className="border border-border/80 bg-card/80 backdrop-blur-md rounded-2xl p-4 shadow-xs">
-              <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono mb-3">
+            <Card className="border border-border bg-card rounded-2xl p-4 shadow-xs">
+              <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-sans mb-3">
                 Contents &amp; Navigation
               </CardTitle>
               <nav className="space-y-1 text-xs font-medium">
                 <a
                   href="#overview"
-                  className="flex items-center gap-2 p-2 rounded-xl text-foreground/80 hover:text-primary hover:bg-primary/5 transition-all"
+                  className="flex items-center p-2 rounded-xl text-foreground hover:text-[#ea580c] hover:bg-orange-500/10 transition-all font-semibold"
                 >
-                  <Sparkles className="h-3.5 w-3.5 text-primary shrink-0" />
                   <span>1. Overview &amp; Alignment</span>
                 </a>
-                <a
-                  href="#outcomes"
-                  className="flex items-center gap-2 p-2 rounded-xl text-foreground/80 hover:text-primary hover:bg-primary/5 transition-all"
-                >
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                  <span>2. Learning Outcomes</span>
-                </a>
-                <a
-                  href="#theory"
-                  className="flex items-center gap-2 p-2 rounded-xl text-foreground/80 hover:text-primary hover:bg-primary/5 transition-all"
-                >
-                  <BookOpen className="h-3.5 w-3.5 text-primary shrink-0" />
-                  <span>3. Theory &amp; Concepts</span>
-                </a>
-                {material.algorithmSteps && material.algorithmSteps.length > 0 && (
                   <a
-                    href="#algorithm"
-                    className="flex items-center gap-2 p-2 rounded-xl text-foreground/80 hover:text-primary hover:bg-primary/5 transition-all"
+                    href="#outcomes"
+                    className="flex items-center p-2 rounded-xl text-foreground hover:text-[#ea580c] hover:bg-orange-500/10 transition-all font-semibold"
                   >
-                    <Layers className="h-3.5 w-3.5 text-indigo-500 shrink-0" />
-                    <span>4. Step-by-Step Algorithm</span>
+                    <span>2. Learning Outcomes</span>
                   </a>
-                )}
-                <a
-                  href="#complexity"
-                  className="flex items-center gap-2 p-2 rounded-xl text-foreground/80 hover:text-primary hover:bg-primary/5 transition-all"
-                >
-                  <Clock className="h-3.5 w-3.5 text-amber-500 shrink-0" />
-                  <span>5. Big-O Complexity</span>
-                </a>
-                <a
-                  href="#code-lab"
-                  className="flex items-center gap-2 p-2 rounded-xl text-foreground/80 hover:text-primary hover:bg-primary/5 transition-all"
-                >
-                  <Code2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-                  <span>6. Multi-Language Code</span>
-                </a>
-                <a
-                  href="#viva-bank"
-                  className="flex items-center gap-2 p-2 rounded-xl text-foreground/80 hover:text-primary hover:bg-primary/5 transition-all"
-                >
-                  <HelpCircle className="h-3.5 w-3.5 text-rose-500 shrink-0" />
-                  <span>7. Viva Voce Q&amp;A Bank</span>
-                </a>
-                <a
-                  href="#applications"
-                  className="flex items-center gap-2 p-2 rounded-xl text-foreground/80 hover:text-primary hover:bg-primary/5 transition-all"
-                >
-                  <Lightbulb className="h-3.5 w-3.5 text-amber-500 shrink-0" />
-                  <span>8. Industry Applications</span>
-                </a>
-                <a
-                  href="#scratchpad"
-                  className="flex items-center gap-2 p-2 rounded-xl text-foreground/80 hover:text-primary hover:bg-primary/5 transition-all"
-                >
-                  <Edit3 className="h-3.5 w-3.5 text-primary shrink-0" />
-                  <span>9. My Study Scratchpad</span>
-                </a>
-              </nav>
-            </Card>
+                  <a
+                    href="#theory"
+                    className="flex items-center p-2 rounded-xl text-foreground hover:text-[#ea580c] hover:bg-orange-500/10 transition-all font-semibold"
+                  >
+                    <span>3. Theory &amp; Concepts</span>
+                  </a>
+                  {material.algorithmSteps && material.algorithmSteps.length > 0 && (
+                    <a
+                      href="#algorithm"
+                      className="flex items-center p-2 rounded-xl text-foreground hover:text-[#ea580c] hover:bg-orange-500/10 transition-all font-semibold"
+                    >
+                      <span>4. Step-by-Step Algorithm</span>
+                    </a>
+                  )}
+                  <a
+                    href="#complexity"
+                    className="flex items-center p-2 rounded-xl text-foreground hover:text-[#ea580c] hover:bg-orange-500/10 transition-all font-semibold"
+                  >
+                    <span>5. Big-O Complexity</span>
+                  </a>
+                  <a
+                    href="#code-lab"
+                    className="flex items-center p-2 rounded-xl text-foreground hover:text-[#ea580c] hover:bg-orange-500/10 transition-all font-semibold"
+                  >
+                    <span>6. Multi-Language Code</span>
+                  </a>
+                  <a
+                    href="#viva-bank"
+                    className="flex items-center p-2 rounded-xl text-foreground hover:text-[#ea580c] hover:bg-orange-500/10 transition-all font-semibold"
+                  >
+                    <span>7. Viva Voce Q&amp;A Bank</span>
+                  </a>
+                  <a
+                    href="#applications"
+                    className="flex items-center p-2 rounded-xl text-foreground hover:text-[#ea580c] hover:bg-orange-500/10 transition-all font-semibold"
+                  >
+                    <span>8. Industry Applications</span>
+                  </a>
+                  <a
+                    href="#scratchpad"
+                    className="flex items-center p-2 rounded-xl text-foreground hover:text-[#ea580c] hover:bg-orange-500/10 transition-all font-semibold"
+                  >
+                    <span>9. My Study Scratchpad</span>
+                  </a>
+                </nav>
+              </Card>
 
-            {/* Quick Virtual Lab Launcher */}
-            {material.simulatorUrl && (
-              <Card className="border border-primary/30 bg-gradient-to-br from-primary/10 via-card to-background rounded-2xl p-4 space-y-3">
-                <div className="space-y-1">
-                  <span className="text-[10px] font-mono uppercase font-bold text-primary tracking-wider">
-                    Interactive Lab Studio
-                  </span>
-                  <h4 className="text-sm font-bold text-foreground">
-                    Practice in Virtual Sandbox
-                  </h4>
-                  <p className="text-xs text-muted-foreground">
-                    Simulate real-time node operations, step through pointers, and run testcases.
+              {/* Quick Virtual Lab Launcher */}
+              {material.simulatorUrl && (
+                <Card className="border border-[#0284c7]/30 bg-card rounded-2xl p-4 space-y-3 shadow-xs">
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-mono uppercase font-bold text-[#0284c7] tracking-wider">
+                      Interactive Lab Studio
+                    </span>
+                    <h4 className="text-sm font-bold text-foreground">
+                      Practice in Virtual Sandbox
+                    </h4>
+                    <p className="text-xs text-muted-foreground">
+                      Simulate real-time node operations, step through pointers, and run testcases.
+                    </p>
+                  </div>
+                  <Button size="sm" className="w-full h-8 text-xs font-bold rounded-xl bg-[#0284c7] hover:bg-[#0369a1] text-white gap-1.5 shadow-xs" asChild>
+                    <Link href={material.simulatorUrl}>
+                      <Play className="h-3.5 w-3.5" />
+                      <span>Open Live Simulator</span>
+                    </Link>
+                  </Button>
+                </Card>
+              )}
+            </aside>
+
+            {/* MAIN READING COLUMN (CLEAN HEADINGS - NO EMOJIS) */}
+            <div className="lg:col-span-9 space-y-10 text-sm sm:text-base leading-relaxed">
+              {/* 1. OVERVIEW & SYLLABUS */}
+              <section id="overview" className="space-y-4">
+                <div className="p-6 rounded-2xl bg-card border border-border space-y-3 shadow-xs">
+                  <h3 className="text-lg sm:text-xl font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
+                    1. Topic Overview &amp; Curriculum Scope
+                  </h3>
+                  <p className="text-foreground font-normal text-sm sm:text-base leading-relaxed">
+                    {material.overview}
                   </p>
                 </div>
-                <Button size="sm" className="w-full h-8 text-xs font-bold rounded-xl bg-primary text-white gap-1.5" asChild>
-                  <Link href={material.simulatorUrl}>
-                    <Play className="h-3.5 w-3.5" />
-                    <span>Open Live Simulator</span>
-                  </Link>
-                </Button>
-              </Card>
-            )}
-          </aside>
+              </section>
 
-          {/* MAIN READING COLUMN */}
-          <div className={`lg:col-span-9 space-y-10 ${fontSizeClass} leading-relaxed`}>
-            {/* 1. OVERVIEW & SYLLABUS */}
-            <section id="overview" className="space-y-4">
-              <div className="p-6 rounded-3xl bg-gradient-to-br from-primary/10 via-background to-secondary/10 border border-primary/20 space-y-4 shadow-sm">
-                <div className="flex items-center gap-2 text-primary font-bold text-base font-heading">
-                  <Sparkles className="h-5 w-5 text-primary" />
-                  <span>1. Topic Overview &amp; Curriculum Scope</span>
+              {/* 2. LEARNING OUTCOMES */}
+              <section id="outcomes" className="space-y-4">
+                <Card className="border border-border bg-card rounded-2xl overflow-hidden shadow-xs">
+                  <CardHeader className="p-6 pb-3">
+                    <CardTitle className="text-lg sm:text-xl font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
+                      2. Core Learning Outcomes
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6 pt-0 space-y-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                      {material.learningObjectives.map((obj, i) => (
+                        <div
+                          key={i}
+                          className="flex items-start gap-3 p-3.5 rounded-xl bg-muted/30 border border-border"
+                        >
+                          <span className="h-2 w-2 rounded-full bg-[#0284c7] mt-2 shrink-0" />
+                          <span className="text-foreground font-medium text-xs sm:text-sm">{obj}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </section>
+
+              {/* 3. DETAILED THEORY & CONCEPTS */}
+              <section id="theory" className="space-y-6">
+                <h2 className="text-lg sm:text-xl font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
+                  3. Theoretical Foundations &amp; Conceptual Mechanics
+                </h2>
+
+                <div className="space-y-5">
+                  {material.keyConcepts.map((concept, idx) => (
+                    <Card key={idx} className="border border-border bg-card rounded-2xl p-6 shadow-xs space-y-4">
+                      <CardTitle className="text-base sm:text-lg font-bold text-foreground font-heading">
+                        {concept.title}
+                      </CardTitle>
+                      <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
+                        {concept.description}
+                      </p>
+                      {concept.points && concept.points.length > 0 && (
+                        <div className="bg-muted/40 rounded-xl p-4 border border-border space-y-2">
+                          {concept.points.map((pt, pIdx) => (
+                            <div key={pIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-foreground">
+                              <span className="text-[#0284c7] font-bold font-mono shrink-0">•</span>
+                              <span className="leading-relaxed">{pt}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </Card>
+                  ))}
                 </div>
-                <p className="text-foreground font-medium text-sm sm:text-base leading-relaxed">
-                  {material.overview}
-                </p>
-              </div>
-            </section>
+              </section>
 
-            {/* 2. LEARNING OUTCOMES */}
-            <section id="outcomes" className="space-y-4">
-              <Card className="border border-border/80 bg-card rounded-3xl overflow-hidden shadow-xs">
-                <CardHeader className="p-6 pb-3">
-                  <CardTitle className="text-base sm:text-lg font-bold flex items-center gap-2 text-foreground font-heading">
-                    <CheckCircle2 className="h-5 w-5 text-emerald-500" />
-                    <span>2. Core Learning Outcomes</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-6 pt-0 space-y-3">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                    {material.learningObjectives.map((obj, i) => (
+              {/* 4. ALGORITHM STEP-BY-STEP */}
+              {material.algorithmSteps && material.algorithmSteps.length > 0 && (
+                <section id="algorithm" className="space-y-4">
+                  <h2 className="text-lg sm:text-xl font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
+                    4. Step-by-Step Algorithm Execution
+                  </h2>
+
+                  <div className="space-y-3">
+                    {material.algorithmSteps.map((alg) => (
                       <div
-                        key={i}
-                        className="flex items-start gap-3 p-3.5 rounded-2xl bg-muted/30 border border-border/60"
+                        key={alg.step}
+                        className="flex items-start gap-4 p-5 rounded-2xl bg-card border border-border shadow-xs"
                       >
-                        <span className="h-2 w-2 rounded-full bg-emerald-500 mt-2 shrink-0" />
-                        <span className="text-foreground/90 font-medium text-xs sm:text-sm">{obj}</span>
+                        <div className="h-8 w-8 rounded-xl bg-sky-500/10 text-[#0284c7] font-bold font-mono text-sm flex items-center justify-center shrink-0 border border-[#0284c7]/20">
+                          0{alg.step}
+                        </div>
+                        <div className="space-y-1 flex-1">
+                          <h4 className="text-sm sm:text-base font-bold text-foreground font-heading">
+                            {alg.title}
+                          </h4>
+                          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                            {alg.description}
+                          </p>
+                        </div>
                       </div>
                     ))}
                   </div>
-                </CardContent>
-              </Card>
-            </section>
+                </section>
+              )}
 
-            {/* 3. DETAILED THEORY & CONCEPTS */}
-            <section id="theory" className="space-y-6">
-              <div className="flex items-center gap-2">
-                <BookOpen className="h-5 w-5 text-primary" />
-                <h2 className="text-xl sm:text-2xl font-black text-foreground font-heading tracking-tight">
-                  3. Theoretical Foundations &amp; Conceptual Mechanics
+              {/* 5. COMPLEXITY PROFILE */}
+              <section id="complexity" className="space-y-4">
+                <h2 className="text-lg sm:text-xl font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
+                  5. Asymptotic Complexity Profile (Big-O)
                 </h2>
-              </div>
 
-              <div className="space-y-5">
-                {material.keyConcepts.map((concept, idx) => (
-                  <Card key={idx} className="border border-border bg-card rounded-3xl p-6 shadow-xs space-y-4">
-                    <CardTitle className="text-base sm:text-lg font-bold text-foreground font-heading">
-                      {concept.title}
-                    </CardTitle>
-                    <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
-                      {concept.description}
-                    </p>
-                    {concept.points && concept.points.length > 0 && (
-                      <div className="bg-muted/40 rounded-2xl p-4 border border-border/60 space-y-2">
-                        {concept.points.map((pt, pIdx) => (
-                          <div key={pIdx} className="flex items-start gap-2.5 text-xs sm:text-sm text-foreground">
-                            <span className="text-primary font-bold font-mono shrink-0">•</span>
-                            <span className="leading-relaxed">{pt}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </Card>
-                ))}
-              </div>
-            </section>
+                <div className="p-6 rounded-2xl bg-card border border-border space-y-4 shadow-xs">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm font-mono">
+                    <div className="p-4 bg-muted/30 rounded-xl border border-border space-y-1 shadow-2xs">
+                      <span className="text-muted-foreground block text-xs font-sans">Time Complexity Profile:</span>
+                      <span className="font-bold text-[#0284c7] text-sm sm:text-base">{material.complexityAnalysis.timeComplexity}</span>
+                    </div>
+                    <div className="p-4 bg-muted/30 rounded-xl border border-border space-y-1 shadow-2xs">
+                      <span className="text-muted-foreground block text-xs font-sans">Space Complexity Profile:</span>
+                      <span className="font-bold text-emerald-600 dark:text-emerald-400 text-sm sm:text-base">
+                        {material.complexityAnalysis.spaceComplexity}
+                      </span>
+                    </div>
+                  </div>
+                  {material.complexityAnalysis.notes && (
+                    <p className="text-xs text-muted-foreground italic px-1">{material.complexityAnalysis.notes}</p>
+                  )}
+                </div>
+              </section>
 
-            {/* 4. ALGORITHM STEP-BY-STEP */}
-            {material.algorithmSteps && material.algorithmSteps.length > 0 && (
-              <section id="algorithm" className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Layers className="h-5 w-5 text-indigo-500" />
-                  <h2 className="text-xl sm:text-2xl font-black text-foreground font-heading tracking-tight">
-                    4. Step-by-Step Algorithm Execution
+              {/* 6. MULTI-LANGUAGE CODE LAB */}
+              <section id="code-lab" className="space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <h2 className="text-lg sm:text-xl font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
+                    6. Multi-Language Source Code Lab
                   </h2>
+
+                  {/* Language Switcher */}
+                  <div className="flex items-center gap-1.5 p-1 bg-muted/60 border border-border rounded-xl">
+                    {codeLanguages.map((lang) => (
+                      <Button
+                        key={lang}
+                        size="sm"
+                        variant={currentLang === lang ? "default" : "ghost"}
+                        onClick={() => setActiveCodeLang(lang)}
+                        className={`text-xs font-bold rounded-lg h-7 px-3 uppercase ${
+                          currentLang === lang ? "bg-[#0284c7] text-white shadow-xs" : "text-muted-foreground"
+                        }`}
+                      >
+                        {lang}
+                      </Button>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="space-y-3">
-                  {material.algorithmSteps.map((alg) => (
-                    <div
-                      key={alg.step}
-                      className="flex items-start gap-4 p-5 rounded-2xl bg-card border border-border shadow-xs"
+                {/* Code Editor Box */}
+                <div className="relative rounded-2xl overflow-hidden border border-border bg-[#0d1117] text-[#e6edf3] font-mono text-xs sm:text-sm shadow-sm">
+                  <div className="flex items-center justify-between px-5 py-3 bg-[#161b22] border-b border-[#30363d] text-xs text-[#8b949e]">
+                    <div className="flex items-center gap-2">
+                      <span className="h-2.5 w-2.5 rounded-full bg-slate-500" />
+                      <span className="font-bold uppercase text-white font-mono">{currentLang} Standard Implementation</span>
+                    </div>
+
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleCopyCode(material.codeSnippets[currentLang] || "")}
+                      className="h-7 text-xs font-bold gap-1.5 rounded-xl border-[#30363d] bg-[#21262d] text-white hover:bg-[#30363d]"
                     >
-                      <div className="h-8 w-8 rounded-2xl bg-primary/10 text-primary font-bold font-mono text-sm flex items-center justify-center shrink-0 border border-primary/20">
-                        0{alg.step}
-                      </div>
-                      <div className="space-y-1 flex-1">
-                        <h4 className="text-sm sm:text-base font-bold text-foreground font-heading">
-                          {alg.title}
-                        </h4>
-                        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                          {alg.description}
-                        </p>
-                      </div>
+                      {copiedCode ? (
+                        <>
+                          <Check className="h-3.5 w-3.5 text-emerald-400" />
+                          <span className="text-emerald-400">Copied!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="h-3.5 w-3.5" />
+                          <span>Copy Code</span>
+                        </>
+                      )}
+                    </Button>
+                  </div>
+
+                  <pre className="p-6 overflow-x-auto leading-relaxed max-h-[600px] font-mono">
+                    <code>{material.codeSnippets[currentLang] || "// Code snippet not available for this language."}</code>
+                  </pre>
+                </div>
+              </section>
+
+              {/* 7. VIVA VOCE & INTERVIEW Q&A */}
+              <section id="viva-bank" className="space-y-4">
+                <h2 className="text-lg sm:text-xl font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
+                  7. University Examination &amp; Technical Viva Bank
+                </h2>
+
+                <div className="space-y-3">
+                  {material.vivaQuestions.map((viva, qIdx) => {
+                    const isExpanded = expandedVivaIdx === qIdx;
+                    return (
+                      <Card
+                        key={qIdx}
+                        className="border border-border bg-card rounded-xl transition-all cursor-pointer hover:border-[#0284c7]/50 overflow-hidden shadow-xs"
+                        onClick={() => setExpandedVivaIdx(isExpanded ? null : qIdx)}
+                      >
+                        <CardHeader className="p-5 flex flex-row items-start justify-between gap-4">
+                          <div className="space-y-1 flex-1">
+                            <span className="text-xs font-mono text-[#0284c7] font-bold">Question 0{qIdx + 1}</span>
+                            <CardTitle className="text-sm sm:text-base font-bold text-foreground font-heading leading-snug">
+                              {viva.question}
+                            </CardTitle>
+                          </div>
+                          <Button variant="ghost" size="sm" className="h-7 w-7 p-0 rounded-full shrink-0">
+                            <ChevronRight className={`h-4 w-4 transition-transform duration-200 ${isExpanded ? "rotate-90 text-[#0284c7]" : ""}`} />
+                          </Button>
+                        </CardHeader>
+                        {isExpanded && (
+                          <CardContent className="p-5 pt-0 border-t border-border/60 bg-muted/20">
+                            <div className="pt-3 text-xs sm:text-sm text-foreground/90 leading-relaxed font-sans space-y-1">
+                              <span className="font-bold text-emerald-600 dark:text-emerald-400 block text-xs font-mono uppercase tracking-wider">
+                                Verified Academic Answer:
+                              </span>
+                              <p className="leading-relaxed">{viva.answer}</p>
+                            </div>
+                          </CardContent>
+                        )}
+                      </Card>
+                    );
+                  })}
+                </div>
+              </section>
+
+              {/* 8. REAL-WORLD APPLICATIONS */}
+              <section id="applications" className="space-y-4">
+                <h2 className="text-lg sm:text-xl font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
+                  8. Real-World Engineering Applications
+                </h2>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {material.realWorldApplications.map((app, aIdx) => (
+                    <div
+                      key={aIdx}
+                      className="p-4 rounded-xl bg-card border border-border text-xs sm:text-sm text-foreground font-medium flex items-start gap-3 shadow-2xs"
+                    >
+                      <span className="h-2 w-2 rounded-full bg-[#0284c7] mt-1.5 shrink-0" />
+                      <span>{app}</span>
                     </div>
                   ))}
                 </div>
               </section>
-            )}
 
-            {/* 5. COMPLEXITY PROFILE */}
-            <section id="complexity" className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Clock className="h-5 w-5 text-amber-500" />
-                <h2 className="text-xl sm:text-2xl font-black text-foreground font-heading tracking-tight">
-                  5. Asymptotic Complexity Profile (Big-O)
-                </h2>
-              </div>
-
-              <div className="p-6 rounded-3xl bg-muted/30 border border-border space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm font-mono">
-                  <div className="p-4 bg-card rounded-2xl border border-border space-y-1 shadow-2xs">
-                    <span className="text-muted-foreground block text-xs font-sans">Time Complexity Profile:</span>
-                    <span className="font-bold text-primary text-sm sm:text-base">{material.complexityAnalysis.timeComplexity}</span>
-                  </div>
-                  <div className="p-4 bg-card rounded-2xl border border-border space-y-1 shadow-2xs">
-                    <span className="text-muted-foreground block text-xs font-sans">Space Complexity Profile:</span>
-                    <span className="font-bold text-emerald-600 dark:text-emerald-400 text-sm sm:text-base">
-                      {material.complexityAnalysis.spaceComplexity}
-                    </span>
-                  </div>
-                </div>
-                {material.complexityAnalysis.notes && (
-                  <p className="text-xs text-muted-foreground italic px-1">{material.complexityAnalysis.notes}</p>
-                )}
-              </div>
-            </section>
-
-            {/* 6. MULTI-LANGUAGE CODE LAB */}
-            <section id="code-lab" className="space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <Code2 className="h-5 w-5 text-emerald-500" />
-                  <h2 className="text-xl sm:text-2xl font-black text-foreground font-heading tracking-tight">
-                    6. Multi-Language Source Code Lab
-                  </h2>
-                </div>
-
-                {/* Language Switcher */}
-                <div className="flex items-center gap-1.5 p-1 bg-muted/60 border border-border rounded-2xl">
-                  {codeLanguages.map((lang) => (
-                    <Button
-                      key={lang}
-                      size="sm"
-                      variant={currentLang === lang ? "default" : "ghost"}
-                      onClick={() => setActiveCodeLang(lang)}
-                      className={`text-xs font-bold rounded-xl h-7 px-3 uppercase ${
-                        currentLang === lang ? "bg-primary text-white shadow-xs" : "text-muted-foreground"
-                      }`}
-                    >
-                      {lang}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Code Editor Box */}
-              <div className="relative rounded-3xl overflow-hidden border border-border bg-[#0d1117] text-[#e6edf3] font-mono text-xs sm:text-sm shadow-xl">
-                <div className="flex items-center justify-between px-5 py-3 bg-[#161b22] border-b border-[#30363d] text-xs text-[#8b949e]">
-                  <div className="flex items-center gap-2">
-                    <span className="h-3 w-3 rounded-full bg-red-500/80" />
-                    <span className="h-3 w-3 rounded-full bg-yellow-500/80" />
-                    <span className="h-3 w-3 rounded-full bg-green-500/80" />
-                    <span className="ml-2 font-bold uppercase text-white font-mono">{currentLang} Standard Implementation</span>
-                  </div>
-
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handleCopyCode(material.codeSnippets[currentLang] || "")}
-                    className="h-7 text-xs font-bold gap-1.5 rounded-xl border-[#30363d] bg-[#21262d] text-white hover:bg-[#30363d]"
-                  >
-                    {copiedCode ? (
-                      <>
-                        <Check className="h-3.5 w-3.5 text-emerald-400" />
-                        <span className="text-emerald-400">Copied!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="h-3.5 w-3.5" />
-                        <span>Copy Code</span>
-                      </>
-                    )}
-                  </Button>
-                </div>
-
-                <pre className="p-6 overflow-x-auto leading-relaxed max-h-[600px] font-mono">
-                  <code>{material.codeSnippets[currentLang] || "// Code snippet not available for this language."}</code>
-                </pre>
-              </div>
-            </section>
-
-            {/* 7. VIVA VOCE & INTERVIEW Q&A */}
-            <section id="viva-bank" className="space-y-4">
-              <div className="flex items-center gap-2">
-                <HelpCircle className="h-5 w-5 text-rose-500" />
-                <h2 className="text-xl sm:text-2xl font-black text-foreground font-heading tracking-tight">
-                  7. University Examination &amp; Technical Viva Bank
-                </h2>
-              </div>
-
-              <div className="space-y-3">
-                {material.vivaQuestions.map((viva, qIdx) => {
-                  const isExpanded = expandedVivaIdx === qIdx;
-                  return (
-                    <Card
-                      key={qIdx}
-                      className="border border-border bg-card rounded-2xl transition-all cursor-pointer hover:border-primary/50 overflow-hidden shadow-xs"
-                      onClick={() => setExpandedVivaIdx(isExpanded ? null : qIdx)}
-                    >
-                      <CardHeader className="p-5 flex flex-row items-start justify-between gap-4">
-                        <div className="space-y-1 flex-1">
-                          <span className="text-xs font-mono text-primary font-bold">Question 0{qIdx + 1}</span>
-                          <CardTitle className="text-sm sm:text-base font-bold text-foreground font-heading leading-snug">
-                            {viva.question}
-                          </CardTitle>
-                        </div>
-                        <Button variant="ghost" size="sm" className="h-7 w-7 p-0 rounded-full shrink-0">
-                          <ChevronRight className={`h-4 w-4 transition-transform duration-200 ${isExpanded ? "rotate-90 text-primary" : ""}`} />
-                        </Button>
-                      </CardHeader>
-                      {isExpanded && (
-                        <CardContent className="p-5 pt-0 border-t border-border/60 bg-muted/20">
-                          <div className="pt-3 text-xs sm:text-sm text-foreground/90 leading-relaxed font-sans space-y-1">
-                            <span className="font-bold text-emerald-600 dark:text-emerald-400 block text-xs font-mono uppercase tracking-wider">
-                              Verified Academic Answer:
-                            </span>
-                            <p className="leading-relaxed">{viva.answer}</p>
-                          </div>
-                        </CardContent>
-                      )}
-                    </Card>
-                  );
-                })}
-              </div>
-            </section>
-
-            {/* 8. REAL-WORLD APPLICATIONS */}
-            <section id="applications" className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Lightbulb className="h-5 w-5 text-amber-500" />
-                <h2 className="text-xl sm:text-2xl font-black text-foreground font-heading tracking-tight">
-                  8. Real-World Engineering Applications
-                </h2>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {material.realWorldApplications.map((app, aIdx) => (
-                  <div
-                    key={aIdx}
-                    className="p-4 rounded-2xl bg-card border border-border/80 text-xs sm:text-sm text-foreground font-medium flex items-start gap-3 shadow-2xs"
-                  >
-                    <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
-                    <span>{app}</span>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* 9. STUDENT STUDY SCRATCHPAD */}
-            <section id="scratchpad" className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Edit3 className="h-5 w-5 text-primary" />
-                <h2 className="text-xl sm:text-2xl font-black text-foreground font-heading tracking-tight">
+              {/* 9. STUDENT STUDY SCRATCHPAD */}
+              <section id="scratchpad" className="space-y-4">
+                <h2 className="text-lg sm:text-xl font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
                   9. My Personal Study Scratchpad
                 </h2>
-              </div>
 
-              <Card className="border border-border bg-card rounded-3xl p-6 space-y-4 shadow-sm">
-                <div className="space-y-1">
-                  <h4 className="font-bold text-sm text-foreground">
-                    Persistent Revision Notes
-                  </h4>
-                  <p className="text-xs text-muted-foreground">
-                    Any notes, formulas, or reminders you write here are automatically saved to your browser session.
+                <Card className="border border-border bg-card rounded-2xl p-6 space-y-4 shadow-xs">
+                  <div className="space-y-1">
+                    <h4 className="font-bold text-sm text-foreground">
+                      Persistent Revision Notes
+                    </h4>
+                    <p className="text-xs text-muted-foreground">
+                      Any notes, formulas, or reminders you write here are automatically saved to your browser session.
+                    </p>
+                  </div>
+
+                  <Textarea
+                    rows={8}
+                    value={studentNotes}
+                    onChange={(e) => setStudentNotes(e.target.value)}
+                    placeholder="Write your personal study summary, notes, or examination pointers here..."
+                    className="w-full text-sm font-sans p-4 rounded-xl bg-background border-border focus:ring-primary leading-relaxed"
+                  />
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground font-mono">
+                      {studentNotes.length} characters
+                    </span>
+                    <div className="flex items-center gap-2">
+                      {savedNoteMsg && (
+                        <span className="text-xs text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
+                          <Check className="h-3.5 w-3.5" /> Notes Saved!
+                        </span>
+                      )}
+                      <Button
+                        size="sm"
+                        onClick={handleSaveNotes}
+                        className="h-8 text-xs font-bold rounded-xl bg-[#0284c7] hover:bg-[#0369a1] text-white"
+                      >
+                        Save Notes
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              </section>
+
+              {/* BOTTOM CALLOUT: SIMULATOR & RELATED */}
+              <div className="p-6 sm:p-8 rounded-2xl bg-card border border-[#0284c7]/30 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xs">
+                <div className="space-y-2 text-center sm:text-left">
+                  <span className="text-xs font-mono uppercase font-bold text-[#0284c7] tracking-wider">
+                    Hands-On Interactive Practice
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-bold text-foreground font-heading">
+                    Ready to test your practical understanding?
+                  </h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground max-w-xl">
+                    Jump directly into our visualizer engine to step through algorithms with animated memory pointers and live execution testcases.
                   </p>
                 </div>
 
-                <Textarea
-                  rows={8}
-                  value={studentNotes}
-                  onChange={(e) => setStudentNotes(e.target.value)}
-                  placeholder="Write your personal study summary, notes, or examination pointers here..."
-                  className="w-full text-sm font-sans p-4 rounded-2xl bg-background border-border focus:ring-primary leading-relaxed"
-                />
-
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground font-mono">
-                    {studentNotes.length} characters
-                  </span>
-                  <div className="flex items-center gap-2">
-                    {savedNoteMsg && (
-                      <span className="text-xs text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
-                        <Check className="h-3.5 w-3.5" /> Notes Saved!
-                      </span>
-                    )}
-                    <Button
-                      size="sm"
-                      onClick={handleSaveNotes}
-                      className="h-8 text-xs font-bold rounded-xl bg-primary text-white"
-                    >
-                      Save Notes
+                <div className="flex items-center gap-3 shrink-0">
+                  {material.simulatorUrl && (
+                    <Button size="lg" className="h-10 px-5 font-bold rounded-xl bg-[#0284c7] hover:bg-[#0369a1] text-white gap-2 shadow-xs" asChild>
+                      <Link href={material.simulatorUrl}>
+                        <Play className="h-4 w-4" />
+                        <span>Open Virtual Lab</span>
+                      </Link>
                     </Button>
-                  </div>
-                </div>
-              </Card>
-            </section>
-
-            {/* BOTTOM CALLOUT: SIMULATOR & RELATED */}
-            <div className="p-8 rounded-3xl bg-gradient-to-br from-primary/10 via-card to-background border border-primary/30 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-md">
-              <div className="space-y-2 text-center sm:text-left">
-                <span className="text-xs font-mono uppercase font-bold text-primary tracking-wider">
-                  Hands-On Interactive Practice
-                </span>
-                <h3 className="text-xl sm:text-2xl font-black text-foreground font-heading">
-                  Ready to test your practical understanding?
-                </h3>
-                <p className="text-xs sm:text-sm text-muted-foreground max-w-xl">
-                  Jump directly into our visualizer engine to step through algorithms with animated memory pointers and live execution testcases.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3 shrink-0">
-                {material.simulatorUrl && (
-                  <Button size="lg" className="h-11 px-6 font-bold rounded-2xl bg-primary text-white gap-2 shadow-md hover:bg-primary/90" asChild>
-                    <Link href={material.simulatorUrl}>
-                      <FlaskConical className="h-4 w-4" />
-                      <span>Open Virtual Lab</span>
+                  )}
+                  <Button size="lg" variant="outline" className="h-10 px-5 font-bold rounded-xl" asChild>
+                    <Link href="/resources">
+                      <span>Back to Vault</span>
                     </Link>
                   </Button>
-                )}
-                <Button size="lg" variant="outline" className="h-11 px-6 font-bold rounded-2xl" asChild>
-                  <Link href="/resources">
-                    <span>Back to Vault</span>
-                  </Link>
-                </Button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </main>
+        </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
   );
 }

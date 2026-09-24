@@ -525,35 +525,50 @@ export function MaterialReaderDialog({
             </div>
           )}
 
-          {/* TAB 5: WEB MIRROR */}
+          {/* TAB 5: WEB REFERENCE */}
           {activeTab === "web" && (
-            <div className="space-y-4 max-w-5xl mx-auto h-[650px] flex flex-col">
-              <div className="p-3 bg-muted/40 rounded-xl border border-border flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2 text-muted-foreground truncate">
-                  <Globe className="h-3.5 w-3.5 shrink-0 text-primary" />
-                  <span className="truncate">In-App Sandbox: {resource.fileUrl}</span>
+            <div className="space-y-4 max-w-4xl mx-auto py-6">
+              <Card className="border border-border bg-card rounded-2xl p-6 sm:p-8 space-y-6 shadow-xs text-center sm:text-left">
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+                  <div className="h-12 w-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shrink-0 border border-primary/20">
+                    <Globe className="h-6 w-6" />
+                  </div>
+                  <div className="space-y-2 flex-1">
+                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                      <Badge variant="outline" className="text-xs font-mono border-primary/30 text-primary">
+                        Official Academic Reference
+                      </Badge>
+                      <Badge variant="secondary" className="text-xs font-mono bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                        {resource.provider}
+                      </Badge>
+                    </div>
+                    <h3 className="text-lg sm:text-xl font-bold text-foreground font-heading">
+                      {resource.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                      All essential core concepts, code implementations, Big-O complexities, and viva questions from this curriculum have been verified and embedded directly inside the <strong>Study Guide</strong> and <strong>Code Lab</strong> tabs.
+                    </p>
+                  </div>
                 </div>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="h-6 text-[11px] font-bold gap-1 rounded-lg shrink-0"
-                  asChild
-                >
-                  <a href={resource.fileUrl} target="_blank" rel="noopener noreferrer">
-                    <span>Open in Tab</span>
-                    <ExternalLink className="h-2.5 w-2.5" />
-                  </a>
-                </Button>
-              </div>
 
-              <div className="flex-1 w-full rounded-2xl overflow-hidden border border-border bg-card shadow-inner">
-                <iframe
-                  src={resource.fileUrl}
-                  title={resource.title}
-                  className="w-full h-full border-0 bg-white"
-                  sandbox="allow-scripts allow-same-origin allow-popups"
-                />
-              </div>
+                <div className="p-4 rounded-xl bg-muted/40 border border-border flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="space-y-0.5 text-xs text-center sm:text-left truncate max-w-md">
+                    <span className="text-muted-foreground block font-mono">External Web Reference:</span>
+                    <span className="text-foreground font-medium truncate block">{resource.fileUrl}</span>
+                  </div>
+
+                  <Button
+                    size="sm"
+                    className="h-9 px-4 text-xs font-bold gap-1.5 rounded-xl bg-[#0284c7] hover:bg-[#0369a1] text-white shrink-0 shadow-xs"
+                    asChild
+                  >
+                    <a href={resource.fileUrl} target="_blank" rel="noopener noreferrer">
+                      <span>Open {resource.provider} in New Tab</span>
+                      <ExternalLink className="h-3.5 w-3.5 ml-0.5" />
+                    </a>
+                  </Button>
+                </div>
+              </Card>
             </div>
           )}
         </div>

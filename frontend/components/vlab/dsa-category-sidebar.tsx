@@ -4,17 +4,16 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { DSACategory, DSATopic } from "@/data/dsa-topic-data";
 import { 
-  ChevronRight, 
   CheckCircle2, 
   BookOpen, 
   BrainCircuit, 
   Code2, 
   Layers, 
   Network,
-  Search
+  Search,
+  Cloud
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 
 interface DSACategorySidebarProps {
   categories: DSACategory[];
@@ -44,6 +43,8 @@ export function DSACategorySidebar({
       ? "C Programming Roadmap"
       : firstCatId.startsWith("ml-")
       ? "ML Curriculum Roadmap"
+      : firstCatId.startsWith("cloud-")
+      ? "Cloud Service Management Roadmap"
       : "DSA Curriculum Roadmap");
 
   const getIcon = (iconName: string) => {
@@ -52,6 +53,7 @@ export function DSACategorySidebar({
       case "Code2": return Code2;
       case "Layers": return Layers;
       case "Network": return Network;
+      case "Cloud": return Cloud;
       default: return BookOpen;
     }
   };
@@ -66,31 +68,31 @@ export function DSACategorySidebar({
   })).filter((cat) => cat.topics.length > 0);
 
   return (
-    <aside className={cn("w-full lg:w-[280px] xl:w-[310px] shrink-0", className)}>
-      <div className="bg-card/90 backdrop-blur-md rounded-2xl border border-border p-4 sm:p-5 shadow-sm space-y-3 sticky top-24">
+    <aside className={cn("w-full shrink-0", className)}>
+      <div className="bg-card border border-border/80 rounded-xl p-4 shadow-xs space-y-3.5 sticky top-24">
         {/* Header & Search */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <h3 className="font-heading font-black text-base text-foreground flex items-center gap-2">
-              <BookOpen className="h-4.5 w-4.5 text-emerald-500" />
-              <span>{headerTitle}</span>
+        <div className="space-y-2.5">
+          <div className="flex items-center justify-between pb-1 border-b border-border/60">
+            <h3 className="font-heading font-bold text-sm sm:text-base text-[#0284c7] dark:text-[#38bdf8] flex items-center gap-2">
+              <BookOpen className="h-4 w-4 text-[#0284c7] dark:text-[#38bdf8]" />
+              <span className="truncate">{headerTitle}</span>
             </h3>
           </div>
 
           <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-muted-foreground" />
             <Input
               type="text"
               placeholder="Search topic or algorithm..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 text-sm h-10 bg-muted/40 border-border rounded-xl"
+              className="pl-8 text-xs h-9 bg-muted/30 border-border/80 rounded-lg focus-visible:ring-1 focus-visible:ring-[#0284c7]/40"
             />
           </div>
         </div>
 
         {/* Category List */}
-        <div className="space-y-3.5 max-h-[380px] xl:max-h-[440px] overflow-y-auto pr-1">
+        <div className="space-y-3.5 max-h-[420px] xl:max-h-[480px] overflow-y-auto pr-1">
           {filteredCategories.map((category) => {
             const Icon = getIcon(category.iconName);
             const categoryCompletedCount = category.topics.filter((t) =>
@@ -98,18 +100,18 @@ export function DSACategorySidebar({
             ).length;
 
             return (
-              <div key={category.id} className="space-y-2">
-                <div className="flex items-center justify-between px-2 py-1">
-                  <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground font-sans tracking-tight">
-                    <Icon className="h-4 w-4 text-primary" />
-                    <span>{category.name}</span>
+              <div key={category.id} className="space-y-1.5">
+                <div className="flex items-center justify-between px-1 py-1 text-xs font-semibold text-muted-foreground">
+                  <div className="flex items-center gap-1.5 min-w-0 pr-2">
+                    <Icon className="h-3.5 w-3.5 text-[#0284c7] dark:text-[#38bdf8] shrink-0" />
+                    <span className="truncate font-sans">{category.name}</span>
                   </div>
-                  <span className="text-xs text-muted-foreground font-sans font-semibold bg-muted px-2 py-0.5 rounded-md">
+                  <span className="text-[10px] font-mono font-medium bg-muted px-1.5 py-0.5 rounded text-muted-foreground shrink-0">
                     {categoryCompletedCount}/{category.topics.length}
                   </span>
                 </div>
 
-                <div className="space-y-1.5 pl-2.5 border-l-2 border-border/60 ml-2">
+                <div className="space-y-1 pl-2 border-l-2 border-border/60 ml-1.5">
                   {category.topics.map((topic) => {
                     const isActive = topic.id === activeTopicId;
                     const isDone = completedTopicIds.includes(topic.id);
@@ -119,17 +121,17 @@ export function DSACategorySidebar({
                         key={topic.id}
                         onClick={() => onSelectTopic(topic)}
                         className={cn(
-                          "w-full flex items-center justify-between text-left px-3.5 py-2.5 rounded-xl text-sm transition-all group",
+                          "w-full flex items-center justify-between text-left px-2.5 py-2 rounded-lg text-xs transition-all cursor-pointer",
                           isActive
-                            ? "bg-primary text-primary-foreground font-bold shadow-md shadow-primary/20"
-                            : "hover:bg-muted/60 text-muted-foreground hover:text-foreground font-medium"
+                            ? "text-[#ea580c] dark:text-[#f97316] font-bold bg-orange-500/10 dark:bg-orange-950/30 border-l-3 border-l-[#ea580c] pl-2.5"
+                            : "text-[#0284c7] dark:text-[#38bdf8] hover:text-[#ea580c] hover:bg-muted/40 font-medium"
                         )}
                       >
-                        <div className="flex items-center gap-2.5 min-w-0 pr-2">
+                        <div className="flex items-center gap-2 min-w-0 pr-2">
                           {isDone ? (
-                            <CheckCircle2 className={cn("h-4 w-4 shrink-0 text-emerald-500", isActive && "text-white")} />
+                            <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" />
                           ) : (
-                            <span className={cn("h-2 w-2 rounded-full shrink-0", isActive ? "bg-white" : "bg-muted-foreground/40")} />
+                            <span className={cn("h-1.5 w-1.5 rounded-full shrink-0", isActive ? "bg-[#ea580c]" : "bg-muted-foreground/40")} />
                           )}
                           <span className="truncate">{topic.title}</span>
                         </div>
@@ -137,10 +139,10 @@ export function DSACategorySidebar({
                         {topic.visualizerType && (
                           <span
                             className={cn(
-                              "text-[10px] px-1.5 py-0.5 rounded font-sans font-semibold tracking-wide shrink-0 border",
+                              "text-[9px] px-1.5 py-0.2 rounded font-sans font-medium shrink-0 border",
                               isActive
-                                ? "bg-white/20 text-white border-white/30"
-                                : "bg-primary/10 text-primary border-primary/20"
+                                ? "bg-orange-500/20 text-[#ea580c] border-orange-500/30"
+                                : "bg-sky-500/10 text-[#0284c7] border-sky-500/20"
                             )}
                           >
                             Sim

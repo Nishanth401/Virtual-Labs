@@ -29,7 +29,7 @@ const ROLLING_CARDS = [
     tag: "DSL • AD8381",
     desc: "Interactive sorting step visualizers, Java recursion call stack & LeetCode practice.",
     icon: Code2,
-    color: "from-blue-500/10 to-indigo-500/10 text-blue-500 border-blue-500/30",
+    color: "from-sky-500/10 to-blue-500/10 text-[#0284c7] border-sky-500/30",
     url: "/labs/data-structures",
   },
   {
@@ -37,7 +37,7 @@ const ROLLING_CARDS = [
     tag: "MLDL • AD8481",
     desc: "12-module NumPy master series, Pandas pipelines & Gradient Descent models.",
     icon: BrainCircuit,
-    color: "from-purple-500/10 to-pink-500/10 text-purple-500 border-purple-500/30",
+    color: "from-indigo-500/10 to-sky-500/10 text-indigo-500 border-indigo-500/30",
     url: "/labs/ai-machine-learning",
   },
   {
@@ -53,7 +53,7 @@ const ROLLING_CARDS = [
     tag: "CEN • AD8581",
     desc: "Sliding window ARQ simulators, Dijkstra shortest path routing & Java sockets.",
     icon: Network,
-    color: "from-amber-500/10 to-orange-500/10 text-amber-500 border-amber-500/30",
+    color: "from-orange-500/10 to-amber-500/10 text-[#ea580c] border-orange-500/30",
     url: "/labs/computer-networks",
   },
   {
@@ -61,7 +61,7 @@ const ROLLING_CARDS = [
     tag: "OSL • CS3461",
     desc: "CPU Scheduling Gantt charts, POSIX Semaphores & Banker's deadlock safety algorithm.",
     icon: Cpu,
-    color: "from-cyan-500/10 to-sky-500/10 text-cyan-500 border-cyan-500/30",
+    color: "from-cyan-500/10 to-sky-500/10 text-cyan-600 border-cyan-500/30",
     url: "/labs/operating-systems",
   },
   {
@@ -69,7 +69,7 @@ const ROLLING_CARDS = [
     tag: "AIL • AI3401",
     desc: "A* 8-Puzzle Manhattan search, Minimax Alpha-Beta pruning & N-Queens CSP solver.",
     icon: Bot,
-    color: "from-violet-500/10 to-purple-500/10 text-violet-500 border-violet-500/30",
+    color: "from-violet-500/10 to-indigo-500/10 text-violet-500 border-violet-500/30",
     url: "/labs/artificial-intelligence",
   },
   {
@@ -77,7 +77,7 @@ const ROLLING_CARDS = [
     tag: "BDAL • CS8711",
     desc: "Hadoop HDFS cluster replication, Distributed MapReduce & PySpark DataFrames.",
     icon: BarChart3,
-    color: "from-amber-500/10 to-orange-500/10 text-amber-500 border-amber-500/30",
+    color: "from-amber-500/10 to-orange-500/10 text-amber-600 border-amber-500/30",
     url: "/labs/big-data-analytics",
   },
   {
@@ -85,7 +85,7 @@ const ROLLING_CARDS = [
     tag: "CSML • CS8811",
     desc: "AWS EC2/VPC provisioning, S3 bucket lifecycle, Docker Compose & Kubernetes mesh.",
     icon: Cloud,
-    color: "from-teal-500/10 to-cyan-500/10 text-teal-500 border-teal-500/30",
+    color: "from-teal-500/10 to-cyan-500/10 text-teal-600 border-teal-500/30",
     url: "/labs/cloud-service-management",
   },
   {
@@ -93,7 +93,7 @@ const ROLLING_CARDS = [
     tag: "12 CORE MODULES",
     desc: "Complete top-to-bottom interactive DSA learning curriculum with live simulators.",
     icon: Layers,
-    color: "from-rose-500/10 to-red-500/10 text-rose-500 border-rose-500/30",
+    color: "from-sky-500/10 to-blue-500/10 text-[#0284c7] border-sky-500/30",
     url: "/dsa-visualization",
   },
   {
@@ -101,39 +101,28 @@ const ROLLING_CARDS = [
     tag: "STUDENT PORTAL",
     desc: "Track completed laboratory experiments and generate verified certificates.",
     icon: Award,
-    color: "from-yellow-500/10 to-amber-500/10 text-yellow-500 border-yellow-500/30",
+    color: "from-amber-500/10 to-yellow-500/10 text-amber-500 border-amber-500/30",
     url: "/dashboard",
   },
 ];
 
 export function HeroObjectives() {
   return (
-    <section className="relative min-h-[85vh] flex flex-col justify-between pt-14 sm:pt-20 pb-16 px-4 sm:px-6 bg-gradient-to-b from-background via-background to-muted/30 border-b border-border/40 overflow-hidden">
-      {/* Ambient Lighting & Glow Backdrop (Fastlane aesthetic - No dot particles) */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-[#ff2a5f]/15 via-rose-500/10 to-primary/10 rounded-full blur-[120px] pointer-events-none -z-10" />
+    <section className="relative min-h-[80vh] flex flex-col justify-between pt-16 sm:pt-24 pb-16 px-4 sm:px-6 bg-gradient-to-b from-background via-background to-muted/20 border-b border-border/40 overflow-hidden">
+      {/* Ambient Lighting & Glow Backdrop in Soft Virtual Labs Sky Blue */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-sky-500/15 via-blue-500/10 to-primary/10 rounded-full blur-[120px] pointer-events-none -z-10" />
 
-      <div className="container max-w-5xl mx-auto text-center relative z-10 space-y-6 pt-2">
-        {/* Sleek Announcement Pill Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: -12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-[#0d0d10] text-white text-[10px] sm:text-[11px] font-bold tracking-wider uppercase border border-white/10 shadow-lg shadow-black/20 max-w-full"
-        >
-          <span className="w-2 h-2 rounded-full bg-[#ff2a5f] animate-pulse shrink-0" />
-          <span className="truncate">Department of Artificial Intelligence &amp; Data Science • VSB Engineering College</span>
-        </motion.div>
-
+      <div className="container max-w-5xl mx-auto text-center relative z-10 space-y-6 pt-4">
         {/* High-Impact Headline with Editorial Italic Highlights */}
         <motion.h1
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
           className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.12] sm:leading-[1.08] font-heading max-w-4xl mx-auto px-1"
         >
           Simulate faster. <span className="font-serif-italic font-normal text-slate-600 dark:text-slate-400">Learn smarter.</span><br />
           Grow with<br />
-          <span className="bg-gradient-to-r from-[#ff2a5f] via-[#e11d48] to-[#dc2626] bg-clip-text text-transparent font-black">
+          <span className="text-[#0284c7] dark:text-[#38bdf8] font-black">
             interactive virtual labs.
           </span>
         </motion.h1>
@@ -142,7 +131,7 @@ export function HeroObjectives() {
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+          transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
           className="text-muted-foreground text-xs sm:text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed px-2"
         >
           We design, build, and simulate high-performance data structures in pure Java, machine learning models with NumPy/Pandas pipelines, relational SQL databases, and network protocols for ambitious engineers.
@@ -152,13 +141,13 @@ export function HeroObjectives() {
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+          transition={{ duration: 0.6, delay: 0.25, ease: "easeOut" }}
           className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 w-full max-w-md sm:max-w-none mx-auto px-2"
         >
           <Button
             asChild
             size="lg"
-            className="w-full sm:w-auto bg-gradient-to-r from-[#ff2a5f] to-[#dc2626] hover:from-[#e11d48] hover:to-[#b91c1c] text-white rounded-full px-7 py-5 sm:py-6 font-bold shadow-xl shadow-rose-500/25 hover:scale-105 transition-all text-xs sm:text-sm gap-2 cursor-pointer"
+            className="w-full sm:w-auto bg-[#0284c7] hover:bg-[#0369a1] text-white rounded-full px-7 py-5 sm:py-6 font-bold shadow-lg shadow-sky-600/20 hover:scale-105 transition-all text-xs sm:text-sm gap-2 cursor-pointer"
           >
             <Link href="/labs">
               <span>Let&apos;s explore &amp; simulate</span>
@@ -170,7 +159,7 @@ export function HeroObjectives() {
             asChild
             variant="outline"
             size="lg"
-            className="w-full sm:w-auto rounded-full px-6 py-5 sm:py-6 text-xs sm:text-sm font-semibold border-border bg-white/90 dark:bg-card/80 backdrop-blur-md hover:bg-muted transition-all gap-1.5 shadow-xs cursor-pointer"
+            className="w-full sm:w-auto rounded-full px-6 py-5 sm:py-6 text-xs sm:text-sm font-semibold border-border bg-card/80 hover:bg-muted hover:border-[#0284c7]/40 text-foreground transition-all gap-1.5 shadow-xs cursor-pointer"
           >
             <Link href="/dsa-visualization">
               <span>DSA Visualization Platform</span>
@@ -180,7 +169,7 @@ export function HeroObjectives() {
         </motion.div>
       </div>
 
-      {/* CONTINUOUS ROLLING / MARQUEE ANIMATED TITLE CARDS SHOWCASE (Replacing 5th Image) */}
+      {/* CONTINUOUS ROLLING / MARQUEE ANIMATED TITLE CARDS SHOWCASE */}
       <div className="w-full mt-14 overflow-hidden relative select-none">
         {/* Subtle Fade Gradients on left and right */}
         <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
@@ -193,11 +182,11 @@ export function HeroObjectives() {
               <Link
                 key={idx}
                 href={card.url}
-                className="w-72 sm:w-80 p-5 rounded-2xl bg-white/95 dark:bg-card/90 backdrop-blur-md border border-border/80 shadow-md hover:border-[#e11d48] hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+                className="w-72 sm:w-80 p-5 rounded-2xl bg-card border border-border shadow-xs hover:border-[#0284c7] hover:shadow-md transition-all duration-300 flex flex-col justify-between group"
               >
                 <div className="space-y-2.5">
                   <div className="flex items-center justify-between">
-                    <div className={`p-2.5 rounded-xl bg-gradient-to-br ${card.color} border shadow-xs group-hover:scale-110 transition-transform`}>
+                    <div className={`p-2.5 rounded-xl bg-gradient-to-br ${card.color} border shadow-2xs group-hover:scale-110 transition-transform`}>
                       <Icon className="h-5 w-5" />
                     </div>
                     <Badge variant="outline" className="text-[10px] font-mono font-bold">
@@ -205,7 +194,7 @@ export function HeroObjectives() {
                     </Badge>
                   </div>
 
-                  <h4 className="font-bold text-sm text-foreground group-hover:text-[#e11d48] transition-colors line-clamp-1">
+                  <h4 className="font-bold text-sm text-foreground group-hover:text-[#0284c7] transition-colors line-clamp-1">
                     {card.title}
                   </h4>
 
@@ -214,7 +203,7 @@ export function HeroObjectives() {
                   </p>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-between text-xs font-semibold text-foreground group-hover:text-[#e11d48] transition-colors">
+                <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-between text-xs font-semibold text-muted-foreground group-hover:text-[#0284c7] transition-colors">
                   <span>Enter Module</span>
                   <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>

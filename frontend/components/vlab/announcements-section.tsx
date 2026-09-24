@@ -56,7 +56,7 @@ export function AnnouncementsSection() {
                   <div key={item.id} className="pt-3.5 first:pt-0 space-y-1.5 group">
                     <div className="flex items-center gap-2">
                       {item.isNew && (
-                        <span className="px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-500 text-[10px] font-black uppercase tracking-wider border border-rose-500/20">
+                        <span className="px-1.5 py-0.5 rounded bg-orange-500/10 text-[#ea580c] dark:text-[#f97316] text-[10px] font-bold uppercase tracking-wider border border-orange-500/20">
                           NEW
                         </span>
                       )}

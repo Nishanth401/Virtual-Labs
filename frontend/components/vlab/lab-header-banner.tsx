@@ -54,34 +54,34 @@ export function LabHeaderBanner({
   };
 
   return (
-    <div className="w-full bg-card border-b border-border/70 shadow-xs">
-      {/* Top Accent Strip matching reference */}
-      <div className="h-1 w-full bg-gradient-to-r from-amber-500 via-rose-500 to-primary" />
+    <div className="w-full bg-card border-b border-border/70 shadow-2xs font-sans">
+      {/* Top Accent Strip matching reference Virtual Labs */}
+      <div className="h-1.5 w-full bg-[#ea580c]" />
 
-      <div className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row md:items-center justify-between gap-3">
-        {/* Breadcrumb Hierarchy */}
-        <div className="flex flex-wrap items-center gap-1.5 text-xs font-medium text-muted-foreground">
-          <Link href="/labs" className="hover:text-primary transition-colors">
+      <div className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row md:items-center justify-between gap-3">
+        {/* Breadcrumb Hierarchy matching Screenshot 112447 / 112538 */}
+        <div className="flex flex-wrap items-center gap-2 text-sm font-normal text-[#0284c7] dark:text-[#38bdf8]">
+          <Link href="/labs" className="hover:underline">
             {discipline}
           </Link>
 
           {labName && (
             <>
-              <span className="text-muted-foreground/60">›</span>
+              <span className="text-muted-foreground/60 font-semibold">›</span>
               {labId ? (
-                <Link href={`/labs/${labId}`} className="hover:text-primary transition-colors">
+                <Link href={`/labs/${labId}`} className="hover:underline">
                   {labName}
                 </Link>
               ) : (
-                <span className="text-foreground">{labName}</span>
+                <span>{labName}</span>
               )}
             </>
           )}
 
           {experimentTitle && (
             <>
-              <span className="text-muted-foreground/60">›</span>
-              <span className="text-foreground font-semibold">Experiments</span>
+              <span className="text-muted-foreground/60 font-semibold">›</span>
+              <span className="text-foreground font-medium">Experiments</span>
             </>
           )}
         </div>

@@ -22,15 +22,15 @@ export function MLPrerequisitesTrack() {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-2xl bg-gradient-to-r from-purple-900/30 via-indigo-900/30 to-slate-900 border border-purple-500/20 shadow-md">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6 rounded-2xl bg-card border border-border shadow-xs">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className="text-xs bg-purple-500/10 text-purple-400 border-purple-500/30">
+            <Badge variant="outline" className="text-xs bg-sky-500/10 text-[#0284c7] dark:text-[#38bdf8] border-[#0284c7]/30">
               Required Prerequisites
             </Badge>
             <span className="text-xs text-muted-foreground">• 12 NumPy Master Modules &amp; Data Pipeline</span>
           </div>
-          <h2 className="text-2xl font-black text-foreground font-heading">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#0284c7] dark:text-[#38bdf8] font-heading">
             Pre-Lab Video Series: NumPy &amp; Pandas for Machine Learning
           </h2>
           <p className="text-xs text-muted-foreground max-w-2xl leading-relaxed">
@@ -45,7 +45,7 @@ export function MLPrerequisitesTrack() {
             </div>
             <div className="w-32 h-2 bg-muted rounded-full overflow-hidden mt-1">
               <div
-                className="h-full bg-gradient-to-r from-purple-500 to-indigo-500 transition-all duration-300"
+                className="h-full bg-[#0284c7] transition-all duration-300"
                 style={{ width: `${(completedTopics.length / ML_PREREQUISITES_DATA.length) * 100}%` }}
               />
             </div>
@@ -130,15 +130,15 @@ export function MLPrerequisitesTrack() {
                   onClick={() => setSelectedTopic(topic)}
                   className={`p-3 rounded-xl border cursor-pointer transition-all flex items-start gap-3 ${
                     isSelected
-                      ? "bg-primary/15 border-primary text-foreground ring-1 ring-primary/40 shadow-xs"
-                      : "bg-card/70 border-border/70 hover:bg-muted/40 text-muted-foreground"
+                      ? "bg-orange-500/10 border-[#ea580c] text-foreground border-l-4 border-l-[#ea580c] shadow-xs"
+                      : "bg-card border-border hover:bg-muted/40 text-muted-foreground"
                   }`}
                 >
                   <div className="mt-0.5">
                     {isDone ? (
                       <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                     ) : (
-                      <PlayCircle className={`h-4 w-4 ${isSelected ? "text-primary" : "text-muted-foreground"}`} />
+                      <PlayCircle className={`h-4 w-4 ${isSelected ? "text-[#ea580c]" : "text-muted-foreground"}`} />
                     )}
                   </div>
 

@@ -46,10 +46,10 @@ export function ScrollSideController() {
           className="fixed bottom-3 sm:bottom-5 inset-x-3 sm:inset-x-8 z-50 flex items-center justify-between pointer-events-none select-none"
           aria-label="Floating page navigation and scroll controller"
         >
-          {/* Left Floating Island: Scroll Percentage & Scroll-To-Top Button (Picture 2 Left) */}
+          {/* Left Floating Island: Scroll Percentage & Scroll-To-Top Button (Virtual Labs Blue) */}
           <div className="bg-slate-900/95 dark:bg-slate-950/95 text-slate-100 backdrop-blur-xl border border-slate-800 rounded-full p-1.5 sm:p-2 shadow-2xl flex items-center gap-1.5 sm:gap-2 ring-1 ring-white/10 pointer-events-auto">
             {/* Scroll Percentage Badge */}
-            <div className="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 font-mono text-[9px] sm:text-[10px] font-bold border border-rose-500/30">
+            <div className="px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 font-sans text-[9px] sm:text-[10px] font-bold border border-sky-500/30">
               {Math.round(scrollProgress)}%
             </div>
 
@@ -57,7 +57,7 @@ export function ScrollSideController() {
             <button
               type="button"
               onClick={scrollToTop}
-              className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center bg-rose-600 hover:bg-rose-500 text-white transition-transform hover:scale-105 active:scale-95 shadow-lg shadow-rose-600/30 cursor-pointer group"
+              className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center bg-[#0284c7] hover:bg-[#0369a1] text-white transition-transform hover:scale-105 active:scale-95 shadow-lg shadow-sky-600/30 cursor-pointer group"
               title="Scroll to top"
             >
               {/* Progress Ring Overlay */}
@@ -86,7 +86,7 @@ export function ScrollSideController() {
             </button>
           </div>
 
-          {/* Right Floating Island: Quick Links (Picture 2 Right) */}
+          {/* Right Floating Island: Quick Links */}
           <div className="bg-slate-900/95 dark:bg-slate-950/95 text-slate-100 backdrop-blur-xl border border-slate-800 rounded-full p-1.5 sm:p-2 shadow-2xl flex items-center gap-1 sm:gap-2 ring-1 ring-white/10 pointer-events-auto">
             {/* Quick Link: Virtual Labs */}
             <button
@@ -95,7 +95,7 @@ export function ScrollSideController() {
               className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-all cursor-pointer group"
               title="Virtual Labs"
             >
-              <FlaskConical className="h-3.5 w-3.5 text-rose-400 group-hover:scale-110 transition-transform shrink-0" />
+              <FlaskConical className="h-3.5 w-3.5 text-sky-400 group-hover:scale-110 transition-transform shrink-0" />
               <span className="hidden sm:inline">Labs</span>
             </button>
 
