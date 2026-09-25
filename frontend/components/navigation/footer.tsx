@@ -32,8 +32,13 @@ export function Footer() {
           
           {/* Left: Creator Profile (Cols 1-5) */}
           <div className="md:col-span-5 space-y-4">
-            <div className="flex items-center gap-1.5 font-black text-2xl text-white font-heading tracking-tight">
-              <span>Virtual Labs</span>
+            <div className="flex items-center gap-2.5 font-black text-2xl text-white font-heading tracking-tight">
+              <img
+                src="/virtual-lab-icon.png"
+                alt="Virtual Lab"
+                className="w-8 h-8 object-contain rounded"
+              />
+              <span>Virtual Lab</span>
               <span className="text-[#0284c7] text-3xl leading-none">.</span>
             </div>
             

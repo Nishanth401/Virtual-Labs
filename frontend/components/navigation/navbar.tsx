@@ -145,24 +145,13 @@ export function Navbar() {
         {/* Top White Strip: Logo + Search & Contact */}
         <div className="w-full bg-white dark:bg-zinc-950 border-b border-slate-200 dark:border-zinc-800">
           <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 h-12 flex items-center justify-between">
-            {/* Left: Official Virtual Labs Logo */}
-            <Link href="/" className="flex items-center gap-2 group select-none">
-              <div className="flex items-center gap-1.5 font-sans">
-                <span className="text-[#059669] font-black text-lg sm:text-xl tracking-tight">
-                  Virtual
-                </span>
-                <span className="text-[#ea580c] font-black text-lg sm:text-xl tracking-tight">
-                  Labs
-                </span>
-              </div>
-              <div className="hidden sm:flex flex-col border-l border-slate-300 dark:border-zinc-700 pl-2">
-                <span className="text-[10px] font-semibold text-slate-700 dark:text-zinc-300 leading-tight">
-                  An MoE Govt of India Initiative
-                </span>
-                <span className="text-[9px] text-slate-500 dark:text-zinc-400 leading-tight">
-                  Department Virtual Laboratory Platform
-                </span>
-              </div>
+            {/* Left: Official Virtual Lab Logo */}
+            <Link href="/" className="flex items-center gap-2 group select-none py-1">
+              <img
+                src="/virtual-lab-logo.png"
+                alt="Virtual Lab"
+                className="h-9 sm:h-10 w-auto object-contain transition-transform group-hover:scale-[1.02]"
+              />
             </Link>
 
             {/* Right: Search Bar & Contact Links */}
