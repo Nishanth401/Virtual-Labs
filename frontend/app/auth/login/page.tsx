@@ -127,7 +127,7 @@ export default function AuthLoginPage() {
           
           {/* Header Brand */}
           <div className="text-center space-y-2">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#ff2a5f] to-[#dc2626] text-white mb-1 shadow-lg shadow-red-500/20">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-tr from-[#ff2a5f] to-[#dc2626] text-white mb-1 shadow-lg shadow-red-500/20">
               <FlaskConical className="h-7 w-7" />
             </div>
 

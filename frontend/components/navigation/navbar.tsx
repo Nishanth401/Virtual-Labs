@@ -158,7 +158,7 @@ export function Navbar() {
                 href="/"
                 className="flex items-center gap-2.5 px-2 py-1 rounded-none text-foreground hover:text-[#0284c7] transition-colors group select-none"
               >
-                <div className="w-7 h-7 rounded-none bg-[#0284c7] flex items-center justify-center text-white shadow-xs shrink-0">
+                <div className="w-7 h-7 rounded-full bg-[#0284c7] flex items-center justify-center text-white shadow-xs shrink-0">
                   <FlaskConical className="h-4 w-4" />
                 </div>
                 <div className="flex items-baseline gap-1.5">
@@ -254,7 +254,7 @@ export function Navbar() {
           {/* Mobile Header View */}
           <div className="md:hidden w-full h-14 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2 text-foreground">
-              <div className="w-7 h-7 rounded-none bg-[#0284c7] flex items-center justify-center text-white">
+              <div className="w-7 h-7 rounded-full bg-[#0284c7] flex items-center justify-center text-white">
                 <FlaskConical className="h-3.5 w-3.5" />
               </div>
               <span className="font-black text-xs font-heading">Virtual Lab STUDIO</span>
