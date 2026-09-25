@@ -49,7 +49,7 @@ export function ExperimentNavigationSidebar({
               type="button"
               onClick={() => onTabChange(tab.id)}
               className={cn(
-                "w-full text-left py-2.5 px-3 text-sm font-semibold transition-all rounded-lg flex items-center justify-between cursor-pointer",
+                "w-full text-left py-2.5 px-3 text-sm font-semibold transition-all rounded-none flex items-center justify-between cursor-pointer",
                 isActive
                   ? "text-[#ea580c] dark:text-[#f97316] font-bold bg-orange-500/10 dark:bg-orange-950/30 border-l-4 border-l-[#ea580c] pl-3"
                   : "text-[#0284c7] dark:text-[#38bdf8] hover:text-[#ea580c] hover:bg-muted/40"

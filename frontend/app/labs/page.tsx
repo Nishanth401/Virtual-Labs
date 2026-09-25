@@ -44,7 +44,7 @@ export default function LabsCataloguePage() {
       <main className="flex-1 pt-24 pb-14 bg-muted/20">
         <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           {/* Top Breadcrumb & Broad Areas Header (Screenshot 112326) */}
-          <div className="bg-card border border-border/80 rounded-2xl p-5 sm:p-6 shadow-2xs space-y-3">
+          <div className="bg-card border border-border/80 rounded-none p-5 sm:p-6 shadow-2xs space-y-3">
             <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-muted-foreground font-sans">
               <Link href="/" className="hover:text-primary transition-colors">
                 Home
@@ -52,16 +52,16 @@ export default function LabsCataloguePage() {
               <span>/</span>
               <span className="text-foreground font-medium">Broad Areas of Virtual Labs</span>
               <span>/</span>
-              <span className="text-primary font-bold">Computer Science &amp; Engineering</span>
+              <span className="text-primary font-bold">Artificial Intelligence &amp; Data Science</span>
             </div>
 
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-1">
               <div>
                 <h1 className="text-2xl sm:text-3xl font-black text-[#0284c7] dark:text-[#38bdf8] font-heading tracking-tight">
-                  Computer Science &amp; Engineering Virtual Labs
+                  Artificial Intelligence &amp; Data Science Virtual Labs
                 </h1>
                 <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                  National Virtual Laboratories in Algorithms, Data Structures, AI, Database Systems, Computer Networks, and Cloud Systems.
+                  National Virtual Laboratories in Artificial Intelligence, Machine Learning, Data Science, Algorithms, Data Structures, Neural Computing, and Cloud Systems.
                 </p>
               </div>
 
@@ -72,7 +72,7 @@ export default function LabsCataloguePage() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search labs or topics..."
-                  className="pl-9 h-10 text-xs bg-background border-border shadow-2xs"
+                  className="pl-9 h-10 text-xs bg-background border-border shadow-2xs rounded-none"
                 />
               </div>
             </div>
@@ -98,13 +98,13 @@ export default function LabsCataloguePage() {
               </div>
 
               {filteredLabs.length === 0 && (
-                <div className="p-12 text-center bg-card rounded-2xl border border-dashed border-border space-y-3">
+                <div className="p-12 text-center bg-card rounded-none border border-dashed border-border space-y-3">
                   <FlaskConical className="h-10 w-10 text-muted-foreground mx-auto" />
                   <h3 className="font-bold text-base">No laboratories matched your search</h3>
                   <p className="text-xs text-muted-foreground">
                     Try searching for C, Java, Sorting, Stack, or Python.
                   </p>
-                  <Button size="sm" variant="outline" onClick={() => setSearchQuery("")}>
+                  <Button size="sm" variant="outline" className="rounded-none" onClick={() => setSearchQuery("")}>
                     Reset Search Filter
                   </Button>
                 </div>
@@ -114,14 +114,14 @@ export default function LabsCataloguePage() {
             {/* Right Column: Announcements, Workshops & Academic Notices (4 Cols) */}
             <div className="lg:col-span-4 space-y-5">
               {/* Announcements Box matching Screenshot 112326 */}
-              <Card className="border-border bg-card shadow-2xs overflow-hidden">
+              <Card className="border-border bg-card shadow-2xs overflow-hidden rounded-none">
                 <CardHeader className="bg-primary/5 pb-3 border-b border-border/60">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-base font-bold text-foreground font-heading flex items-center gap-2">
                       <Bell className="h-4 w-4 text-primary" />
                       <span>Announcements</span>
                     </CardTitle>
-                    <Badge variant="outline" className="text-[10px] font-sans font-semibold bg-primary/10 text-primary border-primary/20">
+                    <Badge variant="outline" className="text-[10px] font-sans font-semibold bg-primary/10 text-primary border-primary/20 rounded-none">
                       Live Updates
                     </Badge>
                   </div>
@@ -129,7 +129,7 @@ export default function LabsCataloguePage() {
 
                 <CardContent className="p-4 space-y-4 text-xs">
                   {/* Notice 1 */}
-                  <div className="p-3 rounded-xl bg-muted/40 border border-border/70 space-y-1.5 hover:border-primary/40 transition-colors">
+                  <div className="p-3 rounded-none bg-muted/40 border border-border/70 space-y-1.5 hover:border-primary/40 transition-colors">
                     <div className="flex items-center justify-between text-[11px] text-muted-foreground">
                       <span className="font-semibold text-primary font-sans">Upcoming Workshop</span>
                       <span className="flex items-center gap-1 font-sans font-medium">
@@ -145,7 +145,7 @@ export default function LabsCataloguePage() {
                   </div>
 
                   {/* Notice 2 */}
-                  <div className="p-3 rounded-xl bg-muted/40 border border-border/70 space-y-1.5 hover:border-primary/40 transition-colors">
+                  <div className="p-3 rounded-none bg-muted/40 border border-border/70 space-y-1.5 hover:border-primary/40 transition-colors">
                     <div className="flex items-center justify-between text-[11px] text-muted-foreground">
                       <span className="font-semibold text-amber-600 dark:text-amber-400 font-sans">Curriculum Alignment</span>
                       <span className="font-sans font-medium">AICTE / AU</span>
@@ -159,7 +159,7 @@ export default function LabsCataloguePage() {
                   </div>
 
                   {/* Notice 3 */}
-                  <div className="p-3 rounded-xl bg-muted/40 border border-border/70 space-y-1.5 hover:border-primary/40 transition-colors">
+                  <div className="p-3 rounded-none bg-muted/40 border border-border/70 space-y-1.5 hover:border-primary/40 transition-colors">
                     <div className="flex items-center justify-between text-[11px] text-muted-foreground">
                       <span className="font-semibold text-emerald-600 dark:text-emerald-400 font-sans">New Simulators</span>
                       <span className="font-sans font-medium">v3.2</span>
@@ -175,7 +175,7 @@ export default function LabsCataloguePage() {
               </Card>
 
               {/* NPTEL & Academic Credit Box */}
-              <Card className="border-border bg-gradient-to-br from-primary/5 via-card to-card shadow-2xs p-4 space-y-3">
+              <Card className="border-border bg-gradient-to-br from-primary/5 via-card to-card shadow-2xs p-4 space-y-3 rounded-none">
                 <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider font-sans">
                   <GraduationCap className="h-4 w-4" />
                   <span>Academic Credit Mapping</span>

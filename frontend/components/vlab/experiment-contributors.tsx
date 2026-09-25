@@ -60,7 +60,7 @@ export function ExperimentContributors({
           Subject Matter Experts
         </h3>
 
-        <div className="overflow-x-auto rounded-xl border border-border shadow-2xs">
+        <div className="overflow-x-auto rounded-none border border-border shadow-2xs">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
               <tr className="bg-muted/60 border-b border-border text-foreground font-bold">
@@ -93,7 +93,7 @@ export function ExperimentContributors({
           Developers
         </h3>
 
-        <div className="overflow-x-auto rounded-xl border border-border shadow-2xs">
+        <div className="overflow-x-auto rounded-none border border-border shadow-2xs">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
               <tr className="bg-muted/60 border-b border-border text-foreground font-bold">

@@ -260,7 +260,7 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
               </CardDescription>
             </div>
 
-            <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-3.5 py-2 rounded-xl text-xs font-mono font-semibold shrink-0">
+            <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-3.5 py-2 rounded-none text-xs font-mono font-semibold shrink-0">
               <ShieldCheck className="h-4 w-4" />
               <span>AES-256 Cloud Encrypted</span>
             </div>
@@ -284,7 +284,7 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
                 onDragLeave={() => setDragOver(false)}
                 onDrop={handleFileDrop}
                 onClick={() => fileInputRef.current?.click()}
-                className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all duration-200 flex flex-col items-center justify-center gap-3 min-h-[260px] ${
+                className={`border-2 border-dashed rounded-none p-8 text-center cursor-pointer transition-all duration-200 flex flex-col items-center justify-center gap-3 min-h-[260px] ${
                   dragOver
                     ? "border-primary bg-primary/10 scale-[1.01]"
                     : selectedFile
@@ -306,7 +306,7 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
 
                 {selectedFile ? (
                   <div className="space-y-3 w-full max-w-md">
-                    <div className="h-16 w-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-xs">
+                    <div className="h-16 w-16 rounded-none bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-xs">
                       <FileCheck className="h-8 w-8" />
                     </div>
                     <div>
@@ -315,13 +315,13 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
                         {formatFileSize(selectedFile.size)} • PDF Document
                       </p>
                     </div>
-                    <Badge variant="outline" className="text-xs font-mono bg-emerald-500/10 text-emerald-600 border-emerald-500/30">
+                    <Badge variant="outline" className="rounded-none text-xs font-mono bg-emerald-500/10 text-emerald-600 border-emerald-500/30">
                       Ready for Cloud Synchronization
                     </Badge>
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    <div className="h-16 w-16 rounded-2xl bg-primary/10 border border-primary/20 text-primary flex items-center justify-center mx-auto">
+                    <div className="h-16 w-16 rounded-none bg-primary/10 border border-primary/20 text-primary flex items-center justify-center mx-auto">
                       <UploadCloud className="h-8 w-8" />
                     </div>
                     <div>
@@ -343,7 +343,7 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
                 2. Student &amp; Exercise Details
               </label>
 
-              <div className="bg-muted/30 border border-border/80 rounded-2xl p-5 space-y-4 shadow-xs">
+              <div className="bg-muted/30 border border-border/80 rounded-none p-5 space-y-4 shadow-xs">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="text-xs font-semibold text-foreground block mb-1">Student Full Name *</label>
@@ -351,7 +351,7 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
                       placeholder="e.g. Nishanth .A"
                       value={studentName}
                       onChange={(e) => setStudentName(e.target.value)}
-                      className="text-sm bg-card"
+                      className="rounded-none text-sm bg-card"
                     />
                   </div>
                   <div>
@@ -360,7 +360,7 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
                       placeholder="e.g. 922521104001"
                       value={registerNumber}
                       onChange={(e) => setRegisterNumber(e.target.value)}
-                      className="text-sm font-mono uppercase bg-card"
+                      className="rounded-none text-sm font-mono uppercase bg-card"
                     />
                   </div>
                 </div>
@@ -371,7 +371,7 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
                     <select
                       value={experimentNumber}
                       onChange={(e) => setExperimentNumber(e.target.value)}
-                      className="w-full h-9 text-sm rounded-lg border border-border bg-card px-2.5 text-foreground"
+                      className="w-full h-9 text-sm rounded-none border border-border bg-card px-2.5 text-foreground"
                     >
                       <option value="Exp 1">Experiment 1</option>
                       <option value="Exp 2">Experiment 2</option>
@@ -388,7 +388,7 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
                       placeholder="e.g. Practical Implementation & Verification"
                       value={experimentTitle}
                       onChange={(e) => setExperimentTitle(e.target.value)}
-                      className="text-sm bg-card"
+                      className="rounded-none text-sm bg-card"
                     />
                   </div>
                 </div>
@@ -400,7 +400,7 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
                     value={facultyRemarks}
                     onChange={(e) => setFacultyRemarks(e.target.value)}
                     rows={2}
-                    className="text-xs bg-card resize-none"
+                    className="rounded-none text-xs bg-card resize-none"
                   />
                 </div>
 
@@ -413,17 +413,17 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
                       </span>
                       <span>{uploadProgress}%</span>
                     </div>
-                    <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                    <div className="h-2 w-full bg-muted rounded-none overflow-hidden">
                       <div
                         style={{ width: `${uploadProgress}%` }}
-                        className="h-full bg-primary transition-all duration-200 rounded-full"
+                        className="h-full bg-primary transition-all duration-200 rounded-none"
                       />
                     </div>
                   </div>
                 )}
 
                 {uploadSuccess && (
-                  <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-600 dark:text-emerald-400 text-xs font-semibold flex items-center gap-2">
+                  <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-none text-emerald-600 dark:text-emerald-400 text-xs font-semibold flex items-center gap-2">
                     <CheckCircle2 className="h-4 w-4 shrink-0" />
                     <span>Lab record successfully uploaded and encrypted in cloud storage vault!</span>
                   </div>
@@ -432,7 +432,7 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
                 <Button
                   onClick={handleStartCloudUpload}
                   disabled={uploading || !selectedFile}
-                  className="w-full text-sm font-bold gap-2 bg-primary hover:bg-primary/90 text-primary-foreground h-11 rounded-xl shadow-md"
+                  className="w-full text-sm font-bold gap-2 bg-primary hover:bg-primary/90 text-primary-foreground h-11 rounded-none shadow-md"
                 >
                   <UploadCloud className="h-4 w-4" />
                   <span>{uploading ? "Synchronizing with Cloud..." : "Upload Lab Record to Cloud Storage"}</span>
@@ -460,7 +460,7 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
             </div>
 
             {submissions.length === 0 ? (
-              <div className="text-center py-12 bg-card border rounded-2xl p-6">
+              <div className="text-center py-12 bg-card border rounded-none p-6">
                 <FileText className="h-10 w-10 text-muted-foreground mx-auto mb-2" />
                 <h4 className="text-sm font-bold text-foreground">No lab records uploaded yet</h4>
                 <p className="text-xs text-muted-foreground mt-1">
@@ -472,20 +472,20 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
                 {submissions.map((record) => (
                   <div
                     key={record.id}
-                    className="p-5 rounded-2xl border border-border/80 bg-card hover:border-primary/40 transition-all shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4"
+                    className="p-5 rounded-none border border-border/80 bg-card hover:border-primary/40 transition-all shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4"
                   >
                     <div className="flex items-start gap-4 min-w-0">
-                      <div className="h-12 w-12 rounded-xl bg-primary/10 border border-primary/20 text-primary flex items-center justify-center shrink-0">
+                      <div className="h-12 w-12 rounded-none bg-primary/10 border border-primary/20 text-primary flex items-center justify-center shrink-0">
                         <FileText className="h-6 w-6" />
                       </div>
                       <div className="space-y-1 min-w-0">
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="font-mono text-xs font-bold text-primary px-2 py-0.5 rounded bg-primary/10">
+                          <span className="font-mono text-xs font-bold text-primary px-2 py-0.5 rounded-none bg-primary/10">
                             {record.id}
                           </span>
                           <Badge
                             variant="outline"
-                            className={`text-[10px] font-mono font-bold ${
+                            className={`rounded-none text-[10px] font-mono font-bold ${
                               record.status === "Verified" || record.status === "Graded"
                                 ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
                                 : "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30"
@@ -494,7 +494,7 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
                             {record.status}
                           </Badge>
                           {record.gradeScore && (
-                            <Badge variant="outline" className="text-[10px] font-mono bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30 font-bold">
+                            <Badge variant="outline" className="rounded-none text-[10px] font-mono bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30 font-bold">
                               Grade: {record.gradeScore}
                             </Badge>
                           )}
@@ -522,7 +522,7 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
                         variant="outline"
                         size="sm"
                         onClick={() => setShowReceiptRecord(record)}
-                        className="text-xs font-bold gap-1.5 h-8 rounded-xl"
+                        className="text-xs font-bold gap-1.5 h-8 rounded-none"
                         title="View Submission Certificate"
                       >
                         <QrCode className="h-3.5 w-3.5 text-primary" />
@@ -533,7 +533,7 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
                         variant="outline"
                         size="sm"
                         onClick={() => downloadRecordFile(record)}
-                        className="text-xs font-bold gap-1.5 h-8 rounded-xl"
+                        className="text-xs font-bold gap-1.5 h-8 rounded-none"
                         title="Download PDF"
                       >
                         <Download className="h-3.5 w-3.5" />
@@ -544,7 +544,7 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleDeleteRecord(record.id)}
-                        className="text-xs text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 h-8 px-2 rounded-xl"
+                        className="text-xs text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 h-8 px-2 rounded-none"
                         title="Delete record from cloud"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -561,16 +561,16 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
       {/* SUBMISSION RECEIPT MODAL */}
       {showReceiptRecord && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-card border border-border rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl relative">
+          <div className="bg-card border border-border rounded-none max-w-lg w-full p-6 space-y-5 shadow-2xl relative">
             <button
               onClick={() => setShowReceiptRecord(null)}
-              className="absolute top-4 right-4 p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted"
+              className="absolute top-4 right-4 p-1.5 rounded-none text-muted-foreground hover:text-foreground hover:bg-muted"
             >
               <X className="h-5 w-5" />
             </button>
 
             <div className="text-center space-y-2 border-b border-border/60 pb-4">
-              <div className="h-12 w-12 rounded-2xl bg-primary/10 border border-primary/20 text-primary flex items-center justify-center mx-auto">
+              <div className="h-12 w-12 rounded-none bg-primary/10 border border-primary/20 text-primary flex items-center justify-center mx-auto">
                 <ShieldCheck className="h-6 w-6" />
               </div>
               <h3 className="text-lg font-black text-foreground font-heading">
@@ -610,7 +610,7 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
                 <span className="text-muted-foreground">Timestamp</span>
                 <span className="font-mono text-muted-foreground">{showReceiptRecord.submittedAt}</span>
               </div>
-              <div className="p-2.5 bg-muted/40 rounded-xl space-y-1">
+              <div className="p-2.5 bg-muted/40 rounded-none space-y-1">
                 <span className="text-[10px] font-mono text-muted-foreground uppercase font-bold block">Digital Signature Hash</span>
                 <span className="font-mono text-[10px] text-primary break-all leading-tight block">{showReceiptRecord.digitalSignatureHash}</span>
               </div>
@@ -620,13 +620,13 @@ export function LabRecordUploadPanel({ lab }: LabRecordUploadPanelProps) {
               <Button
                 onClick={() => window.print()}
                 variant="outline"
-                className="flex-1 text-xs font-bold gap-1.5"
+                className="flex-1 text-xs font-bold gap-1.5 rounded-none"
               >
                 <span>Print Receipt</span>
               </Button>
               <Button
                 onClick={() => setShowReceiptRecord(null)}
-                className="flex-1 text-xs font-bold bg-primary text-primary-foreground"
+                className="flex-1 text-xs font-bold bg-primary text-primary-foreground rounded-none"
               >
                 <span>Close</span>
               </Button>

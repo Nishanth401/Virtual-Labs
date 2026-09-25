@@ -13,14 +13,14 @@ export function CourseAlignmentCard() {
   return (
     <div className="space-y-6 font-sans">
       {/* Reference Books Section matching Virtual Labs Reference */}
-      <Card className="border border-border/80 bg-card rounded-xl shadow-xs">
+      <Card className="border border-border/80 bg-card rounded-none shadow-xs">
         <CardHeader className="pb-3 border-b border-border/50">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg font-bold flex items-center gap-2 text-[#0284c7] dark:text-[#38bdf8] font-heading">
               <BookOpen className="h-4.5 w-4.5" />
               <span>Reference Textbooks &amp; Literature</span>
             </CardTitle>
-            <Badge variant="outline" className="text-xs font-mono">
+            <Badge variant="outline" className="text-xs font-mono rounded-none">
               {REFERENCE_BOOKS_DATA.length} Prescribed Books
             </Badge>
           </div>
@@ -30,10 +30,10 @@ export function CourseAlignmentCard() {
             {REFERENCE_BOOKS_DATA.map((book, idx) => (
               <div
                 key={book.id}
-                className="p-4 rounded-lg border border-border/70 bg-muted/20 hover:border-[#0284c7]/40 transition-all space-y-2"
+                className="p-4 rounded-none border border-border/70 bg-muted/20 hover:border-[#0284c7]/40 transition-all space-y-2"
               >
                 <div className="flex items-start gap-2.5">
-                  <span className="flex items-center justify-center h-5.5 w-5.5 rounded-full bg-sky-500/10 text-[#0284c7] font-bold text-xs shrink-0 mt-0.5 font-mono">
+                  <span className="flex items-center justify-center h-5.5 w-5.5 rounded-none bg-sky-500/10 text-[#0284c7] font-bold text-xs shrink-0 mt-0.5 font-mono">
                     {idx + 1}
                   </span>
                   <div className="space-y-1 flex-1">
@@ -44,7 +44,7 @@ export function CourseAlignmentCard() {
                       <strong className="text-foreground/80">Author:</strong> {book.author}
                     </p>
                     <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px] text-muted-foreground">
-                      <span className="px-2 py-0.5 rounded bg-muted border border-border font-medium">
+                      <span className="px-2 py-0.5 rounded-none bg-muted border border-border font-medium">
                         {book.publisher}
                       </span>
                       <span>• {book.edition}</span>
@@ -59,14 +59,14 @@ export function CourseAlignmentCard() {
       </Card>
 
       {/* University Syllabus Mapping Section */}
-      <Card className="border border-border/80 bg-card rounded-xl shadow-xs">
+      <Card className="border border-border/80 bg-card rounded-none shadow-xs">
         <CardHeader className="pb-3 border-b border-border/50">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg font-bold flex items-center gap-2 text-[#0284c7] dark:text-[#38bdf8] font-heading">
               <GraduationCap className="h-4.5 w-4.5" />
               <span>University Syllabus Alignment</span>
             </CardTitle>
-            <Badge variant="outline" className="text-xs text-[#0284c7] bg-sky-500/10 border-sky-500/20">
+            <Badge variant="outline" className="text-xs text-[#0284c7] bg-sky-500/10 border-sky-500/20 rounded-none">
               Curriculum Standard
             </Badge>
           </div>
@@ -83,7 +83,7 @@ export function CourseAlignmentCard() {
               return (
                 <div
                   key={uIdx}
-                  className="rounded-lg border border-border/70 bg-muted/15 overflow-hidden transition-all"
+                  className="rounded-none border border-border/70 bg-muted/15 overflow-hidden transition-all"
                 >
                   <button
                     type="button"
@@ -93,7 +93,7 @@ export function CourseAlignmentCard() {
                     <div className="space-y-0.5">
                       <div className="font-semibold text-sm text-foreground flex items-center gap-2">
                         <span>{univ.university}</span>
-                        <Badge variant="outline" className="text-[10px] font-mono">
+                        <Badge variant="outline" className="text-[10px] font-mono rounded-none">
                           {univ.courseCode}
                         </Badge>
                       </div>
@@ -115,7 +115,7 @@ export function CourseAlignmentCard() {
                         {univ.units.map((unit, unitIdx) => (
                           <div
                             key={unitIdx}
-                            className="p-3 rounded-lg bg-card border border-border/60 text-xs space-y-1.5"
+                            className="p-3 rounded-none bg-card border border-border/60 text-xs space-y-1.5"
                           >
                             <div className="font-bold text-[#0284c7] dark:text-[#38bdf8] text-[11px] uppercase tracking-wider">
                               {unit.unit}: {unit.title}

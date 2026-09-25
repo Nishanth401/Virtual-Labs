@@ -35,7 +35,7 @@ export const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
           value={currentValue}
           disabled={disabled}
           onChange={handleChange}
-          className="w-full h-2 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary focus:outline-none focus:ring-2 focus:ring-primary/40 disabled:opacity-50"
+          className="w-full h-2 bg-secondary rounded-none appearance-none cursor-pointer accent-primary focus:outline-none focus:ring-2 focus:ring-primary/40 disabled:opacity-50"
           {...props}
         />
       </div>

@@ -125,7 +125,7 @@ export function ExperimentAssessmentView({
             type="checkbox"
             checked={selectedDifficulties.beginner}
             onChange={() => handleDifficultyToggle("beginner")}
-            className="w-4 h-4 rounded text-[#0284c7] focus:ring-primary accent-[#0284c7] cursor-pointer"
+            className="w-4 h-4 rounded-none text-[#0284c7] focus:ring-primary accent-[#0284c7] cursor-pointer"
           />
           <span className="font-normal text-xs sm:text-sm">Beginner</span>
         </label>
@@ -135,7 +135,7 @@ export function ExperimentAssessmentView({
             type="checkbox"
             checked={selectedDifficulties.intermediate}
             onChange={() => handleDifficultyToggle("intermediate")}
-            className="w-4 h-4 rounded text-[#0284c7] focus:ring-primary accent-[#0284c7] cursor-pointer"
+            className="w-4 h-4 rounded-none text-[#0284c7] focus:ring-primary accent-[#0284c7] cursor-pointer"
           />
           <span className="font-normal text-xs sm:text-sm">Intermediate</span>
         </label>
@@ -145,7 +145,7 @@ export function ExperimentAssessmentView({
             type="checkbox"
             checked={selectedDifficulties.advanced}
             onChange={() => handleDifficultyToggle("advanced")}
-            className="w-4 h-4 rounded text-[#0284c7] focus:ring-primary accent-[#0284c7] cursor-pointer"
+            className="w-4 h-4 rounded-none text-[#0284c7] focus:ring-primary accent-[#0284c7] cursor-pointer"
           />
           <span className="font-normal text-xs sm:text-sm">Advanced</span>
         </label>
@@ -175,7 +175,7 @@ export function ExperimentAssessmentView({
                   return (
                     <label
                       key={optIdx}
-                      className={`flex items-start gap-2.5 text-xs sm:text-sm cursor-pointer select-none py-1 px-2 rounded-lg transition-colors ${
+                      className={`flex items-start gap-2.5 text-xs sm:text-sm cursor-pointer select-none py-1 px-2 rounded-none transition-colors ${
                         isOptAnswer
                           ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 font-semibold"
                           : isWrong && isOptSelected
@@ -200,7 +200,7 @@ export function ExperimentAssessmentView({
 
               {/* Post-submit feedback per question */}
               {isSubmitted && q.explanation && (
-                <div className="mt-2 ml-4 p-2.5 rounded-lg bg-muted/50 border border-border text-xs text-muted-foreground">
+                <div className="mt-2 ml-4 p-2.5 rounded-none bg-muted/50 border border-border text-xs text-muted-foreground">
                   <span className="font-bold text-foreground">Explanation: </span>
                   {q.explanation}
                 </div>
@@ -215,13 +215,13 @@ export function ExperimentAssessmentView({
             <Button
               type="submit"
               disabled={Object.keys(selectedAnswers).length === 0}
-              className="bg-[#0284c7] hover:bg-[#0369a1] text-white font-bold text-xs h-9 px-5 shadow-xs"
+              className="bg-[#0284c7] hover:bg-[#0369a1] text-white font-bold text-xs h-9 px-5 shadow-xs rounded-none"
             >
               Submit {type === "pretest" ? "Pretest" : "Posttest"}
             </Button>
           ) : (
             <div className="flex items-center gap-4">
-              <div className="px-3.5 py-1.5 rounded-xl bg-primary/10 border border-primary/20 text-xs font-bold text-primary flex items-center gap-1.5">
+              <div className="px-3.5 py-1.5 rounded-none bg-primary/10 border border-primary/20 text-xs font-bold text-primary flex items-center gap-1.5">
                 <Award className="h-4 w-4" />
                 <span>
                   Score: {score} / {defaultQuestions.length} ({Math.round((score / defaultQuestions.length) * 100)}%)
@@ -233,7 +233,7 @@ export function ExperimentAssessmentView({
                 variant="outline"
                 size="sm"
                 onClick={handleReset}
-                className="h-9 text-xs font-semibold gap-1.5"
+                className="h-9 text-xs font-semibold gap-1.5 rounded-none"
               >
                 <RefreshCw className="h-3.5 w-3.5" />
                 Retake Assessment

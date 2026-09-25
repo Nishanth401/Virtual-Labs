@@ -806,7 +806,7 @@ export async function getAllStudentProfilesFromDb(): Promise<StudentProfile[]> {
       name: "Kavitha R",
       registerNumber: "922522CS052",
       email: "kavitha.r@vsb.ac.in",
-      department: "Computer Science & Engineering",
+      department: "Artificial Intelligence & Data Science",
       yearSemester: "Year III / Semester VI",
       completedExperiments: ["singly-linked-list", "bubble-sort", "sql-ddl-dml-operations", "scikit-learn-linear-regression"],
       completedProblems: ["lc-1", "lc-3"],

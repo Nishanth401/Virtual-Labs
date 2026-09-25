@@ -115,7 +115,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
     <div className="w-full space-y-6">
       {/* Top Discipline Breadcrumbs & Rating Header Banner matching Screenshots 112538 - 112841 */}
       <LabHeaderBanner
-        discipline={lab?.department || "Computer Science and Engineering"}
+        discipline={lab?.department || "Artificial Intelligence & Data Science"}
         labName={lab?.name || "Virtual Laboratory"}
         experimentTitle={experiment.title}
         labId={lab?.id}
@@ -129,7 +129,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
               {experiment.title}
             </h1>
             <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-              <Badge variant="outline" className="text-[10px] font-mono text-primary bg-primary/10 border-primary/20">
+              <Badge variant="outline" className="text-[10px] font-mono text-primary bg-primary/10 border-primary/20 rounded-none">
                 {experiment.category}
               </Badge>
               <span>•</span>
@@ -137,11 +137,11 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 <Clock className="h-3 w-3" /> {experiment.estimatedMinutes || 60} mins
               </span>
               <span>•</span>
-              <Badge variant="outline" className="text-[10px] font-medium">
+              <Badge variant="outline" className="text-[10px] font-medium rounded-none">
                 {experiment.difficulty}
               </Badge>
               {isCompleted && (
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-none border border-emerald-500/20">
                   <CheckCircle2 className="h-3 w-3" /> Completed
                 </span>
               )}
@@ -150,14 +150,14 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
 
           <div className="flex items-center gap-2 shrink-0">
             {prevExp && (
-              <Button asChild variant="outline" size="sm" className="h-8 text-xs gap-1">
+              <Button asChild variant="outline" size="sm" className="h-8 text-xs gap-1 rounded-none">
                 <Link href={`/experiments/${prevExp.slug}`}>
                   <ChevronLeft className="h-3.5 w-3.5" /> Prev Experiment
                 </Link>
               </Button>
             )}
             {nextExp && (
-              <Button asChild variant="outline" size="sm" className="h-8 text-xs gap-1">
+              <Button asChild variant="outline" size="sm" className="h-8 text-xs gap-1 rounded-none">
                 <Link href={`/experiments/${nextExp.slug}`}>
                   Next Experiment <ChevronRight className="h-3.5 w-3.5" />
                 </Link>
@@ -225,7 +225,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                     <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-primary/40 underline-offset-4 mb-3 font-heading">
                       Video Concept Walkthrough
                     </h3>
-                    <div className="aspect-video w-full max-w-2xl rounded-xl bg-slate-950 border border-border overflow-hidden shadow-sm">
+                    <div className="aspect-video w-full max-w-2xl rounded-none bg-slate-950 border border-border overflow-hidden shadow-sm">
                       <iframe
                         src={experiment.sections.videoUrl}
                         title={experiment.title}
@@ -239,7 +239,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
 
                 <div className="pt-4 border-t border-border/60 flex items-center justify-between">
                   <span className="text-xs text-muted-foreground font-mono">Pedagogical Step 1 of 9</span>
-                  <Button onClick={() => setActiveTab("theory")} className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs">
+                  <Button onClick={() => setActiveTab("theory")} className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs rounded-none">
                     Next: Theory <ChevronRight className="h-4 w-4" />
                   </Button>
                 </div>
@@ -268,7 +268,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                     </h3>
                     <div className="space-y-3 pl-1">
                       {experiment.sections.theory.keyConcepts.map((concept, cIdx) => (
-                        <div key={cIdx} className="p-3.5 rounded-xl border border-border bg-muted/20 space-y-1">
+                        <div key={cIdx} className="p-3.5 rounded-none border border-border bg-muted/20 space-y-1">
                           <h4 className="font-bold text-xs uppercase tracking-wider text-primary">
                             {cIdx + 1}. {concept.title}
                           </h4>
@@ -285,7 +285,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                     <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-primary/40 underline-offset-4 font-heading">
                       ⚡ Asymptotic Runtime &amp; Space Complexity
                     </h3>
-                    <div className="overflow-x-auto rounded-xl border border-border shadow-2xs">
+                    <div className="overflow-x-auto rounded-none border border-border shadow-2xs">
                       <table className="w-full text-left text-xs border-collapse">
                         <thead className="bg-muted/60 border-b border-border font-bold text-foreground">
                           <tr>
@@ -327,10 +327,10 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 )}
 
                 <div className="pt-4 border-t border-border/60 flex items-center justify-between">
-                  <Button variant="outline" size="sm" onClick={() => setActiveTab("aim")} className="text-xs gap-1">
+                  <Button variant="outline" size="sm" onClick={() => setActiveTab("aim")} className="text-xs gap-1 rounded-none">
                     <ChevronLeft className="h-4 w-4" /> Aim
                   </Button>
-                  <Button onClick={() => setActiveTab("pretest")} className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs">
+                  <Button onClick={() => setActiveTab("pretest")} className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs rounded-none">
                     Next: Pretest <ChevronRight className="h-4 w-4" />
                   </Button>
                 </div>
@@ -349,10 +349,10 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 />
 
                 <div className="pt-4 border-t border-border/60 flex items-center justify-between">
-                  <Button variant="outline" size="sm" onClick={() => setActiveTab("theory")} className="text-xs gap-1">
+                  <Button variant="outline" size="sm" onClick={() => setActiveTab("theory")} className="text-xs gap-1 rounded-none">
                     <ChevronLeft className="h-4 w-4" /> Theory
                   </Button>
-                  <Button onClick={() => setActiveTab("procedure")} className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs">
+                  <Button onClick={() => setActiveTab("procedure")} className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs rounded-none">
                     Next: Procedure <ChevronRight className="h-4 w-4" />
                   </Button>
                 </div>
@@ -376,9 +376,9 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
 
                 <div className="space-y-3 pl-1">
                   {experiment.sections.procedure.map((step, sIdx) => (
-                    <div key={sIdx} className="p-4 rounded-xl bg-card border border-border shadow-2xs space-y-1">
+                    <div key={sIdx} className="p-4 rounded-none bg-card border border-border shadow-2xs space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="flex items-center justify-center h-5 w-5 rounded-full bg-primary/10 text-primary text-xs font-mono font-bold shrink-0">
+                        <span className="flex items-center justify-center h-5 w-5 rounded-none bg-primary/10 text-primary text-xs font-mono font-bold shrink-0">
                           {sIdx + 1}
                         </span>
                         <h4 className="text-xs font-bold text-foreground uppercase tracking-wider font-mono">
@@ -396,17 +396,17 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                     <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono">
                       Reference Code Implementation ({experiment.sections.sampleCode.language.toUpperCase()})
                     </h4>
-                    <pre className="p-4 rounded-xl bg-slate-950 text-slate-100 text-xs font-mono overflow-x-auto border border-slate-800 leading-relaxed max-h-72">
+                    <pre className="p-4 rounded-none bg-slate-950 text-slate-100 text-xs font-mono overflow-x-auto border border-slate-800 leading-relaxed max-h-72">
                       <code>{experiment.sections.sampleCode.code}</code>
                     </pre>
                   </div>
                 )}
 
                 <div className="pt-4 border-t border-border/60 flex items-center justify-between">
-                  <Button variant="outline" size="sm" onClick={() => setActiveTab("pretest")} className="text-xs gap-1">
+                  <Button variant="outline" size="sm" onClick={() => setActiveTab("pretest")} className="text-xs gap-1 rounded-none">
                     <ChevronLeft className="h-4 w-4" /> Pretest
                   </Button>
-                  <Button onClick={() => setActiveTab("simulation")} className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs">
+                  <Button onClick={() => setActiveTab("simulation")} className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs rounded-none">
                     Next: Enter Simulation <ChevronRight className="h-4 w-4" />
                   </Button>
                 </div>
@@ -419,7 +419,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             {activeTab === "simulation" && (
               <div className="space-y-8">
                 {/* Specific Visualizer Engine or Interactive Workbench */}
-                <div className="p-4 sm:p-6 rounded-2xl bg-card border border-border shadow-sm">
+                <div className="p-4 sm:p-6 rounded-none bg-card border border-border shadow-sm">
                   {experiment.labId === "dbms-lab" ? (
                     <SqlCompiler
                       title={experiment.title}
@@ -468,11 +468,11 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                         <Button
                           onClick={handleRunSimulation}
                           disabled={isSimulating}
-                          className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-2 shadow-xs"
+                          className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-2 shadow-xs rounded-none"
                         >
                           {isSimulating ? (
                             <>
-                              <span className="w-3 h-3 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                              <span className="w-3 h-3 rounded-none border-2 border-white/30 border-t-white animate-spin" />
                               <span>Simulating Execution...</span>
                             </>
                           ) : (
@@ -486,14 +486,14 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
 
                       {/* Procedure Checklist & Console */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-3 p-4 rounded-xl bg-muted/30 border border-border/60">
+                        <div className="space-y-3 p-4 rounded-none bg-muted/30 border border-border/60">
                           <h4 className="text-xs font-bold uppercase tracking-wider text-primary font-mono flex items-center gap-1.5">
                             <CheckCircle2 className="h-4 w-4" /> Execution Procedure Steps
                           </h4>
                           <div className="space-y-2">
                             {experiment.sections.procedure.map((step, sIdx) => (
-                              <div key={sIdx} className="p-2.5 rounded-lg bg-card border border-border/50 text-xs text-muted-foreground flex items-start gap-2">
-                                <span className="flex items-center justify-center h-4 w-4 rounded-full bg-primary/10 text-primary text-[10px] font-bold shrink-0 mt-0.5 font-mono">
+                              <div key={sIdx} className="p-2.5 rounded-none bg-card border border-border/50 text-xs text-muted-foreground flex items-start gap-2">
+                                <span className="flex items-center justify-center h-4 w-4 rounded-none bg-primary/10 text-primary text-[10px] font-bold shrink-0 mt-0.5 font-mono">
                                   {sIdx + 1}
                                 </span>
                                 <span className="leading-snug">{step}</span>
@@ -503,18 +503,18 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                         </div>
 
                         {/* Live Output Terminal */}
-                        <div className="space-y-3 p-4 rounded-xl bg-slate-950 text-slate-100 border border-slate-800 shadow-inner flex flex-col justify-between">
+                        <div className="space-y-3 p-4 rounded-none bg-slate-950 text-slate-100 border border-slate-800 shadow-inner flex flex-col justify-between">
                           <div className="space-y-2">
                             <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                               <span className="text-[11px] font-mono text-slate-400 flex items-center gap-1.5">
-                                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                                <span className="w-2 h-2 rounded-none bg-emerald-400 animate-pulse" />
                                 Simulation Console Stream
                               </span>
-                              <Badge variant="outline" className="text-[10px] font-mono border-slate-700 text-slate-300">
+                              <Badge variant="outline" className="text-[10px] font-mono border-slate-700 text-slate-300 rounded-none">
                                 {experiment.sections.sampleCode.language.toUpperCase()} ENGINE
                               </Badge>
                             </div>
-                            <pre className="font-mono text-xs text-emerald-400 whitespace-pre-wrap leading-relaxed max-h-60 overflow-y-auto p-2 bg-black/40 rounded-lg">
+                            <pre className="font-mono text-xs text-emerald-400 whitespace-pre-wrap leading-relaxed max-h-60 overflow-y-auto p-2 bg-black/40 rounded-none">
                               {simOutput || experiment.sections.expectedOutput}
                             </pre>
                           </div>
@@ -553,10 +553,10 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 )}
 
                 <div className="pt-4 border-t border-border/60 flex items-center justify-between">
-                  <Button variant="outline" size="sm" onClick={() => setActiveTab("procedure")} className="text-xs gap-1">
+                  <Button variant="outline" size="sm" onClick={() => setActiveTab("procedure")} className="text-xs gap-1 rounded-none">
                     <ChevronLeft className="h-4 w-4" /> Procedure
                   </Button>
-                  <Button onClick={() => setActiveTab("posttest")} className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs">
+                  <Button onClick={() => setActiveTab("posttest")} className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs rounded-none">
                     Next: Posttest <ChevronRight className="h-4 w-4" />
                   </Button>
                 </div>
@@ -580,10 +580,10 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 />
 
                 <div className="pt-4 border-t border-border/60 flex items-center justify-between">
-                  <Button variant="outline" size="sm" onClick={() => setActiveTab("simulation")} className="text-xs gap-1">
+                  <Button variant="outline" size="sm" onClick={() => setActiveTab("simulation")} className="text-xs gap-1 rounded-none">
                     <ChevronLeft className="h-4 w-4" /> Simulation
                   </Button>
-                  <Button onClick={() => setActiveTab("references")} className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs">
+                  <Button onClick={() => setActiveTab("references")} className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs rounded-none">
                     Next: References <ChevronRight className="h-4 w-4" />
                   </Button>
                 </div>
@@ -601,10 +601,10 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 />
 
                 <div className="pt-4 border-t border-border/60 flex items-center justify-between">
-                  <Button variant="outline" size="sm" onClick={() => setActiveTab("posttest")} className="text-xs gap-1">
+                  <Button variant="outline" size="sm" onClick={() => setActiveTab("posttest")} className="text-xs gap-1 rounded-none">
                     <ChevronLeft className="h-4 w-4" /> Posttest
                   </Button>
-                  <Button onClick={() => setActiveTab("contributors")} className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs">
+                  <Button onClick={() => setActiveTab("contributors")} className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs rounded-none">
                     Next: Contributors <ChevronRight className="h-4 w-4" />
                   </Button>
                 </div>
@@ -619,10 +619,10 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 <ExperimentContributors labInstitute={lab?.institute} />
 
                 <div className="pt-4 border-t border-border/60 flex items-center justify-between">
-                  <Button variant="outline" size="sm" onClick={() => setActiveTab("references")} className="text-xs gap-1">
+                  <Button variant="outline" size="sm" onClick={() => setActiveTab("references")} className="text-xs gap-1 rounded-none">
                     <ChevronLeft className="h-4 w-4" /> References
                   </Button>
-                  <Button onClick={() => setActiveTab("feedback")} className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs">
+                  <Button onClick={() => setActiveTab("feedback")} className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs rounded-none">
                     Next: Feedback <ChevronRight className="h-4 w-4" />
                   </Button>
                 </div>
@@ -645,13 +645,13 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 </div>
 
                 {feedbackSubmitted ? (
-                  <div className="p-6 text-center space-y-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400">
+                  <div className="p-6 text-center space-y-2 rounded-none bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400">
                     <CheckCircle2 className="h-8 w-8 mx-auto animate-bounce" />
                     <h4 className="font-bold text-base">Thank you for sharing your experience!</h4>
                     <p className="text-xs text-muted-foreground">Your responses have been logged for institutional laboratory evaluation.</p>
                   </div>
                 ) : (
-                  <form onSubmit={handleFeedbackSubmit} className="space-y-4 p-5 rounded-xl border border-border bg-card shadow-2xs">
+                  <form onSubmit={handleFeedbackSubmit} className="space-y-4 p-5 rounded-none border border-border bg-card shadow-2xs">
                     <div className="space-y-2">
                       <label className="text-xs font-semibold block text-foreground">
                         How would you rate this experiment simulation? (1 to 5 Stars)
@@ -662,7 +662,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                             key={s}
                             type="button"
                             onClick={() => setUserRating(s)}
-                            className={`h-9 w-9 rounded-lg text-xs font-bold border transition-all cursor-pointer ${
+                            className={`h-9 w-9 rounded-none text-xs font-bold border transition-all cursor-pointer ${
                               s === userRating
                                 ? "bg-[#0284c7] text-white border-[#0284c7] shadow-xs"
                                 : "bg-muted/40 hover:bg-muted text-muted-foreground border-border"
@@ -683,12 +683,12 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                         onChange={(e) => setFeedbackComment(e.target.value)}
                         placeholder="Please share what worked well and what could be improved..."
                         rows={4}
-                        className="text-xs"
+                        className="text-xs rounded-none"
                         required
                       />
                     </div>
 
-                    <Button type="submit" className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs">
+                    <Button type="submit" className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs rounded-none">
                       <Send className="h-3.5 w-3.5" /> Share Your Experience
                     </Button>
                   </form>

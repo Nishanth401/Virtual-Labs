@@ -44,14 +44,14 @@ export function Footer() {
             <div className="pt-2 flex items-center gap-3">
               <Link
                 href="/admin"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-sky-500/15 hover:bg-[#0284c7] text-[#0284c7] hover:text-white border border-[#0284c7]/30 text-xs font-bold transition-all shadow-xs"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-none bg-sky-500/15 hover:bg-[#0284c7] text-[#0284c7] hover:text-white border border-[#0284c7]/30 text-xs font-bold transition-all shadow-xs"
               >
                 <ShieldCheck className="h-3.5 w-3.5" />
                 <span>Admin Portal</span>
               </Link>
               <Link
                 href="/dashboard"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-xs font-semibold transition-all"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-none bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-xs font-semibold transition-all"
               >
                 <Award className="h-3.5 w-3.5 text-amber-400" />
                 <span>Student Dashboard</span>

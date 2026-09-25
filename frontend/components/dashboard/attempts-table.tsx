@@ -14,7 +14,7 @@ interface AttemptsTableProps {
 
 export function AttemptsTable({ progress }: AttemptsTableProps) {
   return (
-    <Card className="border-secondary/40 bg-card/60 backdrop-blur-xs shadow-sm">
+    <Card className="rounded-none border-secondary/40 bg-card/60 backdrop-blur-xs shadow-sm">
       <CardHeader>
         <CardTitle className="text-xl font-bold font-heading">Data Structures Laboratory Modules</CardTitle>
         <CardDescription className="text-xs">
@@ -22,7 +22,7 @@ export function AttemptsTable({ progress }: AttemptsTableProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="border border-border/60 rounded-xl overflow-hidden">
+        <div className="border border-border/60 rounded-none overflow-hidden">
           <div className="divide-y divide-border/40">
             {EXPERIMENTS_DATA.map((exp, idx) => {
               const isCompleted = progress.completedExperiments.includes(exp.id);
@@ -35,7 +35,7 @@ export function AttemptsTable({ progress }: AttemptsTableProps) {
                   className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 hover:bg-muted/30 transition-colors"
                 >
                   <div className="flex items-start gap-3">
-                    <span className="flex items-center justify-center h-7 w-7 rounded-full bg-muted text-muted-foreground text-xs font-bold shrink-0 mt-0.5">
+                    <span className="flex items-center justify-center h-7 w-7 rounded-none bg-muted text-muted-foreground text-xs font-bold shrink-0 mt-0.5">
                       {idx + 1}
                     </span>
                     <div className="space-y-1">
@@ -47,11 +47,11 @@ export function AttemptsTable({ progress }: AttemptsTableProps) {
                           {exp.title}
                         </Link>
                         {isCompleted ? (
-                          <Badge className="bg-emerald-500/10 text-emerald-500 border-emerald-500/30 text-[10px]">
+                          <Badge className="rounded-none bg-emerald-500/10 text-emerald-500 border-emerald-500/30 text-[10px]">
                             <CheckCircle2 className="h-3 w-3 mr-1" /> Passed
                           </Badge>
                         ) : (
-                          <Badge variant="outline" className="text-[10px]">
+                          <Badge variant="outline" className="rounded-none text-[10px]">
                             Not Completed
                           </Badge>
                         )}

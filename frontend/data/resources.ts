@@ -4,7 +4,7 @@ export interface ResourceItem {
   title: string;
   unit: number | 'All';
   type: 'Lab Material' | 'Lab Manual' | 'Video Tutorial' | 'Virtual Lab';
-  provider: 'GeeksforGeeks' | 'W3Schools' | 'Official Docs' | 'Virtual Labs Manual' | 'YouTube Video' | 'Simulation Studio';
+  provider: 'Academic Curriculum' | 'Official Docs' | 'Virtual Labs Manual' | 'YouTube Video' | 'Simulation Studio' | string;
   format: 'Web Guide' | 'Interactive Tutorial' | 'PDF Manual' | 'Documentation' | 'Video Guide' | 'Interactive Simulator';
   fileUrl: string;
   description: string;
@@ -298,26 +298,26 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'dsa-java-gfg',
     subject: 'Data Structures (Java)',
-    title: 'GeeksforGeeks Data Structures Complete Tutorial & Algorithms Guide',
+    title: 'Data Structures & Algorithms Complete Academic Handbook',
     unit: 'All',
     type: 'Lab Material',
-    provider: 'GeeksforGeeks',
+    provider: 'Academic Curriculum',
     format: 'Web Guide',
-    fileUrl: 'https://www.geeksforgeeks.org/data-structures/',
-    description: 'Comprehensive guide to linear and non-linear data structures: Arrays, Linked Lists, Stacks, Queues, Trees, and Graph traversals.',
+    fileUrl: '',
+    description: 'Comprehensive academic guide to linear and non-linear data structures: Arrays, Linked Lists, Stacks, Queues, Trees, and Graph traversals.',
     downloadCount: 940,
     tags: ['DSA', 'Arrays', 'Linked List', 'Trees', 'Graphs']
   },
   {
     id: 'dsa-java-w3schools',
     subject: 'Data Structures (Java)',
-    title: 'W3Schools Java Data Structures & Collections Framework Reference',
+    title: 'Java Data Structures & Collections Framework Reference',
     unit: 'All',
     type: 'Lab Material',
-    provider: 'W3Schools',
+    provider: 'Academic Curriculum',
     format: 'Interactive Tutorial',
-    fileUrl: 'https://www.w3schools.com/java/java_data_structures.asp',
-    description: 'Hands-on interactive tutorial for Java ArrayList, LinkedList, HashMap, HashSet, and Iterator mechanisms.',
+    fileUrl: '',
+    description: 'In-depth reference for Java ArrayList, LinkedList, HashMap, HashSet, and Iterator mechanisms.',
     downloadCount: 820,
     tags: ['Java', 'Collections', 'ArrayList', 'HashMap']
   },
@@ -341,12 +341,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'os-handbook-gfg',
     subject: 'Operating Systems',
-    title: 'GeeksforGeeks Operating Systems Handbook — CPU Scheduling & Semaphores',
+    title: 'Operating Systems Comprehensive Guide — CPU Scheduling & Semaphores',
     unit: 'All',
     type: 'Lab Material',
-    provider: 'GeeksforGeeks',
+    provider: 'Academic Curriculum',
     format: 'Web Guide',
-    fileUrl: 'https://www.geeksforgeeks.org/operating-systems/',
+    fileUrl: '',
     description: 'In-depth coverage of process synchronization, CPU scheduling algorithms (FCFS, SJF, Round Robin), Banker\'s deadlock avoidance, and memory paging.',
     downloadCount: 880,
     tags: ['OS', 'Scheduling', 'Semaphores', 'Deadlock', 'LRU']
@@ -354,13 +354,13 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'os-linux-w3schools',
     subject: 'Operating Systems',
-    title: 'W3Schools Linux & UNIX Shell Scripting Interactive Handbook',
+    title: 'Linux & UNIX Shell Scripting Academic Handbook',
     unit: 1,
     type: 'Lab Material',
-    provider: 'W3Schools',
+    provider: 'Academic Curriculum',
     format: 'Interactive Tutorial',
-    fileUrl: 'https://www.w3schools.com/linux/index.php',
-    description: 'Interactive reference for POSIX shell commands, system calls, directory navigation, process management, and permissions.',
+    fileUrl: '',
+    description: 'Comprehensive guide for POSIX shell commands, system calls, directory navigation, process management, and permissions.',
     downloadCount: 760,
     tags: ['Linux', 'Shell', 'POSIX', 'Commands']
   },
@@ -384,25 +384,25 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'dbms-w3schools-sql',
     subject: 'Database Management Systems',
-    title: 'W3Schools SQL Complete Tutorial & Interactive Query Editor',
+    title: 'SQL Complete Curriculum & Relational Query Handbook',
     unit: 'All',
     type: 'Lab Material',
-    provider: 'W3Schools',
+    provider: 'Academic Curriculum',
     format: 'Interactive Tutorial',
-    fileUrl: 'https://www.w3schools.com/sql/default.asp',
-    description: 'Master SQL DDL, DML, INNER/LEFT/RIGHT JOINs, GROUP BY aggregations, Nested Queries, and subqueries with live database exercises.',
+    fileUrl: '',
+    description: 'Master SQL DDL, DML, INNER/LEFT/RIGHT JOINs, GROUP BY aggregations, Nested Queries, and subqueries.',
     downloadCount: 1420,
-    tags: ['SQL', 'DBMS', 'Joins', 'Queries', 'W3Schools']
+    tags: ['SQL', 'DBMS', 'Joins', 'Queries']
   },
   {
     id: 'dbms-gfg-guide',
     subject: 'Database Management Systems',
-    title: 'GeeksforGeeks DBMS Complete Guide — ER Models & Normalization',
+    title: 'DBMS Comprehensive Guide — ER Models & Normalization',
     unit: 'All',
     type: 'Lab Material',
-    provider: 'GeeksforGeeks',
+    provider: 'Academic Curriculum',
     format: 'Web Guide',
-    fileUrl: 'https://www.geeksforgeeks.org/dbms/',
+    fileUrl: '',
     description: 'Comprehensive tutorials on Entity-Relationship diagrams, 1NF to BCNF normalization, ACID transactions, indexing (B-Trees), and PL/SQL procedures.',
     downloadCount: 1100,
     tags: ['DBMS', 'ER Model', 'Normalization', 'PL/SQL', 'ACID']
@@ -427,12 +427,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'ai-gfg-guide',
     subject: 'Artificial Intelligence',
-    title: 'GeeksforGeeks Artificial Intelligence: Search & State Space Guide',
+    title: 'Artificial Intelligence: Heuristic Search & State Space Guide',
     unit: 'All',
     type: 'Lab Material',
-    provider: 'GeeksforGeeks',
+    provider: 'Academic Curriculum',
     format: 'Web Guide',
-    fileUrl: 'https://www.geeksforgeeks.org/artificial-intelligence-an-introduction/',
+    fileUrl: '',
     description: 'Detailed analysis of A* Heuristic Search, 8-Puzzle, Minimax with Alpha-Beta Pruning, N-Queens CSP Backtracking, and Expert Systems.',
     downloadCount: 890,
     tags: ['AI', 'A* Search', 'Minimax', 'N-Queens', 'Backtracking']
@@ -440,25 +440,25 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'ai-w3schools-python',
     subject: 'Artificial Intelligence',
-    title: 'W3Schools Python for AI & Machine Learning Tutorial',
+    title: 'Python for AI & Machine Learning Core Curriculum',
     unit: 'All',
     type: 'Lab Material',
-    provider: 'W3Schools',
+    provider: 'Academic Curriculum',
     format: 'Interactive Tutorial',
-    fileUrl: 'https://www.w3schools.com/ai/default.asp',
+    fileUrl: '',
     description: 'Introduction to AI concepts, neural network foundations, regression models, classification trees, and Python AI implementation.',
     downloadCount: 970,
-    tags: ['AI', 'Python', 'Machine Learning', 'W3Schools']
+    tags: ['AI', 'Python', 'Machine Learning']
   },
   {
     id: 'ml-w3schools-numpy',
     subject: 'Machine Learning',
-    title: 'W3Schools NumPy, Pandas & Data Science Tutorial',
+    title: 'NumPy, Pandas & Data Science Computational Handbook',
     unit: 'All',
     type: 'Lab Material',
-    provider: 'W3Schools',
+    provider: 'Academic Curriculum',
     format: 'Interactive Tutorial',
-    fileUrl: 'https://www.w3schools.com/python/numpy/default.asp',
+    fileUrl: '',
     description: 'Complete hands-on guide for multi-dimensional ndarray operations, slicing, broadcasting, Pandas DataFrames, and Matplotlib data visualization.',
     downloadCount: 1350,
     tags: ['NumPy', 'Pandas', 'Data Science', 'Python']
@@ -466,12 +466,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'ml-gfg-sklearn',
     subject: 'Machine Learning',
-    title: 'GeeksforGeeks Machine Learning with Scikit-Learn Handbook',
+    title: 'Machine Learning & Statistical Modeling Handbook',
     unit: 'All',
     type: 'Lab Material',
-    provider: 'GeeksforGeeks',
+    provider: 'Academic Curriculum',
     format: 'Web Guide',
-    fileUrl: 'https://www.geeksforgeeks.org/machine-learning/',
+    fileUrl: '',
     description: 'Supervised and unsupervised ML algorithms: Linear/Logistic Regression, Decision Trees, Random Forests, SVM, K-Means Clustering, and PCA.',
     downloadCount: 1040,
     tags: ['ML', 'Scikit-Learn', 'Regression', 'Classification']
@@ -496,12 +496,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'bigdata-gfg-hadoop',
     subject: 'Big Data Analytics',
-    title: 'GeeksforGeeks Apache Hadoop, HDFS & MapReduce Master Guide',
+    title: 'Apache Hadoop, HDFS & Distributed MapReduce Master Guide',
     unit: 'All',
     type: 'Lab Material',
-    provider: 'GeeksforGeeks',
+    provider: 'Academic Curriculum',
     format: 'Web Guide',
-    fileUrl: 'https://www.geeksforgeeks.org/big-data-tutorial/',
+    fileUrl: '',
     description: 'Detailed study of distributed storage in HDFS, NameNode/DataNode architecture, MapReduce WordCount execution, Apache Hive, and PySpark.',
     downloadCount: 710,
     tags: ['Big Data', 'Hadoop', 'HDFS', 'MapReduce', 'Spark']
@@ -509,15 +509,15 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'bigdata-w3schools-mongodb',
     subject: 'Big Data Analytics',
-    title: 'W3Schools MongoDB NoSQL Database & Aggregation Tutorial',
+    title: 'MongoDB NoSQL Database & Aggregation Pipeline Guide',
     unit: 'All',
     type: 'Lab Material',
-    provider: 'W3Schools',
+    provider: 'Academic Curriculum',
     format: 'Interactive Tutorial',
-    fileUrl: 'https://www.w3schools.com/mongodb/index.php',
+    fileUrl: '',
     description: 'CRUD operations on JSON documents, BSON structure, $match, $group, $project aggregation pipelines, and indexing strategies.',
     downloadCount: 830,
-    tags: ['MongoDB', 'NoSQL', 'Aggregation', 'W3Schools']
+    tags: ['MongoDB', 'NoSQL', 'Aggregation']
   },
   {
     id: 'bigdata-lab-manual',
@@ -539,12 +539,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'cloud-gfg-guide',
     subject: 'Cloud Service Management',
-    title: 'GeeksforGeeks Cloud Computing, AWS, Docker & Kubernetes Guide',
+    title: 'Cloud Computing, Docker & Kubernetes Engineering Guide',
     unit: 'All',
     type: 'Lab Material',
-    provider: 'GeeksforGeeks',
+    provider: 'Academic Curriculum',
     format: 'Web Guide',
-    fileUrl: 'https://www.geeksforgeeks.org/cloud-computing/',
+    fileUrl: '',
     description: 'In-depth guide on IaaS/PaaS/SaaS architectures, AWS EC2, VPC security groups, S3 storage tiers, Docker containers, and Kubernetes orchestration.',
     downloadCount: 920,
     tags: ['Cloud', 'AWS', 'Docker', 'Kubernetes', 'DevOps']
@@ -552,15 +552,15 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'cloud-w3schools-aws',
     subject: 'Cloud Service Management',
-    title: 'W3Schools AWS Cloud Services & Infrastructure Overview',
+    title: 'Cloud Architecture & Scalable Infrastructure Overview',
     unit: 'All',
     type: 'Lab Material',
-    provider: 'W3Schools',
+    provider: 'Academic Curriculum',
     format: 'Interactive Tutorial',
-    fileUrl: 'https://www.w3schools.com/aws/index.php',
-    description: 'Core concepts of AWS cloud infrastructure, serverless Lambda functions, IAM security roles, CloudWatch monitoring, and global availability zones.',
+    fileUrl: '',
+    description: 'Core concepts of cloud infrastructure, serverless Lambda functions, IAM security roles, CloudWatch monitoring, and global availability zones.',
     downloadCount: 850,
-    tags: ['AWS', 'Cloud', 'Serverless', 'W3Schools']
+    tags: ['AWS', 'Cloud', 'Serverless']
   },
   {
     id: 'cloud-lab-manual',
@@ -582,12 +582,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'networks-gfg-guide',
     subject: 'Computer Networks',
-    title: 'GeeksforGeeks Computer Network Architecture & Protocols Guide',
+    title: 'Computer Network Architecture & Protocols Engineering Guide',
     unit: 'All',
     type: 'Lab Material',
-    provider: 'GeeksforGeeks',
+    provider: 'Academic Curriculum',
     format: 'Web Guide',
-    fileUrl: 'https://www.geeksforgeeks.org/computer-network-tutorials/',
+    fileUrl: '',
     description: 'Comprehensive study of OSI & TCP/IP layers, CRC error detection, Sliding Window flow control, Dijkstra routing, and Socket programming.',
     downloadCount: 910,
     tags: ['Networks', 'TCP/IP', 'Routing', 'Dijkstra', 'Sockets']
@@ -612,12 +612,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'c-programming-gfg',
     subject: 'C Programming',
-    title: 'GeeksforGeeks C Programming Language Complete Tutorial',
+    title: 'C Programming Language Complete Academic Tutorial',
     unit: 'All',
     type: 'Lab Material',
-    provider: 'GeeksforGeeks',
+    provider: 'Academic Curriculum',
     format: 'Web Guide',
-    fileUrl: 'https://www.geeksforgeeks.org/c-programming-language/',
+    fileUrl: '',
     description: 'Pointers, memory management (malloc, calloc, free), struct data types, bitwise operators, and recursion mechanics in C.',
     downloadCount: 1180,
     tags: ['C', 'Pointers', 'Memory', 'Structures']
@@ -625,25 +625,25 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'c-programming-w3schools',
     subject: 'C Programming',
-    title: 'W3Schools C Programming Interactive Tutorial & Syntax Guide',
+    title: 'C Programming Memory Models & Syntax Handbook',
     unit: 'All',
     type: 'Lab Material',
-    provider: 'W3Schools',
+    provider: 'Academic Curriculum',
     format: 'Interactive Tutorial',
-    fileUrl: 'https://www.w3schools.com/c/index.php',
-    description: 'Beginner-friendly interactive lessons on C variables, loops, arrays, pointers, functions, and file handling.',
+    fileUrl: '',
+    description: 'Beginner-friendly lessons on C variables, loops, arrays, pointers, functions, and file handling.',
     downloadCount: 990,
-    tags: ['C', 'Syntax', 'Basics', 'W3Schools']
+    tags: ['C', 'Syntax', 'Basics']
   },
   {
     id: 'java-oop-w3schools',
     subject: 'Java OOP',
-    title: 'W3Schools Java Object-Oriented Programming (OOP) Tutorial',
+    title: 'Java Object-Oriented Programming (OOP) Master Guide',
     unit: 'All',
     type: 'Lab Material',
-    provider: 'W3Schools',
+    provider: 'Academic Curriculum',
     format: 'Interactive Tutorial',
-    fileUrl: 'https://www.w3schools.com/java/java_oop.asp',
+    fileUrl: '',
     description: 'Classes, Objects, Inheritance, Polymorphism, Abstraction, Interfaces, Encapsulation, and Exception Handling in Java.',
     downloadCount: 1220,
     tags: ['Java', 'OOP', 'Inheritance', 'Polymorphism']
@@ -651,14 +651,14 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'python-w3schools',
     subject: 'Python Programming',
-    title: 'W3Schools Python Full Tutorial with Interactive Code Sandbox',
+    title: 'Python Programming Comprehensive Core Curriculum',
     unit: 'All',
     type: 'Lab Material',
-    provider: 'W3Schools',
+    provider: 'Academic Curriculum',
     format: 'Interactive Tutorial',
-    fileUrl: 'https://www.w3schools.com/python/default.asp',
-    description: 'Python syntax, Lists, Tuples, Dictionaries, Lambda functions, OOP, Modules, and File Handling with instant web execution.',
+    fileUrl: '',
+    description: 'Python syntax, Lists, Tuples, Dictionaries, Lambda functions, OOP, Modules, and File Handling.',
     downloadCount: 1480,
-    tags: ['Python', 'Data Structures', 'Functions', 'W3Schools']
+    tags: ['Python', 'Data Structures', 'Functions']
   }
 ];

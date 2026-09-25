@@ -79,16 +79,16 @@ export function BroadAreasGrid() {
                 }}
                 className="h-full transform-gpu"
               >
-                <Card className="h-full border-border bg-card/80 backdrop-blur-xs hover:border-primary/50 transition-all duration-200 shadow-xs hover:shadow-lg flex flex-col justify-between group">
+                <Card className="h-full border-border bg-card/80 backdrop-blur-xs hover:border-primary/50 transition-all duration-200 shadow-xs hover:shadow-lg flex flex-col justify-between group rounded-none">
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2.5">
-                        <div className="p-2.5 rounded-xl bg-primary/10 text-primary border border-primary/20 group-hover:bg-primary group-hover:text-white transition-colors duration-300 shadow-2xs">
+                        <div className="p-2.5 rounded-none bg-primary/10 text-primary border border-primary/20 group-hover:bg-primary group-hover:text-white transition-colors duration-300 shadow-2xs">
                           <Icon className="h-5 w-5" />
                         </div>
-                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold tracking-wide">
+                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-none bg-primary/10 border border-primary/20 text-primary text-xs font-semibold tracking-wide">
                           <span>{lab.shortTitle}</span>
-                          <span className="w-1 h-1 rounded-full bg-primary/50" />
+                          <span className="w-1.5 h-1.5 bg-primary/50" />
                           <span className="font-mono text-[11px] font-bold opacity-90">{lab.code}</span>
                         </div>
                       </div>
@@ -110,19 +110,19 @@ export function BroadAreasGrid() {
                     <div className="space-y-3 pt-2">
                       <div className="flex flex-wrap gap-1.5">
                         {lab.tags.map((tag) => (
-                          <span key={tag} className="px-2 py-0.5 rounded bg-muted/60 text-[10px] text-muted-foreground border font-mono">
+                          <span key={tag} className="px-2 py-0.5 rounded-none bg-muted/60 text-[10px] text-muted-foreground border font-mono">
                             {tag}
                           </span>
                         ))}
                       </div>
 
                       <div className="pt-3 border-t border-border/50 flex items-center justify-between">
-                        <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-muted/60 border border-border/60 text-xs font-medium text-muted-foreground">
+                        <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-none bg-muted/60 border border-border/60 text-xs font-medium text-muted-foreground">
                           <Layers className="h-3.5 w-3.5 text-primary shrink-0" />
                           <span><strong className="font-bold text-foreground">{lab.experimentsCount}</strong> Experiments</span>
                         </div>
 
-                        <Button asChild size="sm" className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 font-bold shadow-xs">
+                        <Button asChild size="sm" className="bg-primary hover:bg-primary/90 text-white text-xs gap-1.5 font-bold shadow-xs rounded-none">
                           <Link href={`/labs/${lab.id}`} prefetch={true}>
                             <span>Enter Laboratory</span>
                             <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />

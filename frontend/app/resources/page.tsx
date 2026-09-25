@@ -152,16 +152,12 @@ export default function ResourcesPage() {
 
   const getProviderBadge = (provider: string) => {
     switch (provider) {
-      case "GeeksforGeeks":
+      case "Academic Curriculum":
+      case "Curriculum Handbook":
+      case "Official Academic Guide":
         return (
-          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
-            GeeksforGeeks
-          </span>
-        );
-      case "W3Schools":
-        return (
-          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/30">
-            W3Schools
+          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-sky-500/10 text-[#0284c7] dark:text-[#38bdf8] border border-sky-500/30">
+            Academic Curriculum
           </span>
         );
       case "Virtual Labs Manual":
@@ -207,7 +203,7 @@ export default function ResourcesPage() {
             Department <span className="bg-gradient-to-r from-primary via-rose-500 to-indigo-500 bg-clip-text text-transparent">Resource Vault</span>
           </h1>
           <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-            Direct in-app access to verified academic study materials from <strong>GeeksforGeeks</strong>, <strong>W3Schools</strong>, official documentation, video masterclasses, and interactive virtual laboratories without external redirects.
+            Direct in-app access to verified academic study materials, official institutional laboratory manuals, video masterclasses, and interactive virtual laboratories.
           </p>
         </div>
 

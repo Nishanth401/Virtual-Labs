@@ -17,7 +17,7 @@ interface LabHeaderBannerProps {
 }
 
 export function LabHeaderBanner({
-  discipline = "Computer Science and Engineering",
+  discipline = "Artificial Intelligence & Data Science",
   labName,
   experimentTitle,
   labId,
@@ -54,7 +54,7 @@ export function LabHeaderBanner({
   };
 
   return (
-    <div className="w-full bg-card border-b border-border/70 shadow-2xs font-sans">
+    <div className="w-full bg-card border-b border-border/70 shadow-2xs font-sans rounded-none">
       {/* Top Accent Strip matching reference Virtual Labs */}
       <div className="h-1.5 w-full bg-[#ea580c]" />
 
@@ -117,7 +117,7 @@ export function LabHeaderBanner({
           <Button
             size="sm"
             onClick={() => setIsRateModalOpen(true)}
-            className="h-7.5 px-3 rounded-lg text-xs font-semibold bg-[#0284c7] hover:bg-[#0369a1] text-white shadow-xs"
+            className="h-7.5 px-3 rounded-none text-xs font-semibold bg-[#0284c7] hover:bg-[#0369a1] text-white shadow-xs"
           >
             <Star className="h-3 w-3 mr-1 fill-white/80" />
             Rate Me
@@ -126,7 +126,7 @@ export function LabHeaderBanner({
           <Button
             size="sm"
             onClick={() => setIsBugModalOpen(true)}
-            className="h-7.5 px-3 rounded-lg text-xs font-semibold bg-[#0369a1] hover:bg-[#075985] text-white shadow-xs"
+            className="h-7.5 px-3 rounded-none text-xs font-semibold bg-[#0369a1] hover:bg-[#075985] text-white shadow-xs"
           >
             <Bug className="h-3 w-3 mr-1" />
             Report a Bug
@@ -149,7 +149,7 @@ export function LabHeaderBanner({
 
       {/* Rate Me Modal */}
       <Dialog open={isRateModalOpen} onOpenChange={setIsRateModalOpen}>
-        <DialogContent className="max-w-md rounded-2xl p-6">
+        <DialogContent className="max-w-md rounded-none p-6">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold font-heading">Rate This Laboratory Experience</DialogTitle>
             <DialogDescription className="text-xs text-muted-foreground">
@@ -187,16 +187,16 @@ export function LabHeaderBanner({
                   placeholder="What did you learn? How can we make the simulation smoother?"
                   value={feedbackText}
                   onChange={(e) => setFeedbackText(e.target.value)}
-                  className="text-xs min-h-[90px]"
+                  className="text-xs min-h-[90px] rounded-none"
                   required
                 />
               </div>
 
               <div className="flex justify-end gap-2 pt-2">
-                <Button type="button" variant="outline" size="sm" onClick={() => setIsRateModalOpen(false)}>
+                <Button type="button" variant="outline" size="sm" className="rounded-none" onClick={() => setIsRateModalOpen(false)}>
                   Cancel
                 </Button>
-                <Button type="submit" size="sm" className="bg-[#0284c7] hover:bg-[#0369a1] text-white">
+                <Button type="submit" size="sm" className="bg-[#0284c7] hover:bg-[#0369a1] text-white rounded-none">
                   Submit Rating
                 </Button>
               </div>
@@ -207,7 +207,7 @@ export function LabHeaderBanner({
 
       {/* Report a Bug Modal */}
       <Dialog open={isBugModalOpen} onOpenChange={setIsBugModalOpen}>
-        <DialogContent className="max-w-md rounded-2xl p-6">
+        <DialogContent className="max-w-md rounded-none p-6">
           <DialogHeader>
             <DialogTitle className="text-lg font-bold font-heading">Report a Simulation or Content Issue</DialogTitle>
             <DialogDescription className="text-xs text-muted-foreground">
@@ -229,7 +229,7 @@ export function LabHeaderBanner({
                   value={bugReport.title}
                   onChange={(e) => setBugReport({ ...bugReport, title: e.target.value })}
                   required
-                  className="text-xs h-9"
+                  className="text-xs h-9 rounded-none"
                 />
               </div>
 
@@ -241,7 +241,7 @@ export function LabHeaderBanner({
                   value={bugReport.email}
                   onChange={(e) => setBugReport({ ...bugReport, email: e.target.value })}
                   required
-                  className="text-xs h-9"
+                  className="text-xs h-9 rounded-none"
                 />
               </div>
 
@@ -252,15 +252,15 @@ export function LabHeaderBanner({
                   value={bugReport.description}
                   onChange={(e) => setBugReport({ ...bugReport, description: e.target.value })}
                   required
-                  className="text-xs min-h-[90px]"
+                  className="text-xs min-h-[90px] rounded-none"
                 />
               </div>
 
               <div className="flex justify-end gap-2 pt-2">
-                <Button type="button" variant="outline" size="sm" onClick={() => setIsBugModalOpen(false)}>
+                <Button type="button" variant="outline" size="sm" className="rounded-none" onClick={() => setIsBugModalOpen(false)}>
                   Cancel
                 </Button>
-                <Button type="submit" size="sm" className="bg-[#0369a1] hover:bg-[#075985] text-white">
+                <Button type="submit" size="sm" className="bg-[#0369a1] hover:bg-[#075985] text-white rounded-none">
                   Send Bug Report
                 </Button>
               </div>

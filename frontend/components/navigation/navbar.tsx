@@ -137,64 +137,45 @@ export function Navbar() {
   return (
     <>
       {/* ========================================================================= */}
-      {/* FASTLANE MORPHING FLOATING CAPSULE (HARDWARE ACCELERATED)                 */}
-      {/* Top: Full width with Left & Right sides spread out                       */}
-      {/* Scrolled: Left & Right glide together into centered frosted capsule      */}
+      {/* ========================================================================= */}
+      {/* CLEAN SQUARE GOVERNMENT/ACADEMIC VIRTUAL LABS NAVBAR                       */}
+      {/* Crisp rectangular border, sharp corners, matching reference screenshots    */}
       {/* ========================================================================= */}
       <motion.header
-        initial={{ y: -25, opacity: 0 }}
+        initial={{ y: -10, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.35, ease: "easeOut" }}
-        className="fixed top-3 inset-x-0 z-50 flex justify-center w-full px-2 sm:px-6 pointer-events-none transform-gpu"
+        transition={{ duration: 0.25, ease: "easeOut" }}
+        className="fixed top-0 inset-x-0 z-50 w-full border-b border-border/80 bg-background/95 backdrop-blur-xl shadow-xs"
       >
-        <div className="w-full flex items-center justify-center pointer-events-auto">
-          <motion.nav
-            layout
+        <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8">
+          <nav
             onMouseLeave={() => setHoveredHref(null)}
-            transition={{
-              layout: {
-                duration: 0.4,
-                ease: [0.16, 1, 0.3, 1],
-              },
-            }}
-            className={`hidden md:flex items-center select-none border transform-gpu will-change-transform ${
-              isScrolled
-                ? "w-fit max-w-[96vw] px-3.5 py-1.5 rounded-full border-border/80 dark:border-neutral-800/80 bg-background/95 dark:bg-neutral-950/95 backdrop-blur-2xl shadow-[0_16px_45px_rgba(0,0,0,0.18)] dark:shadow-[0_16px_45px_rgba(0,0,0,0.6)] ring-1 ring-border/20 justify-center gap-2 lg:gap-3"
-                : "w-full max-w-7xl px-5 py-2.5 rounded-full border-border/50 dark:border-neutral-800/60 bg-background/80 dark:bg-neutral-950/80 backdrop-blur-xl shadow-md justify-between"
-            }`}
+            className="hidden md:flex items-center justify-between h-14 select-none"
           >
             {/* Left Side: Brand Logo & Title */}
-            <motion.div
-              layout
-              transition={{ layout: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } }}
-              className="flex items-center shrink-0"
-            >
+            <div className="flex items-center shrink-0">
               <Link
                 href="/"
-                className="flex items-center gap-2 px-2.5 sm:px-3 py-1 rounded-full text-foreground hover:text-[#0284c7] transition-colors group select-none hover:bg-muted/40"
+                className="flex items-center gap-2.5 px-2 py-1 rounded-none text-foreground hover:text-[#0284c7] transition-colors group select-none"
               >
-                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-[#0284c7] flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform shrink-0">
-                  <FlaskConical className="h-3.5 w-3.5" />
+                <div className="w-7 h-7 rounded-full bg-[#0284c7] flex items-center justify-center text-white shadow-xs shrink-0">
+                  <FlaskConical className="h-4 w-4" />
                 </div>
                 <div className="flex items-baseline gap-1.5">
-                  <span className="font-black text-xs sm:text-sm tracking-tight font-heading text-foreground whitespace-nowrap">
+                  <span className="font-black text-sm tracking-tight font-heading text-foreground whitespace-nowrap">
                     Virtual Lab
                   </span>
                   <span className="text-[10px] font-sans font-bold text-muted-foreground uppercase tracking-wider hidden sm:inline">
-                    Studio
+                    STUDIO
                   </span>
                 </div>
               </Link>
-            </motion.div>
+            </div>
 
-            {/* Right Side: Nav Links + Glowing Pill Hover Animation + Actions */}
-            <motion.div
-              layout
-              transition={{ layout: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } }}
-              className="flex items-center gap-1 sm:gap-1.5 shrink-0"
-            >
-              {/* Navigation Links with animated hover pill */}
-              <div className="flex items-center gap-0.5 sm:gap-1">
+            {/* Right Side: Nav Links + Square Hover Animation + Actions */}
+            <div className="flex items-center gap-1.5 shrink-0">
+              {/* Navigation Links */}
+              <div className="flex items-center gap-1">
                 {NAV_ITEMS.map((item) => {
                   const active = isItemActive(item.href);
                   const isHovered = hoveredHref === item.href;
@@ -205,23 +186,12 @@ export function Navbar() {
                       key={item.href}
                       href={item.href}
                       onMouseEnter={() => setHoveredHref(item.href)}
-                      className={`relative px-2.5 sm:px-3 py-1 rounded-full text-xs font-semibold transition-colors duration-200 z-10 select-none tracking-wide whitespace-nowrap ${
+                      className={`relative px-3 py-1.5 rounded-none text-xs font-semibold transition-colors duration-150 z-10 select-none tracking-wide whitespace-nowrap ${
                         isHighlighted
-                          ? "text-white font-bold"
-                          : "text-muted-foreground hover:text-foreground font-medium"
+                          ? "text-white font-bold bg-[#0284c7]"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted/60 font-medium"
                       }`}
                     >
-                      {isHighlighted && (
-                        <motion.div
-                          layoutId="fastlane-navbar-active-pill"
-                          className="absolute inset-0 rounded-full bg-[#0284c7] shadow-sm -z-10"
-                          transition={{
-                            type: "spring",
-                            stiffness: 450,
-                            damping: 32,
-                          }}
-                        />
-                      )}
                       <span>{item.name}</span>
                     </Link>
                   );
@@ -229,36 +199,37 @@ export function Navbar() {
               </div>
 
               {/* Divider */}
-              <div className="h-4 w-[1px] bg-border/60 mx-0.5 sm:mx-1" />
+              <div className="h-5 w-[1px] bg-border/80 mx-1.5" />
 
               {/* Actions: Search + Student Profile Badge + Dashboard + Theme */}
-              <div className="flex items-center gap-1 sm:gap-1.5 pl-0.5">
+              <div className="flex items-center gap-2 pl-0.5">
                 {/* Search Button */}
                 <button
                   type="button"
                   onClick={() => setSearchOpen(true)}
-                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-all cursor-pointer shrink-0"
+                  className="h-8 px-2.5 rounded-none border border-border/80 flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-all cursor-pointer shrink-0"
                   title="Search labs & algorithms (Ctrl+K)"
                 >
                   <Search className="h-3.5 w-3.5" />
+                  <span className="text-[11px] hidden lg:inline font-mono">Ctrl+K</span>
                 </button>
 
                 {/* Student Profile Badge */}
                 {mounted && activeStudentName ? (
-                  <div className="flex items-center gap-1">
-                    <div className="flex items-center gap-1.5 px-2.5 py-0.5 sm:py-1 rounded-full border border-border/80 bg-muted/40 hover:bg-muted text-xs font-bold text-foreground transition-all cursor-pointer shadow-xs whitespace-nowrap">
-                      <div className="w-4 h-4 rounded-full bg-[#0284c7] text-white flex items-center justify-center text-[9px] font-bold shrink-0">
+                  <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-none border border-border/80 bg-muted/40 hover:bg-muted text-xs font-bold text-foreground transition-all cursor-pointer shadow-2xs whitespace-nowrap">
+                      <div className="w-4 h-4 rounded-none bg-[#0284c7] text-white flex items-center justify-center text-[9px] font-bold shrink-0">
                         {activeStudentName[0]?.toUpperCase() || "S"}
                       </div>
-                      <span className="font-bold max-w-[80px] sm:max-w-[95px] truncate text-xs capitalize">
+                      <span className="font-bold max-w-[85px] sm:max-w-[110px] truncate text-xs capitalize">
                         {activeStudentName}
                       </span>
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-none bg-emerald-500 animate-pulse shrink-0" />
                     </div>
 
                     <Link
                       href="/dashboard"
-                      className="hidden xl:flex items-center gap-1 px-2.5 py-0.5 sm:py-1 rounded-full text-xs font-bold bg-sky-500/10 hover:bg-[#0284c7] text-[#0284c7] hover:text-white border border-[#0284c7]/30 transition-all cursor-pointer whitespace-nowrap"
+                      className="hidden xl:flex items-center gap-1 px-2.5 py-1 rounded-none text-xs font-bold bg-sky-500/10 hover:bg-[#0284c7] text-[#0284c7] hover:text-white border border-[#0284c7]/30 transition-all cursor-pointer whitespace-nowrap"
                       title="Go to Student Dashboard"
                     >
                       <span>Dashboard</span>
@@ -268,7 +239,7 @@ export function Navbar() {
                 ) : (
                   <Link
                     href="/auth/login"
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#0284c7] hover:bg-[#0369a1] text-white shadow-xs transition-all cursor-pointer hover:scale-105 whitespace-nowrap"
+                    className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-none text-xs font-bold bg-[#0284c7] hover:bg-[#0369a1] text-white shadow-xs transition-all cursor-pointer whitespace-nowrap"
                   >
                     <LogIn className="h-3.5 w-3.5" />
                     <span>Sign In</span>
@@ -277,23 +248,23 @@ export function Navbar() {
 
                 <ModeToggle />
               </div>
-            </motion.div>
-          </motion.nav>
+            </div>
+          </nav>
 
           {/* Mobile Header View */}
-          <div className="md:hidden w-full px-4 py-2 rounded-2xl border border-border/70 bg-background/90 backdrop-blur-xl shadow-md flex items-center justify-between">
+          <div className="md:hidden w-full h-14 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2 text-foreground">
-              <div className="w-7 h-7 rounded-lg bg-[#0284c7] flex items-center justify-center text-white">
+              <div className="w-7 h-7 rounded-full bg-[#0284c7] flex items-center justify-center text-white">
                 <FlaskConical className="h-3.5 w-3.5" />
               </div>
-              <span className="font-black text-xs font-heading">Virtual Lab</span>
+              <span className="font-black text-xs font-heading">Virtual Lab STUDIO</span>
             </Link>
 
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => setSearchOpen(true)}
-                className="p-1.5 rounded-full text-muted-foreground"
+                className="p-1.5 rounded-none border border-border text-muted-foreground"
               >
                 <Search className="h-3.5 w-3.5" />
               </button>
@@ -301,7 +272,7 @@ export function Navbar() {
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-1.5 rounded-full text-muted-foreground"
+                className="p-1.5 rounded-none border border-border text-muted-foreground"
               >
                 {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
               </button>
@@ -312,13 +283,13 @@ export function Navbar() {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden fixed top-16 inset-x-4 z-50 p-3 rounded-2xl border border-border/80 bg-background/95 backdrop-blur-2xl shadow-2xl space-y-1.5">
+        <div className="md:hidden fixed top-14 inset-x-0 z-50 p-4 border-b border-border bg-background/98 backdrop-blur-2xl shadow-xl space-y-1 rounded-none">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={() => setMobileMenuOpen(false)}
-              className="block px-3.5 py-2 rounded-xl text-xs font-semibold text-foreground hover:bg-muted"
+              className="block px-3 py-2 rounded-none text-xs font-semibold text-foreground hover:bg-muted"
             >
               {item.name}
             </Link>
@@ -326,7 +297,7 @@ export function Navbar() {
           <Link
             href="/dashboard"
             onClick={() => setMobileMenuOpen(false)}
-            className="block px-3.5 py-2 rounded-xl text-xs font-semibold text-foreground hover:bg-muted"
+            className="block px-3 py-2 rounded-none text-xs font-semibold text-foreground hover:bg-muted"
           >
             Student Dashboard
           </Link>
@@ -335,9 +306,9 @@ export function Navbar() {
 
       {/* Global Search Dialog Modal */}
       <Dialog open={searchOpen} onOpenChange={setSearchOpen}>
-        <DialogContent className="max-w-xl p-0 overflow-hidden bg-background border border-border shadow-2xl rounded-2xl">
+        <DialogContent className="max-w-xl p-0 overflow-hidden bg-background border border-border shadow-2xl rounded-none">
           <DialogHeader className="p-4 pb-0">
-            <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-muted/50 border border-border/60">
+            <div className="flex items-center gap-2.5 px-3 py-2 rounded-none bg-muted/50 border border-border/60">
               <Search className="h-4 w-4 text-muted-foreground" />
               <input
                 value={searchQuery}
@@ -366,7 +337,7 @@ export function Navbar() {
                   setSearchOpen(false);
                   router.push(item.url);
                 }}
-                className="p-2.5 rounded-xl hover:bg-muted/60 transition-colors cursor-pointer flex items-start justify-between gap-3 group"
+                className="p-2.5 rounded-none hover:bg-muted/60 transition-colors cursor-pointer flex items-start justify-between gap-3 group"
               >
                 <div className="space-y-0.5 min-w-0">
                   <div className="flex items-center gap-2">

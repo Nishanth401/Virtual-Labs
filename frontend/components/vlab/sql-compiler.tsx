@@ -83,8 +83,8 @@ function createSeedDatabase(): Record<string, SqlTable> {
         { name: "location", type: "VARCHAR", isNullable: true }
       ],
       rows: [
-        { dept_id: 1, dept_name: "Computer Science & Eng", budget: 850000.00, location: "Turing Block" },
-        { dept_id: 2, dept_name: "Artificial Intelligence & DS", budget: 920000.00, location: "Von Neumann Hall" },
+        { dept_id: 1, dept_name: "Artificial Intelligence & DS", budget: 850000.00, location: "Turing Block" },
+        { dept_id: 2, dept_name: "Data Science & Analytics", budget: 920000.00, location: "Von Neumann Hall" },
         { dept_id: 3, dept_name: "Information Technology", budget: 740000.00, location: "Lovelace Tower" },
         { dept_id: 4, dept_name: "Electronics & Comm", budget: 680000.00, location: "Shannon Wing" }
       ]
@@ -1343,12 +1343,12 @@ ORDER BY s.gpa DESC;`
   }, [sqlCode]);
 
   return (
-    <div className="w-full rounded-2xl border border-border bg-card shadow-sm overflow-hidden flex flex-col font-sans transition-all">
+    <div className="w-full rounded-none border border-border bg-card shadow-sm overflow-hidden flex flex-col font-sans transition-all">
       {/* 1. TOP HEADER BAR (EXACT LEETCODE STYLE FROM PIC 2) */}
       <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/80 bg-card/90">
         {/* Left: Language Selector Dropdown Pill */}
         <div className="flex items-center gap-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-border/80 bg-muted/30 text-xs font-semibold text-foreground shadow-2xs hover:bg-muted/60 transition-colors cursor-pointer">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-none border border-border/80 bg-muted/30 text-xs font-semibold text-foreground shadow-2xs hover:bg-muted/60 transition-colors cursor-pointer">
             <Database className="h-3.5 w-3.5 text-blue-500" />
             <span>SQL (Relational Engine)</span>
             <ChevronDown className="h-3.5 w-3.5 text-muted-foreground ml-0.5" />
@@ -1366,7 +1366,7 @@ ORDER BY s.gpa DESC;`
           <button
             type="button"
             onClick={() => setSqlCode("")}
-            className="inline-flex items-center justify-center h-8 px-3 rounded-xl border border-border/80 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors cursor-pointer shadow-2xs"
+            className="inline-flex items-center justify-center h-8 px-3 rounded-none border border-border/80 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors cursor-pointer shadow-2xs"
             title="Clear Editor Code"
           >
             Clear
@@ -1376,11 +1376,11 @@ ORDER BY s.gpa DESC;`
             type="button"
             onClick={handleRunSql}
             disabled={isExecuting}
-            className="inline-flex items-center justify-center h-8 px-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-98 text-white text-xs font-bold gap-1.5 shadow-sm shadow-blue-500/20 transition-all cursor-pointer"
+            className="inline-flex items-center justify-center h-8 px-3.5 rounded-none bg-blue-600 hover:bg-blue-700 active:scale-98 text-white text-xs font-bold gap-1.5 shadow-sm shadow-blue-500/20 transition-all cursor-pointer"
             title="Run SQL Query (Ctrl + Enter)"
           >
             {isExecuting ? (
-              <span className="h-3.5 w-3.5 rounded-full border-2 border-white/40 border-t-white animate-spin" />
+              <span className="h-3.5 w-3.5 rounded-none border-2 border-white/40 border-t-white animate-spin" />
             ) : (
               <Play className="h-3.5 w-3.5 fill-current" />
             )}
@@ -1390,7 +1390,7 @@ ORDER BY s.gpa DESC;`
           <button
             type="button"
             onClick={handleResetDb}
-            className="inline-flex items-center justify-center h-8 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-98 text-white text-xs font-bold gap-1.5 shadow-sm shadow-emerald-500/20 transition-all cursor-pointer"
+            className="inline-flex items-center justify-center h-8 px-3 rounded-none bg-emerald-600 hover:bg-emerald-700 active:scale-98 text-white text-xs font-bold gap-1.5 shadow-sm shadow-emerald-500/20 transition-all cursor-pointer"
             title="Reset Database to Seed State"
           >
             <Cloud className="h-3.5 w-3.5" />
@@ -1440,7 +1440,7 @@ ORDER BY s.gpa DESC;`
                 setActiveBottomTab("results");
                 setIsDrawerOpen(true);
               }}
-              className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3 py-1 rounded-none text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
                 activeBottomTab === "results"
                   ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs font-bold"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
@@ -1449,7 +1449,7 @@ ORDER BY s.gpa DESC;`
               <TableIcon className="h-3.5 w-3.5" />
               <span>Sample Tests / Results</span>
               {queryResults.length > 0 && queryResults[0].rows && (
-                <span className="text-[10px] bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-1.5 py-0.2 rounded-full font-mono font-bold">
+                <span className="text-[10px] bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-1.5 py-0.2 rounded-none font-mono font-bold">
                   {queryResults[0].rows.length}
                 </span>
               )}
@@ -1462,7 +1462,7 @@ ORDER BY s.gpa DESC;`
                 setActiveBottomTab("schema");
                 setIsDrawerOpen(true);
               }}
-              className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3 py-1 rounded-none text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
                 activeBottomTab === "schema"
                   ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs font-bold"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
@@ -1479,7 +1479,7 @@ ORDER BY s.gpa DESC;`
                 setActiveBottomTab("logs");
                 setIsDrawerOpen(true);
               }}
-              className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3 py-1 rounded-none text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
                 activeBottomTab === "logs"
                   ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs font-bold"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
@@ -1497,7 +1497,7 @@ ORDER BY s.gpa DESC;`
                   setActiveBottomTab("presets");
                   setIsDrawerOpen(true);
                 }}
-                className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+                className={`px-3 py-1 rounded-none text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
                   activeBottomTab === "presets"
                     ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs font-bold"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
@@ -1515,7 +1515,7 @@ ORDER BY s.gpa DESC;`
               <button
                 type="button"
                 onClick={() => handleExportCsv(queryResults[0])}
-                className="hidden sm:inline-flex items-center gap-1 text-[11px] font-mono text-muted-foreground hover:text-foreground px-2 py-0.5 rounded-lg border border-border/60 hover:bg-muted/40 cursor-pointer"
+                className="hidden sm:inline-flex items-center gap-1 text-[11px] font-mono text-muted-foreground hover:text-foreground px-2 py-0.5 rounded-none border border-border/60 hover:bg-muted/40 cursor-pointer"
                 title="Export results to CSV"
               >
                 <Download className="h-3 w-3" />
@@ -1526,7 +1526,7 @@ ORDER BY s.gpa DESC;`
             <button
               type="button"
               onClick={() => setIsDrawerOpen(!isDrawerOpen)}
-              className="p-1 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors cursor-pointer"
+              className="p-1 rounded-none text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors cursor-pointer"
               title={isDrawerOpen ? "Collapse drawer" : "Expand drawer"}
             >
               {isDrawerOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
@@ -1550,14 +1550,14 @@ ORDER BY s.gpa DESC;`
                     {queryResults.map((res, qIdx) => (
                       <div key={qIdx} className="space-y-2">
                         {/* Status Message / Metric Bar */}
-                        <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-xl bg-card border border-border text-xs">
+                        <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-none bg-card border border-border text-xs">
                           <div className="flex items-center gap-2 min-w-0">
                             <Badge
                               variant="outline"
                               className={
                                 res.error
-                                  ? "bg-rose-500/10 text-rose-500 border-rose-500/30 text-[10px] font-mono"
-                                  : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 text-[10px] font-mono"
+                                  ? "bg-rose-500/10 text-rose-500 border-rose-500/30 text-[10px] font-mono rounded-none"
+                                  : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 text-[10px] font-mono rounded-none"
                               }
                             >
                               {res.type}
@@ -1580,7 +1580,7 @@ ORDER BY s.gpa DESC;`
 
                         {/* Error State */}
                         {res.error && (
-                          <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs flex items-start gap-2">
+                          <div className="p-3 rounded-none bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs flex items-start gap-2">
                             <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
                             <div>
                               <span className="font-bold font-mono">SQL Error: </span>
@@ -1591,7 +1591,7 @@ ORDER BY s.gpa DESC;`
 
                         {/* Success / Info Message */}
                         {res.message && !res.error && (
-                          <div className="p-2.5 rounded-xl bg-emerald-500/5 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs flex items-center gap-2 font-mono">
+                          <div className="p-2.5 rounded-none bg-emerald-500/5 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs flex items-center gap-2 font-mono">
                             <CheckCircle2 className="h-4 w-4 shrink-0" />
                             <span>{res.message}</span>
                           </div>
@@ -1599,7 +1599,7 @@ ORDER BY s.gpa DESC;`
 
                         {/* Tabular Data Grid */}
                         {res.rows && res.rows.length > 0 && res.columns && (
-                          <div className="border border-border rounded-xl overflow-hidden shadow-2xs bg-card">
+                          <div className="border border-border rounded-none overflow-hidden shadow-2xs bg-card">
                             <table className="w-full text-left text-xs border-collapse">
                               <thead className="bg-muted/80 text-muted-foreground font-semibold sticky top-0 border-b border-border">
                                 <tr>
@@ -1650,7 +1650,7 @@ ORDER BY s.gpa DESC;`
                       <button
                         key={table.name}
                         onClick={() => setSelectedTable(table.name)}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-none border text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                           isSelected
                             ? "bg-primary text-primary-foreground border-primary shadow-2xs"
                             : "bg-card hover:bg-muted text-muted-foreground hover:text-foreground border-border"
@@ -1658,7 +1658,7 @@ ORDER BY s.gpa DESC;`
                       >
                         <TableIcon className="h-3.5 w-3.5" />
                         <span>{table.name}</span>
-                        <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-muted text-muted-foreground font-mono">
+                        <span className="text-[10px] px-1.5 py-0.2 rounded-none bg-muted text-muted-foreground font-mono">
                           {table.rows.length}
                         </span>
                       </button>
@@ -1667,7 +1667,7 @@ ORDER BY s.gpa DESC;`
                 </div>
 
                 {currentActiveTable && (
-                  <div className="border border-border rounded-xl overflow-hidden bg-card text-xs">
+                  <div className="border border-border rounded-none overflow-hidden bg-card text-xs">
                     <table className="w-full text-left font-mono">
                       <thead className="bg-muted/60 text-muted-foreground border-b border-border">
                         <tr>
@@ -1687,9 +1687,9 @@ ORDER BY s.gpa DESC;`
                             <td className="p-2 text-blue-500 font-semibold">{col.type}</td>
                             <td className="p-2">
                               {col.isPrimary ? (
-                                <Badge className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30 text-[10px]">PRIMARY KEY</Badge>
+                                <Badge className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30 text-[10px] rounded-none">PRIMARY KEY</Badge>
                               ) : col.isUnique ? (
-                                <Badge variant="outline" className="text-[10px] border-blue-500/30 text-blue-400">UNIQUE</Badge>
+                                <Badge variant="outline" className="text-[10px] border-blue-500/30 text-blue-400 rounded-none">UNIQUE</Badge>
                               ) : "—"}
                             </td>
                             <td className="p-2 text-muted-foreground">{col.isNullable !== false ? "YES" : "NO"}</td>
@@ -1709,7 +1709,7 @@ ORDER BY s.gpa DESC;`
                   <div className="text-muted-foreground p-3 text-center">[SYSTEM] Engine online with 6 tables ready.</div>
                 ) : (
                   queryResults.map((r, idx) => (
-                    <div key={idx} className="p-2 rounded-lg bg-card border border-border flex items-center justify-between">
+                    <div key={idx} className="p-2 rounded-none bg-card border border-border flex items-center justify-between">
                       <span className="text-blue-500">&gt; {r.statement}</span>
                       <span className="text-[11px] text-muted-foreground">{r.executionTimeMs} ms</span>
                     </div>
@@ -1735,7 +1735,7 @@ ORDER BY s.gpa DESC;`
                         setActiveBottomTab("results");
                       }, 50);
                     }}
-                    className="p-2.5 rounded-xl border border-border bg-card hover:border-blue-500/40 hover:bg-blue-500/5 text-left text-xs transition-all cursor-pointer shadow-2xs space-y-1"
+                    className="p-2.5 rounded-none border border-border bg-card hover:border-blue-500/40 hover:bg-blue-500/5 text-left text-xs transition-all cursor-pointer shadow-2xs space-y-1"
                   >
                     <div className="font-bold text-foreground flex items-center gap-1.5">
                       <Zap className="h-3.5 w-3.5 text-amber-500" />
