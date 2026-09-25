@@ -91,7 +91,8 @@ export function ExperimentAssessmentView({
   const calculateScore = () => {
     let correct = 0;
     defaultQuestions.forEach((q, idx) => {
-      if (selectedAnswers[idx] === q.correctAnswer) {
+      const correctIdx = (q as any).correctIndex ?? (q as any).correctAnswer ?? 0;
+      if (selectedAnswers[idx] === correctIdx) {
         correct += 1;
       }
     });
@@ -154,9 +155,10 @@ export function ExperimentAssessmentView({
       {/* Questions List */}
       <form onSubmit={handleSubmit} className="space-y-6 pt-2">
         {defaultQuestions.map((q, qIdx) => {
+          const correctIdx = (q as any).correctIndex ?? (q as any).correctAnswer ?? 0;
           const selected = selectedAnswers[qIdx];
-          const isCorrect = isSubmitted && selected === q.correctAnswer;
-          const isWrong = isSubmitted && selected !== undefined && selected !== q.correctAnswer;
+          const isCorrect = isSubmitted && selected === correctIdx;
+          const isWrong = isSubmitted && selected !== undefined && selected !== correctIdx;
 
           return (
             <div key={q.id || qIdx} className="space-y-2.5 text-sm">
@@ -170,7 +172,7 @@ export function ExperimentAssessmentView({
                 {q.options.map((opt, optIdx) => {
                   const letter = String.fromCharCode(97 + optIdx); // a, b, c, d
                   const isOptSelected = selected === optIdx;
-                  const isOptAnswer = isSubmitted && optIdx === q.correctAnswer;
+                  const isOptAnswer = isSubmitted && optIdx === correctIdx;
 
                   return (
                     <label

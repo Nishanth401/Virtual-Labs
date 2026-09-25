@@ -39,7 +39,7 @@ export function ExperimentNavigationSidebar({
 }: ExperimentNavigationSidebarProps) {
   return (
     <aside className={cn("w-full lg:w-56 shrink-0", className)}>
-      <div className="sticky top-24 space-y-1 pr-4 border-r border-border/80 min-h-[420px]">
+      <div className="sticky top-24 space-y-2 pr-4 border-r border-border/60 min-h-[460px]">
         {EXPERIMENT_TABS.map((tab) => {
           const isActive = activeTab === tab.id;
 
@@ -49,10 +49,10 @@ export function ExperimentNavigationSidebar({
               type="button"
               onClick={() => onTabChange(tab.id)}
               className={cn(
-                "w-full text-left py-2.5 px-3 text-sm font-semibold transition-all rounded-none flex items-center justify-between cursor-pointer",
+                "w-full text-left py-2 px-2 text-base transition-all flex items-center justify-between cursor-pointer",
                 isActive
-                  ? "text-[#ea580c] dark:text-[#f97316] font-bold bg-orange-500/10 dark:bg-orange-950/30 border-l-4 border-l-[#ea580c] pl-3"
-                  : "text-[#0284c7] dark:text-[#38bdf8] hover:text-[#ea580c] hover:bg-muted/40"
+                  ? "text-[#ea580c] dark:text-[#f97316] font-bold"
+                  : "text-[#0284c7] dark:text-[#38bdf8] font-normal hover:text-[#ea580c] hover:underline"
               )}
             >
               <span>{tab.label}</span>

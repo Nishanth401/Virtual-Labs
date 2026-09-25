@@ -54,97 +54,134 @@ export function LabHeaderBanner({
   };
 
   return (
-    <div className="w-full bg-card border-b border-border/70 shadow-2xs font-sans rounded-none">
-      {/* Top Accent Strip matching reference Virtual Labs */}
-      <div className="h-1.5 w-full bg-[#ea580c]" />
+    <div className="w-full bg-background border-b border-border/60 font-sans">
+      {/* Official Top Bar matching Screenshots 112447, 112538 */}
+      <div className="w-full bg-white dark:bg-card border-b border-border/40">
+        <div className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-4">
+          {/* Left Brand: Hamburger + MoE Virtual Labs Logo */}
+          <div className="flex items-center gap-3">
+            <Link
+              href="/labs"
+              className="p-1.5 text-muted-foreground hover:text-foreground transition-colors"
+              title="Toggle Navigation"
+            >
+              <span className="text-xl font-bold leading-none">☰</span>
+            </Link>
 
-      <div className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row md:items-center justify-between gap-3">
-        {/* Breadcrumb Hierarchy matching Screenshot 112447 / 112538 */}
-        <div className="flex flex-wrap items-center gap-2 text-sm font-normal text-[#0284c7] dark:text-[#38bdf8]">
-          <Link href="/labs" className="hover:underline">
-            {discipline}
-          </Link>
+            <Link href="/" className="flex items-center gap-2.5 group">
+              {/* Virtual Labs SVG Flask/Laptop emblem matching MoE logo */}
+              <div className="flex items-center gap-2">
+                <div className="relative w-8 h-8 rounded-none border border-emerald-600/40 bg-emerald-50 dark:bg-emerald-950/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                  <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current stroke-2">
+                    <path d="M10 2v7.31L4.69 17.5a2 2 0 0 0 1.62 3.12h11.38a2 2 0 0 0 1.62-3.12L14 9.31V2" />
+                    <line x1="8.5" y1="2" x2="15.5" y2="2" />
+                    <line x1="7" y1="14" x2="17" y2="14" />
+                  </svg>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-base font-black tracking-tight leading-tight text-[#0284c7] dark:text-[#38bdf8] font-heading">
+                    Virtual Labs
+                  </span>
+                  <span className="text-[9px] font-sans text-muted-foreground leading-none">
+                    An MoE Govt of India Initiative
+                  </span>
+                </div>
+              </div>
+            </Link>
+          </div>
 
-          {labName && (
-            <>
-              <span className="text-muted-foreground/60 font-semibold">›</span>
-              {labId ? (
-                <Link href={`/labs/${labId}`} className="hover:underline">
-                  {labName}
-                </Link>
-              ) : (
-                <span>{labName}</span>
-              )}
-            </>
-          )}
+          {/* Right Tools: Star Rating, Rate Me, Report a Bug, Top Links */}
+          <div className="flex items-center gap-3 sm:gap-4">
+            {/* Interactive Star Rating matching Screenshots 112447 & 112538 */}
+            <div className="flex items-center gap-0.5" title="Rate this lab / experiment">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  type="button"
+                  onClick={() => {
+                    setRating(star);
+                    setIsRateModalOpen(true);
+                  }}
+                  onMouseEnter={() => setHoverRating(star)}
+                  onMouseLeave={() => setHoverRating(null)}
+                  className="text-amber-400 hover:scale-110 transition-transform p-0.5 cursor-pointer"
+                >
+                  <Star
+                    className={`h-4 w-4 ${
+                      (hoverRating !== null ? star <= hoverRating : star <= rating)
+                        ? "fill-amber-400 text-amber-400"
+                        : "text-amber-400/30"
+                    }`}
+                  />
+                </button>
+              ))}
+            </div>
 
-          {experimentTitle && (
-            <>
-              <span className="text-muted-foreground/60 font-semibold">›</span>
-              <span className="text-foreground font-medium">Experiments</span>
-            </>
-          )}
-        </div>
-
-        {/* Right Tools: Star Rating, Rate Me, Report a Bug, Top Links */}
-        <div className="flex flex-wrap items-center gap-3">
-          {/* Interactive Star Rating */}
-          <div className="flex items-center gap-0.5" title="User Rating">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <button
-                key={star}
-                type="button"
-                onClick={() => {
-                  setRating(star);
-                  setIsRateModalOpen(true);
-                }}
-                onMouseEnter={() => setHoverRating(star)}
-                onMouseLeave={() => setHoverRating(null)}
-                className="text-amber-400 hover:scale-110 transition-transform p-0.5 cursor-pointer"
+            {/* Action Buttons: Rate Me & Report a Bug (Screenshot 112538) */}
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                onClick={() => setIsRateModalOpen(true)}
+                className="h-8 px-3.5 rounded-full text-xs font-semibold bg-[#0284c7] hover:bg-[#0369a1] text-white shadow-xs"
               >
-                <Star
-                  className={`h-4 w-4 ${
-                    (hoverRating !== null ? star <= hoverRating : star <= rating)
-                      ? "fill-amber-400 text-amber-400"
-                      : "text-muted-foreground/40"
-                  }`}
-                />
-              </button>
-            ))}
-          </div>
+                Rate Me
+              </Button>
 
-          {/* Action Buttons matching reference */}
-          <Button
-            size="sm"
-            onClick={() => setIsRateModalOpen(true)}
-            className="h-7.5 px-3 rounded-none text-xs font-semibold bg-[#0284c7] hover:bg-[#0369a1] text-white shadow-xs"
-          >
-            <Star className="h-3 w-3 mr-1 fill-white/80" />
-            Rate Me
-          </Button>
+              <Button
+                size="sm"
+                onClick={() => setIsBugModalOpen(true)}
+                className="h-8 px-3.5 rounded-full text-xs font-semibold bg-[#0284c7] hover:bg-[#0369a1] text-white shadow-xs"
+              >
+                Report a Bug
+              </Button>
+            </div>
 
-          <Button
-            size="sm"
-            onClick={() => setIsBugModalOpen(true)}
-            className="h-7.5 px-3 rounded-none text-xs font-semibold bg-[#0369a1] hover:bg-[#075985] text-white shadow-xs"
-          >
-            <Bug className="h-3 w-3 mr-1" />
-            Report a Bug
-          </Button>
-
-          {/* Top nav links */}
-          <div className="hidden lg:flex items-center gap-3 pl-2 border-l border-border text-xs font-semibold text-muted-foreground">
-            <Link href="/" className="hover:text-primary transition-colors">
-              HOME
-            </Link>
-            <Link href="/colleges" className="hover:text-primary transition-colors">
-              PARTNERS
-            </Link>
-            <Link href="/faculty" className="hover:text-primary transition-colors">
-              CONTACT
-            </Link>
+            {/* Top nav links (Screenshot 112447: HOME, PARTNERS, CONTACT) */}
+            <div className="hidden lg:flex items-center gap-4 pl-3 border-l border-border text-xs font-bold text-[#0284c7] dark:text-[#38bdf8]">
+              <Link href="/" className="hover:underline transition-colors uppercase">
+                HOME
+              </Link>
+              <Link href="/colleges" className="hover:underline transition-colors uppercase">
+                PARTNERS
+              </Link>
+              <Link href="/faculty" className="hover:underline transition-colors uppercase">
+                CONTACT
+              </Link>
+            </div>
           </div>
         </div>
+      </div>
+
+      {/* Prominent Bright Orange Horizontal Line matching Screenshots 112447, 112538 */}
+      <div className="h-1 bg-[#ea580c] w-full" />
+
+      {/* Breadcrumb Hierarchy matching Screenshot 112447 & 112538 */}
+      <div className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center gap-2 text-sm sm:text-base font-medium text-[#0284c7] dark:text-[#38bdf8]">
+        <Link href="/labs" className="hover:underline">
+          {discipline}
+        </Link>
+
+        {labName && (
+          <>
+            <span className="text-muted-foreground font-semibold px-0.5">&gt;</span>
+            {labId ? (
+              <Link href={`/labs/${labId}`} className="hover:underline">
+                {labName}
+              </Link>
+            ) : (
+              <span>{labName}</span>
+            )}
+          </>
+        )}
+
+        {experimentTitle && (
+          <>
+            <span className="text-muted-foreground font-semibold px-0.5">&gt;</span>
+            <span className="hover:underline text-[#0284c7] dark:text-[#38bdf8]">
+              Experiments
+            </span>
+          </>
+        )}
       </div>
 
       {/* Rate Me Modal */}
