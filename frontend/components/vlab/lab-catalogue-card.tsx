@@ -27,7 +27,7 @@ export function LabCatalogueCard({ lab }: LabCatalogueCardProps) {
   ];
 
   return (
-    <div className="w-full bg-card border border-border/80 rounded-xl overflow-hidden shadow-2xs hover:border-primary/40 transition-all flex flex-col md:flex-row md:items-stretch justify-between">
+    <div className="w-full bg-card border border-border/80 rounded-none overflow-hidden shadow-2xs hover:border-primary/40 transition-all flex flex-col md:flex-row md:items-stretch justify-between">
       {/* Left Content Area */}
       <div className="p-4 sm:p-5 flex-1 space-y-3">
         <div className="space-y-1">
@@ -46,7 +46,7 @@ export function LabCatalogueCard({ lab }: LabCatalogueCardProps) {
           <button
             type="button"
             onClick={() => setIsBooksOpen((prev) => !prev)}
-            className="inline-flex items-center gap-1 hover:underline cursor-pointer py-0.5"
+            className="inline-flex items-center gap-1 hover:underline cursor-pointer py-0.5 rounded-none"
           >
             <span>Reference Books</span>
             {isBooksOpen ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
@@ -55,7 +55,7 @@ export function LabCatalogueCard({ lab }: LabCatalogueCardProps) {
           <button
             type="button"
             onClick={() => setIsSyllabusOpen((prev) => !prev)}
-            className="inline-flex items-center gap-1 hover:underline cursor-pointer py-0.5"
+            className="inline-flex items-center gap-1 hover:underline cursor-pointer py-0.5 rounded-none"
           >
             <span>Syllabus Mapping</span>
             {isSyllabusOpen ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
@@ -64,7 +64,7 @@ export function LabCatalogueCard({ lab }: LabCatalogueCardProps) {
 
         {/* Expanded Reference Books Drawer */}
         {isBooksOpen && (
-          <div className="p-3 bg-muted/40 rounded-lg border border-border text-xs space-y-1 text-foreground/90 animate-in fade-in-50 duration-200">
+          <div className="p-3 bg-muted/40 rounded-none border border-border text-xs space-y-1 text-foreground/90 animate-in fade-in-50 duration-200">
             <p className="font-bold text-foreground text-[11px] uppercase tracking-wider mb-1 flex items-center gap-1.5">
               <BookOpen className="h-3.5 w-3.5 text-primary" /> Recommended Textbooks:
             </p>
@@ -78,7 +78,7 @@ export function LabCatalogueCard({ lab }: LabCatalogueCardProps) {
 
         {/* Expanded Syllabus Mapping Drawer */}
         {isSyllabusOpen && (
-          <div className="p-3 bg-muted/40 rounded-lg border border-border text-xs space-y-1 text-foreground/90 animate-in fade-in-50 duration-200">
+          <div className="p-3 bg-muted/40 rounded-none border border-border text-xs space-y-1 text-foreground/90 animate-in fade-in-50 duration-200">
             <p className="font-bold text-foreground text-[11px] uppercase tracking-wider mb-1 flex items-center gap-1.5">
               <GraduationCap className="h-3.5 w-3.5 text-primary" /> Curriculum Mapping:
             </p>
@@ -92,7 +92,7 @@ export function LabCatalogueCard({ lab }: LabCatalogueCardProps) {
       </div>
 
       {/* Right Institute Badge Area matching Screenshot 112326 */}
-      <div className="md:w-56 bg-neutral-600 dark:bg-neutral-800 text-white flex md:flex-col items-center justify-center p-4 text-center font-bold text-xs uppercase tracking-wider shrink-0 border-t md:border-t-0 md:border-l border-neutral-700">
+      <div className="md:w-56 bg-neutral-600 dark:bg-neutral-800 text-white flex md:flex-col items-center justify-center p-4 text-center font-bold text-xs uppercase tracking-wider shrink-0 border-t md:border-t-0 md:border-l border-neutral-700 rounded-none">
         <Link
           href={`/labs/${lab.id}`}
           className="w-full h-full flex flex-col items-center justify-center gap-1 hover:text-amber-300 transition-colors"

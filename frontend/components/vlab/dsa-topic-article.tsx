@@ -32,7 +32,7 @@ export function DSATopicOverview({
   const [isReaderOpen, setIsReaderOpen] = useState(false);
 
   return (
-    <div className={cn("bg-card border border-border/80 p-5 sm:p-6 rounded-xl shadow-xs space-y-5 font-sans", className)}>
+    <div className={cn("bg-card border border-border/80 p-5 sm:p-6 rounded-none shadow-xs space-y-5 font-sans", className)}>
       {/* 1. Header with Breadcrumb and Actions */}
       <div className="space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
@@ -48,7 +48,7 @@ export function DSATopicOverview({
                 variant="outline"
                 size="sm"
                 onClick={() => setIsReaderOpen(true)}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0284c7] dark:text-[#38bdf8] bg-sky-500/10 hover:bg-sky-500/20 px-2.5 h-8 rounded-lg border border-sky-500/20 cursor-pointer"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0284c7] dark:text-[#38bdf8] bg-sky-500/10 hover:bg-sky-500/20 px-2.5 h-8 rounded-none border border-sky-500/20 cursor-pointer"
               >
                 <BookOpen className="h-3.5 w-3.5" />
                 <span>In-App Handbook</span>
@@ -61,8 +61,8 @@ export function DSATopicOverview({
               onClick={() => onToggleCompleted(topic.id)}
               className={
                 isCompleted
-                  ? "bg-emerald-600 hover:bg-emerald-700 text-white text-xs gap-1.5 font-semibold h-8 px-2.5 cursor-pointer"
-                  : "text-xs gap-1.5 h-8 px-2.5 cursor-pointer text-foreground/80 hover:text-[#ea580c]"
+                  ? "bg-emerald-600 hover:bg-emerald-700 text-white text-xs gap-1.5 font-semibold h-8 px-2.5 cursor-pointer rounded-none"
+                  : "text-xs gap-1.5 h-8 px-2.5 cursor-pointer text-foreground/80 hover:text-[#ea580c] rounded-none"
               }
             >
               <CheckCircle2 className="h-3.5 w-3.5" />
@@ -119,7 +119,7 @@ export function DSATopicOverview({
           Time &amp; Space Complexity Summary
         </h3>
         {topic.complexities && topic.complexities.length > 0 ? (
-          <div className="overflow-x-auto rounded-lg border border-border/80">
+          <div className="overflow-x-auto rounded-none border border-border/80">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
                 <tr className="bg-muted/60 border-b border-border text-muted-foreground uppercase text-[11px] font-semibold">
@@ -154,7 +154,7 @@ export function DSATopicOverview({
           <h3 className="text-sm sm:text-base font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
             {topic.diagramTitle || "Architecture Diagram"}
           </h3>
-          <pre className="p-3.5 rounded-lg bg-muted/40 border border-border/80 font-mono text-xs overflow-x-auto text-foreground/90 whitespace-pre leading-relaxed">
+          <pre className="p-3.5 rounded-none bg-muted/40 border border-border/80 font-mono text-xs overflow-x-auto text-foreground/90 whitespace-pre leading-relaxed">
             {topic.diagram}
           </pre>
         </div>
@@ -188,7 +188,7 @@ export function DSATopicResources({ topic }: DSATopicResourcesProps) {
   const [isReaderOpen, setIsReaderOpen] = useState(false);
 
   return (
-    <div className="bg-card border border-border/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-4 font-sans">
+    <div className="bg-card border border-border/80 rounded-none p-5 sm:p-6 shadow-xs space-y-4 font-sans">
       <div className="space-y-1">
         <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
           References &amp; Learning Resources
@@ -203,7 +203,7 @@ export function DSATopicResources({ topic }: DSATopicResourcesProps) {
           <button
             type="button"
             onClick={() => setIsReaderOpen(true)}
-            className="flex items-center justify-between p-3.5 rounded-lg border border-border bg-muted/20 hover:bg-card hover:border-[#0284c7]/50 transition-all text-left cursor-pointer group"
+            className="flex items-center justify-between p-3.5 rounded-none border border-border bg-muted/20 hover:bg-card hover:border-[#0284c7]/50 transition-all text-left cursor-pointer group"
           >
             <div className="space-y-1 min-w-0 pr-2">
               <span className="font-semibold text-xs sm:text-sm text-foreground group-hover:text-[#0284c7] transition-colors truncate block">
@@ -237,7 +237,7 @@ export function DSATopicResources({ topic }: DSATopicResourcesProps) {
             href={prob.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-between p-3.5 rounded-lg border border-border bg-muted/20 hover:bg-card hover:border-[#0284c7]/50 transition-all group"
+            className="flex items-center justify-between p-3.5 rounded-none border border-border bg-muted/20 hover:bg-card hover:border-[#0284c7]/50 transition-all group"
           >
             <div className="space-y-1 min-w-0 pr-2">
               <span className="font-semibold text-xs sm:text-sm text-foreground group-hover:text-[#0284c7] transition-colors truncate block">
@@ -246,7 +246,7 @@ export function DSATopicResources({ topic }: DSATopicResourcesProps) {
               <span className="text-[11px] text-muted-foreground block">{prob.platform} Reference</span>
             </div>
             <div className="flex items-center gap-1.5 shrink-0">
-              <span className="text-[10px] text-muted-foreground font-medium px-1.5 py-0.5 rounded bg-muted border border-border">
+              <span className="text-[10px] text-muted-foreground font-medium px-1.5 py-0.5 rounded-none bg-muted border border-border">
                 {prob.difficulty}
               </span>
               <ExternalLink className="h-3.5 w-3.5 text-muted-foreground group-hover:text-[#0284c7]" />
@@ -270,13 +270,13 @@ export function DSATopicNavigation({
   onSelectTopic,
 }: DSATopicNavigationProps) {
   return (
-    <div className="flex items-center justify-between p-4 bg-card border border-border/80 rounded-xl shadow-xs text-sm">
+    <div className="flex items-center justify-between p-4 bg-card border border-border/80 rounded-none shadow-xs text-sm">
       {prevTopic ? (
         <Button
           variant="outline"
           size="sm"
           onClick={() => onSelectTopic(prevTopic)}
-          className="gap-1.5 text-xs sm:text-sm h-9 px-3.5 cursor-pointer text-foreground hover:text-[#0284c7] hover:border-[#0284c7]/40"
+          className="gap-1.5 text-xs sm:text-sm h-9 px-3.5 cursor-pointer text-foreground hover:text-[#0284c7] hover:border-[#0284c7]/40 rounded-none"
         >
           <ChevronLeft className="h-4 w-4" />
           <span className="truncate max-w-[160px] sm:max-w-none">Prev: {prevTopic.title}</span>
@@ -289,7 +289,7 @@ export function DSATopicNavigation({
         <Button
           size="sm"
           onClick={() => onSelectTopic(nextTopic)}
-          className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs sm:text-sm gap-1.5 font-semibold h-9 px-4 cursor-pointer"
+          className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs sm:text-sm gap-1.5 font-semibold h-9 px-4 cursor-pointer rounded-none"
         >
           <span className="truncate max-w-[160px] sm:max-w-none">Next: {nextTopic.title}</span>
           <ChevronRight className="h-4 w-4" />

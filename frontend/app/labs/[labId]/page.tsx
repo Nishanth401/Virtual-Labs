@@ -371,20 +371,20 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
       <main className="flex-1 bg-muted/20 pt-20 sm:pt-24 pb-14">
         {/* Discipline Breadcrumbs & Rating Header Banner matching Screenshots 112419 - 112512 */}
         <LabHeaderBanner
-          discipline={lab.department || "Computer Science and Engineering"}
+          discipline={lab.department || "Artificial Intelligence & Data Science"}
           labName={lab.name}
           labId={lab.id}
         />
 
         <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 pt-6 font-sans">
           {/* Header Banner */}
-          <div className="bg-card rounded-xl border border-border/80 p-6 sm:p-7 shadow-xs">
+          <div className="bg-card rounded-none border border-border/80 p-6 sm:p-7 shadow-xs">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2.5 mb-2">
-                  <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-[#0284c7] dark:text-[#38bdf8] text-xs font-semibold">
+                  <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-none bg-sky-500/10 border border-sky-500/20 text-[#0284c7] dark:text-[#38bdf8] text-xs font-semibold">
                     <span>{lab.shortTitle}</span>
-                    <span className="w-1 h-1 rounded-full bg-[#0284c7]/50" />
+                    <span className="w-1.5 h-1.5 bg-[#0284c7]" />
                     <span className="font-mono text-xs font-bold">{lab.code}</span>
                   </div>
                   <span className="text-xs sm:text-sm text-muted-foreground font-medium">• {lab.institute}</span>
@@ -399,13 +399,13 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
 
               {lab.id === "c-programming" && (
                 <div className="flex items-center gap-2 shrink-0">
-                  <Badge className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30 px-3 py-1 text-xs font-mono font-bold">
+                  <Badge className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30 px-3 py-1 text-xs font-mono font-bold rounded-none">
                     ★ NPTEL 8-Week AI&amp;DS Track
                   </Badge>
                   <Button
                     size="sm"
                     onClick={() => setActiveTab("nptel-plan")}
-                    className="bg-[#0284c7] hover:bg-[#0369a1] text-white font-semibold text-xs gap-1.5 cursor-pointer"
+                    className="bg-[#0284c7] hover:bg-[#0369a1] text-white font-semibold text-xs gap-1.5 cursor-pointer rounded-none"
                   >
                     <BookOpen className="h-4 w-4" />
                     View Study Plan
@@ -430,46 +430,46 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
-                  <div className="p-3 rounded-xl bg-blue-500/10 border border-blue-500/30 flex flex-col justify-between space-y-1">
+                  <div className="p-3 rounded-none bg-blue-500/10 border border-blue-500/30 flex flex-col justify-between space-y-1">
                     <div className="flex items-center justify-between">
                       <span className="text-[11px] font-bold font-mono text-blue-600 dark:text-blue-400">Mon – Wed</span>
-                      <Badge variant="outline" className="text-[9px] px-1.5 py-0 border-blue-500/30 text-blue-500">Day 1-3</Badge>
+                      <Badge variant="outline" className="text-[9px] px-1.5 py-0 border-blue-500/30 text-blue-500 rounded-none">Day 1-3</Badge>
                     </div>
                     <p className="text-xs font-bold text-foreground">Concept Learning</p>
                     <p className="text-[11px] text-muted-foreground">+ NPTEL Video Lectures</p>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex flex-col justify-between space-y-1">
+                  <div className="p-3 rounded-none bg-indigo-500/10 border border-indigo-500/30 flex flex-col justify-between space-y-1">
                     <div className="flex items-center justify-between">
                       <span className="text-[11px] font-bold font-mono text-indigo-600 dark:text-indigo-400">Thursday</span>
-                      <Badge variant="outline" className="text-[9px] px-1.5 py-0 border-indigo-500/30 text-indigo-500">Day 4</Badge>
+                      <Badge variant="outline" className="text-[9px] px-1.5 py-0 border-indigo-500/30 text-indigo-500 rounded-none">Day 4</Badge>
                     </div>
                     <p className="text-xs font-bold text-foreground">Program Practice</p>
                     <p className="text-[11px] text-muted-foreground">Hands-on Sandbox Coding</p>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-purple-500/10 border border-purple-500/30 flex flex-col justify-between space-y-1">
+                  <div className="p-3 rounded-none bg-purple-500/10 border border-purple-500/30 flex flex-col justify-between space-y-1">
                     <div className="flex items-center justify-between">
                       <span className="text-[11px] font-bold font-mono text-purple-600 dark:text-purple-400">Friday</span>
-                      <Badge variant="outline" className="text-[9px] px-1.5 py-0 border-purple-500/30 text-purple-500">Day 5</Badge>
+                      <Badge variant="outline" className="text-[9px] px-1.5 py-0 border-purple-500/30 text-purple-500 rounded-none">Day 5</Badge>
                     </div>
                     <p className="text-xs font-bold text-foreground">MCQ / MSQ Practice</p>
                     <p className="text-[11px] text-muted-foreground">NPTEL Type Questions</p>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex flex-col justify-between space-y-1">
+                  <div className="p-3 rounded-none bg-emerald-500/10 border border-emerald-500/30 flex flex-col justify-between space-y-1">
                     <div className="flex items-center justify-between">
                       <span className="text-[11px] font-bold font-mono text-emerald-600 dark:text-emerald-400">Saturday</span>
-                      <Badge variant="outline" className="text-[9px] px-1.5 py-0 border-emerald-500/30 text-emerald-500">Day 6</Badge>
+                      <Badge variant="outline" className="text-[9px] px-1.5 py-0 border-emerald-500/30 text-emerald-500 rounded-none">Day 6</Badge>
                     </div>
                     <p className="text-xs font-bold text-foreground">Coding Assignment</p>
                     <p className="text-[11px] text-muted-foreground">+ Peer Discussion Circle</p>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex flex-col justify-between space-y-1">
+                  <div className="p-3 rounded-none bg-amber-500/10 border border-amber-500/30 flex flex-col justify-between space-y-1">
                     <div className="flex items-center justify-between">
                       <span className="text-[11px] font-bold font-mono text-amber-600 dark:text-amber-400">Sunday</span>
-                      <Badge variant="outline" className="text-[9px] px-1.5 py-0 border-amber-500/30 text-amber-500">Day 7</Badge>
+                      <Badge variant="outline" className="text-[9px] px-1.5 py-0 border-amber-500/30 text-amber-500 rounded-none">Day 7</Badge>
                     </div>
                     <p className="text-xs font-bold text-foreground">Revision &amp; Mock Test</p>
                     <p className="text-[11px] text-muted-foreground">Weekly Evaluation Assessment</p>
@@ -511,7 +511,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 {activeTab === "nptel-plan" && (
                   <div className="space-y-6">
                     {/* Goal & Department Alignment Card */}
-                    <Card className="border border-border/80 bg-card rounded-xl shadow-xs overflow-hidden border-l-4 border-l-[#0284c7]">
+                    <Card className="border border-border/80 bg-card rounded-none shadow-xs overflow-hidden border-l-4 border-l-[#0284c7]">
                       <CardHeader className="pb-3">
                         <div className="flex items-center justify-between gap-3">
                           <div className="flex items-center gap-2">
@@ -520,20 +520,20 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                               NPTEL C Programming – 8 Week Study Plan
                             </CardTitle>
                           </div>
-                          <Badge variant="outline" className="bg-sky-500/10 text-[#0284c7] border-sky-500/20 font-mono text-xs">
+                          <Badge variant="outline" className="bg-sky-500/10 text-[#0284c7] border-sky-500/20 font-mono text-xs rounded-none">
                             For AI&amp;DS Students (Engineering Level)
                           </Badge>
                         </div>
                       </CardHeader>
                       <CardContent className="space-y-4 text-sm leading-relaxed">
-                        <div className="p-3.5 rounded-lg bg-sky-500/5 border border-sky-500/20">
+                        <div className="p-3.5 rounded-none bg-sky-500/5 border border-sky-500/20">
                           <p className="font-semibold text-foreground">
                             <strong>Goal:</strong> To help AI&amp;DS students successfully complete NPTEL C Programming certification and build a strong programming foundation required for <strong>Data Structures, AI/ML programming, competitive coding, and projects</strong>.
                           </p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-                          <div className="p-3.5 rounded-lg bg-muted/30 border border-border space-y-1">
+                          <div className="p-3.5 rounded-none bg-muted/30 border border-border space-y-1">
                             <div className="flex items-center gap-2 text-[#0284c7] dark:text-[#38bdf8] font-bold text-xs">
                               <BrainCircuit className="h-4 w-4" />
                               <span>Memory Management</span>
@@ -543,7 +543,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             </p>
                           </div>
 
-                          <div className="p-3.5 rounded-lg bg-muted/30 border border-border space-y-1">
+                          <div className="p-3.5 rounded-none bg-muted/30 border border-border space-y-1">
                             <div className="flex items-center gap-2 text-indigo-500 font-bold text-xs">
                               <Cpu className="h-4 w-4" />
                               <span>AI &amp; Tensor Foundation</span>
@@ -553,7 +553,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             </p>
                           </div>
 
-                          <div className="p-3.5 rounded-lg bg-muted/30 border border-border space-y-1">
+                          <div className="p-3.5 rounded-none bg-muted/30 border border-border space-y-1">
                             <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-xs">
                               <ShieldCheck className="h-4 w-4" />
                               <span>NPTEL Certification</span>
@@ -585,7 +585,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                           return (
                             <div
                               key={w.week}
-                              className={`rounded-xl border transition-all overflow-hidden ${
+                              className={`rounded-none border transition-all overflow-hidden ${
                                 isExpanded
                                   ? "bg-card border-[#0284c7]/50 shadow-xs ring-1 ring-[#0284c7]/20"
                                   : "bg-card/70 border-border hover:border-border/80"
@@ -598,7 +598,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                 className="w-full p-4 flex items-center justify-between gap-4 text-left cursor-pointer"
                               >
                                 <div className="flex items-center gap-3.5 min-w-0">
-                                  <div className={`flex items-center justify-center h-9 w-9 rounded-lg font-bold text-xs shrink-0 font-mono shadow-2xs ${
+                                  <div className={`flex items-center justify-center h-9 w-9 rounded-none font-bold text-xs shrink-0 font-mono shadow-2xs ${
                                     isExpanded ? "bg-[#0284c7] text-white" : "bg-muted text-foreground"
                                   }`}>
                                     W{w.week}
@@ -616,7 +616,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                 </div>
 
                                 <div className="flex items-center gap-2.5 shrink-0">
-                                  <Badge variant="outline" className="text-[11px] font-mono hidden sm:inline-flex">
+                                  <Badge variant="outline" className="text-[11px] font-mono hidden sm:inline-flex rounded-none">
                                     {w.assessment}
                                   </Badge>
                                   <ChevronRight className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${
@@ -630,7 +630,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                 <div className="px-5 pb-5 pt-2 border-t border-border/50 space-y-4 bg-muted/10">
                                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-1">
                                     {/* Topics */}
-                                    <div className="p-3.5 rounded-lg bg-card border border-border space-y-2">
+                                    <div className="p-3.5 rounded-none bg-card border border-border space-y-2">
                                       <div className="flex items-center gap-2">
                                         <CheckSquare className="h-4 w-4 text-[#0284c7]" />
                                         <h4 className="text-xs font-bold uppercase tracking-wider text-foreground font-mono">
@@ -648,7 +648,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                     </div>
 
                                     {/* Programs to Practice */}
-                                    <div className="p-3.5 rounded-lg bg-card border border-border space-y-2">
+                                    <div className="p-3.5 rounded-none bg-card border border-border space-y-2">
                                       <div className="flex items-center gap-2">
                                         <Code2 className="h-4 w-4 text-[#0284c7]" />
                                         <h4 className="text-xs font-bold uppercase tracking-wider text-foreground font-mono">
@@ -669,7 +669,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                   {/* NPTEL Focus & AI&DS Connection */}
                                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                                     {/* NPTEL Preparation / Focus */}
-                                    <div className="p-3.5 rounded-lg bg-amber-500/5 border border-amber-500/20 space-y-2">
+                                    <div className="p-3.5 rounded-none bg-amber-500/5 border border-amber-500/20 space-y-2">
                                       <div className="flex items-center gap-2">
                                         <Award className="h-4 w-4 text-amber-500" />
                                         <h4 className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 font-mono">
@@ -692,7 +692,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                     </div>
 
                                     {/* AI&DS Connection */}
-                                    <div className="p-3.5 rounded-lg bg-sky-500/5 border border-sky-500/20 space-y-2">
+                                    <div className="p-3.5 rounded-none bg-sky-500/5 border border-sky-500/20 space-y-2">
                                       <div className="flex items-center gap-2">
                                         <BrainCircuit className="h-4 w-4 text-[#0284c7]" />
                                         <h4 className="text-xs font-bold uppercase tracking-wider text-[#0284c7] dark:text-[#38bdf8] font-mono">
@@ -718,13 +718,13 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                           setSelectedQuizExpId(w.expId);
                                           setActiveTab("quizzes");
                                         }}
-                                        className="text-xs gap-1.5 font-semibold border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 cursor-pointer"
+                                        className="text-xs gap-1.5 font-semibold border-amber-500/30 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 cursor-pointer rounded-none"
                                       >
                                         <HelpCircle className="h-3.5 w-3.5" />
                                         <span>Take {w.assessment}</span>
                                       </Button>
 
-                                      <Button asChild size="sm" className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs gap-1.5 font-semibold cursor-pointer">
+                                      <Button asChild size="sm" className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs gap-1.5 font-semibold cursor-pointer rounded-none">
                                         <Link href={`/experiments/${w.slug}`}>
                                           <PlayCircle className="h-4 w-4" />
                                           <span>Start Week {w.week} Lab</span>
@@ -741,7 +741,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                     </div>
 
                     {/* WEEKLY EVALUATION PATTERN TABLE */}
-                    <Card className="border border-border/80 bg-card rounded-xl shadow-xs p-5 sm:p-6 space-y-4">
+                    <Card className="border border-border/80 bg-card rounded-none shadow-xs p-5 sm:p-6 space-y-4">
                       <div className="flex items-center justify-between">
                         <div>
                           <CardTitle className="text-base sm:text-lg font-bold text-[#0284c7] dark:text-[#38bdf8] font-heading flex items-center gap-2">
@@ -752,12 +752,12 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             Weekly milestone assessments aligned directly with the NPTEL curriculum schedule.
                           </CardDescription>
                         </div>
-                        <Badge variant="outline" className="text-xs font-mono bg-sky-500/10 text-[#0284c7] border-sky-500/20">
+                        <Badge variant="outline" className="text-xs font-mono bg-sky-500/10 text-[#0284c7] border-sky-500/20 rounded-none">
                           8 Weekly Tests
                         </Badge>
                       </div>
 
-                      <div className="overflow-x-auto rounded-lg border border-border">
+                      <div className="overflow-x-auto rounded-none border border-border">
                         <table className="w-full text-left text-xs border-collapse">
                           <thead>
                             <tr className="bg-muted/60 border-b border-border text-muted-foreground font-mono uppercase text-[11px]">
@@ -783,7 +783,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                       setSelectedQuizExpId(w.expId);
                                       setActiveTab("quizzes");
                                     }}
-                                    className="text-xs py-1 h-7 font-semibold border-[#0284c7]/30 text-[#0284c7] hover:bg-[#0284c7]/10 cursor-pointer"
+                                    className="text-xs py-1 h-7 font-semibold border-[#0284c7]/30 text-[#0284c7] hover:bg-[#0284c7]/10 cursor-pointer rounded-none"
                                   >
                                     Launch Test
                                   </Button>
@@ -801,14 +801,14 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
               {activeTab === "mini-projects" && (
                 <div className="space-y-6">
                   {/* Mini Projects Showcase Card */}
-                  <Card className="border border-border/80 bg-card rounded-xl shadow-xs p-5 sm:p-6 space-y-4">
+                  <Card className="border border-border/80 bg-card rounded-none shadow-xs p-5 sm:p-6 space-y-4">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-border/60 pb-3">
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <Badge variant="outline" className="text-xs font-mono bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30">
+                          <Badge variant="outline" className="text-xs font-mono bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 rounded-none">
                             Hands-on Engineering
                           </Badge>
-                          <Badge variant="outline" className="text-xs font-mono text-[#0284c7] border-[#0284c7]/30 bg-sky-500/10">
+                          <Badge variant="outline" className="text-xs font-mono text-[#0284c7] border-[#0284c7]/30 bg-sky-500/10 rounded-none">
                             C Applications in AI&amp;DS
                           </Badge>
                         </div>
@@ -826,11 +826,11 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                       {AI_DS_MINI_PROJECTS.map((proj) => (
                         <div
                           key={proj.id}
-                          className="p-4 rounded-xl border border-border bg-card hover:border-[#0284c7]/50 transition-all flex flex-col justify-between space-y-3 shadow-2xs group"
+                          className="p-4 rounded-none border border-border bg-card hover:border-[#0284c7]/50 transition-all flex flex-col justify-between space-y-3 shadow-2xs group"
                         >
                           <div className="space-y-2">
                             <div className="flex items-center justify-between gap-2">
-                              <Badge variant="outline" className="text-[10px] font-mono font-bold bg-sky-500/10 text-[#0284c7] border-sky-500/20">
+                              <Badge variant="outline" className="text-[10px] font-mono font-bold bg-sky-500/10 text-[#0284c7] border-sky-500/20 rounded-none">
                                 {proj.highlight}
                               </Badge>
                             </div>
@@ -845,7 +845,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                           <div className="space-y-2.5 pt-2 border-t border-border/50">
                             <div className="flex flex-wrap gap-1">
                               {proj.concepts.map((c, cIdx) => (
-                                <span key={cIdx} className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-muted text-foreground/80">
+                                <span key={cIdx} className="px-1.5 py-0.5 rounded-none text-[10px] font-mono bg-muted text-foreground/80">
                                   {c}
                                 </span>
                               ))}
@@ -855,7 +855,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                               size="sm"
                               variant="outline"
                               onClick={() => setActiveTab("experiments")}
-                              className="w-full text-xs font-semibold border-[#0284c7]/30 text-[#0284c7] hover:bg-[#0284c7] hover:text-white transition-all cursor-pointer"
+                              className="w-full text-xs font-semibold border-[#0284c7]/30 text-[#0284c7] hover:bg-[#0284c7] hover:text-white transition-all cursor-pointer rounded-none"
                             >
                               Explore Related Labs <ArrowRight className="h-3.5 w-3.5 ml-1" />
                             </Button>
@@ -866,10 +866,10 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                   </Card>
 
                   {/* Faculty Implementation Idea Card */}
-                  <Card className="border border-border/80 bg-card rounded-xl shadow-xs p-5 sm:p-6 space-y-4 border-l-4 border-l-[#0284c7]">
+                  <Card className="border border-border/80 bg-card rounded-none shadow-xs p-5 sm:p-6 space-y-4 border-l-4 border-l-[#0284c7]">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2.5">
-                        <div className="h-8 w-8 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-[#0284c7]">
+                        <div className="h-8 w-8 rounded-none bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-[#0284c7]">
                           <Users className="h-4.5 w-4.5" />
                         </div>
                         <div>
@@ -881,17 +881,17 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                           </p>
                         </div>
                       </div>
-                      <Badge className="bg-sky-500/10 text-[#0284c7] border-sky-500/20 font-mono text-xs">
+                      <Badge className="bg-sky-500/10 text-[#0284c7] border-sky-500/20 font-mono text-xs rounded-none">
                         20–30 Champions Roster
                       </Badge>
                     </div>
 
-                    <div className="p-3.5 rounded-lg bg-sky-500/5 border border-sky-500/20 text-xs text-foreground leading-relaxed">
+                    <div className="p-3.5 rounded-none bg-sky-500/5 border border-sky-500/20 text-xs text-foreground leading-relaxed">
                       Select <strong>20–30 interested students as C Programming Champions</strong>. They support peer learning and student retention by conducting:
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-                      <div className="p-3.5 rounded-lg bg-card border border-border space-y-1">
+                      <div className="p-3.5 rounded-none bg-card border border-border space-y-1">
                         <span className="text-[#0284c7] font-mono font-bold text-xs block">01. Practice Circles</span>
                         <h5 className="text-xs font-bold text-foreground">Weekly Coding Practice</h5>
                         <p className="text-[11px] text-muted-foreground">
@@ -899,7 +899,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                         </p>
                       </div>
 
-                      <div className="p-3.5 rounded-lg bg-card border border-border space-y-1">
+                      <div className="p-3.5 rounded-none bg-card border border-border space-y-1">
                         <span className="text-[#0284c7] font-mono font-bold text-xs block">02. Mentorship</span>
                         <h5 className="text-xs font-bold text-foreground">Doubt-Clearing Sessions</h5>
                         <p className="text-[11px] text-muted-foreground">
@@ -907,7 +907,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                         </p>
                       </div>
 
-                      <div className="p-3.5 rounded-lg bg-card border border-border space-y-1">
+                      <div className="p-3.5 rounded-none bg-card border border-border space-y-1">
                         <span className="text-[#0284c7] font-mono font-bold text-xs block">03. Certification</span>
                         <h5 className="text-xs font-bold text-foreground">NPTEL Quiz Discussions</h5>
                         <p className="text-[11px] text-muted-foreground">
@@ -925,7 +925,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
 
               {/* TAB 1: INTRODUCTION */}
               {activeTab === "introduction" && (
-                <Card className="border-border bg-card shadow-xs">
+                <Card className="border-border bg-card shadow-xs rounded-none">
                   <CardHeader>
                     <CardTitle className="text-xl sm:text-2xl font-bold text-[#0284c7] dark:text-[#38bdf8] font-heading">
                       Welcome to the {lab.name}
@@ -939,19 +939,19 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                   {/* LAB VIDEO TUTORIALS: SEPARATE ENGLISH & TAMIL SECTIONS */}
                   <div className="py-2 my-4 space-y-4">
                     {/* Language Selection Header */}
-                    <div className="flex items-center justify-between gap-2 p-1.5 bg-muted/60 rounded-xl border border-border">
+                    <div className="flex items-center justify-between gap-2 p-1.5 bg-muted/60 rounded-none border border-border">
                       <div className="flex items-center gap-1.5">
                         <button
                           type="button"
                           onClick={() => setVideoLanguageTab("english")}
-                          className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+                          className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-none transition-all ${
                             videoLanguageTab === "english"
                               ? "bg-[#0284c7] text-white shadow-xs font-bold"
                               : "text-muted-foreground hover:text-foreground"
                           }`}
                         >
                           <span>🇬🇧 English Tutorial</span>
-                          <Badge variant="outline" className={`text-[9px] px-1.5 py-0 border-0 ${videoLanguageTab === "english" ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"}`}>
+                          <Badge variant="outline" className={`text-[9px] px-1.5 py-0 border-0 rounded-none ${videoLanguageTab === "english" ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"}`}>
                             {lab.englishVideo?.timestamps?.length ? `${lab.englishVideo.timestamps.length} Chapters` : (lab.englishVideo?.duration || "Full Course")}
                           </Badge>
                         </button>
@@ -959,20 +959,20 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                           <button
                             type="button"
                             onClick={() => setVideoLanguageTab("tamil")}
-                            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+                            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-none transition-all ${
                               videoLanguageTab === "tamil"
                                 ? "bg-[#ea580c] text-white shadow-xs font-bold"
                                 : "text-muted-foreground hover:text-orange-500"
                             }`}
                           >
                             <span>🇮🇳 தமிழ் Tutorial (Tamil)</span>
-                            <Badge variant="outline" className={`text-[9px] px-1.5 py-0 border-0 ${videoLanguageTab === "tamil" ? "bg-white/20 text-white" : "bg-orange-500/10 text-orange-600 dark:text-orange-400"}`}>
+                            <Badge variant="outline" className={`text-[9px] px-1.5 py-0 border-0 rounded-none ${videoLanguageTab === "tamil" ? "bg-white/20 text-white" : "bg-orange-500/10 text-orange-600 dark:text-orange-400"}`}>
                               {lab.tamilVideo.timestamps?.length ? `${lab.tamilVideo.timestamps.length} Chapters` : (lab.tamilVideo.duration || "Full Course")}
                             </Badge>
                           </button>
                         )}
                       </div>
-                      <Badge variant="outline" className="hidden sm:inline-flex text-[10px] font-mono text-muted-foreground">
+                      <Badge variant="outline" className="hidden sm:inline-flex text-[10px] font-mono text-muted-foreground rounded-none">
                         {videoLanguageTab === "english" ? "English Video Track" : "Tamil Video Track"}
                       </Badge>
                     </div>
@@ -989,25 +989,25 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
 
                       return (
                         <div className="space-y-4">
-                          <div className="aspect-video w-full rounded-2xl bg-black/90 border border-[#0284c7]/30 flex flex-col items-center justify-center relative overflow-hidden shadow-sm">
+                          <div className="aspect-video w-full rounded-none bg-black/90 border border-[#0284c7]/30 flex flex-col items-center justify-center relative overflow-hidden shadow-sm">
                             <iframe
                               key={`english-overview-${baseEnglishUrl}-${englishVideoTime}`}
                               src={iframeEnglishSrc}
                               title={`${lab.name} English Video Tutorial`}
-                              className="w-full h-full rounded-2xl border-0"
+                              className="w-full h-full rounded-none border-0"
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                               allowFullScreen
                             />
                           </div>
 
-                          <div className="p-4 bg-sky-500/5 rounded-xl border border-[#0284c7]/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                          <div className="p-4 bg-sky-500/5 rounded-none border border-[#0284c7]/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                             <div className="space-y-1">
                               <div className="flex items-center gap-2">
-                                <Badge variant="outline" className="text-[10px] font-mono font-bold text-[#0284c7] dark:text-[#38bdf8] bg-sky-500/10 border-[#0284c7]/30">
+                                <Badge variant="outline" className="text-[10px] font-mono font-bold text-[#0284c7] dark:text-[#38bdf8] bg-sky-500/10 border-[#0284c7]/30 rounded-none">
                                   🇬🇧 {activeEnglishItem?.category || "English Video Tutorial & Theory"}
                                 </Badge>
                                 {lab.englishVideo?.channel && (
-                                  <Badge variant="outline" className="text-[10px] font-mono border-border bg-background/50">
+                                  <Badge variant="outline" className="text-[10px] font-mono border-border bg-background/50 rounded-none">
                                     {lab.englishVideo.channel}
                                   </Badge>
                                 )}
@@ -1028,7 +1028,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                 href={activeEnglishItem?.url || (lab.englishVideo?.url || lab.videoUrl).replace("youtube-nocookie.com/embed/", "youtube.com/watch?v=")}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#0284c7]/30 text-xs font-semibold text-[#0284c7] dark:text-[#38bdf8] hover:bg-[#0284c7]/10 transition-colors"
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-none border border-[#0284c7]/30 text-xs font-semibold text-[#0284c7] dark:text-[#38bdf8] hover:bg-[#0284c7]/10 transition-colors"
                               >
                                 <span>Watch on YouTube</span>
                                 <ExternalLink className="h-3.5 w-3.5" />
@@ -1062,25 +1062,25 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
 
                       return (
                         <div className="space-y-4">
-                          <div className="aspect-video w-full rounded-2xl bg-black/90 border border-[#ea580c]/30 flex flex-col items-center justify-center relative overflow-hidden shadow-sm">
+                          <div className="aspect-video w-full rounded-none bg-black/90 border border-[#ea580c]/30 flex flex-col items-center justify-center relative overflow-hidden shadow-sm">
                             <iframe
                               key={`tamil-overview-${baseTamilUrl}-${tamilVideoTime}`}
                               src={iframeTamilSrc}
                               title={lab.tamilVideo.title}
-                              className="w-full h-full rounded-2xl border-0"
+                              className="w-full h-full rounded-none border-0"
                               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                               allowFullScreen
                             />
                           </div>
 
-                          <div className="p-4 bg-orange-500/5 rounded-xl border border-[#ea580c]/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                          <div className="p-4 bg-orange-500/5 rounded-none border border-[#ea580c]/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                             <div className="space-y-1">
                               <div className="flex items-center gap-2">
-                                <Badge variant="outline" className="text-[10px] font-mono font-bold text-[#ea580c] dark:text-[#f97316] bg-orange-500/10 border-[#ea580c]/30">
+                                <Badge variant="outline" className="text-[10px] font-mono font-bold text-[#ea580c] dark:text-[#f97316] bg-orange-500/10 border-[#ea580c]/30 rounded-none">
                                   {activeTamilItem?.category || "தமிழ் Full Course Tutorial"}
                                 </Badge>
                                 {lab.tamilVideo.channel && (
-                                  <Badge variant="outline" className="text-[10px] font-mono border-border bg-background/50">
+                                  <Badge variant="outline" className="text-[10px] font-mono border-border bg-background/50 rounded-none">
                                     {lab.tamilVideo.channel}
                                   </Badge>
                                 )}
@@ -1101,7 +1101,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                 href={activeTamilItem?.url || lab.tamilVideo.url.replace("youtube-nocookie.com/embed/", "youtube.com/watch?v=")}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#ea580c]/30 text-xs font-semibold text-[#ea580c] dark:text-[#f97316] hover:bg-orange-500/10 transition-colors"
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-none border border-[#ea580c]/30 text-xs font-semibold text-[#ea580c] dark:text-[#f97316] hover:bg-orange-500/10 transition-colors"
                               >
                                 <span>Watch on YouTube</span>
                                 <ExternalLink className="h-3.5 w-3.5" />
@@ -1129,15 +1129,15 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
               {/* TAB 2: VIDEO TUTORIALS */}
               {activeTab === "video-tutorials" && (
                 <div className="space-y-6">
-                  <Card className="border-border bg-card shadow-xs">
+                  <Card className="border-border bg-card shadow-xs rounded-none">
                     <CardHeader className="pb-4 border-b border-border/50">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <Badge variant="outline" className="text-xs font-mono bg-sky-500/10 text-[#0284c7] dark:text-[#38bdf8] border-[#0284c7]/20">
+                            <Badge variant="outline" className="text-xs font-mono bg-sky-500/10 text-[#0284c7] dark:text-[#38bdf8] border-[#0284c7]/20 rounded-none">
                               Comprehensive Masterclasses
                             </Badge>
-                            <Badge variant="outline" className="text-xs font-mono text-[#059669] dark:text-emerald-400 border-emerald-500/30 bg-emerald-500/10">
+                            <Badge variant="outline" className="text-xs font-mono text-[#059669] dark:text-emerald-400 border-emerald-500/30 bg-emerald-500/10 rounded-none">
                               2 Language Tracks
                             </Badge>
                           </div>
@@ -1150,11 +1150,11 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                         </div>
 
                         {/* Language Selector */}
-                        <div className="flex items-center gap-1.5 p-1 bg-muted/60 rounded-xl border border-border shrink-0">
+                        <div className="flex items-center gap-1.5 p-1 bg-muted/60 rounded-none border border-border shrink-0">
                           <button
                             type="button"
                             onClick={() => setVideoLanguageTab("english")}
-                            className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+                            className={`px-3 py-1 text-xs font-semibold rounded-none transition-all ${
                               videoLanguageTab === "english"
                                 ? "bg-[#0284c7] text-white shadow-xs font-bold"
                                 : "text-muted-foreground hover:text-foreground"
@@ -1166,7 +1166,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             <button
                               type="button"
                               onClick={() => setVideoLanguageTab("tamil")}
-                              className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+                              className={`px-3 py-1 text-xs font-semibold rounded-none transition-all ${
                                 videoLanguageTab === "tamil"
                                   ? "bg-[#ea580c] text-white shadow-xs font-bold"
                                   : "text-muted-foreground hover:text-orange-500"
@@ -1192,25 +1192,25 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
 
                         return (
                           <div className="space-y-6">
-                            <div className="aspect-video w-full rounded-2xl bg-black/90 border border-[#0284c7]/30 flex flex-col items-center justify-center relative overflow-hidden shadow-sm">
+                            <div className="aspect-video w-full rounded-none bg-black/90 border border-[#0284c7]/30 flex flex-col items-center justify-center relative overflow-hidden shadow-sm">
                               <iframe
                                 key={`english-tab-${baseEnglishUrl}-${englishVideoTime}`}
                                 src={iframeEnglishSrc}
                                 title={`${lab.name} English Video Suite`}
-                                className="w-full h-full rounded-2xl border-0"
+                                className="w-full h-full rounded-none border-0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen
                               />
                             </div>
 
-                            <div className="p-5 bg-sky-500/5 rounded-2xl border border-[#0284c7]/20 shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                            <div className="p-5 bg-sky-500/5 rounded-none border border-[#0284c7]/20 shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                               <div className="space-y-1.5">
                                 <div className="flex items-center gap-2">
-                                  <Badge variant="outline" className="text-[10px] font-mono font-bold text-[#0284c7] dark:text-[#38bdf8] bg-sky-500/10 border-[#0284c7]/30">
+                                  <Badge variant="outline" className="text-[10px] font-mono font-bold text-[#0284c7] dark:text-[#38bdf8] bg-sky-500/10 border-[#0284c7]/30 rounded-none">
                                     🇬🇧 {activeEnglishItem?.category || "English Lecture & Practical Demonstration"}
                                   </Badge>
                                   {lab.englishVideo?.channel && (
-                                    <Badge variant="outline" className="text-[10px] font-mono border-border bg-background/50">
+                                    <Badge variant="outline" className="text-[10px] font-mono border-border bg-background/50 rounded-none">
                                       Channel: {lab.englishVideo.channel}
                                     </Badge>
                                   )}
@@ -1231,12 +1231,12 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                   href={activeEnglishItem?.url || (lab.englishVideo?.url || lab.videoUrl).replace("youtube-nocookie.com/embed/", "youtube.com/watch?v=")}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#0284c7]/30 text-xs font-semibold text-[#0284c7] dark:text-[#38bdf8] hover:bg-[#0284c7]/10 transition-colors"
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-none border border-[#0284c7]/30 text-xs font-semibold text-[#0284c7] dark:text-[#38bdf8] hover:bg-[#0284c7]/10 transition-colors"
                                 >
                                   <span>Watch on YouTube</span>
                                   <ExternalLink className="h-3.5 w-3.5" />
                                 </a>
-                                <Button onClick={() => setActiveTab("experiments")} size="sm" className="text-xs font-bold gap-1.5 bg-[#0284c7] hover:bg-[#0369a1] text-white">
+                                <Button onClick={() => setActiveTab("experiments")} size="sm" className="text-xs font-bold gap-1.5 bg-[#0284c7] hover:bg-[#0369a1] text-white rounded-none">
                                   Practice Experiments <ChevronRight className="h-4 w-4" />
                                 </Button>
                               </div>
@@ -1268,25 +1268,25 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
 
                         return (
                           <div className="space-y-6">
-                            <div className="aspect-video w-full rounded-2xl bg-black/90 border border-[#ea580c]/30 flex flex-col items-center justify-center relative overflow-hidden shadow-sm">
+                            <div className="aspect-video w-full rounded-none bg-black/90 border border-[#ea580c]/30 flex flex-col items-center justify-center relative overflow-hidden shadow-sm">
                               <iframe
                                 key={`tamil-tab-${baseTamilUrl}-${tamilVideoTime}`}
                                 src={iframeTamilSrc}
                                 title={lab.tamilVideo.title}
-                                className="w-full h-full rounded-2xl border-0"
+                                className="w-full h-full rounded-none border-0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen
                               />
                             </div>
 
-                            <div className="p-5 bg-orange-500/5 rounded-2xl border border-[#ea580c]/20 shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                            <div className="p-5 bg-orange-500/5 rounded-none border border-[#ea580c]/20 shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                               <div className="space-y-1.5">
                                 <div className="flex items-center gap-2">
-                                  <Badge variant="outline" className="text-[10px] font-mono font-bold text-[#ea580c] dark:text-[#f97316] bg-orange-500/10 border-[#ea580c]/30">
+                                  <Badge variant="outline" className="text-[10px] font-mono font-bold text-[#ea580c] dark:text-[#f97316] bg-orange-500/10 border-[#ea580c]/30 rounded-none">
                                     {activeTamilItem?.category || "தமிழ் Full Course Tutorial"}
                                   </Badge>
                                   {lab.tamilVideo.channel && (
-                                    <Badge variant="outline" className="text-[10px] font-mono border-border bg-background/50">
+                                    <Badge variant="outline" className="text-[10px] font-mono border-border bg-background/50 rounded-none">
                                       Channel: {lab.tamilVideo.channel}
                                     </Badge>
                                   )}
@@ -1307,12 +1307,12 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                   href={activeTamilItem?.url || lab.tamilVideo.url.replace("youtube-nocookie.com/embed/", "youtube.com/watch?v=")}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#ea580c]/30 text-xs font-semibold text-[#ea580c] dark:text-[#f97316] hover:bg-orange-500/10 transition-colors"
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-none border border-[#ea580c]/30 text-xs font-semibold text-[#ea580c] dark:text-[#f97316] hover:bg-orange-500/10 transition-colors"
                                 >
                                   <span>Watch on YouTube</span>
                                   <ExternalLink className="h-3.5 w-3.5" />
                                 </a>
-                                <Button onClick={() => setActiveTab("experiments")} size="sm" className="text-xs font-bold gap-1.5 bg-[#ea580c] hover:bg-[#c2410c] text-white">
+                                <Button onClick={() => setActiveTab("experiments")} size="sm" className="text-xs font-bold gap-1.5 bg-[#ea580c] hover:bg-[#c2410c] text-white rounded-none">
                                   Practice Experiments <ChevronRight className="h-4 w-4" />
                                 </Button>
                               </div>
@@ -1337,7 +1337,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
 
               {/* TAB 3: OBJECTIVE */}
               {activeTab === "objective" && (
-                <Card className="border-border bg-card shadow-xs">
+                <Card className="border-border bg-card shadow-xs rounded-none">
                   <CardHeader>
                     <CardTitle className="text-xl sm:text-2xl font-bold text-[#0284c7] dark:text-[#38bdf8] font-heading">
                       Objectives of {lab.name}
@@ -1349,8 +1349,8 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                     </p>
 
                     <div className="space-y-3 pt-2">
-                      <div className="p-4 rounded-xl bg-card border border-border flex items-start gap-3 shadow-2xs">
-                        <span className="flex items-center justify-center h-6 w-6 rounded-full bg-[#0284c7] text-white font-bold text-xs shrink-0 mt-0.5 font-mono">
+                      <div className="p-4 rounded-none bg-card border border-border flex items-start gap-3 shadow-2xs">
+                        <span className="flex items-center justify-center h-6 w-6 rounded-none bg-[#0284c7] text-white font-bold text-xs shrink-0 mt-0.5 font-mono">
                           1
                         </span>
                         <div>
@@ -1361,8 +1361,8 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                         </div>
                       </div>
 
-                      <div className="p-4 rounded-xl bg-card border border-border flex items-start gap-3 shadow-2xs">
-                        <span className="flex items-center justify-center h-6 w-6 rounded-full bg-[#0284c7] text-white font-bold text-xs shrink-0 mt-0.5 font-mono">
+                      <div className="p-4 rounded-none bg-card border border-border flex items-start gap-3 shadow-2xs">
+                        <span className="flex items-center justify-center h-6 w-6 rounded-none bg-[#0284c7] text-white font-bold text-xs shrink-0 mt-0.5 font-mono">
                           2
                         </span>
                         <div>
@@ -1373,8 +1373,8 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                         </div>
                       </div>
 
-                      <div className="p-4 rounded-xl bg-card border border-border flex items-start gap-3 shadow-2xs">
-                        <span className="flex items-center justify-center h-6 w-6 rounded-full bg-[#0284c7] text-white font-bold text-xs shrink-0 mt-0.5 font-mono">
+                      <div className="p-4 rounded-none bg-card border border-border flex items-start gap-3 shadow-2xs">
+                        <span className="flex items-center justify-center h-6 w-6 rounded-none bg-[#0284c7] text-white font-bold text-xs shrink-0 mt-0.5 font-mono">
                           3
                         </span>
                         <div>
@@ -1391,7 +1391,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
 
               {/* TAB: TARGET AUDIENCE */}
               {activeTab === "target-audience" && (
-                <Card className="border-border bg-card shadow-xs">
+                <Card className="border-border bg-card shadow-xs rounded-none">
                   <CardHeader>
                     <CardTitle className="text-xl sm:text-2xl font-bold text-[#0284c7] dark:text-[#38bdf8] font-heading">
                       Target Audience
@@ -1406,17 +1406,17 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                      <div className="p-4 rounded-xl bg-card border border-border space-y-2 shadow-2xs">
+                      <div className="p-4 rounded-none bg-card border border-border space-y-2 shadow-2xs">
                         <div className="flex items-center gap-2 text-[#0284c7] dark:text-[#38bdf8] font-bold text-sm">
                           <GraduationCap className="h-4 w-4" />
                           <span>Undergraduate Students</span>
                         </div>
                         <p className="text-xs text-muted-foreground">
-                          B.E. / B.Tech students in Computer Science &amp; Engineering, Artificial Intelligence &amp; Data Science, and Information Technology taking core laboratory courses.
+                          B.E. / B.Tech students in Artificial Intelligence &amp; Data Science, Computer Science &amp; Engineering, and Information Technology taking core laboratory courses.
                         </p>
                       </div>
 
-                      <div className="p-4 rounded-xl bg-card border border-border space-y-2 shadow-2xs">
+                      <div className="p-4 rounded-none bg-card border border-border space-y-2 shadow-2xs">
                         <div className="flex items-center gap-2 text-[#0284c7] dark:text-[#38bdf8] font-bold text-sm">
                           <Users className="h-4 w-4" />
                           <span>Postgraduate &amp; Research Scholars</span>
@@ -1426,7 +1426,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                         </p>
                       </div>
 
-                      <div className="p-4 rounded-xl bg-card border border-border space-y-2 shadow-2xs">
+                      <div className="p-4 rounded-none bg-card border border-border space-y-2 shadow-2xs">
                         <div className="flex items-center gap-2 text-[#ea580c] dark:text-[#f97316] font-bold text-sm">
                           <Trophy className="h-4 w-4" />
                           <span>Competitive Coders &amp; GATE Aspirants</span>
@@ -1436,7 +1436,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                         </p>
                       </div>
 
-                      <div className="p-4 rounded-xl bg-card border border-border space-y-2 shadow-2xs">
+                      <div className="p-4 rounded-none bg-card border border-border space-y-2 shadow-2xs">
                         <div className="flex items-center gap-2 text-[#059669] dark:text-emerald-400 font-bold text-sm">
                           <BookOpen className="h-4 w-4" />
                           <span>Faculty Educators &amp; Instructors</span>
@@ -1459,13 +1459,13 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                   )}
 
                   {/* Experiments List Card */}
-                  <Card className="border-border bg-card shadow-xs">
+                  <Card className="border-border bg-card shadow-xs rounded-none">
                     <CardHeader className="pb-3 border-b border-border/50">
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-xl sm:text-2xl font-bold text-[#0284c7] dark:text-[#38bdf8] font-heading">
                           Laboratory Experiments Syllabus ({experiments.length})
                         </CardTitle>
-                        <Badge variant="outline" className="text-xs font-mono">
+                        <Badge variant="outline" className="text-xs font-mono rounded-none">
                           {LAB_ROADMAPS_DATA[lab.id]?.badge || "Engineering Sandbox"}
                         </Badge>
                       </div>
@@ -1481,7 +1481,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                               <span className="font-bold text-sm text-foreground group-hover:text-[#0284c7] transition-colors">
                                 {idx + 1}. {exp.title}
                               </span>
-                              <Badge variant="outline" className="text-[10px] font-mono">
+                              <Badge variant="outline" className="text-[10px] font-mono rounded-none">
                                 {exp.difficulty}
                               </Badge>
                             </div>
@@ -1507,12 +1507,12 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                 setSelectedQuizExpId(exp.id);
                                 setActiveTab("quizzes");
                               }}
-                              className="text-xs gap-1.5 font-semibold border-[#0284c7]/30 text-[#0284c7] dark:text-[#38bdf8] hover:bg-[#0284c7]/10 cursor-pointer shadow-2xs"
+                              className="text-xs gap-1.5 font-semibold border-[#0284c7]/30 text-[#0284c7] dark:text-[#38bdf8] hover:bg-[#0284c7]/10 cursor-pointer shadow-2xs rounded-none"
                             >
                               <HelpCircle className="h-3.5 w-3.5" />
                               <span>5-Q Quiz</span>
                             </Button>
-                            <Button asChild size="sm" className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs gap-1.5 font-bold shadow-xs">
+                            <Button asChild size="sm" className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs gap-1.5 font-bold shadow-xs rounded-none">
                               <Link href={`/experiments/${exp.slug}`}>
                                 <PlayCircle className="h-4 w-4" />
                                 <span>Start Experiment</span>
@@ -1536,14 +1536,14 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 return (
                   <div className="space-y-8">
                     {/* Section 1: Interactive 5-Question Lab Assessment */}
-                    <Card className="border-border bg-card shadow-xs p-6 space-y-6">
+                    <Card className="border-border bg-card shadow-xs p-6 space-y-6 rounded-none">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-border/60 pb-4">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <Badge variant="outline" className="text-xs font-mono bg-sky-500/10 text-[#0284c7] dark:text-[#38bdf8] border-[#0284c7]/20">
+                            <Badge variant="outline" className="text-xs font-mono bg-sky-500/10 text-[#0284c7] dark:text-[#38bdf8] border-[#0284c7]/20 rounded-none">
                               {lab.id === "c-programming" ? "NPTEL Weekly Assessment" : "5-Question Assessment"}
                             </Badge>
-                            <Badge variant="outline" className="text-xs font-mono text-[#059669] dark:text-emerald-400 border-emerald-500/30 bg-emerald-500/10">
+                            <Badge variant="outline" className="text-xs font-mono text-[#059669] dark:text-emerald-400 border-emerald-500/30 bg-emerald-500/10 rounded-none">
                               Passing: 80% (4/5)
                             </Badge>
                           </div>
@@ -1570,13 +1570,13 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                 key={exp.id}
                                 type="button"
                                 onClick={() => setSelectedQuizExpId(exp.id)}
-                                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all border flex items-center gap-1.5 cursor-pointer ${
+                                className={`px-3 py-1.5 rounded-none text-xs font-semibold transition-all border flex items-center gap-1.5 cursor-pointer ${
                                   isSelected
                                     ? "bg-[#0284c7] text-white border-[#0284c7] shadow-xs"
                                     : "bg-card hover:bg-muted text-muted-foreground hover:text-foreground border-border"
                                 }`}
                               >
-                                <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded-md ${
+                                <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded-none ${
                                   isSelected ? "bg-white/20 text-white" : "bg-muted text-foreground"
                                 }`}>
                                   {lab.id === "c-programming" ? `Week ${idx + 1}` : `Exp ${idx + 1}`}
@@ -1594,7 +1594,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                           <QuizEngine key={activeQuiz.id} quiz={activeQuiz} />
                         </div>
                       ) : (
-                        <div className="p-8 text-center text-sm text-muted-foreground bg-muted/20 rounded-xl border border-border">
+                        <div className="p-8 text-center text-sm text-muted-foreground bg-muted/20 rounded-none border border-border">
                           Select an assessment above to launch its evaluation quiz.
                         </div>
                       )}
@@ -1611,23 +1611,23 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
               {/* TAB 7: RESOURCES & TUTORIALS */}
               {activeTab === "resources" && (
                 <div className="space-y-6">
-                  <Card className="border-border bg-card shadow-xs">
+                  <Card className="border-border bg-card shadow-xs rounded-none">
                     <CardHeader className="pb-4 border-b border-border/50">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <Badge variant="outline" className="text-xs font-mono bg-sky-500/10 text-[#0284c7] dark:text-[#38bdf8] border-[#0284c7]/20">
+                            <Badge variant="outline" className="text-xs font-mono bg-sky-500/10 text-[#0284c7] dark:text-[#38bdf8] border-[#0284c7]/20 rounded-none">
                               Curated Study Material
                             </Badge>
                             {lab.id === "c-programming" && (
-                              <Badge variant="outline" className="text-xs font-mono border-orange-500/30 text-orange-600 dark:text-orange-400 bg-orange-500/10">
+                              <Badge variant="outline" className="text-xs font-mono border-orange-500/30 text-orange-600 dark:text-orange-400 bg-orange-500/10 rounded-none">
                                 SWAYAM / NPTEL
                               </Badge>
                             )}
-                            <Badge variant="outline" className="text-xs font-mono border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10">
+                            <Badge variant="outline" className="text-xs font-mono border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 rounded-none">
                               GeeksforGeeks
                             </Badge>
-                            <Badge variant="outline" className="text-xs font-mono border-sky-500/30 text-sky-600 dark:text-sky-400 bg-sky-500/10">
+                            <Badge variant="outline" className="text-xs font-mono border-sky-500/30 text-sky-600 dark:text-sky-400 bg-sky-500/10 rounded-none">
                               W3Schools
                             </Badge>
                           </div>
@@ -1640,11 +1640,11 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                         </div>
 
                         {/* Source Filter Buttons */}
-                        <div className="flex items-center gap-1.5 p-1 bg-muted/60 rounded-xl border border-border shrink-0">
+                        <div className="flex items-center gap-1.5 p-1 bg-muted/60 rounded-none border border-border shrink-0">
                           <button
                             type="button"
                             onClick={() => setResourceSourceFilter("ALL")}
-                            className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+                            className={`px-3 py-1 text-xs font-semibold rounded-none transition-all ${
                               resourceSourceFilter === "ALL"
                                 ? "bg-[#0284c7] text-white shadow-xs font-bold"
                                 : "text-muted-foreground hover:text-foreground"
@@ -1655,7 +1655,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                           <button
                             type="button"
                             onClick={() => setResourceSourceFilter("GeeksforGeeks")}
-                            className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+                            className={`px-3 py-1 text-xs font-semibold rounded-none transition-all ${
                               resourceSourceFilter === "GeeksforGeeks"
                                 ? "bg-[#059669] text-white shadow-xs font-bold"
                                 : "text-muted-foreground hover:text-emerald-500"
@@ -1666,7 +1666,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                           <button
                             type="button"
                             onClick={() => setResourceSourceFilter("W3Schools")}
-                            className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
+                            className={`px-3 py-1 text-xs font-semibold rounded-none transition-all ${
                               resourceSourceFilter === "W3Schools"
                                 ? "bg-[#0284c7] text-white shadow-xs font-bold"
                                 : "text-muted-foreground hover:text-sky-500"
@@ -1692,13 +1692,13 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                 href={res.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="group p-4 rounded-xl bg-card hover:bg-muted/30 border border-border hover:border-[#0284c7]/50 transition-all duration-200 shadow-2xs hover:shadow-xs flex flex-col justify-between"
+                                className="group p-4 rounded-none bg-card hover:bg-muted/30 border border-border hover:border-[#0284c7]/50 transition-all duration-200 shadow-2xs hover:shadow-xs flex flex-col justify-between"
                               >
                                 <div className="space-y-2.5">
                                   <div className="flex items-center justify-between gap-2">
                                     <Badge
                                       variant="outline"
-                                      className={`text-[10px] font-bold font-mono ${
+                                      className={`text-[10px] font-bold font-mono rounded-none ${
                                         isOfficial
                                           ? "bg-orange-500/10 text-[#ea580c] dark:text-[#f97316] border-orange-500/30"
                                           : isGfg
@@ -1709,7 +1709,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                       {isOfficial ? "★ NPTEL Official" : isGfg ? "🟢 GeeksforGeeks" : "🔵 W3Schools"}
                                     </Badge>
 
-                                    <Badge variant="outline" className="text-[10px] font-mono text-muted-foreground">
+                                    <Badge variant="outline" className="text-[10px] font-mono text-muted-foreground rounded-none">
                                       {res.category}
                                     </Badge>
                                   </div>
@@ -1735,14 +1735,14 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                       {/* Portal Direct Links */}
                       <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-border/50">
                         {lab.id === "c-programming" && (
-                          <div className="p-4 rounded-xl bg-orange-500/5 border border-[#ea580c]/20 flex items-center justify-between">
+                          <div className="p-4 rounded-none bg-orange-500/5 border border-[#ea580c]/20 flex items-center justify-between">
                             <div className="space-y-0.5">
                               <span className="text-xs font-bold text-[#ea580c] dark:text-[#f97316] block font-mono">
                                 SWAYAM NPTEL Portal
                               </span>
                               <p className="text-[11px] text-muted-foreground">Official course notes &amp; assignment tests</p>
                             </div>
-                            <Button asChild size="sm" variant="outline" className="text-xs border-[#ea580c]/30 hover:bg-orange-500/10 text-[#ea580c] dark:text-[#f97316] font-bold shrink-0">
+                            <Button asChild size="sm" variant="outline" className="text-xs border-[#ea580c]/30 hover:bg-orange-500/10 text-[#ea580c] dark:text-[#f97316] font-bold shrink-0 rounded-none">
                               <a href="https://nptel.ac.in/courses/106104128" target="_blank" rel="noopener noreferrer">
                                 NPTEL ↗
                               </a>
@@ -1750,28 +1750,28 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                           </div>
                         )}
 
-                        <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20 flex items-center justify-between">
+                        <div className="p-4 rounded-none bg-emerald-500/5 border border-emerald-500/20 flex items-center justify-between">
                           <div className="space-y-0.5">
                             <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 block font-mono">
                               GeeksforGeeks Portal
                             </span>
                             <p className="text-[11px] text-muted-foreground">10,000+ computer science articles</p>
                           </div>
-                          <Button asChild size="sm" variant="outline" className="text-xs border-emerald-500/30 hover:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold shrink-0">
+                          <Button asChild size="sm" variant="outline" className="text-xs border-emerald-500/30 hover:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold shrink-0 rounded-none">
                             <a href="https://www.geeksforgeeks.org/" target="_blank" rel="noopener noreferrer">
                               Visit GfG ↗
                             </a>
                           </Button>
                         </div>
 
-                        <div className="p-4 rounded-xl bg-sky-500/5 border border-[#0284c7]/20 flex items-center justify-between">
+                        <div className="p-4 rounded-none bg-sky-500/5 border border-[#0284c7]/20 flex items-center justify-between">
                           <div className="space-y-0.5">
                             <span className="text-xs font-bold text-[#0284c7] dark:text-[#38bdf8] block font-mono">
                               W3Schools C Editor
                             </span>
                             <p className="text-[11px] text-muted-foreground">Interactive sandbox &amp; cheatsheets</p>
                           </div>
-                          <Button asChild size="sm" variant="outline" className="text-xs border-[#0284c7]/30 hover:bg-sky-500/10 text-[#0284c7] dark:text-[#38bdf8] font-bold shrink-0">
+                          <Button asChild size="sm" variant="outline" className="text-xs border-[#0284c7]/30 hover:bg-sky-500/10 text-[#0284c7] dark:text-[#38bdf8] font-bold shrink-0 rounded-none">
                             <a href="https://www.w3schools.com/c/index.php" target="_blank" rel="noopener noreferrer">
                               W3Schools ↗
                             </a>
@@ -1785,7 +1785,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
 
               {/* TAB 8: FEEDBACK */}
               {activeTab === "feedback" && (
-                <Card className="border-border bg-card shadow-xs">
+                <Card className="border-border bg-card shadow-xs rounded-none">
                   <CardHeader>
                     <CardTitle className="text-xl sm:text-2xl font-bold text-[#0284c7] dark:text-[#38bdf8] font-heading">
                       Laboratory Feedback &amp; Suggestions
@@ -1796,7 +1796,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     {feedbackSent ? (
-                      <div className="p-6 text-center space-y-2 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-600 dark:text-emerald-400">
+                      <div className="p-6 text-center space-y-2 bg-emerald-500/10 border border-emerald-500/30 rounded-none text-emerald-600 dark:text-emerald-400">
                         <CheckCircle2 className="h-8 w-8 mx-auto" />
                         <h4 className="font-bold">Thank you for your feedback!</h4>
                         <p className="text-xs text-muted-foreground">— Department of AI &amp; DS Virtual Labs Team</p>
@@ -1811,7 +1811,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                 key={s}
                                 type="button"
                                 onClick={() => setFeedbackRating(s)}
-                                className={`h-8 w-8 rounded-lg text-xs font-bold border transition-all cursor-pointer ${
+                                className={`h-8 w-8 rounded-none text-xs font-bold border transition-all cursor-pointer ${
                                   s === feedbackRating
                                     ? "bg-[#0284c7] text-white border-[#0284c7] shadow-xs"
                                     : "bg-muted/50 hover:bg-muted text-muted-foreground border-border"
@@ -1830,11 +1830,11 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             onChange={(e) => setFeedbackText(e.target.value)}
                             placeholder="Type your feedback here regarding simulations or curriculum preparation..."
                             rows={4}
-                            className="text-xs"
+                            className="text-xs rounded-none"
                           />
                         </div>
 
-                        <Button type="submit" className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs">
+                        <Button type="submit" className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs rounded-none">
                           <Send className="h-3.5 w-3.5" /> Submit Experience
                         </Button>
                       </form>

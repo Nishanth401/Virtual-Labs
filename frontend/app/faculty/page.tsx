@@ -15,7 +15,7 @@ export default function FacultyPage() {
       <main className="flex-1 container max-w-7xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-14">
         {/* Header Banner */}
         <div className="mb-10 text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold mb-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-none bg-primary/10 border border-primary/20 text-primary text-xs font-semibold mb-3">
             <Users className="h-4 w-4" />
             <span>Academic Leadership &amp; Research Faculty</span>
           </div>
@@ -23,17 +23,17 @@ export default function FacultyPage() {
             Department <span className="bg-gradient-to-r from-primary to-cyan-500 bg-clip-text text-transparent">Faculty Profiles</span>
           </h1>
           <p className="mt-3 text-muted-foreground text-sm sm:text-base leading-relaxed">
-            Meet our experienced professors, doctorate researchers, and industry mentors leading artificial intelligence, machine learning, and computer science education.
+            Meet our experienced professors, doctorate researchers, and industry mentors leading artificial intelligence, machine learning, and data science education.
           </p>
         </div>
 
         {/* Faculty Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {FACULTY_DATA.map((fac) => (
-            <Card key={fac.id} className="flex flex-col h-full hover:shadow-md transition-all hover:border-primary/40">
+            <Card key={fac.id} className="rounded-none flex flex-col h-full hover:shadow-md transition-all hover:border-primary/40">
               <CardHeader className="pb-4">
                 <div className="flex items-center gap-4">
-                  <div className="text-4xl p-3 bg-primary/10 border border-primary/20 rounded-2xl shrink-0">
+                  <div className="text-4xl p-3 bg-primary/10 border border-primary/20 rounded-none shrink-0">
                     {fac.avatar}
                   </div>
                   <div>

@@ -6,8 +6,8 @@ import { AnnouncementsSection } from "@/components/vlab/announcements-section";
 import { TestimonialsSection } from "@/components/vlab/testimonials-section";
 
 export const metadata = {
-  title: "Department Virtual Labs | AIDS & CSE — VSB Engineering College",
-  description: "Official interactive virtual laboratory platform for engineering students. Explore computer science, data structures, algorithms, AI labs, simulations, and self-assessment evaluations.",
+  title: "Department Virtual Labs | Artificial Intelligence & Data Science — VSB Engineering College",
+  description: "Official interactive virtual laboratory platform for engineering students. Explore artificial intelligence, data science, data structures, algorithms, machine learning labs, simulations, and self-assessment evaluations.",
 };
 
 export default function HomePage() {

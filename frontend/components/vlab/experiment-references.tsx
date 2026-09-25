@@ -16,7 +16,7 @@ interface ExperimentReferencesProps {
 
 export function ExperimentReferences({
   references,
-  defaultTopic = "Computer Science and Data Structures",
+  defaultTopic = "Artificial Intelligence & Data Science",
   defaultVideoUrl,
 }: ExperimentReferencesProps) {
   const defaultTextBooks = references?.textBooks || [
@@ -35,7 +35,7 @@ export function ExperimentReferences({
     {
       presenter: "NPTEL / Virtual Labs MoE",
       title: "Interactive Experiment Simulation & Code Step Walkthrough",
-      url: defaultVideoUrl || "https://www.youtube.com/results?search_query=virtual+labs+computer+science",
+      url: defaultVideoUrl || "https://www.youtube.com/results?search_query=virtual+labs+artificial+intelligence+data+science",
     },
     {
       presenter: "Prof. John Jose",
