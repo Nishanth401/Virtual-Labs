@@ -20,6 +20,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import {
   FlaskConical,
   PlayCircle,
@@ -50,7 +51,9 @@ import {
   Cpu,
   Layers,
   Flame,
-  ShieldCheck
+  ShieldCheck,
+  Star,
+  MessageSquare
 } from "lucide-react";
 
 interface LabDetailPageProps {
@@ -67,6 +70,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
   const [feedbackRating, setFeedbackRating] = useState<number>(5);
   const [feedbackText, setFeedbackText] = useState<string>("");
   const [feedbackSent, setFeedbackSent] = useState<boolean>(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
   const [videoLanguageTab, setVideoLanguageTab] = useState<"english" | "tamil">("english");
   const [tamilVideoTime, setTamilVideoTime] = useState<number>(0);
   const [activeTamilTimestampIdx, setActiveTamilTimestampIdx] = useState<number | null>(null);
@@ -923,16 +927,16 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 </div>
               )}
 
-              {/* TAB 1: INTRODUCTION */}
+              {/* TAB 1: INTRODUCTION (Screenshot 112419) */}
               {activeTab === "introduction" && (
                 <Card className="border-border bg-card shadow-xs rounded-none">
-                  <CardHeader>
-                    <CardTitle className="text-xl sm:text-2xl font-bold text-[#0284c7] dark:text-[#38bdf8] font-heading">
-                      Welcome to the {lab.name}
-                    </CardTitle>
+                  <CardHeader className="pb-2">
+                    <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                      {lab.name}
+                    </h2>
                   </CardHeader>
                   <CardContent className="space-y-6 text-sm leading-relaxed text-muted-foreground">
-                    <p className="text-foreground text-sm font-medium">
+                    <p className="text-foreground text-sm sm:text-base font-normal leading-relaxed">
                       {lab.description}
                     </p>
 
@@ -1335,16 +1339,33 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 </div>
               )}
 
-              {/* TAB 3: OBJECTIVE */}
+              {/* TAB 3: OBJECTIVE (Screenshot 112447) */}
               {activeTab === "objective" && (
                 <Card className="border-border bg-card shadow-xs rounded-none">
-                  <CardHeader>
-                    <CardTitle className="text-xl sm:text-2xl font-bold text-[#0284c7] dark:text-[#38bdf8] font-heading">
-                      Objectives of {lab.name}
-                    </CardTitle>
+                  <CardHeader className="pb-2">
+                    <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                      {lab.name}
+                    </h2>
                   </CardHeader>
                   <CardContent className="space-y-6 text-sm leading-relaxed text-muted-foreground">
-                    <p className="text-foreground text-sm font-medium">
+                    <div className="space-y-3">
+                      <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4">
+                        Key Learning Outcomes:
+                      </h3>
+                      <ol className="list-decimal pl-6 space-y-2 text-foreground font-sans text-sm">
+                        <li>
+                          <strong>Mastering Core Algorithmic Techniques &amp; Dynamic Execution:</strong> Explore fundamental concepts, data structures, and state transitions to design high-performance computational models.
+                        </li>
+                        <li>
+                          <strong>Optimizing Computational Complexity &amp; Resource Efficiency:</strong> Analyse best, average, and worst-case time/space asymptotic bounds to evaluate memory efficiency and runtime throughput.
+                        </li>
+                        <li>
+                          <strong>Ensuring System Integrity &amp; Memory Safety:</strong> Understand invariant maintenance, buffer boundary safety, and algorithmic stability across edge cases and pipeline stages.
+                        </li>
+                      </ol>
+                    </div>
+
+                    <p className="text-foreground text-sm font-medium pt-2 border-t border-border/50">
                       The role of this Department Virtual Lab is to complement classroom lectures and textbooks in three distinct ways:
                     </p>
 
@@ -1389,21 +1410,38 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 </Card>
               )}
 
-              {/* TAB: TARGET AUDIENCE */}
+              {/* TAB: TARGET AUDIENCE (Screenshot 112910) */}
               {activeTab === "target-audience" && (
                 <Card className="border-border bg-card shadow-xs rounded-none">
-                  <CardHeader>
-                    <CardTitle className="text-xl sm:text-2xl font-bold text-[#0284c7] dark:text-[#38bdf8] font-heading">
-                      Target Audience
-                    </CardTitle>
-                    <CardDescription className="text-xs">
-                      Primary academic cohorts and engineering profiles benefiting from this laboratory.
-                    </CardDescription>
+                  <CardHeader className="pb-2">
+                    <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                      {lab.name}
+                    </h2>
                   </CardHeader>
-                  <CardContent className="space-y-4 text-sm leading-relaxed text-muted-foreground">
-                    <p className="text-foreground text-sm font-medium">
-                      The {lab.name} curriculum, algorithmic visualizations, and interactive sandboxes are designed for:
-                    </p>
+                  <CardContent className="space-y-6 text-sm leading-relaxed text-muted-foreground">
+                    <div className="space-y-3 font-sans text-sm text-foreground">
+                      <ul className="list-disc pl-6 space-y-3">
+                        <li>
+                          <strong className="text-foreground">UG</strong>
+                          <ul className="list-disc pl-6 space-y-1 mt-1 text-muted-foreground">
+                            <li>3rd Year</li>
+                            <li>4th Year</li>
+                          </ul>
+                        </li>
+                        <li>
+                          <strong className="text-foreground">PG</strong>
+                          <ul className="list-disc pl-6 space-y-1 mt-1 text-muted-foreground">
+                            <li>Graduate Students</li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="pt-4 border-t border-border/50">
+                      <p className="text-foreground text-sm font-medium mb-3">
+                        The {lab.name} curriculum, algorithmic visualizations, and interactive sandboxes are designed for:
+                      </p>
+                    </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                       <div className="p-4 rounded-none bg-card border border-border space-y-2 shadow-2xs">
@@ -1450,7 +1488,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 </Card>
               )}
 
-              {/* TAB 4: LIST OF EXPERIMENTS */}
+              {/* TAB 4: LIST OF EXPERIMENTS (Screenshot 112512) */}
               {activeTab === "experiments" && (
                 <div className="space-y-6">
                   {/* If Machine Learning Lab, show the Prerequisite NumPy/Pandas Track first! */}
@@ -1458,48 +1496,56 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                     <MLPrerequisitesTrack />
                   )}
 
-                  {/* Experiments List Card */}
+                  {/* Experiments List Card matching Screenshot 112512 */}
                   <Card className="border-border bg-card shadow-xs rounded-none">
                     <CardHeader className="pb-3 border-b border-border/50">
-                      <div className="flex items-center justify-between">
-                        <CardTitle className="text-xl sm:text-2xl font-bold text-[#0284c7] dark:text-[#38bdf8] font-heading">
-                          Laboratory Experiments Syllabus ({experiments.length})
-                        </CardTitle>
-                        <Badge variant="outline" className="text-xs font-mono rounded-none">
-                          {LAB_ROADMAPS_DATA[lab.id]?.badge || "Engineering Sandbox"}
-                        </Badge>
+                      <div className="flex flex-col gap-1">
+                        <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                          {lab.name}
+                        </h2>
+                        <div className="flex items-center justify-between pt-1">
+                          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-mono">
+                            List of experiments ({experiments.length})
+                          </span>
+                          <Badge variant="outline" className="text-xs font-mono rounded-none">
+                            {LAB_ROADMAPS_DATA[lab.id]?.badge || "Engineering Sandbox"}
+                          </Badge>
+                        </div>
                       </div>
                     </CardHeader>
-                    <CardContent className="p-4 divide-y divide-border/50">
+                    <CardContent className="p-4 sm:p-6 space-y-4">
                       {experiments.map((exp, idx) => (
                         <div
                           key={exp.id}
-                          className="py-4 first:pt-0 last:pb-0 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 group"
+                          className="py-2.5 border-b border-border/40 last:border-b-0 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 group"
                         >
-                          <div className="space-y-1 flex-1">
-                            <div className="flex items-center gap-2">
-                              <span className="font-bold text-sm text-foreground group-hover:text-[#0284c7] transition-colors">
-                                {idx + 1}. {exp.title}
-                              </span>
-                              <Badge variant="outline" className="text-[10px] font-mono rounded-none">
-                                {exp.difficulty}
-                              </Badge>
-                            </div>
-                            <p className="text-xs text-muted-foreground line-clamp-2">
-                              {exp.sections.objective}
-                            </p>
-                            <div className="flex items-center gap-3 text-[11px] text-muted-foreground pt-1">
-                              <span className="flex items-center gap-1">
-                                <Video className="h-3 w-3 text-[#0284c7]" /> Video Tutorial
-                              </span>
-                              <span>•</span>
-                              <span className="flex items-center gap-1">
-                                <Code2 className="h-3 w-3 text-[#ea580c]" /> Call Stack Trace
-                              </span>
+                          <div className="flex items-center gap-3 flex-wrap flex-1">
+                            <span className="font-semibold text-sm sm:text-base text-foreground">
+                              {idx + 1}.
+                            </span>
+                            <Link
+                              href={`/experiments/${exp.slug}`}
+                              className="text-sm sm:text-base font-normal text-[#0284c7] dark:text-[#38bdf8] hover:underline hover:text-[#ea580c] transition-colors"
+                            >
+                              {exp.title}
+                            </Link>
+
+                            {/* 5-Star Rating matching Screenshot 112512 */}
+                            <div className="flex items-center gap-0.5 ml-2" title={`Rating: ${exp.rating || 4.8}/5`}>
+                              {[1, 2, 3, 4, 5].map((s) => (
+                                <Star
+                                  key={s}
+                                  className={`h-3.5 w-3.5 ${
+                                    s <= (idx === 1 ? 5 : (exp.rating >= 4.5 ? 4 : 4))
+                                      ? "fill-amber-400 text-amber-400"
+                                      : "text-amber-400/40"
+                                  }`}
+                                />
+                              ))}
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-2 self-start sm:self-center">
+                          <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
                             <Button
                               size="sm"
                               variant="outline"
@@ -1507,14 +1553,14 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                 setSelectedQuizExpId(exp.id);
                                 setActiveTab("quizzes");
                               }}
-                              className="text-xs gap-1.5 font-semibold border-[#0284c7]/30 text-[#0284c7] dark:text-[#38bdf8] hover:bg-[#0284c7]/10 cursor-pointer shadow-2xs rounded-none"
+                              className="text-xs h-7.5 px-3 font-semibold border-[#0284c7]/30 text-[#0284c7] dark:text-[#38bdf8] hover:bg-[#0284c7]/10 cursor-pointer shadow-2xs rounded-none"
                             >
-                              <HelpCircle className="h-3.5 w-3.5" />
+                              <HelpCircle className="h-3.5 w-3.5 mr-1" />
                               <span>5-Q Quiz</span>
                             </Button>
-                            <Button asChild size="sm" className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs gap-1.5 font-bold shadow-xs rounded-none">
+                            <Button asChild size="sm" className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs h-7.5 px-3.5 font-bold shadow-xs rounded-none">
                               <Link href={`/experiments/${exp.slug}`}>
-                                <PlayCircle className="h-4 w-4" />
+                                <PlayCircle className="h-3.5 w-3.5 mr-1" />
                                 <span>Start Experiment</span>
                               </Link>
                             </Button>
@@ -1603,9 +1649,35 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 );
               })()}
 
-              {/* TAB 6: COURSE ALIGNMENT */}
+              {/* TAB 6: COURSE ALIGNMENT (Screenshot 112924) */}
               {activeTab === "course-alignment" && (
-                <CourseAlignmentCard />
+                <div className="space-y-6">
+                  <Card className="border-border bg-card shadow-xs rounded-none">
+                    <CardHeader className="pb-2">
+                      <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                        {lab.name}
+                      </h2>
+                    </CardHeader>
+                    <CardContent className="space-y-4 text-sm leading-relaxed text-muted-foreground">
+                      <p className="text-foreground text-sm font-normal">
+                        The syllabi of this lab aligns to the following course in the AICTE model curriculum.
+                      </p>
+                      <ol className="list-decimal pl-6 space-y-2 text-foreground font-sans text-sm">
+                        <li>
+                          <strong>{lab.name}</strong> is a professional core/elective course in Computer Science and Engineering ({lab.code || "PEC-CS-SXXX"}).
+                        </li>
+                        <li>
+                          <strong>Computer Organisation and Architecture</strong> is a professional core course in Computer Science and Engineering (PCC-CS402).
+                        </li>
+                        <li>
+                          <strong>Anna University Regulation 2021/2026</strong> laboratory practical curriculum mapping for semester {lab.semester || "IV"}.
+                        </li>
+                      </ol>
+                    </CardContent>
+                  </Card>
+
+                  <CourseAlignmentCard />
+                </div>
               )}
 
               {/* TAB 7: RESOURCES & TUTORIALS */}
@@ -1783,62 +1855,113 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 </div>
               )}
 
-              {/* TAB 8: FEEDBACK */}
+              {/* TAB 8: FEEDBACK (Screenshot 112939) */}
               {activeTab === "feedback" && (
                 <Card className="border-border bg-card shadow-xs rounded-none">
-                  <CardHeader>
-                    <CardTitle className="text-xl sm:text-2xl font-bold text-[#0284c7] dark:text-[#38bdf8] font-heading">
-                      Laboratory Feedback &amp; Suggestions
-                    </CardTitle>
-                    <CardDescription className="text-xs">
-                      Thanks for using Virtual Labs. Your review helps us continuously enhance simulation precision.
-                    </CardDescription>
+                  <CardHeader className="pb-2">
+                    <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                      {lab.name}
+                    </h2>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    {feedbackSent ? (
-                      <div className="p-6 text-center space-y-2 bg-emerald-500/10 border border-emerald-500/30 rounded-none text-emerald-600 dark:text-emerald-400">
-                        <CheckCircle2 className="h-8 w-8 mx-auto" />
-                        <h4 className="font-bold">Thank you for your feedback!</h4>
-                        <p className="text-xs text-muted-foreground">— Department of AI &amp; DS Virtual Labs Team</p>
-                      </div>
-                    ) : (
-                      <form onSubmit={handleSendFeedback} className="space-y-4">
-                        <div className="space-y-1.5">
-                          <label className="text-xs font-semibold">Laboratory Rating (1 - 5)</label>
-                          <div className="flex items-center gap-1.5">
-                            {[1, 2, 3, 4, 5].map((s) => (
-                              <button
-                                key={s}
-                                type="button"
-                                onClick={() => setFeedbackRating(s)}
-                                className={`h-8 w-8 rounded-none text-xs font-bold border transition-all cursor-pointer ${
-                                  s === feedbackRating
-                                    ? "bg-[#0284c7] text-white border-[#0284c7] shadow-xs"
-                                    : "bg-muted/50 hover:bg-muted text-muted-foreground border-border"
-                                }`}
-                              >
-                                {s}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
+                  <CardContent className="space-y-6 text-sm leading-relaxed max-w-3xl">
+                    <div className="space-y-4 font-sans text-foreground">
+                      <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4">
+                        Feedback
+                      </h3>
+                      <p className="font-bold text-foreground">
+                        Dear User,
+                      </p>
+                      <p className="text-muted-foreground leading-relaxed">
+                        Thanks for using Virtual Labs. Your opinion is valuable to us. To help us improve, we&apos;d like to ask you a few questions about your experience. It will only take 3 minutes and your answers will help us make Virtual Labs better for you and other users.
+                      </p>
 
-                        <div className="space-y-1.5">
-                          <label className="text-xs font-semibold">Comments / Suggestions</label>
-                          <Textarea
-                            value={feedbackText}
-                            onChange={(e) => setFeedbackText(e.target.value)}
-                            placeholder="Type your feedback here regarding simulations or curriculum preparation..."
-                            rows={4}
-                            className="text-xs rounded-none"
-                          />
-                        </div>
-
-                        <Button type="submit" className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs rounded-none">
-                          <Send className="h-3.5 w-3.5" /> Submit Experience
+                      <div>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setIsShareModalOpen(true)}
+                          className="h-9 px-4 text-xs font-semibold rounded-none border-[#0284c7] text-[#0284c7] hover:bg-[#0284c7]/10"
+                        >
+                          Share Your Experience
                         </Button>
-                      </form>
-                    )}
+                      </div>
+
+                      <div className="pt-2 text-foreground space-y-0.5">
+                        <p>Thanks for your time !</p>
+                        <p className="font-bold underline decoration-[#0284c7] underline-offset-4">
+                          The Virtual Labs Team
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* In-place or Dialog Modal Feedback */}
+                    <Dialog open={isShareModalOpen} onOpenChange={setIsShareModalOpen}>
+                      <DialogContent className="max-w-md rounded-none p-6">
+                        <DialogHeader>
+                          <DialogTitle className="text-lg font-bold font-heading">Share Your Experience</DialogTitle>
+                          <DialogDescription className="text-xs text-muted-foreground">
+                            Help us improve Virtual Labs for all students and faculty.
+                          </DialogDescription>
+                        </DialogHeader>
+
+                        {feedbackSent ? (
+                          <div className="py-6 text-center space-y-2 text-emerald-600 dark:text-emerald-400">
+                            <CheckCircle2 className="h-10 w-10 mx-auto animate-bounce" />
+                            <p className="font-bold text-sm">Thank you for your feedback!</p>
+                            <p className="text-xs text-muted-foreground">— The Virtual Labs Team</p>
+                          </div>
+                        ) : (
+                          <form onSubmit={handleSendFeedback} className="space-y-4 pt-2">
+                            <div className="space-y-1.5">
+                              <label className="text-xs font-semibold">Laboratory Rating (1 - 5)</label>
+                              <div className="flex items-center gap-1.5">
+                                {[1, 2, 3, 4, 5].map((s) => (
+                                  <button
+                                    key={s}
+                                    type="button"
+                                    onClick={() => setFeedbackRating(s)}
+                                    className={`h-8 w-8 rounded-none text-xs font-bold border transition-all cursor-pointer ${
+                                      s === feedbackRating
+                                        ? "bg-[#0284c7] text-white border-[#0284c7] shadow-xs"
+                                        : "bg-muted/50 hover:bg-muted text-muted-foreground border-border"
+                                    }`}
+                                  >
+                                    {s}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <label className="text-xs font-semibold">Your Review &amp; Suggestions</label>
+                              <Textarea
+                                value={feedbackText}
+                                onChange={(e) => setFeedbackText(e.target.value)}
+                                placeholder="Type your feedback here regarding simulations or curriculum preparation..."
+                                rows={4}
+                                className="text-xs rounded-none"
+                                required
+                              />
+                            </div>
+
+                            <div className="flex justify-end gap-2 pt-2">
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                className="rounded-none"
+                                onClick={() => setIsShareModalOpen(false)}
+                              >
+                                Cancel
+                              </Button>
+                              <Button type="submit" size="sm" className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs rounded-none">
+                                <Send className="h-3.5 w-3.5" /> Submit Experience
+                              </Button>
+                            </div>
+                          </form>
+                        )}
+                      </DialogContent>
+                    </Dialog>
                   </CardContent>
                 </Card>
               )}

@@ -6,6 +6,7 @@ import { Navbar } from "@/components/navigation/navbar";
 import { Footer } from "@/components/navigation/footer";
 import { LABS_DATA } from "@/data/labs";
 import { LabCatalogueCard } from "@/components/vlab/lab-catalogue-card";
+import { ConstellationBackground } from "@/components/vlab/constellation-background";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +19,8 @@ import {
   Sparkles,
   ExternalLink,
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
   BookOpen,
   GraduationCap,
   Award,
@@ -25,6 +28,8 @@ import {
 
 export default function LabsCataloguePage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isDisciplineBooksOpen, setIsDisciplineBooksOpen] = useState(false);
+  const [isDisciplineSyllabusOpen, setIsDisciplineSyllabusOpen] = useState(false);
 
   const filteredLabs = useMemo(() => {
     return LABS_DATA.filter((lab) => {
@@ -41,40 +46,97 @@ export default function LabsCataloguePage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-1 pt-24 pb-14 bg-muted/20">
+      <main className="flex-1 pt-20 pb-14 bg-muted/20">
         <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-          {/* Top Breadcrumb & Broad Areas Header (Screenshot 112326) */}
-          <div className="bg-card border border-border/80 rounded-none p-5 sm:p-6 shadow-2xs space-y-3">
-            <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-muted-foreground font-sans">
-              <Link href="/" className="hover:text-primary transition-colors">
-                Home
-              </Link>
-              <span>/</span>
-              <span className="text-foreground font-medium">Broad Areas of Virtual Labs</span>
-              <span>/</span>
-              <span className="text-primary font-bold">Artificial Intelligence &amp; Data Science</span>
-            </div>
+          {/* Top Discipline Constellation Banner (Screenshot 112326) */}
+          <div className="relative overflow-hidden bg-gradient-to-r from-[#002b49] via-[#003e6b] to-[#00223a] text-white p-6 sm:p-8 rounded-none border border-[#004b80] shadow-md space-y-4">
+            <ConstellationBackground />
 
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-1">
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-black text-[#0284c7] dark:text-[#38bdf8] font-heading tracking-tight">
-                  Artificial Intelligence &amp; Data Science Virtual Labs
-                </h1>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                  National Virtual Laboratories in Artificial Intelligence, Machine Learning, Data Science, Algorithms, Data Structures, Neural Computing, and Cloud Systems.
-                </p>
+            <div className="relative z-10 space-y-3">
+              <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-slate-200 font-sans">
+                <Link href="/" className="hover:text-amber-300 transition-colors">
+                  Home
+                </Link>
+                <span>&gt;</span>
+                <span className="text-white font-bold">Computer Science &amp; Engineering</span>
               </div>
 
-              {/* Search Bar */}
-              <div className="relative w-full md:w-80 shrink-0">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search labs or topics..."
-                  className="pl-9 h-10 text-xs bg-background border-border shadow-2xs rounded-none"
-                />
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-1">
+                <div>
+                  <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight font-sans">
+                    Computer Science &amp; Engineering
+                  </h1>
+                  <p className="text-xs sm:text-sm text-slate-200 mt-1 max-w-2xl leading-relaxed">
+                    National Virtual Laboratories in Artificial Intelligence, Machine Learning, Data Structures, Operating Systems, Computer Architecture, and Relational Database Systems.
+                  </p>
+                </div>
+
+                {/* Search Bar */}
+                <div className="relative w-full md:w-80 shrink-0">
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                  <Input
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search labs or topics..."
+                    className="pl-9 h-10 text-xs bg-black/40 text-white placeholder:text-slate-300 border-white/20 shadow-2xs rounded-none focus-visible:ring-1 focus-visible:ring-white/40"
+                  />
+                </div>
               </div>
+
+              {/* Expandable Discipline Buttons matching Screenshot 112326 */}
+              <div className="flex flex-wrap items-center gap-4 pt-2 text-xs font-bold text-amber-300">
+                <button
+                  type="button"
+                  onClick={() => setIsDisciplineBooksOpen((prev) => !prev)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-black/30 hover:bg-black/50 border border-white/20 rounded-none cursor-pointer transition-colors"
+                >
+                  <BookOpen className="h-3.5 w-3.5 text-amber-300" />
+                  <span>Reference Books</span>
+                  {isDisciplineBooksOpen ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setIsDisciplineSyllabusOpen((prev) => !prev)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-black/30 hover:bg-black/50 border border-white/20 rounded-none cursor-pointer transition-colors"
+                >
+                  <GraduationCap className="h-3.5 w-3.5 text-amber-300" />
+                  <span>Syllabus Mapping</span>
+                  {isDisciplineSyllabusOpen ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+                </button>
+              </div>
+
+              {/* Collapsible Reference Books Panel */}
+              {isDisciplineBooksOpen && (
+                <div className="mt-3 p-4 bg-black/60 border border-white/20 rounded-none text-xs space-y-2 text-slate-200">
+                  <h4 className="font-bold text-amber-300 uppercase tracking-wider text-[11px]">
+                    Recommended Core Textbooks across Computer Science &amp; Engineering:
+                  </h4>
+                  <ul className="list-disc list-inside space-y-1 pl-1 text-slate-300">
+                    <li>Mark Allen Weiss. Data Structures and Algorithm Analysis in Java, 3rd Edition. Pearson.</li>
+                    <li>Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein. Introduction to Algorithms. MIT Press.</li>
+                    <li>John L. Hennessy and David A. Patterson. Computer Architecture: A Quantitative Approach, 6th Edition. Morgan Kaufmann.</li>
+                    <li>Abraham Silberschatz, Peter B. Galvin, Greg Gagne. Operating System Concepts, 10th Edition. Wiley.</li>
+                    <li>Ramez Elmasri and Shamkant B. Navathe. Fundamentals of Database Systems, 7th Edition. Pearson.</li>
+                  </ul>
+                </div>
+              )}
+
+              {/* Collapsible Syllabus Mapping Panel */}
+              {isDisciplineSyllabusOpen && (
+                <div className="mt-3 p-4 bg-black/60 border border-white/20 rounded-none text-xs space-y-2 text-slate-200">
+                  <h4 className="font-bold text-amber-300 uppercase tracking-wider text-[11px]">
+                    AICTE Model Curriculum &amp; Anna University Regulation 2021/2026 Mapping:
+                  </h4>
+                  <ul className="list-disc list-inside space-y-1 pl-1 text-slate-300">
+                    <li>PCC-CS301: Data Structures and Algorithms Laboratory (Semester III)</li>
+                    <li>PCC-CS402: Computer Organisation and Architecture Laboratory (Semester IV)</li>
+                    <li>PCC-CS403: Operating Systems Laboratory (Semester IV)</li>
+                    <li>PCC-CS502: Database Management Systems Laboratory (Semester V)</li>
+                    <li>PEC-CS-S501: Machine Learning &amp; Artificial Intelligence Laboratory (Semester VI)</li>
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
 

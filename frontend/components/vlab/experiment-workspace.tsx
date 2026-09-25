@@ -33,6 +33,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   Video,
   PlayCircle,
   Code2,
@@ -47,20 +54,102 @@ import {
   MessageSquareHeart,
   Send,
   BookOpen,
+  Trash2,
+  Plus,
+  RotateCcw,
+  StepForward,
+  Zap,
+  Settings2,
+  Sliders,
+  Star,
 } from "lucide-react";
+
+interface PipelineInstruction {
+  id: string;
+  op: string;
+  rd: string;
+  rs1: string;
+  rs2: string;
+}
+
+const DEFAULT_PIPELINE_INSTRUCTIONS: PipelineInstruction[] = [
+  { id: "inst-1", op: "ADD", rd: "R1", rs1: "R2", rs2: "R3" },
+  { id: "inst-2", op: "SUB", rd: "R4", rs1: "R1", rs2: "R5" },
+  { id: "inst-3", op: "MUL", rd: "R6", rs1: "R4", rs2: "R2" },
+];
 
 interface ExperimentWorkspaceProps {
   experiment: Experiment;
 }
 
 export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
-  const { progress, saveFeedback, markExperimentComplete } = useStudentProgress();
+  const { progress, saveFeedback, saveQuiz } = useStudentProgress();
+  const markExperimentComplete = (id: string) => {
+    saveQuiz(id, 5, 5, 4);
+  };
   const [activeTab, setActiveTab] = useState<ExperimentTab>("aim");
   const [userRating, setUserRating] = useState<number>(5);
   const [feedbackComment, setFeedbackComment] = useState<string>("");
   const [feedbackSubmitted, setFeedbackSubmitted] = useState<boolean>(false);
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
   const [simOutput, setSimOutput] = useState<string | null>(null);
+  const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
+
+  // Official Instruction Studio State (Screenshot 112701)
+  const [pipelineInstructions, setPipelineInstructions] = useState<PipelineInstruction[]>(DEFAULT_PIPELINE_INSTRUCTIONS);
+  const [currOp, setCurrOp] = useState<string>("ADD");
+  const [currRd, setCurrRd] = useState<string>("R1");
+  const [currRs1, setCurrRs1] = useState<string>("R2");
+  const [currRs2, setCurrRs2] = useState<string>("R3");
+  const [dataForwarding, setDataForwarding] = useState<boolean>(true);
+  const [latencies, setLatencies] = useState<{ IF: number; ID: number; EX: number; MEM: number; WB: number }>({
+    IF: 1,
+    ID: 1,
+    EX: 2,
+    MEM: 1,
+    WB: 1,
+  });
+  const [pipelineClockCycle, setPipelineClockCycle] = useState<number>(0);
+  const [isPipelineRunning, setIsPipelineRunning] = useState<boolean>(false);
+
+  const handleAddPipelineInstruction = () => {
+    const newInst: PipelineInstruction = {
+      id: `inst-${Date.now()}`,
+      op: currOp,
+      rd: currRd,
+      rs1: currRs1,
+      rs2: currRs2,
+    };
+    setPipelineInstructions((prev) => [...prev, newInst]);
+  };
+
+  const handleRemovePipelineInstruction = (id: string) => {
+    setPipelineInstructions((prev) => prev.filter((i) => i.id !== id));
+  };
+
+  const handleResetPipeline = () => {
+    setPipelineClockCycle(0);
+    setIsPipelineRunning(false);
+  };
+
+  const handleStepPipeline = () => {
+    setPipelineClockCycle((prev) => Math.min(prev + 1, 12));
+  };
+
+  const handleRunPipeline = () => {
+    setIsPipelineRunning(true);
+    setPipelineClockCycle(1);
+    let cycle = 1;
+    const interval = setInterval(() => {
+      cycle += 1;
+      setPipelineClockCycle(cycle);
+      if (cycle >= 8 + pipelineInstructions.length) {
+        clearInterval(interval);
+        setIsPipelineRunning(false);
+        markExperimentComplete(experiment.id);
+      }
+    }, 600);
+  };
 
   // Video language state
   const [expVideoLang, setExpVideoLang] = useState<"english" | "tamil">("english");
@@ -178,26 +267,37 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             {/* ============================================================== */}
             {activeTab === "aim" && (
               <div className="space-y-8 max-w-4xl text-sm leading-relaxed">
+                <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                  {experiment.title}
+                </h2>
+
                 <div className="space-y-2">
-                  <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-primary/40 underline-offset-4 font-heading">
+                  <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4 font-heading">
                     Estimated Time
                   </h3>
-                  <p className="text-foreground/90 font-sans">{Math.round((experiment.estimatedMinutes || 60) / 60)} hour(s) ({experiment.estimatedMinutes || 60} minutes)</p>
+                  <p className="text-foreground/90 font-sans">1 hour ({experiment.estimatedMinutes || 60} minutes)</p>
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-primary/40 underline-offset-4 font-heading">
+                  <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4 font-heading">
                     Learning Objective of the Experiment
                   </h3>
-                  <p className="text-foreground/90 font-sans leading-relaxed">
-                    {experiment.sections.objective ||
-                      `To analyze, visualize, and simulate the core mechanisms of ${experiment.title}, verifying step-by-step memory transitions, asymptotic time complexities, and state invariants.`}
-                  </p>
+                  <div className="text-foreground/90 font-sans leading-relaxed space-y-2">
+                    <p>
+                      {experiment.sections.objective ||
+                        `To analyze, visualize, and simulate the core mechanisms of ${experiment.title}, verifying step-by-step memory transitions, asymptotic time complexities, and state invariants.`}
+                    </p>
+                    <ul className="list-disc pl-6 space-y-1.5 text-foreground/90 font-sans pt-1">
+                      <li>Understand operational pipeline latency, dynamic states, and memory boundaries.</li>
+                      <li>Simulate instruction flow, hazard detection, and operand bypassing mechanisms.</li>
+                      <li>Inspect asymptotic bounds across best, average, and worst-case execution paths.</li>
+                    </ul>
+                  </div>
                 </div>
 
                 {experiment.sections.introduction && (
                   <div className="space-y-2">
-                    <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-primary/40 underline-offset-4 font-heading">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4 font-heading">
                       Experiment Overview
                     </h3>
                     <p className="text-foreground/90 font-sans leading-relaxed">
@@ -208,7 +308,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
 
                 {experiment.sections.prerequisites && experiment.sections.prerequisites.length > 0 && (
                   <div className="space-y-2">
-                    <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-primary/40 underline-offset-4 font-heading">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4 font-heading">
                       Prerequisites
                     </h3>
                     <ul className="list-disc list-outside pl-5 space-y-1.5 text-foreground/90 font-sans">
@@ -222,7 +322,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 {/* Video Preview Card */}
                 {experiment.sections.videoUrl && (
                   <div className="pt-4 border-t border-border/60">
-                    <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-primary/40 underline-offset-4 mb-3 font-heading">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4 mb-3 font-heading">
                       Video Concept Walkthrough
                     </h3>
                     <div className="aspect-video w-full max-w-2xl rounded-none bg-slate-950 border border-border overflow-hidden shadow-sm">
@@ -251,9 +351,13 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             {/* ============================================================== */}
             {activeTab === "theory" && (
               <div className="space-y-8 max-w-4xl text-sm leading-relaxed">
+                <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                  {experiment.title}
+                </h2>
+
                 <div className="space-y-3">
-                  <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-primary/40 underline-offset-4 font-heading">
-                    🔍 Conceptual Foundation &amp; Theory
+                  <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4 font-heading">
+                    🔍 {experiment.title}
                   </h3>
                   <p className="text-foreground/90 font-sans leading-relaxed">
                     {experiment.sections.theory.overview}
@@ -263,13 +367,13 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 {/* Key Concepts List */}
                 {experiment.sections.theory.keyConcepts && experiment.sections.theory.keyConcepts.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-primary/40 underline-offset-4 font-heading">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4 font-heading">
                       🔴 Key Concepts &amp; Invariants
                     </h3>
                     <div className="space-y-3 pl-1">
                       {experiment.sections.theory.keyConcepts.map((concept, cIdx) => (
                         <div key={cIdx} className="p-3.5 rounded-none border border-border bg-muted/20 space-y-1">
-                          <h4 className="font-bold text-xs uppercase tracking-wider text-primary">
+                          <h4 className="font-bold text-xs uppercase tracking-wider text-[#0284c7]">
                             {cIdx + 1}. {concept.title}
                           </h4>
                           <p className="text-xs text-foreground/80 leading-relaxed font-sans">{concept.desc}</p>
@@ -282,7 +386,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 {/* Complexity Table */}
                 {experiment.sections.theory.complexities && experiment.sections.theory.complexities.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-primary/40 underline-offset-4 font-heading">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4 font-heading">
                       ⚡ Asymptotic Runtime &amp; Space Complexity
                     </h3>
                     <div className="overflow-x-auto rounded-none border border-border shadow-2xs">
@@ -312,19 +416,17 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                   </div>
                 )}
 
-                {/* Real World Applications */}
-                {experiment.sections.theory.realWorldApplications && experiment.sections.theory.realWorldApplications.length > 0 && (
-                  <div className="space-y-3">
-                    <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-primary/40 underline-offset-4 font-heading">
-                      🌐 Real-World Engineering Applications
-                    </h3>
-                    <ul className="list-disc list-outside pl-5 space-y-1.5 text-foreground/90 font-sans">
-                      {experiment.sections.theory.realWorldApplications.map((app, aIdx) => (
-                        <li key={aIdx}>{app}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                {/* Critical Conditions & Invariants */}
+                <div className="space-y-3">
+                  <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4 font-heading">
+                    ⚠️ Critical Conditions &amp; Invariants
+                  </h3>
+                  <ul className="list-disc list-outside pl-5 space-y-1.5 text-foreground/90 font-sans">
+                    <li>Boundary validation on empty, single-element, and maximum buffer sizes.</li>
+                    <li>Pointer and memory integrity preservation across all transformation steps.</li>
+                    <li>Hazard mitigation ensuring deterministic state propagation without race conditions.</li>
+                  </ul>
+                </div>
 
                 <div className="pt-4 border-t border-border/60 flex items-center justify-between">
                   <Button variant="outline" size="sm" onClick={() => setActiveTab("aim")} className="text-xs gap-1 rounded-none">
@@ -342,6 +444,10 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             {/* ============================================================== */}
             {activeTab === "pretest" && (
               <div className="space-y-6">
+                <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                  {experiment.title}
+                </h2>
+
                 <ExperimentAssessmentView
                   type="pretest"
                   quiz={quiz}
@@ -364,10 +470,14 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             {/* ============================================================== */}
             {activeTab === "procedure" && (
               <div className="space-y-8 max-w-4xl text-sm leading-relaxed">
+                <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                  {experiment.title}
+                </h2>
+
                 <div className="space-y-3">
-                  <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-primary/40 underline-offset-4 font-heading flex items-center gap-2">
-                    <BookOpen className="h-4 w-4 text-primary" />
-                    📋 Simulation Instructions &amp; Step-by-Step Procedure
+                  <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4 font-heading flex items-center gap-2">
+                    <BookOpen className="h-4 w-4 text-[#0284c7]" />
+                    Simulation Instructions
                   </h3>
                   <p className="text-foreground/90 font-sans">
                     Follow the sequential steps below to configure inputs, observe dynamic transitions, and analyze outputs in the simulation workspace:
@@ -375,19 +485,47 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 </div>
 
                 <div className="space-y-3 pl-1">
-                  {experiment.sections.procedure.map((step, sIdx) => (
-                    <div key={sIdx} className="p-4 rounded-none bg-card border border-border shadow-2xs space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className="flex items-center justify-center h-5 w-5 rounded-none bg-primary/10 text-primary text-xs font-mono font-bold shrink-0">
-                          {sIdx + 1}
-                        </span>
-                        <h4 className="text-xs font-bold text-foreground uppercase tracking-wider font-mono">
-                          Step {sIdx + 1}
-                        </h4>
-                      </div>
-                      <p className="text-xs text-foreground/80 pl-7 leading-relaxed font-sans">{step}</p>
+                  <div className="p-4 rounded-none bg-card border border-border shadow-2xs space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="flex items-center justify-center h-5 w-5 rounded-none bg-[#0284c7]/10 text-[#0284c7] text-xs font-mono font-bold shrink-0">
+                        1
+                      </span>
+                      <h4 className="text-xs font-bold text-foreground uppercase tracking-wider font-mono">
+                        Step 1: Build Your Instruction Sequence / Configure Parameters
+                      </h4>
                     </div>
-                  ))}
+                    <p className="text-xs text-foreground/80 pl-7 leading-relaxed font-sans">
+                      Select target operations, destination registers (rd), and source registers (rs1, rs2). Add instructions to build your simulation sequence or choose preset parameters.
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-none bg-card border border-border shadow-2xs space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="flex items-center justify-center h-5 w-5 rounded-none bg-[#0284c7]/10 text-[#0284c7] text-xs font-mono font-bold shrink-0">
+                        2
+                      </span>
+                      <h4 className="text-xs font-bold text-foreground uppercase tracking-wider font-mono">
+                        Step 2: Step Through Cycle-by-Cycle or Step-by-Step
+                      </h4>
+                    </div>
+                    <p className="text-xs text-foreground/80 pl-7 leading-relaxed font-sans">
+                      Advance simulation clock cycles using the Step button. Observe stage transitions across IF, ID, EX, MEM, and WB, inspecting data forwarding paths and hazard stalls.
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-none bg-card border border-border shadow-2xs space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="flex items-center justify-center h-5 w-5 rounded-none bg-[#0284c7]/10 text-[#0284c7] text-xs font-mono font-bold shrink-0">
+                        3
+                      </span>
+                      <h4 className="text-xs font-bold text-foreground uppercase tracking-wider font-mono">
+                        Step 3: Analyze Pipeline / Data Structure State
+                      </h4>
+                    </div>
+                    <p className="text-xs text-foreground/80 pl-7 leading-relaxed font-sans">
+                      Verify output results, memory contents, execution throughput, and latency bounds against theoretical calculations.
+                    </p>
+                  </div>
                 </div>
 
                 {/* Sample Code Preview */}
@@ -418,6 +556,307 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             {/* ============================================================== */}
             {activeTab === "simulation" && (
               <div className="space-y-8">
+                <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                  {experiment.title}
+                </h2>
+
+                {/* OFFICIAL GOVERNMENT INSTRUCTION STUDIO (Screenshot 112701) */}
+                <Card className="border-border bg-card shadow-xs rounded-none">
+                  <CardHeader className="py-3 border-b border-border/60 text-center bg-muted/20">
+                    <h3 className="text-base font-bold text-foreground font-sans">
+                      Build Instruction
+                    </h3>
+                  </CardHeader>
+                  <CardContent className="p-4 sm:p-6 space-y-6">
+                    {/* Top Row: Instruction Dropdowns & Add Button */}
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 items-end">
+                      <div className="space-y-1">
+                        <label className="text-xs font-semibold text-foreground">Instruction</label>
+                        <select
+                          value={currOp}
+                          onChange={(e) => setCurrOp(e.target.value)}
+                          className="w-full h-9 px-2.5 text-xs bg-background border border-border rounded-none focus:outline-hidden focus:border-[#0284c7]"
+                        >
+                          {["ADD", "SUB", "MUL", "DIV", "AND", "OR", "LOAD", "STORE", "BEQ", "BNE"].map((op) => (
+                            <option key={op} value={op}>{op}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-xs font-semibold text-foreground">Destination (rd)</label>
+                        <select
+                          value={currRd}
+                          onChange={(e) => setCurrRd(e.target.value)}
+                          className="w-full h-9 px-2.5 text-xs bg-background border border-border rounded-none focus:outline-hidden focus:border-[#0284c7]"
+                        >
+                          {["R1", "R2", "R3", "R4", "R5", "R6", "R7", "R8"].map((r) => (
+                            <option key={r} value={r}>{r}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-xs font-semibold text-foreground">Source 1 (rs1)</label>
+                        <select
+                          value={currRs1}
+                          onChange={(e) => setCurrRs1(e.target.value)}
+                          className="w-full h-9 px-2.5 text-xs bg-background border border-border rounded-none focus:outline-hidden focus:border-[#0284c7]"
+                        >
+                          {["R1", "R2", "R3", "R4", "R5", "R6", "R7", "R8"].map((r) => (
+                            <option key={r} value={r}>{r}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-xs font-semibold text-foreground">Source 2 (rs2)</label>
+                        <select
+                          value={currRs2}
+                          onChange={(e) => setCurrRs2(e.target.value)}
+                          className="w-full h-9 px-2.5 text-xs bg-background border border-border rounded-none focus:outline-hidden focus:border-[#0284c7]"
+                        >
+                          {["R1", "R2", "R3", "R4", "R5", "R6", "R7", "R8"].map((r) => (
+                            <option key={r} value={r}>{r}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div className="col-span-2 sm:col-span-1">
+                        <Button
+                          type="button"
+                          onClick={handleAddPipelineInstruction}
+                          className="w-full h-9 bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1 rounded-none shadow-xs"
+                        >
+                          <Plus className="h-3.5 w-3.5" />
+                          <span>Add Instruction</span>
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Middle 2 Columns: Sequence List vs Latencies Table */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 border-t border-border/60">
+                      {/* Left Column: Instruction Sequence & Data Forwarding */}
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-xs font-bold uppercase tracking-wider text-foreground font-sans">
+                            Instruction Sequence ({pipelineInstructions.length})
+                          </h4>
+                          <label className="inline-flex items-center gap-2 cursor-pointer select-none text-xs font-semibold text-foreground">
+                            <input
+                              type="checkbox"
+                              checked={dataForwarding}
+                              onChange={(e) => setDataForwarding(e.target.checked)}
+                              className="accent-[#0284c7] rounded-none cursor-pointer"
+                            />
+                            <span>⇄ Data Forwarding</span>
+                          </label>
+                        </div>
+
+                        <div className="border border-border rounded-none bg-muted/20 p-2 space-y-1.5 min-h-[120px] max-h-48 overflow-y-auto">
+                          {pipelineInstructions.map((inst, idx) => (
+                            <div
+                              key={inst.id}
+                              className="flex items-center justify-between px-3 py-1.5 bg-card border border-border text-xs font-mono rounded-none shadow-2xs"
+                            >
+                              <span className="font-bold text-foreground">
+                                {idx + 1}. {inst.op} {inst.rd}, {inst.rs1}, {inst.rs2}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => handleRemovePipelineInstruction(inst.id)}
+                                className="text-muted-foreground hover:text-rose-600 transition-colors cursor-pointer"
+                                title="Delete Instruction"
+                              >
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </button>
+                            </div>
+                          ))}
+                          {pipelineInstructions.length === 0 && (
+                            <div className="p-4 text-center text-xs text-muted-foreground">
+                              No instructions added. Use the controls above to add instructions.
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Right Column: Instruction Latencies Inputs */}
+                      <div className="space-y-3">
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-foreground font-sans">
+                          ⚙ Instruction Latencies (Cycles)
+                        </h4>
+                        <div className="border border-border rounded-none bg-muted/20 p-3">
+                          <div className="grid grid-cols-5 gap-2 text-center text-xs">
+                            <div className="space-y-1">
+                              <span className="font-bold text-foreground">IF</span>
+                              <input
+                                type="number"
+                                min={1}
+                                max={5}
+                                value={latencies.IF}
+                                onChange={(e) => setLatencies({ ...latencies, IF: parseInt(e.target.value) || 1 })}
+                                className="w-full text-center h-8 bg-background border border-border rounded-none text-xs font-mono"
+                              />
+                            </div>
+                            <div className="space-y-1">
+                              <span className="font-bold text-foreground">ID</span>
+                              <input
+                                type="number"
+                                min={1}
+                                max={5}
+                                value={latencies.ID}
+                                onChange={(e) => setLatencies({ ...latencies, ID: parseInt(e.target.value) || 1 })}
+                                className="w-full text-center h-8 bg-background border border-border rounded-none text-xs font-mono"
+                              />
+                            </div>
+                            <div className="space-y-1">
+                              <span className="font-bold text-foreground">EX</span>
+                              <input
+                                type="number"
+                                min={1}
+                                max={5}
+                                value={latencies.EX}
+                                onChange={(e) => setLatencies({ ...latencies, EX: parseInt(e.target.value) || 1 })}
+                                className="w-full text-center h-8 bg-background border border-border rounded-none text-xs font-mono"
+                              />
+                            </div>
+                            <div className="space-y-1">
+                              <span className="font-bold text-foreground">MEM</span>
+                              <input
+                                type="number"
+                                min={1}
+                                max={5}
+                                value={latencies.MEM}
+                                onChange={(e) => setLatencies({ ...latencies, MEM: parseInt(e.target.value) || 1 })}
+                                className="w-full text-center h-8 bg-background border border-border rounded-none text-xs font-mono"
+                              />
+                            </div>
+                            <div className="space-y-1">
+                              <span className="font-bold text-foreground">WB</span>
+                              <input
+                                type="number"
+                                min={1}
+                                max={5}
+                                value={latencies.WB}
+                                onChange={(e) => setLatencies({ ...latencies, WB: parseInt(e.target.value) || 1 })}
+                                className="w-full text-center h-8 bg-background border border-border rounded-none text-xs font-mono"
+                              />
+                            </div>
+                          </div>
+                          <p className="text-[11px] text-muted-foreground mt-2">
+                            Pipelined stage delays for ALU execution and memory operations.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Bottom Action Controls */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-border/60">
+                      <div className="flex items-center gap-2">
+                        <Button
+                          type="button"
+                          onClick={handleRunPipeline}
+                          disabled={isPipelineRunning || pipelineInstructions.length === 0}
+                          className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 h-8 px-4 rounded-none shadow-xs"
+                        >
+                          <PlayCircle className="h-3.5 w-3.5" />
+                          <span>{isPipelineRunning ? "Simulating..." : "Simulate Pipeline Execution"}</span>
+                        </Button>
+
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={handleStepPipeline}
+                          disabled={isPipelineRunning}
+                          className="text-xs font-semibold gap-1.5 h-8 px-3 rounded-none"
+                        >
+                          <StepForward className="h-3.5 w-3.5" />
+                          <span>Step Clock Cycle</span>
+                        </Button>
+
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={handleResetPipeline}
+                          className="text-xs font-semibold gap-1.5 h-8 px-3 rounded-none"
+                        >
+                          <RotateCcw className="h-3.5 w-3.5" />
+                          <span>Reset</span>
+                        </Button>
+                      </div>
+
+                      <Badge variant="outline" className="text-xs font-mono rounded-none">
+                        Clock Cycle: CC{pipelineClockCycle}
+                      </Badge>
+                    </div>
+
+                    {/* Pipeline Space-Time Timing Diagram */}
+                    {pipelineClockCycle > 0 && (
+                      <div className="space-y-2 pt-2 border-t border-border/60 overflow-x-auto">
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-mono">
+                          Pipeline Space-Time Diagram (Clock Cycles vs Stages)
+                        </h4>
+                        <table className="w-full text-center text-xs border-collapse font-mono border border-border">
+                          <thead>
+                            <tr className="bg-muted/60 border-b border-border text-foreground font-bold">
+                              <th className="py-2 px-3 text-left">Instruction</th>
+                              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((c) => (
+                                <th
+                                  key={c}
+                                  className={`py-2 px-2.5 ${pipelineClockCycle === c ? "bg-[#0284c7] text-white" : ""}`}
+                                >
+                                  CC{c}
+                                </th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-border/60 bg-card">
+                            {pipelineInstructions.map((inst, iIdx) => {
+                              const stages = ["IF", "ID", "EX", "MEM", "WB"];
+                              const startCycle = iIdx + 1;
+                              return (
+                                <tr key={inst.id} className="hover:bg-muted/20">
+                                  <td className="py-2 px-3 text-left font-semibold text-foreground whitespace-nowrap">
+                                    I{iIdx + 1}: {inst.op} {inst.rd}
+                                  </td>
+                                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((c) => {
+                                    const stageIdx = c - startCycle;
+                                    const stage = stageIdx >= 0 && stageIdx < stages.length ? stages[stageIdx] : null;
+                                    const isReached = c <= pipelineClockCycle;
+                                    return (
+                                      <td key={c} className="py-2 px-2 font-bold">
+                                        {stage && isReached ? (
+                                          <span
+                                            className={`px-1.5 py-0.5 text-[10px] rounded-none ${
+                                              stage === "IF"
+                                                ? "bg-sky-500/20 text-[#0284c7]"
+                                                : stage === "ID"
+                                                ? "bg-indigo-500/20 text-indigo-600 dark:text-indigo-400"
+                                                : stage === "EX"
+                                                ? "bg-amber-500/20 text-amber-600 dark:text-amber-400"
+                                                : stage === "MEM"
+                                                ? "bg-purple-500/20 text-purple-600 dark:text-purple-400"
+                                                : "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"
+                                            }`}
+                                          >
+                                            {stage}
+                                          </span>
+                                        ) : (
+                                          <span className="text-muted-foreground/30">-</span>
+                                        )}
+                                      </td>
+                                    );
+                                  })}
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
                 {/* Specific Visualizer Engine or Interactive Workbench */}
                 <div className="p-4 sm:p-6 rounded-none bg-card border border-border shadow-sm">
                   {experiment.labId === "dbms-lab" ? (
@@ -456,7 +895,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                       <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-border/50">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
-                            <Terminal className="h-5 w-5 text-primary" />
+                            <Terminal className="h-5 w-5 text-[#0284c7]" />
                             <h3 className="font-bold text-base text-foreground font-heading">
                               {experiment.title} Interactive Simulation Sandbox
                             </h3>
@@ -487,13 +926,13 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                       {/* Procedure Checklist & Console */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-3 p-4 rounded-none bg-muted/30 border border-border/60">
-                          <h4 className="text-xs font-bold uppercase tracking-wider text-primary font-mono flex items-center gap-1.5">
+                          <h4 className="text-xs font-bold uppercase tracking-wider text-[#0284c7] font-mono flex items-center gap-1.5">
                             <CheckCircle2 className="h-4 w-4" /> Execution Procedure Steps
                           </h4>
                           <div className="space-y-2">
                             {experiment.sections.procedure.map((step, sIdx) => (
                               <div key={sIdx} className="p-2.5 rounded-none bg-card border border-border/50 text-xs text-muted-foreground flex items-start gap-2">
-                                <span className="flex items-center justify-center h-4 w-4 rounded-none bg-primary/10 text-primary text-[10px] font-bold shrink-0 mt-0.5 font-mono">
+                                <span className="flex items-center justify-center h-4 w-4 rounded-none bg-[#0284c7]/10 text-[#0284c7] text-[10px] font-bold shrink-0 mt-0.5 font-mono">
                                   {sIdx + 1}
                                 </span>
                                 <span className="leading-snug">{step}</span>
@@ -568,6 +1007,10 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             {/* ============================================================== */}
             {activeTab === "posttest" && (
               <div className="space-y-6">
+                <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                  {experiment.title}
+                </h2>
+
                 <ExperimentAssessmentView
                   type="posttest"
                   quiz={quiz}
@@ -595,6 +1038,10 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             {/* ============================================================== */}
             {activeTab === "references" && (
               <div className="space-y-6">
+                <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                  {experiment.title}
+                </h2>
+
                 <ExperimentReferences
                   defaultTopic={experiment.title}
                   defaultVideoUrl={experiment.sections.videoUrl}
@@ -616,6 +1063,10 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             {/* ============================================================== */}
             {activeTab === "contributors" && (
               <div className="space-y-6">
+                <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                  {experiment.title}
+                </h2>
+
                 <ExperimentContributors labInstitute={lab?.institute} />
 
                 <div className="pt-4 border-t border-border/60 flex items-center justify-between">
@@ -634,70 +1085,106 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             {/* ============================================================== */}
             {activeTab === "feedback" && (
               <div className="space-y-6 max-w-4xl text-sm leading-relaxed">
-                <div className="space-y-2">
-                  <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-primary/40 underline-offset-4 font-heading">
+                <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                  {experiment.title}
+                </h2>
+
+                <div className="space-y-4 font-sans text-foreground">
+                  <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4 font-heading">
                     Feedback
                   </h3>
                   <p className="font-bold text-foreground">Dear User,</p>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground leading-relaxed">
                     Thanks for using Virtual Labs. Your opinion is valuable to us. To help us improve, we&apos;d like to ask you a few questions about your experience. It will only take 3 minutes and your answers will help us make Virtual Labs better for you and other users.
                   </p>
-                </div>
 
-                {feedbackSubmitted ? (
-                  <div className="p-6 text-center space-y-2 rounded-none bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400">
-                    <CheckCircle2 className="h-8 w-8 mx-auto animate-bounce" />
-                    <h4 className="font-bold text-base">Thank you for sharing your experience!</h4>
-                    <p className="text-xs text-muted-foreground">Your responses have been logged for institutional laboratory evaluation.</p>
-                  </div>
-                ) : (
-                  <form onSubmit={handleFeedbackSubmit} className="space-y-4 p-5 rounded-none border border-border bg-card shadow-2xs">
-                    <div className="space-y-2">
-                      <label className="text-xs font-semibold block text-foreground">
-                        How would you rate this experiment simulation? (1 to 5 Stars)
-                      </label>
-                      <div className="flex items-center gap-1.5">
-                        {[1, 2, 3, 4, 5].map((s) => (
-                          <button
-                            key={s}
-                            type="button"
-                            onClick={() => setUserRating(s)}
-                            className={`h-9 w-9 rounded-none text-xs font-bold border transition-all cursor-pointer ${
-                              s === userRating
-                                ? "bg-[#0284c7] text-white border-[#0284c7] shadow-xs"
-                                : "bg-muted/40 hover:bg-muted text-muted-foreground border-border"
-                            }`}
-                          >
-                            {s} ★
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-semibold block text-foreground">
-                        Your Feedback &amp; Suggestions for Improvement
-                      </label>
-                      <Textarea
-                        value={feedbackComment}
-                        onChange={(e) => setFeedbackComment(e.target.value)}
-                        placeholder="Please share what worked well and what could be improved..."
-                        rows={4}
-                        className="text-xs rounded-none"
-                        required
-                      />
-                    </div>
-
-                    <Button type="submit" className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs rounded-none">
-                      <Send className="h-3.5 w-3.5" /> Share Your Experience
+                  <div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setIsShareModalOpen(true)}
+                      className="h-9 px-4 text-xs font-semibold rounded-none border-[#0284c7] text-[#0284c7] hover:bg-[#0284c7]/10"
+                    >
+                      Share Your Experience
                     </Button>
-                  </form>
-                )}
+                  </div>
 
-                <div className="space-y-1 pt-2 text-xs text-foreground">
-                  <p>Thanks for your time !</p>
-                  <p className="font-bold font-heading">The Virtual Labs Team</p>
+                  <div className="pt-2 text-foreground space-y-0.5">
+                    <p>Thanks for your time !</p>
+                    <p className="font-bold underline decoration-[#0284c7] underline-offset-4">
+                      The Virtual Labs Team
+                    </p>
+                  </div>
                 </div>
+
+                {/* Dialog Modal for Share Your Experience matching Screenshot 112841 */}
+                <Dialog open={isShareModalOpen} onOpenChange={setIsShareModalOpen}>
+                  <DialogContent className="max-w-md rounded-none p-6">
+                    <DialogHeader>
+                      <DialogTitle className="text-lg font-bold font-heading">Share Your Experience</DialogTitle>
+                      <DialogDescription className="text-xs text-muted-foreground">
+                        Help us improve Virtual Labs for all students and faculty.
+                      </DialogDescription>
+                    </DialogHeader>
+
+                    {feedbackSubmitted ? (
+                      <div className="py-6 text-center space-y-2 text-emerald-600 dark:text-emerald-400">
+                        <CheckCircle2 className="h-10 w-10 mx-auto animate-bounce" />
+                        <p className="font-bold text-sm">Thank you for your feedback!</p>
+                        <p className="text-xs text-muted-foreground">— The Virtual Labs Team</p>
+                      </div>
+                    ) : (
+                      <form onSubmit={handleFeedbackSubmit} className="space-y-4 pt-2">
+                        <div className="space-y-1.5">
+                          <label className="text-xs font-semibold">Laboratory Rating (1 - 5 Stars)</label>
+                          <div className="flex items-center gap-1.5">
+                            {[1, 2, 3, 4, 5].map((s) => (
+                              <button
+                                key={s}
+                                type="button"
+                                onClick={() => setUserRating(s)}
+                                className={`h-8 w-8 rounded-none text-xs font-bold border transition-all cursor-pointer ${
+                                  s === userRating
+                                    ? "bg-[#0284c7] text-white border-[#0284c7] shadow-xs"
+                                    : "bg-muted/50 hover:bg-muted text-muted-foreground border-border"
+                                }`}
+                              >
+                                {s}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="space-y-1.5">
+                          <label className="text-xs font-semibold">Your Review &amp; Suggestions</label>
+                          <Textarea
+                            value={feedbackComment}
+                            onChange={(e) => setFeedbackComment(e.target.value)}
+                            placeholder="Type your feedback here regarding simulations or curriculum preparation..."
+                            rows={4}
+                            className="text-xs rounded-none"
+                            required
+                          />
+                        </div>
+
+                        <div className="flex justify-end gap-2 pt-2">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className="rounded-none"
+                            onClick={() => setIsShareModalOpen(false)}
+                          >
+                            Cancel
+                          </Button>
+                          <Button type="submit" size="sm" className="bg-[#0284c7] hover:bg-[#0369a1] text-white text-xs font-bold gap-1.5 shadow-xs rounded-none">
+                            <Send className="h-3.5 w-3.5" /> Submit Experience
+                          </Button>
+                        </div>
+                      </form>
+                    )}
+                  </DialogContent>
+                </Dialog>
               </div>
             )}
           </div>

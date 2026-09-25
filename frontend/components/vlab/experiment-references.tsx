@@ -48,8 +48,8 @@ export function ExperimentReferences({
     <div className="space-y-8 max-w-4xl text-sm leading-relaxed">
       {/* Text Books Section */}
       <div className="space-y-3">
-        <h3 className="text-lg font-bold text-foreground underline decoration-primary/40 underline-offset-4 flex items-center gap-2 font-heading">
-          <BookOpen className="h-4 w-4 text-primary" />
+        <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4 flex items-center gap-2 font-heading">
+          <BookOpen className="h-4 w-4 text-[#0284c7]" />
           Text Books
         </h3>
 
@@ -64,8 +64,8 @@ export function ExperimentReferences({
 
       {/* Video Lectures Section */}
       <div className="space-y-3">
-        <h3 className="text-lg font-bold text-foreground underline decoration-primary/40 underline-offset-4 flex items-center gap-2 font-heading">
-          <Video className="h-4 w-4 text-primary" />
+        <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4 flex items-center gap-2 font-heading">
+          <Video className="h-4 w-4 text-[#0284c7]" />
           Video Lectures
         </h3>
 

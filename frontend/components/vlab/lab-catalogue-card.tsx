@@ -14,7 +14,7 @@ export function LabCatalogueCard({ lab }: LabCatalogueCardProps) {
   const [isBooksOpen, setIsBooksOpen] = useState(false);
   const [isSyllabusOpen, setIsSyllabusOpen] = useState(false);
 
-  const defaultBooks = lab.resources?.map((r) => `${r.title} (${r.type})`) || [
+  const defaultBooks = lab.resources?.map((r) => `${r.title} (${r.category})`) || [
     "Mark Allen Weiss. Data Structures and Algorithm Analysis in Java, Pearson.",
     "Thomas H. Cormen et al. Introduction to Algorithms, MIT Press.",
     "Abraham Silberschatz et al. Operating System Concepts, Wiley.",

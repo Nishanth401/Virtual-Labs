@@ -138,43 +138,105 @@ export function Navbar() {
     <>
       {/* ========================================================================= */}
       {/* ========================================================================= */}
-      {/* CLEAN SQUARE GOVERNMENT/ACADEMIC VIRTUAL LABS NAVBAR                       */}
-      {/* Crisp rectangular border, sharp corners, matching reference screenshots    */}
+      {/* AUTHENTIC MoE GOVERNMENT VIRTUAL LABS NAVBAR (Screenshot 112326)         */}
+      {/* Top white banner + Official dark navy navigation bar                       */}
       {/* ========================================================================= */}
-      <motion.header
-        initial={{ y: -10, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.25, ease: "easeOut" }}
-        className="fixed top-0 inset-x-0 z-50 w-full border-b border-border/80 bg-background/95 backdrop-blur-xl shadow-xs"
-      >
-        <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8">
-          <nav
-            onMouseLeave={() => setHoveredHref(null)}
-            className="hidden md:flex items-center justify-between h-14 select-none"
-          >
-            {/* Left Side: Brand Logo & Title */}
-            <div className="flex items-center shrink-0">
-              <Link
-                href="/"
-                className="flex items-center gap-2.5 px-2 py-1 rounded-none text-foreground hover:text-[#0284c7] transition-colors group select-none"
-              >
-                <div className="w-7 h-7 rounded-full bg-[#0284c7] flex items-center justify-center text-white shadow-xs shrink-0">
-                  <FlaskConical className="h-4 w-4" />
-                </div>
-                <div className="flex items-baseline gap-1.5">
-                  <span className="font-black text-sm tracking-tight font-heading text-foreground whitespace-nowrap">
-                    Virtual Lab
-                  </span>
-                  <span className="text-[10px] font-sans font-bold text-muted-foreground uppercase tracking-wider hidden sm:inline">
-                    STUDIO
-                  </span>
-                </div>
-              </Link>
-            </div>
+      <header className="fixed top-0 inset-x-0 z-50 w-full border-b border-border/80 shadow-xs">
+        {/* Top White Strip: Logo + Search & Contact */}
+        <div className="w-full bg-white dark:bg-zinc-950 border-b border-slate-200 dark:border-zinc-800">
+          <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 h-12 flex items-center justify-between">
+            {/* Left: Official Virtual Labs Logo */}
+            <Link href="/" className="flex items-center gap-2 group select-none">
+              <div className="flex items-center gap-1.5 font-sans">
+                <span className="text-[#059669] font-black text-lg sm:text-xl tracking-tight">
+                  Virtual
+                </span>
+                <span className="text-[#ea580c] font-black text-lg sm:text-xl tracking-tight">
+                  Labs
+                </span>
+              </div>
+              <div className="hidden sm:flex flex-col border-l border-slate-300 dark:border-zinc-700 pl-2">
+                <span className="text-[10px] font-semibold text-slate-700 dark:text-zinc-300 leading-tight">
+                  An MoE Govt of India Initiative
+                </span>
+                <span className="text-[9px] text-slate-500 dark:text-zinc-400 leading-tight">
+                  Department Virtual Laboratory Platform
+                </span>
+              </div>
+            </Link>
 
-            {/* Right Side: Nav Links + Square Hover Animation + Actions */}
-            <div className="flex items-center gap-1.5 shrink-0">
-              {/* Navigation Links */}
+            {/* Right: Search Bar & Contact Links */}
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setSearchOpen(true)}
+                className="hidden sm:flex items-center gap-2 px-3 py-1 bg-slate-100 dark:bg-zinc-900 border border-slate-300 dark:border-zinc-700 text-xs text-slate-600 dark:text-zinc-400 hover:border-[#0284c7] transition-all cursor-pointer rounded-none"
+              >
+                <Search className="h-3.5 w-3.5 text-slate-500" />
+                <span className="text-[11px] font-sans">Search labs, topics...</span>
+                <span className="text-[10px] font-mono px-1 py-0.2 bg-white dark:bg-zinc-800 border border-slate-300 dark:border-zinc-700 rounded-none ml-2">
+                  Ctrl+K
+                </span>
+              </button>
+
+              <div className="hidden lg:flex items-center gap-2 text-[11px] font-bold text-slate-600 dark:text-zinc-400 border-l border-slate-300 dark:border-zinc-700 pl-3">
+                <Link href="/" className="hover:text-[#0284c7] transition-colors">HOME</Link>
+                <span>|</span>
+                <Link href="/colleges" className="hover:text-[#0284c7] transition-colors">PARTNERS</Link>
+                <span>|</span>
+                <Link href="/resources" className="hover:text-[#0284c7] transition-colors">CONTACT</Link>
+              </div>
+
+              <ModeToggle />
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Dark Navy Navigation Bar matching Screenshot 112326 */}
+        <div className="w-full bg-[#002b49] text-white">
+          <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8">
+            <nav
+              onMouseLeave={() => setHoveredHref(null)}
+              className="hidden md:flex items-center justify-between h-10 select-none text-xs"
+            >
+              {/* Left Side: Government Portal Links */}
+              <div className="flex items-center gap-1">
+                {[
+                  { name: "HOME", href: "/" },
+                  { name: "ABOUT US", href: "/#about" },
+                  { name: "OUTREACH PORTAL", href: "/#outreach" },
+                  { name: "PARTICIPATING INSTITUTES", href: "/#institutes" },
+                  { name: "NMEICT", href: "https://www.nmeict.ac.in", external: true },
+                  { name: "CONTACT US", href: "/#contact" },
+                ].map((item) => {
+                  const isCurActive = pathname === item.href;
+                  return item.external ? (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-2.5 py-1 text-slate-200 hover:text-white hover:bg-white/10 transition-colors uppercase font-medium tracking-wide"
+                    >
+                      {item.name}
+                    </a>
+                  ) : (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className={`px-2.5 py-1 transition-colors uppercase tracking-wide font-medium ${
+                        isCurActive
+                          ? "text-white font-bold bg-[#ea580c]"
+                          : "text-slate-200 hover:text-white hover:bg-white/10"
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  );
+                })}
+              </div>
+
+              {/* Right Side: Virtual Lab Features & Student Profile */}
               <div className="flex items-center gap-1">
                 {NAV_ITEMS.map((item) => {
                   const active = isItemActive(item.href);
@@ -186,100 +248,74 @@ export function Navbar() {
                       key={item.href}
                       href={item.href}
                       onMouseEnter={() => setHoveredHref(item.href)}
-                      className={`relative px-3 py-1.5 rounded-none text-xs font-semibold transition-colors duration-150 z-10 select-none tracking-wide whitespace-nowrap ${
+                      className={`px-2.5 py-1 transition-colors tracking-wide select-none ${
                         isHighlighted
                           ? "text-white font-bold bg-[#0284c7]"
-                          : "text-muted-foreground hover:text-foreground hover:bg-muted/60 font-medium"
+                          : "text-slate-300 hover:text-white hover:bg-white/10 font-medium"
                       }`}
                     >
-                      <span>{item.name}</span>
+                      {item.name}
                     </Link>
                   );
                 })}
-              </div>
-
-              {/* Divider */}
-              <div className="h-5 w-[1px] bg-border/80 mx-1.5" />
-
-              {/* Actions: Search + Student Profile Badge + Dashboard + Theme */}
-              <div className="flex items-center gap-2 pl-0.5">
-                {/* Search Button */}
-                <button
-                  type="button"
-                  onClick={() => setSearchOpen(true)}
-                  className="h-8 px-2.5 rounded-none border border-border/80 flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-all cursor-pointer shrink-0"
-                  title="Search labs & algorithms (Ctrl+K)"
-                >
-                  <Search className="h-3.5 w-3.5" />
-                  <span className="text-[11px] hidden lg:inline font-mono">Ctrl+K</span>
-                </button>
 
                 {/* Student Profile Badge */}
                 {mounted && activeStudentName ? (
-                  <div className="flex items-center gap-1.5">
-                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-none border border-border/80 bg-muted/40 hover:bg-muted text-xs font-bold text-foreground transition-all cursor-pointer shadow-2xs whitespace-nowrap">
-                      <div className="w-4 h-4 rounded-none bg-[#0284c7] text-white flex items-center justify-center text-[9px] font-bold shrink-0">
+                  <div className="flex items-center gap-1.5 pl-2">
+                    <div className="flex items-center gap-1 px-2 py-0.5 bg-white/10 border border-white/20 text-xs font-bold text-white shadow-2xs whitespace-nowrap">
+                      <div className="w-3.5 h-3.5 bg-[#0284c7] text-white flex items-center justify-center text-[9px] font-bold">
                         {activeStudentName[0]?.toUpperCase() || "S"}
                       </div>
-                      <span className="font-bold max-w-[85px] sm:max-w-[110px] truncate text-xs capitalize">
+                      <span className="font-semibold max-w-[80px] truncate text-[11px]">
                         {activeStudentName}
                       </span>
-                      <span className="w-1.5 h-1.5 rounded-none bg-emerald-500 animate-pulse shrink-0" />
                     </div>
 
                     <Link
                       href="/dashboard"
-                      className="hidden xl:flex items-center gap-1 px-2.5 py-1 rounded-none text-xs font-bold bg-sky-500/10 hover:bg-[#0284c7] text-[#0284c7] hover:text-white border border-[#0284c7]/30 transition-all cursor-pointer whitespace-nowrap"
-                      title="Go to Student Dashboard"
+                      className="hidden xl:flex items-center gap-1 px-2 py-0.5 text-xs font-bold bg-[#ea580c] hover:bg-[#c2410c] text-white transition-all whitespace-nowrap"
                     >
                       <span>Dashboard</span>
-                      <ArrowRight className="h-2.5 w-2.5" />
                     </Link>
                   </div>
                 ) : (
                   <Link
                     href="/auth/login"
-                    className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-none text-xs font-bold bg-[#0284c7] hover:bg-[#0369a1] text-white shadow-xs transition-all cursor-pointer whitespace-nowrap"
+                    className="flex items-center gap-1 px-2.5 py-1 text-xs font-bold bg-[#0284c7] hover:bg-[#0369a1] text-white shadow-xs transition-all whitespace-nowrap ml-1"
                   >
-                    <LogIn className="h-3.5 w-3.5" />
+                    <LogIn className="h-3 w-3" />
                     <span>Sign In</span>
                   </Link>
                 )}
-
-                <ModeToggle />
               </div>
-            </div>
-          </nav>
+            </nav>
 
-          {/* Mobile Header View */}
-          <div className="md:hidden w-full h-14 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2 text-foreground">
-              <div className="w-7 h-7 rounded-full bg-[#0284c7] flex items-center justify-center text-white">
-                <FlaskConical className="h-3.5 w-3.5" />
+            {/* Mobile View */}
+            <div className="md:hidden w-full h-10 flex items-center justify-between">
+              <span className="text-xs font-bold tracking-wider text-slate-200 uppercase">
+                Department Virtual Labs
+              </span>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setSearchOpen(true)}
+                  className="p-1 text-slate-200 hover:text-white"
+                >
+                  <Search className="h-3.5 w-3.5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="p-1 text-slate-200 hover:text-white"
+                >
+                  {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+                </button>
               </div>
-              <span className="font-black text-xs font-heading">Virtual Lab STUDIO</span>
-            </Link>
-
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setSearchOpen(true)}
-                className="p-1.5 rounded-none border border-border text-muted-foreground"
-              >
-                <Search className="h-3.5 w-3.5" />
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-1.5 rounded-none border border-border text-muted-foreground"
-              >
-                {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-              </button>
             </div>
           </div>
         </div>
-      </motion.header>
+      </header>
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
