@@ -168,14 +168,6 @@ export function Navbar() {
                 </span>
               </button>
 
-              <div className="hidden lg:flex items-center gap-2 text-[11px] font-bold text-slate-600 dark:text-zinc-400 border-l border-slate-300 dark:border-zinc-700 pl-3">
-                <Link href="/" className="hover:text-[#0284c7] transition-colors">HOME</Link>
-                <span>|</span>
-                <Link href="/colleges" className="hover:text-[#0284c7] transition-colors">PARTNERS</Link>
-                <span>|</span>
-                <Link href="/resources" className="hover:text-[#0284c7] transition-colors">CONTACT</Link>
-              </div>
-
               <ModeToggle />
             </div>
           </div>
@@ -188,41 +180,18 @@ export function Navbar() {
               onMouseLeave={() => setHoveredHref(null)}
               className="hidden md:flex items-center justify-between h-10 select-none text-xs"
             >
-              {/* Left Side: Government Portal Links */}
+              {/* Left Side: Home Button */}
               <div className="flex items-center gap-1">
-                {[
-                  { name: "HOME", href: "/" },
-                  { name: "ABOUT US", href: "/#about" },
-                  { name: "OUTREACH PORTAL", href: "/#outreach" },
-                  { name: "PARTICIPATING INSTITUTES", href: "/#institutes" },
-                  { name: "NMEICT", href: "https://www.nmeict.ac.in", external: true },
-                  { name: "CONTACT US", href: "/#contact" },
-                ].map((item) => {
-                  const isCurActive = pathname === item.href;
-                  return item.external ? (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-2.5 py-1 text-slate-200 hover:text-white hover:bg-white/10 transition-colors uppercase font-medium tracking-wide"
-                    >
-                      {item.name}
-                    </a>
-                  ) : (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className={`px-2.5 py-1 transition-colors uppercase tracking-wide font-medium ${
-                        isCurActive
-                          ? "text-white font-bold bg-[#ea580c]"
-                          : "text-slate-200 hover:text-white hover:bg-white/10"
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
-                  );
-                })}
+                <Link
+                  href="/"
+                  className={`px-3 py-1 transition-colors uppercase tracking-wide font-medium ${
+                    pathname === "/"
+                      ? "text-white font-bold bg-[#ea580c]"
+                      : "text-slate-200 hover:text-white hover:bg-white/10"
+                  }`}
+                >
+                  HOME
+                </Link>
               </div>
 
               {/* Right Side: Virtual Lab Features & Student Profile */}

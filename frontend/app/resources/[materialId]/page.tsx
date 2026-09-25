@@ -5,7 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Navbar } from "@/components/navigation/navbar";
 import { Footer } from "@/components/navigation/footer";
-import { RESOURCES_DATA, ResourceItem, getResourceId } from "@/data/resources";
+import { RESOURCES_DATA, ResourceItem, getResourceId, getYouTubeEmbedUrl } from "@/data/resources";
 import {
   MaterialContent,
   getMaterialForResource,
@@ -28,7 +28,8 @@ import {
   RefreshCw,
   Globe,
   ShieldCheck,
-  Layers
+  Layers,
+  Video
 } from "lucide-react";
 
 interface MaterialPageProps {
@@ -223,6 +224,65 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
           </div>
         </div>
 
+        {/* IN-APP VIDEO TUTORIAL PLAYER */}
+        {resource.type === "Video Tutorial" && resource.fileUrl && (
+          <div id="video-tutorial-player" className="mb-10 rounded-2xl overflow-hidden border border-border bg-card shadow-lg">
+            <div className="p-4 sm:p-5 bg-gradient-to-r from-red-500/10 via-background to-card border-b border-border flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <span className="p-2.5 rounded-xl bg-red-600 text-white shadow-xs">
+                  <Video className="h-5 w-5" />
+                </span>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-sm sm:text-base font-bold text-foreground">
+                      In-App Video Tutorial &amp; Lecture Stream
+                    </h2>
+                    <Badge variant="outline" className="text-[10px] border-red-500/30 text-red-600 bg-red-500/5 font-mono">
+                      {resource.language || "English"}
+                    </Badge>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Streamed live from {resource.provider} • {resource.duration || "Self-Paced Course"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Button size="sm" variant="outline" className="h-8 text-xs font-semibold gap-1.5 rounded-xl border-red-500/30 text-red-600 hover:bg-red-500/10" asChild>
+                  <a href={resource.fileUrl} target="_blank" rel="noopener noreferrer">
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    <span>Open on YouTube</span>
+                  </a>
+                </Button>
+              </div>
+            </div>
+
+            {/* Responsive 16:9 Video Player */}
+            <div className="relative w-full aspect-video bg-black">
+              <iframe
+                src={getYouTubeEmbedUrl(resource.fileUrl)}
+                title={resource.title}
+                className="w-full h-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
+
+            {/* Video Footer Info */}
+            <div className="p-4 bg-muted/30 border-t border-border flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-semibold text-foreground">Video Topics:</span>
+                {resource.tags?.map((t, idx) => (
+                  <span key={idx} className="bg-background px-2 py-0.5 rounded border border-border/60 text-[11px] font-mono">
+                    #{t}
+                  </span>
+                ))}
+              </div>
+              <span className="text-[11px] font-mono">{resource.downloadCount ? `${resource.downloadCount}+ students enrolled` : "In-App Video Stream"}</span>
+            </div>
+          </div>
+        )}
+
         {/* STRUCTURED IN-APP CURRICULUM HANDBOOK */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* LEFT SIDEBAR: Table of Contents & Navigation */}
@@ -232,6 +292,14 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
                 Contents &amp; Navigation
               </CardTitle>
               <nav className="space-y-1 text-xs font-medium">
+                {resource.type === "Video Tutorial" && (
+                  <a
+                    href="#video-tutorial-player"
+                    className="flex items-center p-2 rounded-xl text-red-600 hover:bg-red-500/10 transition-all font-semibold"
+                  >
+                    <span>▶ Watch Video Stream</span>
+                  </a>
+                )}
                 <a
                   href="#overview"
                   className="flex items-center p-2 rounded-xl text-foreground hover:text-[#ea580c] hover:bg-orange-500/10 transition-all font-semibold"

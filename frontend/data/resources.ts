@@ -23,6 +23,36 @@ export function getResourceId(res: { id?: string; subject?: string; title?: stri
     .replace(/^-+|-+$/g, '');
 }
 
+export function getYouTubeEmbedUrl(url: string): string {
+  if (!url) return "";
+  try {
+    if (url.includes("list=")) {
+      const listMatch = url.match(/[?&]list=([^&#]+)/);
+      if (listMatch && listMatch[1]) {
+        return `https://www.youtube.com/embed/videoseries?list=${listMatch[1]}&rel=0`;
+      }
+    }
+    if (url.includes("watch?v=")) {
+      const vMatch = url.match(/[?&]v=([^&#]+)/);
+      if (vMatch && vMatch[1]) {
+        return `https://www.youtube.com/embed/${vMatch[1]}?rel=0`;
+      }
+    }
+    if (url.includes("youtu.be/")) {
+      const idMatch = url.match(/youtu\.be\/([^?&#]+)/);
+      if (idMatch && idMatch[1]) {
+        return `https://www.youtube.com/embed/${idMatch[1]}?rel=0`;
+      }
+    }
+    if (url.includes("youtube.com/embed/")) {
+      return url;
+    }
+  } catch (e) {
+    console.error("Error parsing YouTube URL:", e);
+  }
+  return url;
+}
+
 export const RESOURCES_DATA: ResourceItem[] = [
   // ==========================================
   // VIDEO TUTORIALS & WALKTHROUGHS
