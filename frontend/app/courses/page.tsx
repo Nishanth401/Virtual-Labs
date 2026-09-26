@@ -26,8 +26,6 @@ export default function CoursesPage() {
     return matchesSem && matchesSearch;
   });
 
-  const totalCredits = COURSES_DATA.reduce((acc, curr) => acc + curr.credits, 0);
-
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -42,7 +40,7 @@ export default function CoursesPage() {
             Curriculum & <span className="bg-gradient-to-r from-[#e11d48] to-[#dc2626] bg-clip-text text-transparent">Semester Courses</span>
           </h1>
           <p className="mt-3 text-muted-foreground text-sm sm:text-base leading-relaxed">
-            Explore all 8 semesters of foundational, core, and advanced Artificial Intelligence and Data Science courses. Review credits, laboratory sessions, and integrated digital learning resources.
+            Explore all 8 semesters of foundational, core, and advanced Artificial Intelligence and Data Science courses. Review laboratory sessions, curriculum roadmaps, and integrated digital learning resources.
           </p>
 
           {/* Quick Metrics */}
@@ -52,8 +50,10 @@ export default function CoursesPage() {
               <div className="text-xs text-muted-foreground">Total Subjects</div>
             </div>
             <div className="p-3 bg-card border rounded-xl shadow-xs">
-              <div className="text-2xl font-bold text-primary font-heading">{totalCredits}</div>
-              <div className="text-xs text-muted-foreground">Degree Credits</div>
+              <div className="text-2xl font-bold text-primary font-heading">
+                {COURSES_DATA.filter((c) => !c.isLab).length}
+              </div>
+              <div className="text-xs text-muted-foreground">Theory Courses</div>
             </div>
             <div className="p-3 bg-card border rounded-xl shadow-xs">
               <div className="text-2xl font-bold text-emerald-600 font-heading">
@@ -126,7 +126,7 @@ export default function CoursesPage() {
                     <div>
                       <div className="text-xs font-mono font-bold text-primary">{course.code}</div>
                       <Badge variant="outline" className="text-[10px] mt-0.5">
-                        Sem {course.sem} • {course.credits} Credits
+                        Sem {course.sem}
                       </Badge>
                     </div>
                   </div>

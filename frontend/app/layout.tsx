@@ -19,6 +19,9 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "Department Virtual Labs | AI & DS — VSB Engineering College",
   description: "Official interactive virtual laboratory platform for the Department of Artificial Intelligence & Data Science, VSB Engineering College. Master DSA, MLDL, DBMS, and CEN with simulation-based experiments.",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({

@@ -16,6 +16,8 @@ import { LAB_ROADMAPS_DATA } from "@/data/all-labs-roadmap-data";
 import { VideoTimeline, TamilVideoTimeline } from "@/components/vlab/tamil-video-timeline";
 import { QuizEngine } from "@/components/quiz/quiz-engine";
 import { QUIZZES_DATA, Quiz, getQuizForExperiment } from "@/data/quizzes";
+import { MaterialReaderDialog } from "@/components/resources/material-reader-dialog";
+import { ResourceItem } from "@/data/resources";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -79,6 +81,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
   const [activeEnglishTimestampIdx, setActiveEnglishTimestampIdx] = useState<number | null>(null);
   const [selectedEnglishVideoUrl, setSelectedEnglishVideoUrl] = useState<string | null>(null);
   const [resourceSourceFilter, setResourceSourceFilter] = useState<string>("ALL");
+  const [selectedMaterialResource, setSelectedMaterialResource] = useState<ResourceItem | null>(null);
   const [expandedWeek, setExpandedWeek] = useState<number | null>(1);
 
   const handleSelectTamilTimestamp = (seconds: number, idx: number, item?: VideoTimestamp) => {
@@ -1758,15 +1761,26 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             const isGfg = res.source === "GeeksforGeeks";
                             const isOfficial = res.source === "Official Docs";
 
+                            const resourceItem: ResourceItem = {
+                              id: res.materialId || res.url.replace('/resources/', ''),
+                              subject: lab.name,
+                              title: res.title,
+                              unit: 'All',
+                              type: 'Lab Material',
+                              provider: res.source,
+                              format: 'Web Guide',
+                              fileUrl: res.url,
+                              description: res.description,
+                              tags: [res.category, res.source],
+                            };
+
                             return (
-                              <a
+                              <div
                                 key={rIdx}
-                                href={res.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="group p-4 rounded-none bg-card hover:bg-muted/30 border border-border hover:border-[#0284c7]/50 transition-all duration-200 shadow-2xs hover:shadow-xs flex flex-col justify-between"
+                                onClick={() => setSelectedMaterialResource(resourceItem)}
+                                className="group p-5 rounded-none bg-card hover:bg-muted/30 border border-border hover:border-[#0284c7]/50 transition-all duration-200 shadow-2xs hover:shadow-xs flex flex-col justify-between cursor-pointer"
                               >
-                                <div className="space-y-2.5">
+                                <div className="space-y-3">
                                   <div className="flex items-center justify-between gap-2">
                                     <Badge
                                       variant="outline"
@@ -1778,7 +1792,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                           : "bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/30"
                                       }`}
                                     >
-                                      {isOfficial ? "★ NPTEL Official" : isGfg ? "🟢 GeeksforGeeks" : "🔵 W3Schools"}
+                                      {isOfficial ? "★ NPTEL Official" : isGfg ? "🟢 GeeksforGeeks Material" : "🔵 W3Schools Material"}
                                     </Badge>
 
                                     <Badge variant="outline" className="text-[10px] font-mono text-muted-foreground rounded-none">
@@ -1795,58 +1809,79 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                   </p>
                                 </div>
 
-                                <div className="pt-3 mt-3 border-t border-border/50 flex items-center justify-between text-xs font-semibold text-[#0284c7] dark:text-[#38bdf8]">
-                                  <span>{isOfficial ? "Visit NPTEL Course Portal" : isGfg ? "Read on GeeksforGeeks" : "Practice on W3Schools"}</span>
-                                  <ExternalLink className="h-3.5 w-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                                <div className="pt-4 mt-4 border-t border-border/50 flex flex-wrap items-center justify-between gap-2">
+                                  <Button
+                                    type="button"
+                                    size="sm"
+                                    variant="outline"
+                                    className="h-8 text-xs font-semibold rounded-none border-[#0284c7]/30 hover:bg-[#0284c7]/10 text-[#0284c7] dark:text-[#38bdf8] flex items-center gap-1.5"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setSelectedMaterialResource(resourceItem);
+                                    }}
+                                  >
+                                    <BookOpen className="h-3.5 w-3.5" />
+                                    <span>Read In-Lab (Modal)</span>
+                                  </Button>
+
+                                  <Button
+                                    asChild
+                                    size="sm"
+                                    className="h-8 text-xs font-bold rounded-none bg-[#0284c7] hover:bg-[#0369a1] text-white flex items-center gap-1.5 shadow-2xs"
+                                    onClick={(e) => e.stopPropagation()}
+                                  >
+                                    <Link href={res.url}>
+                                      <span>Full Handbook</span>
+                                      <ChevronRight className="h-3.5 w-3.5" />
+                                    </Link>
+                                  </Button>
                                 </div>
-                              </a>
+                              </div>
                             );
                           })}
                       </div>
 
-                      {/* Portal Direct Links */}
-                      <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-border/50">
-                        {lab.id === "c-programming" && (
-                          <div className="p-4 rounded-none bg-orange-500/5 border border-[#ea580c]/20 flex items-center justify-between">
-                            <div className="space-y-0.5">
-                              <span className="text-xs font-bold text-[#ea580c] dark:text-[#f97316] block font-mono">
-                                SWAYAM NPTEL Portal
-                              </span>
-                              <p className="text-[11px] text-muted-foreground">Official course notes &amp; assignment tests</p>
-                            </div>
-                            <Button asChild size="sm" variant="outline" className="text-xs border-[#ea580c]/30 hover:bg-orange-500/10 text-[#ea580c] dark:text-[#f97316] font-bold shrink-0 rounded-none">
-                              <a href="https://nptel.ac.in/courses/106104128" target="_blank" rel="noopener noreferrer">
-                                NPTEL ↗
-                              </a>
-                            </Button>
-                          </div>
-                        )}
-
+                      {/* In-App Curated Portal Vaults */}
+                      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-6 border-t border-border/50">
                         <div className="p-4 rounded-none bg-emerald-500/5 border border-emerald-500/20 flex items-center justify-between">
                           <div className="space-y-0.5">
                             <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 block font-mono">
-                              GeeksforGeeks Portal
+                              GeeksforGeeks Lab Materials
                             </span>
-                            <p className="text-[11px] text-muted-foreground">10,000+ computer science articles</p>
+                            <p className="text-[11px] text-muted-foreground">Theory, algorithms, code & viva Q&amp;A</p>
                           </div>
                           <Button asChild size="sm" variant="outline" className="text-xs border-emerald-500/30 hover:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold shrink-0 rounded-none">
-                            <a href="https://www.geeksforgeeks.org/" target="_blank" rel="noopener noreferrer">
-                              Visit GfG ↗
-                            </a>
+                            <Link href="/resources?search=GeeksforGeeks">
+                              Browse GfG ↗
+                            </Link>
                           </Button>
                         </div>
 
                         <div className="p-4 rounded-none bg-sky-500/5 border border-[#0284c7]/20 flex items-center justify-between">
                           <div className="space-y-0.5">
                             <span className="text-xs font-bold text-[#0284c7] dark:text-[#38bdf8] block font-mono">
-                              W3Schools C Editor
+                              W3Schools In-App Guides
                             </span>
-                            <p className="text-[11px] text-muted-foreground">Interactive sandbox &amp; cheatsheets</p>
+                            <p className="text-[11px] text-muted-foreground">Interactive syntax cheatsheets &amp; tips</p>
                           </div>
                           <Button asChild size="sm" variant="outline" className="text-xs border-[#0284c7]/30 hover:bg-sky-500/10 text-[#0284c7] dark:text-[#38bdf8] font-bold shrink-0 rounded-none">
-                            <a href="https://www.w3schools.com/c/index.php" target="_blank" rel="noopener noreferrer">
+                            <Link href="/resources?search=W3Schools">
                               W3Schools ↗
-                            </a>
+                            </Link>
+                          </Button>
+                        </div>
+
+                        <div className="p-4 rounded-none bg-purple-500/5 border border-purple-500/20 flex items-center justify-between sm:col-span-2 lg:col-span-1">
+                          <div className="space-y-0.5">
+                            <span className="text-xs font-bold text-purple-600 dark:text-purple-400 block font-mono">
+                              Resource Vault &amp; Notes
+                            </span>
+                            <p className="text-[11px] text-muted-foreground">All academic lab materials &amp; PDFs</p>
+                          </div>
+                          <Button asChild size="sm" variant="outline" className="text-xs border-purple-500/30 hover:bg-purple-500/10 text-purple-600 dark:text-purple-400 font-bold shrink-0 rounded-none">
+                            <Link href="/resources">
+                              Open Vault ↗
+                            </Link>
                           </Button>
                         </div>
                       </div>
@@ -1970,6 +2005,14 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
         )}
         </div>
       </main>
+
+      {/* In-Lab Full Material Reader Modal */}
+      <MaterialReaderDialog
+        isOpen={!!selectedMaterialResource}
+        onClose={() => setSelectedMaterialResource(null)}
+        resource={selectedMaterialResource}
+      />
+
       <Footer />
     </div>
   );

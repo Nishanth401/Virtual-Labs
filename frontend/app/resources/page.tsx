@@ -4,10 +4,16 @@ import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { Navbar } from "@/components/navigation/navbar";
 import { Footer } from "@/components/navigation/footer";
-import { RESOURCES_DATA, ResourceItem, getResourceId } from "@/data/resources";
+import { RESOURCES_DATA, ResourceItem, getResourceId, getYouTubeEmbedUrl } from "@/data/resources";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   FileText,
   Search,
@@ -18,6 +24,7 @@ import {
   Play,
   Layers,
   ArrowRight,
+  ExternalLink,
   Sparkles
 } from "lucide-react";
 
@@ -25,6 +32,7 @@ export default function ResourcesPage() {
   const [selectedType, setSelectedType] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [tenantResources, setTenantResources] = useState<ResourceItem[]>([]);
+  const [selectedVideo, setSelectedVideo] = useState<ResourceItem | null>(null);
 
   // Load any dynamically uploaded/added resources from Admin Panel
   useEffect(() => {
@@ -180,6 +188,20 @@ export default function ResourcesPage() {
             <span>Interactive Simulator</span>
           </span>
         );
+      case "GeeksforGeeks":
+        return (
+          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            <span>GeeksforGeeks Material</span>
+          </span>
+        );
+      case "W3Schools":
+        return (
+          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-sky-500/10 text-[#0284c7] dark:text-[#38bdf8] border border-sky-500/30 flex items-center gap-1">
+            <span className="h-1.5 w-1.5 rounded-full bg-sky-500" />
+            <span>W3Schools Tutorial</span>
+          </span>
+        );
       default:
         return (
           <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-muted text-muted-foreground border">
@@ -330,11 +352,14 @@ export default function ResourcesPage() {
                         </Link>
                       </Button>
                     ) : res.type === "Video Tutorial" ? (
-                      <Button size="sm" variant="outline" className="h-8 text-xs font-bold gap-1.5 rounded-xl text-red-600 hover:bg-red-500/10 border-red-500/30" asChild>
-                        <Link href={targetUrl}>
-                          <Video className="h-3.5 w-3.5" />
-                          <span>Watch in App</span>
-                        </Link>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-8 text-xs font-bold gap-1.5 rounded-xl text-red-600 hover:bg-red-500/10 border-red-500/30 cursor-pointer"
+                        onClick={() => setSelectedVideo(res)}
+                      >
+                        <Video className="h-3.5 w-3.5" />
+                        <span>Watch in App</span>
                       </Button>
                     ) : res.type === "Lab Manual" ? (
                       <Button size="sm" variant="outline" className="h-8 text-xs font-bold gap-1.5 rounded-xl text-primary border-primary/30 hover:bg-primary/10" asChild>
@@ -358,6 +383,82 @@ export default function ResourcesPage() {
             );
           })}
         </div>
+
+        {/* In-App Video Tutorial Player Modal */}
+        <Dialog open={!!selectedVideo} onOpenChange={(open) => !open && setSelectedVideo(null)}>
+          <DialogContent className="max-w-4xl p-0 overflow-hidden bg-background border border-border rounded-2xl shadow-2xl">
+            {selectedVideo && (
+              <div>
+                {/* Header */}
+                <div className="p-4 sm:p-5 bg-gradient-to-r from-red-500/10 via-background to-card border-b border-border flex items-start justify-between gap-4">
+                  <div className="space-y-1 pr-6">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge variant="outline" className="text-[10px] font-mono border-red-500/30 text-red-600 bg-red-500/5">
+                        {selectedVideo.language || "English"}
+                      </Badge>
+                      <Badge variant="secondary" className="text-[10px] font-mono">
+                        {selectedVideo.subject}
+                      </Badge>
+                      {selectedVideo.duration && (
+                        <span className="text-[11px] text-muted-foreground font-mono">
+                          • {selectedVideo.duration}
+                        </span>
+                      )}
+                    </div>
+                    <DialogTitle className="text-base sm:text-lg font-bold text-foreground font-heading">
+                      {selectedVideo.title}
+                    </DialogTitle>
+                    <DialogDescription className="text-xs text-muted-foreground line-clamp-2">
+                      {selectedVideo.description}
+                    </DialogDescription>
+                  </div>
+                </div>
+
+                {/* Video Player */}
+                <div className="relative w-full aspect-video bg-black">
+                  {selectedVideo.fileUrl && (
+                    <iframe
+                      src={getYouTubeEmbedUrl(selectedVideo.fileUrl)}
+                      title={selectedVideo.title}
+                      className="w-full h-full border-0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                    />
+                  )}
+                </div>
+
+                {/* Actions Footer */}
+                <div className="p-4 bg-muted/40 border-t border-border flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono">
+                    <span>Instructor: {selectedVideo.provider}</span>
+                    <span>•</span>
+                    <span>{selectedVideo.downloadCount ? `${selectedVideo.downloadCount}+ reads` : "In-App Guide"}</span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Button size="sm" variant="outline" className="h-8 text-xs font-semibold gap-1.5 rounded-xl border-red-500/30 text-red-600 hover:bg-red-500/10" asChild>
+                      <a href={selectedVideo.fileUrl} target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="h-3.5 w-3.5" />
+                        <span>Open on YouTube</span>
+                      </a>
+                    </Button>
+
+                    <Button size="sm" className="h-8 text-xs font-bold gap-1.5 rounded-xl bg-primary text-white hover:bg-primary/90" asChild>
+                      <Link
+                        href={`/resources/${getResourceId(selectedVideo)}`}
+                        onClick={() => setSelectedVideo(null)}
+                      >
+                        <BookOpen className="h-3.5 w-3.5" />
+                        <span>Full Lesson &amp; Notes</span>
+                        <ArrowRight className="h-3 w-3 ml-0.5" />
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </main>
 
       <Footer />
