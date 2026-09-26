@@ -39,13 +39,27 @@ interface MaterialPageProps {
 export default function MaterialDetailPage({ params }: MaterialPageProps) {
   const { materialId } = use(params);
 
-  // 1. Locate initial resource synchronously for instant SSR render
-  const initialResource =
+  // 1. Locate material directly or from resource
+  const directMaterial = MATERIAL_CONTENTS[materialId];
+
+  const initialResource: ResourceItem =
     RESOURCES_DATA.find(
       (r) => getResourceId(r) === materialId || r.id === materialId
     ) ||
-    RESOURCES_DATA.find((r) => r.type === "Lab Material") ||
-    RESOURCES_DATA[0];
+    (directMaterial
+      ? {
+          id: materialId,
+          subject: directMaterial.subject,
+          title: directMaterial.title,
+          unit: "All",
+          type: "Lab Material",
+          provider: directMaterial.source || directMaterial.provider || "Academic Curriculum",
+          format: "Web Guide",
+          fileUrl: `/resources/${materialId}`,
+          description: directMaterial.subtitle || directMaterial.overview.slice(0, 150),
+          tags: directMaterial.tags || [directMaterial.category || "Study Material"],
+        }
+      : RESOURCES_DATA.find((r) => r.type === "Lab Material") || RESOURCES_DATA[0]);
 
   const [resource, setResource] = useState<ResourceItem | null>(initialResource);
   const [activeCodeLang, setActiveCodeLang] = useState<string>("java");
@@ -62,27 +76,43 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
     );
 
     if (!found) {
-      try {
-        const rawMats = localStorage.getItem("vlab_tenant_vsb_materials");
-        if (rawMats) {
-          const mats = JSON.parse(rawMats);
-          const dyn = mats.find((m: any) => m.id === materialId || getResourceId(m) === materialId);
-          if (dyn) {
-            found = {
-              id: dyn.id,
-              subject: dyn.department || "Academic Material",
-              title: dyn.title,
-              unit: "All",
-              type: "Lab Material",
-              provider: "Official Docs",
-              format: "Web Guide",
-              fileUrl: dyn.fileUrl,
-              description: dyn.description || "Faculty uploaded reference material.",
-              tags: [dyn.category || "Study Material"],
-            };
+      if (MATERIAL_CONTENTS[materialId]) {
+        const mat = MATERIAL_CONTENTS[materialId];
+        found = {
+          id: materialId,
+          subject: mat.subject,
+          title: mat.title,
+          unit: "All",
+          type: "Lab Material",
+          provider: mat.source || mat.provider || "Academic Curriculum",
+          format: "Web Guide",
+          fileUrl: `/resources/${materialId}`,
+          description: mat.subtitle || mat.overview.slice(0, 150),
+          tags: mat.tags || [mat.category || "Study Material"],
+        };
+      } else {
+        try {
+          const rawMats = localStorage.getItem("vlab_tenant_vsb_materials");
+          if (rawMats) {
+            const mats = JSON.parse(rawMats);
+            const dyn = mats.find((m: any) => m.id === materialId || getResourceId(m) === materialId);
+            if (dyn) {
+              found = {
+                id: dyn.id,
+                subject: dyn.department || "Academic Material",
+                title: dyn.title,
+                unit: "All",
+                type: "Lab Material",
+                provider: "Official Docs",
+                format: "Web Guide",
+                fileUrl: dyn.fileUrl,
+                description: dyn.description || "Faculty uploaded reference material.",
+                tags: [dyn.category || "Study Material"],
+              };
+            }
           }
-        }
-      } catch {}
+        } catch {}
+      }
     }
 
     if (found) {
@@ -91,9 +121,9 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
   }, [materialId]);
 
   // Load study material content
-  const material: MaterialContent = resource
-    ? getMaterialForResource(resource)
-    : MATERIAL_CONTENTS["dsa-complete-guide"];
+  const material: MaterialContent =
+    MATERIAL_CONTENTS[materialId] ||
+    (resource ? getMaterialForResource(resource) : MATERIAL_CONTENTS["dsa-complete-guide"]);
 
   // Local storage notes
   useEffect(() => {
