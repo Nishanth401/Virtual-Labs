@@ -13,13 +13,16 @@ import {
   ExternalLink,
   Video,
   Sparkles,
-  Users
+  Users,
+  Award
 } from "lucide-react";
 
 export type LabTab =
   | "introduction"
   | "objective"
   | "experiments"
+  | "manual-specs"
+  | "case-study"
   | "target-audience"
   | "course-alignment"
   | "feedback"
@@ -44,6 +47,8 @@ const DEFAULT_TABS: { id: LabTab; label: string; icon: React.ElementType }[] = [
   { id: "introduction", label: "Introduction", icon: BookOpen },
   { id: "objective", label: "Objective", icon: Target },
   { id: "experiments", label: "List of experiments", icon: ListTree },
+  { id: "manual-specs", label: "Evaluation Rubric & Specs", icon: Award },
+  { id: "case-study", label: "Industrial Case Study", icon: Sparkles },
   { id: "target-audience", label: "Target Audience", icon: Users },
   { id: "course-alignment", label: "Course Alignment", icon: GraduationCap },
   { id: "video-tutorials", label: "Video Tutorials", icon: Video },
@@ -58,6 +63,8 @@ const C_PROGRAMMING_TABS: { id: LabTab; label: string; icon: React.ElementType }
   { id: "introduction", label: "Introduction", icon: Target },
   { id: "objective", label: "Objective", icon: Target },
   { id: "experiments", label: "List of experiments", icon: ListTree },
+  { id: "manual-specs", label: "Evaluation Rubric & Specs", icon: Award },
+  { id: "case-study", label: "Industrial Case Study", icon: Sparkles },
   { id: "target-audience", label: "Target Audience", icon: Users },
   { id: "course-alignment", label: "Course Alignment", icon: GraduationCap },
   { id: "dsa-roadmap", label: "Weekly Topic Roadmap", icon: Layers },

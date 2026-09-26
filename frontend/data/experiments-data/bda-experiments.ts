@@ -4,7 +4,7 @@ export const BDA_EXPERIMENTS: Experiment[] = [
   {
     "id": "bda-exp-1",
     "labId": "big-data-analytics",
-    "title": "Exp 1: Downloading and Installing Hadoop: Understanding Different",
+    "title": "Exp 1: Downloading and Installing Hadoop: Understanding Different Hadoop Modes, Startup Scripts, and Configuration Files",
     "slug": "bda-exp-1-downloading-and-installing-hadoop-understanding-different",
     "difficulty": "Beginner",
     "category": "Big Data Analytics",
@@ -81,7 +81,7 @@ export const BDA_EXPERIMENTS: Experiment[] = [
   {
     "id": "bda-exp-2",
     "labId": "big-data-analytics",
-    "title": "Exp 2: Hadoop Implementation of file management tasks, such as Adding",
+    "title": "Exp 2: Hadoop Implementation of File Management Tasks (Adding, Retrieving, and Deleting Files in HDFS)",
     "slug": "bda-exp-2-hadoop-implementation-of-file-management-tasks-such-as-adding",
     "difficulty": "Beginner",
     "category": "Big Data Analytics",
@@ -158,7 +158,7 @@ export const BDA_EXPERIMENTS: Experiment[] = [
   {
     "id": "bda-exp-3",
     "labId": "big-data-analytics",
-    "title": "Exp 3: Implement of Matrix Multiplication with Hadoop MapReduce",
+    "title": "Exp 3: Implementation of Matrix Multiplication with Hadoop MapReduce",
     "slug": "bda-exp-3-implement-of-matrix-multiplication-with-hadoop-mapreduce",
     "difficulty": "Beginner",
     "category": "Big Data Analytics",
@@ -235,7 +235,7 @@ export const BDA_EXPERIMENTS: Experiment[] = [
   {
     "id": "bda-exp-4",
     "labId": "big-data-analytics",
-    "title": "Exp 4: Run a basic Word Count MapReduce program to understand",
+    "title": "Exp 4: Run a Basic Word Count MapReduce Program to Understand MapReduce Paradigm",
     "slug": "bda-exp-4-run-a-basic-word-count-mapreduce-program-to-understand",
     "difficulty": "Intermediate",
     "category": "Big Data Analytics",
@@ -312,7 +312,7 @@ export const BDA_EXPERIMENTS: Experiment[] = [
   {
     "id": "bda-exp-5",
     "labId": "big-data-analytics",
-    "title": "Exp 5: Installation of Hive along with practice examples",
+    "title": "Exp 5: Installation of Hive along with Practice Examples",
     "slug": "bda-exp-5-installation-of-hive-along-with-practice-examples",
     "difficulty": "Intermediate",
     "category": "Big Data Analytics",
@@ -389,7 +389,7 @@ export const BDA_EXPERIMENTS: Experiment[] = [
   {
     "id": "bda-exp-6",
     "labId": "big-data-analytics",
-    "title": "Exp 6: Installation of HBase, Installing thrift along with Practice",
+    "title": "Exp 6: Installation of HBase and Thrift along with Practice Examples",
     "slug": "bda-exp-6-installation-of-hbase-installing-thrift-along-with-practice",
     "difficulty": "Advanced",
     "category": "Big Data Analytics",
@@ -466,7 +466,7 @@ export const BDA_EXPERIMENTS: Experiment[] = [
   {
     "id": "bda-exp-7",
     "labId": "big-data-analytics",
-    "title": "Exp 7: Practice importing and exporting data from various databases.",
+    "title": "Exp 7: Practice Importing and Exporting Data from Various Databases",
     "slug": "bda-exp-7-practice-importing-and-exporting-data-from-various-databases",
     "difficulty": "Advanced",
     "category": "Big Data Analytics",

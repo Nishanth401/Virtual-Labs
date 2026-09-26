@@ -18,6 +18,7 @@ import { QuizEngine } from "@/components/quiz/quiz-engine";
 import { QUIZZES_DATA, Quiz, getQuizForExperiment } from "@/data/quizzes";
 import { MaterialReaderDialog } from "@/components/resources/material-reader-dialog";
 import { ResourceItem } from "@/data/resources";
+import { LAB_MANUALS_DATA, INSTITUTION_VISION_MISSION } from "@/data/lab-manuals-data";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -65,6 +66,7 @@ interface LabDetailPageProps {
 export default function LabDetailPage({ params }: LabDetailPageProps) {
   const { labId } = use(params);
   const lab = LABS_DATA.find((l) => l.id === labId) || LABS_DATA[0];
+  const manual = LAB_MANUALS_DATA[lab.id];
 
   const [activeTab, setActiveTab] = useState<LabTab>(
     lab.id === "c-programming" ? "nptel-plan" : "dsa-roadmap"
@@ -930,18 +932,77 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 </div>
               )}
 
-              {/* TAB 1: INTRODUCTION (Screenshot 112419) */}
+              {/* TAB 1: INTRODUCTION (Screenshot 112419 & Official Lab Manual) */}
               {activeTab === "introduction" && (
-                <Card className="border-border bg-card shadow-xs rounded-none">
-                  <CardHeader className="pb-2">
-                    <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
-                      {lab.name}
-                    </h2>
-                  </CardHeader>
-                  <CardContent className="space-y-6 text-sm leading-relaxed text-muted-foreground">
-                    <p className="text-foreground text-sm sm:text-base font-normal leading-relaxed">
-                      {lab.description}
-                    </p>
+                <div className="space-y-6">
+                  {manual && (
+                    <div className="p-4 sm:p-5 bg-sky-500/5 border border-[#0284c7]/20 rounded-none space-y-2">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#0284c7] dark:text-[#38bdf8]">
+                          {manual.institution}
+                        </span>
+                        <Badge variant="outline" className="font-mono text-[11px] rounded-none bg-sky-500/10 text-[#0284c7] border-[#0284c7]/30">
+                          {manual.courseCode} • {manual.regulation}
+                        </Badge>
+                      </div>
+                      <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+                        {manual.courseTitle}
+                      </h2>
+                      <p className="text-xs sm:text-sm text-muted-foreground font-medium">
+                        {manual.department} • {manual.academicYear}
+                      </p>
+                    </div>
+                  )}
+
+                  <Card className="border-border bg-card shadow-xs rounded-none">
+                    <CardHeader className="pb-2">
+                      <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                        {manual ? "Laboratory Overview & Scope" : lab.name}
+                      </h2>
+                    </CardHeader>
+                    <CardContent className="space-y-6 text-sm leading-relaxed text-muted-foreground">
+                      <p className="text-foreground text-sm sm:text-base font-normal leading-relaxed">
+                        {manual ? manual.overview : lab.description}
+                      </p>
+
+                      {/* Vision & Mission of Institution & Department */}
+                      {manual && (
+                        <div className="space-y-4 pt-4 border-t border-border/50">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="p-4 bg-muted/30 border border-border/60 rounded-none space-y-2">
+                              <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-[#0284c7] dark:text-[#38bdf8]">
+                                College Vision &amp; Mission
+                              </h4>
+                              <p className="text-xs text-foreground/90 leading-relaxed font-sans">
+                                <strong>Vision:</strong> {INSTITUTION_VISION_MISSION.vision}
+                              </p>
+                              <p className="text-xs text-muted-foreground leading-relaxed pt-1 font-sans">
+                                <strong>Mission:</strong> {INSTITUTION_VISION_MISSION.mission}
+                              </p>
+                            </div>
+
+                            <div className="p-4 bg-muted/30 border border-border/60 rounded-none space-y-2">
+                              <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-[#ea580c] dark:text-[#f97316]">
+                                Department Vision &amp; Mission
+                              </h4>
+                              <div className="text-xs text-foreground/90 space-y-1 font-sans">
+                                <strong>Vision:</strong>
+                                <ul className="list-disc pl-4 space-y-1 text-muted-foreground">
+                                  {manual.visionDepartment.map((v, i) => (
+                                    <li key={i}>{v}</li>
+                                  ))}
+                                </ul>
+                                <strong className="block pt-1">Mission:</strong>
+                                <ul className="list-disc pl-4 space-y-1 text-muted-foreground">
+                                  {manual.missionDepartment.map((m, i) => (
+                                    <li key={i}>{m}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
 
                   {/* LAB VIDEO TUTORIALS: SEPARATE ENGLISH & TAMIL SECTIONS */}
                   <div className="py-2 my-4 space-y-4">
@@ -1131,6 +1192,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                   </div>
                   </CardContent>
                 </Card>
+                </div>
               )}
 
               {/* TAB 2: VIDEO TUTORIALS */}
@@ -1343,74 +1405,277 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
               )}
 
               {/* TAB 3: OBJECTIVE (Screenshot 112447) */}
+              {/* TAB 3: OBJECTIVE (Official College Lab Manual Curriculum) */}
               {activeTab === "objective" && (
-                <Card className="border-border bg-card shadow-xs rounded-none">
-                  <CardHeader className="pb-2">
-                    <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
-                      {lab.name}
-                    </h2>
-                  </CardHeader>
-                  <CardContent className="space-y-6 text-sm leading-relaxed text-muted-foreground">
-                    <div className="space-y-3">
-                      <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4">
-                        Key Learning Outcomes:
-                      </h3>
-                      <ol className="list-decimal pl-6 space-y-2 text-foreground font-sans text-sm">
-                        <li>
-                          <strong>Mastering Core Algorithmic Techniques &amp; Dynamic Execution:</strong> Explore fundamental concepts, data structures, and state transitions to design high-performance computational models.
-                        </li>
-                        <li>
-                          <strong>Optimizing Computational Complexity &amp; Resource Efficiency:</strong> Analyse best, average, and worst-case time/space asymptotic bounds to evaluate memory efficiency and runtime throughput.
-                        </li>
-                        <li>
-                          <strong>Ensuring System Integrity &amp; Memory Safety:</strong> Understand invariant maintenance, buffer boundary safety, and algorithmic stability across edge cases and pipeline stages.
-                        </li>
-                      </ol>
-                    </div>
-
-                    <p className="text-foreground text-sm font-medium pt-2 border-t border-border/50">
-                      The role of this Department Virtual Lab is to complement classroom lectures and textbooks in three distinct ways:
-                    </p>
-
-                    <div className="space-y-3 pt-2">
-                      <div className="p-4 rounded-none bg-card border border-border flex items-start gap-3 shadow-2xs">
-                        <span className="flex items-center justify-center h-6 w-6 rounded-none bg-[#0284c7] text-white font-bold text-xs shrink-0 mt-0.5 font-mono">
-                          1
-                        </span>
-                        <div>
-                          <strong className="text-foreground font-semibold block text-sm">Interactive Visual Animations</strong>
-                          <p className="text-xs text-muted-foreground mt-0.5">
-                            High-fidelity visual animations of memory states during insertions, deletions, recursion frames, and data filtering.
-                          </p>
+                <div className="space-y-6">
+                  {manual ? (
+                    <>
+                      {/* Institutional Lab Header */}
+                      <div className="p-4 sm:p-5 bg-sky-500/5 border border-[#0284c7]/20 rounded-none space-y-2">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#0284c7] dark:text-[#38bdf8]">
+                            {manual.institution}
+                          </span>
+                          <div className="flex items-center gap-2">
+                            <Badge variant="outline" className="font-mono text-[11px] rounded-none bg-sky-500/10 text-[#0284c7] border-[#0284c7]/30">
+                              {manual.courseCode}
+                            </Badge>
+                            <Badge variant="outline" className="font-mono text-[11px] rounded-none border-border">
+                              {manual.regulation}
+                            </Badge>
+                          </div>
                         </div>
+                        <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+                          {manual.courseTitle}
+                        </h2>
+                        <p className="text-xs sm:text-sm text-muted-foreground font-medium">
+                          {manual.department} • {manual.academicYear}
+                        </p>
                       </div>
 
-                      <div className="p-4 rounded-none bg-card border border-border flex items-start gap-3 shadow-2xs">
-                        <span className="flex items-center justify-center h-6 w-6 rounded-none bg-[#0284c7] text-white font-bold text-xs shrink-0 mt-0.5 font-mono">
-                          2
-                        </span>
-                        <div>
-                          <strong className="text-foreground font-semibold block text-sm">Step-by-Step Code Execution</strong>
+                      {/* Course Objectives */}
+                      <Card className="border-border bg-card shadow-xs rounded-none">
+                        <CardHeader className="pb-3 border-b border-border/50">
+                          <div className="flex items-center gap-2">
+                            <Target className="h-5 w-5 text-[#0284c7] dark:text-[#38bdf8]" />
+                            <h3 className="text-lg sm:text-xl font-bold text-foreground">
+                              Course Objectives
+                            </h3>
+                          </div>
                           <p className="text-xs text-muted-foreground mt-0.5">
-                            Execute algorithms step-by-step with custom inputs, call stack frame inspection, and variable watch scopes.
+                            The syllabus and instructional objectives defined for {manual.courseCode}:
                           </p>
-                        </div>
-                      </div>
+                        </CardHeader>
+                        <CardContent className="pt-4 space-y-3">
+                          <ol className="list-decimal pl-5 space-y-2.5 text-sm text-foreground">
+                            {manual.courseObjectives.map((obj, i) => (
+                              <li key={i} className="leading-relaxed pl-1">
+                                <span>{obj}</span>
+                              </li>
+                            ))}
+                          </ol>
+                        </CardContent>
+                      </Card>
 
-                      <div className="p-4 rounded-none bg-card border border-border flex items-start gap-3 shadow-2xs">
-                        <span className="flex items-center justify-center h-6 w-6 rounded-none bg-[#0284c7] text-white font-bold text-xs shrink-0 mt-0.5 font-mono">
-                          3
-                        </span>
-                        <div>
-                          <strong className="text-foreground font-semibold block text-sm">LeetCode &amp; Industry Alignment</strong>
+                      {/* Course Outcomes (COs) */}
+                      <Card className="border-border bg-card shadow-xs rounded-none">
+                        <CardHeader className="pb-3 border-b border-border/50">
+                          <div className="flex items-center justify-between flex-wrap gap-2">
+                            <div className="flex items-center gap-2">
+                              <GraduationCap className="h-5 w-5 text-[#ea580c] dark:text-[#f97316]" />
+                              <h3 className="text-lg sm:text-xl font-bold text-foreground">
+                                Course Outcomes (COs)
+                              </h3>
+                            </div>
+                            <span className="text-xs font-mono text-muted-foreground">
+                              Mapped with Bloom&apos;s Taxonomy
+                            </span>
+                          </div>
                           <p className="text-xs text-muted-foreground mt-0.5">
-                            Direct problem solving on curated LeetCode challenges and self-assessment evaluations for placement readiness.
+                            Upon successful completion of {manual.courseCode}, students will be able to:
                           </p>
-                        </div>
+                        </CardHeader>
+                        <CardContent className="p-0">
+                          <div className="divide-y divide-border/60">
+                            {manual.courseOutcomes.map((co) => (
+                              <div key={co.code} className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-start gap-3 hover:bg-muted/30 transition-colors">
+                                <div className="flex items-center gap-2 sm:flex-col sm:items-start shrink-0 sm:w-28">
+                                  <Badge className="bg-[#0284c7] text-white font-mono text-xs rounded-none px-2 py-0.5 font-bold shadow-2xs">
+                                    {co.code}
+                                  </Badge>
+                                  {co.bloomsLevel && (
+                                    <Badge variant="outline" className="text-[10px] font-mono text-[#ea580c] dark:text-[#f97316] border-[#ea580c]/30 bg-orange-500/5 rounded-none px-1.5 py-0">
+                                      {co.bloomsLevel}
+                                    </Badge>
+                                  )}
+                                </div>
+                                <p className="text-sm text-foreground leading-relaxed flex-1">
+                                  {co.statement}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      {/* CO-PO and CO-PSO Correlation Articulation Matrix */}
+                      <Card className="border-border bg-card shadow-xs rounded-none">
+                        <CardHeader className="pb-3 border-b border-border/50">
+                          <div className="flex items-center justify-between flex-wrap gap-2">
+                            <div className="flex items-center gap-2">
+                              <Layers className="h-5 w-5 text-[#0284c7] dark:text-[#38bdf8]" />
+                              <h3 className="text-lg sm:text-xl font-bold text-foreground">
+                                CO-PO &amp; CO-PSO Correlation Mapping Matrix
+                              </h3>
+                            </div>
+                            <div className="flex items-center gap-2 text-[11px] font-mono text-muted-foreground">
+                              <span>3: High</span> • <span>2: Medium</span> • <span>1: Low</span> • <span>-: None</span>
+                            </div>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            Course Articulation Matrix showing correlation weights between Course Outcomes and Program Outcomes / Specific Outcomes.
+                          </p>
+                        </CardHeader>
+                        <CardContent className="p-0 overflow-x-auto">
+                          <table className="w-full text-center text-xs font-mono border-collapse min-w-[650px]">
+                            <thead>
+                              <tr className="bg-muted/70 text-foreground border-b border-border">
+                                <th className="p-2.5 text-left font-bold border-r border-border min-w-[70px]">COs</th>
+                                {manual.coPoMapping.headersPO.map((po) => (
+                                  <th key={po} className="p-2 font-bold border-r border-border/60">
+                                    {po}
+                                  </th>
+                                ))}
+                                {manual.coPoMapping.headersPSO.map((pso, idx) => (
+                                  <th
+                                    key={pso}
+                                    className={`p-2 font-bold bg-[#ea580c]/10 text-[#ea580c] dark:text-[#f97316] ${
+                                      idx < manual.coPoMapping.headersPSO.length - 1 ? "border-r border-border/60" : ""
+                                    }`}
+                                  >
+                                    {pso}
+                                  </th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {manual.coPoMapping.rows.map((row, rIdx) => (
+                                <tr
+                                  key={row.coCode}
+                                  className={`border-b border-border/50 hover:bg-muted/40 transition-colors ${
+                                    rIdx % 2 === 0 ? "bg-background" : "bg-muted/20"
+                                  }`}
+                                >
+                                  <td className="p-2 text-left font-bold text-[#0284c7] dark:text-[#38bdf8] border-r border-border">
+                                    {row.coCode}
+                                  </td>
+                                  {row.po.map((val, pIdx) => (
+                                    <td
+                                      key={`po-${pIdx}`}
+                                      className={`p-2 border-r border-border/40 ${
+                                        val === 3
+                                          ? "font-bold text-foreground bg-sky-500/10"
+                                          : val === 2
+                                          ? "text-foreground/90 font-medium"
+                                          : val === 1
+                                          ? "text-muted-foreground"
+                                          : "text-muted-foreground/40"
+                                      }`}
+                                    >
+                                      {val}
+                                    </td>
+                                  ))}
+                                  {row.pso.map((val, sIdx) => (
+                                    <td
+                                      key={`pso-${sIdx}`}
+                                      className={`p-2 font-bold bg-orange-500/5 ${
+                                        sIdx < row.pso.length - 1 ? "border-r border-border/40" : ""
+                                      } ${
+                                        val === 3
+                                          ? "text-[#ea580c] dark:text-[#f97316] bg-orange-500/15"
+                                          : val === 2
+                                          ? "text-[#ea580c]/90"
+                                          : val === 1
+                                          ? "text-muted-foreground"
+                                          : "text-muted-foreground/40"
+                                      }`}
+                                    >
+                                      {val}
+                                    </td>
+                                  ))}
+                                </tr>
+                              ))}
+                              {/* Average Row */}
+                              <tr className="bg-sky-500/10 font-bold border-t-2 border-[#0284c7]/40 text-foreground">
+                                <td className="p-2.5 text-left text-[#0284c7] dark:text-[#38bdf8] border-r border-border">
+                                  Average
+                                </td>
+                                {manual.coPoMapping.averageRow.po.map((avgVal, pIdx) => (
+                                  <td key={`avg-po-${pIdx}`} className="p-2 border-r border-border/40 text-[#0284c7] dark:text-[#38bdf8]">
+                                    {avgVal}
+                                  </td>
+                                ))}
+                                {manual.coPoMapping.averageRow.pso.map((avgVal, sIdx) => (
+                                  <td
+                                    key={`avg-pso-${sIdx}`}
+                                    className={`p-2 text-[#ea580c] dark:text-[#f97316] bg-orange-500/10 ${
+                                      sIdx < manual.coPoMapping.averageRow.pso.length - 1 ? "border-r border-border/40" : ""
+                                    }`}
+                                  >
+                                    {avgVal}
+                                  </td>
+                                ))}
+                              </tr>
+                            </tbody>
+                          </table>
+                        </CardContent>
+                      </Card>
+
+                      {/* Department PEOs & PSOs */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Card className="border-border bg-card shadow-xs rounded-none">
+                          <CardHeader className="pb-3 border-b border-border/50">
+                            <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
+                              <Award className="h-4 w-4 text-[#0284c7]" />
+                              Program Educational Objectives (PEOs)
+                            </h4>
+                          </CardHeader>
+                          <CardContent className="pt-4 space-y-3">
+                            {manual.peos.map((peo) => (
+                              <div key={peo.code} className="text-xs space-y-1">
+                                <span className="font-bold text-[#0284c7] font-mono">{peo.code}:</span>
+                                <p className="text-muted-foreground leading-relaxed">{peo.text}</p>
+                              </div>
+                            ))}
+                          </CardContent>
+                        </Card>
+
+                        <Card className="border-border bg-card shadow-xs rounded-none">
+                          <CardHeader className="pb-3 border-b border-border/50">
+                            <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
+                              <Sparkles className="h-4 w-4 text-[#ea580c]" />
+                              Program Specific Outcomes (PSOs)
+                            </h4>
+                          </CardHeader>
+                          <CardContent className="pt-4 space-y-3">
+                            {manual.psos.map((pso) => (
+                              <div key={pso.code} className="text-xs space-y-1">
+                                <span className="font-bold text-[#ea580c] font-mono">{pso.code}:</span>
+                                <p className="text-muted-foreground leading-relaxed">{pso.text}</p>
+                              </div>
+                            ))}
+                          </CardContent>
+                        </Card>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </>
+                  ) : (
+                    <Card className="border-border bg-card shadow-xs rounded-none">
+                      <CardHeader className="pb-2">
+                        <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                          {lab.name}
+                        </h2>
+                      </CardHeader>
+                      <CardContent className="space-y-6 text-sm leading-relaxed text-muted-foreground">
+                        <div className="space-y-3">
+                          <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4">
+                            Key Learning Outcomes:
+                          </h3>
+                          <ol className="list-decimal pl-6 space-y-2 text-foreground font-sans text-sm">
+                            <li>
+                              <strong>Mastering Core Algorithmic Techniques &amp; Dynamic Execution:</strong> Explore fundamental concepts, data structures, and state transitions to design high-performance computational models.
+                            </li>
+                            <li>
+                              <strong>Optimizing Computational Complexity &amp; Resource Efficiency:</strong> Analyse best, average, and worst-case time/space asymptotic bounds to evaluate memory efficiency and runtime throughput.
+                            </li>
+                            <li>
+                              <strong>Ensuring System Integrity &amp; Memory Safety:</strong> Understand invariant maintenance, buffer boundary safety, and algorithmic stability across edge cases and pipeline stages.
+                            </li>
+                          </ol>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+                </div>
               )}
 
               {/* TAB: TARGET AUDIENCE (Screenshot 112910) */}
@@ -1575,6 +1840,304 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 </div>
               )}
 
+              {/* TAB: EVALUATION RUBRIC & SYSTEM SPECIFICATIONS FROM MD MANUAL */}
+              {activeTab === "manual-specs" && (
+                <div className="space-y-6">
+                  {manual ? (
+                    <>
+                      {/* Institutional Lab Header */}
+                      <div className="p-4 sm:p-5 bg-sky-500/5 border border-[#0284c7]/20 rounded-none space-y-2">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#0284c7] dark:text-[#38bdf8]">
+                            {manual.institution}
+                          </span>
+                          <Badge variant="outline" className="font-mono text-[11px] rounded-none bg-sky-500/10 text-[#0284c7] border-[#0284c7]/30">
+                            {manual.courseCode} • {manual.regulation}
+                          </Badge>
+                        </div>
+                        <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+                          Continuous Assessment Evaluation Scheme &amp; Lab Specifications
+                        </h2>
+                        <p className="text-xs sm:text-sm text-muted-foreground font-medium">
+                          {manual.department} • Academic Year {manual.academicYear}
+                        </p>
+                      </div>
+
+                      {/* Continuous Assessment 75-Mark Evaluation Rubric */}
+                      <Card className="border-border bg-card shadow-xs rounded-none">
+                        <CardHeader className="pb-3 border-b border-border/50">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <Award className="h-5 w-5 text-[#ea580c] dark:text-[#f97316]" />
+                              <h3 className="text-lg sm:text-xl font-bold text-foreground">
+                                Laboratory Continuous Assessment Rubric (75 Marks)
+                              </h3>
+                            </div>
+                            <Badge className="bg-[#ea580c] text-white rounded-none font-mono">
+                              Total: {manual.marksRubric.total} Marks
+                            </Badge>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Official evaluation criteria defined in the laboratory manual for regular practical sessions and continuous internal assessment (CIA):
+                          </p>
+                        </CardHeader>
+                        <CardContent className="pt-4 space-y-5">
+                          {/* 3 Core Metric Cards */}
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div className="p-4 rounded-none bg-sky-500/10 border border-[#0284c7]/30 text-center space-y-1">
+                              <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground font-bold">
+                                Performance / Execution
+                              </span>
+                              <div className="text-3xl font-black text-[#0284c7] dark:text-[#38bdf8]">
+                                {manual.marksRubric.performance}
+                              </div>
+                              <span className="text-[11px] text-muted-foreground block">
+                                Algorithm logic, syntax &amp; test run
+                              </span>
+                            </div>
+
+                            <div className="p-4 rounded-none bg-amber-500/10 border border-amber-500/30 text-center space-y-1">
+                              <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground font-bold">
+                                Viva-Voce
+                              </span>
+                              <div className="text-3xl font-black text-amber-600 dark:text-amber-400">
+                                {manual.marksRubric.viva}
+                              </div>
+                              <span className="text-[11px] text-muted-foreground block">
+                                Theoretical rationale &amp; complexity
+                              </span>
+                            </div>
+
+                            <div className="p-4 rounded-none bg-emerald-500/10 border border-emerald-500/30 text-center space-y-1">
+                              <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground font-bold">
+                                Lab Record / Observation
+                              </span>
+                              <div className="text-3xl font-black text-emerald-600 dark:text-emerald-400">
+                                {manual.marksRubric.record}
+                              </div>
+                              <span className="text-[11px] text-muted-foreground block">
+                                Neat documentation &amp; verification
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Detailed Component Breakdown Table */}
+                          <div className="overflow-x-auto border border-border">
+                            <table className="w-full text-left text-xs font-sans">
+                              <thead className="bg-muted/80 text-foreground uppercase font-mono text-[11px] border-b border-border">
+                                <tr>
+                                  <th className="p-3">Evaluation Component</th>
+                                  <th className="p-3 w-28 text-center">Marks Allotted</th>
+                                  <th className="p-3">Assessment Criteria &amp; Deliverables</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-border/60">
+                                {manual.marksRubric.breakdown.map((row, idx) => (
+                                  <tr key={idx} className="hover:bg-muted/30 transition-colors">
+                                    <td className="p-3 font-semibold text-foreground">
+                                      {row.component}
+                                    </td>
+                                    <td className="p-3 text-center font-mono font-bold text-[#0284c7] dark:text-[#38bdf8]">
+                                      {row.marks} Marks
+                                    </td>
+                                    <td className="p-3 text-muted-foreground">
+                                      {row.description}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      {/* System Hardware & Software Requirements */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Hardware Specs */}
+                        <Card className="border-border bg-card shadow-xs rounded-none">
+                          <CardHeader className="pb-3 border-b border-border/50">
+                            <div className="flex items-center gap-2">
+                              <Cpu className="h-5 w-5 text-[#0284c7] dark:text-[#38bdf8]" />
+                              <h3 className="text-base font-bold text-foreground">
+                                Hardware Requirements
+                              </h3>
+                            </div>
+                          </CardHeader>
+                          <CardContent className="pt-4">
+                            <ul className="space-y-2 text-xs text-muted-foreground">
+                              {manual.systemRequirements.hardware.map((hw, i) => (
+                                <li key={i} className="flex items-start gap-2">
+                                  <CheckCircle2 className="h-3.5 w-3.5 text-[#0284c7] shrink-0 mt-0.5" />
+                                  <span>{hw}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </CardContent>
+                        </Card>
+
+                        {/* Software Specs */}
+                        <Card className="border-border bg-card shadow-xs rounded-none">
+                          <CardHeader className="pb-3 border-b border-border/50">
+                            <div className="flex items-center gap-2">
+                              <Terminal className="h-5 w-5 text-[#ea580c] dark:text-[#f97316]" />
+                              <h3 className="text-base font-bold text-foreground">
+                                Software &amp; Tool Environment
+                              </h3>
+                            </div>
+                          </CardHeader>
+                          <CardContent className="pt-4">
+                            <ul className="space-y-2 text-xs text-muted-foreground">
+                              {manual.systemRequirements.software.map((sw, i) => (
+                                <li key={i} className="flex items-start gap-2">
+                                  <CheckCircle2 className="h-3.5 w-3.5 text-[#ea580c] shrink-0 mt-0.5" />
+                                  <span>{sw}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </CardContent>
+                        </Card>
+                      </div>
+
+                      {/* Student Lab Code of Conduct & Guidelines */}
+                      <Card className="border-border bg-card shadow-xs rounded-none">
+                        <CardHeader className="pb-3 border-b border-border/50">
+                          <div className="flex items-center gap-2">
+                            <ShieldCheck className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                            <h3 className="text-base font-bold text-foreground">
+                              Laboratory Guidelines &amp; Student Code of Conduct
+                            </h3>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="pt-4">
+                          <ol className="list-decimal pl-5 space-y-2 text-xs text-muted-foreground">
+                            {manual.guidelines.map((g, i) => (
+                              <li key={i} className="leading-relaxed pl-1 text-foreground/90">
+                                <span>{g}</span>
+                              </li>
+                            ))}
+                          </ol>
+                        </CardContent>
+                      </Card>
+                    </>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">Specifications data loading...</p>
+                  )}
+                </div>
+              )}
+
+              {/* TAB: INDUSTRIAL CASE STUDY FROM MD MANUAL */}
+              {activeTab === "case-study" && (
+                <div className="space-y-6">
+                  {manual ? (
+                    <>
+                      {/* Case Study Banner */}
+                      <div className="p-4 sm:p-5 bg-gradient-to-r from-[#0284c7]/10 via-sky-500/5 to-[#ea580c]/10 border border-[#0284c7]/30 rounded-none space-y-2">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <Badge className="bg-[#0284c7] text-white rounded-none font-mono text-[10px] uppercase">
+                            {manual.caseStudy.domain}
+                          </Badge>
+                          <Badge variant="outline" className="font-mono text-[11px] rounded-none border-border">
+                            {manual.courseCode} Capstone Manual
+                          </Badge>
+                        </div>
+                        <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+                          {manual.caseStudy.title}
+                        </h2>
+                        <p className="text-xs sm:text-sm text-muted-foreground font-medium">
+                          Real-world industry application extracted directly from the autonomous curriculum manual
+                        </p>
+                      </div>
+
+                      {/* Scenario Narrative */}
+                      <Card className="border-border bg-card shadow-xs rounded-none">
+                        <CardHeader className="pb-3 border-b border-border/50">
+                          <div className="flex items-center gap-2">
+                            <Sparkles className="h-5 w-5 text-[#ea580c] dark:text-[#f97316]" />
+                            <h3 className="text-lg font-bold text-foreground">
+                              Problem Scenario &amp; System Specifications
+                            </h3>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="pt-4 space-y-4">
+                          <p className="text-sm leading-relaxed text-foreground/90 font-sans">
+                            {manual.caseStudy.scenario}
+                          </p>
+
+                          {/* Architectural Highlights */}
+                          <div className="space-y-2 pt-2 border-t border-border/50">
+                            <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-[#0284c7] dark:text-[#38bdf8]">
+                              Key Architecture &amp; Implementation Highlights
+                            </h4>
+                            <ul className="space-y-1.5 text-xs text-muted-foreground">
+                              {manual.caseStudy.architectureHighlights.map((hl, i) => (
+                                <li key={i} className="flex items-start gap-2">
+                                  <CheckSquare className="h-3.5 w-3.5 text-[#0284c7] shrink-0 mt-0.5" />
+                                  <span>{hl}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      {/* Code Snippet & Terminal Output */}
+                      {manual.caseStudy.codeSnippet && (
+                        <div className="space-y-4">
+                          <Card className="border-border bg-zinc-950 text-zinc-100 shadow-xs rounded-none overflow-hidden font-mono">
+                            <CardHeader className="py-2.5 px-4 bg-zinc-900 border-b border-zinc-800 flex flex-row items-center justify-between">
+                              <span className="text-xs text-zinc-400">
+                                Implementation Script / Schema DDL
+                              </span>
+                              <Badge variant="outline" className="text-[10px] border-zinc-700 bg-zinc-800 text-zinc-300 rounded-none">
+                                Verified Code
+                              </Badge>
+                            </CardHeader>
+                            <CardContent className="p-4 text-xs overflow-x-auto leading-relaxed">
+                              <pre className="text-sky-300">
+                                <code>{manual.caseStudy.codeSnippet}</code>
+                              </pre>
+                            </CardContent>
+                          </Card>
+
+                          {manual.caseStudy.outputSnippet && (
+                            <Card className="border-border bg-black text-emerald-400 shadow-xs rounded-none overflow-hidden font-mono">
+                              <CardHeader className="py-2.5 px-4 bg-zinc-900/80 border-b border-zinc-800 flex flex-row items-center justify-between">
+                                <span className="text-xs text-emerald-400 flex items-center gap-1.5">
+                                  <Terminal className="h-3.5 w-3.5" />
+                                  Execution Console Output
+                                </span>
+                                <Badge variant="outline" className="text-[10px] border-emerald-900 bg-emerald-950/40 text-emerald-400 rounded-none">
+                                  Exit Code 0
+                                </Badge>
+                              </CardHeader>
+                              <CardContent className="p-4 text-xs overflow-x-auto leading-relaxed">
+                                <pre className="text-emerald-300">
+                                  <code>{manual.caseStudy.outputSnippet}</code>
+                                </pre>
+                              </CardContent>
+                            </Card>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Analysis Conclusion */}
+                      {manual.caseStudy.analysisConclusion && (
+                        <div className="p-4 bg-muted/40 border border-border rounded-none space-y-1">
+                          <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-[#ea580c] dark:text-[#f97316]">
+                            Engineering Takeaway &amp; Cost/Performance Trade-Off
+                          </h4>
+                          <p className="text-xs text-foreground/90 leading-relaxed font-sans">
+                            {manual.caseStudy.analysisConclusion}
+                          </p>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">Case study data loading...</p>
+                  )}
+                </div>
+              )}
+
               {/* TAB 5: 5-QUESTION EXPERIMENT EVALUATION QUIZZES */}
               {activeTab === "quizzes" && (() => {
                 const currentQuizExp = experiments.find((e) => e.id === selectedQuizExpId) || experiments[0];
@@ -1663,17 +2226,17 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                     </CardHeader>
                     <CardContent className="space-y-4 text-sm leading-relaxed text-muted-foreground">
                       <p className="text-foreground text-sm font-normal">
-                        The syllabi of this lab aligns to the following course in the AICTE model curriculum.
+                        The syllabi of this lab aligns to the following course in the AICTE / Anna University model curriculum:
                       </p>
                       <ol className="list-decimal pl-6 space-y-2 text-foreground font-sans text-sm">
                         <li>
-                          <strong>{lab.name}</strong> is a professional core/elective course in Computer Science and Engineering ({lab.code || "PEC-CS-SXXX"}).
+                          <strong>{manual ? manual.courseTitle : lab.name}</strong> ({manual ? manual.courseCode : (lab.code || "PEC-CS-SXXX")}) is a mandatory laboratory practical course in {manual ? manual.department : "Artificial Intelligence and Data Science"}.
                         </li>
                         <li>
-                          <strong>Computer Organisation and Architecture</strong> is a professional core course in Computer Science and Engineering (PCC-CS402).
+                          <strong>{manual ? manual.institution : "V.S.B. Engineering College"}</strong> autonomous curriculum under {manual ? manual.regulation : "Anna University Regulation 2021/2023"}.
                         </li>
                         <li>
-                          <strong>Anna University Regulation 2021/2026</strong> laboratory practical curriculum mapping for semester {lab.semester || "IV"}.
+                          <strong>Academic Session:</strong> {manual ? manual.academicYear : "Academic Practical Curriculum"} mapped with Bloom&apos;s Taxonomy levels K3, K4, and K6.
                         </li>
                       </ol>
                     </CardContent>
