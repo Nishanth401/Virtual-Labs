@@ -1,930 +1,1203 @@
 import { Experiment } from "../experiments";
 
 export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
-  // =========================================================================
-  // WEEK 1: INTRODUCTION TO C PROGRAMMING & BASICS
-  // =========================================================================
   {
-    id: "c-exp-1",
-    labId: "c-programming",
-    title: "Week 1: Introduction to C Programming & Basics",
-    slug: "c-fundamentals-variables-formatted-io",
-    difficulty: "Beginner",
-    category: "C Programming" as any,
-    estimatedMinutes: 20,
-    rating: 4.95,
-    ratingsCount: 220,
-    simulator: "custom",
-    quizId: "quiz-c-1",
-    sections: {
-      introduction: "Week 1 focuses on C programming origins, the 4-stage GCC compilation pipeline (Preprocessor, Compiler, Assembler, Linker), variables, constants, primitive data types (char, int, float, double), and formatted console I/O using printf and scanf.",
-      objective: "Learn the core structure of a C program and write foundational engineering programs: Hello World, Simple Calculator, Temperature Conversion (Celsius to Fahrenheit), and Area/Perimeter calculation.",
-      videoUrl: "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
-      videoTitle: "NPTEL C Programming Week 1: Introduction, Compilation & Basics",
-      videoChannel: "NPTEL / FreeCodeCamp",
-      prerequisites: ["Computer Fundamentals", "Basic Logic"],
-      theory: {
-        overview: "Execution begins at main(). Variables occupy contiguous stack memory based on their type: char (1B), int (4B), float (4B), double (8B). printf and scanf translate binary memory values to formatted human-readable text via format specifiers (%d, %f, %lf, %c).",
-        keyConcepts: [
-          { title: "Weekly Workflow", desc: "Mon–Wed: Concept learning + NPTEL video | Thu: Program practice | Fri: MCQ/MSQ practice | Sat: Coding assignment + peer discussion | Sun: Revision + mock test." },
-          { title: "GCC 4-Stage Compilation", desc: "Preprocessor (#include) -> Compiler (assembly) -> Assembler (machine object) -> Linker (executable binary)." },
-          { title: "Data Types & Format Specifiers", desc: "%d (integer), %f (float), %lf (double), %c (character), %s (string)." },
-          { title: "AI&DS Engineering Connection", desc: "C provides deep insight into memory layout; foundation for high-performance tensor computing and AI backend libraries (PyTorch ATen, CUDA)." }
+    "id": "c-exp-1",
+    "labId": "c-programming",
+    "title": "Exp 1: Distance Between Two Points",
+    "slug": "c-exp-1-distance-between-two-points",
+    "difficulty": "Beginner",
+    "category": "C Programming",
+    "estimatedMinutes": 30,
+    "rating": 4.9,
+    "ratingsCount": 163,
+    "simulator": "custom",
+    "quizId": "quiz-c-1",
+    "sections": {
+      "introduction": "To develop a C program to calculate the distance between two points using the distance formula.",
+      "objective": "To develop a C program to calculate the distance between two points using the distance formula.",
+      "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
+      "videoTitle": "C Programming: Distance Between Two Points",
+      "videoChannel": "NPTEL & VLab Engineering",
+      "prerequisites": [
+        "Basic Computing Concepts",
+        "C Syntax Fundamentals"
+      ],
+      "theory": {
+        "overview": "This experiment develops practical proficiency in Distance Between Two Points. It demonstrates ANSI C procedural design, memory variables, standard library mathematical/string functions, and runtime execution according to the V.S.B. Engineering College curriculum.",
+        "keyConcepts": [
+          {
+            "title": "Procedural Logic",
+            "desc": "Direct algorithmic problem decomposition in C."
+          },
+          {
+            "title": "Variable Allocation",
+            "desc": "Stack and heap memory management and type constraints."
+          },
+          {
+            "title": "Compilation Pipeline",
+            "desc": "Preprocessing, lexical analysis, code generation, and binary linkage."
+          }
         ],
-        complexities: [
-          { operation: "Variable Read / Write", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(1)" }
+        "complexities": [
+          {
+            "operation": "Primary Execution",
+            "best": "O(1)",
+            "avg": "O(n)",
+            "worst": "O(n)",
+            "space": "O(1)"
+          }
         ],
-        realWorldApplications: [
-          "Operating system kernel programming (Linux, Windows)",
-          "High-performance tensor computing backends for AI/ML libraries",
-          "Embedded microcontroller firmware and real-time hardware interfaces"
+        "realWorldApplications": [
+          "Embedded firmware and hardware micro-controller programming",
+          "Operating system kernel modules and shell utilities",
+          "Numerical computation engines used in AI/ML backend runtimes"
         ]
       },
-      procedure: [
-        "1. Write #include <stdio.h> preprocessor directive.",
-        "2. Define the main() entry function.",
-        "3. Declare int, float, char, and double variables for calculation.",
-        "4. Perform arithmetic calculations for calculator, temperature conversion, and circle/rectangle geometry.",
-        "5. Print formatted output values using printf specifiers.",
-        "6. Compile with gcc main.c -o main and execute."
+      "procedure": [
+        "1. Start the program.",
+        "2. Declare variables x1, y1, x2, y2 to store coordinates and dist to store the result.",
+        "3. Read the coordinates of the two points from the user.",
+        "4. Compute the distance using the formula: dist = sqrt((x2-x1)^2 + (y2-y1)^2).",
+        "5. Display the computed distance.",
+        "6. Stop the program."
       ],
-      sampleCode: {
-        language: "c",
-        code: `#include <stdio.h>
-#define PI 3.14159265359
-
-int main() {
-    printf("=== NPTEL C Programming Week 1: Basic Programs ===\\n\\n");
-
-    // 1. Hello World
-    printf("[1. Hello World]: Hello, AI&DS Engineering World!\\n\\n");
-
-    // 2. Simple Calculator
-    double n1 = 50.0, n2 = 10.0;
-    printf("[2. Simple Calculator]:\\n");
-    printf("Sum: %.2lf | Diff: %.2lf | Prod: %.2lf | Div: %.2lf\\n\\n",
-           n1 + n2, n1 - n2, n1 * n2, n1 / n2);
-
-    // 3. Temperature Conversion (Celsius to Fahrenheit)
-    double celsius = 37.0;
-    double fahrenheit = (celsius * 9.0 / 5.0) + 32.0;
-    printf("[3. Temperature Conversion]:\\n");
-    printf("%.1lf C = %.1lf F\\n\\n", celsius, fahrenheit);
-
-    // 4. Area & Perimeter Calculation
-    double radius = 7.0;
-    double length = 10.0, width = 5.0;
-    printf("[4. Geometry Calculation]:\\n");
-    printf("Circle Area: %.2lf | Circumference: %.2lf\\n", PI * radius * radius, 2 * PI * radius);
-    printf("Rectangle Area: %.2lf | Perimeter: %.2lf\\n", length * width, 2 * (length + width));
-
-    return 0;
-}`
+      "sampleCode": {
+        "language": "c",
+        "code": "#include <stdio.h>\n  \n#include <math.h>\n  int main() {\n  float x1, y1, x2, y2, dist;\n  printf(\"Enter coordinates of first point (x1 y1): \");\n  scanf(\"%f %f\", &x1, &y1);\n  printf(\"Enter coordinates of second point (x2 y2): \");\n  scanf(\"%f %f\", &x2, &y2);\n  dist = sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));\n  printf(\"Distance between the two points = %.2f\\n\", dist);\n  return 0;\n  }"
       },
-      expectedOutput: `=== NPTEL C Programming Week 1: Basic Programs ===
-
-[1. Hello World]: Hello, AI&DS Engineering World!
-
-[2. Simple Calculator]:
-Sum: 60.00 | Diff: 40.00 | Prod: 500.00 | Div: 5.00
-
-[3. Temperature Conversion]:
-37.0 C = 98.6 F
-
-[4. Geometry Calculation]:
-Circle Area: 153.94 | Circumference: 43.98
-Rectangle Area: 50.00 | Perimeter: 30.00`,
-      leetcodeProblems: [],
-      targetAudience: {
-        ug: ["B.E / B.Tech AI&DS Engineering", "CSE", "IT"],
-        pg: ["MCA", "M.Tech AI"]
+      "expectedOutput": "Enter coordinates of first point (x1 y1): 0 0\nEnter coordinates of second point (x2 y2): 3 4\nDistance between the two points = 5.00",
+      "leetcodeProblems": [],
+      "targetAudience": {
+        "ug": [
+          "B.E. CSE",
+          "B.Tech AI&DS",
+          "B.Tech IT - 1st Year"
+        ],
+        "pg": [
+          "M.E. Computer Science"
+        ]
       }
     }
   },
-
-  // =========================================================================
-  // WEEK 2: OPERATORS, EXPRESSIONS & DECISION MAKING
-  // =========================================================================
   {
-    id: "c-exp-2",
-    labId: "c-programming",
-    title: "Week 2: Operators, Expressions & Decision Making",
-    slug: "control-flow-decision-making-switch-case",
-    difficulty: "Beginner",
-    category: "C Programming" as any,
-    estimatedMinutes: 25,
-    rating: 4.96,
-    ratingsCount: 235,
-    simulator: "custom",
-    quizId: "quiz-c-2",
-    sections: {
-      introduction: "Week 2 covers arithmetic, relational, logical, bitwise, and assignment operators, operator precedence, if-else conditional ladders, nested conditions, and jump-table switch-case statements.",
-      objective: "Implement conditional branching algorithms: finding largest of three numbers, student grade calculation, menu-driven calculation, and tiered electricity bill calculation.",
-      videoUrl: "https://www.youtube-nocookie.com/embed/5bV_Q2u_0eA",
-      videoTitle: "NPTEL C Programming Week 2: Operators & Decision Making",
-      videoChannel: "NPTEL / Neso Academy",
-      prerequisites: ["C Fundamentals", "Relational Operators"],
-      theory: {
-        overview: "Relational operators (==, !=, <, <=, >, >=) produce 1 (true) or 0 (false). Logical operators (&&, ||, !) allow multi-condition evaluation with short-circuit optimization. switch-case statements generate constant O(1) jump tables for integer/char selectors.",
-        keyConcepts: [
-          { title: "Weekly Workflow", desc: "Mon–Wed: Concept learning + NPTEL video | Thu: Program practice | Fri: MCQ/MSQ practice | Sat: Coding assignment + peer discussion | Sun: Revision + mock test." },
-          { title: "Operator Precedence", desc: "Unary (++ --) > Multiplicative (* / %) > Additive (+ -) > Relational > Logical (&& ||) > Ternary (?:) > Assignment." },
-          { title: "Short-Circuit Logic", desc: "In (A && B), B is skipped if A is false; in (A || B), B is skipped if A is true." },
-          { title: "Assessment Target", desc: "25 MCQ + 5 Programming Questions for Week-2 evaluation." }
+    "id": "c-exp-2",
+    "labId": "c-programming",
+    "title": "Exp 2: Temperature Conversion (Fahrenheit to Celsius and Vice Versa)",
+    "slug": "c-exp-2-temperature-conversion-fahrenheit-to-celsius-and-vice-versa",
+    "difficulty": "Beginner",
+    "category": "C Programming",
+    "estimatedMinutes": 30,
+    "rating": 4.9,
+    "ratingsCount": 166,
+    "simulator": "custom",
+    "quizId": "quiz-c-2",
+    "sections": {
+      "introduction": "To write a C program to convert temperature from Fahrenheit to Celsius and vice versa.",
+      "objective": "To write a C program to convert temperature from Fahrenheit to Celsius and vice versa.",
+      "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
+      "videoTitle": "C Programming: Temperature Conversion (Fahrenheit to Celsius and Vice Versa)",
+      "videoChannel": "NPTEL & VLab Engineering",
+      "prerequisites": [
+        "Basic Computing Concepts",
+        "C Syntax Fundamentals"
+      ],
+      "theory": {
+        "overview": "This experiment develops practical proficiency in Temperature Conversion (Fahrenheit to Celsius and Vice Versa). It demonstrates ANSI C procedural design, memory variables, standard library mathematical/string functions, and runtime execution according to the V.S.B. Engineering College curriculum.",
+        "keyConcepts": [
+          {
+            "title": "Procedural Logic",
+            "desc": "Direct algorithmic problem decomposition in C."
+          },
+          {
+            "title": "Variable Allocation",
+            "desc": "Stack and heap memory management and type constraints."
+          },
+          {
+            "title": "Compilation Pipeline",
+            "desc": "Preprocessing, lexical analysis, code generation, and binary linkage."
+          }
         ],
-        complexities: [
-          { operation: "Branch Evaluation", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(1)" }
+        "complexities": [
+          {
+            "operation": "Primary Execution",
+            "best": "O(1)",
+            "avg": "O(n)",
+            "worst": "O(n)",
+            "space": "O(1)"
+          }
         ],
-        realWorldApplications: [
-          "Tiered billing engines for utility and cloud resource charging",
-          "Automated grading and performance classification systems",
-          "State machine decision logic and rule-based AI reasoning"
+        "realWorldApplications": [
+          "Embedded firmware and hardware micro-controller programming",
+          "Operating system kernel modules and shell utilities",
+          "Numerical computation engines used in AI/ML backend runtimes"
         ]
       },
-      procedure: [
-        "1. Write program logic to compare 3 variables using nested ternary/if-else.",
-        "2. Implement student grading ladder (>=90: O, >=80: A, >=70: B, >=60: C, >=50: D, else F).",
-        "3. Build tiered electricity billing algorithm (0-100: Rs.1.5, 101-200: Rs.2.0, >200: Rs.3.0).",
-        "4. Validate edge cases (exact tier boundaries and negative inputs).",
-        "5. Execute and verify program output."
+      "procedure": [
+        "1. Start the program.",
+        "2. Display a menu to choose the type of conversion.",
+        "3. Read the choice and the temperature value from the user.",
+        "4. If choice is Fahrenheit to Celsius, apply C = (F - 32) \\* 5/9.",
+        "5. If choice is Celsius to Fahrenheit, apply F = (C \\* 9/5) + 32.",
+        "6. Display the converted temperature.",
+        "7. Stop the program."
       ],
-      sampleCode: {
-        language: "c",
-        code: `#include <stdio.h>
-
-int main() {
-    printf("=== NPTEL Week 2: Operators & Decision Making ===\\n\\n");
-
-    // 1. Largest of Three Numbers
-    int a = 45, b = 78, c = 32;
-    int largest = (a >= b && a >= c) ? a : (b >= c ? b : c);
-    printf("[1. Largest of Three]: Between %d, %d, %d -> %d\\n\\n", a, b, c, largest);
-
-    // 2. Student Grade Calculation
-    float marks = 86.5f;
-    char grade;
-    if (marks >= 90.0) grade = 'O';
-    else if (marks >= 80.0) grade = 'A';
-    else if (marks >= 70.0) grade = 'B';
-    else if (marks >= 60.0) grade = 'C';
-    else if (marks >= 50.0) grade = 'D';
-    else grade = 'F';
-    printf("[2. Student Grade]: Marks: %.1f%% -> Grade: %c\\n\\n", marks, grade);
-
-    // 3. Electricity Bill Calculation
-    int units = 250;
-    double bill = 0.0;
-    if (units <= 100) {
-        bill = units * 1.50;
-    } else if (units <= 200) {
-        bill = (100 * 1.50) + (units - 100) * 2.00;
-    } else {
-        bill = (100 * 1.50) + (100 * 2.00) + (units - 200) * 3.00;
-    }
-    printf("[3. Electricity Bill]: Units: %d -> Total Bill: Rs. %.2lf\\n", units, bill);
-
-    return 0;
-}`
+      "sampleCode": {
+        "language": "c",
+        "code": "#include <stdio.h>\n  int main() {\n  int choice;\n  float temp, result;\n  printf(\"1. Fahrenheit to Celsius\\n\");\n  printf(\"2. Celsius to Fahrenheit\\n\");\n  printf(\"Enter your choice: \");\n  scanf(\"%d\", &choice);\n  if (choice == 1) {\n  printf(\"Enter temperature in Fahrenheit: \");\n  scanf(\"%f\", &temp);\n  result = (temp - 32) \\* 5.0 / 9.0;\n  printf(\"Temperature in Celsius = %.2f\\n\", result);\n  }\n  else if (choice == 2) {\n  printf(\"Enter temperature in Celsius: \");\n  scanf(\"%f\", &temp);\n  result = (temp \\* 9.0 / 5.0) + 32;\n  printf(\"Temperature in Fahrenheit = %.2f\\n\", result);\n  }\n  else {\n  printf(\"Invalid choice\\n\");\n  }\n  return 0;\n  }"
       },
-      expectedOutput: `=== NPTEL Week 2: Operators & Decision Making ===
-
-[1. Largest of Three]: Between 45, 78, 32 -> 78
-
-[2. Student Grade]: Marks: 86.5% -> Grade: A
-
-[3. Electricity Bill]: Units: 250 -> Total Bill: Rs. 500.00`,
-      leetcodeProblems: [],
-      targetAudience: {
-        ug: ["B.E / B.Tech First Year Engineering"],
-        pg: ["MCA"]
+      "expectedOutput": "1. Fahrenheit to Celsius\n2. Celsius to Fahrenheit\nEnter your choice: 1\nEnter temperature in Fahrenheit: 98.6\nTemperature in Celsius = 37.00",
+      "leetcodeProblems": [],
+      "targetAudience": {
+        "ug": [
+          "B.E. CSE",
+          "B.Tech AI&DS",
+          "B.Tech IT - 1st Year"
+        ],
+        "pg": [
+          "M.E. Computer Science"
+        ]
       }
     }
   },
-
-  // =========================================================================
-  // WEEK 3: LOOP CONSTRUCTS
-  // =========================================================================
   {
-    id: "c-exp-3",
-    labId: "c-programming",
-    title: "Week 3: Loop Constructs & Mini Task",
-    slug: "iterative-loops-and-pattern-generation",
-    difficulty: "Beginner",
-    category: "C Programming" as any,
-    estimatedMinutes: 30,
-    rating: 4.97,
-    ratingsCount: 260,
-    simulator: "custom",
-    quizId: "quiz-c-3",
-    sections: {
-      introduction: "Week 3 focuses on iterative control: for loop, while loop, do-while loop, nested loops, break, and continue statements. It includes essential numerical algorithms and the Week 3 Mini Task: Student Mark Analysis Program.",
-      objective: "Implement iterative algorithms: Factorial calculation, Prime number checking in O(sqrt(n)), Fibonacci series generation, Number reversing, Pyramid pattern printing, and the Student Mark Analysis Program.",
-      videoUrl: "https://www.youtube-nocookie.com/embed/3gV_0qM2u-A",
-      videoTitle: "NPTEL C Programming Week 3: Loops & Mini Task",
-      videoChannel: "NPTEL / FreeCodeCamp",
-      prerequisites: ["Conditionals", "Arithmetic Operators"],
-      theory: {
-        overview: "for loops manage loop initialization, condition testing, and iteration stepping in a single compact header. while loops evaluate before entry; do-while guarantees at least one execution. Loop tracing and boundary inspection prevent infinite loops.",
-        keyConcepts: [
-          { title: "Weekly Workflow", desc: "Mon–Wed: Concept learning + NPTEL video | Thu: Program practice | Fri: MCQ/MSQ practice | Sat: Coding assignment + peer discussion | Sun: Revision + mock test." },
-          { title: "NPTEL Focus Areas", desc: "Loop execution tracing, infinite loop identification, and nested loop output analysis." },
-          { title: "Prime Optimization", desc: "Check factors only up to sqrt(n) reducing complexity from O(n) to O(sqrt(n))." },
-          { title: "Week 3 Mini Task", desc: "Create the Student Mark Analysis Program calculating class average, highest/lowest scores, and pass counts." }
+    "id": "c-exp-3",
+    "labId": "c-programming",
+    "title": "Exp 3: Count Zeros and Ones in a Binary Number",
+    "slug": "c-exp-3-count-zeros-and-ones-in-a-binary-number",
+    "difficulty": "Beginner",
+    "category": "C Programming",
+    "estimatedMinutes": 30,
+    "rating": 4.9,
+    "ratingsCount": 169,
+    "simulator": "custom",
+    "quizId": "quiz-c-3",
+    "sections": {
+      "introduction": "To develop a C program to count the number of zeros and ones in a given binary number.",
+      "objective": "To develop a C program to count the number of zeros and ones in a given binary number.",
+      "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
+      "videoTitle": "C Programming: Count Zeros and Ones in a Binary Number",
+      "videoChannel": "NPTEL & VLab Engineering",
+      "prerequisites": [
+        "Basic Computing Concepts",
+        "C Syntax Fundamentals"
+      ],
+      "theory": {
+        "overview": "This experiment develops practical proficiency in Count Zeros and Ones in a Binary Number. It demonstrates ANSI C procedural design, memory variables, standard library mathematical/string functions, and runtime execution according to the V.S.B. Engineering College curriculum.",
+        "keyConcepts": [
+          {
+            "title": "Procedural Logic",
+            "desc": "Direct algorithmic problem decomposition in C."
+          },
+          {
+            "title": "Variable Allocation",
+            "desc": "Stack and heap memory management and type constraints."
+          },
+          {
+            "title": "Compilation Pipeline",
+            "desc": "Preprocessing, lexical analysis, code generation, and binary linkage."
+          }
         ],
-        complexities: [
-          { operation: "Prime Check", best: "O(1)", avg: "O(sqrt(n))", worst: "O(sqrt(n))", space: "O(1)" },
-          { operation: "Pattern Printing", best: "O(n^2)", avg: "O(n^2)", worst: "O(n^2)", space: "O(1)" }
+        "complexities": [
+          {
+            "operation": "Primary Execution",
+            "best": "O(1)",
+            "avg": "O(n)",
+            "worst": "O(n)",
+            "space": "O(1)"
+          }
         ],
-        realWorldApplications: [
-          "Epoch training iterations in gradient descent and machine learning",
-          "Data aggregation pipelines for business analytics dashboards",
-          "Numerical simulation algorithms in scientific computing"
+        "realWorldApplications": [
+          "Embedded firmware and hardware micro-controller programming",
+          "Operating system kernel modules and shell utilities",
+          "Numerical computation engines used in AI/ML backend runtimes"
         ]
       },
-      procedure: [
-        "1. Write iterative factorial calculation using long long accumulator.",
-        "2. Implement prime checking with condition i * i <= n.",
-        "3. Generate Fibonacci series with iterative two-variable swapping.",
-        "4. Reverse an integer using modulo % 10 and division / 10.",
-        "5. Complete the Mini Task: Loop through student marks array to compute average, min, max, and pass count."
+      "procedure": [
+        "1. Start the program.",
+        "2. Read a binary number as an integer (containing only digits 0 and 1).",
+        "3. Initialize counters countZero and countOne to zero.",
+        "4. Repeatedly extract the last digit of the number using the modulus operator.",
+        "5. If the digit is 0, increment countZero; if it is 1, increment countOne.",
+        "6. Remove the last digit by dividing the number by 10 and repeat until the number becomes 0.",
+        "7. Display the count of zeros and ones.",
+        "8. Stop the program."
       ],
-      sampleCode: {
-        language: "c",
-        code: `#include <stdio.h>
-#include <stdbool.h>
-
-bool isPrime(int n) {
-    if (n <= 1) return false;
-    for (int i = 2; i * i <= n; i++) {
-        if (n % i == 0) return false;
-    }
-    return true;
-}
-
-int reverseNumber(int n) {
-    int rev = 0;
-    while (n > 0) {
-        rev = rev * 10 + (n % 10);
-        n /= 10;
-    }
-    return rev;
-}
-
-int main() {
-    printf("=== NPTEL Week 3: Loops & Mini Task ===\\n\\n");
-
-    // 1. Factorial & Prime
-    int n = 6;
-    long long fact = 1;
-    for (int i = 1; i <= n; i++) fact *= i;
-    printf("[1. Numerical]: %d! = %lld | isPrime(29) = %s | Reverse(1234) = %d\\n\\n",
-           n, fact, isPrime(29) ? "YES" : "NO", reverseNumber(1234));
-
-    // 2. Fibonacci Series (8 terms)
-    printf("[2. Fibonacci Series]: ");
-    int t1 = 0, t2 = 1;
-    for (int i = 1; i <= 8; i++) {
-        printf("%d ", t1);
-        int next = t1 + t2;
-        t1 = t2;
-        t2 = next;
-    }
-    printf("\\n\\n");
-
-    // 3. Mini Task: Student Mark Analysis Program
-    int marks[] = {85, 92, 45, 78, 60, 32, 98, 88};
-    int totalStudents = sizeof(marks) / sizeof(marks[0]);
-    int sum = 0, max = marks[0], min = marks[0], passCount = 0;
-
-    for (int i = 0; i < totalStudents; i++) {
-        sum += marks[i];
-        if (marks[i] > max) max = marks[i];
-        if (marks[i] < min) min = marks[i];
-        if (marks[i] >= 50) passCount++;
-    }
-
-    printf("=== Mini Task: Student Mark Analysis Program ===\\n");
-    printf("Total Students: %d\\n", totalStudents);
-    printf("Class Average:  %.2lf\\n", (double)sum / totalStudents);
-    printf("Highest Mark:   %d\\n", max);
-    printf("Lowest Mark:    %d\\n", min);
-    printf("Passed (>=50):  %d / %d\\n", passCount, totalStudents);
-
-    return 0;
-}`
+      "sampleCode": {
+        "language": "c",
+        "code": "#include <stdio.h>\n  int main() {\n  long int binNum;\n  int digit, countZero = 0, countOne = 0;\n  printf(\"Enter a binary number: \");\n  scanf(\"%ld\", &binNum);\n  while (binNum != 0) {\n  digit = binNum % 10;\n  if (digit == 0)\n  countZero++;\n  else if (digit == 1)\n  countOne++;\n  binNum = binNum / 10;\n  }\n  printf(\"Number of zeros = %d\\n\", countZero);\n  printf(\"Number of ones = %d\\n\", countOne);\n  return 0;\n  }"
       },
-      expectedOutput: `=== NPTEL Week 3: Loops & Mini Task ===
-
-[1. Numerical]: 6! = 720 | isPrime(29) = YES | Reverse(1234) = 4321
-
-[2. Fibonacci Series]: 0 1 1 2 3 5 8 13 
-
-=== Mini Task: Student Mark Analysis Program ===
-Total Students: 8
-Class Average:  72.25
-Highest Mark:   98
-Lowest Mark:    32
-Passed (>=50):  6 / 8`,
-      leetcodeProblems: [],
-      targetAudience: {
-        ug: ["B.E / B.Tech First Year Engineering"],
-        pg: ["MCA"]
+      "expectedOutput": "Enter a binary number: 110100101\nNumber of zeros = 4\nNumber of ones = 5",
+      "leetcodeProblems": [],
+      "targetAudience": {
+        "ug": [
+          "B.E. CSE",
+          "B.Tech AI&DS",
+          "B.Tech IT - 1st Year"
+        ],
+        "pg": [
+          "M.E. Computer Science"
+        ]
       }
     }
   },
-
-  // =========================================================================
-  // WEEK 4: FUNCTIONS AND RECURSION
-  // =========================================================================
   {
-    id: "c-exp-4",
-    labId: "c-programming",
-    title: "Week 4: Functions and Recursion",
-    slug: "functions-and-recursion-factorial-gcd",
-    difficulty: "Intermediate",
-    category: "C Programming" as any,
-    estimatedMinutes: 30,
-    rating: 4.95,
-    ratingsCount: 240,
-    simulator: "custom",
-    quizId: "quiz-c-4",
-    sections: {
-      introduction: "Week 4 covers modular programming via function declarations, definitions, parameter passing (pass by value), local vs global vs static variable scopes, and recursive function mechanics.",
-      objective: "Build modular calculator functions and recursive algorithms: Factorial using recursion, Fibonacci using recursion, and Euclidean Greatest Common Divisor (GCD).",
-      videoUrl: "https://www.youtube-nocookie.com/embed/r_P3nF98N1M",
-      videoTitle: "NPTEL C Programming Week 4: Functions & Recursion",
-      videoChannel: "NPTEL / Neso Academy",
-      prerequisites: ["C Fundamentals", "Loop Constructs"],
-      theory: {
-        overview: "Functions modularize code into reusable units with distinct activation stack frames. Pass-by-value copies variable values. static variables retain value across multiple function calls in the data segment. Recursion solves self-similar subproblems with base and recursive cases.",
-        keyConcepts: [
-          { title: "Weekly Workflow", desc: "Mon–Wed: Concept learning + NPTEL video | Thu: Program practice | Fri: MCQ/MSQ practice | Sat: Coding assignment + peer discussion | Sun: Revision + mock test." },
-          { title: "Pass by Value", desc: "Parameters are local copies; mutating formal arguments inside a function does not alter caller variables." },
-          { title: "Euclidean GCD", desc: "gcd(a, b) = gcd(b, a % b) with base case gcd(a, 0) = a running in O(log min(a,b))." },
-          { title: "Assessment", desc: "30 NPTEL MCQs + Recursion tracing practice." }
+    "id": "c-exp-4",
+    "labId": "c-programming",
+    "title": "Exp 4: Armstrong Number Check",
+    "slug": "c-exp-4-armstrong-number-check",
+    "difficulty": "Beginner",
+    "category": "C Programming",
+    "estimatedMinutes": 30,
+    "rating": 4.9,
+    "ratingsCount": 172,
+    "simulator": "custom",
+    "quizId": "quiz-c-4",
+    "sections": {
+      "introduction": "To write a C program to check whether a given number is an Armstrong number.",
+      "objective": "To write a C program to check whether a given number is an Armstrong number.",
+      "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
+      "videoTitle": "C Programming: Armstrong Number Check",
+      "videoChannel": "NPTEL & VLab Engineering",
+      "prerequisites": [
+        "Basic Computing Concepts",
+        "C Syntax Fundamentals"
+      ],
+      "theory": {
+        "overview": "This experiment develops practical proficiency in Armstrong Number Check. It demonstrates ANSI C procedural design, memory variables, standard library mathematical/string functions, and runtime execution according to the V.S.B. Engineering College curriculum.",
+        "keyConcepts": [
+          {
+            "title": "Procedural Logic",
+            "desc": "Direct algorithmic problem decomposition in C."
+          },
+          {
+            "title": "Variable Allocation",
+            "desc": "Stack and heap memory management and type constraints."
+          },
+          {
+            "title": "Compilation Pipeline",
+            "desc": "Preprocessing, lexical analysis, code generation, and binary linkage."
+          }
         ],
-        complexities: [
-          { operation: "Euclidean GCD", best: "O(1)", avg: "O(log min(a,b))", worst: "O(log min(a,b))", space: "O(log n)" },
-          { operation: "Recursive Factorial", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(n)" }
+        "complexities": [
+          {
+            "operation": "Primary Execution",
+            "best": "O(1)",
+            "avg": "O(n)",
+            "worst": "O(n)",
+            "space": "O(1)"
+          }
         ],
-        realWorldApplications: [
-          "Divide-and-conquer algorithms (MergeSort, Fast Fourier Transform)",
-          "Recursive tree parsing in NLP and AST compilers",
-          "Cryptographic greatest common divisor calculations (RSA algorithm)"
+        "realWorldApplications": [
+          "Embedded firmware and hardware micro-controller programming",
+          "Operating system kernel modules and shell utilities",
+          "Numerical computation engines used in AI/ML backend runtimes"
         ]
       },
-      procedure: [
-        "1. Write modular function prototypes for arithmetic operations.",
-        "2. Implement recursive Euclidean GCD: return (b == 0) ? a : gcd(b, a % b).",
-        "3. Implement recursive Factorial with base condition n <= 1.",
-        "4. Implement static variable counter tracking invocation counts.",
-        "5. Compile, run, and verify call stack outputs."
+      "procedure": [
+        "1. Start the program.",
+        "2. Read an integer number from the user.",
+        "3. Store the original number in a temporary variable.",
+        "4. Find the number of digits n in the number.",
+        "5. For every digit, compute digit raised to the power n and add it to a sum variable.",
+        "6. Compare the sum with the original number.",
+        "7. If they are equal, display that it is an Armstrong number; otherwise display that it is not.",
+        "8. Stop the program."
       ],
-      sampleCode: {
-        language: "c",
-        code: `#include <stdio.h>
-
-int gcd(int a, int b) {
-    if (b == 0) return a;
-    return gcd(b, a % b);
-}
-
-long long factorial(int n) {
-    if (n <= 1) return 1;
-    return n * factorial(n - 1);
-}
-
-int fibonacci(int n) {
-    if (n <= 0) return 0;
-    if (n == 1) return 1;
-    return fibonacci(n - 1) + fibonacci(n - 2);
-}
-
-void callCounter() {
-    static int count = 0;
-    count++;
-    printf("Static Function Invocation Count: %d\\n", count);
-}
-
-int main() {
-    printf("=== NPTEL Week 4: Functions & Recursion ===\\n\\n");
-
-    int a = 48, b = 18;
-    printf("[1. Euclidean GCD]: gcd(%d, %d) = %d\\n\\n", a, b, gcd(a, b));
-
-    int n = 5;
-    printf("[2. Recursive Factorial]: %d! = %lld\\n\\n", n, factorial(n));
-
-    printf("[3. Recursive Fibonacci(6)]: %d\\n\\n", fibonacci(6));
-
-    printf("[4. Static Scope Demonstration]:\\n");
-    callCounter();
-    callCounter();
-    callCounter();
-
-    return 0;
-}`
+      "sampleCode": {
+        "language": "c",
+        "code": "#include <stdio.h>\n  \n#include <math.h>\n  int main() {\n  int num, original, digit, n = 0, sum = 0;\n  printf(\"Enter a number: \");\n  scanf(\"%d\", &num);\n  original = num;\n  /\\* Count number of digits \\*/\n  int temp = num;\n  while (temp != 0) {\n  temp = temp / 10;\n  n++;\n  }\n  temp = num;\n  while (temp != 0) {\n  digit = temp % 10;\n  sum = sum + (int)pow(digit, n);\n  temp = temp / 10;\n  }\n  if (sum == original)\n  printf(\"%d is an Armstrong number\\n\", original);\n  else\n  printf(\"%d is NOT an Armstrong number\\n\", original);\n  return 0;\n  }"
       },
-      expectedOutput: `=== NPTEL Week 4: Functions & Recursion ===
-
-[1. Euclidean GCD]: gcd(48, 18) = 6
-
-[2. Recursive Factorial]: 5! = 120
-
-[3. Recursive Fibonacci(6)]: 8
-
-[4. Static Scope Demonstration]:
-Static Function Invocation Count: 1
-Static Function Invocation Count: 2
-Static Function Invocation Count: 3`,
-      leetcodeProblems: [],
-      targetAudience: {
-        ug: ["B.E / B.Tech First Year Engineering"],
-        pg: ["MCA"]
+      "expectedOutput": "Enter a number: 153\n153 is an Armstrong number",
+      "leetcodeProblems": [],
+      "targetAudience": {
+        "ug": [
+          "B.E. CSE",
+          "B.Tech AI&DS",
+          "B.Tech IT - 1st Year"
+        ],
+        "pg": [
+          "M.E. Computer Science"
+        ]
       }
     }
   },
-
-  // =========================================================================
-  // WEEK 5: ARRAYS AND POINTERS
-  // =========================================================================
   {
-    id: "c-exp-5",
-    labId: "c-programming",
-    title: "Week 5: Arrays and Pointers",
-    slug: "1d-arrays-and-statistical-calculations",
-    difficulty: "Intermediate",
-    category: "C Programming" as any,
-    estimatedMinutes: 35,
-    rating: 4.98,
-    ratingsCount: 290,
-    simulator: "custom",
-    quizId: "quiz-c-5",
-    sections: {
-      introduction: "Week 5 explores 1D and 2D arrays, array searching and sorting, pointer basics, pointer arithmetic, and the core relationship between arrays and pointers in C (*(a+i)).",
-      objective: "Master array operations, pointer dereferencing, searching/sorting algorithms, and 2D matrix multiplication with direct application to AI&DS datasets.",
-      videoUrl: "https://www.youtube-nocookie.com/embed/2PgYwA_k4qY",
-      videoTitle: "NPTEL C Programming Week 5: Arrays, Pointers & *(a+i)",
-      videoChannel: "NPTEL / Neso Academy",
-      prerequisites: ["Functions", "Loops"],
-      theory: {
-        overview: "An array name acts as a constant pointer to its first element. The expression arr[i] translates directly to *(arr + i). Pointers store memory addresses and enable pointer arithmetic (ptr + 1 advances by sizeof(*ptr) bytes).",
-        keyConcepts: [
-          { title: "Weekly Workflow", desc: "Mon–Wed: Concept learning + NPTEL video | Thu: Program practice | Fri: MCQ/MSQ practice | Sat: Coding assignment + peer discussion | Sun: Revision + mock test." },
-          { title: "NPTEL Key Concept: *(a+i)", desc: "arr[i] is syntactically equivalent to *(arr + i), *(i + arr), and i[arr]." },
-          { title: "Address Calculation", desc: "Address(arr[i]) = Base_Address + (i * sizeof(type))." },
-          { title: "AI&DS Engineering Connection", desc: "Arrays are the fundamental representation for multi-dimensional tensors, feature vectors, and machine learning numerical datasets." }
+    "id": "c-exp-5",
+    "labId": "c-programming",
+    "title": "Exp 5: Swapping of Two Numbers using Call by Value and Call by Reference",
+    "slug": "c-exp-5-swapping-of-two-numbers-using-call-by-value-and-call-by-reference",
+    "difficulty": "Beginner",
+    "category": "C Programming",
+    "estimatedMinutes": 30,
+    "rating": 4.9,
+    "ratingsCount": 175,
+    "simulator": "custom",
+    "quizId": "quiz-c-5",
+    "sections": {
+      "introduction": "To implement swapping of two numbers using: (a) Call by Value, and (b) Call by Reference.",
+      "objective": "To implement swapping of two numbers using: (a) Call by Value, and (b) Call by Reference.",
+      "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
+      "videoTitle": "C Programming: Swapping of Two Numbers using Call by Value and Call by Reference",
+      "videoChannel": "NPTEL & VLab Engineering",
+      "prerequisites": [
+        "Basic Computing Concepts",
+        "C Syntax Fundamentals"
+      ],
+      "theory": {
+        "overview": "This experiment develops practical proficiency in Swapping of Two Numbers using Call by Value and Call by Reference. It demonstrates ANSI C procedural design, memory variables, standard library mathematical/string functions, and runtime execution according to the V.S.B. Engineering College curriculum.",
+        "keyConcepts": [
+          {
+            "title": "Procedural Logic",
+            "desc": "Direct algorithmic problem decomposition in C."
+          },
+          {
+            "title": "Variable Allocation",
+            "desc": "Stack and heap memory management and type constraints."
+          },
+          {
+            "title": "Compilation Pipeline",
+            "desc": "Preprocessing, lexical analysis, code generation, and binary linkage."
+          }
         ],
-        complexities: [
-          { operation: "Linear Search", best: "O(1)", avg: "O(n)", worst: "O(n)", space: "O(1)" },
-          { operation: "Bubble Sort", best: "O(n)", avg: "O(n^2)", worst: "O(n^2)", space: "O(1)" },
-          { operation: "Matrix Multiplication", best: "O(r * c * k)", avg: "O(r * c * k)", worst: "O(r * c * k)", space: "O(r * k)" }
+        "complexities": [
+          {
+            "operation": "Primary Execution",
+            "best": "O(1)",
+            "avg": "O(n)",
+            "worst": "O(n)",
+            "space": "O(1)"
+          }
         ],
-        realWorldApplications: [
-          "Tensor and matrix multiplication kernels in PyTorch / NumPy",
-          "Feature dataset representations in machine learning pipelines",
-          "Image pixel buffer processing in computer vision"
+        "realWorldApplications": [
+          "Embedded firmware and hardware micro-controller programming",
+          "Operating system kernel modules and shell utilities",
+          "Numerical computation engines used in AI/ML backend runtimes"
         ]
       },
-      procedure: [
-        "1. Declare 1D array and demonstrate pointer address equivalence *(arr + i).",
-        "2. Implement Bubble Sort using pointer arithmetic.",
-        "3. Implement 2D matrix multiplication using nested loops.",
-        "4. Print sorted array and resulting matrix product.",
-        "5. Verify pointer increment steps across memory boundaries."
+      "procedure": [
+        "1. Start the program.",
+        "2. Read two numbers a and b from the user.",
+        "3. Call the function swapByValue(a, b) which swaps the copies of the variables; observe that the original values remain unchanged after the call.",
+        "4. Call the function swapByReference(&a, &b), passing the addresses of a and b, which swaps the actual values using pointers.",
+        "5. Display the values before and after each function call.",
+        "6. Stop the program."
       ],
-      sampleCode: {
-        language: "c",
-        code: `#include <stdio.h>
-
-void bubbleSort(int *arr, int n) {
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 1; j++) {
-            if (*(arr + j) > *(arr + j + 1)) {
-                int temp = *(arr + j);
-                *(arr + j) = *(arr + j + 1);
-                *(arr + j + 1) = temp;
-            }
-        }
-    }
-}
-
-int main() {
-    printf("=== NPTEL Week 5: Arrays & Pointers ===\\n\\n");
-
-    // 1. Pointer-Array Equivalence: *(a+i)
-    int arr[] = {10, 25, 30, 45, 50};
-    int n = 5;
-    printf("[1. *(a+i) Concept]:\\n");
-    for (int i = 0; i < n; i++) {
-        printf("arr[%d] = %d | *(arr + %d) = %d | Address: %p\\n",
-               i, arr[i], i, *(arr + i), (void*)(arr + i));
-    }
-    printf("\\n");
-
-    // 2. Sorting Array with Pointers
-    int data[] = {64, 34, 25, 12, 22, 11, 90};
-    int dataSize = sizeof(data) / sizeof(data[0]);
-    bubbleSort(data, dataSize);
-    printf("[2. Sorted Array]: ");
-    for (int i = 0; i < dataSize; i++) printf("%d ", *(data + i));
-    printf("\\n\\n");
-
-    // 3. Matrix Multiplication (2x2)
-    int A[2][2] = {{1, 2}, {3, 4}};
-    int B[2][2] = {{5, 6}, {7, 8}};
-    int C[2][2] = {0};
-
-    for (int i = 0; i < 2; i++) {
-        for (int j = 0; j < 2; j++) {
-            for (int k = 0; k < 2; k++) {
-                C[i][j] += A[i][k] * B[k][j];
-            }
-        }
-    }
-
-    printf("[3. 2D Matrix Multiplication]:\\n");
-    for (int i = 0; i < 2; i++) {
-        printf("| %4d %4d |\\n", C[i][0], C[i][1]);
-    }
-
-    return 0;
-}`
+      "sampleCode": {
+        "language": "c",
+        "code": "#include <stdio.h>\n  /\\* Call by Value \\*/\n  void swapByValue(int x, int y) {\n  int temp = x;\n  x = y;\n  y = temp;\n  printf(\"Inside swapByValue: x = %d, y = %d\\n\", x, y);\n  }\n  /\\* Call by Reference \\*/\n  void swapByReference(int \\*x, int \\*y) {\n  int temp = \\*x;\n  \\*x = \\*y;\n  \\*y = temp;\n  }\n  int main() {\n  int a, b;\n  printf(\"Enter two numbers a and b: \");\n  scanf(\"%d %d\", &a, &b);\n  printf(\"\\n--- Call by Value ---\\n\");\n  printf(\"Before call: a = %d, b = %d\\n\", a, b);\n  swapByValue(a, b);\n  printf(\"After call: a = %d, b = %d (unchanged)\\n\", a, b);\n  printf(\"\\n--- Call by Reference ---\\n\");\n  printf(\"Before call: a = %d, b = %d\\n\", a, b);\n  swapByReference(&a, &b);\n  printf(\"After call: a = %d, b = %d (swapped)\\n\", a, b);\n  return 0;\n  }"
       },
-      expectedOutput: `=== NPTEL Week 5: Arrays & Pointers ===
-
-[1. *(a+i) Concept]:
-arr[0] = 10 | *(arr + 0) = 10 | Address: 0x...
-arr[1] = 25 | *(arr + 1) = 25 | Address: 0x...
-arr[2] = 30 | *(arr + 2) = 30 | Address: 0x...
-arr[3] = 45 | *(arr + 3) = 45 | Address: 0x...
-arr[4] = 50 | *(arr + 4) = 50 | Address: 0x...
-
-[2. Sorted Array]: 11 12 22 25 34 64 90 
-
-[3. 2D Matrix Multiplication]:
-|   19   22 |
-|   43   50 |`,
-      leetcodeProblems: [],
-      targetAudience: {
-        ug: ["B.E / B.Tech AI&DS Engineering", "CSE"],
-        pg: ["MCA"]
+      "expectedOutput": "Enter two numbers a and b: 10 20\n--- Call by Value ---\nBefore call: a = 10, b = 20\nInside swapByValue: x = 20, y = 10\nAfter call: a = 10, b = 20 (unchanged)\n--- Call by Reference ---\nBefore call: a = 10, b = 20\nAfter call: a = 20, b = 10 (swapped)",
+      "leetcodeProblems": [],
+      "targetAudience": {
+        "ug": [
+          "B.E. CSE",
+          "B.Tech AI&DS",
+          "B.Tech IT - 1st Year"
+        ],
+        "pg": [
+          "M.E. Computer Science"
+        ]
       }
     }
   },
-
-  // =========================================================================
-  // WEEK 6: DYNAMIC MEMORY & FILE HANDLING
-  // =========================================================================
   {
-    id: "c-exp-6",
-    labId: "c-programming",
-    title: "Week 6: Dynamic Memory & File Handling",
-    slug: "pointers-and-dynamic-memory-allocation",
-    difficulty: "Intermediate",
-    category: "C Programming" as any,
-    estimatedMinutes: 35,
-    rating: 4.96,
-    ratingsCount: 250,
-    simulator: "custom",
-    quizId: "quiz-c-6",
-    sections: {
-      introduction: "Week 6 covers dynamic memory allocation on the heap (malloc, calloc, realloc, free), prevention of memory leaks, and disk file stream I/O operations (fopen, fclose, fprintf, fscanf).",
-      objective: "Implement dynamic heap array creation, file-based student mark persistence, and robust error/leak handling.",
-      videoUrl: "https://www.youtube-nocookie.com/embed/VCIVXPoiLpU",
-      videoTitle: "NPTEL C Programming Week 6: Dynamic Memory & File Handling",
-      videoChannel: "NPTEL / FreeCodeCamp",
-      prerequisites: ["Pointers", "Arrays"],
-      theory: {
-        overview: "malloc(size) allocates uninitialized heap memory; calloc(n, size) initializes memory to zero; realloc resizes buffers; free(ptr) deallocates memory back to the OS. File handling utilizes FILE* pointers with modes \"w\", \"r\", and \"a\" for permanent disk storage.",
-        keyConcepts: [
-          { title: "Weekly Workflow", desc: "Mon–Wed: Concept learning + NPTEL video | Thu: Program practice | Fri: MCQ/MSQ practice | Sat: Coding assignment + peer discussion | Sun: Revision + mock test." },
-          { title: "NPTEL Focus Areas", desc: "Memory leaks, dangling pointers, file access modes, and safe free() practices." },
-          { title: "File Operations", desc: "fopen() opens stream; fprintf() writes formatted text; fscanf() reads formatted text; fclose() flushes and closes stream buffer." },
-          { title: "AI&DS Connection", desc: "Batch data streaming from disk, model parameter checkpointing, and dynamic feature buffer allocation." }
+    "id": "c-exp-6",
+    "labId": "c-programming",
+    "title": "Exp 6: Recursive Programs: Fibonacci Series and GCD of Two Numbers",
+    "slug": "c-exp-6-recursive-programs-fibonacci-series-and-gcd-of-two-numbers",
+    "difficulty": "Intermediate",
+    "category": "C Programming",
+    "estimatedMinutes": 30,
+    "rating": 4.9,
+    "ratingsCount": 178,
+    "simulator": "custom",
+    "quizId": "quiz-c-6",
+    "sections": {
+      "introduction": "To develop recursive programs to: (a) generate the Fibonacci series, and (b) find the GCD of two numbers.",
+      "objective": "To develop recursive programs to: (a) generate the Fibonacci series, and (b) find the GCD of two numbers.",
+      "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
+      "videoTitle": "C Programming: Recursive Programs: Fibonacci Series and GCD of Two Numbers",
+      "videoChannel": "NPTEL & VLab Engineering",
+      "prerequisites": [
+        "Basic Computing Concepts",
+        "C Syntax Fundamentals"
+      ],
+      "theory": {
+        "overview": "This experiment develops practical proficiency in Recursive Programs: Fibonacci Series and GCD of Two Numbers. It demonstrates ANSI C procedural design, memory variables, standard library mathematical/string functions, and runtime execution according to the V.S.B. Engineering College curriculum.",
+        "keyConcepts": [
+          {
+            "title": "Procedural Logic",
+            "desc": "Direct algorithmic problem decomposition in C."
+          },
+          {
+            "title": "Variable Allocation",
+            "desc": "Stack and heap memory management and type constraints."
+          },
+          {
+            "title": "Compilation Pipeline",
+            "desc": "Preprocessing, lexical analysis, code generation, and binary linkage."
+          }
         ],
-        complexities: [
-          { operation: "malloc() / free()", best: "O(1)", avg: "O(1)", worst: "O(heap_scan)", space: "O(allocated_bytes)" },
-          { operation: "File Stream Read / Write", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(4KB_buffer)" }
+        "complexities": [
+          {
+            "operation": "Primary Execution",
+            "best": "O(1)",
+            "avg": "O(n)",
+            "worst": "O(n)",
+            "space": "O(1)"
+          }
         ],
-        realWorldApplications: [
-          "Streaming large AI datasets too big to fit in RAM",
-          "Logging training telemetry and saving model checkpoint files",
-          "Database record file indexing systems"
+        "realWorldApplications": [
+          "Embedded firmware and hardware micro-controller programming",
+          "Operating system kernel modules and shell utilities",
+          "Numerical computation engines used in AI/ML backend runtimes"
         ]
       },
-      procedure: [
-        "1. Allocate dynamic integer array using malloc(n * sizeof(int)).",
-        "2. Check for allocation failure (ptr == NULL).",
-        "3. Open file in write mode (\"w\") using fopen() and write student records via fprintf().",
-        "4. Close file with fclose(), reopen in read mode (\"r\"), and read back via fscanf().",
-        "5. Free heap memory with free(ptr) and set ptr = NULL to prevent dangling pointers."
+      "procedure": [
+        "1. Start the program.",
+        "2. Define a recursive function fibonacci(n) that returns the nth Fibonacci number using the base cases n=0 and n=1.",
+        "3. Read the number of terms and print the Fibonacci series by calling fibonacci() repeatedly.",
+        "4. Define a recursive function gcd(a, b) that returns b if a % b == 0, otherwise returns gcd(b, a % b).",
+        "5. Read two numbers and display their GCD using the recursive function.",
+        "6. Stop the program."
       ],
-      sampleCode: {
-        language: "c",
-        code: `#include <stdio.h>
-#include <stdlib.h>
-
-int main() {
-    printf("=== NPTEL Week 6: Dynamic Memory & File Handling ===\\n\\n");
-
-    // 1. Dynamic Array Allocation
-    int n = 4;
-    int *marks = (int*) malloc(n * sizeof(int));
-    if (marks == NULL) {
-        printf("Memory allocation failed!\\n");
-        return 1;
-    }
-
-    marks[0] = 95; marks[1] = 88; marks[2] = 76; marks[3] = 92;
-    printf("[1. Dynamic Heap Array Allocated]: ");
-    for (int i = 0; i < n; i++) printf("%d ", marks[i]);
-    printf("\\n\\n");
-
-    // 2. File Handling: Writing Student Database
-    FILE *fp = fopen("student_database.txt", "w");
-    if (fp == NULL) {
-        perror("File creation failed");
-        free(marks);
-        return 1;
-    }
-
-    fprintf(fp, "%d\\n", n);
-    for (int i = 0; i < n; i++) {
-        fprintf(fp, "Student_%d %d\\n", i + 1, marks[i]);
-    }
-    fclose(fp);
-    printf("[2. File Storage]: student_database.txt written successfully.\\n\\n");
-
-    // 3. File Handling: Reading from Disk
-    fp = fopen("student_database.txt", "r");
-    if (fp != NULL) {
-        int count;
-        fscanf(fp, "%d", &count);
-        printf("[3. Reading Records from File]:\\n");
-        for (int i = 0; i < count; i++) {
-            char name[30];
-            int score;
-            fscanf(fp, "%s %d", name, &score);
-            printf("Record #%d -> %-12s | Mark: %d\\n", i + 1, name, score);
-        }
-        fclose(fp);
-        remove("student_database.txt"); // Clean up disk
-    }
-
-    // 4. Safe Memory Cleanup
-    free(marks);
-    marks = NULL;
-    printf("\\n[✓] Dynamic memory freed; zero leaks.\\n");
-
-    return 0;
-}`
+      "sampleCode": {
+        "language": "c",
+        "code": "#include <stdio.h>\n  /\\* Recursive function for Fibonacci series \\*/\n  int fibonacci(int n) {\n  if (n == 0)\n  return 0;\n  else if (n == 1)\n  return 1;\n  else\n  return fibonacci(n - 1) + fibonacci(n - 2);\n  }\n  /\\* Recursive function for GCD \\*/\n  int gcd(int a, int b) {\n  if (b == 0)\n  return a;\n  else\n  return gcd(b, a % b);\n  }\n  int main() {\n  int n, num1, num2, i;\n  printf(\"Enter number of terms for Fibonacci series: \");\n  scanf(\"%d\", &n);\n  printf(\"Fibonacci Series: \");\n  for (i = 0; i < n; i++)\n  printf(\"%d \", fibonacci(i));\n  printf(\"\\n\");\n  printf(\"\\nEnter two numbers to find GCD: \");\n  scanf(\"%d %d\", &num1, &num2);\n  printf(\"GCD of %d and %d = %d\\n\", num1, num2, gcd(num1, num2));\n  return 0;\n  }"
       },
-      expectedOutput: `=== NPTEL Week 6: Dynamic Memory & File Handling ===
-
-[1. Dynamic Heap Array Allocated]: 95 88 76 92 
-
-[2. File Storage]: student_database.txt written successfully.
-
-[3. Reading Records from File]:
-Record #1 -> Student_1    | Mark: 95
-Record #2 -> Student_2    | Mark: 88
-Record #3 -> Student_3    | Mark: 76
-Record #4 -> Student_4    | Mark: 92
-
-[✓] Dynamic memory freed; zero leaks.`,
-      leetcodeProblems: [],
-      targetAudience: {
-        ug: ["B.E / B.Tech First Year Engineering"],
-        pg: ["MCA"]
+      "expectedOutput": "Enter number of terms for Fibonacci series: 8\nFibonacci Series: 0 1 1 2 3 5 8 13\nEnter two numbers to find GCD: 36 60\nGCD of 36 and 60 = 12",
+      "leetcodeProblems": [],
+      "targetAudience": {
+        "ug": [
+          "B.E. CSE",
+          "B.Tech AI&DS",
+          "B.Tech IT - 1st Year"
+        ],
+        "pg": [
+          "M.E. Computer Science"
+        ]
       }
     }
   },
-
-  // =========================================================================
-  // WEEK 7: STRUCTURES AND LINKED LISTS
-  // =========================================================================
   {
-    id: "c-exp-7",
-    labId: "c-programming",
-    title: "Week 7: Structures and Linked Lists",
-    slug: "structures-unions-and-typedef",
-    difficulty: "Intermediate",
-    category: "C Programming" as any,
-    estimatedMinutes: 35,
-    rating: 4.97,
-    ratingsCount: 270,
-    simulator: "custom",
-    quizId: "quiz-c-7",
-    sections: {
-      introduction: "Week 7 explores heterogeneous data encapsulation via struct declarations, nested structures, structure pointers (->), and dynamic self-referential structures (Singly Linked List node creation, insertion, and deletion).",
-      objective: "Build student records and employee databases using structures, and implement a dynamic Singly Linked List with head insertion, traversal, and memory cleanup.",
-      videoUrl: "https://www.youtube-nocookie.com/embed/TxjIlqW1wZc",
-      videoTitle: "NPTEL C Programming Week 7: Structures & Linked Lists",
-      videoChannel: "NPTEL / Neso Academy",
-      prerequisites: ["Pointers", "Dynamic Memory"],
-      theory: {
-        overview: "struct bundles multiple heterogeneous variables into a single composite type. A Singly Linked List is a linear dynamic data structure composed of heap-allocated nodes containing a data payload and a pointer to the next node.",
-        keyConcepts: [
-          { title: "Weekly Workflow", desc: "Mon–Wed: Concept learning + NPTEL video | Thu: Program practice | Fri: MCQ/MSQ practice | Sat: Coding assignment + peer discussion | Sun: Revision + mock test." },
-          { title: "Structure Pointers", desc: "ptr->member is syntactic shorthand for (*ptr).member." },
-          { title: "Linked List Mechanics", desc: "O(1) head insertion without memory reallocation or shifting." },
-          { title: "AI&DS Engineering Connection", desc: "Custom node representations are mandatory for AI search graphs (A*, Dijkstra), decision trees, and sparse graph processing." }
+    "id": "c-exp-7",
+    "labId": "c-programming",
+    "title": "Exp 7: Matrix Addition, Multiplication, and Transpose using 2D Arrays",
+    "slug": "c-exp-7-matrix-addition-multiplication-and-transpose-using-2d-arrays",
+    "difficulty": "Intermediate",
+    "category": "C Programming",
+    "estimatedMinutes": 30,
+    "rating": 4.9,
+    "ratingsCount": 181,
+    "simulator": "custom",
+    "quizId": "quiz-c-7",
+    "sections": {
+      "introduction": "To implement matrix addition, matrix multiplication, and transpose of a matrix using 2D arrays.",
+      "objective": "To implement matrix addition, matrix multiplication, and transpose of a matrix using 2D arrays.",
+      "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
+      "videoTitle": "C Programming: Matrix Addition, Multiplication, and Transpose using 2D Arrays",
+      "videoChannel": "NPTEL & VLab Engineering",
+      "prerequisites": [
+        "Basic Computing Concepts",
+        "C Syntax Fundamentals"
+      ],
+      "theory": {
+        "overview": "This experiment develops practical proficiency in Matrix Addition, Multiplication, and Transpose using 2D Arrays. It demonstrates ANSI C procedural design, memory variables, standard library mathematical/string functions, and runtime execution according to the V.S.B. Engineering College curriculum.",
+        "keyConcepts": [
+          {
+            "title": "Procedural Logic",
+            "desc": "Direct algorithmic problem decomposition in C."
+          },
+          {
+            "title": "Variable Allocation",
+            "desc": "Stack and heap memory management and type constraints."
+          },
+          {
+            "title": "Compilation Pipeline",
+            "desc": "Preprocessing, lexical analysis, code generation, and binary linkage."
+          }
         ],
-        complexities: [
-          { operation: "Head Insertion", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(1)" },
-          { operation: "Traversal / Search", best: "O(1)", avg: "O(n)", worst: "O(n)", space: "O(1)" }
+        "complexities": [
+          {
+            "operation": "Primary Execution",
+            "best": "O(1)",
+            "avg": "O(n)",
+            "worst": "O(n)",
+            "space": "O(1)"
+          }
         ],
-        realWorldApplications: [
-          "Graph adjacency list representations in social networks and AI pathfinding",
-          "Dynamic task schedulers and memory allocation free-lists",
-          "Symbol tables in compilers and interpreters"
+        "realWorldApplications": [
+          "Embedded firmware and hardware micro-controller programming",
+          "Operating system kernel modules and shell utilities",
+          "Numerical computation engines used in AI/ML backend runtimes"
         ]
       },
-      procedure: [
-        "1. Define struct Student containing id, name, and cgpa.",
-        "2. Define self-referential struct Node with int data and struct Node* next.",
-        "3. Implement insertHead() function allocating node via malloc().",
-        "4. Traverse and print linked list elements.",
-        "5. Free all linked list heap nodes in a loop."
+      "procedure": [
+        "1. Start the program.",
+        "2. Read the order (rows and columns) and elements of the matrices from the user.",
+        "3. For addition, read two matrices of the same order and add corresponding elements.",
+        "4. For multiplication, read two matrices where the columns of the first equal the rows of the second, and compute the product using nested loops.",
+        "5. For transpose, interchange the rows and columns of a matrix.",
+        "6. Display the resultant matrices.",
+        "7. Stop the program."
       ],
-      sampleCode: {
-        language: "c",
-        code: `#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-// 1. Structure for Student Record
-typedef struct {
-    int rollNo;
-    char name[40];
-    float cgpa;
-} Student;
-
-// 2. Singly Linked List Node
-typedef struct Node {
-    int data;
-    struct Node *next;
-} Node;
-
-void insertHead(Node **head, int val) {
-    Node *newNode = (Node*) malloc(sizeof(Node));
-    newNode->data = val;
-    newNode->next = *head;
-    *head = newNode;
-}
-
-void printList(Node *head) {
-    Node *curr = head;
-    while (curr != NULL) {
-        printf("[%d] -> ", curr->data);
-        curr = curr->next;
-    }
-    printf("NULL\\n");
-}
-
-int main() {
-    printf("=== NPTEL Week 7: Structures & Linked Lists ===\\n\\n");
-
-    // 1. Student Record Structure
-    Student s1 = { .rollNo = 101, .cgpa = 9.45f };
-    strcpy(s1.name, "Anish (AI&DS)");
-    printf("[1. Student Record Structure]:\\n");
-    printf("Roll No: %d | Name: %s | CGPA: %.2f\\n\\n", s1.rollNo, s1.name, s1.cgpa);
-
-    // 2. Singly Linked List Implementation
-    Node *head = NULL;
-    insertHead(&head, 30);
-    insertHead(&head, 20);
-    insertHead(&head, 10);
-
-    printf("[2. Singly Linked List Traversal]:\\n");
-    printList(head);
-
-    // 3. Memory Cleanup
-    Node *curr = head;
-    while (curr != NULL) {
-        Node *temp = curr;
-        curr = curr->next;
-        free(temp);
-    }
-    printf("[✓] Linked list nodes freed successfully.\\n");
-
-    return 0;
-}`
+      "sampleCode": {
+        "language": "c",
+        "code": "#include <stdio.h>\n  int main() {\n  int a[10][10], b[10][10], sum[10][10], mul[10][10], trans[10][10];\n  int r1, c1, r2, c2, i, j, k;\n  /\\* Matrix Addition \\*/\n  printf(\"--- Matrix Addition ---\\n\");\n  printf(\"Enter rows and columns of matrix A (same order for B): \");\n  scanf(\"%d %d\", &r1, &c1);\n  printf(\"Enter elements of matrix A:\\n\");\n  for (i = 0; i < r1; i++)\n  for (j = 0; j < c1; j++)\n  scanf(\"%d\", &a[i][j]);\n  printf(\"Enter elements of matrix B:\\n\");\n  for (i = 0; i < r1; i++)\n  for (j = 0; j < c1; j++)\n  scanf(\"%d\", &b[i][j]);\n  for (i = 0; i < r1; i++)\n  for (j = 0; j < c1; j++)\n  sum[i][j] = a[i][j] + b[i][j];\n  printf(\"Sum of matrices:\\n\");\n  for (i = 0; i < r1; i++) {\n  for (j = 0; j < c1; j++)\n  printf(\"%d \", sum[i][j]);\n  printf(\"\\n\");\n  }\n  /\\* Matrix Multiplication \\*/\n  printf(\"\\n--- Matrix Multiplication ---\\n\");\n  printf(\"Enter rows and columns of matrix A: \");\n  scanf(\"%d %d\", &r1, &c1);\n  printf(\"Enter rows and columns of matrix B (rows = %d): \", c1);\n  scanf(\"%d %d\", &r2, &c2);\n  printf(\"Enter elements of matrix A:\\n\");\n  for (i = 0; i < r1; i++)\n  for (j = 0; j < c1; j++)\n  scanf(\"%d\", &a[i][j]);\n  printf(\"Enter elements of matrix B:\\n\");\n  for (i = 0; i < r2; i++)\n  for (j = 0; j < c2; j++)\n  scanf(\"%d\", &b[i][j]);\n  for (i = 0; i < r1; i++) {\n  for (j = 0; j < c2; j++) {\n  mul[i][j] = 0;\n  for (k = 0; k < c1; k++)\n  mul[i][j] += a[i][k] \\* b[k][j];\n  }\n  }\n  printf(\"Product of matrices:\\n\");\n  for (i = 0; i < r1; i++) {\n  for (j = 0; j < c2; j++)\n  printf(\"%d \", mul[i][j]);\n  printf(\"\\n\");\n  }\n  /\\* Matrix Transpose \\*/\n  printf(\"\\n--- Matrix Transpose ---\\n\");\n  for (i = 0; i < r1; i++)\n  for (j = 0; j < c1; j++)\n  trans[j][i] = a[i][j];\n  printf(\"Transpose of matrix A:\\n\");\n  for (i = 0; i < c1; i++) {\n  for (j = 0; j < r1; j++)\n  printf(\"%d \", trans[i][j]);\n  printf(\"\\n\");\n  }\n  return 0;\n  }"
       },
-      expectedOutput: `=== NPTEL Week 7: Structures & Linked Lists ===
-
-[1. Student Record Structure]:
-Roll No: 101 | Name: Anish (AI&DS) | CGPA: 9.45
-
-[2. Singly Linked List Traversal]:
-[10] -> [20] -> [30] -> NULL
-[✓] Linked list nodes freed successfully.`,
-      leetcodeProblems: [],
-      targetAudience: {
-        ug: ["B.E / B.Tech First Year Engineering"],
-        pg: ["MCA"]
+      "expectedOutput": "--- Matrix Addition ---\nEnter rows and columns of matrix A (same order for B): 2 2\nEnter elements of matrix A:\n1 2 3 4\nEnter elements of matrix B:\n5 6 7 8\nSum of matrices:\n6 8\n10 12\n--- Matrix Multiplication ---\nEnter rows and columns of matrix A: 2 2\nEnter rows and columns of matrix B (rows = 2): 2 2\nEnter elements of matrix A:\n1 2 3 4\nEnter elements of matrix B:\n5 6 7 8\nProduct of matrices:\n19 22\n43 50\n--- Matrix Transpose ---\nTranspose of matrix A:\n1 3\n2 4",
+      "leetcodeProblems": [],
+      "targetAudience": {
+        "ug": [
+          "B.E. CSE",
+          "B.Tech AI&DS",
+          "B.Tech IT - 1st Year"
+        ],
+        "pg": [
+          "M.E. Computer Science"
+        ]
       }
     }
   },
-
-  // =========================================================================
-  // WEEK 8: COMPLETE REVISION + NPTEL EXAM PREPARATION
-  // =========================================================================
   {
-    id: "c-exp-8",
-    labId: "c-programming",
-    title: "Week 8: Complete Revision + NPTEL Exam Preparation",
-    slug: "file-handling-and-preprocessor-directives",
-    difficulty: "Advanced",
-    category: "C Programming" as any,
-    estimatedMinutes: 40,
-    rating: 4.99,
-    ratingsCount: 310,
-    simulator: "custom",
-    quizId: "quiz-c-8",
-    sections: {
-      introduction: "Week 8 delivers comprehensive revision across all 7 weeks of C programming and full preparation for the NPTEL Certification Exam: variables, operators, conditions, loops, recursion, arrays, pointers, dynamic memory, structs, files, and linked lists.",
-      objective: "Execute the 7-Day NPTEL Practice Plan, solve comprehensive diagnostic multi-topic problems, and complete the full NPTEL Mock Examination.",
-      videoUrl: "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
-      videoTitle: "NPTEL C Programming Week 8: Complete Revision & Mock Exam",
-      videoChannel: "NPTEL Master Academy",
-      prerequisites: ["Weeks 1 to 7 Full Curriculum"],
-      theory: {
-        overview: "NPTEL certification exams test syntax mastery, operator precedence edge cases, pointer arithmetic, recursion stack tracing, dynamic memory leak diagnosis, and structure padding. This week executes a structured 7-day revision schedule to ensure Elite / Gold medal certification.",
-        keyConcepts: [
-          { title: "7-Day Practice Plan", desc: "Day 1–2: Revise concepts | Day 3–4: Solve previous NPTEL questions | Day 5: Full mock test (100 questions) | Day 6: Analyse mistakes | Day 7: Final revision." },
-          { title: "Core Focus Areas", desc: "Precedence tables, *(a+i) dereferencing, recursion base cases, malloc/free leaks, and file mode error handling." },
-          { title: "Faculty Champions Initiative", desc: "20–30 peer student champions lead doubt-clearing sessions and weekly practice circles." }
+    "id": "c-exp-8",
+    "labId": "c-programming",
+    "title": "Exp 8: Largest, Smallest, Interchange, and Duplicate Count in an Array",
+    "slug": "c-exp-8-largest-smallest-interchange-and-duplicate-count-in-an-array",
+    "difficulty": "Intermediate",
+    "category": "C Programming",
+    "estimatedMinutes": 30,
+    "rating": 4.9,
+    "ratingsCount": 184,
+    "simulator": "custom",
+    "quizId": "quiz-c-8",
+    "sections": {
+      "introduction": "To write a program to: (a) find the largest and smallest elements, (b) interchange the largest and smallest elements, and (c) count duplicate elements in an array.",
+      "objective": "To write a program to: (a) find the largest and smallest elements, (b) interchange the largest and smallest elements, and (c) count duplicate elements in an array.",
+      "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
+      "videoTitle": "C Programming: Largest, Smallest, Interchange, and Duplicate Count in an Array",
+      "videoChannel": "NPTEL & VLab Engineering",
+      "prerequisites": [
+        "Basic Computing Concepts",
+        "C Syntax Fundamentals"
+      ],
+      "theory": {
+        "overview": "This experiment develops practical proficiency in Largest, Smallest, Interchange, and Duplicate Count in an Array. It demonstrates ANSI C procedural design, memory variables, standard library mathematical/string functions, and runtime execution according to the V.S.B. Engineering College curriculum.",
+        "keyConcepts": [
+          {
+            "title": "Procedural Logic",
+            "desc": "Direct algorithmic problem decomposition in C."
+          },
+          {
+            "title": "Variable Allocation",
+            "desc": "Stack and heap memory management and type constraints."
+          },
+          {
+            "title": "Compilation Pipeline",
+            "desc": "Preprocessing, lexical analysis, code generation, and binary linkage."
+          }
         ],
-        complexities: [
-          { operation: "Diagnostic Scan", best: "O(1)", avg: "O(n)", worst: "O(n)", space: "O(1)" }
+        "complexities": [
+          {
+            "operation": "Primary Execution",
+            "best": "O(1)",
+            "avg": "O(n)",
+            "worst": "O(n)",
+            "space": "O(1)"
+          }
         ],
-        realWorldApplications: [
-          "NPTEL Certification Examination readiness with Elite / Gold grade",
-          "Technical interview and competitive programming foundation",
-          "Engineering competency for high-performance AI system development"
+        "realWorldApplications": [
+          "Embedded firmware and hardware micro-controller programming",
+          "Operating system kernel modules and shell utilities",
+          "Numerical computation engines used in AI/ML backend runtimes"
         ]
       },
-      procedure: [
-        "1. Execute Day 1–2 rapid conceptual review across all topics.",
-        "2. Solve previous year NPTEL assignment problems.",
-        "3. Run comprehensive diagnostic program integrating structs, pointers, arrays, and functions.",
-        "4. Take the full Week 8 NPTEL Mock Examination.",
-        "5. Review test metrics and clarify doubts with C Programming Champions."
+      "procedure": [
+        "1. Start the program.",
+        "2. Read the size and elements of the array from the user.",
+        "3. Traverse the array to find the index of the largest element and the index of the smallest element.",
+        "4. Display the largest and smallest elements.",
+        "5. Interchange the elements at the largest and smallest indices and display the updated array.",
+        "6. Use nested loops to compare each element with every other element and count duplicate occurrences.",
+        "7. Display the duplicate count.",
+        "8. Stop the program."
       ],
-      sampleCode: {
-        language: "c",
-        code: `#include <stdio.h>
-#include <stdlib.h>
-
-typedef struct {
-    int id;
-    char name[30];
-    int scores[3];
-} Candidate;
-
-double computeAverage(const int *scores, int n) {
-    int sum = 0;
-    for (int i = 0; i < n; i++) {
-        sum += *(scores + i);
-    }
-    return (double)sum / n;
-}
-
-int main() {
-    printf("=== NPTEL Week 8: Complete Revision Diagnostic ===\\n\\n");
-
-    Candidate c1 = {
-        .id = 2026,
-        .name = "AI&DS Champion",
-        .scores = {92, 88, 96}
-    };
-
-    double avg = computeAverage(c1.scores, 3);
-
-    printf("Candidate ID:   %d\\n", c1.id);
-    printf("Candidate Name: %s\\n", c1.name);
-    printf("Exam Scores:    %d, %d, %d\\n", c1.scores[0], c1.scores[1], c1.scores[2]);
-    printf("Average Score:  %.2lf\\n\\n", avg);
-    printf("[✓] 100%% Prepared for NPTEL C Programming Certification Examination!\\n");
-
-    return 0;
-}`
+      "sampleCode": {
+        "language": "c",
+        "code": "#include <stdio.h>\n  int main() {\n  int arr[50], n, i, j;\n  int maxIdx = 0, minIdx = 0, duplicates = 0;\n  printf(\"Enter number of elements: \");\n  scanf(\"%d\", &n);\n  printf(\"Enter %d elements: \", n);\n  for (i = 0; i < n; i++)\n  scanf(\"%d\", &arr[i]);\n  /\\* Find largest and smallest \\*/\n  for (i = 1; i < n; i++) {\n  if (arr[i] > arr[maxIdx])\n  maxIdx = i;\n  if (arr[i] < arr[minIdx])\n  minIdx = i;\n  }\n  printf(\"\\nLargest element = %d\\n\", arr[maxIdx]);\n  printf(\"Smallest element = %d\\n\", arr[minIdx]);\n  /\\* Interchange largest and smallest \\*/\n  int temp = arr[maxIdx];\n  arr[maxIdx] = arr[minIdx];\n  arr[minIdx] = temp;\n  printf(\"\\nArray after interchanging largest and smallest:\\n\");\n  for (i = 0; i < n; i++)\n  printf(\"%d \", arr[i]);\n  printf(\"\\n\");\n  /\\* Count duplicate elements \\*/\n  int visited[50] = {0};\n  for (i = 0; i < n; i++) {\n  if (visited[i] == 1)\n  continue;\n  int count = 1;\n  for (j = i + 1; j < n; j++) {\n  if (arr[i] == arr[j]) {\n  visited[j] = 1;\n  count++;\n  }\n  }\n  if (count > 1)\n  duplicates++;\n  }\n  printf(\"\\nNumber of duplicate elements (distinct values repeated) = %d\\n\", duplicates);\n  return 0;\n  }"
       },
-      expectedOutput: `=== NPTEL Week 8: Complete Revision Diagnostic ===
-
-Candidate ID:   2026
-Candidate Name: AI&DS Champion
-Exam Scores:    92, 88, 96
-Average Score:  92.00
-
-[✓] 100% Prepared for NPTEL C Programming Certification Examination!`,
-      leetcodeProblems: [],
-      targetAudience: {
-        ug: ["B.E / B.Tech First Year Engineering"],
-        pg: ["MCA"]
+      "expectedOutput": "Enter number of elements: 6\nEnter 6 elements: 4 8 2 8 4 9\nLargest element = 9\nSmallest element = 2\nArray after interchanging largest and smallest:\n4 8 9 8 4 2\nNumber of duplicate elements (distinct values repeated) = 2",
+      "leetcodeProblems": [],
+      "targetAudience": {
+        "ug": [
+          "B.E. CSE",
+          "B.Tech AI&DS",
+          "B.Tech IT - 1st Year"
+        ],
+        "pg": [
+          "M.E. Computer Science"
+        ]
+      }
+    }
+  },
+  {
+    "id": "c-exp-9",
+    "labId": "c-programming",
+    "title": "Exp 9: String Operations: Palindrome Checking, Reverse a String, Extract Last N Characters",
+    "slug": "c-exp-9-string-operations-palindrome-checking-reverse-a-string-extract-last-n-characters",
+    "difficulty": "Intermediate",
+    "category": "C Programming",
+    "estimatedMinutes": 30,
+    "rating": 4.9,
+    "ratingsCount": 187,
+    "simulator": "custom",
+    "quizId": "quiz-c-9",
+    "sections": {
+      "introduction": "To implement string operations: (a) palindrome checking, (b) reverse a string, and (c) extract the last N characters from a string.",
+      "objective": "To implement string operations: (a) palindrome checking, (b) reverse a string, and (c) extract the last N characters from a string.",
+      "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
+      "videoTitle": "C Programming: String Operations: Palindrome Checking, Reverse a String, Extract Last N Characters",
+      "videoChannel": "NPTEL & VLab Engineering",
+      "prerequisites": [
+        "Basic Computing Concepts",
+        "C Syntax Fundamentals"
+      ],
+      "theory": {
+        "overview": "This experiment develops practical proficiency in String Operations: Palindrome Checking, Reverse a String, Extract Last N Characters. It demonstrates ANSI C procedural design, memory variables, standard library mathematical/string functions, and runtime execution according to the V.S.B. Engineering College curriculum.",
+        "keyConcepts": [
+          {
+            "title": "Procedural Logic",
+            "desc": "Direct algorithmic problem decomposition in C."
+          },
+          {
+            "title": "Variable Allocation",
+            "desc": "Stack and heap memory management and type constraints."
+          },
+          {
+            "title": "Compilation Pipeline",
+            "desc": "Preprocessing, lexical analysis, code generation, and binary linkage."
+          }
+        ],
+        "complexities": [
+          {
+            "operation": "Primary Execution",
+            "best": "O(1)",
+            "avg": "O(n)",
+            "worst": "O(n)",
+            "space": "O(1)"
+          }
+        ],
+        "realWorldApplications": [
+          "Embedded firmware and hardware micro-controller programming",
+          "Operating system kernel modules and shell utilities",
+          "Numerical computation engines used in AI/ML backend runtimes"
+        ]
+      },
+      "procedure": [
+        "1. Start the program.",
+        "2. Read a string from the user using gets()/fgets() or scanf with %s.",
+        "3. To check palindrome, compare the string with its reverse; if equal, it is a palindrome.",
+        "4. To reverse a string, swap characters from both ends moving towards the centre, or copy characters from the end into a new string.",
+        "5. To extract the last N characters, find the length of the string and copy characters from position (length - N) to the end.",
+        "6. Display the results of all three operations.",
+        "7. Stop the program."
+      ],
+      "sampleCode": {
+        "language": "c",
+        "code": "#include <stdio.h>\n  \n#include <string.h>\n  int main() {\n  char str[100], rev[100], lastN[100];\n  int n, len, i, isPalindrome = 1;\n  printf(\"Enter a string: \");\n  scanf(\"%s\", str);\n  len = strlen(str);\n  /\\* Reverse the string \\*/\n  for (i = 0; i < len; i++)\n  rev[i] = str[len - 1 - i];\n  rev[len] = '\\0';\n  /\\* Palindrome check \\*/\n  for (i = 0; i < len; i++) {\n  if (str[i] != rev[i]) {\n  isPalindrome = 0;\n  break;\n  }\n  }\n  printf(\"\\nOriginal string : %s\\n\", str);\n  printf(\"Reversed string : %s\\n\", rev);\n  if (isPalindrome)\n  printf(\"The string is a palindrome\\n\");\n  else\n  printf(\"The string is NOT a palindrome\\n\");\n  /\\* Extract last N characters \\*/\n  printf(\"\\nEnter value of N to extract last N characters: \");\n  scanf(\"%d\", &n);\n  if (n > len) {\n  printf(\"N is greater than string length\\n\");\n  } else {\n  strcpy(lastN, str + (len - n));\n  printf(\"Last %d characters: %s\\n\", n, lastN);\n  }\n  return 0;\n  }"
+      },
+      "expectedOutput": "Enter a string: malayalam\nOriginal string : malayalam\nReversed string : malayalam\nThe string is a palindrome\nEnter value of N to extract last N characters: 4\nLast 4 characters: alam",
+      "leetcodeProblems": [],
+      "targetAudience": {
+        "ug": [
+          "B.E. CSE",
+          "B.Tech AI&DS",
+          "B.Tech IT - 1st Year"
+        ],
+        "pg": [
+          "M.E. Computer Science"
+        ]
+      }
+    }
+  },
+  {
+    "id": "c-exp-10",
+    "labId": "c-programming",
+    "title": "Exp 10: Dynamic Array Creation and Manipulation using malloc(), calloc(), realloc(), and free()",
+    "slug": "c-exp-10-dynamic-array-creation-and-manipulation-using-malloc-calloc-realloc-and-free",
+    "difficulty": "Intermediate",
+    "category": "C Programming",
+    "estimatedMinutes": 30,
+    "rating": 4.9,
+    "ratingsCount": 190,
+    "simulator": "custom",
+    "quizId": "quiz-c-10",
+    "sections": {
+      "introduction": "To develop a program using malloc(), calloc(), realloc(), and free() for dynamic array creation and manipulation.",
+      "objective": "To develop a program using malloc(), calloc(), realloc(), and free() for dynamic array creation and manipulation.",
+      "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
+      "videoTitle": "C Programming: Dynamic Array Creation and Manipulation using malloc(), calloc(), realloc(), and free()",
+      "videoChannel": "NPTEL & VLab Engineering",
+      "prerequisites": [
+        "Basic Computing Concepts",
+        "C Syntax Fundamentals"
+      ],
+      "theory": {
+        "overview": "This experiment develops practical proficiency in Dynamic Array Creation and Manipulation using malloc(), calloc(), realloc(), and free(). It demonstrates ANSI C procedural design, memory variables, standard library mathematical/string functions, and runtime execution according to the V.S.B. Engineering College curriculum.",
+        "keyConcepts": [
+          {
+            "title": "Procedural Logic",
+            "desc": "Direct algorithmic problem decomposition in C."
+          },
+          {
+            "title": "Variable Allocation",
+            "desc": "Stack and heap memory management and type constraints."
+          },
+          {
+            "title": "Compilation Pipeline",
+            "desc": "Preprocessing, lexical analysis, code generation, and binary linkage."
+          }
+        ],
+        "complexities": [
+          {
+            "operation": "Primary Execution",
+            "best": "O(1)",
+            "avg": "O(n)",
+            "worst": "O(n)",
+            "space": "O(1)"
+          }
+        ],
+        "realWorldApplications": [
+          "Embedded firmware and hardware micro-controller programming",
+          "Operating system kernel modules and shell utilities",
+          "Numerical computation engines used in AI/ML backend runtimes"
+        ]
+      },
+      "procedure": [
+        "1. Start the program.",
+        "2. Read the number of elements n from the user.",
+        "3. Allocate memory for n integers using malloc() and read/display the elements.",
+        "4. Free the memory and allocate memory again using calloc(), which also initializes all elements to zero, then read/display the elements.",
+        "5. Use realloc() to resize the previously allocated memory block to a new size and display the resized array.",
+        "6. Free all dynamically allocated memory using free() before the program ends.",
+        "7. Stop the program."
+      ],
+      "sampleCode": {
+        "language": "c",
+        "code": "#include <stdio.h>\n  \n#include <stdlib.h>\n  int main() {\n  int \\*arr, n, i, newSize;\n  printf(\"Enter number of elements: \");\n  scanf(\"%d\", &n);\n  /\\* malloc() \\*/\n  arr = (int \\*)malloc(n \\* sizeof(int));\n  if (arr == NULL) {\n  printf(\"Memory allocation failed\\n\");\n  return 1;\n  }\n  printf(\"Enter %d elements (using malloc): \", n);\n  for (i = 0; i < n; i++)\n  scanf(\"%d\", &arr[i]);\n  printf(\"Elements using malloc: \");\n  for (i = 0; i < n; i++)\n  printf(\"%d \", arr[i]);\n  printf(\"\\n\");\n  free(arr);\n  /\\* calloc() \\*/\n  arr = (int \\*)calloc(n, sizeof(int));\n  printf(\"\\nElements using calloc (auto-initialized to 0): \");\n  for (i = 0; i < n; i++)\n  printf(\"%d \", arr[i]);\n  printf(\"\\n\");\n  for (i = 0; i < n; i++)\n  arr[i] = (i + 1) \\* 10;\n  printf(\"After assigning values: \");\n  for (i = 0; i < n; i++)\n  printf(\"%d \", arr[i]);\n  printf(\"\\n\");\n  /\\* realloc() \\*/\n  printf(\"\\nEnter new size to resize the array: \");\n  scanf(\"%d\", &newSize);\n  arr = (int \\*)realloc(arr, newSize \\* sizeof(int));\n  printf(\"Enter values for additional elements: \");\n  for (i = n; i < newSize; i++)\n  scanf(\"%d\", &arr[i]);\n  printf(\"Array after realloc: \");\n  for (i = 0; i < newSize; i++)\n  printf(\"%d \", arr[i]);\n  printf(\"\\n\");\n  /\\* free() \\*/\n  free(arr);\n  printf(\"\\nMemory freed successfully\\n\");\n  return 0;\n  }"
+      },
+      "expectedOutput": "Enter number of elements: 3\nEnter 3 elements (using malloc): 10 20 30\nElements using malloc: 10 20 30\nElements using calloc (auto-initialized to 0): 0 0 0\nAfter assigning values: 10 20 30\nEnter new size to resize the array: 5\nEnter values for additional elements: 40 50\nArray after realloc: 10 20 30 40 50\nMemory freed successfully",
+      "leetcodeProblems": [],
+      "targetAudience": {
+        "ug": [
+          "B.E. CSE",
+          "B.Tech AI&DS",
+          "B.Tech IT - 1st Year"
+        ],
+        "pg": [
+          "M.E. Computer Science"
+        ]
+      }
+    }
+  },
+  {
+    "id": "c-exp-11",
+    "labId": "c-programming",
+    "title": "Exp 11: Structures to Store and Display Student Information",
+    "slug": "c-exp-11-structures-to-store-and-display-student-information",
+    "difficulty": "Advanced",
+    "category": "C Programming",
+    "estimatedMinutes": 30,
+    "rating": 4.9,
+    "ratingsCount": 193,
+    "simulator": "custom",
+    "quizId": "quiz-c-11",
+    "sections": {
+      "introduction": "To use structures to store and display student information such as Roll Number, Name, Department, and Marks.",
+      "objective": "To use structures to store and display student information such as Roll Number, Name, Department, and Marks.",
+      "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
+      "videoTitle": "C Programming: Structures to Store and Display Student Information",
+      "videoChannel": "NPTEL & VLab Engineering",
+      "prerequisites": [
+        "Basic Computing Concepts",
+        "C Syntax Fundamentals"
+      ],
+      "theory": {
+        "overview": "This experiment develops practical proficiency in Structures to Store and Display Student Information. It demonstrates ANSI C procedural design, memory variables, standard library mathematical/string functions, and runtime execution according to the V.S.B. Engineering College curriculum.",
+        "keyConcepts": [
+          {
+            "title": "Procedural Logic",
+            "desc": "Direct algorithmic problem decomposition in C."
+          },
+          {
+            "title": "Variable Allocation",
+            "desc": "Stack and heap memory management and type constraints."
+          },
+          {
+            "title": "Compilation Pipeline",
+            "desc": "Preprocessing, lexical analysis, code generation, and binary linkage."
+          }
+        ],
+        "complexities": [
+          {
+            "operation": "Primary Execution",
+            "best": "O(1)",
+            "avg": "O(n)",
+            "worst": "O(n)",
+            "space": "O(1)"
+          }
+        ],
+        "realWorldApplications": [
+          "Embedded firmware and hardware micro-controller programming",
+          "Operating system kernel modules and shell utilities",
+          "Numerical computation engines used in AI/ML backend runtimes"
+        ]
+      },
+      "procedure": [
+        "1. Start the program.",
+        "2. Define a structure Student with members rollNo, name, department, and marks.",
+        "3. Declare an array of structures to store details of multiple students.",
+        "4. Read the details of each student using dot operator through a loop.",
+        "5. Display the details of all students in a tabular format.",
+        "6. Stop the program."
+      ],
+      "sampleCode": {
+        "language": "c",
+        "code": "#include <stdio.h>\n  struct Student {\n  int rollNo;\n  char name[50];\n  char department[30];\n  float marks;\n  };\n  int main() {\n  int n, i;\n  printf(\"Enter number of students: \");\n  scanf(\"%d\", &n);\n  struct Student s[n];\n  for (i = 0; i < n; i++) {\n  printf(\"\\nEnter details of student %d\\n\", i + 1);\n  printf(\"Roll Number: \");\n  scanf(\"%d\", &s[i].rollNo);\n  printf(\"Name: \");\n  scanf(\"%s\", s[i].name);\n  printf(\"Department: \");\n  scanf(\"%s\", s[i].department);\n  printf(\"Marks: \");\n  scanf(\"%f\", &s[i].marks);\n  }\n  printf(\"\\n%-10s %-15s %-15s %-8s\\n\", \"Roll No\", \"Name\", \"Department\", \"Marks\");\n  printf(\"---------------------------------------------------\\n\");\n  for (i = 0; i < n; i++) {\n  printf(\"%-10d %-15s %-15s %-8.2f\\n\",\n  s[i].rollNo, s[i].name, s[i].department, s[i].marks);\n  }\n  return 0;\n  }"
+      },
+      "expectedOutput": "Enter number of students: 2\nEnter details of student 1\nRoll Number: 101\nName: Arun\nDepartment: IT\nMarks: 88.5\nEnter details of student 2\nRoll Number: 102\nName: Divya\nDepartment: IT\nMarks: 92.0\nRoll No Name Department Marks\n---------------------------------------------------\n101 Arun IT 88.50\n102 Divya IT 92.00",
+      "leetcodeProblems": [],
+      "targetAudience": {
+        "ug": [
+          "B.E. CSE",
+          "B.Tech AI&DS",
+          "B.Tech IT - 1st Year"
+        ],
+        "pg": [
+          "M.E. Computer Science"
+        ]
+      }
+    }
+  },
+  {
+    "id": "c-exp-12",
+    "labId": "c-programming",
+    "title": "Exp 12: Compute a Person's Age using Structures and User-Defined Functions",
+    "slug": "c-exp-12-compute-a-person-s-age-using-structures-and-user-defined-functions",
+    "difficulty": "Advanced",
+    "category": "C Programming",
+    "estimatedMinutes": 30,
+    "rating": 4.9,
+    "ratingsCount": 196,
+    "simulator": "custom",
+    "quizId": "quiz-c-12",
+    "sections": {
+      "introduction": "To develop a program to compute a person's age using structures and user-defined functions.",
+      "objective": "To develop a program to compute a person's age using structures and user-defined functions.",
+      "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
+      "videoTitle": "C Programming: Compute a Person's Age using Structures and User-Defined Functions",
+      "videoChannel": "NPTEL & VLab Engineering",
+      "prerequisites": [
+        "Basic Computing Concepts",
+        "C Syntax Fundamentals"
+      ],
+      "theory": {
+        "overview": "This experiment develops practical proficiency in Compute a Person's Age using Structures and User-Defined Functions. It demonstrates ANSI C procedural design, memory variables, standard library mathematical/string functions, and runtime execution according to the V.S.B. Engineering College curriculum.",
+        "keyConcepts": [
+          {
+            "title": "Procedural Logic",
+            "desc": "Direct algorithmic problem decomposition in C."
+          },
+          {
+            "title": "Variable Allocation",
+            "desc": "Stack and heap memory management and type constraints."
+          },
+          {
+            "title": "Compilation Pipeline",
+            "desc": "Preprocessing, lexical analysis, code generation, and binary linkage."
+          }
+        ],
+        "complexities": [
+          {
+            "operation": "Primary Execution",
+            "best": "O(1)",
+            "avg": "O(n)",
+            "worst": "O(n)",
+            "space": "O(1)"
+          }
+        ],
+        "realWorldApplications": [
+          "Embedded firmware and hardware micro-controller programming",
+          "Operating system kernel modules and shell utilities",
+          "Numerical computation engines used in AI/ML backend runtimes"
+        ]
+      },
+      "procedure": [
+        "1. Start the program.",
+        "2. Define a structure Date with members day, month, and year.",
+        "3. Read the birth date and the current date from the user into two structure variables.",
+        "4. Pass both structure variables to a user-defined function calculateAge() by value.",
+        "5. Inside the function, compute the age in years, months, and days by subtracting the birth date from the current date, borrowing from the previous month/year when required.",
+        "6. Return/display the computed age.",
+        "7. Stop the program."
+      ],
+      "sampleCode": {
+        "language": "c",
+        "code": "#include <stdio.h>\n  struct Date {\n  int day;\n  int month;\n  int year;\n  };\n  void calculateAge(struct Date birth, struct Date current) {\n  int days, months, years;\n  days = current.day - birth.day;\n  months = current.month - birth.month;\n  years = current.year - birth.year;\n  if (days < 0) {\n  months--;\n  int prevMonth = (current.month == 1) ? 12 : current.month - 1;\n  int daysInMonth[] = {31,28,31,30,31,30,31,31,30,31,30,31};\n  days += daysInMonth[prevMonth - 1];\n  }\n  if (months < 0) {\n  years--;\n  months += 12;\n  }\n  printf(\"\\nAge = %d years, %d months, %d days\\n\", years, months, days);\n  }\n  int main() {\n  struct Date birth, current;\n  printf(\"Enter birth date (dd mm yyyy): \");\n  scanf(\"%d %d %d\", &birth.day, &birth.month, &birth.year);\n  printf(\"Enter current date (dd mm yyyy): \");\n  scanf(\"%d %d %d\", &current.day, &current.month, &current.year);\n  calculateAge(birth, current);\n  return 0;\n  }"
+      },
+      "expectedOutput": "Enter birth date (dd mm yyyy): 15 6 2003\nEnter current date (dd mm yyyy): 2 9 2026\nAge = 23 years, 2 months, 18 days",
+      "leetcodeProblems": [],
+      "targetAudience": {
+        "ug": [
+          "B.E. CSE",
+          "B.Tech AI&DS",
+          "B.Tech IT - 1st Year"
+        ],
+        "pg": [
+          "M.E. Computer Science"
+        ]
+      }
+    }
+  },
+  {
+    "id": "c-exp-13",
+    "labId": "c-programming",
+    "title": "Exp 13: File Handling: Create, Write, Read, and Append Data to a File",
+    "slug": "c-exp-13-file-handling-create-write-read-and-append-data-to-a-file",
+    "difficulty": "Advanced",
+    "category": "C Programming",
+    "estimatedMinutes": 30,
+    "rating": 4.9,
+    "ratingsCount": 199,
+    "simulator": "custom",
+    "quizId": "quiz-c-13",
+    "sections": {
+      "introduction": "To write a C program to: (a) create a file, (b) write data to the file, (c) read data from the file, and (d) append data to the file.",
+      "objective": "To write a C program to: (a) create a file, (b) write data to the file, (c) read data from the file, and (d) append data to the file.",
+      "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
+      "videoTitle": "C Programming: File Handling: Create, Write, Read, and Append Data to a File",
+      "videoChannel": "NPTEL & VLab Engineering",
+      "prerequisites": [
+        "Basic Computing Concepts",
+        "C Syntax Fundamentals"
+      ],
+      "theory": {
+        "overview": "This experiment develops practical proficiency in File Handling: Create, Write, Read, and Append Data to a File. It demonstrates ANSI C procedural design, memory variables, standard library mathematical/string functions, and runtime execution according to the V.S.B. Engineering College curriculum.",
+        "keyConcepts": [
+          {
+            "title": "Procedural Logic",
+            "desc": "Direct algorithmic problem decomposition in C."
+          },
+          {
+            "title": "Variable Allocation",
+            "desc": "Stack and heap memory management and type constraints."
+          },
+          {
+            "title": "Compilation Pipeline",
+            "desc": "Preprocessing, lexical analysis, code generation, and binary linkage."
+          }
+        ],
+        "complexities": [
+          {
+            "operation": "Primary Execution",
+            "best": "O(1)",
+            "avg": "O(n)",
+            "worst": "O(n)",
+            "space": "O(1)"
+          }
+        ],
+        "realWorldApplications": [
+          "Embedded firmware and hardware micro-controller programming",
+          "Operating system kernel modules and shell utilities",
+          "Numerical computation engines used in AI/ML backend runtimes"
+        ]
+      },
+      "procedure": [
+        "1. Start the program.",
+        "2. Open a file in write mode (\"w\") using fopen(); this creates the file if it does not exist.",
+        "3. Write data into the file using fprintf() and close the file using fclose().",
+        "4. Open the same file in read mode (\"r\") and read its contents using fscanf()/fgets(), displaying them on the screen.",
+        "5. Open the file again in append mode (\"a\") and add new data to the end of the existing content without deleting it.",
+        "6. Read the file once more to display the final content, confirming the appended data.",
+        "7. Stop the program."
+      ],
+      "sampleCode": {
+        "language": "c",
+        "code": "#include <stdio.h>\n  \n#include <stdlib.h>\n  int main() {\n  FILE \\*fp;\n  char data[100];\n  /\\* Create and write to the file \\*/\n  fp = fopen(\"student.txt\", \"w\");\n  if (fp == NULL) {\n  printf(\"Error creating file\\n\");\n  exit(1);\n  }\n  fprintf(fp, \"Roll No: 101\\n\");\n  fprintf(fp, \"Name: Arun\\n\");\n  fprintf(fp, \"Department: IT\\n\");\n  fclose(fp);\n  printf(\"File created and data written successfully.\\n\");\n  /\\* Read from the file \\*/\n  fp = fopen(\"student.txt\", \"r\");\n  printf(\"\\n--- File Content ---\\n\");\n  while (fgets(data, sizeof(data), fp) != NULL)\n  printf(\"%s\", data);\n  fclose(fp);\n  /\\* Append to the file \\*/\n  fp = fopen(\"student.txt\", \"a\");\n  fprintf(fp, \"Marks: 88.5\\n\");\n  fclose(fp);\n  printf(\"\\nData appended successfully.\\n\");\n  /\\* Read final content \\*/\n  fp = fopen(\"student.txt\", \"r\");\n  printf(\"\\n--- Final File Content ---\\n\");\n  while (fgets(data, sizeof(data), fp) != NULL)\n  printf(\"%s\", data);\n  fclose(fp);\n  return 0;\n  }"
+      },
+      "expectedOutput": "File created and data written successfully.\n--- File Content ---\nRoll No: 101\nName: Arun\nDepartment: IT\nData appended successfully.\n--- Final File Content ---\nRoll No: 101\nName: Arun\nDepartment: IT\nMarks: 88.5",
+      "leetcodeProblems": [],
+      "targetAudience": {
+        "ug": [
+          "B.E. CSE",
+          "B.Tech AI&DS",
+          "B.Tech IT - 1st Year"
+        ],
+        "pg": [
+          "M.E. Computer Science"
+        ]
+      }
+    }
+  },
+  {
+    "id": "c-exp-14",
+    "labId": "c-programming",
+    "title": "Exp 14: File-Based Application to Store Employee Details and Evaluate Performance",
+    "slug": "c-exp-14-file-based-application-to-store-employee-details-and-evaluate-performance",
+    "difficulty": "Advanced",
+    "category": "C Programming",
+    "estimatedMinutes": 30,
+    "rating": 4.9,
+    "ratingsCount": 202,
+    "simulator": "custom",
+    "quizId": "quiz-c-14",
+    "sections": {
+      "introduction": "To develop a file-based application to store employee details and evaluate performance based on predefined criteria.",
+      "objective": "To develop a file-based application to store employee details and evaluate performance based on predefined criteria.",
+      "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
+      "videoTitle": "C Programming: File-Based Application to Store Employee Details and Evaluate Performance",
+      "videoChannel": "NPTEL & VLab Engineering",
+      "prerequisites": [
+        "Basic Computing Concepts",
+        "C Syntax Fundamentals"
+      ],
+      "theory": {
+        "overview": "This experiment develops practical proficiency in File-Based Application to Store Employee Details and Evaluate Performance. It demonstrates ANSI C procedural design, memory variables, standard library mathematical/string functions, and runtime execution according to the V.S.B. Engineering College curriculum.",
+        "keyConcepts": [
+          {
+            "title": "Procedural Logic",
+            "desc": "Direct algorithmic problem decomposition in C."
+          },
+          {
+            "title": "Variable Allocation",
+            "desc": "Stack and heap memory management and type constraints."
+          },
+          {
+            "title": "Compilation Pipeline",
+            "desc": "Preprocessing, lexical analysis, code generation, and binary linkage."
+          }
+        ],
+        "complexities": [
+          {
+            "operation": "Primary Execution",
+            "best": "O(1)",
+            "avg": "O(n)",
+            "worst": "O(n)",
+            "space": "O(1)"
+          }
+        ],
+        "realWorldApplications": [
+          "Embedded firmware and hardware micro-controller programming",
+          "Operating system kernel modules and shell utilities",
+          "Numerical computation engines used in AI/ML backend runtimes"
+        ]
+      },
+      "procedure": [
+        "1. Start the program.",
+        "2. Define a structure Employee with members empId, name, department, and performanceScore.",
+        "3. Open a file in write mode and store the details of multiple employees using fwrite() (binary file) or fprintf() (text file).",
+        "4. Open the file in read mode and read back the employee records.",
+        "5. For each employee, evaluate performance based on predefined criteria: score >= 85 as \"Excellent\", 70-84 as \"Good\", below 70 as \"Needs Improvement\".",
+        "6. Display the employee details along with their performance category.",
+        "7. Close the file and stop the program."
+      ],
+      "sampleCode": {
+        "language": "c",
+        "code": "#include <stdio.h>\n  struct Employee {\n  int empId;\n  char name[50];\n  char department[30];\n  float performanceScore;\n  };\n  char\\* evaluatePerformance(float score) {\n  if (score >= 85)\n  return \"Excellent\";\n  else if (score >= 70)\n  return \"Good\";\n  else\n  return \"Needs Improvement\";\n  }\n  int main() {\n  FILE \\*fp;\n  struct Employee emp;\n  int n, i;\n  fp = fopen(\"employees.dat\", \"wb\");\n  printf(\"Enter number of employees: \");\n  scanf(\"%d\", &n);\n  for (i = 0; i < n; i++) {\n  printf(\"\\nEnter details of employee %d\\n\", i + 1);\n  printf(\"Employee ID: \");\n  scanf(\"%d\", &emp.empId);\n  printf(\"Name: \");\n  scanf(\"%s\", emp.name);\n  printf(\"Department: \");\n  scanf(\"%s\", emp.department);\n  printf(\"Performance Score (0-100): \");\n  scanf(\"%f\", &emp.performanceScore);\n  fwrite(&emp, sizeof(struct Employee), 1, fp);\n  }\n  fclose(fp);\n  /\\* Read back and evaluate performance \\*/\n  fp = fopen(\"employees.dat\", \"rb\");\n  printf(\"\\n%-6s %-12s %-12s %-8s %-18s\\n\",\n  \"ID\", \"Name\", \"Department\", \"Score\", \"Performance\");\n  printf(\"---------------------------------------------------------\\n\");\n  while (fread(&emp, sizeof(struct Employee), 1, fp) == 1) {\n  printf(\"%-6d %-12s %-12s %-8.1f %-18s\\n\",\n  emp.empId, emp.name, emp.department,\n  emp.performanceScore, evaluatePerformance(emp.performanceScore));\n  }\n  fclose(fp);\n  return 0;\n  }"
+      },
+      "expectedOutput": "Enter number of employees: 2\nEnter details of employee 1\nEmployee ID: 1\nName: Kavin\nDepartment: IT\nPerformance Score (0-100): 90\nEnter details of employee 2\nEmployee ID: 2\nName: Priya\nDepartment: HR\nPerformance Score (0-100): 72\nID Name Department Score Performance\n---------------------------------------------------------\n1 Kavin IT 90.0 Excellent\n2 Priya HR 72.0 Good",
+      "leetcodeProblems": [],
+      "targetAudience": {
+        "ug": [
+          "B.E. CSE",
+          "B.Tech AI&DS",
+          "B.Tech IT - 1st Year"
+        ],
+        "pg": [
+          "M.E. Computer Science"
+        ]
+      }
+    }
+  },
+  {
+    "id": "c-exp-15",
+    "labId": "c-programming",
+    "title": "Exp 15: Mini Inventory Management Application using File Handling",
+    "slug": "c-exp-15-mini-inventory-management-application-using-file-handling",
+    "difficulty": "Advanced",
+    "category": "C Programming",
+    "estimatedMinutes": 30,
+    "rating": 4.9,
+    "ratingsCount": 205,
+    "simulator": "custom",
+    "quizId": "quiz-c-15",
+    "sections": {
+      "introduction": "To create a mini application using file handling to: (a) add products, (b) update stock, (c) search products, and (d) generate inventory reports.",
+      "objective": "To create a mini application using file handling to: (a) add products, (b) update stock, (c) search products, and (d) generate inventory reports.",
+      "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
+      "videoTitle": "C Programming: Mini Inventory Management Application using File Handling",
+      "videoChannel": "NPTEL & VLab Engineering",
+      "prerequisites": [
+        "Basic Computing Concepts",
+        "C Syntax Fundamentals"
+      ],
+      "theory": {
+        "overview": "This experiment develops practical proficiency in Mini Inventory Management Application using File Handling. It demonstrates ANSI C procedural design, memory variables, standard library mathematical/string functions, and runtime execution according to the V.S.B. Engineering College curriculum.",
+        "keyConcepts": [
+          {
+            "title": "Procedural Logic",
+            "desc": "Direct algorithmic problem decomposition in C."
+          },
+          {
+            "title": "Variable Allocation",
+            "desc": "Stack and heap memory management and type constraints."
+          },
+          {
+            "title": "Compilation Pipeline",
+            "desc": "Preprocessing, lexical analysis, code generation, and binary linkage."
+          }
+        ],
+        "complexities": [
+          {
+            "operation": "Primary Execution",
+            "best": "O(1)",
+            "avg": "O(n)",
+            "worst": "O(n)",
+            "space": "O(1)"
+          }
+        ],
+        "realWorldApplications": [
+          "Embedded firmware and hardware micro-controller programming",
+          "Operating system kernel modules and shell utilities",
+          "Numerical computation engines used in AI/ML backend runtimes"
+        ]
+      },
+      "procedure": [
+        "1. Start the program.",
+        "2. Define a structure Product with members productId, productName, quantity, and price.",
+        "3. Display a menu with options: Add Product, Update Stock, Search Product, Generate Report, Exit.",
+        "4. For Add Product, append a new product record to the inventory file using fwrite().",
+        "5. For Update Stock, read the file, locate the product by ID, update its quantity, and rewrite the record using fseek() and fwrite().",
+        "6. For Search Product, read the file sequentially and display the record matching the given product ID.",
+        "7. For Generate Report, read all records from the file and display them along with the total inventory value.",
+        "8. Repeat the menu until the user chooses Exit, then close the file and stop the program."
+      ],
+      "sampleCode": {
+        "language": "c",
+        "code": "#include <stdio.h>\n  \n#include <stdlib.h>\n  struct Product {\n  int productId;\n  char productName[30];\n  int quantity;\n  float price;\n  };\n  void addProduct() {\n  FILE \\*fp = fopen(\"inventory.dat\", \"ab\");\n  struct Product p;\n  printf(\"Enter Product ID: \");\n  scanf(\"%d\", &p.productId);\n  printf(\"Enter Product Name: \");\n  scanf(\"%s\", p.productName);\n  printf(\"Enter Quantity: \");\n  scanf(\"%d\", &p.quantity);\n  printf(\"Enter Price: \");\n  scanf(\"%f\", &p.price);\n  fwrite(&p, sizeof(struct Product), 1, fp);\n  fclose(fp);\n  printf(\"Product added successfully.\\n\");\n  }\n  void updateStock() {\n  FILE \\*fp = fopen(\"inventory.dat\", \"rb+\");\n  struct Product p;\n  int id, newQty, found = 0;\n  if (fp == NULL) { printf(\"No inventory file found.\\n\"); return; }\n  printf(\"Enter Product ID to update: \");\n  scanf(\"%d\", &id);\n  printf(\"Enter new quantity: \");\n  scanf(\"%d\", &newQty);\n  while (fread(&p, sizeof(struct Product), 1, fp) == 1) {\n  if (p.productId == id) {\n  p.quantity = newQty;\n  fseek(fp, -(long)sizeof(struct Product), SEEK\\_CUR);\n  fwrite(&p, sizeof(struct Product), 1, fp);\n  found = 1;\n  break;\n  }\n  }\n  fclose(fp);\n  printf(found ? \"Stock updated successfully.\\n\" : \"Product not found.\\n\");\n  }\n  void searchProduct() {\n  FILE \\*fp = fopen(\"inventory.dat\", \"rb\");\n  struct Product p;\n  int id, found = 0;\n  if (fp == NULL) { printf(\"No inventory file found.\\n\"); return; }\n  printf(\"Enter Product ID to search: \");\n  scanf(\"%d\", &id);\n  while (fread(&p, sizeof(struct Product), 1, fp) == 1) {\n  if (p.productId == id) {\n  printf(\"Found: ID=%d, Name=%s, Qty=%d, Price=%.2f\\n\",\n  p.productId, p.productName, p.quantity, p.price);\n  found = 1;\n  break;\n  }\n  }\n  if (!found) printf(\"Product not found.\\n\");\n  fclose(fp);\n  }\n  void generateReport() {\n  FILE \\*fp = fopen(\"inventory.dat\", \"rb\");\n  struct Product p;\n  float totalValue = 0;\n  if (fp == NULL) { printf(\"No inventory file found.\\n\"); return; }\n  printf(\"\\n%-6s %-15s %-10s %-8s\\n\", \"ID\", \"Name\", \"Quantity\", \"Price\");\n  printf(\"-----------------------------------------\\n\");\n  while (fread(&p, sizeof(struct Product), 1, fp) == 1) {\n  printf(\"%-6d %-15s %-10d %-8.2f\\n\",\n  p.productId, p.productName, p.quantity, p.price);\n  totalValue += p.quantity \\* p.price;\n  }\n  printf(\"-----------------------------------------\\n\");\n  printf(\"Total Inventory Value = %.2f\\n\", totalValue);\n  fclose(fp);\n  }\n  int main() {\n  int choice;\n  do {\n  printf(\"\\n----- Inventory Management Menu -----\\n\");\n  printf(\"1. Add Product\\n\");\n  printf(\"2. Update Stock\\n\");\n  printf(\"3. Search Product\\n\");\n  printf(\"4. Generate Report\\n\");\n  printf(\"5. Exit\\n\");\n  printf(\"Enter your choice: \");\n  scanf(\"%d\", &choice);\n  switch (choice) {\n  case 1: addProduct(); break;\n  case 2: updateStock(); break;\n  case 3: searchProduct(); break;\n  case 4: generateReport(); break;\n  case 5: printf(\"Exiting program.\\n\"); break;\n  default: printf(\"Invalid choice.\\n\");\n  }\n  } while (choice != 5);\n  return 0;\n  }"
+      },
+      "expectedOutput": "----- Inventory Management Menu -----\n1. Add Product\n2. Update Stock\n3. Search Product\n4. Generate Report\n5. Exit\nEnter your choice: 1\nEnter Product ID: 1\nEnter Product Name: Keyboard\nEnter Quantity: 50\nEnter Price: 450\nProduct added successfully.\n----- Inventory Management Menu -----\nEnter your choice: 4\nID Name Quantity Price\n-----------------------------------------\n1 Keyboard 50 450.00\n-----------------------------------------\nTotal Inventory Value = 22500.00\n----- Inventory Management Menu -----\nEnter your choice: 5\nExiting program.",
+      "leetcodeProblems": [],
+      "targetAudience": {
+        "ug": [
+          "B.E. CSE",
+          "B.Tech AI&DS",
+          "B.Tech IT - 1st Year"
+        ],
+        "pg": [
+          "M.E. Computer Science"
+        ]
       }
     }
   }

@@ -8,6 +8,9 @@ import { DBMS_EXPERIMENTS } from "./experiments-data/dbms-experiments";
 import { C_PROGRAMMING_EXPERIMENTS } from "./experiments-data/c-programming-experiments";
 import { PYTHON_PROGRAMMING_EXPERIMENTS } from "./experiments-data/python-programming-experiments";
 import { ADVANCED_LABS_EXPERIMENTS } from "./experiments-data/advanced-labs-experiments";
+import { BDA_EXPERIMENTS } from "./experiments-data/bda-experiments";
+import { CSM_EXPERIMENTS } from "./experiments-data/csm-experiments";
+import { DL_EXPERIMENTS } from "./experiments-data/dl-experiments";
 
 export interface ComplexityEntry {
   operation: string;
@@ -241,12 +244,14 @@ export const ML_PREREQUISITES_DATA: MLPrerequisiteTopic[] = [
 export const EXPERIMENTS_DATA: Experiment[] = [
   ...DATA_SCIENCE_EXPERIMENTS,
   ...NETWORKS_EXPERIMENTS,
-  ...ML_EXPERIMENTS,
+  ...DL_EXPERIMENTS,
   ...OS_EXPERIMENTS,
   ...OOPS_JAVA_EXPERIMENTS,
   ...DSA_EXPERIMENTS,
   ...DBMS_EXPERIMENTS,
   ...C_PROGRAMMING_EXPERIMENTS,
   ...PYTHON_PROGRAMMING_EXPERIMENTS,
+  ...BDA_EXPERIMENTS,
+  ...CSM_EXPERIMENTS,
   ...ADVANCED_LABS_EXPERIMENTS,
 ];

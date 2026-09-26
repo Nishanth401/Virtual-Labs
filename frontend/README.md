@@ -2,7 +2,6 @@
 
 An interactive web application for learning data structures through visual animations and step-by-step operations. Built with Next.js 14, TypeScript, Shadcn/ui, React Flow and Framer Motion.
 
-![DS Visualizer Landing Page](./public/landing-light.png)
 ![Stacks](./public/ds-st.png)
 ![Queue](./public/ds-q.png)
 ![Linked List](./public/ds-ll.png)
