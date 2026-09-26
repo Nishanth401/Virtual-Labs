@@ -32,11 +32,11 @@ export const LAB_ROADMAPS_DATA: Record<string, { title: string; badge: string; c
   },
 
   // ==========================================
-  // 3. MACHINE LEARNING LABORATORY (9 EXPERIMENTS)
+  // 3. DEEP LEARNING LABORATORY (8 EXPERIMENTS)
   // ==========================================
   "ai-machine-learning": {
-    title: "Machine Learning Laboratory Roadmap",
-    badge: "9 Core Experiments • ID3 / ANN / Bayes / EM vs k-Means / LWR",
+    title: "Deep Learning Laboratory Roadmap",
+    badge: "8 Practical Experiments • XOR DNN / CNN Vision / RNN / LSTM / GANs",
     categories: ML_ROADMAP_CATEGORIES,
   },
 
@@ -50,38 +50,38 @@ export const LAB_ROADMAPS_DATA: Record<string, { title: string; badge: string; c
   },
 
   // ==========================================
-  // 5. OBJECT ORIENTED PROGRAMMING SYSTEM (JAVA) (15 EXPERIMENTS)
+  // 5. OBJECT ORIENTED PROGRAMMING (15 EXPERIMENTS)
   // ==========================================
   "oops-java": {
-    title: "OOPS Java Laboratory Roadmap",
-    badge: "15 Core Experiments • Classes / Inheritance / Matrix / Collections / JDBC",
+    title: "Object Oriented Programming Laboratory Roadmap",
+    badge: "15 Core Experiments • Classes / Encapsulation / Inheritance / Matrix / Collections / JDBC",
     categories: OOPS_JAVA_ROADMAP_CATEGORIES,
   },
 
   // ==========================================
-  // 6. DATA STRUCTURES AND ALGORITHMS LABORATORY (15 EXPERIMENTS)
+  // 6. DATA STRUCTURES DESIGN LABORATORY (15 EXPERIMENTS)
   // ==========================================
   "data-structures": {
-    title: "DSA Laboratory Complete Curriculum",
-    badge: "15 Core Experiments • Linked Lists / Stacks / Trees / Graphs / Sorting",
+    title: "Data Structures Design Laboratory Roadmap",
+    badge: "15 Core Experiments • Linked Lists / Stacks / Trees / Graphs / Sorting & Hashing",
     categories: DSA_LAB_ROADMAP_CATEGORIES,
   },
 
   // ==========================================
-  // 7. DATABASE MANAGEMENT SYSTEM (10 EXPERIMENTS)
+  // 7. DATABASE MANAGEMENT SYSTEMS (15 EXPERIMENTS)
   // ==========================================
   "dbms-lab": {
-    title: "Database Management System Roadmap",
-    badge: "10 Core Experiments • DDL/DML / Joins / PL/SQL / Triggers / ACID TCL",
+    title: "Database Management Systems Laboratory Roadmap",
+    badge: "15 Core Experiments • ER Models / DDL & DML / Joins / Views & Indexes / PL/SQL / ACID",
     categories: DBMS_LAB_ROADMAP_CATEGORIES,
   },
 
   // ==========================================
-  // 8. C PROGRAMMING LABORATORY (NPTEL 8-WEEK AI&DS TRACK)
+  // 8. C PROGRAMMING LABORATORY (15 EXPERIMENTS)
   // ==========================================
   "c-programming": {
-    title: "NPTEL C Programming 8-Week Roadmap",
-    badge: "8-Week NPTEL Study Plan • AI&DS Engineering Track • 8 Weekly Assessments",
+    title: "Programming in C Laboratory Roadmap",
+    badge: "15 Practical Experiments • Procedural C / Pointers / Recursion / Memory / Structures / Files",
     categories: C_PROGRAMMING_ROADMAP_CATEGORIES,
   },
 
@@ -104,20 +104,20 @@ export const LAB_ROADMAPS_DATA: Record<string, { title: string; badge: string; c
   },
 
   // ==========================================
-  // 11. BIG DATA ANALYTICS LAB
+  // 11. BIG DATA ANALYTICS LAB (7 EXPERIMENTS)
   // ==========================================
   "big-data-analytics": {
-    title: "Big Data Analytics Roadmap",
-    badge: "Hadoop / HDFS / PySpark / NoSQL / MapReduce",
+    title: "Big Data Analytics Laboratory Roadmap",
+    badge: "7 Practical Experiments • Hadoop / HDFS / MapReduce / Hive / HBase / NoSQL",
     categories: BIGDATA_ROADMAP_CATEGORIES,
   },
 
   // ==========================================
-  // 12. CLOUD SERVICE MANAGEMENT LAB
+  // 12. CLOUD SERVICE MANAGEMENT LAB (5 EXPERIMENTS)
   // ==========================================
   "cloud-service-management": {
-    title: "Cloud Service Management Roadmap",
-    badge: "AWS / Docker / Kubernetes / Serverless / Terraform",
+    title: "Cloud Service Management Laboratory Roadmap",
+    badge: "5 Practical Experiments • AWS Governance / TCO / Telemetry / Multi-Region / Migration",
     categories: CLOUD_ROADMAP_CATEGORIES,
   },
 };
