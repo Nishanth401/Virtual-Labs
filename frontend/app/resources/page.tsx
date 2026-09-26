@@ -188,6 +188,20 @@ export default function ResourcesPage() {
             <span>Interactive Simulator</span>
           </span>
         );
+      case "GeeksforGeeks":
+        return (
+          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            <span>GeeksforGeeks Material</span>
+          </span>
+        );
+      case "W3Schools":
+        return (
+          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-sky-500/10 text-[#0284c7] dark:text-[#38bdf8] border border-sky-500/30 flex items-center gap-1">
+            <span className="h-1.5 w-1.5 rounded-full bg-sky-500" />
+            <span>W3Schools Tutorial</span>
+          </span>
+        );
       default:
         return (
           <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-muted text-muted-foreground border">
