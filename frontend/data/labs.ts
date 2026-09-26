@@ -4,6 +4,7 @@ export interface LabResourceLink {
   url: string;
   description: string;
   category: string;
+  materialId?: string;
 }
 
 export interface LabVideoPart {
@@ -203,28 +204,32 @@ export const LABS_DATA: Lab[] = [
       {
         title: "NumPy Tutorial — Vectorized Data Processing in Python",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/numpy-tutorial/",
+        url: "/resources/data-science-numpy-gfg",
+        materialId: "data-science-numpy-gfg",
         description: "Multi-dimensional array slicing, matrix vectorization, broadcasting rules, and linear algebra.",
         category: "NumPy"
       },
       {
         title: "Pandas DataFrame & Data Science Complete Handbook",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/pandas-tutorial/",
+        url: "/resources/data-science-pandas-gfg",
+        materialId: "data-science-pandas-gfg",
         description: "DataFrames, Series manipulation, missing value imputation, grouping, and aggregations.",
         category: "Pandas"
       },
       {
         title: "Hypothesis Testing in Python (Z-test, T-test, ANOVA)",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/hypothesis-testing-in-python/",
+        url: "/resources/data-science-stats-gfg",
+        materialId: "data-science-stats-gfg",
         description: "Formulation of null/alternate hypotheses, p-value calculations, and significance testing using SciPy.",
         category: "Statistics"
       },
       {
         title: "W3Schools Python Data Science & Matplotlib Guide",
         source: "W3Schools",
-        url: "https://www.w3schools.com/datascience/default.asp",
+        url: "/resources/data-science-w3schools",
+        materialId: "data-science-w3schools",
         description: "Interactive data visualization, scatter plots, normal distribution curves, and linear models.",
         category: "Interactive Data Science"
       }
@@ -321,28 +326,32 @@ export const LABS_DATA: Lab[] = [
       {
         title: "GeeksforGeeks Computer Networks Tutorial & Protocol Architecture",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/computer-network-tutorials/",
+        url: "/resources/networks-architecture-gfg",
+        materialId: "networks-architecture-gfg",
         description: "Detailed coverage of Physical, Data Link, Network, Transport, and Application layers.",
         category: "Computer Networks"
       },
       {
         title: "Socket Programming in Java & Python (TCP/UDP)",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/socket-programming-in-java/",
+        url: "/resources/networks-sockets-gfg",
+        materialId: "networks-sockets-gfg",
         description: "Client-server TCP/UDP communication using ServerSocket and DatagramPacket.",
         category: "Socket Programming"
       },
       {
         title: "Routing Algorithms: Distance Vector & Link State (Dijkstra)",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/routing-v-s-routed-protocols-in-computer-network/",
+        url: "/resources/networks-routing-gfg",
+        materialId: "networks-routing-gfg",
         description: "Bellman-Ford and Dijkstra shortest path routing algorithm implementation in C/Python.",
         category: "Routing"
       },
       {
         title: "W3Schools Networking & Protocols Reference",
         source: "W3Schools",
-        url: "https://www.w3schools.com/cybersecurity/cybersecurity_network_basics.php",
+        url: "/resources/networks-w3schools",
+        materialId: "networks-w3schools",
         description: "IP addressing, subnets, ports, Wireshark packet anatomy, and HTTP/HTTPS handshakes.",
         category: "Network Fundamentals"
       }
@@ -437,30 +446,34 @@ export const LABS_DATA: Lab[] = [
     semester: "Semester 4",
     resources: [
       {
-        title: "GeeksforGeeks Machine Learning Tutorial & Algorithms Guide",
+        title: "Machine Learning Foundations, Find-S & Candidate Elimination",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/machine-learning/",
+        url: "/resources/ml-foundations-gfg",
+        materialId: "ml-foundations-gfg",
         description: "Supervised and unsupervised learning, mathematical formulations, and Python implementations.",
         category: "Machine Learning"
       },
       {
         title: "Decision Tree & ID3 Algorithm Implementation with Entropy",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/decision-tree-introduction-example/",
+        url: "/resources/ml-decision-trees-gfg",
+        materialId: "ml-decision-trees-gfg",
         description: "Shannon entropy, Information Gain, and decision boundary visualization.",
         category: "Decision Trees"
       },
       {
         title: "Backpropagation in Neural Networks Explained with Math",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/backpropagation-in-neural-network/",
+        url: "/resources/ml-neural-networks-gfg",
+        materialId: "ml-neural-networks-gfg",
         description: "Chain rule gradient derivations, forward pass activations, and weight updates.",
         category: "Neural Networks"
       },
       {
         title: "W3Schools Machine Learning & Python SciKit-Learn Suite",
         source: "W3Schools",
-        url: "https://www.w3schools.com/python/python_ml_getting_started.asp",
+        url: "/resources/ml-w3schools",
+        materialId: "ml-w3schools",
         description: "Train/test split, confusion matrix, AUC-ROC evaluation, and k-Means clustering.",
         category: "Interactive ML"
       }
@@ -561,30 +574,26 @@ export const LABS_DATA: Lab[] = [
     semester: "Semester 4",
     resources: [
       {
-        title: "GeeksforGeeks Operating Systems Tutorial & Memory Virtualization",
-        source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/operating-systems/",
-        description: "Process lifecycle, scheduling metrics, paging, virtual memory, and file systems.",
-        category: "Operating Systems"
-      },
-      {
         title: "CPU Scheduling Algorithms: FCFS, SJF, Priority & Round Robin",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/cpu-scheduling-in-operating-systems/",
+        url: "/resources/os-scheduling-gfg",
+        materialId: "os-scheduling-gfg",
         description: "Gantt charts, waiting times, turnaround times, and starvation prevention.",
         category: "CPU Scheduling"
       },
       {
-        title: "Banker's Algorithm for Deadlock Avoidance in C",
+        title: "Process Synchronization, Semaphores & Banker's Algorithm",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/bankers-algorithm-in-operating-system-2/",
+        url: "/resources/os-deadlocks-gfg",
+        materialId: "os-deadlocks-gfg",
         description: "Allocation, Max, and Need matrices with safe sequence verification.",
         category: "Deadlocks"
       },
       {
-        title: "W3Schools Linux & Shell Scripting Guide",
+        title: "Linux & UNIX Shell Scripting Academic Handbook",
         source: "W3Schools",
-        url: "https://www.w3schools.com/bash/",
+        url: "/resources/os-linux-w3schools",
+        materialId: "os-linux-w3schools",
         description: "Shell variables, bash loops, POSIX commands, and file permissions.",
         category: "Shell Scripting"
       }
@@ -685,23 +694,26 @@ export const LABS_DATA: Lab[] = [
     semester: "Semester 3",
     resources: [
       {
-        title: "GeeksforGeeks Java Programming Language & OOP Concepts",
+        title: "Java Object-Oriented Programming (OOP) Master Guide",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/java/",
+        url: "/resources/java-oop-gfg",
+        materialId: "java-oop-gfg",
         description: "Classes, Encapsulation, Inheritance, Interfaces, Abstract Classes, and JVM internals.",
         category: "Java OOP"
       },
       {
-        title: "Java Collections Framework (ArrayList, HashMap, LinkedList)",
+        title: "Java Collections Framework: ArrayList, LinkedList, HashMap & HashSet",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/collections-in-java-2/",
+        url: "/resources/java-collections-gfg",
+        materialId: "java-collections-gfg",
         description: "Collection interfaces, iterators, comparator sorting, and Stream API.",
         category: "Java Collections"
       },
       {
-        title: "W3Schools Java Tutorial & Interactive Code Sandbox",
+        title: "W3Schools Java OOP & Methods Interactive Tutorial",
         source: "W3Schools",
-        url: "https://www.w3schools.com/java/",
+        url: "/resources/java-oop-w3schools",
+        materialId: "java-oop-w3schools",
         description: "Syntax, methods, constructors, polymorphism, packages, and file handling.",
         category: "Interactive Java"
       }
@@ -804,23 +816,26 @@ export const LABS_DATA: Lab[] = [
     semester: "Semester 3",
     resources: [
       {
-        title: "GeeksforGeeks Data Structures & Algorithms Complete Guide",
+        title: "Data Structures & Algorithms Complete Academic Handbook",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/data-structures/",
+        url: "/resources/dsa-complete-guide",
+        materialId: "dsa-complete-guide",
         description: "Linear and hierarchical data structures, Big-O asymptotic notations, and LeetCode problems.",
         category: "DSA Fundamentals"
       },
       {
-        title: "Tree Data Structures: BST, AVL Tree Rotations & B-Trees",
+        title: "Binary Search Trees & Self-Balancing AVL Trees",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/binary-search-tree-data-structure/",
+        url: "/resources/dsa-trees-gfg",
+        materialId: "dsa-trees-gfg",
         description: "Insertion, deletion, tree balancing rotations, and disk-oriented multi-way indexing.",
         category: "Trees & Graphs"
       },
       {
-        title: "W3Schools Data Structures & Algorithms Handbook",
+        title: "Java Data Structures & Collections Framework Reference",
         source: "W3Schools",
-        url: "https://www.w3schools.com/dsa/",
+        url: "/resources/dsa-java-w3schools",
+        materialId: "dsa-java-w3schools",
         description: "Interactive visual diagrams, step-by-step algorithms, and animated simulations.",
         category: "Interactive DSA"
       }
@@ -915,24 +930,27 @@ export const LABS_DATA: Lab[] = [
     semester: "Semester 3",
     resources: [
       {
-        title: "GeeksforGeeks DBMS Complete Course & SQL Queries",
+        title: "SQL Complete Curriculum & Relational Query Handbook",
+        source: "W3Schools",
+        url: "/resources/dbms-sql-guide",
+        materialId: "dbms-sql-guide",
+        description: "SELECT queries, JOINs, GROUP BY aggregations, and constraint syntax.",
+        category: "SQL Queries"
+      },
+      {
+        title: "DBMS Comprehensive Guide — ER Models & Normalization",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/dbms/",
+        url: "/resources/dbms-normalization-gfg",
+        materialId: "dbms-normalization-gfg",
         description: "Relational algebra, ER diagrams, normalization (1NF to BCNF), and concurrency control.",
         category: "Database Systems"
       },
       {
-        title: "PL/SQL Programming: Cursors, Procedures & Triggers",
-        source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/pl-sql-introduction/",
-        description: "Control structures, explicit cursor loops, stored functions, and row-level triggers.",
-        category: "PL/SQL"
-      },
-      {
-        title: "W3Schools SQL Tutorial & Interactive Database Editor",
+        title: "SQL Joins, Aggregations & Subqueries Guide",
         source: "W3Schools",
-        url: "https://www.w3schools.com/sql/",
-        description: "SELECT queries, JOINs, GROUP BY aggregations, and constraint syntax.",
+        url: "/resources/dbms-w3schools-sql",
+        materialId: "dbms-w3schools-sql",
+        description: "Multi-table joins, self joins, grouping with aggregations, and window functions.",
         category: "Interactive SQL"
       }
     ]
@@ -1023,31 +1041,27 @@ export const LABS_DATA: Lab[] = [
     semester: "Semester 1",
     resources: [
       {
-        title: "NPTEL Official Portal — Problem Solving through Programming in C",
-        source: "Official Docs",
-        url: "https://nptel.ac.in/courses/106104128",
-        description: "Official SWAYAM / NPTEL course notes, lecture slides, video transcripts, and assignment archives.",
-        category: "NPTEL Portal"
-      },
-      {
-        title: "C Programming Tutorial & Reference Handbook",
+        title: "C Programming Language Complete Academic Tutorial",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/c-programming-language/",
+        url: "/resources/c-programming-guide",
+        materialId: "c-programming-guide",
         description: "Comprehensive guide covering C fundamentals, pointers, dynamic memory, structures, and file streams.",
         category: "C Basics"
       },
       {
-        title: "Dynamic Memory Allocation in C (malloc, calloc, free)",
+        title: "C Pointers & Dynamic Memory Allocation (malloc, free)",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/dynamic-memory-allocation-in-c-using-malloc-calloc-free-and-realloc/",
-        description: "Heap allocation, pointer arithmetic, and memory leak prevention.",
+        url: "/resources/c-pointers-gfg",
+        materialId: "c-pointers-gfg",
+        description: "Heap allocation, pointer arithmetic, double pointers, and memory leak prevention.",
         category: "Memory Management"
       },
       {
-        title: "W3Schools C Programming Interactive Editor",
+        title: "W3Schools C Programming Syntax & Memory Models",
         source: "W3Schools",
-        url: "https://www.w3schools.com/c/index.php",
-        description: "Hands-on browser-based C syntax practice and interactive exercise suite.",
+        url: "/resources/c-programming-w3schools",
+        materialId: "c-programming-w3schools",
+        description: "Hands-on browser-based C syntax practice, structs, unions, and file I/O operations.",
         category: "Interactive Practice"
       }
     ]
@@ -1142,18 +1156,28 @@ export const LABS_DATA: Lab[] = [
     semester: "Semester 1",
     resources: [
       {
-        title: "Python Programming Tutorial & Reference Manual",
+        title: "Python Core Programming, Data Types & Control Structures",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/python-programming-language/",
-        description: "Core syntax, data structures, list comprehensions, OOP, and exception handling.",
+        url: "/resources/python-basics-gfg",
+        materialId: "python-basics-gfg",
+        description: "Core syntax, data structures, list comprehensions, generators, and exception handling.",
         category: "Python Basics"
       },
       {
-        title: "Python Official Documentation & Standard Library",
-        source: "Official Docs",
-        url: "https://docs.python.org/3/",
-        description: "Comprehensive standard library documentation, built-in functions, and file I/O utilities.",
-        category: "Documentation"
+        title: "Python OOP, Classes, Inheritance & Dunder Methods",
+        source: "GeeksforGeeks",
+        url: "/resources/python-oop-gfg",
+        materialId: "python-oop-gfg",
+        description: "Classes, instances, method resolution order (MRO), operator overloading, and context managers.",
+        category: "Python OOP"
+      },
+      {
+        title: "Python Programming Comprehensive Core Curriculum",
+        source: "W3Schools",
+        url: "/resources/python-w3schools",
+        materialId: "python-w3schools",
+        description: "Built-in collections (Lists, Tuples, Sets, Dicts), slicing, lambda functions, and file I/O.",
+        category: "Interactive Python"
       }
     ]
   },
@@ -1240,11 +1264,28 @@ export const LABS_DATA: Lab[] = [
     semester: "Semester 5",
     resources: [
       {
-        title: "A* Search Algorithm with Heuristic Cost Functions in Python",
+        title: "A* Search & Heuristic Evaluation Guide (GeeksforGeeks)",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/a-search-algorithm/",
-        description: "Evaluation function f(n) = g(n) + h(n), Manhattan distance heuristic, and 8-puzzle solver.",
+        url: "/resources/ai-search-gfg",
+        materialId: "ai-search-gfg",
+        description: "Evaluation function f(n) = g(n) + h(n), admissible heuristics, 8-puzzle state solver, and graph search.",
         category: "Heuristic Search"
+      },
+      {
+        title: "Adversarial Search & Alpha-Beta Pruning (GeeksforGeeks)",
+        source: "GeeksforGeeks",
+        url: "/resources/ai-minimax-gfg",
+        materialId: "ai-minimax-gfg",
+        description: "Minimax decision rules, zero-sum game trees, branch pruning conditions, and Tic-Tac-Toe engine.",
+        category: "Game Theory & Search"
+      },
+      {
+        title: "Python for AI & Heuristic Solvers (W3Schools)",
+        source: "W3Schools",
+        url: "/resources/ai-w3schools-python",
+        materialId: "ai-w3schools-python",
+        description: "Python priority queues, state-space representations, heuristic cost functions, and CSP backtracking.",
+        category: "AI Programming"
       }
     ]
   },
@@ -1330,11 +1371,28 @@ export const LABS_DATA: Lab[] = [
     semester: "Semester 5",
     resources: [
       {
-        title: "GeeksforGeeks Big Data Tutorial — Full Architecture Guide",
+        title: "Hadoop Architecture & MapReduce Paradigm (GeeksforGeeks)",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/big-data-tutorial/",
-        description: "Characteristics of Big Data (5 V's), distributed storage, and parallel batch processing.",
-        category: "Big Data"
+        url: "/resources/big-data-hadoop-gfg",
+        materialId: "big-data-hadoop-gfg",
+        description: "Characteristics of Big Data (5 V's), HDFS NameNode/DataNode architecture, block replication, and MapReduce.",
+        category: "Big Data & HDFS"
+      },
+      {
+        title: "Apache Spark & PySpark RDD Analytics (GeeksforGeeks)",
+        source: "GeeksforGeeks",
+        url: "/resources/big-data-spark-gfg",
+        materialId: "big-data-spark-gfg",
+        description: "In-memory distributed computing, RDD transformations vs actions, Spark SQL, and lazy evaluation engine.",
+        category: "Distributed Analytics"
+      },
+      {
+        title: "MongoDB & NoSQL Aggregation Pipeline (W3Schools)",
+        source: "W3Schools",
+        url: "/resources/big-data-mongodb-w3schools",
+        materialId: "big-data-mongodb-w3schools",
+        description: "Document storage model, JSON BSON queries, multi-stage aggregation pipelines ($match, $group, $sort).",
+        category: "NoSQL Databases"
       }
     ]
   },
@@ -1421,11 +1479,28 @@ export const LABS_DATA: Lab[] = [
     semester: "Semester 5",
     resources: [
       {
-        title: "GeeksforGeeks Cloud Computing Tutorial & Architecture",
+        title: "Cloud Computing & Architecture Reference (GeeksforGeeks)",
         source: "GeeksforGeeks",
-        url: "https://www.geeksforgeeks.org/cloud-computing/",
-        description: "IaaS, PaaS, SaaS delivery models, public/private deployment models, and cloud virtualization.",
-        category: "Cloud Computing"
+        url: "/resources/cloud-computing-gfg",
+        materialId: "cloud-computing-gfg",
+        description: "IaaS, PaaS, SaaS delivery models, public/private deployment models, hypervisors, and cloud virtualization.",
+        category: "Cloud Architecture"
+      },
+      {
+        title: "Docker Containerization & Multi-Container Guide (GeeksforGeeks)",
+        source: "GeeksforGeeks",
+        url: "/resources/cloud-docker-gfg",
+        materialId: "cloud-docker-gfg",
+        description: "Container virtualization vs VMs, Dockerfile syntax, layer caching, Docker Compose, and Kubernetes pods.",
+        category: "DevOps & Containers"
+      },
+      {
+        title: "AWS Cloud Infrastructure & Serverless Microservices (W3Schools)",
+        source: "W3Schools",
+        url: "/resources/cloud-w3schools-aws",
+        materialId: "cloud-w3schools-aws",
+        description: "AWS EC2 compute, S3 scalable storage, IAM policies, serverless AWS Lambda, and API Gateway.",
+        category: "Cloud Platforms"
       }
     ]
   }
