@@ -142,15 +142,7 @@ export function HeroObjectives() {
   const currentStatement = VIRTUAL_LAB_STATEMENTS[statementIdx];
 
   return (
-    <section
-      className="relative min-h-[82vh] flex flex-col justify-between pt-28 sm:pt-36 pb-14 px-4 sm:px-6 border-b border-slate-200/80 dark:border-zinc-800 overflow-hidden"
-      style={{
-        background: "linear-gradient(145deg, #fbfcfd 0%, #f4f6f8 35%, #edf1f5 70%, #e5ebf0 100%)"
-      }}
-    >
-      {/* Soft Ambient Light Backdrop matching Video Palette */}
-      <div className="absolute top-1/4 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-gradient-to-tr from-sky-400/10 via-blue-400/5 to-transparent rounded-full blur-[140px] pointer-events-none -z-10" />
-
+    <section className="relative min-h-[80vh] flex flex-col justify-between pt-28 sm:pt-36 pb-14 px-4 sm:px-6 bg-white dark:bg-zinc-950 border-b border-slate-200/80 dark:border-zinc-800 overflow-hidden">
       {/* 2-BLOCK HERO CONTAINER (Block 1: Video | Block 2: Slow-Motion Animated Text) */}
       <div className="container max-w-[1440px] mx-auto relative z-10 pt-2 sm:pt-4">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
@@ -159,16 +151,20 @@ export function HeroObjectives() {
           {/* 1st BLOCK (LEFT): LOGO ANIMATION VIDEO (8 SECONDS)                        */}
           {/* ========================================================================= */}
           <div className="lg:col-span-5 w-full flex justify-center order-2 lg:order-1">
-            <div className="relative group w-full max-w-md lg:max-w-none">
-              {/* Clean Seamless Video Player Card matching video background theme */}
-              <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-[#f4f6f8] shadow-2xl shadow-slate-300/40 dark:shadow-none border border-slate-200/70 dark:border-zinc-800">
+            <div className="relative w-full max-w-md lg:max-w-none flex justify-center items-center">
+              {/* Seamless Video Player: 100% matched background without borders or shadows */}
+              <div className="relative w-full overflow-hidden bg-transparent border-0 shadow-none">
                 <video
                   src="/logo-animation.mp4"
                   autoPlay
                   loop
                   muted
                   playsInline
-                  className="w-full h-auto aspect-square object-cover"
+                  className="w-full h-auto aspect-square object-contain bg-transparent pointer-events-none select-none"
+                  style={{
+                    filter: "brightness(1.12) contrast(1.08)",
+                    mixBlendMode: "multiply"
+                  }}
                 />
               </div>
             </div>
