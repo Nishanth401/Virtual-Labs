@@ -605,9 +605,9 @@ export const LABS_DATA: Lab[] = [
   // ==========================================
   {
     id: "oops-java",
-    code: "CS3351",
-    name: "Object Oriented Programming System (Java)",
-    shortTitle: "OOPS",
+    code: "AD8302",
+    name: "Object Oriented Programming Laboratory",
+    shortTitle: "OOPL",
     discipline: "Artificial Intelligence & Data Science",
     disciplineSlug: "aids",
     shortDesc: "Master OOP principles: Classes & Objects, Encapsulation, Inheritance hierarchies, Polymorphism, Matrix traversals, Exception Handling, Collections & JDBC.",
@@ -615,7 +615,7 @@ export const LABS_DATA: Lab[] = [
     institute: "VSB Engineering College, Karur",
     department: "Department of Artificial Intelligence & Data Science",
     difficulty: "Intermediate",
-    experimentsCount: 17,
+    experimentsCount: 15,
     rating: 4.97,
     ratingsCount: 450,
     iconName: "Code2",
@@ -725,9 +725,9 @@ export const LABS_DATA: Lab[] = [
   // ==========================================
   {
     id: "data-structures",
-    code: "AD8381",
-    name: "Data Structures and Algorithms Laboratory",
-    shortTitle: "DSAL",
+    code: "AD8301",
+    name: "Data Structures Design Laboratory",
+    shortTitle: "DSDL",
     discipline: "Artificial Intelligence & Data Science",
     disciplineSlug: "aids",
     shortDesc: "Explore Singly/Doubly Linked Lists, Stacks, Queues, BSTs, AVL balancing, Tries, B-Trees, Graph traversals (BFS/DFS), Shortest Path & MST, Sorting and Hashing.",
@@ -847,9 +847,9 @@ export const LABS_DATA: Lab[] = [
   // ==========================================
   {
     id: "dbms-lab",
-    code: "AD8382",
-    name: "Database Management System",
-    shortTitle: "DBMS",
+    code: "AD8303",
+    name: "Database Management Systems Laboratory",
+    shortTitle: "DBMSL",
     discipline: "Artificial Intelligence & Data Science",
     disciplineSlug: "aids",
     shortDesc: "Master DDL/DML, Set Operations, Complex Joins, Views & B-Tree indexing, PL/SQL control structures, Stored Procedures, Triggers, Exceptions, and TCL ACID transactions.",
@@ -961,7 +961,7 @@ export const LABS_DATA: Lab[] = [
   // ==========================================
   {
     id: "c-programming",
-    code: "CS3151",
+    code: "GE3171",
     name: "Programming in C Laboratory",
     shortTitle: "CPL",
     discipline: "Artificial Intelligence & Data Science",
