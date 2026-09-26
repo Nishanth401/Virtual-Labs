@@ -1840,6 +1840,304 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 </div>
               )}
 
+              {/* TAB: EVALUATION RUBRIC & SYSTEM SPECIFICATIONS FROM MD MANUAL */}
+              {activeTab === "manual-specs" && (
+                <div className="space-y-6">
+                  {manual ? (
+                    <>
+                      {/* Institutional Lab Header */}
+                      <div className="p-4 sm:p-5 bg-sky-500/5 border border-[#0284c7]/20 rounded-none space-y-2">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#0284c7] dark:text-[#38bdf8]">
+                            {manual.institution}
+                          </span>
+                          <Badge variant="outline" className="font-mono text-[11px] rounded-none bg-sky-500/10 text-[#0284c7] border-[#0284c7]/30">
+                            {manual.courseCode} • {manual.regulation}
+                          </Badge>
+                        </div>
+                        <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+                          Continuous Assessment Evaluation Scheme &amp; Lab Specifications
+                        </h2>
+                        <p className="text-xs sm:text-sm text-muted-foreground font-medium">
+                          {manual.department} • Academic Year {manual.academicYear}
+                        </p>
+                      </div>
+
+                      {/* Continuous Assessment 75-Mark Evaluation Rubric */}
+                      <Card className="border-border bg-card shadow-xs rounded-none">
+                        <CardHeader className="pb-3 border-b border-border/50">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <Award className="h-5 w-5 text-[#ea580c] dark:text-[#f97316]" />
+                              <h3 className="text-lg sm:text-xl font-bold text-foreground">
+                                Laboratory Continuous Assessment Rubric (75 Marks)
+                              </h3>
+                            </div>
+                            <Badge className="bg-[#ea580c] text-white rounded-none font-mono">
+                              Total: {manual.marksRubric.total} Marks
+                            </Badge>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Official evaluation criteria defined in the laboratory manual for regular practical sessions and continuous internal assessment (CIA):
+                          </p>
+                        </CardHeader>
+                        <CardContent className="pt-4 space-y-5">
+                          {/* 3 Core Metric Cards */}
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div className="p-4 rounded-none bg-sky-500/10 border border-[#0284c7]/30 text-center space-y-1">
+                              <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground font-bold">
+                                Performance / Execution
+                              </span>
+                              <div className="text-3xl font-black text-[#0284c7] dark:text-[#38bdf8]">
+                                {manual.marksRubric.performance}
+                              </div>
+                              <span className="text-[11px] text-muted-foreground block">
+                                Algorithm logic, syntax &amp; test run
+                              </span>
+                            </div>
+
+                            <div className="p-4 rounded-none bg-amber-500/10 border border-amber-500/30 text-center space-y-1">
+                              <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground font-bold">
+                                Viva-Voce
+                              </span>
+                              <div className="text-3xl font-black text-amber-600 dark:text-amber-400">
+                                {manual.marksRubric.viva}
+                              </div>
+                              <span className="text-[11px] text-muted-foreground block">
+                                Theoretical rationale &amp; complexity
+                              </span>
+                            </div>
+
+                            <div className="p-4 rounded-none bg-emerald-500/10 border border-emerald-500/30 text-center space-y-1">
+                              <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground font-bold">
+                                Lab Record / Observation
+                              </span>
+                              <div className="text-3xl font-black text-emerald-600 dark:text-emerald-400">
+                                {manual.marksRubric.record}
+                              </div>
+                              <span className="text-[11px] text-muted-foreground block">
+                                Neat documentation &amp; verification
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Detailed Component Breakdown Table */}
+                          <div className="overflow-x-auto border border-border">
+                            <table className="w-full text-left text-xs font-sans">
+                              <thead className="bg-muted/80 text-foreground uppercase font-mono text-[11px] border-b border-border">
+                                <tr>
+                                  <th className="p-3">Evaluation Component</th>
+                                  <th className="p-3 w-28 text-center">Marks Allotted</th>
+                                  <th className="p-3">Assessment Criteria &amp; Deliverables</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y divide-border/60">
+                                {manual.marksRubric.breakdown.map((row, idx) => (
+                                  <tr key={idx} className="hover:bg-muted/30 transition-colors">
+                                    <td className="p-3 font-semibold text-foreground">
+                                      {row.component}
+                                    </td>
+                                    <td className="p-3 text-center font-mono font-bold text-[#0284c7] dark:text-[#38bdf8]">
+                                      {row.marks} Marks
+                                    </td>
+                                    <td className="p-3 text-muted-foreground">
+                                      {row.description}
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      {/* System Hardware & Software Requirements */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Hardware Specs */}
+                        <Card className="border-border bg-card shadow-xs rounded-none">
+                          <CardHeader className="pb-3 border-b border-border/50">
+                            <div className="flex items-center gap-2">
+                              <Cpu className="h-5 w-5 text-[#0284c7] dark:text-[#38bdf8]" />
+                              <h3 className="text-base font-bold text-foreground">
+                                Hardware Requirements
+                              </h3>
+                            </div>
+                          </CardHeader>
+                          <CardContent className="pt-4">
+                            <ul className="space-y-2 text-xs text-muted-foreground">
+                              {manual.systemRequirements.hardware.map((hw, i) => (
+                                <li key={i} className="flex items-start gap-2">
+                                  <CheckCircle2 className="h-3.5 w-3.5 text-[#0284c7] shrink-0 mt-0.5" />
+                                  <span>{hw}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </CardContent>
+                        </Card>
+
+                        {/* Software Specs */}
+                        <Card className="border-border bg-card shadow-xs rounded-none">
+                          <CardHeader className="pb-3 border-b border-border/50">
+                            <div className="flex items-center gap-2">
+                              <Terminal className="h-5 w-5 text-[#ea580c] dark:text-[#f97316]" />
+                              <h3 className="text-base font-bold text-foreground">
+                                Software &amp; Tool Environment
+                              </h3>
+                            </div>
+                          </CardHeader>
+                          <CardContent className="pt-4">
+                            <ul className="space-y-2 text-xs text-muted-foreground">
+                              {manual.systemRequirements.software.map((sw, i) => (
+                                <li key={i} className="flex items-start gap-2">
+                                  <CheckCircle2 className="h-3.5 w-3.5 text-[#ea580c] shrink-0 mt-0.5" />
+                                  <span>{sw}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </CardContent>
+                        </Card>
+                      </div>
+
+                      {/* Student Lab Code of Conduct & Guidelines */}
+                      <Card className="border-border bg-card shadow-xs rounded-none">
+                        <CardHeader className="pb-3 border-b border-border/50">
+                          <div className="flex items-center gap-2">
+                            <ShieldCheck className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                            <h3 className="text-base font-bold text-foreground">
+                              Laboratory Guidelines &amp; Student Code of Conduct
+                            </h3>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="pt-4">
+                          <ol className="list-decimal pl-5 space-y-2 text-xs text-muted-foreground">
+                            {manual.guidelines.map((g, i) => (
+                              <li key={i} className="leading-relaxed pl-1 text-foreground/90">
+                                <span>{g}</span>
+                              </li>
+                            ))}
+                          </ol>
+                        </CardContent>
+                      </Card>
+                    </>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">Specifications data loading...</p>
+                  )}
+                </div>
+              )}
+
+              {/* TAB: INDUSTRIAL CASE STUDY FROM MD MANUAL */}
+              {activeTab === "case-study" && (
+                <div className="space-y-6">
+                  {manual ? (
+                    <>
+                      {/* Case Study Banner */}
+                      <div className="p-4 sm:p-5 bg-gradient-to-r from-[#0284c7]/10 via-sky-500/5 to-[#ea580c]/10 border border-[#0284c7]/30 rounded-none space-y-2">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <Badge className="bg-[#0284c7] text-white rounded-none font-mono text-[10px] uppercase">
+                            {manual.caseStudy.domain}
+                          </Badge>
+                          <Badge variant="outline" className="font-mono text-[11px] rounded-none border-border">
+                            {manual.courseCode} Capstone Manual
+                          </Badge>
+                        </div>
+                        <h2 className="text-xl sm:text-2xl font-bold text-foreground">
+                          {manual.caseStudy.title}
+                        </h2>
+                        <p className="text-xs sm:text-sm text-muted-foreground font-medium">
+                          Real-world industry application extracted directly from the autonomous curriculum manual
+                        </p>
+                      </div>
+
+                      {/* Scenario Narrative */}
+                      <Card className="border-border bg-card shadow-xs rounded-none">
+                        <CardHeader className="pb-3 border-b border-border/50">
+                          <div className="flex items-center gap-2">
+                            <Sparkles className="h-5 w-5 text-[#ea580c] dark:text-[#f97316]" />
+                            <h3 className="text-lg font-bold text-foreground">
+                              Problem Scenario &amp; System Specifications
+                            </h3>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="pt-4 space-y-4">
+                          <p className="text-sm leading-relaxed text-foreground/90 font-sans">
+                            {manual.caseStudy.scenario}
+                          </p>
+
+                          {/* Architectural Highlights */}
+                          <div className="space-y-2 pt-2 border-t border-border/50">
+                            <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-[#0284c7] dark:text-[#38bdf8]">
+                              Key Architecture &amp; Implementation Highlights
+                            </h4>
+                            <ul className="space-y-1.5 text-xs text-muted-foreground">
+                              {manual.caseStudy.architectureHighlights.map((hl, i) => (
+                                <li key={i} className="flex items-start gap-2">
+                                  <CheckSquare className="h-3.5 w-3.5 text-[#0284c7] shrink-0 mt-0.5" />
+                                  <span>{hl}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      {/* Code Snippet & Terminal Output */}
+                      {manual.caseStudy.codeSnippet && (
+                        <div className="space-y-4">
+                          <Card className="border-border bg-zinc-950 text-zinc-100 shadow-xs rounded-none overflow-hidden font-mono">
+                            <CardHeader className="py-2.5 px-4 bg-zinc-900 border-b border-zinc-800 flex flex-row items-center justify-between">
+                              <span className="text-xs text-zinc-400">
+                                Implementation Script / Schema DDL
+                              </span>
+                              <Badge variant="outline" className="text-[10px] border-zinc-700 bg-zinc-800 text-zinc-300 rounded-none">
+                                Verified Code
+                              </Badge>
+                            </CardHeader>
+                            <CardContent className="p-4 text-xs overflow-x-auto leading-relaxed">
+                              <pre className="text-sky-300">
+                                <code>{manual.caseStudy.codeSnippet}</code>
+                              </pre>
+                            </CardContent>
+                          </Card>
+
+                          {manual.caseStudy.outputSnippet && (
+                            <Card className="border-border bg-black text-emerald-400 shadow-xs rounded-none overflow-hidden font-mono">
+                              <CardHeader className="py-2.5 px-4 bg-zinc-900/80 border-b border-zinc-800 flex flex-row items-center justify-between">
+                                <span className="text-xs text-emerald-400 flex items-center gap-1.5">
+                                  <Terminal className="h-3.5 w-3.5" />
+                                  Execution Console Output
+                                </span>
+                                <Badge variant="outline" className="text-[10px] border-emerald-900 bg-emerald-950/40 text-emerald-400 rounded-none">
+                                  Exit Code 0
+                                </Badge>
+                              </CardHeader>
+                              <CardContent className="p-4 text-xs overflow-x-auto leading-relaxed">
+                                <pre className="text-emerald-300">
+                                  <code>{manual.caseStudy.outputSnippet}</code>
+                                </pre>
+                              </CardContent>
+                            </Card>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Analysis Conclusion */}
+                      {manual.caseStudy.analysisConclusion && (
+                        <div className="p-4 bg-muted/40 border border-border rounded-none space-y-1">
+                          <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-[#ea580c] dark:text-[#f97316]">
+                            Engineering Takeaway &amp; Cost/Performance Trade-Off
+                          </h4>
+                          <p className="text-xs text-foreground/90 leading-relaxed font-sans">
+                            {manual.caseStudy.analysisConclusion}
+                          </p>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">Case study data loading...</p>
+                  )}
+                </div>
+              )}
+
               {/* TAB 5: 5-QUESTION EXPERIMENT EVALUATION QUIZZES */}
               {activeTab === "quizzes" && (() => {
                 const currentQuizExp = experiments.find((e) => e.id === selectedQuizExpId) || experiments[0];
