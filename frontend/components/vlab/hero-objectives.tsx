@@ -142,46 +142,34 @@ export function HeroObjectives() {
   const currentStatement = VIRTUAL_LAB_STATEMENTS[statementIdx];
 
   return (
-    <section className="relative min-h-[82vh] flex flex-col justify-between pt-28 sm:pt-36 pb-14 px-4 sm:px-6 bg-gradient-to-b from-background via-background to-muted/20 border-b border-border/40 overflow-hidden">
-      {/* Ambient Lighting & Glow Backdrop in Soft Virtual Labs Sky Blue */}
-      <div className="absolute top-1/4 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-gradient-to-tr from-sky-500/15 via-blue-500/10 to-primary/10 rounded-full blur-[140px] pointer-events-none -z-10" />
+    <section
+      className="relative min-h-[82vh] flex flex-col justify-between pt-28 sm:pt-36 pb-14 px-4 sm:px-6 border-b border-slate-200/80 dark:border-zinc-800 overflow-hidden"
+      style={{
+        background: "linear-gradient(145deg, #fbfcfd 0%, #f4f6f8 35%, #edf1f5 70%, #e5ebf0 100%)"
+      }}
+    >
+      {/* Soft Ambient Light Backdrop matching Video Palette */}
+      <div className="absolute top-1/4 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-gradient-to-tr from-sky-400/10 via-blue-400/5 to-transparent rounded-full blur-[140px] pointer-events-none -z-10" />
 
       {/* 2-BLOCK HERO CONTAINER (Block 1: Video | Block 2: Slow-Motion Animated Text) */}
-      <div className="container max-w-[1400px] mx-auto relative z-10 pt-2 sm:pt-4">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <div className="container max-w-[1440px] mx-auto relative z-10 pt-2 sm:pt-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
           
           {/* ========================================================================= */}
           {/* 1st BLOCK (LEFT): LOGO ANIMATION VIDEO (8 SECONDS)                        */}
           {/* ========================================================================= */}
           <div className="lg:col-span-5 w-full flex justify-center order-2 lg:order-1">
             <div className="relative group w-full max-w-md lg:max-w-none">
-              {/* Outer Atmospheric Glow */}
-              <div className="absolute -inset-1.5 rounded-3xl bg-gradient-to-r from-[#0284c7]/40 via-sky-500/30 to-indigo-500/40 blur-xl opacity-75 group-hover:opacity-100 transition duration-1000 -z-10 animate-pulse" />
-              
-              {/* Video Player Card */}
-              <div className="relative rounded-2xl overflow-hidden bg-black/90 border-2 border-[#0284c7]/40 shadow-2xl shadow-sky-950/40">
+              {/* Clean Seamless Video Player Card matching video background theme */}
+              <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-[#f4f6f8] shadow-2xl shadow-slate-300/40 dark:shadow-none border border-slate-200/70 dark:border-zinc-800">
                 <video
                   src="/logo-animation.mp4"
                   autoPlay
                   loop
                   muted
                   playsInline
-                  className="w-full h-auto aspect-video sm:aspect-[4/3] lg:aspect-square object-cover"
+                  className="w-full h-auto aspect-square object-cover"
                 />
-
-                {/* Glassmorphic Live Tag Overlay */}
-                <div className="absolute top-3.5 left-3.5 flex items-center gap-2 px-3 py-1 bg-black/70 backdrop-blur-md border border-white/15 rounded-full text-[11px] font-mono text-white/95 shadow-md">
-                  <span className="h-2 w-2 rounded-full bg-[#0284c7] animate-ping" />
-                  <span className="font-semibold">Virtual Labs Official (8s)</span>
-                </div>
-
-                {/* Bottom Glass Caption */}
-                <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex items-center justify-between text-[11px] text-white/80 font-mono">
-                  <span className="truncate">VSB Engineering College</span>
-                  <Badge variant="outline" className="text-[10px] border-white/20 bg-white/10 text-white rounded-none">
-                    Autonomous
-                  </Badge>
-                </div>
               </div>
             </div>
           </div>
@@ -189,7 +177,7 @@ export function HeroObjectives() {
           {/* ========================================================================= */}
           {/* 2nd BLOCK (RIGHT): SLOW-MOTION ANIMATED VIRTUAL LAB SENTENCE              */}
           {/* ========================================================================= */}
-          <div className="lg:col-span-7 w-full text-left space-y-5 order-1 lg:order-2 pl-0 lg:pl-4">
+          <div className="lg:col-span-7 w-full text-left space-y-7 order-1 lg:order-2 pl-0 lg:pl-6">
             
             {/* Slow-Motion Animated Sentence Block */}
             <AnimatePresence mode="wait">
@@ -201,14 +189,6 @@ export function HeroObjectives() {
                 transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
                 className="space-y-4"
               >
-                {/* Pill Badge */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0284c7]/10 border border-[#0284c7]/30 text-[#0284c7] dark:text-[#38bdf8] text-xs font-mono font-bold shadow-2xs">
-                  <Sparkles className="h-3.5 w-3.5 text-[#0284c7]" />
-                  <span>{currentStatement.badge}</span>
-                  <span className="text-muted-foreground">•</span>
-                  <span className="text-muted-foreground font-normal">{currentStatement.highlight}</span>
-                </div>
-
                 {/* High-Impact Headline with Slow-Motion Aesthetic Typography */}
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-[1.12] sm:leading-[1.08] font-heading">
                   {currentStatement.line1}{" "}
@@ -222,42 +202,22 @@ export function HeroObjectives() {
                 </h1>
 
                 {/* Subtitle Sentence */}
-                <p className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-2xl font-light leading-relaxed">
+                <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base md:text-lg max-w-2xl font-normal leading-relaxed">
                   {currentStatement.desc}
                 </p>
               </motion.div>
             </AnimatePresence>
 
-            {/* 8-Second Synchronized Slow-Motion Progress Bar */}
-            <div className="space-y-1.5 py-1 max-w-xl">
-              <div className="flex items-center justify-between text-[11px] font-mono text-muted-foreground">
-                <span className="flex items-center gap-1.5 text-[#0284c7] dark:text-[#38bdf8] font-bold">
-                  <Zap className="h-3 w-3" />
-                  <span>Slow-motion Synchronized Cycle ({statementIdx + 1}/4)</span>
-                </span>
-                <span>8.0s Interval</span>
-              </div>
-              <div className="w-full h-1 bg-border/60 rounded-full overflow-hidden">
-                <motion.div
-                  key={`progress-bar-${statementIdx}`}
-                  initial={{ width: "0%" }}
-                  animate={{ width: "100%" }}
-                  transition={{ duration: 8.0, ease: "linear" }}
-                  className="h-full bg-gradient-to-r from-[#0284c7] via-sky-400 to-[#ea580c]"
-                />
-              </div>
-            </div>
-
-            {/* Dual Capsule CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 pt-2 w-full">
+            {/* Dual Capsule CTA Buttons (Increased size) */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-3 w-full">
               <Button
                 asChild
                 size="lg"
-                className="w-full sm:w-auto bg-[#0284c7] hover:bg-[#0369a1] text-white rounded-full px-7 py-5 sm:py-6 font-bold shadow-lg shadow-sky-600/20 hover:scale-105 transition-all text-xs sm:text-sm gap-2 cursor-pointer"
+                className="w-full sm:w-auto bg-[#0284c7] hover:bg-[#0369a1] text-white rounded-full px-8 sm:px-10 py-6 sm:py-7 font-bold shadow-xl shadow-sky-600/25 hover:scale-105 transition-all text-sm sm:text-base gap-2.5 cursor-pointer"
               >
                 <Link href="/labs">
                   <span>Let&apos;s explore &amp; simulate</span>
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="h-4.5 w-4.5" />
                 </Link>
               </Button>
 
@@ -265,35 +225,13 @@ export function HeroObjectives() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="w-full sm:w-auto rounded-full px-6 py-5 sm:py-6 text-xs sm:text-sm font-semibold border-border bg-card/80 hover:bg-muted hover:border-[#0284c7]/40 text-foreground transition-all gap-1.5 shadow-xs cursor-pointer"
+                className="w-full sm:w-auto rounded-full px-8 sm:px-9 py-6 sm:py-7 text-sm sm:text-base font-semibold border-2 border-slate-300 dark:border-zinc-700 bg-white/90 dark:bg-card/80 hover:bg-white hover:border-[#0284c7] text-foreground transition-all gap-2 shadow-sm cursor-pointer"
               >
                 <Link href="/dsa-visualization">
                   <span>DSA Visualization Platform</span>
-                  <ExternalLink className="h-3.5 w-3.5" />
+                  <ExternalLink className="h-4 w-4" />
                 </Link>
               </Button>
-            </div>
-
-            {/* Quick Access Lab Tags */}
-            <div className="flex flex-wrap items-center gap-1.5 pt-1 text-[11px] font-mono text-muted-foreground">
-              <span className="font-semibold text-foreground mr-1">Direct Labs:</span>
-              {[
-                { name: "DBMS", href: "/labs/dbms-lab" },
-                { name: "OOP (Java)", href: "/labs/oops-java" },
-                { name: "DSA", href: "/labs/data-structures" },
-                { name: "Big Data", href: "/labs/big-data-analytics" },
-                { name: "Cloud CSM", href: "/labs/cloud-service-management" },
-                { name: "Deep Learning", href: "/labs/ai-machine-learning" },
-                { name: "C Programming", href: "/labs/c-programming" },
-              ].map((labChip) => (
-                <Link
-                  key={labChip.name}
-                  href={labChip.href}
-                  className="px-2 py-0.5 rounded-none bg-muted/60 hover:bg-[#0284c7]/10 hover:text-[#0284c7] border border-border/80 transition-colors"
-                >
-                  {labChip.name}
-                </Link>
-              ))}
             </div>
 
           </div>

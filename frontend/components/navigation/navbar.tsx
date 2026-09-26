@@ -178,15 +178,15 @@ export function Navbar() {
           <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8">
             <nav
               onMouseLeave={() => setHoveredHref(null)}
-              className="hidden md:flex items-center justify-between h-10 select-none text-xs"
+              className="hidden md:flex items-center justify-between h-12 sm:h-14 select-none text-sm"
             >
               {/* Left Side: Home Button */}
               <div className="flex items-center gap-1">
                 <Link
                   href="/"
-                  className={`px-3 py-1 transition-colors uppercase tracking-wide font-medium ${
+                  className={`px-4 sm:px-5 py-2 transition-colors uppercase tracking-wider text-xs sm:text-sm font-bold ${
                     pathname === "/"
-                      ? "text-white font-bold bg-[#ea580c]"
+                      ? "text-white font-bold bg-[#ea580c] shadow-xs"
                       : "text-slate-200 hover:text-white hover:bg-white/10"
                   }`}
                 >
@@ -206,7 +206,7 @@ export function Navbar() {
                       key={item.href}
                       href={item.href}
                       onMouseEnter={() => setHoveredHref(item.href)}
-                      className={`px-2.5 py-1 transition-colors tracking-wide select-none ${
+                      className={`px-3 sm:px-3.5 py-1.5 transition-colors tracking-wide select-none text-xs sm:text-sm ${
                         isHighlighted
                           ? "text-white font-bold bg-[#0284c7]"
                           : "text-slate-300 hover:text-white hover:bg-white/10 font-medium"
