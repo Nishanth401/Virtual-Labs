@@ -68,25 +68,15 @@ export function LabHeaderBanner({
               <span className="text-xl font-bold leading-none">☰</span>
             </Link>
 
-            <Link href="/" className="flex items-center gap-2.5 group">
-              {/* Virtual Labs SVG Flask/Laptop emblem matching MoE logo */}
-              <div className="flex items-center gap-2">
-                <div className="relative w-8 h-8 rounded-none border border-emerald-600/40 bg-emerald-50 dark:bg-emerald-950/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
-                  <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-current stroke-2">
-                    <path d="M10 2v7.31L4.69 17.5a2 2 0 0 0 1.62 3.12h11.38a2 2 0 0 0 1.62-3.12L14 9.31V2" />
-                    <line x1="8.5" y1="2" x2="15.5" y2="2" />
-                    <line x1="7" y1="14" x2="17" y2="14" />
-                  </svg>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-base font-black tracking-tight leading-tight text-[#0284c7] dark:text-[#38bdf8] font-heading">
-                    Virtual Labs
-                  </span>
-                  <span className="text-[9px] font-sans text-muted-foreground leading-none">
-                    An MoE Govt of India Initiative
-                  </span>
-                </div>
-              </div>
+            <Link href="/" className="flex items-center gap-2.5 group select-none">
+              <img
+                src="/virtual-lab-icon.png"
+                alt="Virtual Lab"
+                className="w-8 h-8 object-contain rounded-md transition-transform group-hover:scale-105"
+              />
+              <span className="text-base font-black tracking-tight leading-tight text-[#0284c7] dark:text-[#38bdf8] font-heading">
+                Virtual Lab
+              </span>
             </Link>
           </div>
 

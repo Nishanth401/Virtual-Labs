@@ -176,8 +176,12 @@ export function StudentOnboardingModal() {
         <div className="p-6 space-y-5">
           {/* Header Brand */}
           <DialogHeader className="space-y-1.5 text-center">
-            <div className="mx-auto w-12 h-12 rounded-full bg-gradient-to-tr from-[#ff2a5f] to-[#dc2626] flex items-center justify-center text-white mb-1 shadow-lg shadow-red-500/20">
-              <FlaskConical className="h-6 w-6" />
+            <div className="mx-auto w-12 h-12 flex items-center justify-center mb-1">
+              <img
+                src="/virtual-lab-icon.png"
+                alt="Virtual Lab"
+                className="w-12 h-12 object-contain rounded-lg shadow-sm"
+              />
             </div>
 
             <div className="flex justify-center">

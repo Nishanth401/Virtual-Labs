@@ -232,26 +232,25 @@ export function DSATopicResources({ topic }: DSATopicResourcesProps) {
         />
 
         {topic.practiceProblems.map((prob, idx) => (
-          <a
+          <button
             key={idx}
-            href={prob.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between p-3.5 rounded-none border border-border bg-muted/20 hover:bg-card hover:border-[#0284c7]/50 transition-all group"
+            type="button"
+            onClick={() => setIsReaderOpen(true)}
+            className="flex items-center justify-between p-3.5 rounded-none border border-border bg-muted/20 hover:bg-card hover:border-[#0284c7]/50 transition-all group text-left cursor-pointer"
           >
             <div className="space-y-1 min-w-0 pr-2">
               <span className="font-semibold text-xs sm:text-sm text-foreground group-hover:text-[#0284c7] transition-colors truncate block">
                 {prob.title}
               </span>
-              <span className="text-[11px] text-muted-foreground block">{prob.platform} Reference</span>
+              <span className="text-[11px] text-[#0284c7] dark:text-[#38bdf8] block">In-App Practice Guide &amp; Code</span>
             </div>
             <div className="flex items-center gap-1.5 shrink-0">
               <span className="text-[10px] text-muted-foreground font-medium px-1.5 py-0.5 rounded-none bg-muted border border-border">
                 {prob.difficulty}
               </span>
-              <ExternalLink className="h-3.5 w-3.5 text-muted-foreground group-hover:text-[#0284c7]" />
+              <BookOpen className="h-3.5 w-3.5 text-muted-foreground group-hover:text-[#0284c7]" />
             </div>
-          </a>
+          </button>
         ))}
       </div>
     </div>
