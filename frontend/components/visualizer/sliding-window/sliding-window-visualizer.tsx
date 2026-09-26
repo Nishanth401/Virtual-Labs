@@ -51,7 +51,27 @@ public int maxSumSubarray(int[] arr, int k) {
         maxSum = Math.max(maxSum, windowSum);
     }
     return maxSum;
-}`;
+}
+`;
+
+const JAVA_CODE_VARIABLE_SUM = `// Sliding Window - Smallest Subarray with Sum >= S
+public int minSubArrayLen(int target, int[] nums) {
+    int n = nums.length;
+    int minLen = Integer.MAX_VALUE;
+    int windowSum = 0;
+    int windowStart = 0;
+    
+    for (int windowEnd = 0; windowEnd < n; windowEnd++) {
+        windowSum += nums[windowEnd]; // Expand window right
+        while (windowSum >= target) {
+            minLen = Math.min(minLen, windowEnd - windowStart + 1);
+            windowSum -= nums[windowStart]; // Shrink from left
+            windowStart++;
+        }
+    }
+    return minLen == Integer.MAX_VALUE ? 0 : minLen;
+}
+`;
 
 const PSEUDOCODE_MAP: Record<SlidingWindowMode, string[]> = {
   "fixed-k": [
