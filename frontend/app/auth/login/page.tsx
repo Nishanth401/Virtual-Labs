@@ -81,11 +81,11 @@ export default function AuthLoginPage() {
   } = useAuth();
 
   // 1. Ordered cohorts: 2nd year, 3rd year, 4th year
-  // 2. Default Register Number: 92252423172
-  // 3. Default Password (Name in CAPS): ROHITH E
+  // 2. Background Shading / Placeholder: 92252423172
+  // 3. Background Shading / Placeholder: ROHITH E
   const [selectedCohort, setSelectedCohort] = useState<CohortType>("III AIDS");
-  const [registerNumber, setRegisterNumber] = useState("92252423172");
-  const [password, setPassword] = useState("ROHITH E");
+  const [registerNumber, setRegisterNumber] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [capsLockActive, setCapsLockActive] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -118,8 +118,12 @@ export default function AuthLoginPage() {
     setErrorMsg("");
     setSuccessMsg("");
 
-    const cleanReg = registerNumber.trim().toUpperCase();
-    const cleanPass = password.trim().toUpperCase();
+    const defaultReg = COHORT_CONFIG[selectedCohort].sampleReg;
+    const defaultPass = COHORT_CONFIG[selectedCohort].sampleName;
+
+    // Use typed value or fallback to shaded placeholder default
+    const cleanReg = (registerNumber.trim() || defaultReg).toUpperCase();
+    const cleanPass = (password.trim() || defaultPass).toUpperCase();
 
     if (!cleanReg) {
       setErrorMsg("Please enter your official Register Number.");
@@ -323,8 +327,7 @@ export default function AuthLoginPage() {
                       onChange={(e) => setRegisterNumber(e.target.value.toUpperCase())}
                       onKeyDown={handleKeyDown}
                       placeholder={COHORT_CONFIG[selectedCohort].sampleReg}
-                      className="text-xs font-mono uppercase bg-muted/30 border-border h-11 pl-3 pr-8 focus:ring-1 focus:ring-primary"
-                      required
+                      className="text-xs font-mono uppercase bg-muted/20 border-border h-11 pl-3 pr-8 placeholder:text-muted-foreground/60 placeholder:font-mono focus:ring-1 focus:ring-primary tracking-wider"
                       autoComplete="username"
                     />
                     {registerNumber && (
@@ -335,7 +338,7 @@ export default function AuthLoginPage() {
                   </div>
                 </div>
 
-                {/* 2. Password (Name in CAPS LOCK) Input (Default: ROHITH E) */}
+                {/* 2. Password (Name in CAPS LOCK) Input (Shaded Placeholder: ROHITH E) */}
                 <div className="space-y-1.5 text-left">
                   <div className="flex items-center justify-between">
                     <Label className="text-xs font-semibold flex items-center gap-1.5 text-foreground">
@@ -353,8 +356,7 @@ export default function AuthLoginPage() {
                       onChange={(e) => setPassword(e.target.value.toUpperCase())}
                       onKeyDown={handleKeyDown}
                       placeholder={COHORT_CONFIG[selectedCohort].sampleName}
-                      className="text-xs font-mono uppercase bg-muted/30 border-border h-11 pl-3 pr-10 focus:ring-1 focus:ring-primary"
-                      required
+                      className="text-xs font-mono uppercase bg-muted/20 border-border h-11 pl-3 pr-10 placeholder:text-muted-foreground/60 placeholder:font-mono focus:ring-1 focus:ring-primary tracking-wider"
                       autoComplete="current-password"
                     />
                     <button

@@ -56,8 +56,8 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
     loading
   } = auth || {};
 
-  const [loginRegNo, setLoginRegNo] = useState("92252423172");
-  const [loginPassword, setLoginPassword] = useState("ROHITH E");
+  const [loginRegNo, setLoginRegNo] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const [selectedCohort, setSelectedCohort] = useState<"II AIDS" | "III AIDS" | "IV AIDS">("III AIDS");
   const [showPassword, setShowPassword] = useState(false);
 
@@ -107,8 +107,10 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
   const handleStudentLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
-    const cleanReg = loginRegNo.trim().toUpperCase();
-    const cleanPass = loginPassword.trim().toUpperCase();
+    const defaultReg = selectedCohort === "III AIDS" ? "92252423172" : selectedCohort === "IV AIDS" ? "922523243001" : "922525243001";
+    const defaultPass = selectedCohort === "III AIDS" ? "ROHITH E" : selectedCohort === "IV AIDS" ? "S.AARTHI" : "ABINAYA G";
+    const cleanReg = (loginRegNo.trim() || defaultReg).toUpperCase();
+    const cleanPass = (loginPassword.trim() || defaultPass).toUpperCase();
 
     if (!cleanReg) {
       setErrorMsg("Please enter your official Register Number.");
@@ -642,13 +644,12 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                   onChange={(e) => setLoginRegNo(e.target.value.toUpperCase())}
                   placeholder={
                     selectedCohort === "III AIDS"
-                      ? "922524243001"
+                      ? "92252423172"
                       : selectedCohort === "IV AIDS"
                       ? "922523243001"
                       : "922525243001"
                   }
-                  className="text-xs font-mono uppercase bg-muted/30 border-border h-10"
-                  required
+                  className="text-xs font-mono uppercase bg-muted/20 border-border h-10 placeholder:text-muted-foreground/60 placeholder:font-mono tracking-wider"
                 />
               </div>
 
@@ -666,9 +667,14 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                     type={showPassword ? "text" : "password"}
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value.toUpperCase())}
-                    placeholder="e.g. ABINAYA K"
-                    className="text-xs font-mono uppercase bg-muted/30 border-border h-10 pr-9"
-                    required
+                    placeholder={
+                      selectedCohort === "III AIDS"
+                        ? "ROHITH E"
+                        : selectedCohort === "IV AIDS"
+                        ? "S.AARTHI"
+                        : "ABINAYA G"
+                    }
+                    className="text-xs font-mono uppercase bg-muted/20 border-border h-10 pr-9 placeholder:text-muted-foreground/60 placeholder:font-mono tracking-wider"
                   />
                   <button
                     type="button"
