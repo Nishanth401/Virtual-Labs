@@ -32,17 +32,17 @@ export function Footer() {
           
           {/* Left: Creator Profile (Cols 1-5) */}
           <div className="md:col-span-5 space-y-4">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3.5">
               <img
-                src="/vsb-logo.png"
-                alt="VSB Engineering College"
-                className="w-12 h-12 object-contain"
+                src="/vsb-seal.png"
+                alt="V.S.B. Engineering College"
+                className="w-13 h-13 sm:w-14 sm:h-14 object-contain shrink-0 drop-shadow-md select-none hover:scale-105 transition-transform"
               />
-              <div className="flex flex-col">
-                <span className="font-extrabold text-base text-white tracking-tight leading-tight">
+              <div className="flex flex-col justify-center">
+                <span className="font-extrabold text-base sm:text-lg text-white tracking-tight leading-tight">
                   V.S.B. ENGINEERING COLLEGE
                 </span>
-                <span className="text-xs font-semibold text-[#0284c7] tracking-tight leading-tight">
+                <span className="text-xs sm:text-sm font-semibold text-[#0284c7] tracking-tight leading-tight mt-0.5">
                   Department of Artificial Intelligence and Data Science
                 </span>
               </div>
@@ -173,7 +173,7 @@ export function Footer() {
         {/* Bottom Copyright Strip */}
         <div className="pt-10 mt-10 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-center text-center gap-4 text-xs text-slate-500 font-sans">
           <p>
-            &copy; {new Date().getFullYear()} Virtual Laboratories Platform. Designed &amp; Developed with ❤️ for V.S.B. Engineering College.
+            &copy; {new Date().getFullYear()} Virtual Laboratories Platform. Designed &amp; Developed with ❤️ by Rohith E &amp; Nishanth A.
           </p>
         </div>
       </div>

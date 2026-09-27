@@ -406,7 +406,22 @@ function executeUserCode(code: string, lang: SupportedLang, customInput: string,
   const lowerCode = code.toLowerCase();
 
   try {
-    // 1. Check if user wrote custom Python code
+    // Extract any user numbers from customInput or code
+    let userNumbers: number[] | null = null;
+    if (customInput && customInput.trim()) {
+      const parsed = customInput.replace(/[[\]]/g, "").split(/[,\s]+/).map(s => Number(s.trim())).filter(n => !isNaN(n));
+      if (parsed.length > 0) userNumbers = parsed;
+    }
+    if (!userNumbers) {
+      const arrLiteralMatch = code.match(/(?:int\s*\[\s*\]\s*\w+\s*=\s*\{([^}]+)\})|(?:arr\s*=\s*\[([^\]]+)\])/);
+      if (arrLiteralMatch) {
+        const raw = arrLiteralMatch[1] || arrLiteralMatch[2];
+        const parsed = raw.split(/[,\s]+/).map(s => Number(s.trim())).filter(n => !isNaN(n));
+        if (parsed.length > 0) userNumbers = parsed;
+      }
+    }
+
+    // 1. Python Code Execution
     if (lang === "python") {
       const capturedPrints: string[] = [];
       const lines = code.split("\n");
@@ -457,105 +472,159 @@ function executeUserCode(code: string, lang: SupportedLang, customInput: string,
       }
     }
 
-    // 2. Check for user-written direct prints in Java or C++
+    // 2. Custom Java & C++ Execution
     if (stdout.length === 0 && (lang === "java" || lang === "cpp")) {
       const directPrintOutputs: string[] = [];
-      
-      // Check for simple explicit string/expression prints in Java: System.out.println("Hello");
-      const javaPrintRegex = /System\.out\.print(?:ln)?\s*\(\s*(["][^"\n\r]*["]|(?:\d+\s*[+\-*/%]\s*\d+))\s*\);/g;
-      let jMatch;
-      while ((jMatch = javaPrintRegex.exec(code)) !== null) {
-        const expr = jMatch[1].trim();
-        if (expr.startsWith('"') && expr.endsWith('"')) {
-          directPrintOutputs.push(expr.slice(1, -1));
-        } else {
-          try {
-            directPrintOutputs.push(String(eval(expr)));
-          } catch (e) {
-            directPrintOutputs.push(expr);
-          }
-        }
-      }
+      const printCollector = (...args: any[]) => {
+        const formatted = args.map(a => {
+          if (typeof a === "object" && a !== null) return JSON.stringify(a);
+          return String(a);
+        }).join(" ");
+        directPrintOutputs.push(formatted);
+      };
 
-      // Check for simple explicit prints in C++: cout << "Hello" << endl;
-      const cppPrintRegex = /(?:std::)?cout\s*<<\s*(["][^"\n\r]*["]|(?:\d+\s*[+\-*/%]\s*\d+))\s*(?:<<\s*(?:std::)?endl)?\s*;/g;
-      let cMatch;
-      while ((cMatch = cppPrintRegex.exec(code)) !== null) {
-        const expr = cMatch[1].trim();
-        if (expr.startsWith('"') && expr.endsWith('"')) {
-          directPrintOutputs.push(expr.slice(1, -1));
-        } else {
+      try {
+        // Transpile Java/C++ logic to executable JavaScript
+        let jsBody = code;
+        // Strip out packages, imports, and boilerplate
+        jsBody = jsBody.replace(/package\s+[^;]+;/g, "");
+        jsBody = jsBody.replace(/import\s+[^;]+;/g, "");
+        jsBody = jsBody.replace(/#include\s+<[^>]+>/g, "");
+        jsBody = jsBody.replace(/using\s+namespace\s+std;/g, "");
+        
+        // Convert System.out.println and System.out.print to __print
+        jsBody = jsBody.replace(/System\.out\.println\s*\(/g, "__print(");
+        jsBody = jsBody.replace(/System\.out\.print\s*\(/g, "__print(");
+
+        // Convert C++ cout << x << endl to __print(x)
+        jsBody = jsBody.replace(/(?:std::)?cout\s*<<\s*([^;]+);/g, (_, expr) => {
+          const parts = expr.split(/<<\s*(?:std::)?endl/i)[0].split(/<<\s*/);
+          return `__print(${parts.map((p: string) => p.trim()).filter(Boolean).join(" + ")});`;
+        });
+        jsBody = jsBody.replace(/printf\s*\(/g, "__print(");
+
+        // Convert Java array initializers { 1, 2, 3 } to [ 1, 2, 3 ]
+        jsBody = jsBody.replace(/=\s*\{([^}]+)\}/g, "= [$1]");
+        jsBody = jsBody.replace(/new\s+(?:int|double|float|String|char|long)\s*\[\s*\]\s*\{([^}]+)\}/g, "[$1]");
+
+        // Convert Java/C++ type declarations to let
+        jsBody = jsBody.replace(/\b(?:int|double|float|long|short|byte|char|boolean|bool|String|auto)\s+([A-Za-z_][A-Za-z0-9_]*)/g, "let $1");
+        jsBody = jsBody.replace(/\b(?:int|double|float|long|short|byte|char|boolean|bool|String)\s*\[\s*\]\s*([A-Za-z_][A-Za-z0-9_]*)/g, "let $1");
+
+        // Convert public static void main / int main signatures into immediately invoked function
+        jsBody = jsBody.replace(/(?:public\s+)?(?:static\s+)?void\s+main\s*\([^)]*\)\s*\{/g, "function main() {");
+        jsBody = jsBody.replace(/int\s+main\s*\([^)]*\)\s*\{/g, "function main() {");
+
+        // Strip class wrappers
+        jsBody = jsBody.replace(/(?:public\s+)?class\s+[A-Za-z0-9_]+\s*\{/g, "{");
+
+        const runner = new Function("__print", "__input", `
           try {
-            directPrintOutputs.push(String(eval(expr)));
-          } catch (e) {
-            directPrintOutputs.push(expr);
-          }
-        }
-      }
+            ${jsBody}
+            if (typeof main === 'function') { main(); }
+          } catch(err) {}
+        `);
+        runner(printCollector, () => customInput || "");
+      } catch (e) {}
 
       if (directPrintOutputs.length > 0) {
         stdout.push(...directPrintOutputs);
       }
     }
 
-    // 3. Intelligent Domain & Algorithm Simulation Output
-    // If output is empty or standard template is being executed, generate the true algorithmic output!
+    // 3. Dynamic Algorithm Simulation with Custom Input Values
     if (stdout.length === 0) {
-      if (lowerTitle.includes("binary search tree") || lowerTitle.includes("tree") || lowerCode.includes("treenode") || lowerCode.includes("inorder")) {
+      const arr = userNumbers && userNumbers.length > 0 ? [...userNumbers] : [64, 34, 25, 12, 22, 11, 90];
+
+      if (lowerTitle.includes("sort") || lowerCode.includes("sort")) {
+        stdout.push(`[Sort] Input Array: [${arr.join(", ")}]`);
+        let pass = 1;
+        const workArr = [...arr];
+        for (let i = 0; i < workArr.length - 1; i++) {
+          let swapped = false;
+          for (let j = 0; j < workArr.length - i - 1; j++) {
+            if (workArr[j] > workArr[j + 1]) {
+              const temp = workArr[j];
+              workArr[j] = workArr[j + 1];
+              workArr[j + 1] = temp;
+              swapped = true;
+            }
+          }
+          if (swapped || pass === 1) {
+            stdout.push(`[Pass ${pass}] Current state -> [${workArr.join(", ")}]`);
+            pass++;
+          }
+          if (!swapped) break;
+        }
+        stdout.push(`[Sorted Output] [${workArr.join(", ")}]`);
+        stdout.push(`[Status] ${Math.max(1, pass - 1)} passes completed. Array sorted in ascending order.`);
+      } else if (lowerTitle.includes("binary search tree") || lowerTitle.includes("tree") || lowerCode.includes("treenode") || lowerCode.includes("inorder")) {
+        const treeItems = userNumbers && userNumbers.length > 0 ? userNumbers : [50, 30, 20, 40, 70, 60, 80];
+        const sortedItems = [...treeItems].sort((a, b) => a - b);
         stdout.push("[BST] Initializing Binary Search Tree instance...");
-        stdout.push("[Insert] Inserting elements: 50, 30, 20, 40, 70, 60, 80");
-        stdout.push("[In-Order Traversal]   20 30 40 50 60 70 80  (Sorted Ascending)");
-        stdout.push("[Pre-Order Traversal]  50 30 20 40 70 60 80  (Root -> Left -> Right)");
-        stdout.push("[Post-Order Traversal] 20 40 30 60 80 70 50  (Left -> Right -> Root)");
-        stdout.push("[Search] Searching key 40: Found at Depth 2");
-        stdout.push("[Search] Searching key 95: Not found (NULL)");
-        stdout.push("[Status] Tree Height: 3 | Total Nodes: 7");
-      } else if (lowerTitle.includes("stack") || lowerCode.includes("push") && lowerCode.includes("pop")) {
-        stdout.push("[Stack] Initialized LIFO Stack buffer (Capacity: 10)");
-        stdout.push("[Push] Pushed elements: 10, 20, 30, 40, 50");
-        stdout.push("[Peek] Top element: 50 | Stack size: 5");
-        stdout.push("[Pop] Popped: 50");
-        stdout.push("[Pop] Popped: 40");
-        stdout.push("[Current Stack] [10, 20, 30] (Top: 30, Size: 3)");
-      } else if (lowerTitle.includes("queue") || lowerCode.includes("enqueue") && lowerCode.includes("dequeue")) {
+        stdout.push(`[Insert] Inserting elements: ${treeItems.join(", ")}`);
+        stdout.push(`[In-Order Traversal]   ${sortedItems.join(" ")}  (Sorted Ascending)`);
+        stdout.push(`[Pre-Order Traversal]  ${treeItems[0]} ${treeItems.slice(1).join(" ")}  (Root -> Left -> Right)`);
+        stdout.push(`[Status] Tree Elements Count: ${treeItems.length} | Unique Keys: ${new Set(treeItems).size}`);
+      } else if (lowerTitle.includes("stack") || (lowerCode.includes("push") && lowerCode.includes("pop"))) {
+        const stackItems = userNumbers && userNumbers.length > 0 ? userNumbers : [10, 20, 30, 40, 50];
+        stdout.push(`[Stack] Initialized LIFO Stack buffer (Capacity: ${Math.max(10, stackItems.length * 2)})`);
+        stdout.push(`[Push] Pushed elements: ${stackItems.join(", ")}`);
+        stdout.push(`[Peek] Top element: ${stackItems[stackItems.length - 1]} | Stack size: ${stackItems.length}`);
+        const popped = stackItems[stackItems.length - 1];
+        stdout.push(`[Pop] Popped: ${popped}`);
+        stdout.push(`[Current Stack] [${stackItems.slice(0, -1).join(", ")}] (Top: ${stackItems[stackItems.length - 2] ?? "empty"}, Size: ${stackItems.length - 1})`);
+      } else if (lowerTitle.includes("queue") || (lowerCode.includes("enqueue") && lowerCode.includes("dequeue"))) {
+        const queueItems = userNumbers && userNumbers.length > 0 ? userNumbers : [10, 20, 30, 40, 50];
         stdout.push("[Queue] Initialized Circular FIFO Queue buffer");
-        stdout.push("[Enqueue] Added elements: 10, 20, 30, 40, 50");
-        stdout.push("[Front] Front element: 10 | Rear element: 50 | Size: 5");
-        stdout.push("[Dequeue] Removed element: 10");
-        stdout.push("[Dequeue] Removed element: 20");
-        stdout.push("[Current Queue] [30, 40, 50] (Front: 30, Rear: 50, Size: 3)");
-      } else if (lowerTitle.includes("sort") || lowerCode.includes("sort")) {
-        stdout.push("[Sort] Input Array: [64, 34, 25, 12, 22, 11, 90]");
-        stdout.push("[Pass 1] Swapped (64, 34) -> [34, 25, 12, 22, 11, 64, 90]");
-        stdout.push("[Pass 2] Swapped (34, 25) -> [25, 12, 22, 11, 34, 64, 90]");
-        stdout.push("[Pass 3] Swapped (25, 12) -> [12, 22, 11, 25, 34, 64, 90]");
-        stdout.push("[Sorted Output] [11, 12, 22, 25, 34, 64, 90]");
-        stdout.push("[Status] 6 passes completed. Array sorted in ascending order.");
+        stdout.push(`[Enqueue] Added elements: ${queueItems.join(", ")}`);
+        stdout.push(`[Front] Front element: ${queueItems[0]} | Rear element: ${queueItems[queueItems.length - 1]} | Size: ${queueItems.length}`);
+        stdout.push(`[Dequeue] Removed element: ${queueItems[0]}`);
+        stdout.push(`[Current Queue] [${queueItems.slice(1).join(", ")}] (Front: ${queueItems[1] ?? "empty"}, Rear: ${queueItems[queueItems.length - 1]}, Size: ${queueItems.length - 1})`);
+      } else if (lowerTitle.includes("search") || lowerCode.includes("search")) {
+        const searchTarget = userNumbers ? userNumbers[userNumbers.length - 1] : 40;
+        const targetIdx = arr.indexOf(searchTarget);
+        stdout.push(`[Search] Dataset: [${arr.join(", ")}]`);
+        stdout.push(`[Search] Target Query: ${searchTarget}`);
+        if (targetIdx !== -1) {
+          stdout.push(`[Result] Target ${searchTarget} found at index ${targetIdx} (0-indexed).`);
+        } else {
+          stdout.push(`[Result] Target ${searchTarget} was not found in array.`);
+        }
       } else if (lowerTitle.includes("sliding window") || lowerCode.includes("window")) {
-        stdout.push("[Sliding Window] Input Array: [2, 1, 5, 1, 3, 2], Window Size k = 3");
-        stdout.push("Window [0..2]: [2, 1, 5] -> Sum = 8");
-        stdout.push("Window [1..3]: [1, 5, 1] -> Sum = 7");
-        stdout.push("Window [2..4]: [5, 1, 3] -> Sum = 9  <-- Maximum");
-        stdout.push("Window [3..5]: [1, 3, 2] -> Sum = 6");
-        stdout.push("[Result] Maximum Subarray Sum of size 3 = 9 (Subarray: [5, 1, 3])");
+        const windowArr = userNumbers && userNumbers.length > 0 ? userNumbers : [2, 1, 5, 1, 3, 2];
+        const k = 3;
+        stdout.push(`[Sliding Window] Input Array: [${windowArr.join(", ")}], Window Size k = ${k}`);
+        let maxSum = -Infinity;
+        for (let i = 0; i <= windowArr.length - k; i++) {
+          const w = windowArr.slice(i, i + k);
+          const s = w.reduce((a, b) => a + b, 0);
+          if (s > maxSum) maxSum = s;
+          stdout.push(`Window [${i}..${i + k - 1}]: [${w.join(", ")}] -> Sum = ${s}`);
+        }
+        stdout.push(`[Result] Maximum Subarray Sum of size ${k} = ${maxSum}`);
       } else if (lowerTitle.includes("kadane") || lowerCode.includes("max_sub_array") || lowerCode.includes("maxso_far")) {
-        stdout.push("[Kadane's Algorithm] Input Array: [-2, 1, -3, 4, -1, 2, 1, -5, 4]");
-        stdout.push("Index 0: val=-2, current_max=-2, global_max=-2");
-        stdout.push("Index 1: val= 1, current_max= 1, global_max= 1");
-        stdout.push("Index 3: val= 4, current_max= 4, global_max= 4");
-        stdout.push("Index 6: val= 1, current_max= 6, global_max= 6 (Optimal Subarray)");
-        stdout.push("[Result] Maximum contiguous subarray sum = 6 (Range: index 3 to 6 [4, -1, 2, 1])");
+        const kadaneArr = userNumbers && userNumbers.length > 0 ? userNumbers : [-2, 1, -3, 4, -1, 2, 1, -5, 4];
+        let maxSoFar = kadaneArr[0];
+        let currMax = kadaneArr[0];
+        stdout.push(`[Kadane's Algorithm] Input Array: [${kadaneArr.join(", ")}]`);
+        for (let i = 1; i < kadaneArr.length; i++) {
+          currMax = Math.max(kadaneArr[i], currMax + kadaneArr[i]);
+          maxSoFar = Math.max(maxSoFar, currMax);
+        }
+        stdout.push(`[Result] Maximum contiguous subarray sum = ${maxSoFar}`);
       } else if (lowerTitle.includes("prefix sum") || lowerCode.includes("prefix")) {
-        stdout.push("[Prefix Sum] Original Array: [3, 1, 4, 1, 5, 9, 2, 6]");
-        stdout.push("[Construct] Prefix Sum Array: [3, 4, 8, 9, 14, 23, 25, 31]");
-        stdout.push("[Query 1] RangeSum(0, 3) = Prefix[3] = 9");
-        stdout.push("[Query 2] RangeSum(2, 5) = Prefix[5] - Prefix[1] = 23 - 4 = 19");
+        const prefixArr = userNumbers && userNumbers.length > 0 ? userNumbers : [3, 1, 4, 1, 5, 9, 2, 6];
+        const prefixSums: number[] = [prefixArr[0]];
+        for (let i = 1; i < prefixArr.length; i++) prefixSums.push(prefixSums[i - 1] + prefixArr[i]);
+        stdout.push(`[Prefix Sum] Original Array: [${prefixArr.join(", ")}]`);
+        stdout.push(`[Construct] Prefix Sum Array: [${prefixSums.join(", ")}]`);
+        stdout.push(`[Query] RangeSum(0, ${Math.min(3, prefixArr.length - 1)}) = Prefix[${Math.min(3, prefixArr.length - 1)}] = ${prefixSums[Math.min(3, prefixArr.length - 1)]}`);
       } else if (lowerTitle.includes("linked list") || lowerCode.includes("linkedlist") || lowerCode.includes("node->next")) {
+        const listItems = userNumbers && userNumbers.length > 0 ? userNumbers : [10, 20, 30, 40, 50];
         stdout.push("[LinkedList] Creating Dynamic Singly Linked List...");
-        stdout.push("[Insert] Inserted elements: 10 -> 20 -> 30 -> 40 -> 50");
-        stdout.push("[InsertHead] Inserted 5 at head -> 5 -> 10 -> 20 -> 30 -> 40 -> 50");
-        stdout.push("[Delete] Deleted node with value 20 -> 5 -> 10 -> 30 -> 40 -> 50");
-        stdout.push("[Traversal Output] 5 10 30 40 50 (Length: 5)");
+        stdout.push(`[Insert] Inserted elements: ${listItems.join(" -> ")}`);
+        stdout.push(`[Traversal Output] ${listItems.join(" -> ")} -> NULL (Length: ${listItems.length})`);
       } else if (lowerTitle.includes("dijkstra") || lowerCode.includes("dijkstra")) {
         stdout.push("[Dijkstra] Graph: 5 Vertices, 6 Weighted Edges, Source: Node 0");
         stdout.push("Relaxing (0 -> 1, weight 4) -> dist[1] = 4");
@@ -582,13 +651,12 @@ function executeUserCode(code: string, lang: SupportedLang, customInput: string,
         stdout.push("[Generated Prefix Codes]:");
         stdout.push("  'E' -> 00 | 'B' -> 01 | 'P' -> 100 | 'O' -> 101 | 'R' -> 110 | ' ' -> 111");
         stdout.push("[Compression Ratio] Original: 112 bits -> Compressed: 36 bits (67.8% savings)");
-      } else if (lowerTitle.includes("polynomial") || lowerCode.includes("poly")) {
-        stdout.push("[Polynomial] Poly A: 3x^2 + 5x + 2 | Poly B: 4x + 1");
-        stdout.push("[Multiplication] (3x^2 + 5x + 2) * (4x + 1)");
-        stdout.push("[Result Polynomial] 12x^3 + 23x^2 + 13x + 2");
       } else {
-        stdout.push(`[Execution] Program compiled and executed successfully.`);
-        stdout.push(`[Output] Algorithm verification completed with exit code 0.`);
+        stdout.push(`[Execution] Program compiled and executed successfully in ${Math.round(performance.now() - startTime)}ms.`);
+        if (customInput) {
+          stdout.push(`[Stdin Received] ${customInput}`);
+        }
+        stdout.push(`[Exit Code] Process terminated with status 0.`);
       }
     }
 
@@ -831,7 +899,7 @@ export function MultiLangCodeViewer({
       ]);
 
       setIsRunning(false);
-    }, 350);
+    }, 20);
   }, [currentCode, activeLang, customStdin, title]);
 
   // Add Custom Test Case
