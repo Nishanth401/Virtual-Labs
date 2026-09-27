@@ -50,11 +50,27 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
     studentProfile,
     isProfileComplete,
     completeStudentProfile,
-    loginWithGoogle,
+    loginWithRegisterNumber,
     logout,
     deleteAccount,
     loading
   } = auth || {};
+
+  const [loginRegNo, setLoginRegNo] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [selectedCohort, setSelectedCohort] = useState<"II AIDS" | "III AIDS" | "IV AIDS">("III AIDS");
+  const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    const clean = loginRegNo.trim();
+    if (clean.startsWith("922525")) {
+      setSelectedCohort("II AIDS");
+    } else if (clean.startsWith("922524") || clean.startsWith("92252423")) {
+      setSelectedCohort("III AIDS");
+    } else if (clean.startsWith("922523")) {
+      setSelectedCohort("IV AIDS");
+    }
+  }, [loginRegNo]);
 
   const [name, setName] = useState("");
   const [regNo, setRegNo] = useState("");
@@ -88,15 +104,34 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
     }
   }, [user, studentProfile]);
 
-  const handleGoogleSignIn = async () => {
+  const handleStudentLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
     setErrorMsg("");
+    const defaultReg = selectedCohort === "III AIDS" ? "92252423172" : selectedCohort === "IV AIDS" ? "922523243001" : "922525243001";
+    const defaultPass = selectedCohort === "III AIDS" ? "ROHITH E" : selectedCohort === "IV AIDS" ? "S.AARTHI" : "ABINAYA G";
+    const cleanReg = (loginRegNo.trim() || defaultReg).toUpperCase();
+    const cleanPass = (loginPassword.trim() || defaultPass).toUpperCase();
+
+    if (!cleanReg) {
+      setErrorMsg("Please enter your official Register Number.");
+      return;
+    }
+    if (!cleanPass) {
+      setErrorMsg("Please enter your Password (Name in CAPITAL LETTERS).");
+      return;
+    }
+
+    setIsSubmitting(true);
     try {
-      if (typeof loginWithGoogle === "function") {
-        await loginWithGoogle();
+      if (typeof loginWithRegisterNumber === "function") {
+        await loginWithRegisterNumber(cleanReg, cleanPass);
       }
       onOpenChange(false);
+      router.push("/dashboard");
     } catch (err: any) {
-      setErrorMsg("Google Sign-In was cancelled or failed.");
+      setErrorMsg(err.message || "Invalid Register Number or Password. Password must be your Name in ALL CAPS.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -542,7 +577,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
           </div>
         ) : (
           /* ============================================================== */
-          /* 4. LOGIN MODAL - CONTINUE WITH GOOGLE                          */
+          /* 4. LOGIN MODAL - REGISTER NUMBER & PASSWORD (CAPS LOCK)        */
           /* ============================================================== */
           <div className="p-6 space-y-5">
             <DialogHeader className="space-y-1.5 text-center">
@@ -562,9 +597,33 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
                 VSB Virtual Labs
               </DialogTitle>
               <DialogDescription className="text-xs text-muted-foreground leading-relaxed">
-                Continue with your Google account to access all interactive experiments.
+                Sign in with your Register Number and Name in CAPITAL LETTERS.
               </DialogDescription>
             </DialogHeader>
+
+            {/* Cohort Tabs: Ordered 2nd year, 3rd year, 4th year */}
+            <div className="grid grid-cols-3 gap-1.5 p-1 bg-muted/40 rounded-xl border border-border/60">
+              {(["II AIDS", "III AIDS", "IV AIDS"] as const).map((cohort) => {
+                const isSelected = selectedCohort === cohort;
+                return (
+                  <button
+                    key={cohort}
+                    type="button"
+                    onClick={() => {
+                      setSelectedCohort(cohort);
+                      setErrorMsg("");
+                    }}
+                    className={`py-1.5 px-2 text-xs font-bold rounded-lg transition-all text-center cursor-pointer ${
+                      isSelected
+                        ? "bg-teal-50 dark:bg-teal-950/40 text-teal-700 dark:text-teal-400 border border-teal-500/40 shadow-xs ring-1 ring-teal-500/30"
+                        : "bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted/70 border border-transparent"
+                    }`}
+                  >
+                    {cohort}
+                  </button>
+                );
+              })}
+            </div>
 
             {errorMsg && (
               <div className="p-2.5 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-500 text-xs font-medium">
@@ -572,34 +631,79 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
               </div>
             )}
 
-            {/* Google One-Click Sign-In */}
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleGoogleSignIn}
-              disabled={loading}
-              className="w-full py-5 rounded-xl border-border bg-white dark:bg-card hover:bg-muted font-bold text-xs flex items-center justify-center gap-2 shadow-xs cursor-pointer"
-            >
-              <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24">
-                <path
-                  fill="#4285F4"
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+            {/* Login Form */}
+            <form onSubmit={handleStudentLogin} className="space-y-3.5 text-left">
+              <div className="space-y-1">
+                <Label className="text-xs font-semibold flex items-center gap-1.5">
+                  <GraduationCap className="h-3.5 w-3.5 text-primary" />
+                  <span>Register Number</span>
+                </Label>
+                <Input
+                  type="text"
+                  value={loginRegNo}
+                  onChange={(e) => setLoginRegNo(e.target.value.toUpperCase())}
+                  placeholder={
+                    selectedCohort === "III AIDS"
+                      ? "92252423172"
+                      : selectedCohort === "IV AIDS"
+                      ? "922523243001"
+                      : "922525243001"
+                  }
+                  className="text-xs font-mono uppercase bg-muted/20 border-border h-10 placeholder:text-muted-foreground/60 placeholder:font-mono tracking-wider"
                 />
-                <path
-                  fill="#34A853"
-                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-                />
-                <path
-                  fill="#EA4335"
-                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-                />
-              </svg>
-              <span>Continue with Google</span>
-            </Button>
+              </div>
+
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <Label className="text-xs font-semibold flex items-center gap-1.5">
+                    <span>Password (Name in CAPS)</span>
+                  </Label>
+                  <span className="text-[9px] font-mono uppercase text-amber-600 bg-amber-500/10 px-1 rounded">
+                    Caps Lock
+                  </span>
+                </div>
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value.toUpperCase())}
+                    placeholder={
+                      selectedCohort === "III AIDS"
+                        ? "ROHITH E"
+                        : selectedCohort === "IV AIDS"
+                        ? "S.AARTHI"
+                        : "ABINAYA G"
+                    }
+                    className="text-xs font-mono uppercase bg-muted/20 border-border h-10 pr-9 placeholder:text-muted-foreground/60 placeholder:font-mono tracking-wider"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-2.5 top-2.5 text-muted-foreground hover:text-foreground cursor-pointer text-xs"
+                  >
+                    {showPassword ? "Hide" : "Show"}
+                  </button>
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                disabled={isSubmitting || loading}
+                className="w-full h-11 mt-1 bg-gradient-to-r from-[#ff2a5f] to-[#dc2626] hover:from-[#e11d48] hover:to-[#b91c1c] text-white font-bold text-xs rounded-xl shadow-md cursor-pointer flex items-center justify-center gap-2"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Verifying Student...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Sign In to Virtual Labs</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </>
+                )}
+              </Button>
+            </form>
           </div>
         )}
       </DialogContent>

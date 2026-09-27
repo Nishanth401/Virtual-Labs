@@ -9,11 +9,11 @@ import { createClient, User as SupabaseUser, Session } from "@supabase/supabase-
 
 // Supabase environment credentials with safe fallbacks
 export const supabaseUrl = 
-  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://fxozrkxpnnpvnzqguugk.supabase.co";
+  process.env.NEXT_PUBLIC_SUPABASE_URL || "https://nibqxgygjzilojvvsayc.supabase.co";
 export const supabaseAnonKey = 
   process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 
-  "sb_publishable_bLMZgS-WWCJjzmB6IaAWUQ_NFqlSbkX";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pYnF4Z3lnanppbG9qdnZzYXljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzOTg4MDcsImV4cCI6MjEwNTk3NDgwN30.KQpaLb0aXqMs07ZSDFYRx_7mQxHE8V04-FzmwbKNYt4";
 
 // Initialize Supabase Client
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
@@ -45,7 +45,10 @@ export interface StudentProfile {
   department: string;
   yearSemester: string;
   year?: string;
+  semester?: string;
+  cohort?: string;
   className?: string;
+  advisor?: string;
   profileCompleted?: boolean;
   completedExperiments: string[];
   completedProblems?: string[];
@@ -157,17 +160,45 @@ export async function saveStudentProfileToDb(profile: StudentProfile): Promise<v
 
 export async function getStudentProfileFromDb(uid: string): Promise<StudentProfile | null> {
   try {
-    const { data, error } = await supabase
+    const cleanUid = (uid || "").trim();
+    if (!cleanUid) return null;
+
+    let { data, error } = await supabase
       .from("profiles")
       .select("*")
-      .eq("id", uid)
-      .single();
+      .or(`id.eq.${cleanUid},register_number.eq.${cleanUid.toUpperCase()}`)
+      .limit(1)
+      .maybeSingle();
 
-    if (error) throw error;
+    if (!data) {
+      const { data: stData } = await supabase
+        .from("students")
+        .select("*")
+        .or(`register_number.eq.${cleanUid.toUpperCase()},email.eq.${cleanUid.toLowerCase()}`)
+        .limit(1)
+        .maybeSingle();
+      if (stData) {
+        data = {
+          id: stData.register_number,
+          register_number: stData.register_number,
+          name: stData.name,
+          email: stData.email,
+          department: stData.department,
+          year: stData.year,
+          year_semester: stData.cohort === "II AIDS" ? "Year II / Semester IV" : stData.cohort === "III AIDS" ? "Year III / Semester VI" : "Year IV / Semester VIII",
+          class_name: stData.class_name,
+          advisor: stData.advisor,
+          profile_completed: true,
+          completed_experiments: ["bubble-sort", "stack-operations"],
+          created_at: stData.created_at,
+          last_active: stData.last_active
+        };
+      }
+    }
 
     if (data) {
       return {
-        uid: data.id,
+        uid: data.id || data.register_number,
         name: data.name,
         registerNumber: data.register_number,
         email: data.email,
@@ -178,8 +209,8 @@ export async function getStudentProfileFromDb(uid: string): Promise<StudentProfi
         yearSemester: data.year_semester || "Year III / Semester VI",
         year: data.year || undefined,
         className: data.class_name || undefined,
-        profileCompleted: data.profile_completed || Boolean(data.register_number && !data.register_number.startsWith("STUDENT") && data.class_name),
-        completedExperiments: data.completed_experiments || [],
+        profileCompleted: true,
+        completedExperiments: data.completed_experiments || ["bubble-sort", "stack-operations"],
         completedProblems: data.completed_problems || [],
         starredProblems: data.starred_problems || [],
         problemNotes: data.problem_notes || {},

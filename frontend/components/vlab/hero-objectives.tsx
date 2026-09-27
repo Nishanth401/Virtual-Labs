@@ -151,12 +151,12 @@ export function HeroObjectives() {
           {/* 1st BLOCK (LEFT): VSB ENGINEERING COLLEGE EMBLEM                          */}
           {/* ========================================================================= */}
           <div className="lg:col-span-5 w-full flex justify-center order-2 lg:order-1">
-            <div className="relative w-full max-w-sm sm:max-w-md flex flex-col justify-center items-center p-6 sm:p-8 rounded-2xl bg-gradient-to-b from-amber-500/5 via-sky-500/5 to-transparent border border-slate-200/80 dark:border-zinc-800 shadow-xl shadow-sky-500/5">
+            <div className="relative w-full max-w-sm sm:max-w-md flex flex-col justify-center items-center p-6 sm:p-8 rounded-2xl bg-white dark:bg-card border border-slate-200/80 dark:border-zinc-800 shadow-xl shadow-sky-500/5">
               <div className="relative w-48 h-48 sm:w-60 sm:h-60 flex items-center justify-center">
                 <img
                   src="/vsb-logo.png"
                   alt="V.S.B. Engineering College Logo"
-                  className="w-full h-full object-contain drop-shadow-md select-none hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal select-none hover:scale-105 transition-transform duration-500"
                 />
               </div>
               <div className="mt-4 text-center space-y-1">
