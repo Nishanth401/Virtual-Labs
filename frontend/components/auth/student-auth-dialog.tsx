@@ -56,10 +56,21 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
     loading
   } = auth || {};
 
-  const [loginRegNo, setLoginRegNo] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-  const [selectedCohort, setSelectedCohort] = useState<"III AIDS" | "IV AIDS" | "II AIDS">("III AIDS");
+  const [loginRegNo, setLoginRegNo] = useState("92252423172");
+  const [loginPassword, setLoginPassword] = useState("ROHITH E");
+  const [selectedCohort, setSelectedCohort] = useState<"II AIDS" | "III AIDS" | "IV AIDS">("III AIDS");
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    const clean = loginRegNo.trim();
+    if (clean.startsWith("922525")) {
+      setSelectedCohort("II AIDS");
+    } else if (clean.startsWith("922524") || clean.startsWith("92252423")) {
+      setSelectedCohort("III AIDS");
+    } else if (clean.startsWith("922523")) {
+      setSelectedCohort("IV AIDS");
+    }
+  }, [loginRegNo]);
 
   const [name, setName] = useState("");
   const [regNo, setRegNo] = useState("");
@@ -588,9 +599,9 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
               </DialogDescription>
             </DialogHeader>
 
-            {/* Cohort Tabs */}
+            {/* Cohort Tabs: Ordered 2nd year, 3rd year, 4th year */}
             <div className="grid grid-cols-3 gap-1.5 p-1 bg-muted/40 rounded-xl border border-border/60">
-              {(["III AIDS", "IV AIDS", "II AIDS"] as const).map((cohort) => {
+              {(["II AIDS", "III AIDS", "IV AIDS"] as const).map((cohort) => {
                 const isSelected = selectedCohort === cohort;
                 return (
                   <button

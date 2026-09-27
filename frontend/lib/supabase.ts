@@ -45,7 +45,10 @@ export interface StudentProfile {
   department: string;
   yearSemester: string;
   year?: string;
+  semester?: string;
+  cohort?: string;
   className?: string;
+  advisor?: string;
   profileCompleted?: boolean;
   completedExperiments: string[];
   completedProblems?: string[];

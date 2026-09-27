@@ -24,47 +24,49 @@ import {
   EyeOff,
   AlertCircle,
   KeyRound,
-  Users,
-  CheckCircle2,
-  Sparkles
+  CheckCircle2
 } from "lucide-react";
 
-type CohortType = "III AIDS" | "IV AIDS" | "II AIDS";
+type CohortType = "II AIDS" | "III AIDS" | "IV AIDS";
 
 const COHORT_CONFIG: Record<
   CohortType,
   {
     label: string;
     year: string;
+    semester: string;
     batch: string;
     sampleReg: string;
     sampleName: string;
     prefix: string;
   }
 > = {
-  "III AIDS": {
-    label: "III AIDS",
-    year: "Third Year (Sem VI)",
-    batch: "2024 - 2028 Batch",
-    sampleReg: "922524243001",
-    sampleName: "ABINAYA K",
-    prefix: "922524"
-  },
-  "IV AIDS": {
-    label: "IV AIDS",
-    year: "Fourth Year (Sem VIII)",
-    batch: "2023 - 2027 Batch",
-    sampleReg: "922523243001",
-    sampleName: "S.AARTHI",
-    prefix: "922523"
-  },
   "II AIDS": {
     label: "II AIDS",
-    year: "Second Year (Sem IV)",
+    year: "Second Year",
+    semester: "Semester III",
     batch: "2025 - 2029 Batch",
     sampleReg: "922525243001",
     sampleName: "ABINAYA G",
     prefix: "922525"
+  },
+  "III AIDS": {
+    label: "III AIDS",
+    year: "Third Year",
+    semester: "Semester V",
+    batch: "2024 - 2028 Batch",
+    sampleReg: "92252423172",
+    sampleName: "ROHITH E",
+    prefix: "922524"
+  },
+  "IV AIDS": {
+    label: "IV AIDS",
+    year: "Fourth Year",
+    semester: "Semester VII / Capstone",
+    batch: "2023 - 2027 Batch",
+    sampleReg: "922523243001",
+    sampleName: "S.AARTHI",
+    prefix: "922523"
   }
 };
 
@@ -78,9 +80,12 @@ export default function AuthLoginPage() {
     loading: authLoading
   } = useAuth();
 
+  // 1. Ordered cohorts: 2nd year, 3rd year, 4th year
+  // 2. Default Register Number: 92252423172
+  // 3. Default Password (Name in CAPS): ROHITH E
   const [selectedCohort, setSelectedCohort] = useState<CohortType>("III AIDS");
-  const [registerNumber, setRegisterNumber] = useState("");
-  const [password, setPassword] = useState("");
+  const [registerNumber, setRegisterNumber] = useState("92252423172");
+  const [password, setPassword] = useState("ROHITH E");
   const [showPassword, setShowPassword] = useState(false);
   const [capsLockActive, setCapsLockActive] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -90,12 +95,12 @@ export default function AuthLoginPage() {
   // Auto-detect cohort as student types register number
   useEffect(() => {
     const clean = registerNumber.trim();
-    if (clean.startsWith("922524")) {
+    if (clean.startsWith("922525")) {
+      setSelectedCohort("II AIDS");
+    } else if (clean.startsWith("922524") || clean.startsWith("92252423")) {
       setSelectedCohort("III AIDS");
     } else if (clean.startsWith("922523")) {
       setSelectedCohort("IV AIDS");
-    } else if (clean.startsWith("922525")) {
-      setSelectedCohort("II AIDS");
     }
   }, [registerNumber]);
 
@@ -146,7 +151,8 @@ export default function AuthLoginPage() {
     <div className="flex flex-col min-h-screen bg-slate-50 dark:bg-slate-950">
       <Navbar />
 
-      <main className="flex-1 flex items-center justify-center py-16 sm:py-20 px-4">
+      {/* Main container with generous top spacing to prevent navbar overlap (fixes edge case in Image 1) */}
+      <main className="flex-1 flex items-center justify-center pt-36 sm:pt-44 pb-20 px-4">
         <div className="w-full max-w-md p-6 sm:p-8 bg-white dark:bg-card border border-border shadow-2xl rounded-2xl space-y-6">
           
           {/* Header Brand */}
@@ -195,6 +201,7 @@ export default function AuthLoginPage() {
                   <p className="text-xs text-muted-foreground font-mono">
                     {studentProfile?.className || studentProfile?.year || "Dept. of AI & DS"}
                     {studentProfile?.year && ` • ${studentProfile.year}`}
+                    {studentProfile?.yearSemester && ` (${studentProfile.yearSemester})`}
                   </p>
                   {studentProfile?.advisor && (
                     <p className="text-[11px] text-muted-foreground">
@@ -245,19 +252,19 @@ export default function AuthLoginPage() {
             /* ======================================================== */
             <div className="space-y-5 pt-1">
               
-              {/* Cohort Tabs (Image 1 Style) */}
+              {/* Cohort Tabs: Ordered 2nd year, 3rd year, 4th year */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between px-0.5">
                   <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
                     Select AIDS Cohort:
                   </span>
-                  <span className="text-[10px] text-muted-foreground font-mono">
-                    {COHORT_CONFIG[selectedCohort].batch}
+                  <span className="text-[10px] text-primary font-semibold font-mono">
+                    {COHORT_CONFIG[selectedCohort].semester}
                   </span>
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 p-1 bg-muted/40 rounded-xl border border-border/60">
-                  {(["III AIDS", "IV AIDS", "II AIDS"] as CohortType[]).map((cohort) => {
+                  {(["II AIDS", "III AIDS", "IV AIDS"] as CohortType[]).map((cohort) => {
                     const isSelected = selectedCohort === cohort;
                     return (
                       <button
@@ -298,7 +305,7 @@ export default function AuthLoginPage() {
               {/* Login Form */}
               <form onSubmit={handleLogin} className="space-y-4">
                 
-                {/* 1. Register Number Input */}
+                {/* 1. Register Number Input (Default: 92252423172) */}
                 <div className="space-y-1.5 text-left">
                   <div className="flex items-center justify-between">
                     <Label className="text-xs font-semibold flex items-center gap-1.5 text-foreground">
@@ -306,7 +313,7 @@ export default function AuthLoginPage() {
                       <span>Register Number</span>
                     </Label>
                     <span className="text-[10px] text-muted-foreground font-mono">
-                      e.g. {COHORT_CONFIG[selectedCohort].sampleReg}
+                      Official Reg No
                     </span>
                   </div>
                   <div className="relative">
@@ -328,7 +335,7 @@ export default function AuthLoginPage() {
                   </div>
                 </div>
 
-                {/* 2. Password (Name in CAPS LOCK) Input */}
+                {/* 2. Password (Name in CAPS LOCK) Input (Default: ROHITH E) */}
                 <div className="space-y-1.5 text-left">
                   <div className="flex items-center justify-between">
                     <Label className="text-xs font-semibold flex items-center gap-1.5 text-foreground">
@@ -336,7 +343,7 @@ export default function AuthLoginPage() {
                       <span>Password (Name in CAPS)</span>
                     </Label>
                     <Badge variant="outline" className="text-[9px] font-mono uppercase text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/30">
-                      Caps Lock Only
+                      Caps Lock
                     </Badge>
                   </div>
                   <div className="relative">
@@ -367,32 +374,16 @@ export default function AuthLoginPage() {
                   {/* Caps Lock Indicator */}
                   {capsLockActive && (
                     <p className="text-[11px] text-amber-600 dark:text-amber-400 flex items-center gap-1 font-mono pt-0.5">
-                      <KeyRound className="h-3 w-3" /> Caps Lock is ON (Required for Name password)
+                      <KeyRound className="h-3 w-3" /> Caps Lock is ON
                     </p>
                   )}
-                </div>
-
-                {/* Help Information Card */}
-                <div className="p-3 bg-muted/30 border border-border/50 rounded-xl space-y-1 text-left">
-                  <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
-                    <Sparkles className="h-3.5 w-3.5 text-amber-500 shrink-0" />
-                    <span>Login Credentials Guide</span>
-                  </div>
-                  <ul className="text-[11px] text-muted-foreground space-y-0.5 list-disc list-inside">
-                    <li>
-                      <span className="font-semibold text-foreground/80">Register No:</span> As registered in Anna University / College
-                    </li>
-                    <li>
-                      <span className="font-semibold text-foreground/80">Password:</span> Your Official Name in <span className="font-bold text-foreground">ALL CAPS</span>
-                    </li>
-                  </ul>
                 </div>
 
                 {/* Submit Action */}
                 <Button
                   type="submit"
                   disabled={submitting || authLoading}
-                  className="w-full h-11 bg-gradient-to-r from-[#ff2a5f] to-[#dc2626] hover:from-[#e11d48] hover:to-[#b91c1c] text-white text-xs font-bold rounded-xl shadow-lg shadow-red-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full h-11 bg-gradient-to-r from-[#ff2a5f] to-[#dc2626] hover:from-[#e11d48] hover:to-[#b91c1c] text-white text-xs font-bold rounded-xl shadow-lg shadow-red-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer mt-2"
                 >
                   {submitting ? (
                     <>

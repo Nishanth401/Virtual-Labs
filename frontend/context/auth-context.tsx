@@ -159,15 +159,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }));
       }
     } else {
+      let resolvedYear = currentUser.user_metadata?.year || "III Year";
+      let resolvedSemester = "Semester V";
+      let resolvedCohort = currentUser.user_metadata?.cohort || "III AIDS";
+
+      if (resolvedCohort.includes("II") || resolvedYear.includes("II") || regNo.startsWith("922525")) {
+        resolvedYear = "II Year";
+        resolvedSemester = "Semester III";
+        resolvedCohort = "II AIDS";
+      } else if (resolvedCohort.includes("IV") || resolvedYear.includes("IV") || regNo.startsWith("922523")) {
+        resolvedYear = "IV Year";
+        resolvedSemester = "Semester VII";
+        resolvedCohort = "IV AIDS";
+      } else {
+        resolvedYear = "III Year";
+        resolvedSemester = "Semester V";
+        resolvedCohort = "III AIDS";
+      }
+
       const defaultProfile: StudentProfile = {
         uid: currentUser.id,
         name: displayName,
         registerNumber: regNo,
         email,
         department: "Artificial Intelligence & Data Science",
-        yearSemester: "Year III / Semester VI",
-        year: currentUser.user_metadata?.year || "III Year",
-        className: currentUser.user_metadata?.cohort || "III AIDS",
+        year: resolvedYear,
+        semester: resolvedSemester,
+        cohort: resolvedCohort,
+        className: resolvedCohort,
+        yearSemester: `${resolvedYear} / ${resolvedSemester}`,
         profileCompleted: true,
         completedExperiments: ["bubble-sort", "stack-operations"],
         completedProblems: [],
@@ -428,6 +448,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         created_at: new Date().toISOString()
       };
 
+      // Map year and semester accurately based on cohort/reg
+      const reg = authenticatedStudent.registerNumber;
+      const rawCohort = authenticatedStudent.cohort || "";
+      const rawYear = authenticatedStudent.year || "";
+      let resolvedYear = rawYear || "III Year";
+      let resolvedSemester = "Semester V";
+      let resolvedCohort = rawCohort || "III AIDS";
+
+      if (rawCohort.includes("II") || rawYear.includes("II") || rawYear.includes("Second") || reg.startsWith("922525")) {
+        resolvedYear = "II Year";
+        resolvedSemester = "Semester III";
+        resolvedCohort = "II AIDS";
+      } else if (rawCohort.includes("IV") || rawYear.includes("IV") || rawYear.includes("Fourth") || reg.startsWith("922523")) {
+        resolvedYear = "IV Year";
+        resolvedSemester = "Semester VII";
+        resolvedCohort = "IV AIDS";
+      } else {
+        resolvedYear = "III Year";
+        resolvedSemester = "Semester V";
+        resolvedCohort = "III AIDS";
+      }
+
       const profileObj: StudentProfile = {
         uid: authenticatedStudent.registerNumber,
         name: authenticatedStudent.name,
@@ -437,9 +479,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         collegeName: "VSB Engineering College",
         collegeCode: "9225",
         department: authenticatedStudent.department || "Artificial Intelligence & Data Science",
-        year: authenticatedStudent.year,
-        className: authenticatedStudent.className || authenticatedStudent.cohort,
-        yearSemester: `${authenticatedStudent.year} / Semester VI`,
+        year: resolvedYear,
+        semester: resolvedSemester,
+        cohort: resolvedCohort,
+        className: authenticatedStudent.className || resolvedCohort,
+        yearSemester: `${resolvedYear} / ${resolvedSemester}`,
         advisor: authenticatedStudent.advisor,
         profileCompleted: true,
         completedExperiments: ["bubble-sort", "stack-operations"],
