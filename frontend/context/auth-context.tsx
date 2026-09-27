@@ -133,45 +133,51 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
     setUser(userWithCompat);
 
-    const defaultProfile: StudentProfile = {
-      uid: currentUser.id,
-      name: displayName,
-      registerNumber: regNo,
-      email,
-      department: "Artificial Intelligence & Data Science",
-      yearSemester: "Year III / Semester VI",
-      completedExperiments: ["bubble-sort", "stack-operations"],
-      completedProblems: [],
-      starredProblems: [],
-      problemNotes: {},
-      quizScores: {},
-      feedbacks: {},
-      createdAt: new Date().toISOString(),
-      lastActive: new Date().toISOString()
-    };
-
     let existing: StudentProfile | null = null;
     try {
       existing = await getStudentProfileFromDb(currentUser.id);
+      if (!existing && regNo && !regNo.startsWith("STUDENT")) {
+        existing = await getStudentProfileFromDb(regNo);
+      }
     } catch {
       // fallback
     }
 
-    const isProfileAlreadyCompleted = Boolean(
-      existing?.profileCompleted || (
-        existing?.registerNumber &&
-        !existing.registerNumber.startsWith("STUDENT") &&
-        existing?.className &&
-        existing?.year
-      )
-    );
-
     if (existing) {
       setStudentProfile({
         ...existing,
-        profileCompleted: isProfileAlreadyCompleted
+        profileCompleted: true
       });
+      if (typeof window !== "undefined") {
+        localStorage.setItem("vsb_student_profile_data", JSON.stringify(existing));
+        localStorage.setItem("vlab_active_student", JSON.stringify({
+          regNo: existing.registerNumber,
+          name: existing.name,
+          year: existing.year,
+          className: existing.className,
+          department: existing.department
+        }));
+      }
     } else {
+      const defaultProfile: StudentProfile = {
+        uid: currentUser.id,
+        name: displayName,
+        registerNumber: regNo,
+        email,
+        department: "Artificial Intelligence & Data Science",
+        yearSemester: "Year III / Semester VI",
+        year: currentUser.user_metadata?.year || "III Year",
+        className: currentUser.user_metadata?.cohort || "III AIDS",
+        profileCompleted: true,
+        completedExperiments: ["bubble-sort", "stack-operations"],
+        completedProblems: [],
+        starredProblems: [],
+        problemNotes: {},
+        quizScores: {},
+        feedbacks: {},
+        createdAt: new Date().toISOString(),
+        lastActive: new Date().toISOString()
+      };
       await saveStudentProfileToDb(defaultProfile);
       setStudentProfile(defaultProfile);
     }
@@ -337,7 +343,138 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const loginWithRegisterNumber = async (regNoOrEmail: string, pass: string) => {
-    return signInWithEmail(regNoOrEmail, pass);
+    setLoading(true);
+    try {
+      const cleanReg = regNoOrEmail.trim().toUpperCase();
+      const cleanPass = pass.trim().toUpperCase();
+      const email = cleanReg.includes("@") ? cleanReg.toLowerCase() : `${cleanReg.toLowerCase()}@vsb.ac.in`;
+
+      let authenticatedStudent: any = null;
+
+      // 1. Try Supabase Auth signInWithPassword
+      try {
+        const { data: authData, error: authErr } = await supabase.auth.signInWithPassword({
+          email,
+          password: cleanPass
+        });
+        if (authData?.user) {
+          await handleUserSession(authData.user);
+          return { email, emailVerified: true };
+        }
+      } catch (authErr) {
+        // Fall through to RPC verification
+      }
+
+      // 2. Try authenticate_student RPC in Supabase Postgres
+      try {
+        const { data: rpcData, error: rpcErr } = await supabase.rpc("authenticate_student", {
+          p_reg_no: cleanReg,
+          p_password: cleanPass
+        });
+        if (rpcData && rpcData.success && rpcData.student) {
+          authenticatedStudent = rpcData.student;
+        }
+      } catch (rpcErr) {
+        // Fall through to table query
+      }
+
+      // 3. Fallback direct query to public.students table
+      if (!authenticatedStudent) {
+        const { data: stRow } = await supabase
+          .from("students")
+          .select("*")
+          .eq("register_number", cleanReg)
+          .maybeSingle();
+
+        if (stRow) {
+          const passMatch =
+            stRow.password.toUpperCase() === cleanPass ||
+            stRow.password.replace(/\s+/g, "").toUpperCase() === cleanPass.replace(/\s+/g, "") ||
+            stRow.password.replace(/\./g, "").toUpperCase() === cleanPass.replace(/\./g, "") ||
+            stRow.password.replace(/[\s\.]/g, "").toUpperCase() === cleanPass.replace(/[\s\.]/g, "");
+          if (passMatch) {
+            authenticatedStudent = {
+              registerNumber: stRow.register_number,
+              name: stRow.name,
+              email: stRow.email,
+              year: stRow.year,
+              cohort: stRow.cohort,
+              className: stRow.class_name,
+              department: stRow.department,
+              advisor: stRow.advisor
+            };
+          }
+        }
+      }
+
+      if (!authenticatedStudent) {
+        throw new Error("Invalid Register Number or Password. Password must be your Name in CAPITAL LETTERS.");
+      }
+
+      // Set user session and profile from verified student
+      const userObj: User = {
+        id: authenticatedStudent.registerNumber,
+        uid: authenticatedStudent.registerNumber,
+        email: authenticatedStudent.email,
+        displayName: authenticatedStudent.name,
+        app_metadata: {},
+        user_metadata: {
+          name: authenticatedStudent.name,
+          register_number: authenticatedStudent.registerNumber,
+          year: authenticatedStudent.year,
+          cohort: authenticatedStudent.cohort
+        },
+        aud: "authenticated",
+        created_at: new Date().toISOString()
+      };
+
+      const profileObj: StudentProfile = {
+        uid: authenticatedStudent.registerNumber,
+        name: authenticatedStudent.name,
+        registerNumber: authenticatedStudent.registerNumber,
+        email: authenticatedStudent.email,
+        collegeSlug: "vsb",
+        collegeName: "VSB Engineering College",
+        collegeCode: "9225",
+        department: authenticatedStudent.department || "Artificial Intelligence & Data Science",
+        year: authenticatedStudent.year,
+        className: authenticatedStudent.className || authenticatedStudent.cohort,
+        yearSemester: `${authenticatedStudent.year} / Semester VI`,
+        advisor: authenticatedStudent.advisor,
+        profileCompleted: true,
+        completedExperiments: ["bubble-sort", "stack-operations"],
+        completedProblems: [],
+        starredProblems: [],
+        problemNotes: {},
+        quizScores: {},
+        feedbacks: {},
+        createdAt: new Date().toISOString(),
+        lastActive: new Date().toISOString()
+      };
+
+      setUser(userObj);
+      setStudentProfile(profileObj);
+
+      if (typeof window !== "undefined") {
+        localStorage.setItem("vlab_active_student", JSON.stringify({
+          regNo: authenticatedStudent.registerNumber,
+          name: authenticatedStudent.name,
+          year: authenticatedStudent.year,
+          className: authenticatedStudent.className || authenticatedStudent.cohort,
+          department: authenticatedStudent.department,
+          advisor: authenticatedStudent.advisor,
+          collegeSlug: "vsb",
+          collegeName: "VSB Engineering College"
+        }));
+        localStorage.setItem("vsb_student_profile_data", JSON.stringify(profileObj));
+        localStorage.setItem(`vlab_student_${authenticatedStudent.registerNumber}`, JSON.stringify(profileObj));
+        window.dispatchEvent(new Event("storage"));
+      }
+
+      return { email: authenticatedStudent.email, emailVerified: true };
+    } finally {
+      setLoading(false);
+    }
   };
 
   const registerWithRegisterNumber = async (

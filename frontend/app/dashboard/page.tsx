@@ -148,11 +148,25 @@ export default function StudentDashboardPage() {
                 transition={{ duration: 0.5, delay: 0.25 }}
                 className="flex items-center gap-2 text-xs text-muted-foreground font-mono flex-wrap pt-0.5"
               >
-                <span className="px-2.5 py-0.5 rounded-md bg-muted/80 text-foreground font-semibold border border-border/60">
-                  Roll No: {studentRollNo}
+                <span className="px-2.5 py-0.5 rounded-md bg-primary/10 text-primary font-semibold border border-primary/20">
+                  Reg No: {studentRollNo}
                 </span>
+                {studentProfile?.year && (
+                  <>
+                    <span>•</span>
+                    <span className="px-2 py-0.5 rounded-md bg-teal-500/10 text-teal-600 dark:text-teal-400 font-semibold border border-teal-500/20">
+                      {studentProfile.className || studentProfile.year}
+                    </span>
+                  </>
+                )}
+                {studentProfile?.advisor && (
+                  <>
+                    <span>•</span>
+                    <span className="text-foreground/90 font-medium">Advisor: {studentProfile.advisor}</span>
+                  </>
+                )}
                 <span>•</span>
-                <span>Department of Artificial Intelligence &amp; Data Science</span>
+                <span>Dept. of Artificial Intelligence &amp; Data Science</span>
                 <span>•</span>
                 <span className="text-slate-500">VSB Engineering College</span>
               </motion.div>
