@@ -726,5 +726,336 @@ def lambda_handler(event, context):
         description: "Write a Python script using boto3 that uploads a local file to an S3 bucket and generates a pre-signed URL valid for 60 minutes."
       }
     ]
+  },
+  "cloud-lab-manual": {
+    id: "cloud-lab-manual",
+    title: "Cloud Service Management & Virtualization Laboratory Manual",
+    subject: "Cloud Service Management Lab",
+    provider: "Department of Artificial Intelligence and Data Science",
+    source: "VSB Engineering College Autonomous Curriculum (R2023 / R2021)",
+    subtitle: "Hands-on Manual: AWS EC2, S3, Docker Containerization, Kubernetes Pod Orchestration & Nagios Infrastructure Monitoring",
+    category: "Academic Laboratory Manual",
+    readTime: "50 mins",
+    difficulty: "Advanced",
+    simulatorUrl: "/labs/cloud-service-management",
+    simulatorName: "Cloud & Container Simulator",
+    overview:
+      "This official laboratory manual provides structured experiments for Cloud Service Management and DevOps. Designed in accordance with autonomous curriculum requirements, it covers virtual machine provisioning on AWS EC2, S3 bucket lifecycle management, multi-stage Docker containerization, microservice scaling via Kubernetes Deployments, and full-stack host monitoring with Nagios.",
+    learningObjectives: [
+      "Provision and configure Linux virtual instances on AWS EC2 using secure SSH keypairs and Security Group firewall rules",
+      "Deploy scalable object storage pipelines with AWS S3, bucket policies, and cross-origin resource sharing (CORS)",
+      "Build lightweight multi-container microservice images using optimized Dockerfiles and Docker Compose networks",
+      "Orchestrate container workloads using Kubernetes YAML manifests with automated replica self-healing and load balancing",
+      "Configure active server infrastructure monitoring, latency thresholds, and notification alerts via Nagios Core"
+    ],
+    tags: ["Cloud", "AWS", "Docker", "Kubernetes", "DevOps", "Nagios", "Lab Manual", "VSB Engineering College"],
+    keyConcepts: [
+      {
+        title: "1. Cloud Compute & Storage Virtualization",
+        description:
+          "Compute virtualization abstracts hardware through hypervisors, while object storage provides horizontally scalable distributed storage.",
+        points: [
+          "AWS EC2: Elastic compute capacity with customizable vCPUs, EBS persistent block storage, and AMI templates.",
+          "AWS S3: High-durability (99.999999999%) bucket storage with server-side encryption (SSE-S3/SSE-KMS) and lifecycle policies.",
+          "Security Groups: Stateful packet inspection firewalls governing inbound and outbound CIDR block permissions."
+        ]
+      },
+      {
+        title: "2. Containerization vs Traditional Virtualization",
+        description:
+          "Containers package user-space application runtimes sharing the host Linux kernel, eliminating OS hypervisor overhead.",
+        points: [
+          "Dockerfile: Declarative instructions (FROM, WORKDIR, COPY, RUN, EXPOSE, CMD) creating read-only image layers.",
+          "Docker Compose: Multi-container orchestration defining isolated bridge networks and persistent host volume mounts.",
+          "Alpine Base Images: Reducing attack surface and deployment footprint from 1 GB+ down to < 50 MB."
+        ]
+      },
+      {
+        title: "3. Kubernetes Pod Orchestration & Service Discovery",
+        description:
+          "Automated cluster management handling deployment rollouts, horizontal replica scaling, and cluster-internal DNS routing.",
+        points: [
+          "Pods: Smallest deployable units containing one or more co-located containers sharing localhost networking and IPC.",
+          "Deployments: Declares desired replica state with automated rolling updates and zero-downtime rollbacks.",
+          "Services: Stable virtual IP abstractions (ClusterIP, NodePort, LoadBalancer) load-balancing traffic across ephemeral Pods."
+        ]
+      }
+    ],
+    algorithmSteps: [
+      {
+        step: 1,
+        title: "Compute Instance Provisioning",
+        description: "Generate RSA keypairs, define ingress firewall rules for ports 22, 80, and 443, and launch an Ubuntu LTS EC2 instance."
+      },
+      {
+        step: 2,
+        title: "Container Image Construction",
+        description: "Author an optimized Dockerfile, execute 'docker build -t app:latest .', and verify container execution with mapped host ports."
+      },
+      {
+        step: 3,
+        title: "Kubernetes Cluster Deployment",
+        description: "Author deployment.yaml with 3 Pod replicas, apply via 'kubectl apply -f', and expose via a NodePort Service."
+      },
+      {
+        step: 4,
+        title: "Monitoring Configuration",
+        description: "Install Nagios NRPE client daemon on the target node, register host and service definitions, and test threshold alerts."
+      }
+    ],
+    codeSnippets: {
+      bash: `# 1. Multi-Stage Dockerfile
+cat << 'EOF' > Dockerfile
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+FROM node:18-alpine
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package*.json ./
+RUN npm install --only=production
+EXPOSE 3000
+CMD ["node", "dist/index.js"]
+EOF
+
+# 2. Kubernetes Deployment & Service Manifest
+cat << 'EOF' > k8s-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-service-api
+  labels:
+    app: cloud-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cloud-api
+  template:
+    metadata:
+      labels:
+        app: cloud-api
+    spec:
+      containers:
+      - name: cloud-api-container
+        image: vlab/cloud-api:v1.0
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloud-api-service
+spec:
+  type: NodePort
+  selector:
+    app: cloud-api
+  ports:
+    - port: 80
+      targetPort: 3000
+      nodePort: 30080
+EOF
+
+# 3. Apply Kubernetes Deployment
+kubectl apply -f k8s-deployment.yaml
+kubectl get pods -l app=cloud-api`
+    },
+    complexityAnalysis: {
+      timeComplexity: "O(1) container startup overhead (seconds) vs O(minutes) for full VM hypervisor boots",
+      spaceComplexity: "Shared host kernel footprint with copy-on-write (CoW) overlayfs storage drivers",
+      notes: "Kubernetes Horizontal Pod Autoscaler (HPA) dynamically adjusts replica counts based on target CPU/Memory metrics in O(1) scheduling complexity."
+    },
+    vivaQuestions: [
+      {
+        question: "What is the primary difference between a Container and a Virtual Machine?",
+        answer: "A Virtual Machine virtualizes underlying hardware using a hypervisor and runs a full guest operating system. A Container virtualizes only the OS user space by sharing the host Linux kernel (via cgroups and namespaces), making it significantly lighter and faster.",
+        category: "Containers"
+      },
+      {
+        question: "Explain the role of Kubernetes ReplicaSets and Deployments.",
+        answer: "A ReplicaSet maintains a stable set of identical replica Pods running at any given time. A Deployment is a higher-level controller that manages ReplicaSets to enable declarative rolling updates, pauses, and rollbacks without manual intervention.",
+        category: "Kubernetes"
+      },
+      {
+        question: "What is the significance of IAM (Identity and Access Management) in AWS?",
+        answer: "IAM manages authentication and authorization across AWS resources using Users, Groups, Roles, and JSON permission policies following the principle of least privilege.",
+        category: "AWS Cloud"
+      }
+    ],
+    realWorldApplications: [
+      "High-throughput microservices architecture powering streaming platforms like Netflix and Spotify",
+      "Continuous Integration / Continuous Delivery (CI/CD) pipelines automating software releases via GitHub Actions and Docker",
+      "Enterprise multi-region cloud disaster recovery and failover management on AWS"
+    ],
+    practiceProblems: [
+      {
+        title: "Docker Multi-Container WordPress Setup",
+        difficulty: "Medium",
+        description: "Write a docker-compose.yml file that sets up WordPress and a MySQL database on an isolated bridge network with persistent named volumes and environment credentials."
+      },
+      {
+        title: "Kubernetes Zero-Downtime Rolling Update",
+        difficulty: "Hard",
+        description: "Configure a rolling update strategy in a Kubernetes deployment with maxSurge=1 and maxUnavailable=0, verify pod readiness probes, and simulate a zero-downtime image version update."
+      }
+    ]
+  },
+  "bigdata-lab-manual": {
+    id: "bigdata-lab-manual",
+    title: "Big Data Analytics Laboratory Manual",
+    subject: "Big Data Analytics Lab",
+    provider: "Department of Artificial Intelligence and Data Science",
+    source: "VSB Engineering College Autonomous Curriculum (R2023 / R2021)",
+    subtitle: "Hands-on Manual: Hadoop HDFS Architecture, MapReduce Processing, Apache Pig, Hive Data Warehousing & PySpark DataFrames",
+    category: "Academic Laboratory Manual",
+    readTime: "55 mins",
+    difficulty: "Advanced",
+    simulatorUrl: "/labs/big-data-analytics",
+    simulatorName: "Hadoop & Spark Simulator",
+    overview:
+      "This official laboratory manual for Big Data Analytics guides students through distributed data ingestion, distributed storage, and large-scale parallel processing. The syllabus covers the Hadoop Distributed File System (HDFS), MapReduce programming in Java and Python, Apache Pig Latin data transformation, Apache Hive data warehousing (HQL), and in-memory analytics using Apache Spark (PySpark DataFrames).",
+    learningObjectives: [
+      "Master the Hadoop Distributed File System (HDFS) command line for distributed file storage, block replication, and cluster node inspection",
+      "Develop custom MapReduce programs implementing Mapper and Reducer logic for aggregation and word frequency analysis",
+      "Perform ETL workflows and schema transformations using Apache Pig Latin scripts (LOAD, FILTER, GROUP, FOREACH)",
+      "Design distributed relational data warehouses in Apache Hive, creating managed/external tables and partitioned querying",
+      "Execute high-speed distributed in-memory transformations and actions on PySpark RDDs and DataFrames"
+    ],
+    tags: ["Big Data", "Hadoop", "HDFS", "MapReduce", "Hive", "PySpark", "Lab Manual", "VSB Engineering College"],
+    keyConcepts: [
+      {
+        title: "1. HDFS Architecture & Fault Tolerance",
+        description:
+          "HDFS employs a master-worker architecture designed to store multi-terabyte datasets across commodity hardware clusters.",
+        points: [
+          "NameNode: Master server managing the file system namespace, directory tree, and block location mapping in memory.",
+          "DataNodes: Worker nodes storing physical 128 MB data blocks and reporting periodic block heartbeats back to NameNode.",
+          "Replication Factor: Default replication of 3 ensures data resilience across different racks against disk/node crashes."
+        ]
+      },
+      {
+        title: "2. The MapReduce Distributed Computing Paradigm",
+        description:
+          "Processes data by dividing computations into independent map phases and aggregated reduce phases across the cluster.",
+        points: [
+          "Map Phase: Transforms raw input (k1, v1) pairs into intermediate key-value pairs (k2, v2).",
+          "Shuffle & Sort: Distributes intermediate key-value pairs across the network such that all values for a given key arrive at the same Reducer.",
+          "Reduce Phase: Aggregates values for each unique key to produce the final output (k2, v3) pairs."
+        ]
+      },
+      {
+        title: "3. Apache Spark In-Memory Computing",
+        description:
+          "Spark accelerates iterative batch and streaming analytics up to 100x faster than traditional MapReduce through memory caching.",
+        points: [
+          "Resilient Distributed Datasets (RDDs): Immutable, partitioned collections supporting lazy evaluation transformations.",
+          "Catalyst Optimizer: Optimizes PySpark DataFrame execution plans into highly efficient low-level bytecode.",
+          "Transformations vs Actions: Transformations (map, filter, groupBy) return new RDDs lazily; Actions (count, collect, saveAsTextFile) trigger cluster execution."
+        ]
+      }
+    ],
+    algorithmSteps: [
+      {
+        step: 1,
+        title: "Hadoop Cluster & HDFS Ingestion",
+        description: "Start NameNode and DataNode daemons using 'start-dfs.sh', create an HDFS target directory, and upload large dataset files using 'hdfs dfs -put'."
+      },
+      {
+        step: 2,
+        title: "MapReduce Job Execution",
+        description: "Compile mapper and reducer code, submit the jar file to the YARN cluster manager via 'hadoop jar', and inspect part-r-00000 output files."
+      },
+      {
+        step: 3,
+        title: "Hive Data Warehouse Schema Definition",
+        description: "Launch Beeline/Hive shell, create partitioned tables with delimited row formats, and run analytical queries translated into Tez/MapReduce jobs."
+      },
+      {
+        step: 4,
+        title: "PySpark In-Memory Transformation",
+        description: "Initialize SparkSession, read CSV/Parquet into PySpark DataFrames, perform groupBy aggregations, and compute metrics in memory."
+      }
+    ],
+    codeSnippets: {
+      python: `# 1. PySpark Distributed Analytics Script
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, desc, count, avg
+
+# Initialize distributed SparkSession
+spark = SparkSession.builder \\
+    .appName("BigDataAnalyticsLab") \\
+    .config("spark.executor.memory", "2g") \\
+    .getOrCreate()
+
+# Load dataset from HDFS
+df = spark.read.csv("hdfs://namenode:9000/data/web_traffic.csv", header=True, inferSchema=True)
+
+# Data Exploration and Transformation
+print("Schema definition:")
+df.printSchema()
+
+# Aggregation: Top IP addresses by page hits
+ip_hits = df.groupBy("ip_address") \\
+    .agg(count("url").alias("hit_count"), avg("response_time_ms").alias("avg_latency")) \\
+    .filter(col("hit_count") > 100) \\
+    .orderBy(desc("hit_count"))
+
+ip_hits.show(10)
+
+# Save result back to HDFS in Parquet format
+ip_hits.write.mode("overwrite").parquet("hdfs://namenode:9000/output/ip_traffic_metrics")
+
+spark.stop()`
+    },
+    complexityAnalysis: {
+      timeComplexity: "MapReduce: O(N log N) dominated by network shuffle/sort; PySpark: O(N) in-memory execution",
+      spaceComplexity: "HDFS: O(N * 3) for standard 3x block replication across cluster storage nodes",
+      notes: "PySpark preserves intermediate DAG partitions in RAM, avoiding disk serialization bottlenecks between iterative algorithm steps."
+    },
+    vivaQuestions: [
+      {
+        question: "Explain the role of NameNode and Secondary NameNode in Hadoop.",
+        answer: "The NameNode maintains the filesystem metadata (fsimage and edits log) in memory. The Secondary NameNode is NOT a hot standby; it periodically merges the edits log with the fsimage checkpoint to prevent the edits log from growing excessively large.",
+        category: "HDFS"
+      },
+      {
+        question: "What is the difference between Apache Pig and Apache Hive?",
+        answer: "Apache Pig uses a procedural dataflow language called Pig Latin suited for ETL data pipelines. Apache Hive provides a declarative SQL-like dialect (HiveQL) suited for structured data warehousing and analytical reporting.",
+        category: "Ecosystem"
+      },
+      {
+        question: "Why is Apache Spark faster than Hadoop MapReduce?",
+        answer: "Spark performs computations in memory (RAM) and pipelines transformations lazily into a directed acyclic graph (DAG), avoiding MapReduce's costly disk read/write cycles between intermediate pipeline phases.",
+        category: "Spark"
+      }
+    ],
+    realWorldApplications: [
+      "Telecom call detail record (CDR) ingestion and fraud detection processing billions of events per day",
+      "Recommendation engines and search indexing at large tech companies utilizing distributed PySpark clusters",
+      "Financial market risk analysis and algorithmic high-frequency trading data lake warehousing"
+    ],
+    practiceProblems: [
+      {
+        title: "WordCount MapReduce in Python (Hadoop Streaming)",
+        difficulty: "Medium",
+        description: "Author a Python mapper and reducer script to execute a distributed WordCount over an 8 GB Gutenberg text archive using the Hadoop streaming utility."
+      },
+      {
+        title: "PySpark Churn Feature Engineering Pipeline",
+        difficulty: "Hard",
+        description: "Build an end-to-end PySpark pipeline that imputes missing numerical fields, one-hot encodes categorical customer features, and vectorizes attributes using VectorAssembler for MLlib."
+      }
+    ]
   }
 };

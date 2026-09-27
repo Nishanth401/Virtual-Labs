@@ -18,7 +18,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
       "objective": "To develop a C program to calculate the distance between two points using the distance formula.",
       "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
       "videoTitle": "C Programming: Distance Between Two Points",
-      "videoChannel": "NPTEL & VLab Engineering",
+      "videoChannel": "AI&DS Virtual Labs",
       "prerequisites": [
         "Basic Computing Concepts",
         "C Syntax Fundamentals"
@@ -97,7 +97,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
       "objective": "To write a C program to convert temperature from Fahrenheit to Celsius and vice versa.",
       "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
       "videoTitle": "C Programming: Temperature Conversion (Fahrenheit to Celsius and Vice Versa)",
-      "videoChannel": "NPTEL & VLab Engineering",
+      "videoChannel": "AI&DS Virtual Labs",
       "prerequisites": [
         "Basic Computing Concepts",
         "C Syntax Fundamentals"
@@ -177,7 +177,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
       "objective": "To develop a C program to count the number of zeros and ones in a given binary number.",
       "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
       "videoTitle": "C Programming: Count Zeros and Ones in a Binary Number",
-      "videoChannel": "NPTEL & VLab Engineering",
+      "videoChannel": "AI&DS Virtual Labs",
       "prerequisites": [
         "Basic Computing Concepts",
         "C Syntax Fundamentals"
@@ -258,7 +258,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
       "objective": "To write a C program to check whether a given number is an Armstrong number.",
       "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
       "videoTitle": "C Programming: Armstrong Number Check",
-      "videoChannel": "NPTEL & VLab Engineering",
+      "videoChannel": "AI&DS Virtual Labs",
       "prerequisites": [
         "Basic Computing Concepts",
         "C Syntax Fundamentals"
@@ -339,7 +339,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
       "objective": "To implement swapping of two numbers using: (a) Call by Value, and (b) Call by Reference.",
       "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
       "videoTitle": "C Programming: Swapping of Two Numbers using Call by Value and Call by Reference",
-      "videoChannel": "NPTEL & VLab Engineering",
+      "videoChannel": "AI&DS Virtual Labs",
       "prerequisites": [
         "Basic Computing Concepts",
         "C Syntax Fundamentals"
@@ -418,7 +418,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
       "objective": "To develop recursive programs to: (a) generate the Fibonacci series, and (b) find the GCD of two numbers.",
       "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
       "videoTitle": "C Programming: Recursive Programs: Fibonacci Series and GCD of Two Numbers",
-      "videoChannel": "NPTEL & VLab Engineering",
+      "videoChannel": "AI&DS Virtual Labs",
       "prerequisites": [
         "Basic Computing Concepts",
         "C Syntax Fundamentals"
@@ -497,7 +497,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
       "objective": "To implement matrix addition, matrix multiplication, and transpose of a matrix using 2D arrays.",
       "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
       "videoTitle": "C Programming: Matrix Addition, Multiplication, and Transpose using 2D Arrays",
-      "videoChannel": "NPTEL & VLab Engineering",
+      "videoChannel": "AI&DS Virtual Labs",
       "prerequisites": [
         "Basic Computing Concepts",
         "C Syntax Fundamentals"
@@ -577,7 +577,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
       "objective": "To write a program to: (a) find the largest and smallest elements, (b) interchange the largest and smallest elements, and (c) count duplicate elements in an array.",
       "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
       "videoTitle": "C Programming: Largest, Smallest, Interchange, and Duplicate Count in an Array",
-      "videoChannel": "NPTEL & VLab Engineering",
+      "videoChannel": "AI&DS Virtual Labs",
       "prerequisites": [
         "Basic Computing Concepts",
         "C Syntax Fundamentals"
@@ -658,7 +658,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
       "objective": "To implement string operations: (a) palindrome checking, (b) reverse a string, and (c) extract the last N characters from a string.",
       "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
       "videoTitle": "C Programming: String Operations: Palindrome Checking, Reverse a String, Extract Last N Characters",
-      "videoChannel": "NPTEL & VLab Engineering",
+      "videoChannel": "AI&DS Virtual Labs",
       "prerequisites": [
         "Basic Computing Concepts",
         "C Syntax Fundamentals"
@@ -738,7 +738,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
       "objective": "To develop a program using malloc(), calloc(), realloc(), and free() for dynamic array creation and manipulation.",
       "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
       "videoTitle": "C Programming: Dynamic Array Creation and Manipulation using malloc(), calloc(), realloc(), and free()",
-      "videoChannel": "NPTEL & VLab Engineering",
+      "videoChannel": "AI&DS Virtual Labs",
       "prerequisites": [
         "Basic Computing Concepts",
         "C Syntax Fundamentals"
@@ -818,7 +818,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
       "objective": "To use structures to store and display student information such as Roll Number, Name, Department, and Marks.",
       "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
       "videoTitle": "C Programming: Structures to Store and Display Student Information",
-      "videoChannel": "NPTEL & VLab Engineering",
+      "videoChannel": "AI&DS Virtual Labs",
       "prerequisites": [
         "Basic Computing Concepts",
         "C Syntax Fundamentals"
@@ -897,7 +897,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
       "objective": "To develop a program to compute a person's age using structures and user-defined functions.",
       "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
       "videoTitle": "C Programming: Compute a Person's Age using Structures and User-Defined Functions",
-      "videoChannel": "NPTEL & VLab Engineering",
+      "videoChannel": "AI&DS Virtual Labs",
       "prerequisites": [
         "Basic Computing Concepts",
         "C Syntax Fundamentals"
@@ -977,7 +977,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
       "objective": "To write a C program to: (a) create a file, (b) write data to the file, (c) read data from the file, and (d) append data to the file.",
       "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
       "videoTitle": "C Programming: File Handling: Create, Write, Read, and Append Data to a File",
-      "videoChannel": "NPTEL & VLab Engineering",
+      "videoChannel": "AI&DS Virtual Labs",
       "prerequisites": [
         "Basic Computing Concepts",
         "C Syntax Fundamentals"
@@ -1057,7 +1057,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
       "objective": "To develop a file-based application to store employee details and evaluate performance based on predefined criteria.",
       "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
       "videoTitle": "C Programming: File-Based Application to Store Employee Details and Evaluate Performance",
-      "videoChannel": "NPTEL & VLab Engineering",
+      "videoChannel": "AI&DS Virtual Labs",
       "prerequisites": [
         "Basic Computing Concepts",
         "C Syntax Fundamentals"
@@ -1137,7 +1137,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
       "objective": "To create a mini application using file handling to: (a) add products, (b) update stock, (c) search products, and (d) generate inventory reports.",
       "videoUrl": "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
       "videoTitle": "C Programming: Mini Inventory Management Application using File Handling",
-      "videoChannel": "NPTEL & VLab Engineering",
+      "videoChannel": "AI&DS Virtual Labs",
       "prerequisites": [
         "Basic Computing Concepts",
         "C Syntax Fundamentals"

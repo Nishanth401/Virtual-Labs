@@ -368,5 +368,171 @@ public class CollectionsDemo {
         description: "Create a Book class with title, author, isbn, and isAvailable flag, with methods to borrowBook() and returnBook()."
       }
     ]
+  },
+  "oops-java-manual": {
+    id: "oops-java-manual",
+    title: "Object-Oriented Programming (Java) Laboratory Manual",
+    subject: "Java OOP Lab",
+    provider: "Department of Artificial Intelligence and Data Science",
+    source: "VSB Engineering College Autonomous Curriculum (R2023 / R2021)",
+    subtitle: "Complete Manual: Classes, Encapsulation, Inheritance, Interfaces, Packages, Multithreading & Exception Handling",
+    category: "Academic Laboratory Manual",
+    readTime: "50 mins",
+    difficulty: "Intermediate",
+    simulatorUrl: "/labs/oops-java",
+    simulatorName: "Java Code Runner",
+    overview:
+      "This official laboratory manual for Object-Oriented Programming in Java provides comprehensive practical exercises aligned with the Anna University and Autonomous curriculum. Students master the 4 pillars of OOP (Encapsulation, Inheritance, Polymorphism, Abstraction), interface-driven architecture, modular packages, robust exception handling, multithreaded concurrency, and generic collections.",
+    learningObjectives: [
+      "Design robust object-oriented software architectures using classes, constructors, and encapsulation access specifiers",
+      "Implement single, multilevel, and hierarchical inheritance hierarchies utilizing the 'super' keyword",
+      "Apply runtime polymorphism via method overriding and interface contracts",
+      "Construct custom exception hierarchies and enforce defensive programming via try-catch-finally blocks",
+      "Develop multithreaded applications leveraging thread synchronization and inter-thread communication (wait, notify)"
+    ],
+    tags: ["Java", "OOP", "Inheritance", "Polymorphism", "Multithreading", "Exceptions", "Lab Manual", "VSB Engineering College"],
+    keyConcepts: [
+      {
+        title: "1. The 4 Pillars of Object-Oriented Programming",
+        description:
+          "Core software engineering paradigm structuring systems into cooperating objects.",
+        points: [
+          "Encapsulation: Bundling data attributes and manipulating methods together while hiding internal state via private access.",
+          "Inheritance: Reusing code attributes and behaviors from base superclasses using the 'extends' keyword.",
+          "Polymorphism: Compile-time (method overloading) and dynamic runtime dispatch (method overriding).",
+          "Abstraction: Representing essential features without including background implementation details via abstract classes and interfaces."
+        ]
+      },
+      {
+        title: "2. Interface Contracts & Modular Packages",
+        description:
+          "Interfaces declare pure API contracts allowing multiple interface inheritance, while packages structure namespaces.",
+        points: [
+          "Interface: All methods are public abstract by default (prior to Java 8); supports default/static methods.",
+          "Packages: Organized namespace avoiding class naming collisions; compiled into matching directory hierarchies."
+        ]
+      },
+      {
+        title: "3. Concurrency & Exception Handling",
+        description:
+          "Multithreading maximizes CPU utilization while structured exception handling maintains system stability.",
+        points: [
+          "Checked vs Unchecked Exceptions: Checked (IOException, SQLException) enforced at compile-time; Unchecked (NullPointerException, ArithmeticException) inherit from RuntimeException.",
+          "Synchronized Blocks: Prevents race conditions on shared memory resources by acquiring intrinsic object monitor locks."
+        ]
+      }
+    ],
+    algorithmSteps: [
+      {
+        step: 1,
+        title: "Domain Model Abstraction",
+        description: "Identify real-world entities, model private attributes with public getters/setters, and establish superclass/subclass relationships."
+      },
+      {
+        step: 2,
+        title: "Interface Contract Definition",
+        description: "Specify interface methods that enforce uniform behavior across diverse business service implementations."
+      },
+      {
+        step: 3,
+        title: "Exception Boundary Guarding",
+        description: "Wrap high-risk operations in try-catch-finally blocks, throwing custom application exceptions when domain rules are violated."
+      },
+      {
+        step: 4,
+        title: "Multithreaded Thread Safety",
+        description: "Implement Runnable or extend Thread, applying the 'synchronized' keyword to critical sections to guarantee thread-safe execution."
+      }
+    ],
+    codeSnippets: {
+      java: `// 1. Employee Hierarchy Demonstrating Inheritance & Polymorphism
+abstract class Employee {
+    protected int empId;
+    protected String name;
+    protected double baseSalary;
+
+    public Employee(int empId, String name, double baseSalary) {
+        this.empId = empId;
+        this.name = name;
+        this.baseSalary = baseSalary;
+    }
+
+    public abstract double calculatePay();
+
+    public void displaySlip() {
+        System.out.printf("ID: %d | Name: %-15s | Net Pay: $%.2f%n", 
+            empId, name, calculatePay());
+    }
+}
+
+class FullTimeEmployee extends Employee {
+    private double bonus;
+
+    public FullTimeEmployee(int empId, String name, double baseSalary, double bonus) {
+        super(empId, name, baseSalary);
+        this.bonus = bonus;
+    }
+
+    @Override
+    public double calculatePay() {
+        return baseSalary + bonus;
+    }
+}
+
+class PartTimeEmployee extends Employee {
+    private int hoursWorked;
+    private double hourlyRate;
+
+    public PartTimeEmployee(int empId, String name, int hoursWorked, double hourlyRate) {
+        super(empId, name, 0);
+        this.hoursWorked = hoursWorked;
+        this.hourlyRate = hourlyRate;
+    }
+
+    @Override
+    public double calculatePay() {
+        return hoursWorked * hourlyRate;
+    }
+}`
+    },
+    complexityAnalysis: {
+      timeComplexity: "Dynamic method dispatch: O(1) via virtual method table (vtable) resolution",
+      spaceComplexity: "O(1) stack frame allocation per method invocation",
+      notes: "JVM HotSpot JIT compiler optimizes monomorphic call sites via inline caching, eliminating vtable lookup overhead."
+    },
+    vivaQuestions: [
+      {
+        question: "What is the difference between method overloading and method overriding?",
+        answer: "Method overloading occurs in the same class with identical method names but different parameter signatures (resolved at compile-time). Method overriding occurs between superclass and subclass with identical signatures and return types (resolved at runtime).",
+        category: "OOP"
+      },
+      {
+        question: "Can an abstract class have constructors in Java?",
+        answer: "Yes. Even though an abstract class cannot be instantiated directly with 'new', its constructor is invoked by subclass constructors via super(...) to initialize inherited fields.",
+        category: "Classes"
+      },
+      {
+        question: "What is the role of the 'finally' block?",
+        answer: "The 'finally' block always executes when the try block exits, regardless of whether an exception was thrown or caught, making it ideal for releasing resources like file handles and database connections.",
+        category: "Exceptions"
+      }
+    ],
+    realWorldApplications: [
+      "Enterprise Spring Boot microservices architected with Dependency Injection and interface layers",
+      "Banking transaction processing pipelines utilizing synchronized thread pools and custom exceptions",
+      "Android application UI event listeners implementing interface contracts"
+    ],
+    practiceProblems: [
+      {
+        title: "Custom InsufficientFundsException Banking System",
+        difficulty: "Medium",
+        description: "Implement a BankAccount class with synchronized withdraw() and deposit() methods that throws a custom checked InsufficientFundsException when withdrawal exceeds balance."
+      },
+      {
+        title: "Producer-Consumer Queue with wait() and notify()",
+        difficulty: "Hard",
+        description: "Implement a thread-safe bounded buffer queue where producer threads call wait() on a full buffer and consumer threads call notify() after consumption."
+      }
+    ]
   }
 };

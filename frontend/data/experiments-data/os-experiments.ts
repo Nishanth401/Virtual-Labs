@@ -234,7 +234,7 @@ Hello from execvp system call!
       objective: "Simulate and compare First-Come First-Served (FCFS), Shortest Job First (SJF), Priority Scheduling, and Round Robin (RR) with quantum preemption.",
       videoUrl: "https://www.youtube-nocookie.com/embed/IPvYjXCsTg8",
       videoTitle: "CPU Scheduling Algorithms Explained",
-      videoChannel: "NPTEL Operating Systems",
+      videoChannel: "Operating Systems Lecture Series",
       prerequisites: ["Process Control Block (PCB)", "Ready Queue"],
       theory: {
         overview: "Turnaround Time TAT = Completion Time (CT) - Arrival Time (AT). Waiting Time WT = TAT - Burst Time (BT). FCFS suffers from the convoy effect. SJF minimizes AWT but risks starvation of long bursts. Round Robin guarantees bounded response time via time quantum time-slicing.",
@@ -412,7 +412,7 @@ int main() {
       objective: "Implement thread-safe Producer-Consumer bounded-buffer synchronization using counting semaphores (empty, full) and a binary mutex semaphore.",
       videoUrl: "https://www.youtube-nocookie.com/embed/IPvYjXCsTg8",
       videoTitle: "Producer Consumer with Semaphores",
-      videoChannel: "NPTEL Operating Systems",
+      videoChannel: "Operating Systems Lecture Series",
       prerequisites: ["POSIX Threads", "Race Conditions"],
       theory: {
         overview: "The bounded buffer has capacity N. Counting semaphore 'empty' initialized to N tracks vacant buffer slots; 'full' initialized to 0 tracks produced items; binary mutex ensures mutual exclusion on buffer insertion/extraction. Producer: sem_wait(&empty); sem_wait(&mutex); ... sem_post(&mutex); sem_post(&full).",

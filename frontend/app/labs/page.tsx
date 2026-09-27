@@ -210,13 +210,13 @@ export default function LabsCataloguePage() {
                   <div className="p-3 rounded-none bg-muted/40 border border-border/70 space-y-1.5 hover:border-primary/40 transition-colors">
                     <div className="flex items-center justify-between text-[11px] text-muted-foreground">
                       <span className="font-semibold text-amber-600 dark:text-amber-400 font-sans">Curriculum Alignment</span>
-                      <span className="font-sans font-medium">AICTE / AU</span>
+                      <span className="font-sans font-medium">Autonomous / AU</span>
                     </div>
                     <p className="font-bold text-foreground leading-snug">
-                      NPTEL 8-Week AI&amp;DS C Programming Track Live
+                      Autonomous 8-Week C Programming Foundation Track Live
                     </p>
                     <p className="text-muted-foreground leading-relaxed text-[11px]">
-                      Integrated weekly practice programs, 5-question quizzes, and NPTEL mock evaluation tests.
+                      Integrated weekly practice programs, 5-question quizzes, and comprehensive laboratory evaluation tests.
                     </p>
                   </div>
 
@@ -236,7 +236,7 @@ export default function LabsCataloguePage() {
                 </CardContent>
               </Card>
 
-              {/* NPTEL & Academic Credit Box */}
+              {/* Autonomous Academic Credit Box */}
               <Card className="border-border bg-gradient-to-br from-primary/5 via-card to-card shadow-2xs p-4 space-y-3 rounded-none">
                 <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider font-sans">
                   <GraduationCap className="h-4 w-4" />

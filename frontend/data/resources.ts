@@ -370,12 +370,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     title: 'Data Structures & Algorithms Virtual Laboratory Manual',
     unit: 'All',
     type: 'Lab Manual',
-    provider: 'Virtual Labs Manual',
-    format: 'PDF Manual',
-    fileUrl: '#',
+    provider: 'VSB Autonomous Curriculum',
+    format: 'Web Guide',
+    fileUrl: '/resources/dsa-lab-manual',
     description: 'Official department laboratory manual containing problem statements, Java code skeletons, test cases, and viva questions.',
     downloadCount: 1250,
-    tags: ['Lab Manual', 'Java', 'Anna University Syllabus']
+    tags: ['Lab Manual', 'Java', 'Data Structures', 'VSB Engineering College']
   },
 
   // ==========================================
@@ -482,12 +482,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     title: 'DBMS Laboratory Manual — SQL & PL/SQL Stored Procedures',
     unit: 'All',
     type: 'Lab Manual',
-    provider: 'Virtual Labs Manual',
-    format: 'PDF Manual',
-    fileUrl: '#',
+    provider: 'VSB Autonomous Curriculum',
+    format: 'Web Guide',
+    fileUrl: '/resources/dbms-lab-manual',
     description: 'Standard laboratory manual with database schema creation, integrity constraints, triggers, views, and complex join queries.',
     downloadCount: 1150,
-    tags: ['Lab Manual', 'SQL', 'PostgreSQL', 'Oracle']
+    tags: ['Lab Manual', 'SQL', 'PostgreSQL', 'Oracle', 'VSB Engineering College']
   },
 
   // ==========================================
@@ -585,17 +585,17 @@ export const RESOURCES_DATA: ResourceItem[] = [
     tags: ['AI', 'Python', 'Priority Queue', 'CSP', 'W3Schools']
   },
   {
-    id: 'ml-lab-manual',
-    subject: 'AI & Machine Learning Lab',
-    title: 'AI & Machine Learning Laboratory Manual with Python Jupyter Notebooks',
+    id: 'dl-lab-manual',
+    subject: 'Deep Learning & AI Lab',
+    title: 'Deep Learning & AI Laboratory Manual with PyTorch & TensorFlow',
     unit: 'All',
     type: 'Lab Manual',
-    provider: 'Virtual Labs Manual',
-    format: 'PDF Manual',
-    fileUrl: '#',
-    description: 'Department lab manual with experiment setups, model training workflows, hyperparameter tuning instructions, and evaluation metrics.',
+    provider: 'VSB Autonomous Curriculum',
+    format: 'Web Guide',
+    fileUrl: '/resources/dl-lab-manual',
+    description: 'Department lab manual with neural network architectures, CNN image classifiers, LSTMs, and transfer learning experiments.',
     downloadCount: 1320,
-    tags: ['Lab Manual', 'AI', 'ML', 'Python']
+    tags: ['Lab Manual', 'Deep Learning', 'AI', 'CNN', 'LSTM', 'VSB Engineering College']
   },
 
   // ==========================================
@@ -653,6 +653,19 @@ export const RESOURCES_DATA: ResourceItem[] = [
     downloadCount: 1610,
     tags: ['Data Science', 'Matplotlib', 'Pandas', 'W3Schools']
   },
+  {
+    id: 'business-analytics-manual',
+    subject: 'Business Analytics Lab',
+    title: 'Business Analytics & Data Science Laboratory Manual',
+    unit: 'All',
+    type: 'Lab Manual',
+    provider: 'VSB Autonomous Curriculum',
+    format: 'Web Guide',
+    fileUrl: '/resources/business-analytics-manual',
+    description: 'Official laboratory manual covering statistical modeling, Z-test, T-test, ANOVA, data preprocessing, and predictive regression forecasting.',
+    downloadCount: 1440,
+    tags: ['Lab Manual', 'Business Analytics', 'Data Science', 'ANOVA', 'VSB Engineering College']
+  },
 
   // ==========================================
   // 6. BIG DATA ANALYTICS
@@ -702,12 +715,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     title: 'Big Data Analytics Virtual Laboratory Manual',
     unit: 'All',
     type: 'Lab Manual',
-    provider: 'Virtual Labs Manual',
-    format: 'PDF Manual',
-    fileUrl: '#',
+    provider: 'VSB Autonomous Curriculum',
+    format: 'Web Guide',
+    fileUrl: '/resources/bigdata-lab-manual',
     description: 'Hadoop cluster setup guide, MapReduce job submissions, PySpark DataFrame analytics, and Hive data warehousing lab exercises.',
     downloadCount: 890,
-    tags: ['Lab Manual', 'Hadoop', 'Spark', 'Hive']
+    tags: ['Lab Manual', 'Hadoop', 'Spark', 'Hive', 'VSB Engineering College']
   },
 
   // ==========================================
@@ -758,12 +771,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     title: 'Cloud Computing & Containerization Laboratory Manual',
     unit: 'All',
     type: 'Lab Manual',
-    provider: 'Virtual Labs Manual',
-    format: 'PDF Manual',
-    fileUrl: '#',
+    provider: 'VSB Autonomous Curriculum',
+    format: 'Web Guide',
+    fileUrl: '/resources/cloud-lab-manual',
     description: 'Step-by-step instructions for AWS EC2 instance launch, S3 bucket policy setup, Dockerfile creation, docker-compose orchestration, and K8s Pods.',
     downloadCount: 960,
-    tags: ['Lab Manual', 'AWS', 'Docker', 'Kubernetes']
+    tags: ['Lab Manual', 'AWS', 'Docker', 'Kubernetes', 'VSB Engineering College']
   },
 
   // ==========================================
@@ -877,6 +890,19 @@ export const RESOURCES_DATA: ResourceItem[] = [
     downloadCount: 1820,
     tags: ['C Programming', 'Syntax', 'File IO', 'Strings', 'W3Schools']
   },
+  {
+    id: 'c-programming-lab-manual',
+    subject: 'C Programming Lab',
+    title: 'Programming in C Laboratory Manual',
+    unit: 'All',
+    type: 'Lab Manual',
+    provider: 'VSB Autonomous Curriculum',
+    format: 'Web Guide',
+    fileUrl: '/resources/c-programming-lab-manual',
+    description: 'Official department laboratory manual with control statements, arrays, matrix operations, pointers, and file management.',
+    downloadCount: 1530,
+    tags: ['Lab Manual', 'C Programming', 'Pointers', 'Structures', 'VSB Engineering College']
+  },
 
   // ==========================================
   // 10. JAVA OBJECT-ORIENTED PROGRAMMING
@@ -919,6 +945,19 @@ export const RESOURCES_DATA: ResourceItem[] = [
     description: 'Class syntax, constructors, access modifiers (public, private, protected), abstract classes vs interfaces, try-catch-finally.',
     downloadCount: 1640,
     tags: ['Java', 'Classes', 'Interfaces', 'Exceptions', 'W3Schools']
+  },
+  {
+    id: 'oops-java-manual',
+    subject: 'Java OOP Lab',
+    title: 'Object-Oriented Programming (Java) Laboratory Manual',
+    unit: 'All',
+    type: 'Lab Manual',
+    provider: 'VSB Autonomous Curriculum',
+    format: 'Web Guide',
+    fileUrl: '/resources/oops-java-manual',
+    description: 'Official laboratory manual covering 4 pillars of OOP, interfaces, packages, exception handling, and multithreading.',
+    downloadCount: 1470,
+    tags: ['Lab Manual', 'Java', 'OOP', 'Multithreading', 'VSB Engineering College']
   },
 
   // ==========================================

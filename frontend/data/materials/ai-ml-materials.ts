@@ -890,5 +890,162 @@ print(f"Total Solutions for {n}-Queens: {len(solutions)}")`
         description: "Implement a Sudoku solver using recursive backtracking and constraint satisfaction checks across rows, columns, and 3x3 grids."
       }
     ]
+  },
+  "dl-lab-manual": {
+    id: "dl-lab-manual",
+    title: "Deep Learning & Artificial Intelligence Laboratory Manual",
+    subject: "Deep Learning Lab",
+    provider: "Department of Artificial Intelligence and Data Science",
+    source: "VSB Engineering College Autonomous Curriculum (R2023 / R2021)",
+    subtitle: "Complete Manual: Perceptron, Multi-Layer Perceptrons, Convolutional Neural Networks (CNN), LSTMs & Transfer Learning",
+    category: "Academic Laboratory Manual",
+    readTime: "60 mins",
+    difficulty: "Advanced",
+    simulatorUrl: "/labs/ai-machine-learning",
+    simulatorName: "Deep Learning Model Studio",
+    overview:
+      "This official laboratory manual for Deep Learning covers practical neural network architectures conforming to the autonomous AI & DS curriculum. Students implement single-layer perceptrons, backpropagation multi-layer feedforward networks (MLP), deep Convolutional Neural Networks (CNN) for computer vision image classification, Long Short-Term Memory (LSTM) recurrent networks for sequence prediction, and transfer learning pipelines using state-of-the-art pre-trained backbones.",
+    learningObjectives: [
+      "Implement artificial neural networks from scratch, deriving gradient descent weight updates and activation derivatives",
+      "Train Multi-Layer Perceptrons (MLP) on tabular and numerical classification tasks using Adam optimizers and cross-entropy loss",
+      "Build deep Convolutional Neural Networks (CNNs) with Conv2D, MaxPooling, Batch Normalization, and Dropout layers",
+      "Design Recurrent Neural Networks (RNN) and LSTM cells for natural language modeling and sequential time-series forecasting",
+      "Apply Transfer Learning by fine-tuning pre-trained ImageNet architectures (ResNet, MobileNet) on custom domain datasets"
+    ],
+    tags: ["Deep Learning", "CNN", "LSTM", "Neural Networks", "TensorFlow", "PyTorch", "Lab Manual", "VSB Engineering College"],
+    keyConcepts: [
+      {
+        title: "1. Biological to Artificial Neural Networks & Backpropagation",
+        description:
+          "Neurons compute a weighted sum of inputs plus bias passed through a non-linear activation function (ReLU, Sigmoid, Softmax).",
+        points: [
+          "Forward Propagation: Data flows from input layer through hidden layers to output layer producing predictions.",
+          "Loss Functions: Mean Squared Error (Regression), Binary Cross-Entropy (Binary Classification), Categorical Cross-Entropy (Multi-class).",
+          "Backpropagation: Applying chain rule of calculus to compute loss gradients with respect to all network weights: dL/dw."
+        ]
+      },
+      {
+        title: "2. Convolutional Neural Networks (CNN) Architecture",
+        description:
+          "Preserves 2D spatial locality in image tensors through parameter sharing and translation invariance.",
+        points: [
+          "Convolutional Filters: Learnable kernels that convolve across images to extract low-level edges, textures, and high-level semantic shapes.",
+          "Pooling Layers: MaxPooling downsamples feature map dimensions, reducing parameter count and computational complexity.",
+          "Dropout & Batch Normalization: Regularization techniques that accelerate training convergence and mitigate overfitting."
+        ]
+      },
+      {
+        title: "3. Recurrent Architectures & Transfer Learning",
+        description:
+          "Processes sequential context over time and leverages knowledge from models trained on millions of samples.",
+        points: [
+          "LSTM Memory Cell: Regulates information flow using Forget, Input, and Output gates to prevent vanishing/exploding gradients.",
+          "Transfer Learning: Freezing lower feature extraction layers of pre-trained models and retraining only classification heads on small target datasets."
+        ]
+      }
+    ],
+    algorithmSteps: [
+      {
+        step: 1,
+        title: "Dataset Preparation & Augmentation",
+        description: "Normalize image pixels to [0, 1] range, apply data augmentations (random rotations, horizontal flips), and partition into train/validation/test splits."
+      },
+      {
+        step: 2,
+        title: "Model Topology Construction",
+        description: "Stack Conv2D, BatchNorm, ReLU, MaxPooling, Flatten, Dense, and Softmax layers into a sequential or functional model graph."
+      },
+      {
+        step: 3,
+        title: "Loss Compilation & Optimization",
+        description: "Select optimizer (Adam / SGD with momentum), define learning rate schedulers, and compile with categorical cross-entropy loss."
+      },
+      {
+        step: 4,
+        title: "Training, Validation & Evaluation",
+        description: "Fit model using mini-batches, monitor validation loss with EarlyStopping callbacks, and generate Confusion Matrices and ROC-AUC curves."
+      }
+    ],
+    codeSnippets: {
+      python: `# 1. Deep Convolutional Neural Network (CNN) for Image Classification
+import tensorflow as tf
+from tensorflow.keras import layers, models
+
+# Construct CNN Architecture
+model = models.Sequential([
+    # Block 1
+    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(64, 64, 3)),
+    layers.BatchNormalization(),
+    layers.MaxPooling2D((2, 2)),
+    
+    # Block 2
+    layers.Conv2D(64, (3, 3), activation='relu'),
+    layers.BatchNormalization(),
+    layers.MaxPooling2D((2, 2)),
+    
+    # Block 3
+    layers.Conv2D(128, (3, 3), activation='relu'),
+    layers.BatchNormalization(),
+    layers.MaxPooling2D((2, 2)),
+    
+    # Classification Head
+    layers.Flatten(),
+    layers.Dense(128, activation='relu'),
+    layers.Dropout(0.5),
+    layers.Dense(10, activation='softmax')
+])
+
+# Model Compilation
+model.compile(
+    optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+    loss='categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+model.summary()
+
+# Training with Early Stopping Callback
+early_stop = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+# history = model.fit(train_data, epochs=30, validation_data=val_data, callbacks=[early_stop])`
+    },
+    complexityAnalysis: {
+      timeComplexity: "Forward/Backward Pass: O(W * H * K^2 * C_in * C_out) per convolutional layer",
+      spaceComplexity: "O(P) memory for storing layer weight parameters and intermediate activation tensors for backprop",
+      notes: "Separable convolutions (MobileNet) reduce parameter count and multiply-accumulate (MAC) operations by 8x-9x compared to standard convolutions."
+    },
+    vivaQuestions: [
+      {
+        question: "Why is the ReLU activation function preferred over Sigmoid in hidden layers?",
+        answer: "ReLU (Rectified Linear Unit) avoids the vanishing gradient problem because its derivative is a constant 1 for positive inputs, whereas Sigmoid's derivative saturates near 0 for large positive or negative values, stalling gradient propagation.",
+        category: "Activations"
+      },
+      {
+        question: "How do Convolutional layers achieve translation invariance?",
+        answer: "By sliding the same shared filter kernel across the entire spatial dimensions of an image, CNNs detect visual features (like edges or corners) regardless of their absolute position in the frame.",
+        category: "CNNs"
+      },
+      {
+        question: "Explain the role of the Forget Gate in an LSTM cell.",
+        answer: "The forget gate applies a sigmoid function to the previous hidden state and current input to decide what percentage of the previous cell state memory (C_{t-1}) should be discarded (0) or retained (1).",
+        category: "LSTMs"
+      }
+    ],
+    realWorldApplications: [
+      "Medical imaging diagnostic systems segmenting MRI tumors and chest X-ray pathologies",
+      "Autonomous vehicle vision perception suites performing real-time object detection and lane segmentation",
+      "Financial credit card fraud detection utilizing deep sequence recurrent autoencoders"
+    ],
+    practiceProblems: [
+      {
+        title: "Transfer Learning with MobileNetV2",
+        difficulty: "Medium",
+        description: "Load MobileNetV2 with pre-trained ImageNet weights, freeze all base layers, add a custom global average pooling and dense classification head, and train on a 5-class botanical leaf disease dataset."
+      },
+      {
+        title: "Bidirectional LSTM Sentiment Classifier",
+        difficulty: "Hard",
+        description: "Construct a Bidirectional LSTM neural network with word embedding layers to classify product review sentiments as positive, neutral, or negative."
+      }
+    ]
   }
 };

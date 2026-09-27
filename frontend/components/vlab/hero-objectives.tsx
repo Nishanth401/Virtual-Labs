@@ -148,24 +148,27 @@ export function HeroObjectives() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
           
           {/* ========================================================================= */}
-          {/* 1st BLOCK (LEFT): LOGO ANIMATION VIDEO (8 SECONDS)                        */}
+          {/* 1st BLOCK (LEFT): VSB ENGINEERING COLLEGE EMBLEM                          */}
           {/* ========================================================================= */}
           <div className="lg:col-span-5 w-full flex justify-center order-2 lg:order-1">
-            <div className="relative w-full max-w-md lg:max-w-none flex justify-center items-center">
-              {/* Seamless Video Player: 100% matched background without borders or shadows */}
-              <div className="relative w-full overflow-hidden bg-transparent border-0 shadow-none">
-                <video
-                  src="/logo-animation.mp4"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full h-auto aspect-square object-contain bg-transparent pointer-events-none select-none"
-                  style={{
-                    filter: "brightness(1.12) contrast(1.08)",
-                    mixBlendMode: "multiply"
-                  }}
+            <div className="relative w-full max-w-sm sm:max-w-md flex flex-col justify-center items-center p-6 sm:p-8 rounded-2xl bg-gradient-to-b from-amber-500/5 via-sky-500/5 to-transparent border border-slate-200/80 dark:border-zinc-800 shadow-xl shadow-sky-500/5">
+              <div className="relative w-48 h-48 sm:w-60 sm:h-60 flex items-center justify-center">
+                <img
+                  src="/vsb-logo.png"
+                  alt="V.S.B. Engineering College Logo"
+                  className="w-full h-full object-contain drop-shadow-md select-none hover:scale-105 transition-transform duration-500"
                 />
+              </div>
+              <div className="mt-4 text-center space-y-1">
+                <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#0284c7] dark:text-[#38bdf8] block">
+                  An Autonomous Institution • Karur
+                </span>
+                <h3 className="text-sm sm:text-base font-black text-foreground">
+                  V.S.B. ENGINEERING COLLEGE
+                </h3>
+                <p className="text-xs text-muted-foreground font-semibold">
+                  Department of Artificial Intelligence and Data Science
+                </p>
               </div>
             </div>
           </div>
@@ -175,6 +178,16 @@ export function HeroObjectives() {
           {/* ========================================================================= */}
           <div className="lg:col-span-7 w-full text-left space-y-7 order-1 lg:order-2 pl-0 lg:pl-6">
             
+            {/* Department Badge */}
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/30 text-xs font-semibold text-[#0284c7] dark:text-[#38bdf8]">
+              <img
+                src="/vsb-logo.png"
+                alt="VSB"
+                className="w-4 h-4 object-contain rounded-full"
+              />
+              <span>Department of Artificial Intelligence and Data Science</span>
+            </div>
+
             {/* Slow-Motion Animated Sentence Block */}
             <AnimatePresence mode="wait">
               <motion.div

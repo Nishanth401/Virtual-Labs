@@ -32,7 +32,7 @@ export const COURSES_DATA: CourseItem[] = [
     sem: 1,
     credits: 1.5,
     type: 'Foundation',
-    desc: 'Official 8-Week NPTEL Study Plan & Certification Track for AI&DS students covering Weekly Workflows (Mon–Sun), formatted I/O, operators, loops, recursion, *(a+i) pointers, dynamic memory, structs, and mock exams.',
+    desc: 'Autonomous 8-Week Foundation Curriculum Track for AI&DS students covering Weekly Workflows (Mon–Sun), formatted I/O, operators, loops, recursion, *(a+i) pointers, dynamic memory, structs, and comprehensive examinations.',
     resources: 26,
     icon: '💻',
     isLab: true,

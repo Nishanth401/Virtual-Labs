@@ -353,5 +353,169 @@ SELECT * FROM HighEarnersView;`
         description: "Write a SQL query using DENSE_RANK() to find the top 3 highest-paid employees in each department."
       }
     ]
+  },
+  "dbms-lab-manual": {
+    id: "dbms-lab-manual",
+    title: "DBMS Official Laboratory Manual & SQL Specifications",
+    subject: "Database Management Systems Lab",
+    provider: "Department of Artificial Intelligence and Data Science",
+    source: "VSB Engineering College Autonomous Curriculum (R2023 / R2021)",
+    subtitle: "Complete Laboratory Manual: DDL, DML, Integrity Constraints, Joins, Subqueries, Views & PL/SQL Stored Procedures",
+    category: "Academic Laboratory Manual",
+    readTime: "45 mins",
+    difficulty: "Intermediate",
+    simulatorUrl: "/labs/dbms-lab",
+    simulatorName: "SQL Query Simulator",
+    overview:
+      "This official laboratory manual for Database Management Systems covers complete hands-on experiments compliant with the Anna University and Autonomous curriculum. Students master database definition (DDL), manipulation (DML), integrity constraints, complex join queries, nested subqueries, views, and procedural SQL (PL/SQL blocks, cursors, triggers, and stored procedures).",
+    learningObjectives: [
+      "Design relational schemas and apply integrity constraints (PRIMARY KEY, FOREIGN KEY, CHECK, UNIQUE, NOT NULL)",
+      "Formulate advanced DML operations and transaction control commands (COMMIT, ROLLBACK, SAVEPOINT)",
+      "Write multi-table relational joins, aggregate group queries, and nested subqueries",
+      "Construct virtual views for row-level security and computational query simplification",
+      "Develop procedural PL/SQL blocks with exception handling, parameterized cursors, and row-level database triggers"
+    ],
+    tags: ["DBMS", "SQL", "PL/SQL", "Triggers", "Cursors", "Lab Manual", "VSB Engineering College"],
+    keyConcepts: [
+      {
+        title: "1. Data Definition & Integrity Constraints",
+        description:
+          "DDL commands (CREATE, ALTER, DROP, TRUNCATE) establish relational tables with rigorous domain and referential integrity constraints.",
+        points: [
+          "PRIMARY KEY: Uniquely identifies rows while prohibiting NULL values.",
+          "FOREIGN KEY: Enforces referential integrity linking child tuples to parent tables with CASCADE policies.",
+          "CHECK constraint: Enforces domain-specific business logic (e.g. CHECK (Salary >= 10000)).",
+          "UNIQUE & NOT NULL: Ensures uniqueness of secondary attributes like Email and mandatory non-empty columns."
+        ]
+      },
+      {
+        title: "2. Relational Joins & Subquery Optimization",
+        description:
+          "Relational algebra joins combine datasets horizontally, while subqueries allow nesting one query's result set into another.",
+        points: [
+          "INNER JOIN: Retains only matching rows between connected entities.",
+          "LEFT/RIGHT OUTER JOIN: Preserves non-matching tuples from one side with NULL placeholders.",
+          "Correlated Subqueries: Queries where the inner evaluation references an outer row on each iteration.",
+          "EXISTS / NOT EXISTS: Highly performant existence testing without returning entire subquery column vectors."
+        ]
+      },
+      {
+        title: "3. PL/SQL Architecture: Cursors & Triggers",
+        description:
+          "Procedural extensions enable conditional branching, looping, context area cursors, and automated event triggers.",
+        points: [
+          "Explicit Cursors: Cursor declaration, OPEN, FETCH, and CLOSE with %FOUND, %NOTFOUND, %ROWCOUNT attributes.",
+          "Database Triggers: Event-driven procedures executing BEFORE or AFTER INSERT/UPDATE/DELETE events FOR EACH ROW.",
+          "Exception Handling: Trapping system predefined exceptions (NO_DATA_FOUND, TOO_MANY_ROWS) and user-defined errors."
+        ]
+      }
+    ],
+    algorithmSteps: [
+      {
+        step: 1,
+        title: "Schema Design & Constraint Mapping",
+        description: "Analyze the mini-world enterprise requirements and translate Entity-Relationship models into normalized tables with Primary and Foreign key references."
+      },
+      {
+        step: 2,
+        title: "Tuple Population & Query Testing",
+        description: "Insert comprehensive test data satisfying foreign key constraints, then formulate relational queries to verify data extraction and aggregations."
+      },
+      {
+        step: 3,
+        title: "Procedural Script Compilation",
+        description: "Author PL/SQL blocks using DECLARE, BEGIN, EXCEPTION, END; sections, incorporating explicit cursors to process row-by-row updates."
+      },
+      {
+        step: 4,
+        title: "Trigger Verification",
+        description: "Attach event triggers to audit log modifications and verify rollback behavior upon rule violation."
+      }
+    ],
+    codeSnippets: {
+      sql: `-- 1. Table Schema Creation with Integrity Constraints
+CREATE TABLE Department (
+    dept_id INT PRIMARY KEY,
+    dept_name VARCHAR(50) NOT NULL,
+    location VARCHAR(50)
+);
+
+CREATE TABLE Employee (
+    emp_id INT PRIMARY KEY,
+    emp_name VARCHAR(50) NOT NULL,
+    salary DECIMAL(10, 2) CHECK (salary > 10000),
+    dept_id INT,
+    hire_date DATE DEFAULT CURRENT_DATE,
+    CONSTRAINT fk_dept FOREIGN KEY (dept_id) 
+        REFERENCES Department(dept_id) ON DELETE CASCADE
+);
+
+-- 2. Multi-Table Join & Aggregate Grouping
+SELECT 
+    d.dept_name,
+    COUNT(e.emp_id) AS total_employees,
+    ROUND(AVG(e.salary), 2) AS average_salary,
+    MAX(e.salary) AS highest_salary
+FROM Department d
+LEFT JOIN Employee e ON d.dept_id = e.dept_id
+GROUP BY d.dept_id, d.dept_name
+HAVING COUNT(e.emp_id) > 0
+ORDER BY average_salary DESC;
+
+-- 3. PL/SQL Cursor & Trigger
+CREATE OR REPLACE TRIGGER trg_salary_audit
+BEFORE UPDATE OF salary ON Employee
+FOR EACH ROW
+BEGIN
+    IF :NEW.salary < :OLD.salary THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Salary reduction is prohibited by HR policy.');
+    END IF;
+END;
+/`
+    },
+    complexityAnalysis: {
+      timeComplexity: "O(log N) for B-Tree Indexed Primary Key lookups; O(N + M) for Hash Joins",
+      spaceComplexity: "O(N) physical disk and buffer pool storage for table extents and B-Tree indices",
+      notes: "Proper composite indexing on foreign key attributes drastically reduces nested loop join execution times from O(N * M) to O(N log M)."
+    },
+    vivaQuestions: [
+      {
+        question: "What is the key difference between DROP, TRUNCATE, and DELETE?",
+        answer: "DELETE is a DML command that removes rows one by one with rollback support. TRUNCATE is a DDL command that deallocates data pages instantly, resets identity counters, and cannot be rolled back in some engines. DROP removes the entire table schema and all data permanently.",
+        category: "SQL DDL/DML"
+      },
+      {
+        question: "What are ACID properties in DBMS?",
+        answer: "Atomicity (all operations succeed or entire transaction rolls back), Consistency (database transitions from one valid state to another), Isolation (concurrent transactions execute independently without interference), and Durability (committed changes persist even across system crashes).",
+        category: "Transactions"
+      },
+      {
+        question: "What is the function of a database cursor in PL/SQL?",
+        answer: "A cursor is a named pointer to a private memory context area allocated by the database to process multi-row SQL query results tuple-by-tuple.",
+        category: "PL/SQL"
+      },
+      {
+        question: "When does a mutating table error occur in triggers?",
+        answer: "A mutating table error (ORA-04091) occurs when a row-level trigger attempts to query or modify the same table that is currently undergoing the triggering DML operation.",
+        category: "Triggers"
+      }
+    ],
+    realWorldApplications: [
+      "Core banking transaction engines ensuring strict ACID consistency for debit and credit operations",
+      "E-commerce inventory and order tracking systems handling high-concurrency cart checkouts",
+      "Hospital electronic health record (EHR) systems enforcing strict patient privacy via secure relational views"
+    ],
+    practiceProblems: [
+      {
+        title: "Employee Bonus Computation Cursor",
+        difficulty: "Medium",
+        description: "Write a PL/SQL block utilizing an explicit parameterized cursor to compute and update a 10% annual bonus for all employees in the 'Engineering' department whose salary is below the department average."
+      },
+      {
+        title: "Inventory Stock Level Trigger",
+        difficulty: "Hard",
+        description: "Design an AFTER UPDATE trigger on an 'Orders' table that automatically decrements the stock quantity in the 'Products' table and logs an alert when stock drops below minimum reorder thresholds."
+      }
+    ]
   }
 };

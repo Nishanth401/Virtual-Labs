@@ -5,7 +5,7 @@ export const C_PROGRAMMING_ROADMAP_CATEGORIES: DSACategory[] = [
   // WEEK 1: INTRODUCTION TO C PROGRAMMING & BASICS
   // ==========================================
   {
-    id: "nptel-week-1",
+    id: "c-prog-week-1",
     name: "Week 1: Introduction to C Programming & Basics",
     shortDesc: "History, structure of C, compilation pipeline, variables, constants, data types, and formatted I/O.",
     iconName: "Code2",
@@ -14,7 +14,7 @@ export const C_PROGRAMMING_ROADMAP_CATEGORIES: DSACategory[] = [
         id: "c-week-1-fundamentals",
         slug: "c-fundamentals-variables-formatted-io",
         title: "Week 1: Introduction to C Programming & Basics (Hello World, Calc, Temp, Area)",
-        categoryId: "nptel-week-1",
+        categoryId: "c-prog-week-1",
         categoryName: "Week 1: Introduction to C Programming & Basics",
         difficulty: "Beginner",
         estimatedTime: "20 mins",
@@ -25,7 +25,7 @@ export const C_PROGRAMMING_ROADMAP_CATEGORIES: DSACategory[] = [
           "Compilation Pipeline: Preprocessing (#include, #define) -> Compilation (.s assembly) -> Assembly (.o object code) -> Linking (executable binary).",
           "Primitive Data Types & Sizing: char (1 Byte, ASCII), int (4 Bytes, two's complement), float (4 Bytes, IEEE 754), double (8 Bytes).",
           "Formatted I/O: printf for stdout with format specifiers (%d, %f, %lf, %c), scanf for stdin with address-of operator (&).",
-          "NPTEL Focus: Understand basic syntax, data type sizing limits, and solve 25 Week-1 MCQs.",
+          "Curriculum Focus: Understand basic syntax, data type sizing limits, and solve 25 Week-1 MCQs.",
           "AI&DS Connection: Understanding low-level memory allocation; foundational for high-performance computing and C/C++ backend AI kernels (e.g. PyTorch ATen, TensorFlow XLA, CUDA)."
         ],
         diagramTitle: "GCC 4-Stage Compilation Process & Memory Layout",
@@ -51,7 +51,7 @@ export const C_PROGRAMMING_ROADMAP_CATEGORIES: DSACategory[] = [
 
 int main() {
     // 1. Hello World
-    printf("=== NPTEL C Programming Week 1 ===\\n");
+    printf("=== C Programming Laboratory Week 1 ===\\n");
     printf("Hello, AI&DS Engineering World!\\n\\n");
 
     // 2. Simple Calculator
@@ -101,7 +101,7 @@ int main() {
   // WEEK 2: OPERATORS, EXPRESSIONS & DECISION MAKING
   // ==========================================
   {
-    id: "nptel-week-2",
+    id: "c-prog-week-2",
     name: "Week 2: Operators, Expressions & Decision Making",
     shortDesc: "Arithmetic/relational/logical operators, operator precedence, if, if-else ladders, nested conditions, and switch.",
     iconName: "Target",
@@ -110,7 +110,7 @@ int main() {
         id: "c-week-2-operators-decision",
         slug: "control-flow-decision-making-switch-case",
         title: "Week 2: Operators, Expressions & Decision Making (Largest of 3, Grades, Menu, Bill)",
-        categoryId: "nptel-week-2",
+        categoryId: "c-prog-week-2",
         categoryName: "Week 2: Operators, Expressions & Decision Making",
         difficulty: "Beginner",
         estimatedTime: "25 mins",
@@ -121,7 +121,7 @@ int main() {
           "Operators Hierarchy: Postfix () [] -> Unary ++ -- ! ~ -> Multiplicative * / % -> Additive + - -> Relational < <= > >= -> Equality == != -> Logical && || -> Conditional ?: -> Assignment = +=.",
           "Decision Making: if-else evaluates boolean expressions sequentially; switch-case creates fast O(1) jump tables for integer/char selectors.",
           "Short-Circuit Evaluation: In (A && B), if A is false, B is never evaluated; in (A || B), if A is true, B is skipped.",
-          "NPTEL Focus: Output prediction on operator precedence problems, pre/post increment trick questions, and 25 MCQ + 5 Programming Questions assessment.",
+          "Curriculum Focus: Output prediction on operator precedence problems, pre/post increment trick questions, and 25 MCQ + 5 Programming Questions assessment.",
           "AI&DS Connection: Decision trees and threshold-based classification models rely directly on nested conditional logic."
         ],
         diagramTitle: "Decision Tree Flow for Student Grading & Electricity Billing",
@@ -143,7 +143,7 @@ int main() {
             code: `#include <stdio.h>
 
 int main() {
-    printf("=== NPTEL C Programming Week 2: Decision Making ===\\n\\n");
+    printf("=== C Programming Laboratory Week 2: Decision Making ===\\n\\n");
 
     // 1. Largest of Three Numbers
     int a = 45, b = 78, c = 32;
@@ -201,7 +201,7 @@ int main() {
   // WEEK 3: LOOP CONSTRUCTS
   // ==========================================
   {
-    id: "nptel-week-3",
+    id: "c-prog-week-3",
     name: "Week 3: Loop Constructs & Iterative Algorithms",
     shortDesc: "for loop, while loop, do-while loop, nested loops, break/continue, patterns, and Student Mark Analysis.",
     iconName: "Layers",
@@ -210,7 +210,7 @@ int main() {
         id: "c-week-3-loops-patterns",
         slug: "iterative-loops-and-pattern-generation",
         title: "Week 3: Loop Constructs & Mini Task (Factorial, Prime, Fibonacci, Patterns, Mark Analysis)",
-        categoryId: "nptel-week-3",
+        categoryId: "c-prog-week-3",
         categoryName: "Week 3: Loop Constructs & Iterative Algorithms",
         difficulty: "Beginner",
         estimatedTime: "30 mins",
@@ -220,7 +220,7 @@ int main() {
         keyPoints: [
           "Loop Types: for loop for counted iterations; while loop for condition-driven cycles; do-while executes loop body at least once.",
           "Loop Control: break terminates current enclosing loop immediately; continue skips remainder of current iteration.",
-          "NPTEL Focus: Loop execution tracing, infinite loop identification, nested loop output prediction, and off-by-one boundary checking.",
+          "Curriculum Focus: Loop execution tracing, infinite loop identification, nested loop output prediction, and off-by-one boundary checking.",
           "Mini Task: Build the Student Mark Analysis Program computing class average, top score, lowest score, and pass/fail counts across dynamic student cohorts.",
           "AI&DS Connection: Gradient descent optimization, iterative epoch training loops, and data aggregation pipelines run on loop iterations."
         ],
@@ -251,7 +251,7 @@ bool isPrime(int n) {
 }
 
 int main() {
-    printf("=== NPTEL Week 3: Loops & Mini Task ===\\n\\n");
+    printf("=== C Programming Laboratory Week 3: Loops & Mini Task ===\\n\\n");
 
     // 1. Prime Number & Factorial
     int num = 7;
@@ -319,7 +319,7 @@ int main() {
   // WEEK 4: FUNCTIONS AND RECURSION
   // ==========================================
   {
-    id: "nptel-week-4",
+    id: "c-prog-week-4",
     name: "Week 4: Functions and Recursion",
     shortDesc: "Function declaration, definition, parameters, return values, scopes (local/global/static), and recursion.",
     iconName: "BrainCircuit",
@@ -328,7 +328,7 @@ int main() {
         id: "c-week-4-functions-recursion",
         slug: "functions-and-recursion-factorial-gcd",
         title: "Week 4: Functions and Recursion (Modular Calc, Factorial, Fibonacci, GCD)",
-        categoryId: "nptel-week-4",
+        categoryId: "c-prog-week-4",
         categoryName: "Week 4: Functions and Recursion",
         difficulty: "Intermediate",
         estimatedTime: "30 mins",
@@ -340,7 +340,7 @@ int main() {
           "Variable Scopes & Storage Classes: auto (stack-allocated local), static (persists across calls in data segment), global (file scope).",
           "Pass by Value: Caller copies argument values into function stack frame; modifications do not affect caller variables.",
           "Recursion: Base case stops self-invocation; recursive step moves toward base case; call stack unwinds in LIFO order.",
-          "NPTEL Focus: Recursion stack frame tracing, base case omission (stack overflow), static variable state preservation, and 30 NPTEL MCQs.",
+          "Curriculum Focus: Recursion stack frame tracing, base case omission (stack overflow), static variable state preservation, and technical diagnostic MCQs.",
           "AI&DS Connection: Recursive divide-and-conquer algorithms (MergeSort, QuickSort, Decision Tree splitting) and backpropagation tree traversals."
         ],
         diagramTitle: "Euclidean GCD Recursive Call Stack Unwinding",
@@ -383,7 +383,7 @@ void counterTracker() {
 }
 
 int main() {
-    printf("=== NPTEL Week 4: Functions & Recursion ===\\n\\n");
+    printf("=== C Programming Laboratory Week 4: Functions & Recursion ===\\n\\n");
 
     int a = 48, b = 18;
     printf("[1. Euclidean GCD]: gcd(%d, %d) = %d\\n\\n", a, b, gcd(a, b));
@@ -426,7 +426,7 @@ int main() {
   // WEEK 5: ARRAYS AND POINTERS
   // ==========================================
   {
-    id: "nptel-week-5",
+    id: "c-prog-week-5",
     name: "Week 5: Arrays and Pointers",
     shortDesc: "1D/2D arrays, searching, sorting, pointer basics, pointer arithmetic, and *(a+i) relationship.",
     iconName: "Layers",
@@ -435,7 +435,7 @@ int main() {
         id: "c-week-5-arrays-pointers",
         slug: "1d-arrays-and-statistical-calculations",
         title: "Week 5: Arrays and Pointers (Searching, Sorting, Matrix Mult, *(a+i))",
-        categoryId: "nptel-week-5",
+        categoryId: "c-prog-week-5",
         categoryName: "Week 5: Arrays and Pointers",
         difficulty: "Intermediate",
         estimatedTime: "30 mins",
@@ -447,7 +447,7 @@ int main() {
           "The *(a+i) Equivalence: In C, arr[i] is syntactically equivalent to *(arr + i), *(i + arr), and i[arr].",
           "Pointer Arithmetic: Incrementing ptr by 1 advances memory by sizeof(*ptr) bytes.",
           "Matrix Multiplication: Condition cols_A == rows_B; requires triple nested loop running in O(r * c * k).",
-          "NPTEL Focus: Address calculations, pointer increment/decrement precedence, `*(a+i)` dereferencing, and array decay to pointers.",
+          "Curriculum Focus: Address calculations, pointer increment/decrement precedence, `*(a+i)` dereferencing, and array decay to pointers.",
           "AI&DS Connection: Arrays and 2D matrices form the foundational representation for tensors, feature vectors, machine learning datasets, and image pixel matrices."
         ],
         diagramTitle: "Array Memory Stride & Pointer Dereferencing Mechanics",
@@ -479,7 +479,7 @@ void bubbleSort(int *arr, int n) {
 }
 
 int main() {
-    printf("=== NPTEL Week 5: Arrays & Pointers ===\\n\\n");
+    printf("=== C Programming Laboratory Week 5: Arrays & Pointers ===\\n\\n");
 
     // 1. *(a+i) Pointer Arithmetic Demonstration
     int a[] = {10, 20, 30, 40, 50};
@@ -545,7 +545,7 @@ int main() {
   // WEEK 6: DYNAMIC MEMORY & FILE HANDLING
   // ==========================================
   {
-    id: "nptel-week-6",
+    id: "c-prog-week-6",
     name: "Week 6: Dynamic Memory & File Handling",
     shortDesc: "malloc, calloc, realloc, free, memory leaks, and file operations (fopen, fclose, fprintf, fscanf).",
     iconName: "Database",
@@ -554,7 +554,7 @@ int main() {
         id: "c-week-6-dynamic-mem-files",
         slug: "pointers-and-dynamic-memory-allocation",
         title: "Week 6: Dynamic Memory & File Handling (malloc/free, File Mark Storage)",
-        categoryId: "nptel-week-6",
+        categoryId: "c-prog-week-6",
         categoryName: "Week 6: Dynamic Memory & File Handling",
         difficulty: "Intermediate",
         estimatedTime: "35 mins",
@@ -565,7 +565,7 @@ int main() {
           "Heap Memory Functions: malloc(bytes) allocates uninitialized buffer; calloc(n, size) initializes memory to zero; realloc(ptr, new_size) resizes buffer; free(ptr) releases RAM to OS.",
           "Memory Leaks & Dangling Pointers: Failing to free allocated memory leaks RAM; accessing freed pointer causes undefined behavior (set ptr = NULL after free).",
           "File Stream Modes: \"w\" (write/overwrite), \"r\" (read), \"a\" (append), \"r+\" (read/write), \"wb\"/\"rb\" (binary mode).",
-          "NPTEL Focus: Identifying memory leaks, file open error handling (checking fp == NULL), and pointer lifetime management.",
+          "Curriculum Focus: Identifying memory leaks, file open error handling (checking fp == NULL), and pointer lifetime management.",
           "AI&DS Connection: Dynamic batch buffering for streaming dataset loading and disk-based file persistence for model weights and logs."
         ],
         diagramTitle: "Dynamic Heap Allocation Lifecycle & File Stream Architecture",
@@ -585,7 +585,7 @@ int main() {
 #include <stdlib.h>
 
 int main() {
-    printf("=== NPTEL Week 6: Dynamic Memory & File Handling ===\\n\\n");
+    printf("=== C Programming Laboratory Week 6: Dynamic Memory & File Handling ===\\n\\n");
 
     // 1. Dynamic Array Allocation with malloc()
     int n = 4;
@@ -601,7 +601,7 @@ int main() {
     printf("\\n\\n");
 
     // 2. File-Based Student Database Storage
-    FILE *fp = fopen("nptel_student_marks.txt", "w");
+    FILE *fp = fopen("student_marks.txt", "w");
     if (fp == NULL) {
         perror("File opening failed");
         free(scores);
@@ -613,10 +613,10 @@ int main() {
         fprintf(fp, "Student_%d %d\\n", i + 1, scores[i]);
     }
     fclose(fp);
-    printf("[2. File Written]: nptel_student_marks.txt created successfully.\\n\\n");
+    printf("[2. File Written]: student_marks.txt created successfully.\\n\\n");
 
     // 3. Read back from File using fscanf()
-    fp = fopen("nptel_student_marks.txt", "r");
+    fp = fopen("student_marks.txt", "r");
     if (fp != NULL) {
         int count;
         fscanf(fp, "%d", &count);
@@ -628,7 +628,7 @@ int main() {
             printf("Record #%d -> %-12s | Mark: %d\\n", i + 1, name, mark);
         }
         fclose(fp);
-        remove("nptel_student_marks.txt"); // Clean up disk
+        remove("student_marks.txt"); // Clean up disk
     }
 
     // 4. Safe Deallocation
@@ -664,7 +664,7 @@ int main() {
   // WEEK 7: STRUCTURES AND LINKED LISTS
   // ==========================================
   {
-    id: "nptel-week-7",
+    id: "c-prog-week-7",
     name: "Week 7: Structures and Linked Lists",
     shortDesc: "Structure declaration, nested structures, structure pointers, linked list nodes, and insertion/deletion.",
     iconName: "ListTree",
@@ -673,7 +673,7 @@ int main() {
         id: "c-week-7-structs-linked-lists",
         slug: "structures-unions-and-typedef",
         title: "Week 7: Structures and Linked Lists (Student Record, Employee DB, Singly Linked List)",
-        categoryId: "nptel-week-7",
+        categoryId: "c-prog-week-7",
         categoryName: "Week 7: Structures and Linked Lists",
         difficulty: "Intermediate",
         estimatedTime: "35 mins",
@@ -685,7 +685,7 @@ int main() {
           "Structure Pointers: Arrow operator (ptr->name) is shorthand for (*ptr).name.",
           "Linked List Fundamentals: Self-referential structure containing data payload and pointer to next node: struct Node { int data; struct Node *next; }.",
           "Dynamic Node Allocation: Each node is allocated on the heap via malloc(sizeof(struct Node)).",
-          "NPTEL Focus: Structure padding calculations, self-referential pointer dereferencing, and linked list insertion/deletion edge cases (empty list, head deletion).",
+          "Curriculum Focus: Structure padding calculations, self-referential pointer dereferencing, and linked list insertion/deletion edge cases (empty list, head deletion).",
           "AI&DS Connection: Custom node representations are the core building block for AI search graph nodes, decision tree branches, and sparse matrix representations."
         ],
         diagramTitle: "Singly Linked List Dynamic Node Memory Structure",
@@ -736,7 +736,7 @@ void printList(Node *head) {
 }
 
 int main() {
-    printf("=== NPTEL Week 7: Structures & Linked Lists ===\\n\\n");
+    printf("=== C Programming Laboratory Week 7: Structures & Linked Lists ===\\n\\n");
 
     // 1. Student Record Structure
     Student s1;
@@ -789,32 +789,32 @@ int main() {
   },
 
   // ==========================================
-  // WEEK 8: COMPLETE REVISION + NPTEL EXAM PREPARATION
+  // WEEK 8: COMPLETE REVISION & PRACTICAL EXAM PREPARATION
   // ==========================================
   {
-    id: "nptel-week-8",
-    name: "Week 8: Complete Revision + NPTEL Exam Preparation",
-    shortDesc: "Comprehensive review of all 7 weeks, 7-day study plan, and 100-question NPTEL mock exam preparation.",
+    id: "c-prog-week-8",
+    name: "Week 8: Complete Revision & Practical Exam Preparation",
+    shortDesc: "Comprehensive review of all 7 weeks, 7-day study plan, and 100-question comprehensive mock exam preparation.",
     iconName: "Trophy",
     topics: [
       {
         id: "c-week-8-revision-exam",
         slug: "file-handling-and-preprocessor-directives",
-        title: "Week 8: Complete Revision + NPTEL Exam Preparation (7-Day Plan & Mock Exam)",
-        categoryId: "nptel-week-8",
-        categoryName: "Week 8: Complete Revision + NPTEL Exam Preparation",
+        title: "Week 8: Complete Revision & Practical Exam Preparation (7-Day Plan & Mock Exam)",
+        categoryId: "c-prog-week-8",
+        categoryName: "Week 8: Complete Revision & Practical Exam Preparation",
         difficulty: "Advanced",
         estimatedTime: "40 mins",
-        gfgSearchQuery: "NPTEL C programming mock exam revision questions previous years",
+        gfgSearchQuery: "C programming mock exam revision questions previous years",
         gfgUrl: "https://www.geeksforgeeks.org/c-programming-language/",
-        quickSummary: "Consolidate all C core domains (variables, operators, conditions, loops, recursion, pointers, heap memory, structs, files, linked lists) with a targeted 7-day revision schedule and full NPTEL mock examination.",
+        quickSummary: "Consolidate all C core domains (variables, operators, conditions, loops, recursion, pointers, heap memory, structs, files, linked lists) with a targeted 7-day revision schedule and full comprehensive mock examination.",
         keyPoints: [
-          "7-Day Practice Plan: Day 1–2 (Revise concepts), Day 3–4 (Solve previous NPTEL questions), Day 5 (Full mock test with 100 questions), Day 6 (Analyse mistakes), Day 7 (Final revision).",
-          "Critical NPTEL Exam Focus Areas: Precedence tables, `*(a+i)` address indexing, pointer arithmetic, recursion stack tracing, dynamic memory leak diagnosis, and structure padding.",
-          "Department Strategy: AI&DS C Programming Champions lead peer study circles and doubt-clearing sessions to achieve maximum NPTEL Elite/Gold certification rates."
+          "7-Day Practice Plan: Day 1–2 (Revise concepts), Day 3–4 (Solve practice questions), Day 5 (Full mock test with 100 questions), Day 6 (Analyse mistakes), Day 7 (Final revision).",
+          "Critical Exam Focus Areas: Precedence tables, `*(a+i)` address indexing, pointer arithmetic, recursion stack tracing, dynamic memory leak diagnosis, and structure padding.",
+          "Department Strategy: AI&DS C Programming Champions lead peer study circles and doubt-clearing sessions to achieve maximum academic excellence."
         ],
-        diagramTitle: "7-Day NPTEL Exam Preparation Strategy Schedule",
-        diagram: `  [ Day 1-2: Core Concept Revision ] ──► [ Day 3-4: Previous Year NPTEL Papers ]
+        diagramTitle: "7-Day Comprehensive Exam Preparation Strategy Schedule",
+        diagram: `  [ Day 1-2: Core Concept Revision ] ──► [ Day 3-4: Practice Question Papers ]
                                                               │
                                                               ▼
   [ Day 7: Final Rapid Review ] ◄── [ Day 6: Mistake Analysis ] ◄── [ Day 5: 100-Q Mock Test ]`,
@@ -843,14 +843,14 @@ double calculateAverage(const int *arr, int size) {
 }
 
 int main() {
-    printf("=== NPTEL Week 8: Final Exam Comprehensive Diagnostic ===\\n\\n");
+    printf("=== Week 8: Final Exam Comprehensive Diagnostic ===\\n\\n");
 
     StudentData s = { .id = 201, .scores = {85, 90, 95} };
     double avg = calculateAverage(s.scores, 3);
 
     printf("Student ID: %d\\n", s.id);
     printf("Calculated Average: %.2f\\n", avg);
-    printf("Exam Status: Ready for NPTEL C Programming Certification (100%% Prepared)\\n");
+    printf("Exam Status: Ready for Comprehensive C Programming Examination (100%% Prepared)\\n");
 
     return 0;
 }`
@@ -858,7 +858,7 @@ int main() {
         ],
         practiceProblems: [
           {
-            title: "NPTEL C Programming Previous Year Practice Quiz",
+            title: "Autonomous C Programming Comprehensive Practice Quiz",
             difficulty: "Hard",
             url: "https://www.geeksforgeeks.org/c-programming-language/",
             platform: "GeeksforGeeks",

@@ -30,7 +30,7 @@ export type LabTab =
   | "dsa-roadmap"
   | "quizzes"
   | "resources"
-  | "nptel-plan"
+  | "c-study-plan"
   | "mini-projects";
 
 interface LabSidebarProps {
@@ -47,7 +47,7 @@ const DEFAULT_TABS: { id: LabTab; label: string; icon: React.ElementType }[] = [
   { id: "introduction", label: "Introduction", icon: BookOpen },
   { id: "objective", label: "Objective", icon: Target },
   { id: "experiments", label: "List of experiments", icon: ListTree },
-  { id: "manual-specs", label: "Evaluation Rubric & Specs", icon: Award },
+  { id: "manual-specs", label: "Lab Manual & Specs", icon: Award },
   { id: "case-study", label: "Industrial Case Study", icon: Sparkles },
   { id: "target-audience", label: "Target Audience", icon: Users },
   { id: "course-alignment", label: "Course Alignment", icon: GraduationCap },
@@ -59,11 +59,11 @@ const DEFAULT_TABS: { id: LabTab; label: string; icon: React.ElementType }[] = [
 ];
 
 const C_PROGRAMMING_TABS: { id: LabTab; label: string; icon: React.ElementType }[] = [
-  { id: "nptel-plan", label: "8-Week NPTEL Study Plan", icon: BookOpen },
+  { id: "c-study-plan", label: "8-Week C Study Plan", icon: BookOpen },
   { id: "introduction", label: "Introduction", icon: Target },
   { id: "objective", label: "Objective", icon: Target },
   { id: "experiments", label: "List of experiments", icon: ListTree },
-  { id: "manual-specs", label: "Evaluation Rubric & Specs", icon: Award },
+  { id: "manual-specs", label: "Lab Manual & Specs", icon: Award },
   { id: "case-study", label: "Industrial Case Study", icon: Sparkles },
   { id: "target-audience", label: "Target Audience", icon: Users },
   { id: "course-alignment", label: "Course Alignment", icon: GraduationCap },

@@ -19,6 +19,7 @@ import { QUIZZES_DATA, Quiz, getQuizForExperiment } from "@/data/quizzes";
 import { MaterialReaderDialog } from "@/components/resources/material-reader-dialog";
 import { ResourceItem } from "@/data/resources";
 import { LAB_MANUALS_DATA, INSTITUTION_VISION_MISSION } from "@/data/lab-manuals-data";
+import { LabManualExperimentsBrowser } from "@/components/vlab/lab-manual-experiments-browser";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -69,7 +70,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
   const manual = LAB_MANUALS_DATA[lab.id];
 
   const [activeTab, setActiveTab] = useState<LabTab>(
-    lab.id === "c-programming" ? "nptel-plan" : "dsa-roadmap"
+    lab.id === "c-programming" ? "c-study-plan" : "dsa-roadmap"
   );
   const [feedbackRating, setFeedbackRating] = useState<number>(5);
   const [feedbackText, setFeedbackText] = useState<string>("");
@@ -112,8 +113,8 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
     setFeedbackSent(true);
   };
 
-  // NPTEL 8-Week Curriculum Breakdown for AI&DS
-  const NPTEL_WEEKS_DATA = [
+  // 8-Week Curriculum Breakdown for AI&DS
+  const C_WEEKS_DATA = [
     {
       week: 1,
       title: "Introduction to C Programming & Basics",
@@ -134,7 +135,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
         "Temperature conversion (Celsius to Fahrenheit)",
         "Area and perimeter calculation (Circle & Rectangle)"
       ],
-      nptelFocus: [
+      examFocus: [
         "Learn basic syntax & tokenization",
         "Practice data type sizing questions",
         "Solve 25 Week-1 MCQs"
@@ -162,7 +163,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
         "Simple menu-driven program",
         "Electricity bill calculation (Tiered tariff)"
       ],
-      nptelFocus: [
+      examFocus: [
         "Output prediction questions on pre/post increment",
         "Operator precedence & associativity problems",
         "25 MCQ + 5 Programming Questions"
@@ -189,7 +190,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
         "Pattern printing (Star pyramid)",
         "Number reverse"
       ],
-      nptelFocus: [
+      examFocus: [
         "Loop execution tracing & step verification",
         "Infinite loop identification",
         "Nested loop output analysis"
@@ -216,10 +217,10 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
         "Fibonacci using recursion",
         "Greatest Common Divisor (GCD) using Euclidean Algorithm"
       ],
-      nptelFocus: [
+      examFocus: [
         "Pass by value copying behavior",
         "Local vs global vs static variable state persistence",
-        "30 NPTEL MCQs & Recursion stack tracing"
+        "30 Autonomous MCQs & Recursion stack tracing"
       ],
       aidsConnection: "Divide-and-conquer machine learning algorithms (Decision Tree splitting, MergeSort, Fast Fourier Transform) and recursive AST parsers."
     },
@@ -243,7 +244,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
         "Matrix addition & Transpose",
         "Matrix multiplication (2D dot products)"
       ],
-      nptelFocus: [
+      examFocus: [
         "⭐ *(a+i) address dereferencing concept",
         "⭐ Contiguous memory address calculation: Base + (i * size)",
         "⭐ Pointer increment/decrement precedence"
@@ -267,7 +268,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
         "Student database file storage",
         "File-based mark persistence & retrieval"
       ],
-      nptelFocus: [
+      examFocus: [
         "Memory leaks & proper free() invocation",
         "File access modes (\"w\", \"r\", \"a\")",
         "Pointer handling & allocation validation (NULL checks)"
@@ -293,7 +294,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
         "Employee database system",
         "Singly linked list implementation (insert, traverse, free)"
       ],
-      nptelFocus: [
+      examFocus: [
         "Structure padding & sizeof(struct) calculations",
         "Pointer arrow dereferencing ptr->member",
         "Linked list insertion and pointer boundary safety"
@@ -302,24 +303,24 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
     },
     {
       week: 8,
-      title: "Complete Revision + NPTEL Exam Preparation",
-      assessment: "NPTEL Mock Exam",
+      title: "Complete Revision + Comprehensive Exam Preparation",
+      assessment: "Comprehensive Mock Exam",
       slug: "file-handling-and-preprocessor-directives",
       expId: "c-exp-8",
       topics: [
         "Comprehensive Revision: Variables, Operators, Conditions, Loops",
         "Functions, Recursion, Arrays, *(a+i) Pointers",
         "Dynamic Heap Memory, Files, Structures, Linked Lists",
-        "NPTEL Elite/Gold Exam Strategy"
+        "Comprehensive Exam Strategy & Problem Solving"
       ],
       programs: [
         "Comprehensive diagnostic program",
-        "Previous years' NPTEL assignment problem solving",
-        "100-Question Full NPTEL Mock Examination"
+        "Previous years' examination problem solving",
+        "100-Question Full Comprehensive Mock Examination"
       ],
-      nptelFocus: [
+      examFocus: [
         "Day 1–2: Revise core concepts",
-        "Day 3–4: Solve previous NPTEL questions",
+        "Day 3–4: Solve previous examination questions",
         "Day 5: Full mock test (100 questions)",
         "Day 6: Analyse mistakes & diagnose weak spots",
         "Day 7: Final revision"
@@ -409,11 +410,11 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
               {lab.id === "c-programming" && (
                 <div className="flex items-center gap-2 shrink-0">
                   <Badge className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30 px-3 py-1 text-xs font-mono font-bold rounded-none">
-                    ★ NPTEL 8-Week AI&amp;DS Track
+                    ★ 8-Week AI&amp;DS Foundation Track
                   </Badge>
                   <Button
                     size="sm"
-                    onClick={() => setActiveTab("nptel-plan")}
+                    onClick={() => setActiveTab("c-study-plan")}
                     className="bg-[#0284c7] hover:bg-[#0369a1] text-white font-semibold text-xs gap-1.5 cursor-pointer rounded-none"
                   >
                     <BookOpen className="h-4 w-4" />
@@ -434,7 +435,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                     </span>
                   </div>
                   <span className="text-[11px] text-muted-foreground font-medium">
-                    Continuous 7-Day Cycle for NPTEL Success
+                    Continuous 7-Day Cycle for Laboratory Success
                   </span>
                 </div>
 
@@ -445,7 +446,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                       <Badge variant="outline" className="text-[9px] px-1.5 py-0 border-blue-500/30 text-blue-500 rounded-none">Day 1-3</Badge>
                     </div>
                     <p className="text-xs font-bold text-foreground">Concept Learning</p>
-                    <p className="text-[11px] text-muted-foreground">+ NPTEL Video Lectures</p>
+                    <p className="text-[11px] text-muted-foreground">+ Video Lectures &amp; Notes</p>
                   </div>
 
                   <div className="p-3 rounded-none bg-indigo-500/10 border border-indigo-500/30 flex flex-col justify-between space-y-1">
@@ -463,7 +464,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                       <Badge variant="outline" className="text-[9px] px-1.5 py-0 border-purple-500/30 text-purple-500 rounded-none">Day 5</Badge>
                     </div>
                     <p className="text-xs font-bold text-foreground">MCQ / MSQ Practice</p>
-                    <p className="text-[11px] text-muted-foreground">NPTEL Type Questions</p>
+                    <p className="text-[11px] text-muted-foreground">Diagnostic Questions</p>
                   </div>
 
                   <div className="p-3 rounded-none bg-emerald-500/10 border border-emerald-500/30 flex flex-col justify-between space-y-1">
@@ -516,8 +517,8 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
 
               {/* Right Tab Content View */}
               <div className="flex-1 w-full min-w-0">
-                {/* TAB: NPTEL 8-WEEK STUDY PLAN (C PROGRAMMING CORE) */}
-                {activeTab === "nptel-plan" && (
+                {/* TAB: 8-WEEK STUDY PLAN (C PROGRAMMING CORE) */}
+                {activeTab === "c-study-plan" && (
                   <div className="space-y-6">
                     {/* Goal & Department Alignment Card */}
                     <Card className="border border-border/80 bg-card rounded-none shadow-xs overflow-hidden border-l-4 border-l-[#0284c7]">
@@ -526,7 +527,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                           <div className="flex items-center gap-2">
                             <Trophy className="h-5 w-5 text-amber-500" />
                             <CardTitle className="text-xl font-bold text-[#0284c7] dark:text-[#38bdf8] font-heading">
-                              NPTEL C Programming – 8 Week Study Plan
+                              C Programming Foundation – 8 Week Study Plan
                             </CardTitle>
                           </div>
                           <Badge variant="outline" className="bg-sky-500/10 text-[#0284c7] border-sky-500/20 font-mono text-xs rounded-none">
@@ -537,7 +538,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                       <CardContent className="space-y-4 text-sm leading-relaxed">
                         <div className="p-3.5 rounded-none bg-sky-500/5 border border-sky-500/20">
                           <p className="font-semibold text-foreground">
-                            <strong>Goal:</strong> To help AI&amp;DS students successfully complete NPTEL C Programming certification and build a strong programming foundation required for <strong>Data Structures, AI/ML programming, competitive coding, and projects</strong>.
+                            <strong>Goal:</strong> To help AI&amp;DS students build a strong computational and algorithmic foundation required for <strong>Data Structures, AI/ML programming, competitive coding, and departmental laboratory projects</strong>.
                           </p>
                         </div>
 
@@ -565,10 +566,10 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                           <div className="p-3.5 rounded-none bg-muted/30 border border-border space-y-1">
                             <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-xs">
                               <ShieldCheck className="h-4 w-4" />
-                              <span>NPTEL Certification</span>
+                              <span>Department Certification</span>
                             </div>
                             <p className="text-xs text-muted-foreground">
-                              Structured 8-week path to secure Elite / Gold NPTEL certification.
+                              Structured 8-week path to master C fundamentals and autonomous curriculum.
                             </p>
                           </div>
                         </div>
@@ -588,7 +589,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                       </div>
 
                       <div className="space-y-3">
-                        {NPTEL_WEEKS_DATA.map((w) => {
+                        {C_WEEKS_DATA.map((w) => {
                           const isExpanded = expandedWeek === w.week;
 
                           return (
@@ -675,18 +676,18 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                     </div>
                                   </div>
 
-                                  {/* NPTEL Focus & AI&DS Connection */}
+                                  {/* Curriculum Focus & AI&DS Connection */}
                                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                                    {/* NPTEL Preparation / Focus */}
+                                    {/* Focus Area */}
                                     <div className="p-3.5 rounded-none bg-amber-500/5 border border-amber-500/20 space-y-2">
                                       <div className="flex items-center gap-2">
                                         <Award className="h-4 w-4 text-amber-500" />
                                         <h4 className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 font-mono">
-                                          NPTEL Focus &amp; Evaluation
+                                          Curriculum Focus &amp; Evaluation
                                         </h4>
                                       </div>
                                       <ul className="space-y-1 text-xs text-muted-foreground">
-                                        {w.nptelFocus.map((foc, fIdx) => (
+                                        {w.examFocus.map((foc, fIdx) => (
                                           <li key={fIdx} className="flex items-start gap-2">
                                             <span className="text-amber-500">★</span>
                                             <span>{foc}</span>
@@ -758,7 +759,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             <span>Weekly Evaluation Pattern for Students</span>
                           </CardTitle>
                           <CardDescription className="text-xs mt-0.5">
-                            Weekly milestone assessments aligned directly with the NPTEL curriculum schedule.
+                            Weekly milestone assessments aligned directly with the autonomous curriculum schedule.
                           </CardDescription>
                         </div>
                         <Badge variant="outline" className="text-xs font-mono bg-sky-500/10 text-[#0284c7] border-sky-500/20 rounded-none">
@@ -778,7 +779,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-border/60 text-foreground">
-                            {NPTEL_WEEKS_DATA.map((w) => (
+                            {C_WEEKS_DATA.map((w) => (
                               <tr key={w.week} className="hover:bg-muted/30 transition-colors">
                                 <td className="p-2.5 font-mono font-bold text-[#0284c7]">Week {w.week}</td>
                                 <td className="p-2.5 font-bold">{w.assessment}</td>
@@ -918,7 +919,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
 
                       <div className="p-3.5 rounded-none bg-card border border-border space-y-1">
                         <span className="text-[#0284c7] font-mono font-bold text-xs block">03. Certification</span>
-                        <h5 className="text-xs font-bold text-foreground">NPTEL Quiz Discussions</h5>
+                        <h5 className="text-xs font-bold text-foreground">Weekly Quiz Discussions</h5>
                         <p className="text-[11px] text-muted-foreground">
                           Friday MCQ/MSQ problem analysis and Sunday mock test reviews.
                         </p>
@@ -926,7 +927,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                     </div>
 
                     <p className="text-xs text-muted-foreground italic pt-1">
-                      💡 <strong>Department Impact:</strong> This initiative dramatically improves both <strong>NPTEL certification success rates</strong> and the <strong>engineering programming culture</strong> across the Artificial Intelligence &amp; Data Science department.
+                      💡 <strong>Department Impact:</strong> This initiative dramatically improves the <strong>engineering programming culture</strong> and foundational problem-solving across the Artificial Intelligence &amp; Data Science department.
                     </p>
                   </Card>
                 </div>
@@ -1738,7 +1739,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                           <span>Competitive Coders &amp; GATE Aspirants</span>
                         </div>
                         <p className="text-xs text-muted-foreground">
-                          Learners preparing for GATE CSE/DA, NPTEL Certification exams, LeetCode / HackerRank technical interview rounds, and university evaluations.
+                          Learners preparing for GATE CSE/DA, Technical Certifications, LeetCode / HackerRank technical interview rounds, and university evaluations.
                         </p>
                       </div>
 
@@ -2018,6 +2019,15 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                           </ol>
                         </CardContent>
                       </Card>
+
+                      {/* Official Lab Manual Experiments Record */}
+                      {manual.manualExperiments && manual.manualExperiments.length > 0 && (
+                        <LabManualExperimentsBrowser
+                          experiments={manual.manualExperiments}
+                          courseCode={manual.courseCode}
+                          courseTitle={manual.courseTitle}
+                        />
+                      )}
                     </>
                   ) : (
                     <p className="text-sm text-muted-foreground">Specifications data loading...</p>
@@ -2153,7 +2163,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                         <div>
                           <div className="flex items-center gap-2 mb-1">
                             <Badge variant="outline" className="text-xs font-mono bg-sky-500/10 text-[#0284c7] dark:text-[#38bdf8] border-[#0284c7]/20 rounded-none">
-                              {lab.id === "c-programming" ? "NPTEL Weekly Assessment" : "5-Question Assessment"}
+                              {lab.id === "c-programming" ? "Weekly Evaluation Assessment" : "5-Question Assessment"}
                             </Badge>
                             <Badge variant="outline" className="text-xs font-mono text-[#059669] dark:text-emerald-400 border-emerald-500/30 bg-emerald-500/10 rounded-none">
                               Passing: 80% (4/5)
@@ -2257,11 +2267,6 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             <Badge variant="outline" className="text-xs font-mono bg-sky-500/10 text-[#0284c7] dark:text-[#38bdf8] border-[#0284c7]/20 rounded-none">
                               Curated Study Material
                             </Badge>
-                            {lab.id === "c-programming" && (
-                              <Badge variant="outline" className="text-xs font-mono border-orange-500/30 text-orange-600 dark:text-orange-400 bg-orange-500/10 rounded-none">
-                                SWAYAM / NPTEL
-                              </Badge>
-                            )}
                             <Badge variant="outline" className="text-xs font-mono border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 rounded-none">
                               GeeksforGeeks
                             </Badge>
@@ -2273,7 +2278,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                             {lab.name} — Handbooks &amp; Interactive Tutorials
                           </CardTitle>
                           <CardDescription className="text-xs mt-1">
-                            Master core concepts through curated, industry-standard tutorials and documentation from NPTEL, GeeksforGeeks, and W3Schools.
+                            Master core concepts through curated, industry-standard tutorials and documentation from official handbooks, GeeksforGeeks, and W3Schools.
                           </CardDescription>
                         </div>
 
@@ -2355,7 +2360,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                                           : "bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/30"
                                       }`}
                                     >
-                                      {isOfficial ? "★ NPTEL Official" : isGfg ? "🟢 GeeksforGeeks Material" : "🔵 W3Schools Material"}
+                                      {isOfficial ? "★ Official Manual" : isGfg ? "🟢 GeeksforGeeks Material" : "🔵 W3Schools Material"}
                                     </Badge>
 
                                     <Badge variant="outline" className="text-[10px] font-mono text-muted-foreground rounded-none">
