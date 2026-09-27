@@ -127,19 +127,6 @@ export function MaterialReaderDialog({
         <div className="p-5 sm:p-6 pb-4 border-b border-border/80 bg-card/60 backdrop-blur-md flex flex-col gap-3 shrink-0">
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1 min-w-0">
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge variant="outline" className="text-[11px] font-mono border-primary/30 text-primary bg-primary/5">
-                  <GraduationCap className="h-3 w-3 mr-1" />
-                  {resource.subject}
-                </Badge>
-                <Badge variant="secondary" className="text-[11px] font-mono bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                  {resource.provider} Curriculum
-                </Badge>
-                <span className="inline-flex items-center text-[11px] text-muted-foreground font-mono gap-1">
-                  <Clock className="h-3 w-3" />
-                  {material.readTime}
-                </span>
-              </div>
               <DialogTitle className="text-xl sm:text-2xl font-black text-foreground font-heading tracking-tight truncate">
                 {resource.title}
               </DialogTitle>

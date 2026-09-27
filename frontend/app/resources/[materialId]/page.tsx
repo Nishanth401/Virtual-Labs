@@ -211,23 +211,6 @@ export default function MaterialDetailPage({ params }: MaterialPageProps) {
       <main className="flex-1 container max-w-7xl mx-auto px-4 sm:px-6 py-8">
         {/* Hero Title Section */}
         <div className="mb-8 space-y-4 pb-6 border-b border-border/80">
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="outline" className="text-xs font-mono border-primary/30 text-primary bg-primary/5 px-3 py-1">
-              <GraduationCap className="h-3.5 w-3.5 mr-1.5" />
-              {resource.subject}
-            </Badge>
-            <Badge variant="secondary" className="text-xs font-mono bg-sky-500/10 text-[#0284c7] dark:text-[#38bdf8] border border-sky-500/20 px-3 py-1">
-              Academic Curriculum
-            </Badge>
-            <span className="inline-flex items-center text-xs text-muted-foreground font-mono gap-1 ml-1">
-              <Clock className="h-3.5 w-3.5" />
-              {material.readTime}
-            </span>
-            <span className="inline-flex items-center text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 font-mono">
-              {material.difficulty}
-            </span>
-          </div>
-
           <h1 className="text-2xl sm:text-4xl font-black text-foreground font-heading tracking-tight leading-tight">
             {resource.title}
           </h1>

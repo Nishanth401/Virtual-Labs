@@ -177,17 +177,6 @@ export function HeroObjectives() {
           {/* 2nd BLOCK (RIGHT): SLOW-MOTION ANIMATED VIRTUAL LAB SENTENCE              */}
           {/* ========================================================================= */}
           <div className="lg:col-span-7 w-full text-left space-y-7 order-1 lg:order-2 pl-0 lg:pl-6">
-            
-            {/* Department Badge */}
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/30 text-xs font-semibold text-[#0284c7] dark:text-[#38bdf8]">
-              <img
-                src="/vsb-logo.png"
-                alt="VSB"
-                className="w-4 h-4 object-contain rounded-full"
-              />
-              <span>Department of Artificial Intelligence and Data Science</span>
-            </div>
-
             {/* Slow-Motion Animated Sentence Block */}
             <AnimatePresence mode="wait">
               <motion.div
