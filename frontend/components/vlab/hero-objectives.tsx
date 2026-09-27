@@ -28,36 +28,36 @@ import {
 
 const VIRTUAL_LAB_STATEMENTS = [
   {
-    badge: "Interactive Engineering Sandbox",
+    badge: "Department of Artificial Intelligence & Data Science",
+    line1: "Department of AI & DS.",
+    line2: "Virtual Laboratory Platform.",
+    line3: "Empowering future engineers.",
+    desc: "Official virtual laboratory platform for the Department of Artificial Intelligence and Data Science at V.S.B. Engineering College, providing immersive hands-on simulations and interactive engineering experimentation.",
+    highlight: "Department of AI & DS • Official Virtual Labs"
+  },
+  {
+    badge: "Interactive Department Sandbox",
     line1: "Simulate faster.",
     line2: "Learn smarter.",
     line3: "Grow with interactive virtual labs.",
-    desc: "We design, build, and simulate high-performance data structures in pure Java, machine learning models with NumPy/Pandas pipelines, relational SQL databases, and network protocols for ambitious engineers.",
+    desc: "We design, build, and simulate deep neural networks, machine learning pipelines, relational databases, cloud microservices, and high-performance algorithms for AI & DS engineers.",
     highlight: "Autonomous Curriculum Aligned"
   },
   {
-    badge: "Deep Visual Understanding",
+    badge: "Deep Algorithmic Visualization",
     line1: "Visualize code.",
     line2: "Master concepts.",
-    line3: "Intuitive algorithmic thinking.",
-    desc: "Inspect live memory frames, observe dynamic recursive call stacks step-by-step, trace pointer arithmetic, and verify time complexity across edge cases in real time.",
+    line3: "Department of AI & DS Labs.",
+    desc: "Inspect live memory frames, observe dynamic execution traces, trace recursive call stacks, and explore interactive simulators anytime, anywhere without local setup.",
     highlight: "Placement & GATE Ready"
   },
   {
-    badge: "Cloud, AI & Distributed Data",
-    line1: "Deploy systems.",
-    line2: "Analyze data.",
-    line3: "From fundamentals to production.",
-    desc: "Hands-on virtual computing labs covering AWS multi-account governance, distributed Hadoop HDFS MapReduce pipelines, BCNF relational normalization, and deep neural vision networks.",
-    highlight: "V.S.B. Autonomous Syllabus"
-  },
-  {
-    badge: "Zero Setup Required",
+    badge: "Department Core Curriculum",
     line1: "Code anywhere.",
     line2: "Simulate anytime.",
-    line3: "Empowering future engineers.",
-    desc: "Comprehensive lab manuals, Bloom's Taxonomy mapped Course Outcomes (COs), numerical CO-PO correlation matrices, and automated interactive grading rubrics.",
-    highlight: "Anna University R2021/R2023"
+    line3: "Department of AI & DS Virtual Labs.",
+    desc: "Comprehensive virtual laboratory manuals, Bloom's Taxonomy mapped Course Outcomes (COs), and real-time algorithmic execution suites developed for AI & DS students.",
+    highlight: "Department of AI & DS • Experiential Learning"
   }
 ];
 

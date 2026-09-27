@@ -343,7 +343,7 @@ export function JavaCodeViewer({
     // 1. Try real Java execution via Piston API (supports OpenJDK 15+)
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 9000);
+      const timeoutId = setTimeout(() => controller.abort(), 2000);
 
       const response = await fetch("https://emkc.org/api/v2/piston/execute", {
         method: "POST",

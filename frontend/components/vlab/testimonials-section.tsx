@@ -15,32 +15,44 @@ const TESTIMONIALS = [
 
 export function TestimonialsSection() {
   return (
-    <section className="py-14 bg-muted/20 border-b border-border/40">
+    <section className="py-16 sm:py-20 bg-muted/20 border-b border-border/40">
       <div className="container max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <Badge variant="outline" className="mb-2 text-xs uppercase tracking-wider bg-primary/5 text-primary border-primary/20">
-            Endorsements & Insights
+        <div className="text-center max-w-3xl mx-auto mb-12 space-y-2">
+          <Badge variant="outline" className="px-3 py-1 text-xs uppercase tracking-wider bg-sky-500/10 text-[#0284c7] dark:text-[#38bdf8] border-[#0284c7]/30 font-semibold">
+            Endorsements &amp; Insights
           </Badge>
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground font-heading">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground font-heading">
             Academic Testimonials
           </h2>
-          <p className="text-xs sm:text-sm text-muted-foreground mt-2">
+          <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
             What faculty members and students say about remote laboratory learning and simulation pedagogies.
           </p>
         </div>
 
-        <div className="max-w-2xl mx-auto">
+        {/* Large Prominent Testimonial Panel */}
+        <div className="max-w-4xl lg:max-w-5xl mx-auto">
           {TESTIMONIALS.map((t, idx) => (
-            <Card key={idx} className="border-secondary/40 bg-card/60 backdrop-blur-xs flex flex-col justify-between p-6 shadow-sm">
-              <CardContent className="p-0 space-y-4 flex-1 flex flex-col justify-between">
-                <Quote className="h-6 w-6 text-primary/40 shrink-0" />
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed italic flex-1">
-                  "{t.quote}"
+            <Card
+              key={idx}
+              className="border-2 border-border/80 bg-card/90 dark:bg-zinc-900/90 backdrop-blur-md rounded-2xl p-8 sm:p-12 md:p-14 shadow-xl hover:shadow-2xl transition-all relative overflow-hidden"
+            >
+              {/* Subtle Ambient Glow */}
+              <div className="absolute -top-24 -right-24 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
+
+              <CardContent className="p-0 space-y-6 sm:space-y-8 flex-1 flex flex-col justify-between relative z-10">
+                <Quote className="h-10 w-10 sm:h-12 sm:w-12 text-[#0284c7] dark:text-[#38bdf8] shrink-0" />
+                <p className="text-lg sm:text-xl md:text-2xl text-foreground font-medium leading-relaxed italic">
+                  &ldquo;{t.quote}&rdquo;
                 </p>
-                <div className="pt-4 border-t border-border/50">
-                  <div className="font-bold text-sm text-foreground">{t.author}</div>
-                  <div className="text-[11px] text-primary font-medium">{t.designation}</div>
-                  <div className="text-[10px] text-muted-foreground">{t.institute}</div>
+                <div className="pt-6 sm:pt-8 border-t border-border/60 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <div>
+                    <div className="font-extrabold text-lg sm:text-xl text-foreground font-heading">{t.author}</div>
+                    <div className="text-sm sm:text-base text-[#0284c7] dark:text-[#38bdf8] font-semibold mt-0.5">{t.designation}</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground font-medium mt-0.5">{t.institute}</div>
+                  </div>
+                  <Badge variant="outline" className="self-start sm:self-center px-3 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 text-xs font-semibold">
+                    Verified Faculty Endorsement
+                  </Badge>
                 </div>
               </CardContent>
             </Card>
