@@ -53,6 +53,9 @@ export interface IndustrialCaseStudy {
   analysisConclusion?: string;
 }
 
+import { MANUAL_EXPERIMENTS_DATA, ManualExperimentItem } from "./manual-experiments-data";
+export type { ManualExperimentItem };
+
 export interface LabManualCurriculum {
   labId: string;
   courseCode: string;
@@ -73,6 +76,7 @@ export interface LabManualCurriculum {
   systemRequirements: SystemRequirements;
   guidelines: string[];
   caseStudy: IndustrialCaseStudy;
+  manualExperiments?: ManualExperimentItem[];
 }
 
 export const INSTITUTION_VISION_MISSION = {
@@ -251,6 +255,7 @@ export const LAB_MANUALS_DATA: Record<string, LabManualCurriculum> = {
     "outputSnippet": "==============================================\n AWS CLOUD WEB APPLICATION COST MODEL\n==============================================\nAmazon EC2 (2 t3.medium Instances)     : $60\nElastic Load Balancer (ALB)            : $20\nAmazon RDS (Multi-AZ MySQL)            : $55\nAmazon S3 Storage (Standard 100GB)     : $3\nAmazon CloudFront (Global CDN)         : $18\nAmazon Route 53 (DNS Routing)          : $1\nAmazon CloudWatch (Telemetry & Alarms) : $10\nData Transfer (Egress Bandwidth)       : $45\nAutomated Snapshot Backup Storage      : $10\n----------------------------------------------\nTotal Monthly Cost    : $222\nEstimated Annual Cost : $2664\n----------------------------------------------\nCost-Benefit Analysis: Cloud deployment is highly cost-effective (< $300 threshold).\nBenefits: Zero upfront CapEx, Auto-scaling elasticity, 99.99% SLA, Managed disaster recovery.",
     "analysisConclusion": "Cloud deployment yields a 68% total cost reduction compared to on-premise hardware provisioning, providing instant high availability, automated backup redundancy, and horizontal elasticity."
 },
+    manualExperiments: MANUAL_EXPERIMENTS_DATA["cloud-service-management"],
     visionDepartment: INSTITUTION_VISION_MISSION.departmentVision,
     missionDepartment: INSTITUTION_VISION_MISSION.departmentMission,
     peos: INSTITUTION_VISION_MISSION.peos,
@@ -388,6 +393,7 @@ export const LAB_MANUALS_DATA: Record<string, LabManualCurriculum> = {
     "outputSnippet": "Model: \"sequential_1\"\n_________________________________________________________________\n Layer (type)                Output Shape              Param #   \n=================================================================\n conv2d (Conv2D)             (None, 26, 26, 32)        320       \n max_pooling2d (MaxPooling2D (None, 13, 13, 32)        0         \n conv2d_1 (Conv2D)           (None, 11, 11, 64)        18496     \n max_pooling2d_1 (MaxPooling (None, 5, 5, 64)          0         \n flatten (Flatten)           (None, 1600)              0         \n dense (Dense)               (None, 128)               204928    \n dropout (Dropout)           (None, 128)               0         \n dense_1 (Dense)             (None, 10)                1290      \n=================================================================\nTotal params: 225,034 (879.04 KB)\nTest accuracy: 98.74% | Test loss: 0.0412",
     "analysisConclusion": "Convolutional spatial feature extraction combined with dropout regularization prevents overfitting and drastically reduces parameter counts compared to fully connected feedforward networks."
 },
+    manualExperiments: MANUAL_EXPERIMENTS_DATA["ai-machine-learning"],
     visionDepartment: INSTITUTION_VISION_MISSION.departmentVision,
     missionDepartment: INSTITUTION_VISION_MISSION.departmentMission,
     peos: INSTITUTION_VISION_MISSION.peos,
@@ -526,6 +532,7 @@ export const LAB_MANUALS_DATA: Record<string, LabManualCurriculum> = {
     "outputSnippet": "19/09/26 14:15:22 INFO mapreduce.Job: Job job_1727339722001_0001 completed successfully\n19/09/26 14:15:22 INFO mapreduce.Job: Counters: 54\n    File System Counters\n        FILE: Number of bytes read=48210\n        HDFS: Number of bytes read=145920\n        HDFS: Number of bytes written=24180\n    Map-Reduce Framework\n        Map input records=5000\n        Map output records=38420\n        Reduce input groups=4120\n        Reduce output records=4120\nOutput written to: /user/hadoop/output/wordcount/part-r-00000",
     "analysisConclusion": "Distributed MapReduce architecture scales linearly with data volume, executing parallel processing across clusters with automated hardware fault tolerance and zero data loss."
 },
+    manualExperiments: MANUAL_EXPERIMENTS_DATA["big-data-analytics"],
     visionDepartment: INSTITUTION_VISION_MISSION.departmentVision,
     missionDepartment: INSTITUTION_VISION_MISSION.departmentMission,
     peos: INSTITUTION_VISION_MISSION.peos,
@@ -663,6 +670,7 @@ export const LAB_MANUALS_DATA: Record<string, LabManualCurriculum> = {
     "outputSnippet": "Query OK, 1 row affected (0.02 sec)\nDatabase changed\nQuery OK, 0 rows affected (0.04 sec) - Table 'Customer' created\nQuery OK, 0 rows affected (0.03 sec) - Table 'Supplier' created\nQuery OK, 0 rows affected (0.05 sec) - Table 'Product' created with FK constraint fk_prod_sup\nAll constraints (chk_wallet, chk_price, chk_stock) verified in information_schema.table_constraints",
     "analysisConclusion": "Relational database normalization through BCNF ensures zero redundant data storage while declarative integrity constraints eliminate orphaned records and financial overdraft anomalies."
 },
+    manualExperiments: MANUAL_EXPERIMENTS_DATA["dbms-lab"],
     visionDepartment: INSTITUTION_VISION_MISSION.departmentVision,
     missionDepartment: INSTITUTION_VISION_MISSION.departmentMission,
     peos: INSTITUTION_VISION_MISSION.peos,
@@ -798,6 +806,7 @@ export const LAB_MANUALS_DATA: Record<string, LabManualCurriculum> = {
     "outputSnippet": "Account created: SA-9042 with balance 1200.00\nDeposit: 300.00 -> New Balance: 1500.00\nWithdrew 600.00. New Balance: 900.00\nAttempting withdrawal of 500.00...\nEXCEPTION CAUGHT: Transaction Rejected: Account balance is deficient by 100.0\nCurrent Balance safely preserved: 900.00 (Minimum 500.00 threshold respected)",
     "analysisConclusion": "Object-oriented polymorphism and checked exceptions enforce strict domain invariants at compile time, eliminating invalid state transitions in enterprise financial software."
 },
+    manualExperiments: MANUAL_EXPERIMENTS_DATA["oops-java"],
     visionDepartment: INSTITUTION_VISION_MISSION.departmentVision,
     missionDepartment: INSTITUTION_VISION_MISSION.departmentMission,
     peos: INSTITUTION_VISION_MISSION.peos,
@@ -935,6 +944,7 @@ export const LAB_MANUALS_DATA: Record<string, LabManualCurriculum> = {
     "outputSnippet": "Infix Expression:    ((2 + 3) * 4) - (8 / 2)\nPostfix Conversion:  2 3 + 4 * 8 2 / -\nEvaluation Steps:\n  Push: 2, 3\n  Op '+': Pop 3, 2 -> Push 5\n  Push: 4\n  Op '*': Pop 4, 5 -> Push 20\n  Push: 8, 2\n  Op '/': Pop 2, 8 -> Push 4\n  Op '-': Pop 4, 20 -> Push 16\nFinal Computed Result: 16 (Computed in 18 CPU cycles)",
     "analysisConclusion": "Stack-based expression compilation eliminates parsing ambiguities, ensuring deterministic evaluation with optimal O(N) time and O(N) auxiliary space."
 },
+    manualExperiments: MANUAL_EXPERIMENTS_DATA["data-structures"],
     visionDepartment: INSTITUTION_VISION_MISSION.departmentVision,
     missionDepartment: INSTITUTION_VISION_MISSION.departmentMission,
     peos: INSTITUTION_VISION_MISSION.peos,
@@ -1075,6 +1085,96 @@ export const LAB_MANUALS_DATA: Record<string, LabManualCurriculum> = {
     visionDepartment: INSTITUTION_VISION_MISSION.departmentVision,
     missionDepartment: INSTITUTION_VISION_MISSION.departmentMission,
     peos: INSTITUTION_VISION_MISSION.peos,
-    psos: INSTITUTION_VISION_MISSION.psos
+    psos: INSTITUTION_VISION_MISSION.psos,
+    manualExperiments: MANUAL_EXPERIMENTS_DATA["c-programming"]
+  },
+  "data-science-analytics": {
+    labId: "data-science-analytics",
+    courseCode: "AD3511",
+    courseTitle: "Business Analytics Laboratory",
+    regulation: "R2023 / R2021 (Autonomous)",
+    academicYear: "2025-2026 (ODD Semester)",
+    department: "Department of Artificial Intelligence and Data Science",
+    institution: "V.S.B. Engineering College, Karur (An Autonomous Institution)",
+    overview: "The Business Analytics Laboratory equips students with practical capabilities across the entire data analytics life cycle. Students master spreadsheet engineering with MS-Excel, inferential hypothesis testing (Z-Test, Student's T-Test, One-Way ANOVA), automated data preprocessing (missing data imputation, Min-Max normalization), and predictive machine learning models for forecasting sales, inventory, and supply chain KPIs.",
+    courseObjectives: [
+      "To understand the Analytics Life Cycle and business forecasting fundamentals.",
+      "To comprehend the process of acquiring Business Intelligence from raw datasets.",
+      "To understand various types of analytics for Business Forecasting, regression, and trends.",
+      "To model the supply chain management for Analytics.",
+      "To apply analytics for different functions of a business including marketing and sales."
+    ],
+    courseOutcomes: [
+      { code: "CO1", statement: "Explain real-world business problems and model with structured analytical solutions.", bloomsLevel: "Understand / Apply" },
+      { code: "CO2", statement: "Identify business processes for extracting Business Intelligence and clean data pipelines.", bloomsLevel: "Analyze / Evaluate" },
+      { code: "CO3", statement: "Apply predictive analytics, regression models, and statistical tests for business forecasting.", bloomsLevel: "Apply / Create" },
+      { code: "CO4", statement: "Formulate data-driven analytics for supply chain and logistics optimization.", bloomsLevel: "Analyze / Apply" },
+      { code: "CO5", statement: "Design and implement analytics dashboards for marketing, customer segmentation, and sales.", bloomsLevel: "Evaluate / Create" }
+    ],
+    coPoMapping: {
+      headersPO: ["PO1", "PO2", "PO3", "PO4", "PO5", "PO6", "PO7", "PO8", "PO9", "PO10", "PO11", "PO12"],
+      headersPSO: ["PSO1", "PSO2", "PSO3"],
+      rows: [
+        { coCode: "CO1", po: [2, 2, 3, 1, 1, "-", "-", "-", 1, 2, 1, 1], pso: [3, 2, 1] },
+        { coCode: "CO2", po: [3, 3, 3, 2, 3, "-", "-", "-", 1, 2, 2, 2], pso: [3, 1, 2] },
+        { coCode: "CO3", po: [2, 2, 3, 3, 2, "-", "-", "-", 3, 1, 1, 3], pso: [3, 1, 2] },
+        { coCode: "CO4", po: [2, 1, 1, 2, 2, "-", "-", "-", 3, 3, 2, 1], pso: [1, 3, 1] },
+        { coCode: "CO5", po: [2, 3, 2, 3, 2, "-", "-", "-", 3, 3, 1, 3], pso: [3, 1, 1] }
+      ],
+      averageRow: {
+        po: [2.2, 2.2, 2.4, 2.2, 2.0, "-", "-", "-", 2.2, 2.2, 1.4, 2.0],
+        pso: [2.6, 1.6, 1.4]
+      }
+    },
+    marksRubric: {
+      performance: 50,
+      viva: 10,
+      record: 15,
+      total: 75,
+      breakdown: [
+        { component: "Continuous Assessment / Pre-Lab Readiness", marks: 15, description: "Pre-lab statistical preparation, algorithm understanding, and dataset schema comprehension." },
+        { component: "Lab Practical Execution & Analytics Modelling", marks: 35, description: "Accurate model execution, hypothesis test execution (Z-Test, T-Test, ANOVA), and regression outputs." },
+        { component: "Results Interpretation & Business Insight", marks: 15, description: "Clarity in business decision inferences, trend forecast evaluations, and statistical p-value validation." },
+        { component: "Viva-Voce & Practical Record Journal", marks: 10, description: "Prompt answers to business analytics viva-voce questions and disciplined lab record maintenance." }
+      ]
+    },
+    systemRequirements: {
+      hardware: [
+        "Hardware: Intel Core i5 / i7 Quad-Core 64-bit systems with 16 GB DDR4 RAM",
+        "Storage: 512 GB SSD NVMe with 50 GB free space for business datasets",
+        "Network: 100 Mbps dedicated campus intranet with secure external access"
+      ],
+      software: [
+        "Python 3.10+ / Anaconda Distribution (Jupyter Notebook, Spyder)",
+        "Statistical Packages: Pandas, NumPy, Scipy, Statsmodels, Scikit-learn, Seaborn, Matplotlib",
+        "Spreadsheet & BI: Microsoft Excel 2021 / 365 with Analysis ToolPak Solver, Power BI Desktop"
+      ]
+    },
+    guidelines: [
+      "Verify statistical assumptions (normality, homoscedasticity, sample size independence) prior to hypothesis testing.",
+      "Conduct thorough data preprocessing: identify missing values, detect outliers using IQR/Z-scores, and apply Min-Max or Standard Scaling.",
+      "Format visual outputs with informative axes, legends, confidence intervals, and decision thresholds.",
+      "Document business interpretation for every analytical model and relate quantitative output back to business objectives."
+    ],
+    caseStudy: {
+      title: "Retail Customer Churn & Sales Forecasting Multi-Variate Analytics Suite",
+      domain: "Retail E-Commerce, Predictive Modeling & Business Intelligence",
+      scenario: "Design an end-to-end business intelligence pipeline for an omni-channel retail enterprise. The analytical suite ingests 100,000 transaction records, performs data hygiene and cohort aggregation, computes descriptive and inferential hypothesis metrics (ANOVA across sales channels), trains a predictive churn classification model, and forecasts quarterly revenue using exponential smoothing and linear regression.",
+      architectureHighlights: [
+        "Data Ingestion & Hygiene: Automated CSV parsing, handling missing data via median imputation, and one-hot encoding categorical variables.",
+        "Inferential Analytics: One-way ANOVA comparing average purchase values across Online, In-Store, and Catalog sales channels (F-stat = 14.82, p < 0.001).",
+        "Predictive Modeling: Logistic Regression and Random Forest classifier predicting 30-day customer churn with 89.4% ROC-AUC.",
+        "Forecasting Engine: Holt-Winters triple exponential smoothing generating 12-week forward demand estimates with MAPE < 6.2%.",
+        "Executive Dashboard: Automated generation of KPI cards (Customer Lifetime Value, Net Retention Rate) and heatmaps."
+      ],
+      codeSnippet: "import pandas as pd\nimport numpy as np\nfrom scipy import stats\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.metrics import classification_report\n\n# Load retail transactions dataset\ndf = pd.read_csv('retail_transactions.csv')\n\n# Data Preprocessing\ndf['TotalSpend'] = df['Quantity'] * df['UnitPrice']\ndf.fillna({'Discount': 0}, inplace=True)\n\n# Inferential Hypothesis Testing (ANOVA between 3 purchase channels)\nf_val, p_val = stats.f_oneway(\n    df[df['Channel'] == 'Web']['TotalSpend'],\n    df[df['Channel'] == 'Store']['TotalSpend'],\n    df[df['Channel'] == 'Mobile']['TotalSpend']\n)\nprint(f'One-way ANOVA: F-Statistic={f_val:.4f}, p-value={p_val:.4e}')\n\n# Churn Prediction Pipeline\nX = df[['Recency', 'Frequency', 'Monetary', 'DiscountUsage']]\ny = df['Churned']\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\nmodel = LogisticRegression(max_iter=1000)\nmodel.fit(X_train, y_train)\ny_pred = model.predict(X_test)\nprint(classification_report(y_test, y_pred))",
+      outputSnippet: "=== Retail Analytics Pipeline Output ===\nOne-way ANOVA: F-Statistic=14.8210, p-value=4.12e-07 (Reject H0: Significant channel difference)\n\nClassification Report (Customer Churn Prediction):\n              precision    recall  f1-score   support\n           0       0.91      0.94      0.92      1420\n           1       0.86      0.80      0.83       580\n    accuracy                           0.90      2000\n\nForecasted Q4 Revenue: $1,428,500 (+8.4% YoY at 95% Confidence Interval)",
+      analysisConclusion: "The integration of inferential statistical hypothesis testing with machine learning predictive modeling empowers business leadership to transition from reactive reporting to proactive revenue retention and targeted promotional campaigns."
+    },
+    visionDepartment: INSTITUTION_VISION_MISSION.departmentVision,
+    missionDepartment: INSTITUTION_VISION_MISSION.departmentMission,
+    peos: INSTITUTION_VISION_MISSION.peos,
+    psos: INSTITUTION_VISION_MISSION.psos,
+    manualExperiments: MANUAL_EXPERIMENTS_DATA["data-science-analytics"]
   }
 };

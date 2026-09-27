@@ -1,849 +1,1060 @@
 import { DSACategory } from "../dsa-topic-data";
 
 export const DATA_SCIENCE_ROADMAP_CATEGORIES: DSACategory[] = [
+  // ========================================================
+  // MODULE 1: EXCEL FUNDAMENTALS (0/3)
+  // ========================================================
   {
-    id: "ds-foundations",
-    name: "1. Python Data Foundations",
-    shortDesc: "NumPy vectorization, Pandas DataFrames, and Matplotlib plotting.",
+    id: "ba-excel-fundamentals",
+    name: "1. Excel Fundamentals",
+    shortDesc: "Interface features, formulas, numerical operators, and multi-format data import/export.",
     iconName: "Code2",
     topics: [
       {
-        id: "ds-numpy-arrays",
-        slug: "working-with-numpy-arrays",
-        title: "Exp 1: Working with NumPy arrays",
-        categoryId: "ds-foundations",
-        categoryName: "1. Python Data Foundations",
+        id: "ba-excel-features",
+        slug: "explore-features-of-ms-excel",
+        title: "Exp 1: Explore the Features of MS-Excel",
+        categoryId: "ba-excel-fundamentals",
+        categoryName: "1. Excel Fundamentals",
         difficulty: "Beginner",
         estimatedTime: "20 mins",
-        gfgSearchQuery: "Python NumPy arrays indexing broadcasting",
-        gfgUrl: "https://www.geeksforgeeks.org/numpy-tutorial/",
-        quickSummary: "NumPy arrays provide memory-efficient, contiguous C-buffers with vectorized mathematical operations.",
+        gfgSearchQuery: "MS Excel interface ribbons formula bar cell referencing worksheet basics",
+        gfgUrl: "https://www.geeksforgeeks.org/ms-excel-tutorial/",
+        quickSummary: "Get familiar with the Excel interface — cells, formulas, formatting, and basic worksheet operations.",
         keyPoints: [
-          "Contiguous C-buffer storage eliminates Python pointer indirection.",
-          "Broadcasting automatically aligns trailing matrix dimensions without copying data.",
-          "Vectorized universal functions (ufuncs) achieve near C-speed execution."
+          "Cell coordinate addressing: Cells hold data or formulas referenced by row-column coordinates (e.g. A1, $B$4).",
+          "Tabular formatting: Formatting (column width, text wrap, number types) improves readability of tabular data.",
+          "Formula foundations: Formula entry and editing is the foundation for all later numeric analysis in Excel."
         ],
-        diagramTitle: "NumPy 2D Array Memory Buffer & Vectorized Operations",
-        diagram: `┌───────────────────────────────────────────────┐
-│              NumPy 2D ndarray Buffer          │
-├───────────────┬───────────────┬───────────────┤
-│ [0, 0] = 10   │ [0, 1] = 20   │ [0, 2] = 30   │  Row 0 (Stride: 24 bytes)
-├───────────────┼───────────────┼───────────────┤
-│ [1, 0] = 40   │ [1, 1] = 50   │ [1, 2] = 60   │  Row 1 (Stride: 24 bytes)
-└───────────────┴───────────────┴───────────────┘
-              ▲                 │
-              │ Vector Addition │ arr * 2 + 5 (SIMD Parallel)
-              ▼                 ▼
-        [25, 45, 65, 85, 105, 125] (Instant Result)`,
-        complexities: [
-          { operation: "Array Element Indexing", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(1)" },
-          { operation: "Vectorized Arithmetic (+, *, @)", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(n)" },
-          { operation: "Matrix Multiplication (X @ W)", best: "O(n^2.8)", avg: "O(n^3)", worst: "O(n^3)", space: "O(n*m)" }
+        diagramTitle: "MS Excel Grid Anatomy & Ribbon Structure",
+        diagram: `  ┌────────────────────────────────────────────────────────┐
+  │ [ Ribbon Toolbar ] [ Formula Bar: =SUM(A1:A10) ]       │
+  ├──────┬───────────────┬───────────────┬─────────────────┤
+  │      │       A       │       B       │        C        │
+  ├──────┼───────────────┼───────────────┼─────────────────┤
+  │  1   │ Product       │ Quantity      │ Price           │
+  │  2   │ Laptop        │ 15            │ $1,200.00       │
+  │  3   │ Mouse         │ 50            │ $25.00          │
+  └──────┴───────────────┴───────────────┴─────────────────┘`,
+        complexities: [],
+        tools: [
+          { tool: "MS Excel", purpose: "Spreadsheet basics, cell referencing, and worksheet operations", notes: "Standard desktop or web edition" }
         ],
         codeSnippets: [
           {
-            language: "python",
-            label: "Python (NumPy)",
-            code: `import numpy as np
+            language: "bash",
+            label: "Excel Formulas & Shortcuts",
+            code: `# Standard Excel Navigation & Grid Formulas
+# 1. Total Revenue in Row 2
+=B2 * C2
 
-# 1. Array Creation & Attributes
-arr = np.array([[10, 20, 30], [40, 50, 60]], dtype=np.float64)
-print(f"Shape: {arr.shape}, Dtype: {arr.dtype}, Dimensions: {arr.ndim}")
+# 2. Cumulative Column Sum
+=SUM(C2:C50)
 
-# 2. Slicing & Striding
-print("Sub-matrix (Row 0, Cols 1..2):", arr[0, 1:])
-
-# 3. Broadcasting & Vectorized Math
-scaled = (arr * 2.5) + 10.0
-print("Vectorized result:\\n", scaled)
-
-# 4. Matrix Multiplication
-weights = np.array([[1.0], [2.0], [3.0]])
-output = arr @ weights
-print("Matrix Product (arr @ weights):\\n", output)`
+# 3. Formatted Currency Representation
+Ctrl + Shift + 4 (Applies $ Currency Format)`
           }
         ],
         practiceProblems: [
           {
-            title: "Array Transformation & Matrix Vectorization",
+            title: "MS Excel Basics Tutorial",
             difficulty: "Easy",
-            url: "https://www.geeksforgeeks.org/numpy-array-creation/",
+            url: "https://www.geeksforgeeks.org/ms-excel-tutorial/",
             platform: "GeeksforGeeks",
-            topicTag: "NumPy"
+            topicTag: "Excel"
           }
         ]
       },
       {
-        id: "ds-pandas-dfs",
-        slug: "working-with-pandas-data-frames",
-        title: "Exp 2: Working with Pandas data frames",
-        categoryId: "ds-foundations",
-        categoryName: "1. Python Data Foundations",
+        id: "ba-excel-numerical-ops",
+        slug: "numerical-operations-max-min-avg-sum-sqrt-round",
+        title: "Exp 2a: Get Input from the User and Perform Numerical Operations (MAX, MIN, AVG, SUM, SQRT, ROUND)",
+        categoryId: "ba-excel-fundamentals",
+        categoryName: "1. Excel Fundamentals",
         difficulty: "Beginner",
         estimatedTime: "25 mins",
-        gfgSearchQuery: "Pandas DataFrame manipulation indexing groupby",
-        gfgUrl: "https://www.geeksforgeeks.org/pandas-tutorial/",
-        quickSummary: "Pandas DataFrames provide tabular data structures with labeled axes, missing value handling, and grouping.",
+        gfgSearchQuery: "Excel functions SUM AVERAGE MAX MIN SQRT ROUND syntax examples",
+        gfgUrl: "https://www.geeksforgeeks.org/important-excel-functions/",
+        quickSummary: "Apply Excel's built-in statistical/numeric functions to a set of user-entered values.",
         keyPoints: [
-          "DataFrame aligns heterogeneous columns with row/column indexes.",
-          ".loc provides label-based indexing while .iloc provides integer-position indexing.",
-          "Groupby enables the Split-Apply-Combine statistical pipeline."
+          "Summary functions: MAX/MIN/AVG/SUM summarize a range of numeric values efficiently.",
+          "Mathematical transformations: SQRT and ROUND perform mathematical transformation and precision control.",
+          "Dynamic range references: Function arguments reference cell ranges rather than hard-coded values, enabling reuse."
         ],
-        diagramTitle: "Pandas Split-Apply-Combine Pipeline",
-        diagram: `┌──────────────────────────────────────────────┐
-│ Raw DataFrame (Student, Dept, Score, Lab)    │
-└──────────────────────┬───────────────────────┘
-                       │ groupby('Dept')
-       ┌───────────────┼───────────────┐
-       ▼               ▼               ▼
-┌──────────────┐┌──────────────┐┌──────────────┐
-│ AIDS Group   ││ CSE Group    ││ ECE Group    │
-└──────┬───────┘└──────┬───────┘└──────┬───────┘
-       │ mean()        │ mean()        │ mean()
-       └───────────────┼───────────────┘
-                       ▼
-┌──────────────────────────────────────────────┐
-│ Aggregated Output (Dept -> Mean Score)       │
-└──────────────────────────────────────────────┘`,
-        complexities: [
-          { operation: "Column Access df['col']", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(1)" },
-          { operation: "Row Filtering (Boolean Mask)", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(n)" },
-          { operation: "Groupby Aggregation", best: "O(n)", avg: "O(n log k)", worst: "O(n log n)", space: "O(k)" }
+        diagramTitle: "Excel Statistical & Numeric Functions Pipeline",
+        diagram: `  User Inputs: [ 45, 68, 92, 14, 83, 77 ]
+        │
+        ├── =SUM(A1:A6)     ──► 379
+        ├── =AVERAGE(A1:A6) ──► 63.17 (with =ROUND(..., 2))
+        ├── =MAX(A1:A6)     ──► 92
+        └── =SQRT(379)      ──► 19.47`,
+        complexities: [],
+        tools: [
+          { tool: "MS Excel", purpose: "Built-in numeric & statistical functions", notes: "Formula calculations" }
         ],
         codeSnippets: [
           {
-            language: "python",
-            label: "Python (Pandas)",
-            code: `import pandas as pd
-import numpy as np
-
-# 1. Create DataFrame
-data = {
-    "StudentID": [101, 102, 103, 104, 105],
-    "Name": ["Alice", "Bob", "Charlie", "Diana", "Evan"],
-    "Dept": ["AIDS", "AIDS", "CSE", "AIDS", "CSE"],
-    "LabMarks": [94.5, 88.0, np.nan, 91.0, 78.5],
-    "Attendance": [95, 88, 72, 98, 85]
-}
-df = pd.DataFrame(data)
-
-# 2. Impute Missing Values
-df["LabMarks"] = df["LabMarks"].fillna(df["LabMarks"].mean())
-
-# 3. Filtering & Selection
-high_scorers = df[df["LabMarks"] >= 90.0]
-print("High Scorers:\\n", high_scorers[["Name", "LabMarks"]])
-
-# 4. GroupBy Aggregation
-summary = df.groupby("Dept").agg(
-    AvgMarks=("LabMarks", "mean"),
-    AvgAttendance=("Attendance", "mean"),
-    TotalStudents=("StudentID", "count")
-)
-print("\\nDepartment Summary:\\n", summary)`
+            language: "bash",
+            label: "Excel Formulas",
+            code: `# Numerical Operations in Excel Cells
+=SUM(B2:B20)               # Total Aggregate
+=AVERAGE(B2:B20)           # Arithmetic Mean
+=MAX(B2:B20)               # Peak Maximum
+=MIN(B2:B20)               # Valley Minimum
+=SQRT(C2)                  # Square Root Calculation
+=ROUND(AVERAGE(B2:B20), 2) # Two-decimal precision round`
           }
         ],
         practiceProblems: [
           {
-            title: "Pandas DataFrame Filtering & Aggregation",
+            title: "Important Functions in Excel",
             difficulty: "Easy",
-            url: "https://www.geeksforgeeks.org/pandas-dataframe-group-by/",
+            url: "https://www.geeksforgeeks.org/important-excel-functions/",
             platform: "GeeksforGeeks",
-            topicTag: "Pandas"
+            topicTag: "Excel"
           }
         ]
       },
       {
-        id: "ds-matplotlib-plots",
-        slug: "basic-plots-using-matplotlib",
-        title: "Exp 3: Basic plots using Matplotlib",
-        categoryId: "ds-foundations",
-        categoryName: "1. Python Data Foundations",
+        id: "ba-excel-import-export",
+        slug: "data-import-export-operations-file-formats",
+        title: "Exp 2b: Perform Data Import/Export Operations for Different File Formats",
+        categoryId: "ba-excel-fundamentals",
+        categoryName: "1. Excel Fundamentals",
         difficulty: "Beginner",
-        estimatedTime: "20 mins",
-        gfgSearchQuery: "Matplotlib plotting subplots line bar histogram",
-        gfgUrl: "https://www.geeksforgeeks.org/matplotlib-tutorial/",
-        quickSummary: "Matplotlib Pyplot enables custom 2D visualization: line plots, bar charts, scatter plots, and histograms.",
+        estimatedTime: "25 mins",
+        gfgSearchQuery: "Excel import CSV text wizard export PDF XLSX delimiter",
+        gfgUrl: "https://www.geeksforgeeks.org/how-to-import-csv-file-into-excel/",
+        quickSummary: "Practice importing data into Excel (CSV, text) and exporting Excel data to other formats.",
         keyPoints: [
-          "Figure and Axes hierarchy provides granular control over subplots.",
-          "Histograms visualize continuous probability distributions.",
-          "Labels, legends, color maps, and gridlines make charts publication-ready."
+          "Format wizards & delimiters: Different file formats (CSV, TXT, XLSX) require different import wizards and delimiter configurations (comma, tab).",
+          "Data type integrity: Data types (dates, numbers, text) must be correctly interpreted during import to avoid corruption.",
+          "Preservation tradeoffs: Exporting preserves or loses formatting/formulas depending on the target format chosen."
         ],
-        diagramTitle: "Matplotlib Canvas & Subplot Grid Architecture",
-        diagram: `┌────────────────────────────────────────────────────────┐
-│ Figure Canvas (figsize=(10, 6), dpi=150)               │
-│                                                        │
-│  ┌───────────────────────┐    ┌──────────────────────┐ │
-│  │ Ax1: Line Trend       │    │ Ax2: Bar Distribution│ │
-│  │  ▲ y=f(x)             │    │  ▲ [||| |  || ]      │ │
-│  │  └─────────► Time     │    │  └─────────► Category│ │
-│  └───────────────────────┘    └──────────────────────┘ │
-│  ┌───────────────────────┐    ┌──────────────────────┐ │
-│  │ Ax3: Scatter Plot     │    │ Ax4: Histogram       │ │
-│  │  ▲  . : .  .          │    │  ▲    _/\_           │ │
-│  │  └─────────► Feature  │    │  └─────────► Bins    │ │
-│  └───────────────────────┘    └──────────────────────┘ │
-└────────────────────────────────────────────────────────┘`,
-        complexities: [
-          { operation: "Line Plot Generation", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(n)" },
-          { operation: "Histogram Binning", best: "O(n log k)", avg: "O(n)", worst: "O(n)", space: "O(k)" }
+        diagramTitle: "Excel Ingress & Egress Data Conversions",
+        diagram: `  [ External CSV / TXT ] ──► [ Text Import Wizard (Delimiter: Comma) ] ──► [ Excel Grid ]
+                                                                                   │
+                                [ Formatted XLSX / PDF / Clean CSV ] ◄── Export ───┘`,
+        complexities: [],
+        tools: [
+          { tool: "MS Excel", purpose: "Import/export practice with CSV, TXT, and XLSX", notes: "Data tab -> Get Data" }
         ],
         codeSnippets: [
           {
             language: "python",
-            label: "Python (Matplotlib)",
-            code: `import matplotlib.pyplot as plt
-import numpy as np
+            label: "Python (Verifying CSV & Excel Export)",
+            code: `import pandas as pd
 
-# Generate Sample Distribution
-np.random.seed(42)
-epochs = np.arange(1, 21)
-train_loss = 1.0 / (epochs ** 0.5) + np.random.normal(0, 0.02, 20)
-val_loss = 1.1 / (epochs ** 0.45) + np.random.normal(0, 0.03, 20)
+# 1. Read Raw CSV
+df = pd.read_csv("raw_student_data.csv")
 
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+# 2. Inspect Column Types and Delimiters
+print(df.info())
 
-# 1. Line Plot: Training Curve
-ax1.plot(epochs, train_loss, 'b-o', label='Train Loss', linewidth=2)
-ax1.plot(epochs, val_loss, 'r--s', label='Validation Loss', linewidth=2)
-ax1.set_title('Training vs Validation Loss Curve')
-ax1.set_xlabel('Epochs')
-ax1.set_ylabel('Cross-Entropy Loss')
-ax1.legend()
-ax1.grid(True, alpha=0.3)
-
-# 2. Bar Chart: Lab Category Scores
-categories = ['NumPy', 'Pandas', 'Stats', 'Regression', 'Series']
-scores = [92, 88, 79, 95, 84]
-ax2.bar(categories, scores, color=['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'])
-ax2.set_title('Module Competency Breakdown')
-ax2.set_ylabel('Average Score (%)')
-ax2.set_ylim(0, 100)
-
-plt.tight_layout()
-plt.show()`
+# 3. Export to Clean Excel Format
+df.to_excel("standardized_student_report.xlsx", index=False)
+print("Dataset imported from CSV and exported to XLSX successfully.")`
           }
         ],
         practiceProblems: [
           {
-            title: "Data Visualization with Matplotlib & Seaborn",
+            title: "Importing Data into Excel",
             difficulty: "Easy",
-            url: "https://www.geeksforgeeks.org/matplotlib-pyplot-plot-in-python/",
+            url: "https://www.geeksforgeeks.org/how-to-import-csv-file-into-excel/",
             platform: "GeeksforGeeks",
-            topicTag: "Matplotlib"
+            topicTag: "Data Ingestion"
           }
         ]
       }
     ]
   },
+
+  // ========================================================
+  // MODULE 2: DESCRIPTIVE & INFERENTIAL STATISTICS (0/4)
+  // ========================================================
   {
-    id: "ds-statistics",
+    id: "ba-statistics-hypothesis",
     name: "2. Descriptive & Inferential Statistics",
-    shortDesc: "Variability, normal distributions, correlation, and hypothesis testing.",
+    shortDesc: "Central tendency, dispersion, Skewness, Kurtosis, Z-test, T-test, and ANOVA.",
     iconName: "BarChart3",
     topics: [
       {
-        id: "ds-frequency-variability",
-        slug: "frequency-distributions-averages-variability",
-        title: "Exp 4: Frequency distributions, Averages, Variability",
-        categoryId: "ds-statistics",
+        id: "ba-descriptive-stats",
+        slug: "statistical-operations-descriptive-statistics",
+        title: "Exp 3: Perform Statistical Operations — Mean, Median, Mode, Standard Deviation, Variance, Skewness, Kurtosis",
+        categoryId: "ba-statistics-hypothesis",
         categoryName: "2. Descriptive & Inferential Statistics",
         difficulty: "Intermediate",
-        estimatedTime: "25 mins",
-        gfgSearchQuery: "Frequency distributions variance standard deviation IQR Python",
-        gfgUrl: "https://www.geeksforgeeks.org/measures-of-dispersion/",
-        quickSummary: "Calculate measures of central tendency (Mean, Median, Mode) and dispersion (Variance, Std Dev, IQR).",
+        estimatedTime: "30 mins",
+        gfgSearchQuery: "Excel Data Analysis ToolPak descriptive statistics skewness kurtosis",
+        gfgUrl: "https://www.geeksforgeeks.org/descriptive-statistics-in-excel/",
+        quickSummary: "Compute a full set of descriptive statistics on a dataset to summarize its central tendency, spread, and shape.",
         keyPoints: [
-          "Mean is sensitive to outliers; Median is robust against skewed distributions.",
-          "Standard deviation quantifies the spread of data in original units.",
-          "Interquartile Range (IQR = Q3 - Q1) detects statistical outliers."
+          "Central tendency: Mean, Median, and Mode describe central tendency from different perspectives (average, middle value, most frequent).",
+          "Dispersion: Standard deviation and variance quantify spread and dispersion around the mean.",
+          "Distribution shape: Skewness and kurtosis describe the asymmetry and tailedness of the data's distribution."
         ],
-        diagramTitle: "Boxplot & Five-Number Summary Distribution",
-        diagram: `           Min      Q1 (25%)     Median (50%)     Q3 (75%)      Max       Outlier
-            │          │             │              │            │           *
-       ─────┼──────────┌─────────────┬──────────────┐────────────┼───────────
-            │          │      IQR = Q3 - Q1         │            │
-            │          └────────────────────────────┘            │
-       ─────┴────────────────────────────────────────────────────┴───────────`,
-        complexities: [
-          { operation: "Mean & Variance", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)" },
-          { operation: "Median & IQR (Sorting)", best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(1)" }
+        diagramTitle: "Descriptive Statistics Variability & Distribution Shape",
+        diagram: `  [ Left Skewed (< 0) ]       [ Normal (Bell: Skew=0) ]       [ Right Skewed (> 0) ]
+        Tail on Left                 Mean = Median = Mode               Tail on Right`,
+        complexities: [],
+        tools: [
+          { tool: "MS Excel (Data Analysis ToolPak)", purpose: "Descriptive statistics summary reports", notes: "Data -> Data Analysis" }
         ],
         codeSnippets: [
           {
-            language: "python",
-            label: "Python (Statistics)",
-            code: `import numpy as np
-import scipy.stats as stats
-
-data = np.array([23, 29, 20, 32, 23, 21, 33, 25, 45, 24, 28, 26, 29, 30, 22])
-
-# Central Tendency
-mean_val = np.mean(data)
-median_val = np.median(data)
-mode_val = stats.mode(data, keepdims=True).mode[0]
-
-# Dispersion & Variability
-variance = np.var(data, ddof=1)
-std_dev = np.std(data, ddof=1)
-q75, q25 = np.percentile(data, [75, 25])
-iqr = q75 - q25
-
-print(f"Mean: {mean_val:.2f}, Median: {median_val}, Mode: {mode_val}")
-print(f"Variance: {variance:.2f}, Std Dev: {std_dev:.2f}, IQR: {iqr:.2f}")
-
-# Outlier Detection (1.5 * IQR Rule)
-lower_bound = q25 - (1.5 * iqr)
-upper_bound = q75 + (1.5 * iqr)
-outliers = data[(data < lower_bound) | (data > upper_bound)]
-print(f"Outliers detected: {outliers}")`
+            language: "bash",
+            label: "Excel Statistical Formulas",
+            code: `=AVERAGE(A2:A100) # Arithmetic Mean
+=MEDIAN(A2:A100)  # Middle Centile
+=MODE.SNGL(A2:A100) # Most Frequent
+=VAR.S(A2:A100)   # Sample Variance
+=STDEV.S(A2:A100) # Sample Standard Deviation
+=SKEW(A2:A100)    # Distribution Asymmetry
+=KURT(A2:A100)    # Distribution Tailedness / Kurtosis`
           }
         ],
         practiceProblems: [
           {
-            title: "Descriptive Statistics & Outlier Filtering",
-            difficulty: "Easy",
-            url: "https://www.geeksforgeeks.org/mathematics-mean-variance-and-standard-deviation/",
+            title: "Descriptive Statistics in Excel",
+            difficulty: "Medium",
+            url: "https://www.geeksforgeeks.org/descriptive-statistics-in-excel/",
             platform: "GeeksforGeeks",
             topicTag: "Statistics"
           }
         ]
       },
       {
-        id: "ds-normal-correlation",
-        slug: "normal-curves-correlation-scatter-plots",
-        title: "Exp 5: Normal curves, Correlation and scatter plots, Correlation coefficient",
-        categoryId: "ds-statistics",
+        id: "ba-z-test",
+        slug: "perform-z-test",
+        title: "Exp 4a: Perform Z-Test",
+        categoryId: "ba-statistics-hypothesis",
         categoryName: "2. Descriptive & Inferential Statistics",
         difficulty: "Intermediate",
         estimatedTime: "25 mins",
-        gfgSearchQuery: "Normal distribution Pearson correlation coefficient scatter plot Python",
-        gfgUrl: "https://www.geeksforgeeks.org/pearson-correlation-coefficient/",
-        quickSummary: "Fit normal distribution curves and compute Pearson correlation coefficients r in [-1, 1].",
-        keyPoints: [
-          "Standard Normal Distribution has mean=0, std=1; 68-95-99.7 empirical rule applies.",
-          "Pearson's r measures linear relationship strength and direction.",
-          "Scatter plots identify collinearity and non-linear patterns."
-        ],
-        diagramTitle: "Normal Distribution & Pearson Correlation Spectrum",
-        diagram: `       Normal Bell Curve (μ, σ)                  Correlation Spectrum (r)
-                 ▲                                     -1.0        0.0        +1.0
-               /   \\                                  ───────┴──────────┴──────────
-              /  |  \\                                 Strong      No        Strong
-             / 68% |  \\                               Negative   Linear    Positive
-           /───┼───┼───\\
-          μ-2σ μ   μ+σ μ+2σ`,
-        complexities: [
-          { operation: "PDF Calculation", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(n)" },
-          { operation: "Pearson Correlation r", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)" }
-        ],
-        codeSnippets: [
-          {
-            language: "python",
-            label: "Python (Correlation & Normality)",
-            code: `import numpy as np
-import scipy.stats as stats
-
-# Generate correlated data
-np.random.seed(42)
-study_hours = np.array([2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
-exam_scores = 40 + (4.5 * study_hours) + np.random.normal(0, 3, len(study_hours))
-
-# 1. Pearson Correlation Coefficient
-r, p_value = stats.pearsonr(study_hours, exam_scores)
-print(f"Pearson Correlation r: {r:.4f}, p-value: {p_value:.4e}")
-
-# 2. Normality Check (Shapiro-Wilk Test)
-stat, norm_p = stats.shapiro(exam_scores)
-print(f"Shapiro-Wilk Test Stat: {stat:.4f}, p-value: {norm_p:.4f} (Normal if p > 0.05)")
-
-# 3. Z-Score Standardization
-z_scores = stats.zscore(exam_scores)
-print("Standardized Z-Scores (first 5):", np.round(z_scores[:5], 2))`
-          }
-        ],
-        practiceProblems: [
-          {
-            title: "Correlation Matrix & Scatter Analysis",
-            difficulty: "Medium",
-            url: "https://www.geeksforgeeks.org/how-to-calculate-covariance-and-correlation-in-python/",
-            platform: "GeeksforGeeks",
-            topicTag: "Correlation"
-          }
-        ]
-      },
-      {
-        id: "ds-regression-analysis",
-        slug: "regression-analysis",
-        title: "Exp 6: Regression",
-        categoryId: "ds-statistics",
-        categoryName: "2. Descriptive & Inferential Statistics",
-        difficulty: "Intermediate",
-        estimatedTime: "30 mins",
-        gfgSearchQuery: "Linear regression least squares R2 score Python",
-        gfgUrl: "https://www.geeksforgeeks.org/linear-regression-python-implementation/",
-        quickSummary: "Fit Ordinary Least Squares (OLS) regression line y = mx + c and calculate R-squared score.",
-        keyPoints: [
-          "OLS minimizes Sum of Squared Residuals (SSR).",
-          "Slope m = Cov(X, Y) / Var(X), Intercept c = Y_mean - m * X_mean.",
-          "R^2 measures proportion of variance explained by the model."
-        ],
-        diagramTitle: "Ordinary Least Squares Residual Minimization",
-        diagram: `   Score y ▲                  / y = mx + c (Fitted Line)
-           │                 /
-           │       (x3, y3) * ──┐ Residual e3 = (y3 - ŷ3)
-           │               /    │
-           │              * (x2, y2)
-           │             /
-           │    * (x1, y1)
-           └────────────────────────► Study Hours x`,
-        complexities: [
-          { operation: "OLS Slope & Intercept", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)" },
-          { operation: "Prediction & R2", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)" }
-        ],
-        codeSnippets: [
-          {
-            language: "python",
-            label: "Python (OLS Regression)",
-            code: `import numpy as np
-
-# Sample Data
-X = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], dtype=float)
-y = np.array([2.2, 3.8, 6.5, 7.9, 10.1, 12.3, 14.2, 16.0, 18.1, 20.4], dtype=float)
-
-# Compute OLS Parameters
-x_mean, y_mean = np.mean(X), np.mean(y)
-numerator = np.sum((X - x_mean) * (y - y_mean))
-denominator = np.sum((X - x_mean) ** 2)
-slope = numerator / denominator
-intercept = y_mean - (slope * x_mean)
-
-# Predictions & R2 Score
-y_pred = (slope * X) + intercept
-ss_res = np.sum((y - y_pred) ** 2)
-ss_tot = np.sum((y - y_mean) ** 2)
-r2 = 1.0 - (ss_res / ss_tot)
-
-print(f"Regression Equation: y = {slope:.3f}x + {intercept:.3f}")
-print(f"R-squared: {r2:.4f} ({r2*100:.2f}% variance explained)")`
-          }
-        ],
-        practiceProblems: [
-          {
-            title: "Linear Regression Implementation",
-            difficulty: "Medium",
-            url: "https://www.geeksforgeeks.org/linear-regression-python-implementation/",
-            platform: "GeeksforGeeks",
-            topicTag: "Regression"
-          }
-        ]
-      },
-      {
-        id: "ds-z-test",
-        slug: "z-test-hypothesis",
-        title: "Exp 7: Z-test",
-        categoryId: "ds-statistics",
-        categoryName: "2. Descriptive & Inferential Statistics",
-        difficulty: "Intermediate",
-        estimatedTime: "25 mins",
-        gfgSearchQuery: "Z-test hypothesis testing one sample two sample Python",
+        gfgSearchQuery: "Z-test in Excel hypothesis testing two sample for means",
         gfgUrl: "https://www.geeksforgeeks.org/z-test/",
-        quickSummary: "Perform one-sample and two-sample Z-tests for large sample sizes (n >= 30) with known variance.",
+        quickSummary: "Run a Z-test to determine whether a sample mean differs significantly from a known population mean (large sample, known variance).",
         keyPoints: [
-          "Formula: Z = (x_bar - μ) / (σ / sqrt(n)).",
-          "Null hypothesis H0 is rejected if |Z| > Z_critical (1.96 for α=0.05).",
-          "p-value < α indicates statistical significance."
+          "Assumption criteria: The Z-test assumes a known population standard deviation and a sufficiently large sample size (n >= 30).",
+          "Z-statistic formula: A Z-statistic is computed from the sample mean, population mean, and standard error: Z = (x̄ - μ) / (σ / √n).",
+          "Decision rule: The resulting p-value is compared against the significance level (alpha = 0.05) to accept or reject the null hypothesis."
         ],
-        diagramTitle: "Two-Tailed Z-Test Rejection Regions",
-        diagram: `                   Standard Normal Curve (Z ~ N(0, 1))
-                                   ▲
-               α/2 = 0.025        / \\        α/2 = 0.025
-               Rejection         /   \\       Rejection
-               ◄──────┐         /     \\        ┌──────►
-               ───────┴────────/───────\\───────┴───────
-                    -1.96       0       +1.96
-                         Acceptance Region (95%)`,
-        complexities: [
-          { operation: "Z-Statistic Computation", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)" }
+        diagramTitle: "Standard Normal Z-Distribution Critical Rejection Region",
+        diagram: `                 [ Null Hypothesis Region (Fail to Reject) ]
+                       -1.96 <= Z <= +1.96 (95% Confidence)
+          ┌───────────────────────────┴───────────────────────────┐
+  ◄───────┴───────                                         ───────┴───────►
+  Rejection Region (Z < -1.96)                             Rejection Region (Z > +1.96)`,
+        complexities: [],
+        tools: [
+          { tool: "MS Excel (Data Analysis ToolPak)", purpose: "Hypothesis testing: z-Test: Two Sample for Means", notes: "Alpha = 0.05" }
         ],
         codeSnippets: [
           {
-            language: "python",
-            label: "Python (Z-Test)",
-            code: `import numpy as np
-from statsmodels.stats.weightstats import ztest
-
-# Sample: New teaching methodology test scores (n = 45)
-np.random.seed(42)
-scores = np.random.normal(loc=78.5, scale=8.2, size=45)
-pop_mean = 72.0  # Historical baseline
-
-# Perform One-Sample Two-Tailed Z-Test
-z_stat, p_val = ztest(scores, value=pop_mean)
-
-print(f"Sample Mean: {np.mean(scores):.2f}, Sample Size: {len(scores)}")
-print(f"Z-Statistic: {z_stat:.4f}, p-value: {p_val:.4e}")
-
-alpha = 0.05
-if p_val < alpha:
-    print("Conclusion: Reject H0 — Significant difference detected.")
-else:
-    print("Conclusion: Fail to reject H0 — Insufficient evidence.")`
+            language: "bash",
+            label: "Excel Formula",
+            code: `# Z-Test One-Sample P-Value in Excel
+=Z.TEST(A2:A50, 75.0, 10.0) 
+# Arguments: (Array, Hypothesized Mean, Population Sigma)`
           }
         ],
         practiceProblems: [
           {
-            title: "Hypothesis Testing with Z-Test",
+            title: "Z-Test Overview & Calculations",
             difficulty: "Medium",
             url: "https://www.geeksforgeeks.org/z-test/",
             platform: "GeeksforGeeks",
-            topicTag: "Z-Test"
+            topicTag: "Hypothesis Testing"
           }
         ]
       },
       {
-        id: "ds-t-test",
-        slug: "t-test-hypothesis",
-        title: "Exp 8: T-test",
-        categoryId: "ds-statistics",
+        id: "ba-t-test",
+        slug: "perform-t-test",
+        title: "Exp 4b: Perform T-Test",
+        categoryId: "ba-statistics-hypothesis",
         categoryName: "2. Descriptive & Inferential Statistics",
         difficulty: "Intermediate",
         estimatedTime: "25 mins",
-        gfgSearchQuery: "Student T-test independent paired SciPy Python",
-        gfgUrl: "https://www.geeksforgeeks.org/how-to-conduct-a-two-sample-t-test-in-python/",
-        quickSummary: "Perform Independent and Paired Student's T-tests when population variance is unknown (n < 30).",
+        gfgSearchQuery: "t-Test in Excel two sample unequal variances paired Student t-test",
+        gfgUrl: "https://www.geeksforgeeks.org/t-test/",
+        quickSummary: "Run a T-test to compare means when the population variance is unknown or the sample size is small.",
         keyPoints: [
-          "Student's t-distribution has heavier tails parameterized by degrees of freedom df = n - 1.",
-          "Paired t-test evaluates before-and-after treatments on the same subjects.",
-          "Independent two-sample t-test compares two independent control/treatment groups."
+          "Sample standard deviation: The T-test uses the sample standard deviation (s) in place of an unknown population value.",
+          "Comparison variants: Different T-test variants (one-sample, paired before/after, two-sample independent) suit different scenarios.",
+          "Degrees of freedom: Degrees of freedom (df = n - 1) govern the heavier tails of the Student t-distribution."
         ],
-        diagramTitle: "Paired vs Independent Two-Sample T-Test Setup",
-        diagram: `   Independent Two-Sample T-Test:      Paired T-Test (Same Subject):
-      Group A (Control) -> x̄1, s1         Subject i: Before Score -> x_i
-      Group B (Test)    -> x̄2, s2         Subject i: After Score  -> y_i
-      df = n1 + n2 - 2                    Difference d_i = y_i - x_i, df = n - 1`,
-        complexities: [
-          { operation: "Two-Sample T-Test", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)" }
+        diagramTitle: "Student t-Distribution vs Standard Normal Distribution",
+        diagram: `  [ Student's t (df=10) has heavier tails than Normal Z ]
+  ──► Accommodates smaller sample sizes without underestimating variance.`,
+        complexities: [],
+        tools: [
+          { tool: "MS Excel (Data Analysis ToolPak)", purpose: "Hypothesis testing: t-Test Two-Sample Assuming Equal/Unequal Variances", notes: "Data Analysis ToolPak" }
         ],
         codeSnippets: [
           {
-            language: "python",
-            label: "Python (SciPy T-Test)",
-            code: `import numpy as np
-import scipy.stats as stats
-
-# Independent Samples: Algorithm A vs Algorithm B execution times (ms)
-alg_a = np.array([24.5, 23.8, 25.1, 24.9, 26.2, 23.4, 25.0, 24.8])
-alg_b = np.array([21.2, 22.0, 20.8, 21.5, 22.4, 20.9, 21.8, 22.1])
-
-# Two-Sample Independent T-Test
-t_stat, p_val = stats.ttest_ind(alg_a, alg_b)
-print(f"Independent T-Test: t = {t_stat:.4f}, p = {p_val:.4e}")
-
-# Paired Samples: Student scores Before vs After Virtual Lab simulator
-before = np.array([65, 70, 68, 72, 60, 75, 69, 71])
-after = np.array([82, 85, 84, 89, 78, 91, 86, 88])
-
-t_paired, p_paired = stats.ttest_rel(after, before)
-print(f"Paired T-Test: t = {t_paired:.4f}, p = {p_paired:.4e}")`
+            language: "bash",
+            label: "Excel Formula",
+            code: `# Two-Sample Two-Tailed T-Test
+=T.TEST(A2:A30, B2:B30, 2, 2)
+# Arguments: (Array1, Array2, Tails=2, Type=2 [Two-sample equal variance])`
           }
         ],
         practiceProblems: [
           {
-            title: "Student T-Test Hypothesis Formulation",
+            title: "T-Test in Statistics",
             difficulty: "Medium",
             url: "https://www.geeksforgeeks.org/t-test/",
             platform: "GeeksforGeeks",
-            topicTag: "T-Test"
+            topicTag: "Hypothesis Testing"
           }
         ]
       },
       {
-        id: "ds-anova-test",
-        slug: "anova-analysis-of-variance",
-        title: "Exp 9: ANOVA",
-        categoryId: "ds-statistics",
+        id: "ba-anova",
+        slug: "perform-anova",
+        title: "Exp 4c: Perform ANOVA",
+        categoryId: "ba-statistics-hypothesis",
         categoryName: "2. Descriptive & Inferential Statistics",
         difficulty: "Intermediate",
         estimatedTime: "30 mins",
-        gfgSearchQuery: "One way ANOVA F-statistic scipy stats Python",
-        gfgUrl: "https://www.geeksforgeeks.org/how-to-perform-a-one-way-anova-in-python/",
-        quickSummary: "Compare means across 3+ groups simultaneously using One-Way ANOVA and the F-statistic.",
+        gfgSearchQuery: "One way ANOVA in Excel Data Analysis F-statistic p-value",
+        gfgUrl: "https://www.geeksforgeeks.org/anova-analysis-of-variance/",
+        quickSummary: "Use Analysis of Variance to test whether the means of three or more groups differ significantly.",
         keyPoints: [
-          "F-statistic = Mean Square Between Groups (MSB) / Mean Square Within Groups (MSW).",
-          "Controls Family-Wise Type I Error rate compared to running multiple pairwise t-tests.",
-          "Post-hoc Tukey HSD test isolates which specific pairs differ significantly."
+          "Variance partitioning: ANOVA partitions total variance into between-group variance and within-group error variance.",
+          "F-statistic comparison: An F-statistic (MS_between / MS_within) compares these variance components to test the null hypothesis.",
+          "Omnibus interpretation: A significant result indicates at least one group mean differs, though not which one (requiring post-hoc tests)."
         ],
-        diagramTitle: "ANOVA Partition of Total Sum of Squares (SST)",
-        diagram: `┌────────────────────────────────────────────────────────┐
-│ Total Sum of Squares (SST)                             │
-├────────────────────────────┬───────────────────────────┤
-│ Sum of Squares Between     │ Sum of Squares Within     │
-│ Groups (SSB) [Treatment]   │ Groups (SSW) [Error/Noise]│
-└─────────────┬──────────────┴─────────────┬─────────────┘
-              ▼                            ▼
-         MSB = SSB / (k - 1)          MSW = SSW / (N - k)
-              └──────────────┬─────────────┘
-                             ▼
-                    F = MSB / MSW (Compare with F_critical)`,
-        complexities: [
-          { operation: "ANOVA F-Statistic", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(k)" }
+        diagramTitle: "ANOVA Between-Group vs Within-Group Variance",
+        diagram: `  Total Variance = SS_Between (Treatment Effect) + SS_Within (Random Error)
+  F = MS_Between / MS_Within
+  If F > F_critical (or p < 0.05) ──► Reject H0: At least one group mean differs!`,
+        complexities: [],
+        tools: [
+          { tool: "MS Excel (Data Analysis ToolPak)", purpose: "Multi-group hypothesis testing (Anova: Single Factor)", notes: "Alpha = 0.05" }
         ],
         codeSnippets: [
           {
-            language: "python",
-            label: "Python (ANOVA)",
-            code: `import numpy as np
-import scipy.stats as stats
-
-# Test 3 different caching algorithms latency (ms)
-cache_lru = [12.4, 14.1, 13.2, 12.9, 13.8]
-cache_lfu = [15.2, 16.0, 14.8, 15.7, 16.4]
-cache_arc = [10.1, 11.3, 10.8, 10.5, 11.0]
-
-# Perform One-Way ANOVA
-f_stat, p_val = stats.f_oneway(cache_lru, cache_lfu, cache_arc)
-
-print(f"One-Way ANOVA Results:")
-print(f"F-Statistic: {f_stat:.4f}, p-value: {p_val:.4e}")
-
-if p_val < 0.05:
-    print("Conclusion: At least one cache algorithm exhibits statistically different latency.")`
+            language: "bash",
+            label: "Excel ANOVA Workflow",
+            code: `# Excel Ribbon Action:
+# 1. Data -> Data Analysis -> Anova: Single Factor
+# 2. Input Range: $A$1:$C$50 (Columns: Group A, Group B, Group C)
+# 3. Check "Labels in first row", Alpha = 0.05
+# 4. Review Summary: F-statistic, P-value, F critical`
           }
         ],
         practiceProblems: [
           {
-            title: "One-Way ANOVA Testing in Python",
-            difficulty: "Hard",
-            url: "https://www.geeksforgeeks.org/how-to-perform-a-one-way-anova-in-python/",
+            title: "Analysis of Variance (ANOVA)",
+            difficulty: "Medium",
+            url: "https://www.geeksforgeeks.org/anova-analysis-of-variance/",
             platform: "GeeksforGeeks",
-            topicTag: "ANOVA"
+            topicTag: "Hypothesis Testing"
           }
         ]
       }
     ]
   },
+
+  // ========================================================
+  // MODULE 3: DATA PREPROCESSING & DIMENSIONALITY REDUCTION (0/3)
+  // ========================================================
   {
-    id: "ds-models",
-    name: "3. Predictive Modeling & Time Series",
-    shortDesc: "Linear models, logistic classification, and time series decomposition.",
-    iconName: "BrainCircuit",
+    id: "ba-preprocessing-dim-reduction",
+    name: "3. Data Preprocessing & Dimensionality Reduction",
+    shortDesc: "Missing data handling, Min-Max / Z-score normalization, PCA, KPCA, and SVD.",
+    iconName: "Layers",
     topics: [
       {
-        id: "ds-linear-models",
-        slug: "building-validating-linear-models",
-        title: "Exp 10: Building and validating linear models",
-        categoryId: "ds-models",
-        categoryName: "3. Predictive Modeling & Time Series",
-        difficulty: "Advanced",
-        estimatedTime: "30 mins",
-        gfgSearchQuery: "Multiple linear regression train test split RMSE Scikit-learn",
-        gfgUrl: "https://www.geeksforgeeks.org/multiple-linear-regression-with-scikit-learn/",
-        quickSummary: "Train multiple linear regression models, perform train-test splits, and evaluate RMSE/MAE.",
+        id: "ba-missing-data-handling",
+        slug: "data-preprocessing-handling-missing-data",
+        title: "Exp 5a: Perform Data Pre-Processing Operations — Handling Missing Data",
+        categoryId: "ba-preprocessing-dim-reduction",
+        categoryName: "3. Data Preprocessing & Dimensionality Reduction",
+        difficulty: "Intermediate",
+        estimatedTime: "25 mins",
+        gfgSearchQuery: "Handling missing data imputation mean median mode Excel Power BI",
+        gfgUrl: "https://www.geeksforgeeks.org/working-with-missing-data-in-pandas/",
+        quickSummary: "Detect and treat missing values in a dataset using common strategies (removal, mean/median imputation, etc.).",
         keyPoints: [
-          "Multiple linear regression models y = w0 + w1*x1 + ... + wn*xn.",
-          "Feature scaling (StandardScaler) accelerates gradient convergence.",
-          "Metrics: Mean Squared Error (MSE), Root MSE (RMSE), Mean Absolute Error (MAE)."
+          "Removal vs imputation: Missing data can be handled by row/column removal when missingness is minimal and random.",
+          "Imputation strategies: Imputation (mean, median, mode, or linear interpolation) fills gaps while preserving dataset sample size.",
+          "Downstream impact: The choice of imputation method affects downstream variance, standard deviation, and modeling results."
         ],
-        diagramTitle: "Train-Test Split & Validation Workflow",
-        diagram: `┌──────────────────────────────────────────────┐
-│ Full Dataset (1000 Samples, 8 Features)      │
-└──────────────────────┬───────────────────────┘
-                       │ train_test_split(test_size=0.2)
-       ┌───────────────┴───────────────┐
-       ▼ (80% Train)                   ▼ (20% Test)
-┌──────────────┐                ┌──────────────┐
-│ Training Set │──► Model.fit() │ Test Set X   │──► Model.predict()
-└──────────────┘                └──────┬───────┘          │
-                                       ▼ (ŷ_test)         ▼
-                                ┌──────────────────────────────┐
-                                │ Metric Eval: RMSE, MAE, R^2  │
-                                └──────────────────────────────┘`,
-        complexities: [
-          { operation: "Model Fitting OLS (X^T X)^-1", best: "O(n d^2 + d^3)", avg: "O(n d^2)", worst: "O(n d^2)", space: "O(d^2)" }
+        diagramTitle: "Missing Data Imputation Strategies",
+        diagram: `  [ Raw Dataset with Nulls ]
+             │
+             ├── MCAR Minimal (<3%)  ──► Listwise Deletion (Drop Row)
+             └── Numeric Features    ──► Impute with Column Median / Mean`,
+        complexities: [],
+        tools: [
+          { tool: "MS Excel / Power BI", purpose: "Data cleaning and missing value replacement", notes: "Power Query: Replace Values" }
         ],
         codeSnippets: [
           {
-            language: "python",
-            label: "Python (Scikit-Learn Linear Model)",
-            code: `from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
-import numpy as np
+            language: "bash",
+            label: "Power Query / Excel Formulas",
+            code: `# Excel Conditional Imputation
+=IF(ISBLANK(B2), AVERAGE($B$2:$B$100), B2)
 
-# Synthetic Dataset: House pricing factors
-np.random.seed(42)
-X = np.random.rand(200, 3) * 100  # Sqft, Bedrooms, Age
-y = 50 + (1.5 * X[:, 0]) + (20.0 * X[:, 1]) - (2.5 * X[:, 2]) + np.random.normal(0, 10, 200)
-
-# Train-Test Split (80/20)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-# Model Training
-model = LinearRegression()
-model.fit(X_train, y_train)
-
-# Validation
-y_pred = model.predict(X_test)
-rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-mae = mean_absolute_error(y_test, y_pred)
-r2 = r2_score(y_test, y_pred)
-
-print(f"Model Coefficients: {model.coef_}, Intercept: {model.intercept_:.2f}")
-print(f"Validation RMSE: {rmse:.2f}, MAE: {mae:.2f}, R2 Score: {r2:.4f}")`
+# Power Query M Formula
+Table.ReplaceValue(Source, null, 0, Replacer.ReplaceValue, {"Revenue"})`
           }
         ],
         practiceProblems: [
           {
-            title: "Multiple Linear Regression Pipeline",
+            title: "Handling Missing Data Techniques",
             difficulty: "Medium",
-            url: "https://www.geeksforgeeks.org/multiple-linear-regression-with-scikit-learn/",
+            url: "https://www.geeksforgeeks.org/working-with-missing-data-in-pandas/",
             platform: "GeeksforGeeks",
-            topicTag: "Linear Models"
+            topicTag: "Data Cleaning"
           }
         ]
       },
       {
-        id: "ds-logistic-models",
-        slug: "building-validating-logistic-models",
-        title: "Exp 11: Building and validating logistic models",
-        categoryId: "ds-models",
-        categoryName: "3. Predictive Modeling & Time Series",
-        difficulty: "Advanced",
-        estimatedTime: "30 mins",
-        gfgSearchQuery: "Logistic regression confusion matrix ROC AUC classification Python",
-        gfgUrl: "https://www.geeksforgeeks.org/understanding-logistic-regression/",
-        quickSummary: "Build binary logistic regression classifiers and evaluate Confusion Matrix, Precision, Recall, and ROC-AUC.",
+        id: "ba-data-normalization",
+        slug: "data-preprocessing-normalization",
+        title: "Exp 5b: Perform Data Pre-Processing Operations — Normalization",
+        categoryId: "ba-preprocessing-dim-reduction",
+        categoryName: "3. Data Preprocessing & Dimensionality Reduction",
+        difficulty: "Beginner",
+        estimatedTime: "25 mins",
+        gfgSearchQuery: "Data normalization Min Max scaling Z-score standardization Excel",
+        gfgUrl: "https://www.geeksforgeeks.org/data-normalization-in-data-mining/",
+        quickSummary: "Rescale numeric features onto a common range (e.g. 0–1 or z-scores) to prepare data for comparison or modeling.",
         keyPoints: [
-          "Sigmoid link function σ(z) = 1 / (1 + e^-z) maps logits to probabilities in [0, 1].",
-          "Binary cross-entropy loss function is minimized via gradient descent.",
-          "Evaluated with Precision, Recall, F1-Score, and ROC Area Under Curve."
+          "Min-Max normalization: Min-Max normalization rescales values into a bounded range [0, 1] based on dataset minimum and maximum: (x - min) / (max - min).",
+          "Z-score standardization: Z-score standardization centers data around a mean of 0 with unit standard deviation: (x - μ) / σ.",
+          "Scale discrepancy resolution: Normalization matters most when features are on drastically different scales (e.g. Salary in thousands vs. Age in tens)."
         ],
-        diagramTitle: "Sigmoid Activation & Confusion Matrix",
-        diagram: `  Sigmoid Activation: σ(z) = 1 / (1 + e^-z)      Confusion Matrix:
-            1.0 ▲           _--""""                       ┌───────────┬───────────┐
-                │        _-"                              │ True Pos  │ False Pos │
-            0.5 ┼──────/                                  ├───────────┼───────────┤
-                │    _-"                                  │ False Neg │ True Neg  │
-            0.0 ┴───┴──────┼──────► Logits z              └───────────┴───────────┘
-                          z=0`,
-        complexities: [
-          { operation: "Logistic Gradient Descent", best: "O(epochs * n * d)", avg: "O(epochs * n * d)", worst: "O(epochs * n * d)", space: "O(d)" }
+        diagramTitle: "Feature Rescaling: Min-Max vs Z-Score",
+        diagram: `  Original Range [20,000 to 180,000]
+        │
+        ├── Min-Max Normalization  ──► [0.0 to 1.0]
+        └── Z-Score Standardization ──► Mean = 0, Std = 1`,
+        complexities: [],
+        tools: [
+          { tool: "MS Excel / Power BI", purpose: "Feature scaling and numeric transformation", notes: "Custom formula columns" }
         ],
         codeSnippets: [
           {
-            language: "python",
-            label: "Python (Logistic Regression)",
-            code: `from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score
-from sklearn.preprocessing import StandardScaler
-import numpy as np
+            language: "bash",
+            label: "Excel Formulas",
+            code: `# 1. Min-Max Normalization (Bounded [0, 1])
+=(A2 - MIN($A$2:$A$100)) / (MAX($A$2:$A$100) - MIN($A$2:$A$100))
 
-# Generate Binary Classification Dataset (Admitted vs Rejected)
-np.random.seed(42)
-X = np.random.randn(300, 2) * 15 + 65  # GRE Score, GPA
-y = (X[:, 0] * 0.08 + X[:, 1] * 0.15 - 14.5 > 0).astype(int)
-
-# Split & Scale
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
-scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
-
-# Train Logistic Model
-clf = LogisticRegression()
-clf.fit(X_train_scaled, y_train)
-
-# Predictions & Evaluation
-y_pred = clf.predict(X_test_scaled)
-y_prob = clf.predict_proba(X_test_scaled)[:, 1]
-
-print("Confusion Matrix:\\n", confusion_matrix(y_test, y_pred))
-print("\\nClassification Report:\\n", classification_report(y_test, y_pred))
-print(f"ROC-AUC Score: {roc_auc_score(y_test, y_prob):.4f}")`
+# 2. Z-Score Standardization
+=(A2 - AVERAGE($A$2:$A$100)) / STDEV.S($A$2:$A$100)`
           }
         ],
         practiceProblems: [
           {
-            title: "Logistic Regression Classification",
-            difficulty: "Medium",
-            url: "https://www.geeksforgeeks.org/understanding-logistic-regression/",
+            title: "Data Normalization in Data Mining",
+            difficulty: "Easy",
+            url: "https://www.geeksforgeeks.org/data-normalization-in-data-mining/",
             platform: "GeeksforGeeks",
-            topicTag: "Classification"
+            topicTag: "Normalization"
           }
         ]
       },
       {
-        id: "ds-time-series",
-        slug: "time-series-analysis",
-        title: "Exp 12: Time series analysis",
-        categoryId: "ds-models",
-        categoryName: "3. Predictive Modeling & Time Series",
+        id: "ba-dim-reduction-pca-kpca-svd",
+        slug: "dimensionality-reduction-pca-kpca-svd",
+        title: "Exp 6: Perform Dimensionality Reduction Operation Using PCA, KPCA & SVD",
+        categoryId: "ba-preprocessing-dim-reduction",
+        categoryName: "3. Data Preprocessing & Dimensionality Reduction",
         difficulty: "Advanced",
-        estimatedTime: "30 mins",
-        gfgSearchQuery: "Time series decomposition trend seasonality moving average ARIMA Python",
-        gfgUrl: "https://www.geeksforgeeks.org/python-pandas-time-series/",
-        quickSummary: "Decompose temporal data into Trend, Seasonality, and Residual components and compute Moving Averages.",
+        estimatedTime: "35 mins",
+        gfgSearchQuery: "Dimensionality reduction PCA Kernel PCA SVD Python Excel",
+        gfgUrl: "https://www.geeksforgeeks.org/principal-component-analysis-pca/",
+        quickSummary: "Apply Principal Component Analysis, Kernel PCA, and Singular Value Decomposition to reduce the number of variables while retaining most of the data's variance.",
         keyPoints: [
-          "Additive Decomposition: Y[t] = Trend[t] + Seasonal[t] + Residual[t].",
-          "Stationarity verification using the Augmented Dickey-Fuller (ADF) test.",
-          "Simple Moving Average (SMA) and Exponential Moving Average (EMA) smoothing."
+          "Orthogonal projection: PCA projects high-dimensional data onto orthogonal components ordered by the variance they explain.",
+          "Non-linear kernel trick: Kernel PCA extends PCA to capture non-linear manifold structures via a kernel-transformed feature space.",
+          "Matrix factorization: SVD decomposes a data matrix into singular vectors and singular values: X = U Σ V^T, underlying PCA and low-rank approximation."
         ],
-        diagramTitle: "Time Series Additive Component Decomposition",
-        diagram: `┌────────────────────────────────────────────────────────┐
-│ Observed Signal Y[t] = Trend + Seasonal + Residual     │
-├────────────────────────────────────────────────────────┤
-│ Trend T[t]: Long-term upward / downward drift           │
-│   ▲        /‾‾‾‾\\                                      │
-│   └───────/──────\\─────────────────────────────────────│
-│ Seasonal S[t]: Periodic fixed-interval cycles          │
-│   ▲  _/\_/\_/\_/\_                                     │
-│   └────────────────────────────────────────────────────│
-│ Residual R[t]: Irregular stochastic noise              │
-│   ▲  . : . . : .                                       │
-│   └────────────────────────────────────────────────────│
-└────────────────────────────────────────────────────────┘`,
-        complexities: [
-          { operation: "Moving Average Window", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(n)" },
-          { operation: "ADF Stationarity Test", best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(n)" }
+        diagramTitle: "PCA Orthogonal Axis Rotation",
+        diagram: `  [ Correlated 2D Features (X1, X2) ]
+                   │
+                   ▼ (Eigen Decomposition)
+  [ Principal Component 1 (Max Variance) ] ──► [ PC 2 (Orthogonal) ]`,
+        complexities: [],
+        tools: [
+          { tool: "Excel / Python add-in or equivalent", purpose: "Dimensionality reduction & covariance decomposition", notes: "PCA / SVD algorithms" }
         ],
         codeSnippets: [
           {
             language: "python",
-            label: "Python (Time Series)",
-            code: `import pandas as pd
-import numpy as np
-from statsmodels.tsa.seasonal import seasonal_decompose
-from statsmodels.tsa.stattools import adfuller
+            label: "Python (PCA & SVD Decomposition)",
+            code: `import numpy as np
+from sklearn.decomposition import PCA, KernelPCA
 
-# 1. Create Synthetic Time Series (1 Year Daily)
-dates = pd.date_range(start="2025-01-01", periods=365, freq="D")
-trend = np.linspace(100, 250, 365)
-seasonality = 20 * np.sin(2 * np.pi * np.arange(365) / 30)  # Monthly cycle
-noise = np.random.normal(0, 5, 365)
-ts_data = pd.Series(trend + seasonality + noise, index=dates)
+# Sample Multidimensional Data
+X = np.random.randn(100, 6) # 100 samples, 6 features
 
-# 2. Moving Average Smoothing
-sma_7 = ts_data.rolling(window=7).mean()
-sma_30 = ts_data.rolling(window=30).mean()
+# 1. Standard PCA to 2 Components
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X)
+print("Explained Variance Ratio:", pca.explained_variance_ratio_)
 
-# 3. Additive Decomposition
-result = seasonal_decompose(ts_data, model="additive", period=30)
-print(f"Decomposed Components: Trend shape={result.trend.dropna().shape}, Seasonality shape={result.seasonal.shape}")
+# 2. Kernel PCA (RBF Non-linear)
+kpca = KernelPCA(n_components=2, kernel='rbf')
+X_kpca = kpca.fit_transform(X)
 
-# 4. Augmented Dickey-Fuller Test
-adf_stat, p_val, _, _, critical_vals, _ = adfuller(ts_data)
-print(f"ADF Statistic: {adf_stat:.4f}, p-value: {p_val:.4f} (Stationary if p < 0.05)")`
+# 3. Direct Singular Value Decomposition (SVD)
+U, S, Vt = np.linalg.svd(X - np.mean(X, axis=0))
+print("Top 2 Singular Values:", S[:2])`
           }
         ],
         practiceProblems: [
           {
-            title: "Time Series Moving Averages & Trend Filtering",
+            title: "Principal Component Analysis (PCA)",
             difficulty: "Hard",
-            url: "https://www.geeksforgeeks.org/time-series-analysis-using-pandas-in-python/",
+            url: "https://www.geeksforgeeks.org/principal-component-analysis-pca/",
             platform: "GeeksforGeeks",
-            topicTag: "Time Series"
+            topicTag: "Dimensionality Reduction"
+          }
+        ]
+      }
+    ]
+  },
+
+  // ========================================================
+  // MODULE 4: EXPLORATORY DATA ANALYSIS (0/3)
+  // ========================================================
+  {
+    id: "ba-exploratory-data-analysis",
+    name: "4. Exploratory Data Analysis",
+    shortDesc: "Bivariate correlation, multivariate interaction matrices, and statistical charting.",
+    iconName: "Network",
+    topics: [
+      {
+        id: "ba-bivariate-analysis",
+        slug: "bivariate-analysis-on-dataset",
+        title: "Exp 7a: Perform Bivariate Analysis on the Dataset",
+        categoryId: "ba-exploratory-data-analysis",
+        categoryName: "4. Exploratory Data Analysis",
+        difficulty: "Intermediate",
+        estimatedTime: "25 mins",
+        gfgSearchQuery: "Bivariate analysis Pearson correlation scatter plot cross-tabulation Excel",
+        gfgUrl: "https://www.geeksforgeeks.org/bivariate-analysis/",
+        quickSummary: "Examine the relationship between two variables (e.g. correlation, cross-tabulation, scatter comparison).",
+        keyPoints: [
+          "Linear correlation: Correlation coefficients (Pearson's r) quantify the strength and direction of a linear relationship between two numeric variables.",
+          "Contingency tables: Cross-tabulation summarizes the co-occurrence relationships between two categorical variables.",
+          "Visual pattern inspection: Scatter plots visually reveal clusters, linear trends, and outliers between two variables."
+        ],
+        diagramTitle: "Bivariate Correlation & Scatter Plot Matrix",
+        diagram: `  [ Variable X (Ad Spend) ] vs [ Variable Y (Sales) ]
+  Scatter: Upward slope with r = +0.87 (Strong Positive Correlation)`,
+        complexities: [],
+        tools: [
+          { tool: "MS Excel", purpose: "Two-variable analysis, scatter plots, and correlation", notes: "Data Analysis ToolPak: Correlation" }
+        ],
+        codeSnippets: [
+          {
+            language: "bash",
+            label: "Excel Formula",
+            code: `# Pearson Correlation Coefficient
+=CORREL(A2:A100, B2:B100)
+
+# Linear Slope & Intercept for Trendline
+=SLOPE(B2:B100, A2:A100)
+=INTERCEPT(B2:B100, A2:A100)`
+          }
+        ],
+        practiceProblems: [
+          {
+            title: "Bivariate Analysis in Data Science",
+            difficulty: "Medium",
+            url: "https://www.geeksforgeeks.org/bivariate-analysis/",
+            platform: "GeeksforGeeks",
+            topicTag: "EDA"
+          }
+        ]
+      },
+      {
+        id: "ba-multivariate-analysis",
+        slug: "multivariate-analysis-on-dataset",
+        title: "Exp 7b: Perform Multivariate Analysis on the Dataset",
+        categoryId: "ba-exploratory-data-analysis",
+        categoryName: "4. Exploratory Data Analysis",
+        difficulty: "Intermediate",
+        estimatedTime: "30 mins",
+        gfgSearchQuery: "Multivariate analysis correlation matrix pair plot Excel Python",
+        gfgUrl: "https://www.geeksforgeeks.org/multivariate-analysis/",
+        quickSummary: "Extend the analysis to relationships among three or more variables simultaneously.",
+        keyPoints: [
+          "Correlation matrices: Correlation matrices summarize pairwise relationships across many variables at once in a heatmap grid.",
+          "High-dimensional visualization: Multivariate visualization (pair plots, grouped bubble charts) reveals interactions not visible in single-pair analysis.",
+          "Predictive foundation: Multivariate analysis lays the groundwork for regression and clustering involving multiple predictors."
+        ],
+        diagramTitle: "Multivariate Correlation Matrix Grid",
+        diagram: `           │ Price │ Units │ Rating │ Margin
+  ─────────┼───────┼───────┼────────┼───────
+  Price    │  1.00 │ -0.42 │  0.15  │  0.68
+  Units    │ -0.42 │  1.00 │  0.35  │ -0.25
+  Rating   │  0.15 │  0.35 │  1.00  │  0.12
+  Margin   │  0.68 │ -0.25 │  0.12  │  1.00`,
+        complexities: [],
+        tools: [
+          { tool: "MS Excel", purpose: "Multi-variable analysis and correlation matrices", notes: "Data -> Data Analysis -> Correlation" }
+        ],
+        codeSnippets: [
+          {
+            language: "python",
+            label: "Python (Correlation Matrix Heatmap)",
+            code: `import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("business_metrics.csv")
+corr_matrix = df.corr()
+
+plt.figure(figsize=(8, 6))
+sns.heatmap(corr_matrix, annot=True, cmap="Blues", fmt=".2f")
+plt.title("Multivariate Correlation Matrix")
+plt.show()`
+          }
+        ],
+        practiceProblems: [
+          {
+            title: "Multivariate Analysis Techniques",
+            difficulty: "Medium",
+            url: "https://www.geeksforgeeks.org/multivariate-analysis/",
+            platform: "GeeksforGeeks",
+            topicTag: "EDA"
+          }
+        ]
+      },
+      {
+        id: "ba-plotting-functions",
+        slug: "various-plotting-functions-on-dataset",
+        title: "Exp 8: Apply and Explore Various Plotting Functions on the Dataset",
+        categoryId: "ba-exploratory-data-analysis",
+        categoryName: "4. Exploratory Data Analysis",
+        difficulty: "Beginner",
+        estimatedTime: "25 mins",
+        gfgSearchQuery: "Excel chart types bar line scatter histogram box plot visualization",
+        gfgUrl: "https://www.geeksforgeeks.org/charts-in-excel/",
+        quickSummary: "Create a range of chart types (bar, line, pie, scatter, histogram, box plot) to visualize different aspects of the dataset.",
+        keyPoints: [
+          "Analytical chart matching: Chart type should match the data type and analytical question (trend, comparison, distribution, relationship).",
+          "Distribution shape & outliers: Histograms and box plots reveal distribution shape, quartiles, and outlier anomalies.",
+          "Visual communication standards: Consistent labeling, legends, and axis scaling are essential for charts to communicate accurately."
+        ],
+        diagramTitle: "Chart Selection Matrix for Business Intelligence",
+        diagram: `  [ Trend Over Time ] ──► Line Chart
+  [ Category Compare ] ──► Bar / Column Chart
+  [ Distribution ]    ──► Histogram / Box & Whisker
+  [ Correlation ]     ──► Scatter Plot`,
+        complexities: [],
+        tools: [
+          { tool: "MS Excel", purpose: "Business data visualization and chart generation", notes: "Insert -> Charts menu" }
+        ],
+        codeSnippets: [
+          {
+            language: "bash",
+            label: "Excel Chart Shortcuts",
+            code: `# Instant Chart Generation in Excel
+1. Select Data Range (e.g. A1:D25)
+2. Press Alt + F1 (Creates embedded 2D Column Chart)
+3. Change Chart Type -> Box & Whisker or Histogram for statistical distributions`
+          }
+        ],
+        practiceProblems: [
+          {
+            title: "Types of Charts in MS Excel",
+            difficulty: "Easy",
+            url: "https://www.geeksforgeeks.org/charts-in-excel/",
+            platform: "GeeksforGeeks",
+            topicTag: "Data Visualization"
+          }
+        ]
+      }
+    ]
+  },
+
+  // ========================================================
+  // MODULE 5: POWER BI FUNDAMENTALS (0/3)
+  // ========================================================
+  {
+    id: "ba-power-bi-fundamentals",
+    name: "5. Power BI Fundamentals",
+    shortDesc: "Power BI Desktop views, Power Query ETL pipelines, and star schema data modeling.",
+    iconName: "Sparkles",
+    topics: [
+      {
+        id: "ba-powerbi-desktop-features",
+        slug: "explore-features-power-bi-desktop",
+        title: "Exp 9: Explore the Features of Power BI Desktop",
+        categoryId: "ba-power-bi-fundamentals",
+        categoryName: "5. Power BI Fundamentals",
+        difficulty: "Beginner",
+        estimatedTime: "25 mins",
+        gfgSearchQuery: "Power BI Desktop interface Report Data Model view visuals",
+        gfgUrl: "https://www.geeksforgeeks.org/power-bi-tutorial/",
+        quickSummary: "Get familiar with the Power BI Desktop interface — Report, Data, and Model views, and its core building blocks.",
+        keyPoints: [
+          "Three core viewports: Power BI Desktop is organized into Report, Data, and Model views for building visuals, inspecting data, and defining relationships.",
+          "Report building blocks: Reports are composed of interactive visuals placed on one or more report canvas pages.",
+          "Hybrid connectivity: Power BI connects to hundreds of data sources for Import mode or DirectQuery live access."
+        ],
+        diagramTitle: "Power BI Desktop Interface Three-View Architecture",
+        diagram: `  ┌────────────────────────────────────────────────────────┐
+  │ [ Report View: Canvas & Visuals ]                      │
+  ├────────────────────────────────────────────────────────┤
+  │ [ Data View: Tabular Rows & Columns ]                  │
+  ├────────────────────────────────────────────────────────┤
+  │ [ Model View: Entity Relationships & Star Schema ]     │
+  └────────────────────────────────────────────────────────┘`,
+        complexities: [],
+        tools: [
+          { tool: "Power BI Desktop", purpose: "BI tool orientation, report authoring, and views", notes: "Free desktop download" }
+        ],
+        codeSnippets: [
+          {
+            language: "bash",
+            label: "Power BI Workflow",
+            code: `# Getting Started in Power BI Desktop
+1. Home -> Get Data -> Excel Workbook / CSV
+2. Navigator -> Select Target Tables -> Transform Data (Power Query)
+3. Close & Apply -> Switch to Report Canvas
+4. Drag Fields into Visualizations pane`
+          }
+        ],
+        practiceProblems: [
+          {
+            title: "Power BI Architecture & Views",
+            difficulty: "Easy",
+            url: "https://www.geeksforgeeks.org/power-bi-tutorial/",
+            platform: "GeeksforGeeks",
+            topicTag: "Power BI"
+          }
+        ]
+      },
+      {
+        id: "ba-powerbi-prepare-load",
+        slug: "prepare-and-load-data-power-query",
+        title: "Exp 10: Prepare & Load Data",
+        categoryId: "ba-power-bi-fundamentals",
+        categoryName: "5. Power BI Fundamentals",
+        difficulty: "Intermediate",
+        estimatedTime: "30 mins",
+        gfgSearchQuery: "Power Query Applied Steps data transformation clean load Power BI",
+        gfgUrl: "https://www.geeksforgeeks.org/power-query-in-power-bi/",
+        quickSummary: "Use Power Query within Power BI to connect to, clean, and load a dataset for reporting.",
+        keyPoints: [
+          "Repeatable transformation pipeline: Power Query provides a step-by-step, repeatable transformation pipeline (the Applied Steps list).",
+          "Core data transforms: Common transforms include removing unnecessary columns, changing data types, filtering rows, and merging queries.",
+          "Model data ingress: The loaded, transformed data becomes the clean model data source for downstream visuals."
+        ],
+        diagramTitle: "Power Query Applied Steps Pipeline",
+        diagram: `  [ Source (Raw CSV) ] ──► [ Promoted Headers ] ──► [ Changed Column Types ]
+                                                                 │
+  [ Clean Model Source ] ◄── [ Filtered Out Nulls ] ◄── [ Removed Columns ]`,
+        complexities: [],
+        tools: [
+          { tool: "Power BI (Power Query)", purpose: "Data preparation, ETL transformations, and loading", notes: "Applied Steps engine" }
+        ],
+        codeSnippets: [
+          {
+            language: "bash",
+            label: "Power Query M Script Sample",
+            code: `let
+    Source = Csv.Document(File.Contents("C:\\Data\\sales.csv"), [Delimiter=",", Encoding=65001]),
+    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"SalesAmount", type number}, {"OrderDate", type date}}),
+    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each [SalesAmount] > 0)
+in
+    #"Filtered Rows"`
+          }
+        ],
+        practiceProblems: [
+          {
+            title: "Data Transformation with Power Query",
+            difficulty: "Medium",
+            url: "https://www.geeksforgeeks.org/power-query-in-power-bi/",
+            platform: "GeeksforGeeks",
+            topicTag: "Power Query"
+          }
+        ]
+      },
+      {
+        id: "ba-powerbi-data-model",
+        slug: "develop-the-data-model-relationships",
+        title: "Exp 11: Develop the Data Model",
+        categoryId: "ba-power-bi-fundamentals",
+        categoryName: "5. Power BI Fundamentals",
+        difficulty: "Intermediate",
+        estimatedTime: "30 mins",
+        gfgSearchQuery: "Power BI data modeling star schema cardinality relationship filter direction",
+        gfgUrl: "https://www.geeksforgeeks.org/data-modeling-in-power-bi/",
+        quickSummary: "Define relationships between multiple loaded tables to build a coherent data model (e.g. star schema) for reporting.",
+        keyPoints: [
+          "Common key relationships: Relationships link tables via common keys, enabling cross-table filtering and unified aggregation.",
+          "Star schema pattern: A star schema (central fact table surrounded by dimension tables) is a standard, performant modeling pattern.",
+          "Cardinality & cross-filter direction: Cardinality (1:*, 1:1, *.*) and filter direction control how visual filters propagate between related tables."
+        ],
+        diagramTitle: "Power BI Star Schema Data Model",
+        diagram: `  [ DimCustomer (1) ] ──┐
+                         │ (1:N)
+  [ DimDate (1) ] ─────► [ FactSales (*) ] ◄───── [ DimProduct (1) ]
+                         ▲
+  [ DimStore (1) ] ──────┘`,
+        complexities: [],
+        tools: [
+          { tool: "Power BI (Model view)", purpose: "Entity relationship modeling & star schema configuration", notes: "Manage Relationships" }
+        ],
+        codeSnippets: [
+          {
+            language: "bash",
+            label: "Model Relationship Configuration",
+            code: `# Configuring Star Schema in Model View:
+1. Drag DimCustomer[CustomerID] -> FactSales[CustomerID] (1-to-Many)
+2. Drag DimProduct[ProductID]   -> FactSales[ProductID]   (1-to-Many)
+3. Set Cross filter direction to 'Single' (Dimension filters Fact)`
+          }
+        ],
+        practiceProblems: [
+          {
+            title: "Data Modeling in Power BI",
+            difficulty: "Medium",
+            url: "https://www.geeksforgeeks.org/data-modeling-in-power-bi/",
+            platform: "GeeksforGeeks",
+            topicTag: "Data Modeling"
+          }
+        ]
+      }
+    ]
+  },
+
+  // ========================================================
+  // MODULE 6: POWER BI ANALYTICS & REPORTING (0/3)
+  // ========================================================
+  {
+    id: "ba-powerbi-analytics-reporting",
+    name: "6. Power BI Analytics & Reporting",
+    shortDesc: "DAX dynamic measures, report canvas visual design, and executive dashboards.",
+    iconName: "Award",
+    topics: [
+      {
+        id: "ba-dax-calculations",
+        slug: "perform-dax-calculations",
+        title: "Exp 12: Perform DAX Calculations",
+        categoryId: "ba-powerbi-analytics-reporting",
+        categoryName: "6. Power BI Analytics & Reporting",
+        difficulty: "Advanced",
+        estimatedTime: "35 mins",
+        gfgSearchQuery: "DAX in Power BI CALCULATE SUM FILTER measures calculated columns",
+        gfgUrl: "https://www.geeksforgeeks.org/dax-in-power-bi/",
+        quickSummary: "Write DAX (Data Analysis Expressions) measures and calculated columns to derive custom metrics from the data model.",
+        keyPoints: [
+          "Calculated columns vs measures: Calculated columns are computed row-by-row and stored in memory; measures are computed dynamically based on report filter context.",
+          "Core DAX functions: DAX functions (SUM, CALCULATE, FILTER, RELATED) manipulate aggregations and modify filter contexts.",
+          "Evaluation context: Context (row context vs. filter context) determines how a DAX expression evaluates within an individual visual."
+        ],
+        diagramTitle: "DAX Context Transition & CALCULATE Filter Override",
+        diagram: `  [ Report Filter Context: Year=2026, Region='South' ]
+                      │
+                      ▼
+  CALCULATE([Total Sales], ALL(Region)) ──► Strips Region Filter to compute Nationwide Total`,
+        complexities: [],
+        tools: [
+          { tool: "Power BI (DAX)", purpose: "Custom metric calculation and context-aware business measures", notes: "DAX formula bar" }
+        ],
+        codeSnippets: [
+          {
+            language: "bash",
+            label: "DAX Formulas",
+            code: `# 1. Basic Sum Measure
+Total Sales = SUM(FactSales[SalesAmount])
+
+# 2. Context-Modified Measure with CALCULATE
+High Value Sales = 
+CALCULATE(
+    [Total Sales],
+    FactSales[SalesAmount] > 1000
+)
+
+# 3. Year-over-Year Growth Measure
+YoY Sales Growth = 
+DIVIDE(
+    [Total Sales] - CALCULATE([Total Sales], SAMEPERIODLASTYEAR(DimDate[Date])),
+    CALCULATE([Total Sales], SAMEPERIODLASTYEAR(DimDate[Date])),
+    0
+)`
+          }
+        ],
+        practiceProblems: [
+          {
+            title: "DAX in Power BI Tutorial",
+            difficulty: "Hard",
+            url: "https://www.geeksforgeeks.org/dax-in-power-bi/",
+            platform: "GeeksforGeeks",
+            topicTag: "DAX"
+          }
+        ]
+      },
+      {
+        id: "ba-report-design",
+        slug: "design-a-report-power-bi",
+        title: "Exp 13: Design a Report",
+        categoryId: "ba-powerbi-analytics-reporting",
+        categoryName: "6. Power BI Analytics & Reporting",
+        difficulty: "Intermediate",
+        estimatedTime: "30 mins",
+        gfgSearchQuery: "Design report Power BI canvas visuals slicers KPIs bookmarks",
+        gfgUrl: "https://www.geeksforgeeks.org/reports-in-power-bi/",
+        quickSummary: "Lay out visuals (charts, tables, KPIs, slicers) on a report page to answer specific business questions.",
+        keyPoints: [
+          "Visual purposeful choice: Visual choice should match the underlying question (trend, comparison, part-to-whole, distribution).",
+          "Interactive drill-down: Slicers, cross-filtering, and drill-through allow interactive drill-down without altering the underlying data model.",
+          "Visual hierarchy: Consistent layout, coordinated color palettes, and clear labeling improve report readability and storytelling."
+        ],
+        diagramTitle: "Report Page Layout Wireframe",
+        diagram: `  ┌────────────────────────────────────────────────────────┐
+  │ [ KPI: Revenue ] [ KPI: Orders ] [ KPI: Conversion ]   │
+  ├────────────────────────────┬───────────────────────────┤
+  │ [ Monthly Revenue Trend ]  │ [ Top 5 Selling Products ]│
+  │ (Line Chart)               │ (Horizontal Bar Chart)    │
+  ├────────────────────────────┴───────────────────────────┤
+  │ [ Interactive Slicers: Date Range, Region, Category ]  │
+  └────────────────────────────────────────────────────────┘`,
+        complexities: [],
+        tools: [
+          { tool: "Power BI (Report view)", purpose: "Interactive report design, canvas layout, and slicers", notes: "Visualizations pane" }
+        ],
+        codeSnippets: [
+          {
+            language: "bash",
+            label: "Report Design Checklist",
+            code: `# Business Report Best Practices:
+1. Top-left: High-level KPI summary cards (Total Revenue, Active Customers)
+2. Center: Primary trend and comparative charts
+3. Bottom / Sidebar: Slicers (Date, Region, Segment) with single-select or multi-select`
+          }
+        ],
+        practiceProblems: [
+          {
+            title: "Reports in Power BI",
+            difficulty: "Medium",
+            url: "https://www.geeksforgeeks.org/reports-in-power-bi/",
+            platform: "GeeksforGeeks",
+            topicTag: "Report Design"
+          }
+        ]
+      },
+      {
+        id: "ba-dashboard-creation",
+        slug: "create-dashboard-perform-data-analysis",
+        title: "Exp 14: Create a Dashboard and Perform Data Analysis",
+        categoryId: "ba-powerbi-analytics-reporting",
+        categoryName: "6. Power BI Analytics & Reporting",
+        difficulty: "Intermediate",
+        estimatedTime: "30 mins",
+        gfgSearchQuery: "Power BI Service dashboards pin tiles data alerts mobile view",
+        gfgUrl: "https://www.geeksforgeeks.org/dashboard-in-power-bi/",
+        quickSummary: "Pin key visuals into a consolidated dashboard view for at-a-glance monitoring and analysis.",
+        keyPoints: [
+          "Cross-report aggregation: A dashboard aggregates pinned tiles from one or more reports into a single, high-level executive view.",
+          "Operational KPI focus: Dashboards are typically optimized for monitoring vital KPIs rather than deep exploratory analysis.",
+          "Interactivity links: Tile clicks and drill-through links connect dashboard tiles back to their underlying detailed report pages."
+        ],
+        diagramTitle: "Power BI Multi-Report Dashboard Pinning",
+        diagram: `  [ Report A: Sales Performance ] ──► Pin Tile ──┐
+                                                 ▼
+  [ Report B: Inventory Health ]   ──► Pin Tile ──► [ Unified Executive Dashboard ]
+                                                 ▲
+  [ Report C: Customer Retention ] ──► Pin Tile ──┘`,
+        complexities: [],
+        tools: [
+          { tool: "Power BI Service / Desktop", purpose: "Dashboard creation, tile pinning, and executive monitoring", notes: "Online service / Desktop" }
+        ],
+        codeSnippets: [
+          {
+            language: "bash",
+            label: "Dashboard Workflow",
+            code: `# Publishing & Dashboard Pinning
+1. File -> Publish -> Select Power BI Workspace
+2. In Web Service, open published report
+3. Hover over visual -> Click Pin icon (📌)
+4. Select "New dashboard" -> Name: Executive Overview
+5. Set up Data Alert on KPI tile (e.g. Alert if Revenue < $50,000)`
+          }
+        ],
+        practiceProblems: [
+          {
+            title: "Dashboards in Power BI",
+            difficulty: "Medium",
+            url: "https://www.geeksforgeeks.org/dashboard-in-power-bi/",
+            platform: "GeeksforGeeks",
+            topicTag: "Dashboards"
+          }
+        ]
+      }
+    ]
+  },
+
+  // ========================================================
+  // MODULE 7: CAPSTONE CASE STUDY (0/1)
+  // ========================================================
+  {
+    id: "ba-capstone-case-study",
+    name: "7. Capstone Case Study",
+    shortDesc: "End-to-end recruitment analytics workflow from data preparation to executive presentation.",
+    iconName: "GraduationCap",
+    topics: [
+      {
+        id: "ba-campus-recruitment-case-study",
+        slug: "presentation-case-study-campus-recruitment",
+        title: "Exp 15: Presentation of a Case Study — Campus Recruitment Analysis",
+        categoryId: "ba-capstone-case-study",
+        categoryName: "7. Capstone Case Study",
+        difficulty: "Advanced",
+        estimatedTime: "40 mins",
+        gfgSearchQuery: "Campus recruitment analysis Power BI case study placement predictive factors",
+        gfgUrl: "https://www.geeksforgeeks.org/data-analysis-project-ideas/",
+        quickSummary: "Apply the full analytics workflow (data prep, statistics, visualization, Power BI reporting) to a real dataset — campus recruitment — and present findings.",
+        keyPoints: [
+          "End-to-end pipeline: A complete analytics workflow moves from raw data through cleaning, exploration, modeling, and visualization to actionable insight.",
+          "Framed around business questions: Findings should be framed around specific business questions (e.g. placement rate drivers, salary determinant factors).",
+          "Executive communication: Clear presentation (charts + narrative) is essential for communicating analytical results to non-technical stakeholders."
+        ],
+        diagramTitle: "End-to-End Campus Recruitment Analytics Workflow",
+        diagram: `  [ Raw Placement Data ] ──► [ Power Query Cleaning (Nulls, Types) ]
+                                    │
+                                    ▼ [ Descriptive Stats & Hypothesis Testing ]
+                                    │ (GPA vs Placement Likelihood)
+                                    ▼ [ Power BI Interactive Visuals & DAX ]
+                                    │
+                                    ▼ [ Executive Placement Strategy Presentation ]`,
+        complexities: [],
+        tools: [
+          { tool: "Excel + Power BI", purpose: "End-to-end analytics workflow, modeling, and presentation", notes: "Capstone deliverable" }
+        ],
+        codeSnippets: [
+          {
+            language: "bash",
+            label: "Capstone Deliverable Outline",
+            code: `# Case Study Presentation Structure
+1. Executive Summary & Problem Statement
+2. Data Cleaning & Demographics Overview (Gender, Specialization)
+3. Key Placement Drivers (CGPA, Internships, Technical Assessment Scores)
+4. Salary Distribution Analysis by Stream
+5. Recommendations for Training & Placement Cell Enhancement`
+          }
+        ],
+        practiceProblems: [
+          {
+            title: "Data Analysis Case Study Ideas",
+            difficulty: "Hard",
+            url: "https://www.geeksforgeeks.org/data-analysis-project-ideas/",
+            platform: "GeeksforGeeks",
+            topicTag: "Capstone Project"
           }
         ]
       }

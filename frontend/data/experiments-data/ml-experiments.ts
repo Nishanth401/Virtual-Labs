@@ -18,7 +18,7 @@ export const ML_EXPERIMENTS: Experiment[] = [
       objective: "Read a training dataset from a CSV file, iteratively generalize Specific Boundary S on positive instances, specialize General Boundary G on negative instances, and output the Version Space.",
       videoUrl: "https://www.youtube-nocookie.com/embed/aircAruvnKk",
       videoTitle: "Candidate-Elimination Algorithm Explained",
-      videoChannel: "NPTEL Machine Learning",
+      videoChannel: "Machine Learning Academy",
       prerequisites: ["Concept Learning", "Find-S Algorithm"],
       theory: {
         overview: "The Version Space represents all consistent hypotheses bounded between the Most Specific hypothesis S (initially ['ϕ', ..., 'ϕ']) and the Most General hypothesis G (initially [['?', ..., '?']]). Positive examples generalize S; negative examples specialize G.",
@@ -416,7 +416,7 @@ print("Test Predictions (1=Spam, 0=Ham):", clf.predict(X_test))`
       objective: "Construct a Bayesian network in Python (pgmpy) modeling COVID-19 transmission risks, symptoms, and disease states, and compute exact posterior diagnostic probabilities via Variable Elimination.",
       videoUrl: "https://www.youtube-nocookie.com/embed/aircAruvnKk",
       videoTitle: "Bayesian Networks Explained",
-      videoChannel: "NPTEL AI",
+      videoChannel: "Artificial Intelligence Academy",
       prerequisites: ["Conditional Probability", "Graph Theory DAG"],
       theory: {
         overview: "A Bayesian Network factorizes the joint probability distribution across all variables: P(X1, ..., Xn) = ∏ P(Xi | Parents(Xi)). Inference algorithms such as Variable Elimination compute marginal and posterior query probabilities P(Disease | Symptoms).",

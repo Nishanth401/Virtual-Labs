@@ -41,6 +41,12 @@ MATERIAL_CONTENTS["c-programming-gfg"] = MATERIAL_CONTENTS["c-programming-guide"
 MATERIAL_CONTENTS["bigdata-gfg-hadoop"] = MATERIAL_CONTENTS["big-data-hadoop-gfg"];
 MATERIAL_CONTENTS["bigdata-w3schools-mongodb"] = MATERIAL_CONTENTS["big-data-mongodb-w3schools"];
 
+// Lab Manual Aliases for the 8 featured laboratories
+MATERIAL_CONTENTS["csm-lab-manual"] = MATERIAL_CONTENTS["cloud-lab-manual"];
+MATERIAL_CONTENTS["bda-lab-manual"] = MATERIAL_CONTENTS["bigdata-lab-manual"];
+MATERIAL_CONTENTS["ml-lab-manual"] = MATERIAL_CONTENTS["dl-lab-manual"];
+MATERIAL_CONTENTS["data-science-lab-manual"] = MATERIAL_CONTENTS["business-analytics-manual"];
+
 
 /**
  * Helper to match any resource item to its corresponding rich in-app material

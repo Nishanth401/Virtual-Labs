@@ -80,7 +80,7 @@ export const DBMS_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd/3rd Year"
         ],
         "pg": [
-          "M.E. Computer Science",
+          "M.Tech Artificial Intelligence & Data Science",
           "M.Tech Data Science"
         ]
       }
@@ -165,7 +165,7 @@ export const DBMS_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd/3rd Year"
         ],
         "pg": [
-          "M.E. Computer Science",
+          "M.Tech Artificial Intelligence & Data Science",
           "M.Tech Data Science"
         ]
       }
@@ -250,7 +250,7 @@ export const DBMS_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd/3rd Year"
         ],
         "pg": [
-          "M.E. Computer Science",
+          "M.Tech Artificial Intelligence & Data Science",
           "M.Tech Data Science"
         ]
       }
@@ -335,7 +335,7 @@ export const DBMS_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd/3rd Year"
         ],
         "pg": [
-          "M.E. Computer Science",
+          "M.Tech Artificial Intelligence & Data Science",
           "M.Tech Data Science"
         ]
       }
@@ -420,7 +420,7 @@ export const DBMS_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd/3rd Year"
         ],
         "pg": [
-          "M.E. Computer Science",
+          "M.Tech Artificial Intelligence & Data Science",
           "M.Tech Data Science"
         ]
       }
@@ -505,7 +505,7 @@ export const DBMS_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd/3rd Year"
         ],
         "pg": [
-          "M.E. Computer Science",
+          "M.Tech Artificial Intelligence & Data Science",
           "M.Tech Data Science"
         ]
       }
@@ -590,7 +590,7 @@ export const DBMS_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd/3rd Year"
         ],
         "pg": [
-          "M.E. Computer Science",
+          "M.Tech Artificial Intelligence & Data Science",
           "M.Tech Data Science"
         ]
       }
@@ -675,7 +675,7 @@ export const DBMS_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd/3rd Year"
         ],
         "pg": [
-          "M.E. Computer Science",
+          "M.Tech Artificial Intelligence & Data Science",
           "M.Tech Data Science"
         ]
       }
@@ -760,7 +760,7 @@ export const DBMS_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd/3rd Year"
         ],
         "pg": [
-          "M.E. Computer Science",
+          "M.Tech Artificial Intelligence & Data Science",
           "M.Tech Data Science"
         ]
       }
@@ -845,7 +845,7 @@ export const DBMS_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd/3rd Year"
         ],
         "pg": [
-          "M.E. Computer Science",
+          "M.Tech Artificial Intelligence & Data Science",
           "M.Tech Data Science"
         ]
       }
@@ -930,7 +930,7 @@ export const DBMS_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd/3rd Year"
         ],
         "pg": [
-          "M.E. Computer Science",
+          "M.Tech Artificial Intelligence & Data Science",
           "M.Tech Data Science"
         ]
       }
@@ -1015,7 +1015,7 @@ export const DBMS_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd/3rd Year"
         ],
         "pg": [
-          "M.E. Computer Science",
+          "M.Tech Artificial Intelligence & Data Science",
           "M.Tech Data Science"
         ]
       }
@@ -1100,7 +1100,7 @@ export const DBMS_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd/3rd Year"
         ],
         "pg": [
-          "M.E. Computer Science",
+          "M.Tech Artificial Intelligence & Data Science",
           "M.Tech Data Science"
         ]
       }
@@ -1185,7 +1185,7 @@ export const DBMS_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd/3rd Year"
         ],
         "pg": [
-          "M.E. Computer Science",
+          "M.Tech Artificial Intelligence & Data Science",
           "M.Tech Data Science"
         ]
       }
@@ -1270,7 +1270,7 @@ export const DBMS_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd/3rd Year"
         ],
         "pg": [
-          "M.E. Computer Science",
+          "M.Tech Artificial Intelligence & Data Science",
           "M.Tech Data Science"
         ]
       }

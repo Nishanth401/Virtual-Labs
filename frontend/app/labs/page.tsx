@@ -118,7 +118,7 @@ export default function LabsCataloguePage() {
                     Department of Artificial Intelligence &amp; Data Science
                   </h1>
                   <p className="text-xs sm:text-sm text-slate-200 mt-1 max-w-2xl leading-relaxed">
-                    Anna University &amp; Autonomous Curriculum Virtual Laboratories: AI Systems, Big Data Analytics, Cloud Infrastructure, Java OOP, Data Structures, and Relational Databases.
+                    National Virtual Laboratories in Artificial Intelligence, Machine Learning, Deep Learning, Big Data Analytics, Cloud Computing, Database Systems, and Data Structures.
                   </p>
                 </div>
 
@@ -161,7 +161,7 @@ export default function LabsCataloguePage() {
               {isDisciplineBooksOpen && (
                 <div className="mt-3 p-4 bg-black/60 border border-white/20 rounded-none text-xs space-y-2 text-slate-200">
                   <h4 className="font-bold text-amber-300 uppercase tracking-wider text-[11px]">
-                    Recommended Core Textbooks across AI &amp; DS:
+                    Recommended Core Textbooks across Artificial Intelligence &amp; Data Science:
                   </h4>
                   <ul className="list-disc list-inside space-y-1 pl-1 text-slate-300">
                     <li>Stuart Russell, Peter Norvig. Artificial Intelligence: A Modern Approach, 4th Edition. Pearson.</li>
@@ -177,7 +177,7 @@ export default function LabsCataloguePage() {
               {isDisciplineSyllabusOpen && (
                 <div className="mt-3 p-4 bg-black/60 border border-white/20 rounded-none text-xs space-y-2 text-slate-200">
                   <h4 className="font-bold text-amber-300 uppercase tracking-wider text-[11px]">
-                    Anna University &amp; Autonomous Regulation Laboratory Mapping:
+                    Anna University &amp; Autonomous Regulation Laboratory Mapping (AI &amp; DS):
                   </h4>
                   <ul className="list-disc list-inside space-y-1 pl-1 text-slate-300">
                     <li>Semester III (II Year): AD8302 OOP (Java) Lab • AD8301 Data Structures Design Lab • AD8303 DBMS Lab</li>
@@ -482,7 +482,7 @@ export default function LabsCataloguePage() {
                   <div className="p-3 rounded-none bg-muted/40 border border-border/70 space-y-1.5 hover:border-primary/40 transition-colors">
                     <div className="flex items-center justify-between text-[11px] text-muted-foreground">
                       <span className="font-semibold text-amber-600 dark:text-amber-400 font-sans">Curriculum Alignment</span>
-                      <span className="font-sans font-medium">AICTE / AU</span>
+                      <span className="font-sans font-medium">Autonomous / AU</span>
                     </div>
                     <p className="font-bold text-foreground leading-snug">
                       Semester V Big Data &amp; AI Lab Sandbox Live
@@ -491,10 +491,24 @@ export default function LabsCataloguePage() {
                       Integrated Hadoop HDFS cluster emulation, PySpark jobs, and A* heuristic search visualizations.
                     </p>
                   </div>
+
+                  {/* Notice 3 */}
+                  <div className="p-3 rounded-none bg-muted/40 border border-border/70 space-y-1.5 hover:border-primary/40 transition-colors">
+                    <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+                      <span className="font-semibold text-emerald-600 dark:text-emerald-400 font-sans">New Simulators</span>
+                      <span className="font-sans font-medium">v3.2</span>
+                    </div>
+                    <p className="font-bold text-foreground leading-snug">
+                      Interactive Call Stack &amp; Memory Buffer Visualizer
+                    </p>
+                    <p className="text-muted-foreground leading-relaxed text-[11px]">
+                      Recursion trees, stack pointer tracking, and variable scope inspector enabled across all labs.
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
 
-              {/* NPTEL & Academic Credit Box */}
+              {/* Autonomous Academic Credit Box */}
               <Card className="border-border bg-gradient-to-br from-primary/5 via-card to-card shadow-2xs p-4 space-y-3 rounded-none">
                 <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider font-sans">
                   <GraduationCap className="h-4 w-4" />

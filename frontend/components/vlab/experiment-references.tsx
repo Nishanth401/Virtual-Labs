@@ -30,17 +30,17 @@ export function ExperimentReferences({
     {
       presenter: "Prof. Naveen Garg",
       title: "Lecture: Data Structures, Algorithms & Computational Complexity",
-      url: defaultVideoUrl || "https://nptel.ac.in/courses/106102064",
+      url: defaultVideoUrl || "https://www.youtube.com/results?search_query=Data+Structures+Algorithms+IIT+Delhi",
     },
     {
-      presenter: "NPTEL / Virtual Labs MoE",
+      presenter: "Department Faculty / Virtual Labs",
       title: "Interactive Experiment Simulation & Code Step Walkthrough",
       url: defaultVideoUrl || "https://www.youtube.com/results?search_query=virtual+labs+artificial+intelligence+data+science",
     },
     {
       presenter: "Prof. John Jose",
       title: "Pipeline Hazards and Dynamic Scheduling in Modern Architecture",
-      url: "https://nptel.ac.in/courses/106103206",
+      url: "https://www.youtube.com/results?search_query=Pipeline+Hazards+Computer+Architecture",
     },
   ];
 

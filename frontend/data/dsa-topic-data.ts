@@ -43,6 +43,7 @@ export interface DSATopic {
   diagramTitle?: string;
   diagram?: string;
   complexities: DSATopicComplexity[];
+  tools?: { tool: string; purpose: string; notes?: string }[];
   codeSnippets: CodeSnippet[];
   practiceProblems: DSATopicPractice[];
   studentMode?: StudentModeExplanation;

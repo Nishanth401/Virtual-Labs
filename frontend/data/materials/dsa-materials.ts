@@ -424,5 +424,169 @@ public class W3SchoolsDSADemo {
         description: "Given an integer array and an integer k, return the k most frequent elements using a HashMap and a PriorityQueue Min-Heap."
       }
     ]
+  },
+  "dsa-lab-manual": {
+    id: "dsa-lab-manual",
+    title: "Data Structures & Algorithms Laboratory Manual",
+    subject: "Data Structures Lab",
+    provider: "Department of Artificial Intelligence and Data Science",
+    source: "VSB Engineering College Autonomous Curriculum (R2023 / R2021)",
+    subtitle: "Complete Manual: Singly/Doubly Linked Lists, Stacks, Circular Queues, Binary Search Trees, BFS/DFS & Dijkstra's Algorithm",
+    category: "Academic Laboratory Manual",
+    readTime: "60 mins",
+    difficulty: "Intermediate",
+    simulatorUrl: "/labs/data-structures",
+    simulatorName: "DSA Algorithm Visualizer",
+    overview:
+      "This official laboratory manual for Data Structures and Algorithms provides complete practical specifications conforming to the Anna University and Autonomous curriculum. Students implement foundational linear abstract data types (Singly Linked Lists, Doubly Linked Lists, Stacks, Circular Queues) and non-linear data structures (Binary Search Trees, Expression Trees, Graph BFS/DFS, and Dijkstra Shortest Path).",
+    learningObjectives: [
+      "Implement dynamic linear data structures using self-referential pointer nodes in C/C++/Java",
+      "Apply Stack ADT for arithmetic expression parsing, Infix to Postfix conversion, and operand stack evaluation",
+      "Construct circular array and linked queue buffers handling boundary overflow and underflow conditions",
+      "Develop Binary Search Trees (BST) supporting recursive insertion, deletion, and tree traversals",
+      "Implement graph pathfinding algorithms including Breadth-First Search, Depth-First Search, and Dijkstra shortest paths"
+    ],
+    tags: ["Data Structures", "Linked List", "Stack", "Queue", "BST", "Graph", "Lab Manual", "VSB Engineering College"],
+    keyConcepts: [
+      {
+        title: "1. Linear vs Dynamic Linked Allocations",
+        description:
+          "Array-based structures require contiguous memory blocks, whereas Linked Lists allocate discrete heap nodes connected by pointers.",
+        points: [
+          "Singly Linked List: Forward-only traversal; insertion/deletion at head takes O(1) time.",
+          "Doubly Linked List: Bidirectional traversal via 'next' and 'prev' pointers, enabling O(1) arbitrary node deletion when node reference is known.",
+          "Circular Queue: Reuses array memory via modulo arithmetic (rear = (rear + 1) % capacity) to prevent false overflow."
+        ]
+      },
+      {
+        title: "2. The Stack ADT & Expression Evaluation",
+        description:
+          "Last-In First-Out (LIFO) structure essential for procedure call stacks, undo mechanisms, and parsing.",
+        points: [
+          "Infix to Postfix: Operators pushed to stack based on operator precedence; parentheses force sub-expression evaluation.",
+          "Postfix Evaluation: Operands pushed to stack; operators pop top two operands, evaluate result, and push result back."
+        ]
+      },
+      {
+        title: "3. Non-Linear Hierarchies & Graph Algorithms",
+        description:
+          "Trees and graphs represent hierarchical dependencies and networked relationships.",
+        points: [
+          "Binary Search Tree Property: For every node X, all left subtree values are < X.val and all right subtree values are > X.val.",
+          "Inorder Traversal: Traverses Left-Root-Right, yielding values in sorted ascending order in O(N) time.",
+          "Dijkstra's Algorithm: Greedy algorithm finding single-source shortest paths on non-negative weighted graphs using a priority queue in O((V + E) log V)."
+        ]
+      }
+    ],
+    algorithmSteps: [
+      {
+        step: 1,
+        title: "Node Memory Specification",
+        description: "Define structure/class containing data fields and self-referential reference pointers."
+      },
+      {
+        step: 2,
+        title: "Pointer Manipulation & Invariants",
+        description: "Perform pointer rewiring while maintaining null-terminations, head/tail pointers, and size counters."
+      },
+      {
+        step: 3,
+        title: "Boundary Condition Verification",
+        description: "Explicitly handle edge cases: empty structure (underflow), single element lists, head deletion, and tail insertion."
+      },
+      {
+        step: 4,
+        title: "Traversal & Verification",
+        description: "Iterate or recursively visit nodes to verify structural integrity and print formatted output."
+      }
+    ],
+    codeSnippets: {
+      java: `// 1. Singly Linked List Implementation
+class Node {
+    int data;
+    Node next;
+    Node(int data) { this.data = data; this.next = null; }
+}
+
+public class SinglyLinkedList {
+    private Node head;
+
+    public void insertAtEnd(int val) {
+        Node newNode = new Node(val);
+        if (head == null) {
+            head = newNode;
+            return;
+        }
+        Node temp = head;
+        while (temp.next != null) {
+            temp = temp.next;
+        }
+        temp.next = newNode;
+    }
+
+    public void deleteValue(int val) {
+        if (head == null) return;
+        if (head.data == val) {
+            head = head.next;
+            return;
+        }
+        Node curr = head;
+        while (curr.next != null && curr.next.data != val) {
+            curr = curr.next;
+        }
+        if (curr.next != null) {
+            curr.next = curr.next.next;
+        }
+    }
+
+    public void display() {
+        Node curr = head;
+        while (curr != null) {
+            System.out.print(curr.data + " -> ");
+            curr = curr.next;
+        }
+        System.out.println("NULL");
+    }
+}`
+    },
+    complexityAnalysis: {
+      timeComplexity: "SLL/DLL Head Operations: O(1); Search: O(N); BST Search/Insert: O(log N) average, O(N) worst case",
+      spaceComplexity: "O(N) memory overhead for storing node reference pointers alongside data elements",
+      notes: "Balanced BSTs (AVL, Red-Black) maintain strict O(log N) worst-case height guarantees through tree rotations."
+    },
+    vivaQuestions: [
+      {
+        question: "What is an Abstract Data Type (ADT)?",
+        answer: "An ADT is a mathematical model for data types where the data type is defined by its behavior (operations and semantics) from the point of view of a user, independent of its concrete implementation.",
+        category: "Foundations"
+      },
+      {
+        question: "Why does a Circular Queue solve the false overflow problem of a Linear Queue?",
+        answer: "In a standard linear queue, once the rear pointer hits the array boundary, no more elements can be enqueued even if elements have been dequeued from the front. A circular queue wraps the rear pointer back to index 0 using modulo arithmetic.",
+        category: "Queue"
+      },
+      {
+        question: "What is the time complexity of searching an element in a Binary Search Tree?",
+        answer: "Average case is O(log N) for balanced trees. Worst case is O(N) if the tree degrades into a skewed linked list due to sorted input insertion.",
+        category: "Trees"
+      }
+    ],
+    realWorldApplications: [
+      "Operating system memory allocation free-lists implemented using Doubly Linked Lists",
+      "Web browser backwards and forwards history navigation utilizing paired Stack ADTs",
+      "Network router packet switching queues and OS scheduler runqueues implemented as Circular Queues"
+    ],
+    practiceProblems: [
+      {
+        title: "Reverse a Linked List in Groups of K",
+        difficulty: "Hard",
+        description: "Given a singly linked list, reverse the nodes of the list k at a time and return its modified list preserving pointer integrity."
+      },
+      {
+        title: "Evaluate Reverse Polish Notation",
+        difficulty: "Medium",
+        description: "Evaluate the value of an arithmetic expression in Reverse Polish Notation (Postfix) containing +, -, *, and / using a Stack."
+      }
+    ]
   }
 };
