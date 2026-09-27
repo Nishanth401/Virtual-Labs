@@ -152,7 +152,7 @@ export default function AuthLoginPage() {
       <Navbar />
 
       {/* Main container with generous top spacing to prevent navbar overlap (fixes edge case in Image 1) */}
-      <main className="flex-1 flex items-center justify-center pt-36 sm:pt-44 pb-20 px-4">
+      <main className="flex-1 flex flex-col items-center justify-start pt-44 sm:pt-48 pb-20 px-4">
         <div className="w-full max-w-md p-6 sm:p-8 bg-white dark:bg-card border border-border shadow-2xl rounded-2xl space-y-6">
           
           {/* Header Brand */}

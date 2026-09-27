@@ -555,7 +555,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setStudentProfile(null);
       if (typeof window !== "undefined") {
         localStorage.removeItem("vsb_student_profile_data");
+        localStorage.removeItem("vlab_active_student");
         localStorage.removeItem("vlab_auth_token");
+        window.dispatchEvent(new Event("storage"));
       }
     } catch (e) {
       console.error("Logout error:", e);
