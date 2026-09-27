@@ -127,7 +127,7 @@ export function StudentOnboardingModal() {
           ...(studentProfile || {
             uid: currentUid,
             email,
-            completedExperiments: ["bubble-sort", "stack-operations"],
+            completedExperiments: [],
             completedProblems: [],
             starredProblems: [],
             problemNotes: {},

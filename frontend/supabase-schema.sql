@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   register_number TEXT,
   department TEXT DEFAULT 'Artificial Intelligence & Data Science',
   year_semester TEXT DEFAULT 'Year III / Semester VI',
-  completed_experiments TEXT[] DEFAULT ARRAY['bubble-sort', 'stack-operations']::TEXT[],
+  completed_experiments TEXT[] DEFAULT ARRAY[]::TEXT[],
   completed_problems TEXT[] DEFAULT ARRAY[]::TEXT[],
   starred_problems TEXT[] DEFAULT ARRAY[]::TEXT[],
   problem_notes JSONB DEFAULT '{}'::JSONB,

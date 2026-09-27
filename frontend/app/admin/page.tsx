@@ -24,8 +24,16 @@ import {
   CollegeLabManual,
   CollegeCustomLab,
   CollegeVideoTutorial,
+  updateStudentProgressInCloud,
 } from "@/lib/supabase-multitenant";
 import { StudentProfile } from "@/lib/supabase";
+import {
+  evaluateStudentProgress,
+  generateGmailReminderUrl,
+  generateReminderClipboardText,
+  LabRequirement,
+  SEMESTER_LAB_REQUIREMENTS,
+} from "@/lib/student-lab-progress";
 import { StudentAnalyticsModal } from "@/components/admin/student-analytics-modal";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -59,6 +67,7 @@ import {
   FileSpreadsheet,
   RefreshCw,
   ChevronRight,
+  ChevronLeft,
   BookOpen,
   FileText,
   Video,
@@ -73,7 +82,11 @@ import {
   Upload,
   FileUp,
   FileCode,
-  Paperclip
+  Paperclip,
+  Send,
+  AlertCircle,
+  Copy,
+  Check
 } from "lucide-react";
 
 const ADMIN_EMAIL = "anishanth404@gmail.com";
@@ -156,15 +169,25 @@ function AdminPageContent() {
     loadAllTenantData(activeCollegeSlug);
   }, [activeCollegeSlug]);
 
+  // Enhanced Student Roster Filter & Pagination States
+  const [selectedCohortTab, setSelectedCohortTab] = useState<"all" | "II AIDS" | "III AIDS" | "IV AIDS">("all");
+  const [selectedProgressFilter, setSelectedProgressFilter] = useState<"all" | "pending" | "completed">("all");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(25);
+  const [copiedStudentReg, setCopiedStudentReg] = useState<string | null>(null);
+  const [copiedReminderReg, setCopiedReminderReg] = useState<string | null>(null);
+  const [bulkCopied, setBulkCopied] = useState<boolean>(false);
+  const [isRefreshingStudents, setIsRefreshingStudents] = useState<boolean>(false);
+
   const loadAllTenantData = async (slug: string) => {
     setIsLoadingData(true);
     try {
       const [stuData, matData, manData, labData, vidData] = await Promise.all([
-        getStudentsByCollege(slug),
-        getCollegeMaterials(slug),
-        getCollegeLabManuals(slug),
-        getCollegeCustomLabs(slug),
-        getCollegeVideoTutorials(slug),
+        getStudentsByCollege(slug).catch(() => []),
+        getCollegeMaterials(slug).catch(() => []),
+        getCollegeLabManuals(slug).catch(() => []),
+        getCollegeCustomLabs(slug).catch(() => []),
+        getCollegeVideoTutorials(slug).catch(() => []),
       ]);
       setStudents(stuData);
       setMaterials(matData);
@@ -175,6 +198,18 @@ function AdminPageContent() {
       console.error("Failed to load tenant data", e);
     } finally {
       setIsLoadingData(false);
+    }
+  };
+
+  const refreshLiveStudents = async () => {
+    setIsRefreshingStudents(true);
+    try {
+      const freshStudents = await getStudentsByCollege(activeCollegeSlug);
+      setStudents(freshStudents);
+    } catch (e) {
+      console.error("Failed to refresh students", e);
+    } finally {
+      setIsRefreshingStudents(false);
     }
   };
 
@@ -206,22 +241,133 @@ function AdminPageContent() {
     } catch {}
   };
 
+  // Cohort Counts Breakdown
+  const cohortStats = useMemo(() => {
+    let iiCount = 0;
+    let iiiCount = 0;
+    let ivCount = 0;
+    let totalIncomplete = 0;
+    let iiIncomplete = 0;
+    let iiiIncomplete = 0;
+    let ivIncomplete = 0;
+
+    students.forEach((s) => {
+      const progress = evaluateStudentProgress(s);
+      if (!progress.isFullyCompleted) totalIncomplete++;
+
+      if (progress.cohort === "II AIDS") {
+        iiCount++;
+        if (!progress.isFullyCompleted) iiIncomplete++;
+      } else if (progress.cohort === "III AIDS") {
+        iiiCount++;
+        if (!progress.isFullyCompleted) iiiIncomplete++;
+      } else {
+        ivCount++;
+        if (!progress.isFullyCompleted) ivIncomplete++;
+      }
+    });
+
+    return {
+      all: students.length,
+      ii: iiCount,
+      iii: iiiCount,
+      iv: ivCount,
+      totalIncomplete,
+      iiIncomplete,
+      iiiIncomplete,
+      ivIncomplete,
+    };
+  }, [students]);
+
   // Filtered Students
   const filteredStudents = useMemo(() => {
     return students.filter((student) => {
+      const q = searchQuery.toLowerCase().trim();
       const matchesSearch =
-        student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        student.registerNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        student.email.toLowerCase().includes(searchQuery.toLowerCase());
+        !q ||
+        student.name.toLowerCase().includes(q) ||
+        student.registerNumber.toLowerCase().includes(q) ||
+        student.email.toLowerCase().includes(q);
 
       const matchesDept =
         selectedDept === "all" ||
         student.department.toLowerCase().includes(selectedDept.toLowerCase()) ||
         (student.className && student.className.toLowerCase().includes(selectedDept.toLowerCase()));
 
-      return matchesSearch && matchesDept;
+      const evalData = evaluateStudentProgress(student);
+      const matchesCohort =
+        selectedCohortTab === "all" || evalData.cohort === selectedCohortTab;
+
+      let matchesProgress = true;
+      if (selectedProgressFilter !== "all") {
+        if (selectedProgressFilter === "pending") {
+          matchesProgress = !evalData.isFullyCompleted;
+        } else if (selectedProgressFilter === "completed") {
+          matchesProgress = evalData.isFullyCompleted;
+        }
+      }
+
+      return matchesSearch && matchesDept && matchesCohort && matchesProgress;
     });
-  }, [students, searchQuery, selectedDept]);
+  }, [students, searchQuery, selectedDept, selectedCohortTab, selectedProgressFilter]);
+
+  // Paginated Students
+  const paginatedStudents = useMemo(() => {
+    if (pageSize === -1) return filteredStudents;
+    const start = (currentPage - 1) * pageSize;
+    return filteredStudents.slice(start, start + pageSize);
+  }, [filteredStudents, currentPage, pageSize]);
+
+  const totalPages = useMemo(() => {
+    if (pageSize === -1 || filteredStudents.length === 0) return 1;
+    return Math.ceil(filteredStudents.length / pageSize);
+  }, [filteredStudents, pageSize]);
+
+  // Bulk Gmail Action
+  const handleBulkGmailReminder = () => {
+    const incomplete = filteredStudents.filter((s) => !evaluateStudentProgress(s).isFullyCompleted);
+    if (incomplete.length === 0) {
+      alert("All students in this view have completed their semester laboratories!");
+      return;
+    }
+    const emails = incomplete.map((s) => s.email || `${s.registerNumber}@vsb.ac.in`).join(",");
+    const cohortLabel =
+      selectedCohortTab === "II AIDS"
+        ? "Semester III (II AIDS)"
+        : selectedCohortTab === "III AIDS"
+        ? "Semester V (III AIDS)"
+        : "Semester Practical";
+
+    const subject = `[URGENT] Virtual Labs ${cohortLabel} Practical Lab Completion Notice - Mandatory CIE`;
+    const body = `Dear Students,
+
+This is an urgent academic notification from the Department of Artificial Intelligence and Data Science regarding your practical laboratory completion on the VSB Virtual Labs platform.
+
+According to continuous internal assessment records, you have pending laboratory simulations that must be completed immediately before the upcoming semester practical evaluation.
+
+Portal: http://localhost:3010/auth/login
+Login: Your Register Number
+Password: Your Name in CAPITAL LETTERS
+
+Please log in, complete all experiments, and submit observations.
+
+Department of AI & DS
+V.S.B. Engineering College`;
+
+    window.open(
+      `https://mail.google.com/mail/?view=cm&fs=1&bcc=${encodeURIComponent(emails)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
+      "_blank"
+    );
+  };
+
+  const handleCopyIncompleteEmails = () => {
+    const incomplete = filteredStudents.filter((s) => !evaluateStudentProgress(s).isFullyCompleted);
+    if (incomplete.length === 0) return;
+    const emails = incomplete.map((s) => s.email || `${s.registerNumber}@vsb.ac.in`).join(", ");
+    navigator.clipboard.writeText(emails);
+    setBulkCopied(true);
+    setTimeout(() => setBulkCopied(false), 2500);
+  };
 
   // Filtered Labs
   const filteredLabs = useMemo(() => {
@@ -243,22 +389,42 @@ function AdminPageContent() {
   // Export CSV of students
   const handleExportCSV = () => {
     if (filteredStudents.length === 0) return;
-    const headers = ["Register Number", "Student Name", "Email", "Department", "Year / Class", "Experiments Completed", "Quizzes Completed", "Last Active"];
-    const rows = filteredStudents.map((s) => [
-      `"${s.registerNumber}"`,
-      `"${s.name}"`,
-      `"${s.email}"`,
-      `"${s.department}"`,
-      `"${s.yearSemester || s.year || s.className || 'N/A'}"`,
-      s.completedExperiments.length,
-      Object.keys(s.quizScores || {}).length,
-      `"${s.lastActive || 'N/A'}"`
-    ]);
+    const headers = [
+      "Register Number",
+      "Student Name",
+      "Email",
+      "Department",
+      "Cohort",
+      "Active Semester",
+      "Advisor",
+      "Labs Completed Count",
+      "Finished Labs",
+      "Pending Labs",
+      "Progress %",
+      "Last Active"
+    ];
+    const rows = filteredStudents.map((s) => {
+      const p = evaluateStudentProgress(s);
+      return [
+        `"${s.registerNumber}"`,
+        `"${s.name}"`,
+        `"${s.email}"`,
+        `"${s.department}"`,
+        `"${p.cohort}"`,
+        `"${p.semester}"`,
+        `"${s.advisor || 'N/A'}"`,
+        p.completedCount,
+        `"${p.finishedLabs.map((l) => l.code).join(", ") || 'None'}"`,
+        `"${p.pendingLabs.map((l) => l.code).join(", ") || 'None'}"`,
+        `"${p.percentage}%"`,
+        `"${s.lastActive || 'N/A'}"`
+      ];
+    });
     const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `${activeCollege.slug}_student_analytics_${new Date().toISOString().split("T")[0]}.csv`);
+    link.setAttribute("download", `${activeCollege.slug}_student_lab_progress_${new Date().toISOString().split("T")[0]}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -1031,26 +1197,180 @@ function AdminPageContent() {
               </div>
             </TabsContent>
 
-            {/* TAB 5: STUDENTS ROSTER */}
-            <TabsContent value="students" className="space-y-4 mt-6">
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-muted/30 p-4 rounded-xl border border-border">
-                <div className="flex flex-1 items-center gap-3 w-full">
+            {/* TAB 5: STUDENTS ROSTER & SEMESTER LAB COMPLETION TRACKER */}
+            <TabsContent value="students" className="space-y-5 mt-6">
+              {/* Cohort Tabs Bar (II AIDS, III AIDS, IV AIDS) */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-2 bg-muted/40 rounded-2xl border border-border">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => { setSelectedCohortTab("all"); setCurrentPage(1); }}
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                      selectedCohortTab === "all"
+                        ? "bg-primary text-primary-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    }`}
+                  >
+                    <span>All Cohorts</span>
+                    <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4">
+                      {cohortStats.all}
+                    </Badge>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => { setSelectedCohortTab("II AIDS"); setCurrentPage(1); }}
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                      selectedCohortTab === "II AIDS"
+                        ? "bg-rose-600 text-white shadow-sm"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    }`}
+                  >
+                    <span>II Year • Semester III</span>
+                    <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4 bg-rose-500/10 text-rose-600 dark:text-rose-400">
+                      {cohortStats.ii}
+                    </Badge>
+                    {cohortStats.iiIncomplete > 0 && (
+                      <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" title={`${cohortStats.iiIncomplete} students with pending Semester III labs`} />
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => { setSelectedCohortTab("III AIDS"); setCurrentPage(1); }}
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                      selectedCohortTab === "III AIDS"
+                        ? "bg-blue-600 text-white shadow-sm"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    }`}
+                  >
+                    <span>III Year • Semester V</span>
+                    <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4 bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                      {cohortStats.iii}
+                    </Badge>
+                    {cohortStats.iiiIncomplete > 0 && (
+                      <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" title={`${cohortStats.iiiIncomplete} students with pending Semester V labs`} />
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => { setSelectedCohortTab("IV AIDS"); setCurrentPage(1); }}
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                      selectedCohortTab === "IV AIDS"
+                        ? "bg-purple-600 text-white shadow-sm"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    }`}
+                  >
+                    <span>IV Year • Semester VII</span>
+                    <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4 bg-purple-500/10 text-purple-600 dark:text-purple-400">
+                      {cohortStats.iv}
+                    </Badge>
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={refreshLiveStudents}
+                    disabled={isRefreshingStudents}
+                    className="h-8 text-xs font-semibold gap-1.5 rounded-xl bg-background"
+                  >
+                    <RefreshCw className={`h-3 w-3 text-primary ${isRefreshingStudents ? "animate-spin" : ""}`} />
+                    <span>{isRefreshingStudents ? "Syncing..." : "Sync Live Online"}</span>
+                  </Button>
+                </div>
+              </div>
+
+              {/* Incomplete Reminder Action Banner */}
+              <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-rose-500/10 to-transparent border border-amber-500/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <AlertCircle className="h-4 w-4 text-amber-600 shrink-0" />
+                    <span className="text-xs font-bold text-foreground">
+                      {selectedCohortTab === "II AIDS"
+                        ? "Mandatory Semester III Lab Completion (OOP Java, DSA, DBMS)"
+                        : selectedCohortTab === "III AIDS"
+                        ? "Mandatory Semester V Lab Completion (AI, Big Data, Cloud)"
+                        : "Institutional Laboratory Progress & CIE Tracking"}
+                    </span>
+                    <Badge variant="outline" className="text-[10px] font-mono bg-amber-500/10 text-amber-700 border-amber-500/30">
+                      {selectedCohortTab === "II AIDS"
+                        ? `${cohortStats.iiIncomplete} of ${cohortStats.ii} Students Incomplete`
+                        : selectedCohortTab === "III AIDS"
+                        ? `${cohortStats.iiiIncomplete} of ${cohortStats.iii} Students Incomplete`
+                        : `${cohortStats.totalIncomplete} Total Incomplete`}
+                    </Badge>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    Second-year students are currently studying Semester III and must finish AD8301 (DSA), AD8302 (Java OOP), and AD8303 (DBMS). Use the Gmail reminder buttons below to dispatch official notices directly to their student emails.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 shrink-0">
+                  <Button
+                    size="sm"
+                    onClick={handleBulkGmailReminder}
+                    className="h-8 text-xs font-bold gap-1.5 rounded-xl bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-700 hover:to-amber-700 text-white shadow-sm cursor-pointer"
+                  >
+                    <Mail className="h-3.5 w-3.5" />
+                    <span>Send Bulk Gmail Reminders</span>
+                  </Button>
+
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={handleCopyIncompleteEmails}
+                    className="h-8 text-xs font-semibold gap-1.5 rounded-xl bg-card"
+                  >
+                    {bulkCopied ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5" />}
+                    <span>{bulkCopied ? "Emails Copied!" : "Copy Incomplete Emails"}</span>
+                  </Button>
+
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={handleExportCSV}
+                    disabled={filteredStudents.length === 0}
+                    className="h-8 text-xs font-semibold gap-1.5 rounded-xl bg-card"
+                  >
+                    <Download className="h-3.5 w-3.5 text-emerald-600" />
+                    <span>Export CSV</span>
+                  </Button>
+                </div>
+              </div>
+
+              {/* Search & Filter Toolbar */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-muted/30 p-3 rounded-2xl border border-border">
+                <div className="flex flex-1 items-center gap-2.5 w-full">
                   <div className="relative flex-1">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
                     <Input
                       type="text"
-                      placeholder={`Search ${activeCollege.shortName} students by name or register number...`}
+                      placeholder="Search student name, register number (e.g. 922525243001), or email..."
                       value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-9 h-9 text-xs bg-background"
+                      onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
+                      className="pl-9 h-8 text-xs bg-background rounded-xl"
                     />
                   </div>
+
+                  <select
+                    value={selectedProgressFilter}
+                    onChange={(e) => { setSelectedProgressFilter(e.target.value as any); setCurrentPage(1); }}
+                    className="h-8 px-2.5 rounded-xl border border-input bg-background text-xs font-semibold text-foreground shrink-0 cursor-pointer"
+                  >
+                    <option value="all">All Progress Status</option>
+                    <option value="pending">Incomplete Labs Only</option>
+                    <option value="completed">Completed All Labs (100%)</option>
+                  </select>
+
                   <select
                     value={selectedDept}
-                    onChange={(e) => setSelectedDept(e.target.value)}
-                    className="h-9 px-3 rounded-md border border-input bg-background text-xs font-medium text-foreground shrink-0"
+                    onChange={(e) => { setSelectedDept(e.target.value); setCurrentPage(1); }}
+                    className="h-8 px-2.5 rounded-xl border border-input bg-background text-xs font-semibold text-foreground shrink-0 cursor-pointer hidden md:block"
                   >
-                    <option value="all">All Departments</option>
+                    <option value="all">All Disciplines</option>
                     {activeCollege.departments.map((d) => (
                       <option key={d.code} value={d.code}>
                         {d.name}
@@ -1059,99 +1379,328 @@ function AdminPageContent() {
                   </select>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={handleExportCSV}
-                    disabled={filteredStudents.length === 0}
-                    className="h-9 text-xs font-semibold gap-1.5"
-                  >
-                    <Download className="h-3.5 w-3.5 text-emerald-600" />
-                    <span>Export CIE Sheet (CSV)</span>
-                  </Button>
+                <div className="text-[11px] text-muted-foreground font-medium shrink-0 flex items-center gap-1.5">
+                  <span>Showing <strong className="text-foreground">{filteredStudents.length}</strong> students</span>
                 </div>
               </div>
 
               {/* Students Table */}
-              <div className="rounded-xl border border-border overflow-hidden bg-card">
+              <div className="rounded-2xl border border-border overflow-hidden bg-card shadow-sm">
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs text-left">
-                    <thead className="bg-muted/60 text-muted-foreground font-semibold border-b border-border">
+                    <thead className="bg-muted/70 text-muted-foreground font-semibold border-b border-border text-[11px]">
                       <tr>
-                        <th className="p-3.5">Student Name</th>
-                        <th className="p-3.5">Register Number</th>
-                        <th className="p-3.5">Department &amp; Class</th>
-                        <th className="p-3.5 text-center">Labs Completed</th>
-                        <th className="p-3.5 text-center">Quiz Scores</th>
-                        <th className="p-3.5 text-center">Last Active</th>
-                        <th className="p-3.5 text-right">Action</th>
+                        <th className="p-3 pl-4">Student Details</th>
+                        <th className="p-3">Register Number</th>
+                        <th className="p-3">Cohort &amp; Semester</th>
+                        <th className="p-3">Finished Labs</th>
+                        <th className="p-3">Pending Labs</th>
+                        <th className="p-3 text-center">Progress</th>
+                        <th className="p-3 pr-4 text-right">Reminder Action</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border/60">
                       {filteredStudents.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="p-8 text-center text-muted-foreground">
-                            {isLoadingData ? "Loading student records..." : `No students registered under ${activeCollege.shortName} yet.`}
+                          <td colSpan={7} className="p-10 text-center text-muted-foreground space-y-2">
+                            <Users className="h-8 w-8 mx-auto text-muted-foreground/40" />
+                            <p className="font-semibold text-sm">
+                              {isLoadingData ? "Loading student records from Supabase..." : "No matching students found."}
+                            </p>
+                            <p className="text-xs text-muted-foreground/70">
+                              Try clearing your search query or cohort filter.
+                            </p>
                           </td>
                         </tr>
                       ) : (
-                        filteredStudents.map((s) => (
-                          <tr
-                            key={s.uid}
-                            onClick={() => {
-                              setSelectedStudentForAnalytics(s);
-                              setIsAnalyticsModalOpen(true);
-                            }}
-                            className="hover:bg-primary/5 cursor-pointer transition-colors group"
-                            title={`Click to view detailed laboratory & DSA analytics for ${s.name}`}
-                          >
-                            <td className="p-3.5 font-bold text-foreground flex items-center gap-2">
-                              <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[10px] font-bold group-hover:scale-105 transition-transform">
-                                {s.name.charAt(0)}
-                              </div>
-                              <span className="group-hover:text-primary transition-colors">{s.name}</span>
-                            </td>
-                            <td className="p-3.5 font-mono text-primary font-bold">
-                              {s.registerNumber}
-                            </td>
-                            <td className="p-3.5 text-muted-foreground">
-                              {s.department} • <span className="text-foreground font-medium">{s.className || s.year || "III Year"}</span>
-                            </td>
-                            <td className="p-3.5 text-center">
-                              <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20 font-bold">
-                                {s.completedExperiments?.length || 0} Labs
-                              </Badge>
-                            </td>
-                            <td className="p-3.5 text-center">
-                              <Badge variant="secondary" className="font-mono text-[11px]">
-                                {Object.keys(s.quizScores || {}).length} Tests
-                              </Badge>
-                            </td>
-                            <td className="p-3.5 text-center text-muted-foreground text-[11px]">
-                              {s.lastActive ? new Date(s.lastActive).toLocaleDateString() : "Active Today"}
-                            </td>
-                            <td className="p-3.5 text-right">
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setSelectedStudentForAnalytics(s);
-                                  setIsAnalyticsModalOpen(true);
-                                }}
-                                className="h-7 text-[11px] font-semibold gap-1 px-2.5 bg-background group-hover:bg-primary group-hover:text-primary-foreground transition-colors border-border group-hover:border-primary shadow-2xs"
-                              >
-                                <Eye className="h-3 w-3" />
-                                <span>View Progress</span>
-                              </Button>
-                            </td>
-                          </tr>
-                        ))
+                        paginatedStudents.map((s) => {
+                          const evalData = evaluateStudentProgress(s);
+                          const gmailUrl = generateGmailReminderUrl(s);
+
+                          return (
+                            <tr
+                              key={s.uid || s.registerNumber}
+                              onClick={() => {
+                                setSelectedStudentForAnalytics(s);
+                                setIsAnalyticsModalOpen(true);
+                              }}
+                              className="hover:bg-primary/5 cursor-pointer transition-colors group"
+                              title={`Click to view detailed laboratory report for ${s.name}`}
+                            >
+                              {/* 1. Student Name & Email */}
+                              <td className="p-3 pl-4">
+                                <div className="flex items-center gap-2.5">
+                                  <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-primary/20 to-primary/10 text-primary flex items-center justify-center text-xs font-bold shrink-0 border border-primary/20 group-hover:scale-105 transition-transform">
+                                    {s.name.charAt(0)}
+                                  </div>
+                                  <div>
+                                    <div className="font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
+                                      <span>{s.name}</span>
+                                    </div>
+                                    <div className="text-[10px] text-muted-foreground flex items-center gap-1 mt-0.5">
+                                      <span>{s.email}</span>
+                                      {s.advisor && (
+                                        <span className="text-[10px] text-muted-foreground/70 hidden lg:inline">
+                                          • Adv: {s.advisor}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              </td>
+
+                              {/* 2. Register Number */}
+                              <td className="p-3">
+                                <div className="flex items-center gap-1.5">
+                                  <span className="font-mono text-primary font-bold text-xs bg-primary/5 px-2 py-0.5 rounded-lg border border-primary/10">
+                                    {s.registerNumber}
+                                  </span>
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      navigator.clipboard.writeText(s.registerNumber);
+                                      setCopiedStudentReg(s.registerNumber);
+                                      setTimeout(() => setCopiedStudentReg(null), 1800);
+                                    }}
+                                    className="text-muted-foreground hover:text-foreground p-0.5 rounded hover:bg-muted"
+                                    title="Copy Register Number"
+                                  >
+                                    {copiedStudentReg === s.registerNumber ? (
+                                      <Check className="h-3 w-3 text-emerald-600" />
+                                    ) : (
+                                      <Copy className="h-3 w-3" />
+                                    )}
+                                  </button>
+                                </div>
+                              </td>
+
+                              {/* 3. Cohort & Semester */}
+                              <td className="p-3">
+                                <div className="space-y-0.5">
+                                  <div className="flex items-center gap-1.5">
+                                    <Badge
+                                      variant="outline"
+                                      className={`text-[10px] font-bold px-1.5 py-0 rounded-md ${
+                                        evalData.cohort === "II AIDS"
+                                          ? "bg-rose-500/10 text-rose-600 border-rose-500/20"
+                                          : evalData.cohort === "III AIDS"
+                                          ? "bg-blue-500/10 text-blue-600 border-blue-500/20"
+                                          : "bg-purple-500/10 text-purple-600 border-purple-500/20"
+                                      }`}
+                                    >
+                                      {evalData.cohort}
+                                    </Badge>
+                                    <span className="text-[11px] font-semibold text-foreground">
+                                      {evalData.semester}
+                                    </span>
+                                  </div>
+                                  <div className="text-[10px] text-muted-foreground">
+                                    {s.department || "Artificial Intelligence"}
+                                  </div>
+                                </div>
+                              </td>
+
+                              {/* 4. Finished Labs */}
+                              <td className="p-3">
+                                {evalData.finishedLabs.length > 0 ? (
+                                  <div className="space-y-1">
+                                    <div className="flex items-center gap-1">
+                                      <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20 text-[10px] font-bold py-0">
+                                        <CheckCircle2 className="h-2.5 w-2.5 mr-1" />
+                                        {evalData.finishedLabs.length} Finished
+                                      </Badge>
+                                    </div>
+                                    <div className="flex flex-wrap gap-1">
+                                      {evalData.finishedLabs.map((l) => (
+                                        <span
+                                          key={l.id}
+                                          className="text-[9px] font-mono bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-500/20"
+                                          title={l.name}
+                                        >
+                                          {l.code}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <Badge variant="outline" className="text-[10px] text-muted-foreground bg-muted/40 border-muted">
+                                    0 Finished
+                                  </Badge>
+                                )}
+                              </td>
+
+                              {/* 5. Pending Labs */}
+                              <td className="p-3">
+                                {evalData.pendingLabs.length > 0 ? (
+                                  <div className="space-y-1">
+                                    <div className="flex items-center gap-1">
+                                      <Badge variant="outline" className="bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/30 text-[10px] font-bold py-0">
+                                        <Clock className="h-2.5 w-2.5 mr-1" />
+                                        {evalData.pendingLabs.length} Pending
+                                      </Badge>
+                                    </div>
+                                    <div className="flex flex-wrap gap-1">
+                                      {evalData.pendingLabs.map((l) => (
+                                        <span
+                                          key={l.id}
+                                          className="text-[9px] font-mono bg-amber-500/10 text-amber-800 dark:text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/20"
+                                          title={`${l.code}: ${l.name}`}
+                                        >
+                                          {l.code}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <Badge variant="outline" className="bg-emerald-500/15 text-emerald-600 border-emerald-500/30 text-[10px] font-bold py-0">
+                                    <CheckCircle2 className="h-3 w-3 mr-1" />
+                                    All Labs Done
+                                  </Badge>
+                                )}
+                              </td>
+
+                              {/* 6. Progress Percentage */}
+                              <td className="p-3 text-center">
+                                <div className="flex flex-col items-center gap-1">
+                                  <span className={`text-[11px] font-black font-mono ${
+                                    evalData.percentage === 100
+                                      ? "text-emerald-600"
+                                      : evalData.percentage > 0
+                                      ? "text-primary"
+                                      : "text-muted-foreground"
+                                  }`}>
+                                    {evalData.percentage}%
+                                  </span>
+                                  <div className="w-16 bg-muted h-1.5 rounded-full overflow-hidden">
+                                    <div
+                                      className={`h-full rounded-full transition-all duration-300 ${
+                                        evalData.percentage === 100
+                                          ? "bg-emerald-500"
+                                          : evalData.percentage > 0
+                                          ? "bg-primary"
+                                          : "bg-muted-foreground/30"
+                                      }`}
+                                      style={{ width: `${Math.max(evalData.percentage, 4)}%` }}
+                                    />
+                                  </div>
+                                </div>
+                              </td>
+
+                              {/* 7. Action: Send Gmail Reminder & View Progress */}
+                              <td className="p-3 pr-4 text-right">
+                                <div className="flex items-center justify-end gap-1.5" onClick={(e) => e.stopPropagation()}>
+                                  {!evalData.isFullyCompleted ? (
+                                    <Button
+                                      size="sm"
+                                      onClick={() => window.open(gmailUrl, "_blank")}
+                                      className="h-7 text-[11px] font-bold gap-1 px-2.5 bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-700 hover:to-amber-700 text-white rounded-lg shadow-2xs cursor-pointer"
+                                      title={`Send official ${evalData.semester} lab reminder via Gmail to ${s.email}`}
+                                    >
+                                      <Send className="h-3 w-3" />
+                                      <span>Gmail Reminder</span>
+                                    </Button>
+                                  ) : (
+                                    <Badge variant="outline" className="h-7 text-[10px] font-bold px-2 bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
+                                      Completed
+                                    </Badge>
+                                  )}
+
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const text = generateReminderClipboardText(s);
+                                      navigator.clipboard.writeText(text);
+                                      setCopiedReminderReg(s.registerNumber);
+                                      setTimeout(() => setCopiedReminderReg(null), 2000);
+                                    }}
+                                    className="h-7 w-7 rounded-lg border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted"
+                                    title="Copy Quick Reminder Text"
+                                  >
+                                    {copiedReminderReg === s.registerNumber ? (
+                                      <Check className="h-3.5 w-3.5 text-emerald-600" />
+                                    ) : (
+                                      <Copy className="h-3.5 w-3.5" />
+                                    )}
+                                  </button>
+
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => {
+                                      setSelectedStudentForAnalytics(s);
+                                      setIsAnalyticsModalOpen(true);
+                                    }}
+                                    className="h-7 text-[11px] font-semibold gap-1 px-2 rounded-lg bg-background hover:bg-primary hover:text-primary-foreground transition-colors border-border"
+                                    title="View detailed student analytics"
+                                  >
+                                    <Eye className="h-3 w-3" />
+                                  </Button>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })
                       )}
                     </tbody>
                   </table>
                 </div>
+
+                {/* Pagination Controls */}
+                {filteredStudents.length > 0 && (
+                  <div className="p-3.5 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3 bg-muted/20 text-xs">
+                    <div className="flex items-center gap-2 text-muted-foreground text-[11px]">
+                      <span>Rows per page:</span>
+                      <select
+                        value={pageSize}
+                        onChange={(e) => {
+                          setPageSize(Number(e.target.value));
+                          setCurrentPage(1);
+                        }}
+                        className="h-7 px-2 rounded-md border border-input bg-background text-xs text-foreground cursor-pointer"
+                      >
+                        <option value={25}>25</option>
+                        <option value={50}>50</option>
+                        <option value={100}>100</option>
+                        <option value={-1}>All ({filteredStudents.length})</option>
+                      </select>
+                      <span>
+                        Showing {pageSize === -1 ? 1 : Math.min((currentPage - 1) * pageSize + 1, filteredStudents.length)} to{" "}
+                        {pageSize === -1 ? filteredStudents.length : Math.min(currentPage * pageSize, filteredStudents.length)} of {filteredStudents.length}
+                      </span>
+                    </div>
+
+                    {pageSize !== -1 && totalPages > 1 && (
+                      <div className="flex items-center gap-1.5">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          disabled={currentPage <= 1}
+                          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                          className="h-7 px-2 text-xs rounded-lg"
+                        >
+                          <ChevronLeft className="h-3.5 w-3.5" />
+                          <span>Previous</span>
+                        </Button>
+
+                        <span className="text-xs font-semibold px-2 text-foreground">
+                          Page {currentPage} of {totalPages}
+                        </span>
+
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          disabled={currentPage >= totalPages}
+                          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                          className="h-7 px-2 text-xs rounded-lg"
+                        >
+                          <span>Next</span>
+                          <ChevronRight className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </TabsContent>
           </Tabs>
