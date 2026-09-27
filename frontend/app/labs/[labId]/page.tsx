@@ -69,9 +69,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
   const lab = LABS_DATA.find((l) => l.id === labId) || LABS_DATA[0];
   const manual = LAB_MANUALS_DATA[lab.id];
 
-  const [activeTab, setActiveTab] = useState<LabTab>(
-    lab.id === "c-programming" ? "c-study-plan" : "dsa-roadmap"
-  );
+  const [activeTab, setActiveTab] = useState<LabTab>("dsa-roadmap");
   const [feedbackRating, setFeedbackRating] = useState<number>(5);
   const [feedbackText, setFeedbackText] = useState<string>("");
   const [feedbackSent, setFeedbackSent] = useState<boolean>(false);

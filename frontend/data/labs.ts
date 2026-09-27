@@ -107,25 +107,25 @@ export const DISCIPLINES_DATA: Discipline[] = [
 
 export const LABS_DATA: Lab[] = [
   // ==========================================
-  // 1. DATA SCIENCE & ANALYTICS
+  // 1. BUSINESS ANALYTICS
   // ==========================================
   {
     id: "data-science-analytics",
     code: "AD8482",
-    name: "Data Science and Analytics Laboratory",
-    shortTitle: "DSAL",
+    name: "Business Analytics Laboratory",
+    shortTitle: "BAL",
     discipline: "Artificial Intelligence & Data Science",
     disciplineSlug: "aids",
-    shortDesc: "Master statistical hypothesis testing (Z-test, T-test, ANOVA), NumPy/Pandas pipelines, regression, logistic models, and time series forecasting.",
-    description: "The Data Science & Analytics Virtual Laboratory provides an interactive Python statistical computing suite: NumPy multi-dimensional array vectorization, Pandas DataFrame wrangling, Matplotlib visualization, descriptive variability metrics, hypothesis testing (Z-test, T-test, ANOVA), linear/logistic predictive models, and time series decomposition.",
+    shortDesc: "Master descriptive, diagnostic, predictive, and prescriptive analytics: EDA, clustering, sentiment, predictive regression, decision trees, optimization, and Tableau dashboards.",
+    description: "The Business Analytics Virtual Laboratory provides an interactive computational analytics suite: descriptive analytics, predictive regression and classification, time series forecasting, prescriptive LP optimization with PuLP, interactive Tableau dashboard design, and an end-to-end retail/fintech capstone project.",
     institute: "VSB Engineering College, Karur",
     department: "Department of Artificial Intelligence & Data Science",
     difficulty: "Intermediate",
-    experimentsCount: 11,
+    experimentsCount: 15,
     rating: 4.96,
     ratingsCount: 360,
     iconName: "BarChart3",
-    tags: ["NumPy", "Pandas", "Matplotlib", "Z-Test", "ANOVA", "Regression", "Time Series"],
+    tags: ["Descriptive Analytics", "Clustering", "Predictive Modeling", "Decision Trees", "Linear Programming", "Tableau", "Capstone"],
     bannerGradient: "from-violet-700 via-indigo-950 to-slate-950",
     videoUrl: "https://www.youtube-nocookie.com/embed/QUT1VHiLmmI",
     englishVideo: {

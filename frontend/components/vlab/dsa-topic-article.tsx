@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { DSATopic } from "@/data/dsa-topic-data";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -11,6 +12,9 @@ import {
   ChevronLeft,
   ChevronRight,
   BookOpen,
+  FlaskConical,
+  Code2,
+  LayoutDashboard,
 } from "lucide-react";
 import { MultiLangCodeViewer } from "@/components/visualizer/code/multi-lang-code-viewer";
 import { SqlCompiler } from "@/components/vlab/sql-compiler";
@@ -113,40 +117,68 @@ export function DSATopicOverview({
         </div>
       )}
 
-      {/* 4. Time & Space Complexity Summary Table */}
-      <div className="space-y-2">
-        <h3 className="text-sm sm:text-base font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
-          Time &amp; Space Complexity Summary
-        </h3>
-        {topic.complexities && topic.complexities.length > 0 ? (
+      {/* 4. Time & Space Complexity or Tools & Environment Required Table */}
+      {topic.tools && topic.tools.length > 0 ? (
+        <div className="space-y-2">
+          <h3 className="text-sm sm:text-base font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
+            Tools &amp; Environment Required
+          </h3>
           <div className="overflow-x-auto rounded-none border border-border/80">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
                 <tr className="bg-muted/60 border-b border-border text-muted-foreground uppercase text-[11px] font-semibold">
-                  <th className="p-2.5">Scope / Operation</th>
-                  <th className="p-2.5">Best Time</th>
-                  <th className="p-2.5">Average Time</th>
-                  <th className="p-2.5">Worst Time</th>
-                  <th className="p-2.5">Space</th>
+                  <th className="p-2.5">Tool</th>
+                  <th className="p-2.5">Purpose</th>
+                  <th className="p-2.5">Notes</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/60 text-foreground font-sans">
-                {topic.complexities.map((comp, cIdx) => (
-                  <tr key={cIdx} className="hover:bg-muted/30">
-                    <td className="p-2.5 font-semibold text-foreground">{comp.operation || "Core Operation"}</td>
-                    <td className="p-2.5 font-mono text-emerald-600 dark:text-emerald-400 font-semibold">{comp.best || (comp as any).bestTime || "O(1)"}</td>
-                    <td className="p-2.5 font-mono text-[#0284c7] dark:text-[#38bdf8]">{comp.avg || "-"}</td>
-                    <td className="p-2.5 font-mono text-amber-600 dark:text-amber-400 font-semibold">{comp.worst || (comp as any).worstTime || "O(N)"}</td>
-                    <td className="p-2.5 font-mono text-foreground font-semibold">{comp.space || "O(1)"}</td>
+                {topic.tools.map((item, tIdx) => (
+                  <tr key={tIdx} className="hover:bg-muted/30">
+                    <td className="p-2.5 font-semibold text-[#0284c7] dark:text-[#38bdf8] font-mono">{item.tool}</td>
+                    <td className="p-2.5 text-foreground">{item.purpose}</td>
+                    <td className="p-2.5 text-muted-foreground">{item.notes || "-"}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-        ) : (
-          <p className="text-xs text-muted-foreground font-sans">Standard execution complexity benchmark.</p>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          <h3 className="text-sm sm:text-base font-bold text-foreground underline decoration-[#0284c7]/40 underline-offset-4 font-heading">
+            Time &amp; Space Complexity Summary
+          </h3>
+          {topic.complexities && topic.complexities.length > 0 ? (
+            <div className="overflow-x-auto rounded-none border border-border/80">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="bg-muted/60 border-b border-border text-muted-foreground uppercase text-[11px] font-semibold">
+                    <th className="p-2.5">Scope / Operation</th>
+                    <th className="p-2.5">Best Time</th>
+                    <th className="p-2.5">Average Time</th>
+                    <th className="p-2.5">Worst Time</th>
+                    <th className="p-2.5">Space</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border/60 text-foreground font-sans">
+                  {topic.complexities.map((comp, cIdx) => (
+                    <tr key={cIdx} className="hover:bg-muted/30">
+                      <td className="p-2.5 font-semibold text-foreground">{comp.operation || "Core Operation"}</td>
+                      <td className="p-2.5 font-mono text-emerald-600 dark:text-emerald-400 font-semibold">{comp.best || (comp as any).bestTime || "O(1)"}</td>
+                      <td className="p-2.5 font-mono text-[#0284c7] dark:text-[#38bdf8]">{comp.avg || "-"}</td>
+                      <td className="p-2.5 font-mono text-amber-600 dark:text-amber-400 font-semibold">{comp.worst || (comp as any).worstTime || "O(N)"}</td>
+                      <td className="p-2.5 font-mono text-foreground font-semibold">{comp.space || "O(1)"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="text-xs text-muted-foreground font-sans">Standard execution complexity benchmark.</p>
+          )}
+        </div>
+      )}
 
       {/* 5. Architecture Diagram (if present) */}
       {topic.diagram && (
@@ -354,6 +386,42 @@ export function DSATopicArticle({
         nextTopic={nextTopic}
         onSelectTopic={onSelectTopic}
       />
+
+      <PersistentVLabToolbar />
     </div>
   );
 }
+
+export function PersistentVLabToolbar() {
+  return (
+    <aside
+      aria-label="Persistent Quick Navigation Toolbar"
+      className="fixed bottom-5 right-5 z-40 flex items-center bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-slate-200 dark:border-slate-800 shadow-xl rounded-full px-3 py-1.5 gap-2 text-xs font-medium"
+    >
+      <Link
+        href="/labs"
+        className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-slate-700 dark:text-slate-200 hover:text-[#0284c7] hover:bg-sky-50 dark:hover:bg-sky-950/40 transition-colors"
+      >
+        <FlaskConical className="h-3.5 w-3.5 text-[#0284c7]" />
+        <span>Labs</span>
+      </Link>
+      <span className="text-slate-300 dark:text-slate-700 select-none">|</span>
+      <Link
+        href="/visualizer"
+        className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-slate-700 dark:text-slate-200 hover:text-[#0284c7] hover:bg-sky-50 dark:hover:bg-sky-950/40 transition-colors"
+      >
+        <Code2 className="h-3.5 w-3.5 text-[#ea580c]" />
+        <span>&lt;/&gt; Visualizer</span>
+      </Link>
+      <span className="text-slate-300 dark:text-slate-700 select-none">|</span>
+      <Link
+        href="/dashboard"
+        className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-slate-700 dark:text-slate-200 hover:text-[#0284c7] hover:bg-sky-50 dark:hover:bg-sky-950/40 transition-colors"
+      >
+        <LayoutDashboard className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+        <span>Dashboard</span>
+      </Link>
+    </aside>
+  );
+}
+

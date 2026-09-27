@@ -14,11 +14,11 @@ import { CLOUD_ROADMAP_CATEGORIES } from "./roadmaps/cloud-roadmap";
 
 export const LAB_ROADMAPS_DATA: Record<string, { title: string; badge: string; categories: DSACategory[] }> = {
   // ==========================================
-  // 1. DATA SCIENCE AND ANALYTICS LABORATORY (12 EXPERIMENTS)
+  // 1. BUSINESS ANALYTICS LABORATORY (15 EXPERIMENTS)
   // ==========================================
   "data-science-analytics": {
-    title: "Data Science & Analytics Roadmap",
-    badge: "12 Practical Experiments • NumPy / Pandas / Statistics / Time Series",
+    title: "Business Analytics Laboratory Roadmap",
+    badge: "15 Practical Experiments • Descriptive / Prescriptive / Predictive / Optimization / Tableau / Capstone",
     categories: DATA_SCIENCE_ROADMAP_CATEGORIES,
   },
 
@@ -53,8 +53,8 @@ export const LAB_ROADMAPS_DATA: Record<string, { title: string; badge: string; c
   // 5. OBJECT ORIENTED PROGRAMMING (15 EXPERIMENTS)
   // ==========================================
   "oops-java": {
-    title: "Object Oriented Programming Laboratory Roadmap",
-    badge: "15 Core Experiments • Classes / Encapsulation / Inheritance / Matrix / Collections / JDBC",
+    title: "Object-Oriented Programming Laboratory (Java) Roadmap",
+    badge: "15 Core Experiments • Classes & Objects / Inheritance & Packages / Matrix & Arrays / Collections / JDBC",
     categories: OOPS_JAVA_ROADMAP_CATEGORIES,
   },
 
