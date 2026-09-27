@@ -213,41 +213,40 @@ export function getStudentSemesterKey(student: Partial<StudentProfile>): string 
   const semStr = (student.yearSemester || "").toLowerCase();
   const classStr = (student.className || student.cohort || "").toLowerCase();
   const yearStr = (student.year || "").toLowerCase();
-  const text = `${semStr} ${classStr} ${yearStr}`;
 
-  // 1. Fourth Year -> Semester VII
+  // 1. Fourth Year (Semester VII)
   if (
-    text.includes("semester vii") ||
-    text.includes("sem 7") ||
-    text.includes("iv aids") ||
-    text.includes("year iv") ||
-    /\b(iv|4th|seventh)\b/i.test(text)
+    semStr.includes("semester vii") ||
+    semStr.includes("sem 7") ||
+    semStr.includes("year iv") ||
+    classStr.includes("iv aids") ||
+    yearStr.includes("iv")
   ) {
     return "Semester VII";
   }
 
-  // 2. Third Year -> Semester V (Must be checked BEFORE Second Year because 'iii' contains 'ii')
+  // 2. Third Year (Semester V)
   if (
-    text.includes("semester v") ||
-    text.includes("sem 5") ||
-    text.includes("iii aids") ||
-    text.includes("year iii") ||
-    text.includes("3rd year") ||
-    text.includes("third year") ||
-    /\b(iii|5th|fifth)\b/i.test(text)
+    semStr.includes("semester v") ||
+    semStr.includes("sem 5") ||
+    semStr.includes("year iii") ||
+    classStr.includes("iii aids") ||
+    yearStr.includes("iii year") ||
+    yearStr.includes("3rd year") ||
+    yearStr.includes("third year")
   ) {
     return "Semester V";
   }
 
-  // 3. Second Year -> Semester III
+  // 3. Second Year (Semester III)
   if (
-    text.includes("semester iii") ||
-    text.includes("sem 3") ||
-    text.includes("ii aids") ||
-    text.includes("year ii") ||
-    text.includes("2nd year") ||
-    text.includes("second year") ||
-    /\b(ii|3rd sem|third sem)\b/i.test(text)
+    semStr.includes("semester iii") ||
+    semStr.includes("sem 3") ||
+    semStr.includes("year ii") ||
+    classStr.includes("ii aids") ||
+    yearStr.includes("ii year") ||
+    yearStr.includes("2nd year") ||
+    yearStr.includes("second year")
   ) {
     return "Semester III";
   }

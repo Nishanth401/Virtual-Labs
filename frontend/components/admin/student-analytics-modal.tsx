@@ -312,8 +312,8 @@ export function StudentAnalyticsModal({
   const studentName = student?.name || "Student";
   const studentInitial = (studentName.charAt(0) || "S").toUpperCase();
   const studentReg = student?.registerNumber || "N/A";
-  const studentDept = student?.department || "General Engineering";
-  const studentClass = student?.className || student?.yearSemester || student?.year || "Semester VI";
+  const evalData = student ? evaluateStudentProgress(student) : null;
+  const studentClass = evalData ? `${evalData.studentYear} (${evalData.cohort})` : (student?.className || "II AIDS");
   const studentEmail = student?.email || "student@vlab.edu";
 
   return (

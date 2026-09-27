@@ -26,7 +26,6 @@ const NAV_ITEMS = [
   { name: "Curriculum", href: "/courses" },
   { name: "ML Track", href: "/labs/ai-machine-learning" },
   { name: "Resources", href: "/resources" },
-  { name: "Admin Portal", href: "/admin" },
 ];
 
 const SEARCH_ITEMS = [
@@ -45,7 +44,6 @@ const SEARCH_ITEMS = [
   { title: "Big Data Analytics Lab", category: "Virtual Labs", url: "/labs/big-data-analytics", desc: "Hadoop HDFS cluster, Distributed MapReduce & PySpark" },
   { title: "Cloud Service Management Lab", category: "Virtual Labs", url: "/labs/cloud-service-management", desc: "AWS EC2/S3, Docker Compose & Kubernetes" },
   { title: "DSA Visualization Studio", category: "Simulators", url: "/visualizer", desc: "Interactive sandbox for 11+ algorithms and trees" },
-  { title: "Admin Portal", category: "Admin", url: "/admin", desc: "College Tenant Administration & Student Management" },
   { title: "Student Progress & Certificate", category: "Dashboard", url: "/dashboard", desc: "Track completed labs and view achievements" },
 ];
 
