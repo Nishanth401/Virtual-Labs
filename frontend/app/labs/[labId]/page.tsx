@@ -1719,7 +1719,7 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                           <span>Undergraduate Students</span>
                         </div>
                         <p className="text-xs text-muted-foreground">
-                          B.E. / B.Tech students in Artificial Intelligence &amp; Data Science, Computer Science &amp; Engineering, and Information Technology taking core laboratory courses.
+                          B.E. / B.Tech students in Artificial Intelligence &amp; Data Science taking autonomous core laboratory courses.
                         </p>
                       </div>
 

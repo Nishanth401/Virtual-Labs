@@ -75,7 +75,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
           "B.Tech IT - 1st Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -155,7 +155,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
           "B.Tech IT - 1st Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -236,7 +236,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
           "B.Tech IT - 1st Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -317,7 +317,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
           "B.Tech IT - 1st Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -396,7 +396,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
           "B.Tech IT - 1st Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -475,7 +475,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
           "B.Tech IT - 1st Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -555,7 +555,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
           "B.Tech IT - 1st Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -636,7 +636,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
           "B.Tech IT - 1st Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -716,7 +716,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
           "B.Tech IT - 1st Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -796,7 +796,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
           "B.Tech IT - 1st Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -875,7 +875,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
           "B.Tech IT - 1st Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -955,7 +955,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
           "B.Tech IT - 1st Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -1035,7 +1035,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
           "B.Tech IT - 1st Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -1115,7 +1115,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
           "B.Tech IT - 1st Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -1196,7 +1196,7 @@ export const C_PROGRAMMING_EXPERIMENTS: Experiment[] = [
           "B.Tech IT - 1st Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }

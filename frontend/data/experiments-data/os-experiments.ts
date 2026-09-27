@@ -62,7 +62,7 @@ sda
       leetcodeProblems: [],
       targetAudience: {
         ug: ["B.Tech AIDS", "B.E CSE"],
-        pg: ["M.Tech Computer Science"]
+        pg: ["M.Tech Artificial Intelligence & Data Science"]
       }
     }
   },
@@ -130,7 +130,7 @@ echo "$LOG_DATA" | grep -v '^$' | awk '{print $1}' | sort | uniq -c | sort -nr`
       leetcodeProblems: [],
       targetAudience: {
         ug: ["B.Tech AIDS", "B.E CSE"],
-        pg: ["M.Tech Computer Science"]
+        pg: ["M.Tech Artificial Intelligence & Data Science"]
       }
     }
   },
@@ -213,7 +213,7 @@ Hello from execvp system call!
       leetcodeProblems: [],
       targetAudience: {
         ug: ["B.Tech AIDS", "B.E CSE"],
-        pg: ["M.Tech Computer Science"]
+        pg: ["M.Tech Artificial Intelligence & Data Science"]
       }
     }
   },
@@ -309,7 +309,7 @@ Average Waiting Time: 12.00`,
       leetcodeProblems: [],
       targetAudience: {
         ug: ["B.Tech AIDS", "B.E CSE"],
-        pg: ["M.Tech Computer Science"]
+        pg: ["M.Tech Artificial Intelligence & Data Science"]
       }
     }
   },
@@ -391,7 +391,7 @@ int main() {
       leetcodeProblems: [],
       targetAudience: {
         ug: ["B.Tech AIDS", "B.E CSE"],
-        pg: ["M.Tech Computer Science"]
+        pg: ["M.Tech Artificial Intelligence & Data Science"]
       }
     }
   },
@@ -499,7 +499,7 @@ int main() {
       leetcodeProblems: [],
       targetAudience: {
         ug: ["B.Tech AIDS", "B.E CSE"],
-        pg: ["M.Tech Computer Science"]
+        pg: ["M.Tech Artificial Intelligence & Data Science"]
       }
     }
   },
@@ -592,7 +592,7 @@ Safe Sequence: P1 -> P3 -> P4 -> P0 -> P2`,
       leetcodeProblems: [],
       targetAudience: {
         ug: ["B.Tech AIDS", "B.E CSE"],
-        pg: ["M.Tech Computer Science"]
+        pg: ["M.Tech Artificial Intelligence & Data Science"]
       }
     }
   },
@@ -681,7 +681,7 @@ int main() {
       leetcodeProblems: [],
       targetAudience: {
         ug: ["B.Tech AIDS", "B.E CSE"],
-        pg: ["M.Tech Computer Science"]
+        pg: ["M.Tech Artificial Intelligence & Data Science"]
       }
     }
   },
@@ -767,7 +767,7 @@ int main() {
       leetcodeProblems: [],
       targetAudience: {
         ug: ["B.Tech AIDS", "B.E CSE"],
-        pg: ["M.Tech Computer Science"]
+        pg: ["M.Tech Artificial Intelligence & Data Science"]
       }
     }
   },
@@ -848,7 +848,7 @@ int main() {
       leetcodeProblems: [],
       targetAudience: {
         ug: ["B.Tech AIDS", "B.E CSE"],
-        pg: ["M.Tech Computer Science"]
+        pg: ["M.Tech Artificial Intelligence & Data Science"]
       }
     }
   },
@@ -938,7 +938,7 @@ P4	426		5`,
       leetcodeProblems: [],
       targetAudience: {
         ug: ["B.Tech AIDS", "B.E CSE"],
-        pg: ["M.Tech Computer Science"]
+        pg: ["M.Tech Artificial Intelligence & Data Science"]
       }
     }
   },
@@ -1049,7 +1049,7 @@ int main() {
       ],
       targetAudience: {
         ug: ["B.Tech AIDS", "B.E CSE"],
-        pg: ["M.Tech Computer Science"]
+        pg: ["M.Tech Artificial Intelligence & Data Science"]
       }
     }
   },
@@ -1130,7 +1130,7 @@ root.display()`
       leetcodeProblems: [],
       targetAudience: {
         ug: ["B.Tech AIDS", "B.E CSE"],
-        pg: ["M.Tech Computer Science"]
+        pg: ["M.Tech Artificial Intelligence & Data Science"]
       }
     }
   },
@@ -1208,7 +1208,7 @@ Block Pointer Table:
       leetcodeProblems: [],
       targetAudience: {
         ug: ["B.Tech AIDS", "B.E CSE"],
-        pg: ["M.Tech Computer Science"]
+        pg: ["M.Tech Artificial Intelligence & Data Science"]
       }
     }
   },
@@ -1298,7 +1298,7 @@ Total Head Movement (SCAN): 331 cylinders`,
       leetcodeProblems: [],
       targetAudience: {
         ug: ["B.Tech AIDS", "B.E CSE"],
-        pg: ["M.Tech Computer Science"]
+        pg: ["M.Tech Artificial Intelligence & Data Science"]
       }
     }
   }

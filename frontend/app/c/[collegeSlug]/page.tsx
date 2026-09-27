@@ -75,8 +75,7 @@ export default function CollegePortalPage({ params }: CollegePortalPageProps) {
     accreditation: ["Autonomous", "NBA Ready", "AICTE Approved"],
     affiliations: "Affiliated to Anna University",
     departments: [
-      { code: "AIDS", name: "Artificial Intelligence & Data Science", classes: ["AIDS - A", "AIDS - B"], years: ["I Year", "II Year", "III Year", "IV Year"] },
-      { code: "CSE", name: "Computer Science & Engineering", classes: ["CSE - A", "CSE - B"], years: ["I Year", "II Year", "III Year", "IV Year"] }
+      { code: "AIDS", name: "Artificial Intelligence & Data Science", classes: ["AIDS - A", "AIDS - B"], years: ["I Year", "II Year", "III Year", "IV Year"] }
     ],
     curriculumInfo: {
       regulation: "Autonomous Regulations 2023",
@@ -314,7 +313,7 @@ export default function CollegePortalPage({ params }: CollegePortalPageProps) {
                 <CardContent className="space-y-4 text-xs text-muted-foreground leading-relaxed">
                   <p>
                     Welcome to the official Virtual Laboratory environment for <strong>{college.name}</strong>. 
-                    This portal provides interactive simulation engines for Artificial Intelligence & Data Science, Computer Science, and allied branches. 
+                    This portal provides interactive simulation engines for Artificial Intelligence & Data Science laboratories. 
                     You can execute step-by-step algorithms, run real-world Machine Learning pipelines, debug C programs, and test SQL queries with zero local setup.
                   </p>
 

@@ -76,7 +76,7 @@ export const OOPS_JAVA_EXPERIMENTS: Experiment[] = [
         "B.E. CSE - 2nd Year"
       ],
       "pg": [
-        "M.E. Computer Science"
+        "M.Tech Artificial Intelligence & Data Science"
       ]
     }
   }
@@ -157,7 +157,7 @@ export const OOPS_JAVA_EXPERIMENTS: Experiment[] = [
         "B.E. CSE - 2nd Year"
       ],
       "pg": [
-        "M.E. Computer Science"
+        "M.Tech Artificial Intelligence & Data Science"
       ]
     }
   }
@@ -235,7 +235,7 @@ export const OOPS_JAVA_EXPERIMENTS: Experiment[] = [
         "B.E. CSE - 2nd Year"
       ],
       "pg": [
-        "M.E. Computer Science"
+        "M.Tech Artificial Intelligence & Data Science"
       ]
     }
   }
@@ -316,7 +316,7 @@ export const OOPS_JAVA_EXPERIMENTS: Experiment[] = [
         "B.E. CSE - 2nd Year"
       ],
       "pg": [
-        "M.E. Computer Science"
+        "M.Tech Artificial Intelligence & Data Science"
       ]
     }
   }
@@ -396,7 +396,7 @@ export const OOPS_JAVA_EXPERIMENTS: Experiment[] = [
         "B.E. CSE - 2nd Year"
       ],
       "pg": [
-        "M.E. Computer Science"
+        "M.Tech Artificial Intelligence & Data Science"
       ]
     }
   }
@@ -476,7 +476,7 @@ export const OOPS_JAVA_EXPERIMENTS: Experiment[] = [
         "B.E. CSE - 2nd Year"
       ],
       "pg": [
-        "M.E. Computer Science"
+        "M.Tech Artificial Intelligence & Data Science"
       ]
     }
   }
@@ -556,7 +556,7 @@ export const OOPS_JAVA_EXPERIMENTS: Experiment[] = [
         "B.E. CSE - 2nd Year"
       ],
       "pg": [
-        "M.E. Computer Science"
+        "M.Tech Artificial Intelligence & Data Science"
       ]
     }
   }
@@ -635,7 +635,7 @@ export const OOPS_JAVA_EXPERIMENTS: Experiment[] = [
         "B.E. CSE - 2nd Year"
       ],
       "pg": [
-        "M.E. Computer Science"
+        "M.Tech Artificial Intelligence & Data Science"
       ]
     }
   }
@@ -714,7 +714,7 @@ export const OOPS_JAVA_EXPERIMENTS: Experiment[] = [
         "B.E. CSE - 2nd Year"
       ],
       "pg": [
-        "M.E. Computer Science"
+        "M.Tech Artificial Intelligence & Data Science"
       ]
     }
   }
@@ -793,7 +793,7 @@ export const OOPS_JAVA_EXPERIMENTS: Experiment[] = [
         "B.E. CSE - 2nd Year"
       ],
       "pg": [
-        "M.E. Computer Science"
+        "M.Tech Artificial Intelligence & Data Science"
       ]
     }
   }
@@ -873,7 +873,7 @@ export const OOPS_JAVA_EXPERIMENTS: Experiment[] = [
         "B.E. CSE - 2nd Year"
       ],
       "pg": [
-        "M.E. Computer Science"
+        "M.Tech Artificial Intelligence & Data Science"
       ]
     }
   }
@@ -950,7 +950,7 @@ export const OOPS_JAVA_EXPERIMENTS: Experiment[] = [
         "B.E. CSE - 2nd Year"
       ],
       "pg": [
-        "M.E. Computer Science"
+        "M.Tech Artificial Intelligence & Data Science"
       ]
     }
   }
@@ -1030,7 +1030,7 @@ export const OOPS_JAVA_EXPERIMENTS: Experiment[] = [
         "B.E. CSE - 2nd Year"
       ],
       "pg": [
-        "M.E. Computer Science"
+        "M.Tech Artificial Intelligence & Data Science"
       ]
     }
   }
@@ -1109,7 +1109,7 @@ export const OOPS_JAVA_EXPERIMENTS: Experiment[] = [
         "B.E. CSE - 2nd Year"
       ],
       "pg": [
-        "M.E. Computer Science"
+        "M.Tech Artificial Intelligence & Data Science"
       ]
     }
   }
@@ -1179,9 +1179,9 @@ export const OOPS_JAVA_EXPERIMENTS: Experiment[] = [
     ],
     "sampleCode": {
       "language": "java",
-      "code": "import java.sql.*;\n\npublic class StudentCRUD {\n    static final String URL = \"jdbc:mysql://localhost:3306/collegedb\";\n    static final String USER = \"root\";\n    static final String PASS = \"password\";\n\n    public static void main(String[] args) {\n        String insertSql = \"INSERT INTO student (id, name, department) VALUES (?, ?, ?)\";\n        String selectSql = \"SELECT * FROM student\";\n        String updateSql = \"UPDATE student SET department = ? WHERE id = ?\";\n        String deleteSql = \"DELETE FROM student WHERE id = ?\";\n\n        System.out.println(\"[JDBC DEMO] Connecting to MySQL Database: \" + URL);\n        System.out.println(\"Executing CRUD operations...\");\n        System.out.println(\"1. INSERT: Created record (101, 'Rahul Sharma', 'AI & DS')\");\n        System.out.println(\"2. SELECT: Found record id=101, name='Rahul Sharma', dept='AI & DS'\");\n        System.out.println(\"3. UPDATE: Modified department to 'Computer Science'\");\n        System.out.println(\"4. DELETE: Deleted record id=101\");\n        System.out.println(\"CRUD Transactions Completed Successfully.\");\n    }\n}"
+      "code": "import java.sql.*;\n\npublic class StudentCRUD {\n    static final String URL = \"jdbc:mysql://localhost:3306/collegedb\";\n    static final String USER = \"root\";\n    static final String PASS = \"password\";\n\n    public static void main(String[] args) {\n        String insertSql = \"INSERT INTO student (id, name, department) VALUES (?, ?, ?)\";\n        String selectSql = \"SELECT * FROM student\";\n        String updateSql = \"UPDATE student SET department = ? WHERE id = ?\";\n        String deleteSql = \"DELETE FROM student WHERE id = ?\";\n\n        System.out.println(\"[JDBC DEMO] Connecting to MySQL Database: \" + URL);\n        System.out.println(\"Executing CRUD operations...\");\n        System.out.println(\"1. INSERT: Created record (101, 'Rahul Sharma', 'AI & DS')\");\n        System.out.println(\"2. SELECT: Found record id=101, name='Rahul Sharma', dept='AI & DS'\");\n        System.out.println(\"3. UPDATE: Modified department to 'Artificial Intelligence & Data Science'\");\n        System.out.println(\"4. DELETE: Deleted record id=101\");\n        System.out.println(\"CRUD Transactions Completed Successfully.\");\n    }\n}"
     },
-    "expectedOutput": "[JDBC DEMO] Connecting to MySQL Database: jdbc:mysql://localhost:3306/collegedb\nExecuting CRUD operations...\n1. INSERT: Created record (101, 'Rahul Sharma', 'AI & DS')\n2. SELECT: Found record id=101, name='Rahul Sharma', dept='AI & DS'\n3. UPDATE: Modified department to 'Computer Science'\n4. DELETE: Deleted record id=101\nCRUD Transactions Completed Successfully.",
+    "expectedOutput": "[JDBC DEMO] Connecting to MySQL Database: jdbc:mysql://localhost:3306/collegedb\nExecuting CRUD operations...\n1. INSERT: Created record (101, 'Rahul Sharma', 'AI & DS')\n2. SELECT: Found record id=101, name='Rahul Sharma', dept='AI & DS'\n3. UPDATE: Modified department to 'Artificial Intelligence & Data Science'\n4. DELETE: Deleted record id=101\nCRUD Transactions Completed Successfully.",
     "leetcodeProblems": [],
     "targetAudience": {
       "ug": [
@@ -1189,7 +1189,7 @@ export const OOPS_JAVA_EXPERIMENTS: Experiment[] = [
         "B.E. CSE - 2nd Year"
       ],
       "pg": [
-        "M.E. Computer Science"
+        "M.Tech Artificial Intelligence & Data Science"
       ]
     }
   }

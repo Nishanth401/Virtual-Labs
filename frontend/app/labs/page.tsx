@@ -58,16 +58,16 @@ export default function LabsCataloguePage() {
                   Home
                 </Link>
                 <span>&gt;</span>
-                <span className="text-white font-bold">Computer Science &amp; Engineering</span>
+                <span className="text-white font-bold">Artificial Intelligence &amp; Data Science</span>
               </div>
 
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-1">
                 <div>
                   <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight font-sans">
-                    Computer Science &amp; Engineering
+                    Artificial Intelligence &amp; Data Science
                   </h1>
                   <p className="text-xs sm:text-sm text-slate-200 mt-1 max-w-2xl leading-relaxed">
-                    National Virtual Laboratories in Artificial Intelligence, Machine Learning, Data Structures, Operating Systems, Computer Architecture, and Relational Database Systems.
+                    National Virtual Laboratories in Artificial Intelligence, Machine Learning, Deep Learning, Big Data Analytics, Cloud Computing, Database Systems, and Data Structures.
                   </p>
                 </div>
 
@@ -110,7 +110,7 @@ export default function LabsCataloguePage() {
               {isDisciplineBooksOpen && (
                 <div className="mt-3 p-4 bg-black/60 border border-white/20 rounded-none text-xs space-y-2 text-slate-200">
                   <h4 className="font-bold text-amber-300 uppercase tracking-wider text-[11px]">
-                    Recommended Core Textbooks across Computer Science &amp; Engineering:
+                    Recommended Core Textbooks across Artificial Intelligence &amp; Data Science:
                   </h4>
                   <ul className="list-disc list-inside space-y-1 pl-1 text-slate-300">
                     <li>Mark Allen Weiss. Data Structures and Algorithm Analysis in Java, 3rd Edition. Pearson.</li>
@@ -126,14 +126,15 @@ export default function LabsCataloguePage() {
               {isDisciplineSyllabusOpen && (
                 <div className="mt-3 p-4 bg-black/60 border border-white/20 rounded-none text-xs space-y-2 text-slate-200">
                   <h4 className="font-bold text-amber-300 uppercase tracking-wider text-[11px]">
-                    AICTE Model Curriculum &amp; Anna University Regulation 2021/2026 Mapping:
+                    AICTE Model Curriculum &amp; Anna University Regulation 2021/2026 Mapping (B.Tech AI &amp; DS):
                   </h4>
                   <ul className="list-disc list-inside space-y-1 pl-1 text-slate-300">
-                    <li>PCC-CS301: Data Structures and Algorithms Laboratory (Semester III)</li>
-                    <li>PCC-CS402: Computer Organisation and Architecture Laboratory (Semester IV)</li>
-                    <li>PCC-CS403: Operating Systems Laboratory (Semester IV)</li>
-                    <li>PCC-CS502: Database Management Systems Laboratory (Semester V)</li>
-                    <li>PEC-CS-S501: Machine Learning &amp; Artificial Intelligence Laboratory (Semester VI)</li>
+                    <li>AD3391: Database Design &amp; Management Laboratory (Semester III)</li>
+                    <li>CS3381: Data Structures and Algorithms Laboratory (Semester III)</li>
+                    <li>CS3461: Operating Systems Laboratory (Semester IV)</li>
+                    <li>AL3461: Machine Learning Laboratory (Semester IV)</li>
+                    <li>AL3511: Deep Learning Laboratory (Semester V)</li>
+                    <li>AD3511: Big Data Analytics Laboratory (Semester V)</li>
                   </ul>
                 </div>
               )}

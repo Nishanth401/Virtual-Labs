@@ -73,7 +73,7 @@ export const DSA_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -150,7 +150,7 @@ export const DSA_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -227,7 +227,7 @@ export const DSA_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -304,7 +304,7 @@ export const DSA_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -381,7 +381,7 @@ export const DSA_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -458,7 +458,7 @@ export const DSA_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -535,7 +535,7 @@ export const DSA_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -612,7 +612,7 @@ export const DSA_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -689,7 +689,7 @@ export const DSA_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -766,7 +766,7 @@ export const DSA_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -843,7 +843,7 @@ export const DSA_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -920,7 +920,7 @@ export const DSA_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -997,7 +997,7 @@ export const DSA_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -1074,7 +1074,7 @@ export const DSA_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
@@ -1151,7 +1151,7 @@ export const DSA_EXPERIMENTS: Experiment[] = [
           "B.E. CSE - 2nd Year"
         ],
         "pg": [
-          "M.E. Computer Science"
+          "M.Tech Artificial Intelligence & Data Science"
         ]
       }
     }
