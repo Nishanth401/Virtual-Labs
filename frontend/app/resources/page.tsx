@@ -174,6 +174,13 @@ export default function ResourcesPage() {
             Virtual Labs Manual
           </span>
         );
+      case "VSB Autonomous Curriculum":
+        return (
+          <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#0284c7]/15 text-[#0284c7] dark:text-[#38bdf8] border border-[#0284c7]/30 flex items-center gap-1">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#0284c7]" />
+            <span>VSB Autonomous Curriculum</span>
+          </span>
+        );
       case "YouTube Video":
         return (
           <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/30 flex items-center gap-1">
@@ -339,10 +346,7 @@ export default function ResourcesPage() {
                     </div>
                   )}
 
-                  <div className="pt-2 border-t border-border/40 flex items-center justify-between">
-                    <span className="text-[11px] text-muted-foreground font-mono">
-                      {res.downloadCount ? `${res.downloadCount}+ reads` : "In-App Guide"}
-                    </span>
+                  <div className="pt-2 border-t border-border/40 flex items-center justify-end">
 
                     {res.type === "Virtual Lab" ? (
                       <Button size="sm" className="h-8 text-xs font-bold gap-1.5 rounded-xl bg-primary text-white hover:bg-primary/90" asChild>
@@ -431,8 +435,6 @@ export default function ResourcesPage() {
                 <div className="p-4 bg-muted/40 border-t border-border flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono">
                     <span>Instructor: {selectedVideo.provider}</span>
-                    <span>•</span>
-                    <span>{selectedVideo.downloadCount ? `${selectedVideo.downloadCount}+ reads` : "In-App Guide"}</span>
                   </div>
 
                   <div className="flex items-center gap-2">

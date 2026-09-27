@@ -1196,7 +1196,7 @@ export const QUIZZES_DATA: Record<string, Quiz> = {
   },
 
   // ========================================================
-  // 10. NPTEL C PROGRAMMING 8-WEEK EVALUATION ASSESSMENTS
+  // 10. AUTONOMOUS C PROGRAMMING 8-WEEK EVALUATION ASSESSMENTS
   // ========================================================
   "quiz-c-1": {
     id: "quiz-c-1",
@@ -1623,8 +1623,8 @@ export const QUIZZES_DATA: Record<string, Quiz> = {
   "quiz-c-8": {
     id: "quiz-c-8",
     experimentId: "c-exp-8",
-    title: "Week 8: NPTEL Mock Exam",
-    description: "Comprehensive 5-Question High-Yield NPTEL Certification Diagnostic Exam covering all core C topics and edge cases.",
+    title: "Week 8: Comprehensive Diagnostic Exam",
+    description: "Comprehensive 5-Question High-Yield Autonomous Curriculum Diagnostic Exam covering all core C topics and edge cases.",
     passingScore: 4,
     timeLimitMinutes: 5,
     questions: [
@@ -1666,7 +1666,7 @@ export const QUIZZES_DATA: Record<string, Quiz> = {
       },
       {
         id: "c8-q4",
-        question: "What is the primary objective of the 7-Day NPTEL Exam Practice Plan?",
+        question: "What is the primary objective of the 7-Day Exam Practice Plan?",
         options: [
           "Day 1-2 Concept review -> Day 3-4 Previous papers -> Day 5 Full Mock Test -> Day 6 Mistake Analysis -> Day 7 Final Review",
           "Only reading textbook on Day 7",
@@ -1674,11 +1674,11 @@ export const QUIZZES_DATA: Record<string, Quiz> = {
           "Skipping recursion practice"
         ],
         correctIndex: 0,
-        explanation: "The 7-day structured revision consolidates concept mastery, solves authentic NPTEL papers, diagnoses mistakes, and achieves Elite/Gold certification."
+        explanation: "The 7-day structured revision consolidates concept mastery, solves authentic practice papers, diagnoses mistakes, and achieves academic excellence."
       },
       {
         id: "c8-q5",
-        question: "How do AI&DS 'C Programming Champions' support department peers during NPTEL preparation?",
+        question: "How do AI&DS 'C Programming Champions' support department peers during lab preparation?",
         options: [
           "By conducting weekly coding practice, doubt-clearing sessions, and mock quiz discussions",
           "By writing exams for other students",
@@ -1686,7 +1686,7 @@ export const QUIZZES_DATA: Record<string, Quiz> = {
           "By grading faculty assignments"
         ],
         correctIndex: 0,
-        explanation: "The 20–30 selected student champions lead peer study circles, mentor struggling peers, and host weekly NPTEL quiz discussions."
+        explanation: "The 20–30 selected student champions lead peer study circles, mentor struggling peers, and host weekly concept and quiz discussions."
       }
     ]
   }

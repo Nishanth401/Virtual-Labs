@@ -608,7 +608,7 @@ benchmark_udp()`
       objective: "Implement Bellman-Ford Distance Vector routing and Dijkstra Link State routing to find lowest-cost shortest paths across router nodes.",
       videoUrl: "https://www.youtube-nocookie.com/embed/IPvYjXCsTg8",
       videoTitle: "Routing Algorithms: Distance Vector vs Link State",
-      videoChannel: "NPTEL Computer Networks",
+      videoChannel: "Computer Networks Academy",
       prerequisites: ["Graph Theory", "Bellman-Ford & Dijkstra"],
       theory: {
         overview: "Distance Vector routing (RIP) uses the Bellman-Ford equation: D_x(y) = min_v { c(x, v) + D_v(y) }, periodically exchanging full routing tables with direct neighbors. Link State routing (OSPF) broadcasts link state packets globally and executes Dijkstra's algorithm to compute the Shortest Path Tree.",

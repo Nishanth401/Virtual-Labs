@@ -32,14 +32,20 @@ export function Footer() {
           
           {/* Left: Creator Profile (Cols 1-5) */}
           <div className="md:col-span-5 space-y-4">
-            <div className="flex items-center gap-2.5 font-black text-2xl text-white font-heading tracking-tight">
+            <div className="flex items-center gap-3">
               <img
-                src="/virtual-lab-icon.png"
-                alt="Virtual Lab"
-                className="w-8 h-8 object-contain rounded"
+                src="/vsb-logo.png"
+                alt="VSB Engineering College"
+                className="w-12 h-12 object-contain"
               />
-              <span>Virtual Lab</span>
-              <span className="text-[#0284c7] text-3xl leading-none">.</span>
+              <div className="flex flex-col">
+                <span className="font-extrabold text-base text-white tracking-tight leading-tight">
+                  V.S.B. ENGINEERING COLLEGE
+                </span>
+                <span className="text-xs font-semibold text-[#0284c7] tracking-tight leading-tight">
+                  Department of Artificial Intelligence and Data Science
+                </span>
+              </div>
             </div>
             
             <p className="text-slate-400 text-xs sm:text-sm font-light max-w-md leading-relaxed">

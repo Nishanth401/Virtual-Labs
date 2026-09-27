@@ -1,35 +1,36 @@
 import { DSACategory } from "../dsa-topic-data";
 
 export const DSA_LAB_ROADMAP_CATEGORIES: DSACategory[] = [
+  // ========================================================
+  // MODULE 1: LINKED LISTS (0/3)
+  // ========================================================
   {
     id: "dsa-linked-lists",
-    name: "1. Linked Lists & Applications",
-    shortDesc: "Singly, Doubly, Circular Linked Lists, Reversal, Floyd's Cycle Detection, and Merging.",
+    name: "1. Linked Lists",
+    shortDesc: "Singly, Doubly, and Circular Linked Lists, Cycle Detection, and Merging.",
     iconName: "Code2",
     topics: [
       {
         id: "dsa-singly-linked-list",
-        slug: "singly-linked-list-operations",
-        title: "Exp 1: Singly Linked List (Insert, Delete, Search & Traversal)",
+        slug: "implement-singly-linked-list",
+        title: "Exp 1: Implement a Singly Linked List and Perform Insertion, Deletion, Searching, and Traversal Operations",
         categoryId: "dsa-linked-lists",
-        categoryName: "1. Linked Lists & Applications",
+        categoryName: "1. Linked Lists",
         difficulty: "Beginner",
         estimatedTime: "25 mins",
         visualizerType: "linked-list",
-        gfgSearchQuery: "Singly Linked list insertion deletion search Java",
+        gfgSearchQuery: "Singly linked list insertion deletion search traversal Java",
         gfgUrl: "https://www.geeksforgeeks.org/data-structures/linked-list/singly-linked-list/",
-        quickSummary: "Implement dynamic node allocations with head/tail insertion, target deletion, key search, and forward traversal.",
+        quickSummary: "Build a singly linked list from scratch with node-based insertion, deletion, search, and traversal.",
         keyPoints: [
-          "Dynamic heap memory allocation per node: data and next pointer.",
-          "O(1) insertion at head; O(n) traversal for searching and tail insertions.",
-          "Edge case handling: empty list, single node, and deleting head/tail."
+          "Node pointer structure: Each node stores data and a pointer/reference to the next node.",
+          "Pointer re-linking: Insertion/deletion at head, tail, or a given position requires pointer re-linking.",
+          "Traversal termination: Traversal walks the list from head until a null reference is reached."
         ],
-        diagramTitle: "Singly Linked List Dynamic Node Pointers",
+        diagramTitle: "Singly Linked List Node References",
         diagram: `  Head ──► [ Data: 10 | Next ] ──► [ Data: 20 | Next ] ──► [ Data: 30 | Next: NULL ]`,
         complexities: [
-          { operation: "Insert at Head", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(1)" },
-          { operation: "Search / Traverse", best: "O(1)", avg: "O(n)", worst: "O(n)", space: "O(1)" },
-          { operation: "Delete by Value", best: "O(1)", avg: "O(n)", worst: "O(n)", space: "O(1)" }
+          { operation: "Insert at head / Search", best: "O(1) / O(1)", avg: "O(1) / O(n)", worst: "O(1) / O(n)", space: "O(n)" }
         ],
         codeSnippets: [
           {
@@ -60,6 +61,15 @@ public class SinglyLinkedList {
         if (curr.next != null) curr.next = curr.next.next;
     }
 
+    public boolean search(int key) {
+        ListNode curr = head;
+        while (curr != null) {
+            if (curr.val == key) return true;
+            curr = curr.next;
+        }
+        return false;
+    }
+
     public void display() {
         ListNode curr = head;
         while (curr != null) {
@@ -73,7 +83,7 @@ public class SinglyLinkedList {
         ],
         practiceProblems: [
           {
-            title: "Design Linked List",
+            title: "Design Linked List (LeetCode #707)",
             difficulty: "Medium",
             url: "https://leetcode.com/problems/design-linked-list/",
             platform: "LeetCode",
@@ -83,99 +93,92 @@ public class SinglyLinkedList {
       },
       {
         id: "dsa-doubly-circular-ll",
-        slug: "doubly-circular-linked-lists",
-        title: "Exp 2: Doubly and Circular Linked Lists",
+        slug: "implement-doubly-and-circular-linked-list",
+        title: "Exp 2: Implement Doubly Linked List and Circular Linked List with Insertion and Deletion at Different Positions",
         categoryId: "dsa-linked-lists",
-        categoryName: "1. Linked Lists & Applications",
+        categoryName: "1. Linked Lists",
         difficulty: "Beginner",
         estimatedTime: "25 mins",
-        gfgSearchQuery: "Doubly linked list circular linked list Java implementation",
+        gfgSearchQuery: "Doubly linked list circular linked list Java insertion deletion",
         gfgUrl: "https://www.geeksforgeeks.org/doubly-linked-list/",
-        quickSummary: "Implement bidirectional traversal (Doubly Linked List) and continuous looping buffer structures (Circular Linked List).",
+        quickSummary: "Extend the linked list to support backward traversal (doubly) and a circular structure with wrap-around links.",
         keyPoints: [
-          "Doubly Linked List maintains prev and next pointers enabling O(1) node deletion given a pointer.",
-          "Circular Linked List links the tail node back to head node.",
-          "Ideal for round-robin CPU scheduling and playlist buffers."
+          "Bidirectional navigation: Doubly linked nodes maintain both next and prev pointers, enabling bidirectional traversal.",
+          "Circular boundary link: Circular lists link the tail back to the head, removing the null-terminated end.",
+          "Pointer preservation: Insertion/deletion must correctly update all affected neighboring pointers to preserve list integrity."
         ],
-        diagramTitle: "Doubly Linked List & Circular Linked List Topologies",
-        diagram: `  Doubly Linked List:
-  NULL ◄── [ Prev | 10 | Next ] ◄──► [ Prev | 20 | Next ] ──► NULL
-
-  Circular Linked List:
-  ┌──► [ 10 | Next ] ──► [ 20 | Next ] ──► [ 30 | Next ] ──┐
-  └────────────────────────────────────────────────────────┘`,
+        diagramTitle: "Doubly & Circular Linked List Architectures",
+        diagram: `  Doubly:   NULL ◄── [ Prev | 10 | Next ] ◄──► [ Prev | 20 | Next ] ──► NULL
+  Circular: Head ──► [ 10 | Next ] ──► [ 20 | Next ] ──┐
+             ▲                                         │
+             └─────────────────────────────────────────┘`,
         complexities: [
-          { operation: "Doubly LL Node Delete", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(1)" },
-          { operation: "Circular LL Traversal", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)" }
+          { operation: "Insert/Delete at position", best: "O(1)", avg: "O(n)", worst: "O(n)", space: "O(n)" }
         ],
         codeSnippets: [
           {
             language: "java",
             label: "Java (Doubly Linked List)",
-            code: `class DNode {
+            code: `class DLLNode {
     int val;
-    DNode prev, next;
-    DNode(int v) { this.val = v; }
+    DLLNode prev, next;
+    DLLNode(int v) { this.val = v; }
 }
 
 public class DoublyLinkedList {
-    private DNode head;
+    private DLLNode head, tail;
 
-    public void insertAtEnd(int val) {
-        DNode newNode = new DNode(val);
-        if (head == null) { head = newNode; return; }
-        DNode curr = head;
-        while (curr.next != null) curr = curr.next;
-        curr.next = newNode;
-        newNode.prev = curr;
+    public void insertEnd(int val) {
+        DLLNode newNode = new DLLNode(val);
+        if (head == null) {
+            head = tail = newNode;
+        } else {
+            tail.next = newNode;
+            newNode.prev = tail;
+            tail = newNode;
+        }
     }
 }`
           }
         ],
         practiceProblems: [
           {
-            title: "Insert into a Sorted Circular Linked List",
-            difficulty: "Medium",
-            url: "https://leetcode.com/problems/insert-into-a-sorted-circular-linked-list/",
-            platform: "LeetCode",
-            topicTag: "Circular LL"
+            title: "Doubly Linked List Tutorial",
+            difficulty: "Easy",
+            url: "https://www.geeksforgeeks.org/doubly-linked-list/",
+            platform: "GeeksforGeeks",
+            topicTag: "Doubly Linked List"
           }
         ]
       },
       {
         id: "dsa-ll-applications",
-        slug: "linked-list-applications-reversal-cycle-merge",
-        title: "Exp 3: Linked List Applications (Reversal, Floyd's Cycle Detection & Merge)",
+        slug: "linked-list-applications-reverse-cycle-merge",
+        title: "Exp 3: Linked List Applications — Reverse a Singly Linked List, Detect a Cycle Using Fast and Slow Pointer Technique, Merge Two Sorted Linked Lists",
         categoryId: "dsa-linked-lists",
-        categoryName: "1. Linked Lists & Applications",
+        categoryName: "1. Linked Lists",
         difficulty: "Intermediate",
         estimatedTime: "30 mins",
         gfgSearchQuery: "Reverse linked list Floyd cycle detection merge two sorted lists Java",
         gfgUrl: "https://www.geeksforgeeks.org/reverse-a-linked-list/",
-        quickSummary: "Master in-place pointer reversal, Floyd's Fast & Slow pointer cycle detection, and merging two sorted lists.",
+        quickSummary: "Solve three classic linked-list problems building on the base structure.",
         keyPoints: [
-          "In-place Reversal iteratively updates: nextNode = curr.next; curr.next = prev; prev = curr; curr = nextNode.",
-          "Floyd's Tortoise and Hare moves slow by 1 and fast by 2; meeting point confirms cycle.",
-          "Merge two sorted lists maintains two pointer heads without creating extra node allocations."
+          "Iterative reversal: Reversing a list iteratively re-points each node's next to its predecessor.",
+          "Floyd's cycle detection: The Fast/Slow (Floyd's) pointer technique detects a cycle when the two pointers meet.",
+          "Sorted interleaving: Merging two sorted lists interleaves nodes by comparing values, producing one sorted list without extra arrays."
         ],
-        diagramTitle: "Floyd's Tortoise & Hare Fast/Slow Cycle Detection",
-        diagram: `  [ 1 ] ──► [ 2 ] ──► [ 3 ] ──► [ 4 ]
-                        ▲                 │
-                        │     Loop        │
-                        └──────── [ 5 ] ◄─┘
-            Slow (1 step)  ──► Fast (2 steps)
-            Meeting at Node 4 or 5 proves cycle in O(n) time & O(1) space!`,
+        diagramTitle: "Floyd's Fast & Slow Pointer Cycle Detection",
+        diagram: `  [ 1 ] ──► [ 2 ] ──► [ 3 (Slow) ] ──► [ 4 ]
+                         ▲                     │
+                         └── [ 6 (Fast) ] ◄── [ 5 ]`,
         complexities: [
-          { operation: "List Reversal", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(1)" },
-          { operation: "Floyd's Cycle Detection", best: "O(1)", avg: "O(n)", worst: "O(n)", space: "O(1)" },
-          { operation: "Merge Two Sorted Lists", best: "O(n + m)", avg: "O(n + m)", worst: "O(n + m)", space: "O(1)" }
+          { operation: "Reverse / Cycle detect / Merge", best: "O(n) each", avg: "O(n)", worst: "O(n)", space: "O(1) (reverse/cycle) / O(1) (merge, in-place)" }
         ],
         codeSnippets: [
           {
             language: "java",
-            label: "Java (Cycle Detection & Reversal)",
+            label: "Java (Reverse & Floyd's Cycle)",
             code: `public class LinkedListApplications {
-    // 1. In-Place Reversal
     public static ListNode reverseList(ListNode head) {
         ListNode prev = null, curr = head;
         while (curr != null) {
@@ -187,9 +190,8 @@ public class DoublyLinkedList {
         return prev;
     }
 
-    // 2. Floyd's Cycle Detection (Tortoise and Hare)
     public static boolean hasCycle(ListNode head) {
-        if (head == null || head.next == null) return false;
+        if (head == null) return false;
         ListNode slow = head, fast = head;
         while (fast != null && fast.next != null) {
             slow = slow.next;
@@ -203,45 +205,49 @@ public class DoublyLinkedList {
         ],
         practiceProblems: [
           {
-            title: "Linked List Cycle (LeetCode #141)",
-            difficulty: "Easy",
-            url: "https://leetcode.com/problems/linked-list-cycle/",
-            platform: "LeetCode",
-            topicTag: "Floyd Cycle"
-          },
-          {
             title: "Reverse Linked List (LeetCode #206)",
             difficulty: "Easy",
             url: "https://leetcode.com/problems/reverse-linked-list/",
             platform: "LeetCode",
             topicTag: "Reversal"
+          },
+          {
+            title: "Linked List Cycle (LeetCode #141)",
+            difficulty: "Easy",
+            url: "https://leetcode.com/problems/linked-list-cycle/",
+            platform: "LeetCode",
+            topicTag: "Cycle Detection"
           }
         ]
       }
     ]
   },
+
+  // ========================================================
+  // MODULE 2: STACKS & QUEUES (0/3)
+  // ========================================================
   {
     id: "dsa-stacks-queues",
-    name: "2. Stacks, Queues & Applications",
-    shortDesc: "Array/Linked Stack, Infix-to-Postfix, Circular Queue, Priority Queue, and Deque.",
+    name: "2. Stacks & Queues",
+    shortDesc: "LIFO/FIFO ADTs, expression conversion, balancing, and sliding window maximum.",
     iconName: "Layers",
     topics: [
       {
         id: "dsa-stack-implementation",
-        slug: "stack-implementation-array-linkedlist",
-        title: "Exp 4: Stack Implementation (Array-Based & Linked List-Based)",
+        slug: "implement-stack-arrays-linked-lists",
+        title: "Exp 4: Implement Stack Using Arrays and Linked Lists — Push, Pop, Peek, Display",
         categoryId: "dsa-stacks-queues",
-        categoryName: "2. Stacks, Queues & Applications",
+        categoryName: "2. Stacks & Queues",
         difficulty: "Beginner",
         estimatedTime: "25 mins",
         visualizerType: "stack",
         gfgSearchQuery: "Stack implementation array linked list Push Pop Peek Java",
         gfgUrl: "https://www.geeksforgeeks.org/stack-data-structure/",
-        quickSummary: "Implement Last-In First-Out (LIFO) stack supporting Push, Pop, Peek, and Overflow/Underflow protection.",
+        quickSummary: "Implement the stack ADT using both an array-backed and a linked-list-backed representation.",
         keyPoints: [
-          "Array-based stack maintains top index pointer; checks top == capacity - 1 for overflow.",
-          "Linked List stack pushes/pops at the head in O(1) time without capacity constraints.",
-          "Peek returns element at top without modifying stack state."
+          "LIFO discipline: A stack follows Last-In-First-Out (LIFO) ordering.",
+          "Dual representation: Array-based stacks need a top index and fixed/resizable capacity; linked-list stacks push/pop at the head node.",
+          "Constant-time ops: Push/Pop/Peek are all designed to run in constant O(1) time."
         ],
         diagramTitle: "Stack LIFO Memory Architecture",
         diagram: `          Push(30) ──► ┌──────────┐ ◄── Pop()
@@ -250,45 +256,45 @@ public class DoublyLinkedList {
                        │    20    │
                        ├──────────┤
                        │    10    │
-                       └──────────┘ (Base)`,
+                       └──────────┘`,
         complexities: [
-          { operation: "Push", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(1)" },
-          { operation: "Pop", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(1)" },
-          { operation: "Peek", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(1)" }
+          { operation: "Push/Pop/Peek", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(n)" }
         ],
         codeSnippets: [
           {
             language: "java",
-            label: "Java (Array Stack)",
+            label: "Java (Array-Based Stack)",
             code: `public class ArrayStack {
-    private int[] stack;
+    private int[] arr;
     private int top;
     private int capacity;
 
     public ArrayStack(int cap) {
         this.capacity = cap;
-        this.stack = new int[cap];
+        this.arr = new int[cap];
         this.top = -1;
     }
 
     public void push(int val) {
-        if (top == capacity - 1) throw new RuntimeException("Stack Overflow!");
-        stack[++top] = val;
+        if (top == capacity - 1) throw new StackOverflowError();
+        arr[++top] = val;
     }
 
     public int pop() {
-        if (top == -1) throw new RuntimeException("Stack Underflow!");
-        return stack[top--];
+        if (top == -1) throw new RuntimeException("Stack Underflow");
+        return arr[top--];
     }
 
-    public int peek() { return stack[top]; }
-    public boolean isEmpty() { return top == -1; }
+    public int peek() {
+        if (top == -1) throw new RuntimeException("Stack Empty");
+        return arr[top];
+    }
 }`
           }
         ],
         practiceProblems: [
           {
-            title: "Implement Stack using Queues",
+            title: "Implement Stack using Queues (LeetCode #225)",
             difficulty: "Easy",
             url: "https://leetcode.com/problems/implement-stack-using-queues/",
             platform: "LeetCode",
@@ -297,64 +303,47 @@ public class DoublyLinkedList {
         ]
       },
       {
-        id: "dsa-stack-applications",
-        slug: "stack-applications-infix-postfix-parentheses",
-        title: "Exp 5: Stack Applications (Infix to Postfix, Evaluation & Parentheses Validation)",
+        id: "dsa-infix-postfix-parens",
+        slug: "infix-to-postfix-evaluation-parentheses-balancing",
+        title: "Exp 5: Infix to Postfix Conversion, Postfix Expression Evaluation, Parentheses Balancing",
         categoryId: "dsa-stacks-queues",
-        categoryName: "2. Stacks, Queues & Applications",
+        categoryName: "2. Stacks & Queues",
         difficulty: "Intermediate",
         estimatedTime: "30 mins",
-        gfgSearchQuery: "Infix to Postfix conversion stack postfix evaluation valid parentheses Java",
-        gfgUrl: "https://www.geeksforgeeks.org/stack-data-structure-evaluation-of-postfix-expression/",
-        quickSummary: "Convert mathematical infix expressions to postfix via operator precedence stacks and validate bracket balances.",
+        gfgSearchQuery: "Infix to postfix conversion evaluation parentheses balancing Java stack",
+        gfgUrl: "https://www.geeksforgeeks.org/stack-set-2-infix-to-postfix/",
+        quickSummary: "Use a stack to convert infix expressions to postfix, evaluate postfix expressions, and check balanced parentheses.",
         keyPoints: [
-          "Shunting-Yard Algorithm compares operator precedence (*, / > +, -).",
-          "Postfix Evaluation pops two operands per operator and pushes intermediate results.",
-          "Parentheses matching checks matching pairs: '(', '{', '[' vs ')', '}', ']'."
+          "Precedence popping: Operator precedence and a stack determine when to pop operators during infix-to-postfix conversion.",
+          "Postfix evaluation: Postfix evaluation pushes operands and applies operators to the top two stack values as they're encountered.",
+          "Bracket pairing: Parentheses balancing pushes opening brackets and matches/pops them against closing brackets."
         ],
-        diagramTitle: "Shunting-Yard Operator Precedence Stack Flow",
-        diagram: `  Input: A + B * C
-  Tokens: A -> Output: "A"
-          + -> Stack: [+]
-          B -> Output: "A B"
-          * -> Stack: [+, *] (* has higher precedence than +)
-          C -> Output: "A B C"
-  Pop all -> Output: "A B C * +"`,
+        diagramTitle: "Infix to Postfix & Evaluation",
+        diagram: `  Infix: (A + B) * C  ──► Postfix: A B + C *
+  Evaluation (2 3 + 4 *): Push(2), Push(3), '+' -> Pop 3,2 -> Push(5), Push(4), '*' -> Result: 20`,
         complexities: [
-          { operation: "Infix to Postfix Conversion", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(n)" },
-          { operation: "Valid Parentheses Check", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(n)" }
+          { operation: "Conversion/Evaluation/Balance check", best: "O(n)", avg: "O(n)", worst: "O(n)", space: "O(n)" }
         ],
         codeSnippets: [
           {
             language: "java",
-            label: "Java (Infix to Postfix & Evaluation)",
+            label: "Java (Valid Parentheses)",
             code: `import java.util.Stack;
 
-public class StackApplications {
-    public static int precedence(char ch) {
-        if (ch == '+' || ch == '-') return 1;
-        if (ch == '*' || ch == '/') return 2;
-        return -1;
-    }
-
-    public static String infixToPostfix(String exp) {
-        StringBuilder result = new StringBuilder();
+public class ExpressionStack {
+    public static boolean isValidParentheses(String s) {
         Stack<Character> stack = new Stack<>();
-        for (char c : exp.toCharArray()) {
-            if (Character.isLetterOrDigit(c)) result.append(c);
-            else if (c == '(') stack.push(c);
-            else if (c == ')') {
-                while (!stack.isEmpty() && stack.peek() != '(') result.append(stack.pop());
-                stack.pop();
-            } else {
-                while (!stack.isEmpty() && precedence(c) <= precedence(stack.peek())) {
-                    result.append(stack.pop());
-                }
-                stack.push(c);
+        for (char c : s.toCharArray()) {
+            if (c == '(' || c == '{' || c == '[') stack.push(c);
+            else {
+                if (stack.isEmpty()) return false;
+                char top = stack.pop();
+                if (c == ')' && top != '(') return false;
+                if (c == '}' && top != '{') return false;
+                if (c == ']' && top != '[') return false;
             }
         }
-        while (!stack.isEmpty()) result.append(stack.pop());
-        return result.toString();
+        return stack.isEmpty();
     }
 }`
           }
@@ -365,43 +354,32 @@ public class StackApplications {
             difficulty: "Easy",
             url: "https://leetcode.com/problems/valid-parentheses/",
             platform: "LeetCode",
-            topicTag: "Stack App"
-          },
-          {
-            title: "Evaluate Reverse Polish Notation (LeetCode #150)",
-            difficulty: "Medium",
-            url: "https://leetcode.com/problems/evaluate-reverse-polish-notation/",
-            platform: "LeetCode",
-            topicTag: "Postfix Eval"
+            topicTag: "Stack"
           }
         ]
       },
       {
-        id: "dsa-queue-implementations",
-        slug: "queue-implementations-circular-priority-deque",
-        title: "Exp 6: Queue Implementations (Circular Queue, Priority Queue & Deque)",
+        id: "dsa-circular-priority-queue",
+        slug: "circular-queue-priority-queue-sliding-window",
+        title: "Exp 6: Circular Queue, Priority Queue, Sliding Window Maximum Using Queue",
         categoryId: "dsa-stacks-queues",
-        categoryName: "2. Stacks, Queues & Applications",
+        categoryName: "2. Stacks & Queues",
         difficulty: "Intermediate",
         estimatedTime: "30 mins",
-        visualizerType: "queue",
-        gfgSearchQuery: "Circular queue priority queue min max heap deque sliding window Java",
-        gfgUrl: "https://www.geeksforgeeks.org/queue-data-structure/",
-        quickSummary: "Implement Circular Queue with modulo wrap, Priority Queue with binary min-heaps, and Sliding Window Maximum with Deques.",
+        gfgSearchQuery: "Circular queue priority queue sliding window maximum deque Java",
+        gfgUrl: "https://www.geeksforgeeks.org/circular-queue-set-1-introduction-array-implementation/",
+        quickSummary: "Implement a circular queue to reuse freed slots, a priority queue where elements are served by priority, and a deque-based sliding window maximum algorithm.",
         keyPoints: [
-          "Circular Queue indices: rear = (rear + 1) % capacity, front = (front + 1) % capacity.",
-          "Priority Queue maintains binary heap invariant: parent <= children (Min-Heap).",
-          "Double-ended Queue (Deque) supports monotonic sliding window maximum queries in O(n) time."
+          "Modulo index wrap: A circular queue wraps front/rear indices modulo capacity to reuse array space.",
+          "Priority dispatch: A priority queue (often heap-backed) dequeues the highest/lowest-priority element first rather than FIFO.",
+          "Monotonic deque: The sliding window maximum uses a deque that discards indices outside the window or with smaller values, keeping the max accessible at the front."
         ],
-        diagramTitle: "Circular Queue Modulo Array Wrap Buffer",
-        diagram: `               [ 0 ] ──► [ 1 ] ──► [ 2 ]
-                 ▲                   │
-                 │   Modulo Wrap     │
-               [ 5 ] ◄── [ 4 ] ◄── [ 3 ]
-               front = (front + 1) % cap | rear = (rear + 1) % cap`,
+        diagramTitle: "Circular Queue Index Wrapping",
+        diagram: `  Capacity = 5:  [ 0 | 1 | 2 | 3 | 4 ]
+                 rear = (rear + 1) % 5
+                 front = (front + 1) % 5`,
         complexities: [
-          { operation: "Circular Enqueue / Dequeue", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(1)" },
-          { operation: "Priority Queue Insert / Extract", best: "O(1)", avg: "O(log n)", worst: "O(log n)", space: "O(1)" }
+          { operation: "Enqueue/Dequeue / Sliding window scan", best: "O(1) / O(n) total", avg: "O(1) / O(n)", worst: "O(1) or O(log n) heap / O(n)", space: "O(n)" }
         ],
         codeSnippets: [
           {
@@ -433,20 +411,10 @@ public class StackApplications {
         size--;
         return true;
     }
-
-    public int Front() { return size == 0 ? -1 : arr[front]; }
-    public int Rear() { return size == 0 ? -1 : arr[rear]; }
 }`
           }
         ],
         practiceProblems: [
-          {
-            title: "Design Circular Queue (LeetCode #622)",
-            difficulty: "Medium",
-            url: "https://leetcode.com/problems/design-circular-queue/",
-            platform: "LeetCode",
-            topicTag: "Circular Queue"
-          },
           {
             title: "Sliding Window Maximum (LeetCode #239)",
             difficulty: "Hard",
@@ -458,28 +426,32 @@ public class StackApplications {
       }
     ]
   },
+
+  // ========================================================
+  // MODULE 3: TREES (0/4)
+  // ========================================================
   {
-    id: "dsa-trees-graphs",
-    name: "3. Trees, Multi-way Trees, Graphs & Algorithms",
-    shortDesc: "BST, AVL Balancing, Huffman/Trie, B-Trees, Graph BFS/DFS, Dijkstra/MST, Searching, Sorting, and Hashing.",
+    id: "dsa-trees",
+    name: "3. Trees",
+    shortDesc: "Binary search trees, AVL balancing rotations, Huffman/Tries, and B/B+ trees.",
     iconName: "BrainCircuit",
     topics: [
       {
         id: "dsa-bst-operations",
-        slug: "binary-search-tree-bst",
-        title: "Exp 7: Binary Search Tree (Insert, Delete, Search & Traversals)",
-        categoryId: "dsa-trees-graphs",
-        categoryName: "3. Trees, Multi-way Trees, Graphs & Algorithms",
+        slug: "implement-binary-search-tree",
+        title: "Exp 7: Implement Binary Search Tree (BST) with Insertion, Deletion, Searching, and Traversal Operations",
+        categoryId: "dsa-trees",
+        categoryName: "3. Trees",
         difficulty: "Intermediate",
         estimatedTime: "30 mins",
         visualizerType: "binary-tree",
         gfgSearchQuery: "Binary Search Tree BST insertion deletion traversal Inorder Java",
         gfgUrl: "https://www.geeksforgeeks.org/binary-search-tree-data-structure/",
-        quickSummary: "Build BST maintaining left < root < right invariant with Inorder, Preorder, and Postorder traversals.",
+        quickSummary: "Build a BST maintaining the left-smaller/right-larger ordering property, with standard operations and in/pre/post-order traversals.",
         keyPoints: [
-          "Inorder Traversal (Left -> Root -> Right) of a BST outputs keys in strictly ascending sorted order.",
-          "Node deletion handles 3 cases: 0 children (leaf), 1 child, and 2 children (replace with Inorder Successor).",
-          "Average search time O(log n); worst case O(n) for degenerate skewed trees."
+          "Recursive BST search: BST insertion/search recursively compares the target value to decide left or right subtree traversal.",
+          "Three-case deletion: Deletion handles three cases: leaf node, one child, and two children (successor replacement).",
+          "In-order sortedness: In-order traversal of a BST yields values in sorted order."
         ],
         diagramTitle: "Binary Search Tree & Inorder Successor Deletion",
         diagram: `                    [ 50 ]
@@ -487,10 +459,9 @@ public class StackApplications {
                 [ 30 ]  [ 70 ]
                ┌──┴──┐  ┌──┴──┐
              [ 20 ] [40][ 60 ][ 80 ]
-        Delete(50): Replace with Inorder Successor (60, smallest in right subtree)`,
+         Delete(50): Replace with Inorder Successor (60)`,
         complexities: [
-          { operation: "BST Search / Insert", best: "O(1)", avg: "O(log n)", worst: "O(n) Skewed", space: "O(height)" },
-          { operation: "BST Deletion", best: "O(1)", avg: "O(log n)", worst: "O(n)", space: "O(height)" }
+          { operation: "Insert/Search/Delete", best: "O(log n)", avg: "O(log n)", worst: "O(n) (skewed tree)", space: "O(n)" }
         ],
         codeSnippets: [
           {
@@ -532,19 +503,19 @@ public class BinarySearchTree {
       },
       {
         id: "dsa-avl-tree",
-        slug: "avl-tree-rotations",
-        title: "Exp 8: AVL Tree (Self-Balancing Rotations)",
-        categoryId: "dsa-trees-graphs",
-        categoryName: "3. Trees, Multi-way Trees, Graphs & Algorithms",
+        slug: "implement-avl-tree-rotations",
+        title: "Exp 8: Implement AVL Tree and Perform Balancing Through Rotations During Insertion",
+        categoryId: "dsa-trees",
+        categoryName: "3. Trees",
         difficulty: "Advanced",
         estimatedTime: "35 mins",
         gfgSearchQuery: "AVL tree rotations LL RR LR RL balance factor insertion Java",
         gfgUrl: "https://www.geeksforgeeks.org/avl-tree-set-1-insertion/",
-        quickSummary: "Maintain strictly balanced height invariant (|Balance Factor| <= 1) via LL, RR, LR, and RL rotations.",
+        quickSummary: "Extend the BST with self-balancing logic, using rotation operations to keep the tree height balanced after insertion.",
         keyPoints: [
-          "Balance Factor = Height(Left Subtree) - Height(Right Subtree) ∈ {-1, 0, +1}.",
-          "Left-Left (LL) imbalance fixed via Right Rotation.",
-          "Left-Right (LR) imbalance fixed via Left Rotation on left child followed by Right Rotation on root."
+          "Balance factor tracking: A balance factor (height difference of left/right subtrees) is tracked at every node.",
+          "Four rotation types: Left, Right, Left-Right, and Right-Left rotations restore balance when the factor exceeds ±1.",
+          "Guaranteed height: Maintaining balance guarantees O(log n) height regardless of insertion order."
         ],
         diagramTitle: "AVL Left-Right (LR) Double Rotation",
         diagram: `     Node A (BF = +2)                   Node A (BF = +2)               Node C (Balanced)
@@ -553,8 +524,7 @@ public class BinarySearchTree {
         \\                                 /
         Node C                          Node B`,
         complexities: [
-          { operation: "AVL Search / Insert / Delete", best: "O(1)", avg: "O(log n)", worst: "O(log n) Strictly", space: "O(log n)" },
-          { operation: "Single / Double Rotation", best: "O(1)", avg: "O(1)", worst: "O(1)", space: "O(1)" }
+          { operation: "Insert with rebalancing", best: "O(log n)", avg: "O(log n)", worst: "O(log n)", space: "O(n)" }
         ],
         codeSnippets: [
           {
@@ -579,22 +549,12 @@ public class AVLTree {
         x.height = Math.max(height(x.left), height(x.right)) + 1;
         return x;
     }
-
-    AVLNode leftRotate(AVLNode x) {
-        AVLNode y = x.right;
-        AVLNode T2 = y.left;
-        y.left = x;
-        x.right = T2;
-        x.height = Math.max(height(x.left), height(x.right)) + 1;
-        y.height = Math.max(height(y.left), height(y.right)) + 1;
-        return y;
-    }
 }`
           }
         ],
         practiceProblems: [
           {
-            title: "Balance a Binary Search Tree",
+            title: "Balance a Binary Search Tree (LeetCode #1382)",
             difficulty: "Medium",
             url: "https://leetcode.com/problems/balance-a-binary-search-tree/",
             platform: "LeetCode",
@@ -603,20 +563,20 @@ public class AVLTree {
         ]
       },
       {
-        id: "dsa-advanced-trees-trie",
-        slug: "advanced-trees-lca-huffman-trie",
-        title: "Exp 9: Advanced Trees & Encoding (LCA, Huffman Coding & Trie Prefix Tree)",
-        categoryId: "dsa-trees-graphs",
-        categoryName: "3. Trees, Multi-way Trees, Graphs & Algorithms",
+        id: "dsa-lca-huffman-trie",
+        slug: "lca-huffman-coding-tree-trie",
+        title: "Exp 9: Lowest Common Ancestor (LCA) in a Binary Tree, Huffman Coding Tree Construction, Trie (Prefix Tree) for Dictionary Applications",
+        categoryId: "dsa-trees",
+        categoryName: "3. Trees",
         difficulty: "Advanced",
         estimatedTime: "35 mins",
         gfgSearchQuery: "Lowest Common Ancestor Huffman coding tree Trie prefix tree Java",
         gfgUrl: "https://www.geeksforgeeks.org/trie-insert-and-search/",
-        quickSummary: "Find Lowest Common Ancestor (LCA), construct lossless Huffman coding trees, and implement Trie prefix dictionary lookup.",
+        quickSummary: "Solve three distinct tree problems — finding the LCA of two nodes, building a Huffman tree for compression, and building a Trie for prefix-based word lookup.",
         keyPoints: [
-          "LCA in binary tree recursively searches left and right subtrees for matching node references.",
-          "Huffman coding builds optimal prefix codes by merging lowest-frequency min-heap tree nodes.",
-          "Trie (Prefix Tree) provides O(L) prefix search and autocomplete where L is word length."
+          "Recursive split point: LCA is found by recursively searching both subtrees and identifying the split point where paths diverge.",
+          "Min-heap merging: Huffman coding repeatedly merges the two lowest-frequency nodes using a min-heap to build an optimal prefix-code tree.",
+          "Prefix paths: A Trie stores strings character-by-character along tree paths, enabling fast prefix search and autocomplete."
         ],
         diagramTitle: "Trie Prefix Tree Dictionary Architecture",
         diagram: `                        Root
@@ -631,8 +591,7 @@ public class AVLTree {
                       │
                      (e)* -> "apple"`,
         complexities: [
-          { operation: "Trie Insert / Search Word", best: "O(L)", avg: "O(L)", worst: "O(L)", space: "O(26 * L * N)" },
-          { operation: "LCA Query", best: "O(1)", avg: "O(n)", worst: "O(n)", space: "O(height)" }
+          { operation: "LCA / Huffman build / Trie insert-search", best: "O(log n)/O(n log n)/O(L)", avg: "same", worst: "O(n)/O(n log n)/O(L) (L=word length)", space: "O(n)" }
         ],
         codeSnippets: [
           {
@@ -665,16 +624,6 @@ public class Trie {
         }
         return curr.isEndOfWord;
     }
-
-    public boolean startsWith(String prefix) {
-        TrieNode curr = root;
-        for (char c : prefix.toCharArray()) {
-            int idx = c - 'a';
-            if (curr.children[idx] == null) return false;
-            curr = curr.children[idx];
-        }
-        return true;
-    }
 }`
           }
         ],
@@ -685,48 +634,39 @@ public class Trie {
             url: "https://leetcode.com/problems/implement-trie-prefix-tree/",
             platform: "LeetCode",
             topicTag: "Trie"
-          },
-          {
-            title: "Lowest Common Ancestor of a Binary Tree (LeetCode #236)",
-            difficulty: "Medium",
-            url: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/",
-            platform: "LeetCode",
-            topicTag: "LCA"
           }
         ]
       },
       {
-        id: "dsa-multiway-btrees",
-        slug: "multi-way-search-trees-b-and-bplus-trees",
-        title: "Exp 10: Multi-way Search Trees (B-Trees and B+ Trees)",
-        categoryId: "dsa-trees-graphs",
-        categoryName: "3. Trees, Multi-way Trees, Graphs & Algorithms",
+        id: "dsa-b-tree-b-plus-tree",
+        slug: "insertion-searching-b-tree-b-plus-tree",
+        title: "Exp 10: Implement Insertion and Searching Operations in B-Tree and B+ Tree",
+        categoryId: "dsa-trees",
+        categoryName: "3. Trees",
         difficulty: "Advanced",
         estimatedTime: "30 mins",
         gfgSearchQuery: "B-Tree B+ Tree insertion search disk block indexing Java",
         gfgUrl: "https://www.geeksforgeeks.org/introduction-of-b-tree-2/",
-        quickSummary: "Model multi-way balanced search trees optimized for disk block storage with high branching fan-out factors.",
+        quickSummary: "Implement multi-way search trees (B-Tree and B+ Tree) commonly used in database/file-system indexing.",
         keyPoints: [
-          "B-Tree nodes hold multiple keys (up to M - 1) and M child pointers.",
-          "B+ Tree stores all data records exclusively in doubly-linked leaf nodes, enabling fast range scans.",
-          "Splits internal nodes at median key when capacity overflows."
+          "Multi-key nodes: Each B-Tree/B+ Tree node holds multiple keys and children, keeping the tree shallow for large datasets.",
+          "Node splitting invariant: Node splitting during insertion maintains the minimum/maximum key-count invariant per node.",
+          "Sequential leaf links: B+ Trees additionally link all leaf nodes sequentially, optimizing range queries."
         ],
-        diagramTitle: "B+ Tree Index Internal Nodes vs Linked Leaf Sequence",
-        diagram: `                   [ 50 | 100 ]  (Internal Router Node)
+        diagramTitle: "B+ Tree Index Internal Router vs Linked Leaves",
+        diagram: `                   [ 50 | 100 ]  (Internal Router)
                 ┌─────────┼─────────┐
                 ▼         ▼         ▼
              [ 20 ]    [ 70 ]    [ 120 ]
              ┌──┴──┐   ┌──┴──┐   ┌──┴──┐
-             ▼     ▼   ▼     ▼   ▼     ▼
-    Leaves: [10,20]◄-►[50,70]◄-►[100,120] (Linked Leaf Level for Sequential Range Queries)`,
+    Leaves: [10,20]◄-►[50,70]◄-►[100,120] (Linked Leaf Level)`,
         complexities: [
-          { operation: "B-Tree Search / Insert", best: "O(1)", avg: "O(log_M n)", worst: "O(log_M n)", space: "O(n)" },
-          { operation: "B+ Tree Range Scan", best: "O(log_M n + k)", avg: "O(log_M n + k)", worst: "O(log_M n + k)", space: "O(1)" }
+          { operation: "Insert/Search", best: "O(log n)", avg: "O(log n)", worst: "O(log n)", space: "O(n)" }
         ],
         codeSnippets: [
           {
             language: "java",
-            label: "Java (B-Tree Node Structure)",
+            label: "Java (B-Tree Node Definition)",
             code: `class BTreeNode {
     int[] keys;
     int t; // Minimum degree
@@ -748,29 +688,41 @@ public class Trie {
           {
             title: "B-Tree Insertion & Search Fundamentals",
             difficulty: "Hard",
-            url: "https://www.geeksforgeeks.org/b-tree-set-1-insert-2/",
+            url: "https://www.geeksforgeeks.org/introduction-of-b-tree-2/",
             platform: "GeeksforGeeks",
             topicTag: "B-Tree"
           }
         ]
-      },
+      }
+    ]
+  },
+
+  // ========================================================
+  // MODULE 4: GRAPHS (0/2)
+  // ========================================================
+  {
+    id: "dsa-graphs",
+    name: "4. Graphs",
+    shortDesc: "Adjacency matrix/lists, BFS/DFS, Dijkstra shortest paths, and Prim/Kruskal MST.",
+    iconName: "Network",
+    topics: [
       {
-        id: "dsa-graphs-bfs-dfs",
-        slug: "graph-representations-and-traversals-bfs-dfs",
-        title: "Exp 11: Graph Representations & Traversals (BFS & DFS)",
-        categoryId: "dsa-trees-graphs",
-        categoryName: "3. Trees, Multi-way Trees, Graphs & Algorithms",
+        id: "dsa-graph-traversals-bfs-dfs",
+        slug: "graph-adjacency-matrix-list-bfs-dfs",
+        title: "Exp 11: Represent Graphs Using Adjacency Matrix and Adjacency List; Perform BFS and DFS",
+        categoryId: "dsa-graphs",
+        categoryName: "4. Graphs",
         difficulty: "Intermediate",
         estimatedTime: "30 mins",
         gfgSearchQuery: "Graph BFS DFS adjacency list matrix Java traversal",
         gfgUrl: "https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/",
-        quickSummary: "Represent graphs via Adjacency Lists and execute Breadth-First Search (Queue) and Depth-First Search (Recursion).",
+        quickSummary: "Represent a graph two ways and implement Breadth-First and Depth-First traversal on it.",
         keyPoints: [
-          "Adjacency List stores neighbors in O(V + E) memory space compared to O(V^2) matrix.",
-          "BFS discovers shortest unweighted paths level-by-level using a FIFO Queue.",
-          "DFS traverses deep branch paths using LIFO Call Stack / recursion."
+          "Dual representation: An adjacency matrix stores edges in an n×n grid (fast lookup, more space); an adjacency list stores per-vertex neighbor lists (space-efficient for sparse graphs).",
+          "Queue-based BFS: BFS explores neighbors level-by-level using a queue.",
+          "Recursive DFS: DFS explores as deep as possible along each branch using recursion or an explicit stack."
         ],
-        diagramTitle: "Graph Traversal: BFS (Level-Order) vs DFS (Depth)",
+        diagramTitle: "Graph Traversals: BFS Level-Order vs DFS Depth-First",
         diagram: `       (0)
       ┌─┴─┐
      (1) (2)
@@ -779,12 +731,12 @@ public class Trie {
      BFS from 0: 0 -> 1 -> 2 -> 3 -> 4 (Queue FIFO)
      DFS from 0: 0 -> 1 -> 3 -> 2 -> 4 (Recursion / Stack)`,
         complexities: [
-          { operation: "BFS / DFS Traversal", best: "O(V + E)", avg: "O(V + E)", worst: "O(V + E)", space: "O(V) Visited Set" }
+          { operation: "BFS/DFS", best: "O(V+E)", avg: "O(V+E)", worst: "O(V+E)", space: "O(V) (matrix: O(V²))" }
         ],
         codeSnippets: [
           {
             language: "java",
-            label: "Java (BFS and DFS)",
+            label: "Java (Graph BFS & DFS)",
             code: `import java.util.*;
 
 public class GraphTraversals {
@@ -818,48 +770,47 @@ public class GraphTraversals {
         ],
         practiceProblems: [
           {
-            title: "Number of Islands (LeetCode #200)",
+            title: "Clone Graph (LeetCode #133)",
             difficulty: "Medium",
-            url: "https://leetcode.com/problems/number-of-islands/",
+            url: "https://leetcode.com/problems/clone-graph/",
             platform: "LeetCode",
-            topicTag: "BFS/DFS"
+            topicTag: "Graph"
           }
         ]
       },
       {
-        id: "dsa-shortest-path-mst",
-        slug: "shortest-path-and-mst-dijkstra-prim-kruskal",
-        title: "Exp 12: Shortest Path & MST (Dijkstra, Prim's & Kruskal's)",
-        categoryId: "dsa-trees-graphs",
-        categoryName: "3. Trees, Multi-way Trees, Graphs & Algorithms",
+        id: "dsa-dijkstra-prim-kruskal",
+        slug: "dijkstra-prim-kruskal-algorithms",
+        title: "Exp 12: Dijkstra's Shortest Path Algorithm, Prim's Minimum Spanning Tree Algorithm, Kruskal's Minimum Spanning Tree Algorithm",
+        categoryId: "dsa-graphs",
+        categoryName: "4. Graphs",
         difficulty: "Advanced",
         estimatedTime: "35 mins",
         gfgSearchQuery: "Dijkstras shortest path algorithm Prims Kruskals MST Java priority queue",
         gfgUrl: "https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/",
-        quickSummary: "Compute single-source shortest paths (Dijkstra) and Minimum Spanning Trees (Prim's & Kruskal's with Disjoint Set Union).",
+        quickSummary: "Implement three classic greedy graph algorithms for shortest paths and minimum spanning trees.",
         keyPoints: [
-          "Dijkstra's Algorithm greedily extracts minimum tentative distance vertex via PriorityQueue.",
-          "Kruskal's Algorithm sorts all edges by weight and uses Union-Find (DSU) to avoid cycles.",
-          "Prim's Algorithm grows a single connected MST tree by adding minimum cut edges."
+          "Greedy shortest paths: Dijkstra's Algorithm greedily expands the nearest unvisited vertex using a priority queue to find shortest paths from a source.",
+          "Cut property: Prim's Algorithm grows a minimum spanning tree one edge at a time by always adding the cheapest edge connecting a new vertex.",
+          "Cycle-avoidance with DSU: Kruskal's Algorithm sorts all edges by weight and adds them greedily while avoiding cycles, using a Union-Find structure."
         ],
         diagramTitle: "Kruskal's Disjoint Set Union (DSU) MST Construction",
         diagram: `  Edges sorted by weight: (B-D: 1), (A-B: 2), (C-D: 3), (A-C: 7)
   1. Add (B-D: 1) -> Sets: {A}, {B, D}, {C}
   2. Add (A-B: 2) -> Sets: {A, B, D}, {C}
-  3. Add (C-D: 3) -> Sets: {A, B, C, D} (All V connected, Weight = 6, MST Complete!)`,
+  3. Add (C-D: 3) -> Sets: {A, B, C, D} (All V connected, Weight = 6)`,
         complexities: [
-          { operation: "Dijkstra with Min-Heap", best: "O(E log V)", avg: "O(E log V)", worst: "O(E log V)", space: "O(V + E)" },
-          { operation: "Kruskal's Algorithm (DSU)", best: "O(E log E)", avg: "O(E log E)", worst: "O(E log E)", space: "O(V)" }
+          { operation: "Dijkstra/Prim/Kruskal", best: "O((V+E) log V)", avg: "same", worst: "O((V+E) log V) / O(E log E) (Kruskal)", space: "O(V+E)" }
         ],
         codeSnippets: [
           {
             language: "java",
-            label: "Java (Dijkstra's Shortest Path)",
+            label: "Java (Dijkstra)",
             code: `import java.util.*;
 
 class Edge { int to, weight; Edge(int t, int w) { to = t; weight = w; } }
 
-public class DijkstraShortestPath {
+public class DijkstraAlgorithm {
     public static int[] dijkstra(int n, List<List<Edge>> adj, int src) {
         int[] dist = new int[n];
         Arrays.fill(dist, Integer.MAX_VALUE);
@@ -890,31 +841,36 @@ public class DijkstraShortestPath {
             url: "https://leetcode.com/problems/network-delay-time/",
             platform: "LeetCode",
             topicTag: "Dijkstra"
-          },
-          {
-            title: "Min Cost to Connect All Points (LeetCode #1584)",
-            difficulty: "Medium",
-            url: "https://leetcode.com/problems/min-cost-to-connect-all-points/",
-            platform: "LeetCode",
-            topicTag: "MST Prim/Kruskal"
           }
         ]
-      },
+      }
+    ]
+  },
+
+  // ========================================================
+  // MODULE 5: SEARCHING, SORTING & HASHING (0/3)
+  // ========================================================
+  {
+    id: "dsa-searching-sorting-hashing",
+    name: "5. Searching, Sorting & Hashing",
+    shortDesc: "Linear/Binary search, Bubble/Merge/Quick sorting, and hash collision resolution.",
+    iconName: "Sparkles",
+    topics: [
       {
-        id: "dsa-searching-algorithms",
-        slug: "searching-algorithms-linear-binary",
-        title: "Exp 13: Searching Algorithms (Linear Search & Binary Search)",
-        categoryId: "dsa-trees-graphs",
-        categoryName: "3. Trees, Multi-way Trees, Graphs & Algorithms",
+        id: "dsa-linear-binary-search",
+        slug: "compare-linear-and-binary-search",
+        title: "Exp 13: Implement and Compare Linear Search and Binary Search",
+        categoryId: "dsa-searching-sorting-hashing",
+        categoryName: "5. Searching, Sorting & Hashing",
         difficulty: "Beginner",
         estimatedTime: "20 mins",
         gfgSearchQuery: "Linear search vs Binary search Java complexity comparison",
         gfgUrl: "https://www.geeksforgeeks.org/binary-search/",
-        quickSummary: "Compare sequential array scanning (Linear Search, O(n)) with divide-and-conquer logarithmic reduction (Binary Search, O(log n)).",
+        quickSummary: "Implement both search strategies and compare their efficiency on sorted vs. unsorted data.",
         keyPoints: [
-          "Linear Search works on unsorted collections by checking elements sequentially.",
-          "Binary Search requires a pre-sorted array; halves search interval every comparison.",
-          "Prevents integer overflow by computing mid = low + (high - low) / 2."
+          "Sequential scan: Linear search checks each element sequentially, working on unsorted data.",
+          "Interval bisection: Binary search repeatedly halves the search range on sorted data by comparing against the midpoint.",
+          "Sorted precondition: The precondition (sortedness) is what enables binary search's logarithmic advantage."
         ],
         diagramTitle: "Binary Search Interval Bisection",
         diagram: `  Array: [ 2, 5, 8, 12, 16, 23, 38, 56, 72, 91 ] Target = 23
@@ -922,14 +878,13 @@ public class DijkstraShortestPath {
   Step 2: low=5, high=9 -> mid=7 (Val=56 > 23) -> Search Left  [5..6]
   Step 3: low=5, high=6 -> mid=5 (Val=23 == 23) -> MATCH FOUND in 3 steps!`,
         complexities: [
-          { operation: "Linear Search", best: "O(1)", avg: "O(n)", worst: "O(n)", space: "O(1)" },
-          { operation: "Binary Search", best: "O(1)", avg: "O(log n)", worst: "O(log n)", space: "O(1)" }
+          { operation: "Linear/Binary search", best: "O(1)", avg: "O(n)/O(log n)", worst: "O(n)/O(log n)", space: "O(1)" }
         ],
         codeSnippets: [
           {
             language: "java",
             label: "Java (Binary Search)",
-            code: `public class SearchAlgorithms {
+            code: `public class SearchComparison {
     public static int binarySearch(int[] arr, int target) {
         int low = 0, high = arr.length - 1;
         while (low <= high) {
@@ -954,44 +909,38 @@ public class DijkstraShortestPath {
         ]
       },
       {
-        id: "dsa-sorting-algorithms",
-        slug: "sorting-algorithms-bubble-merge-quick",
-        title: "Exp 14: Sorting Algorithms (Bubble Sort, Merge Sort & Quick Sort)",
-        categoryId: "dsa-trees-graphs",
-        categoryName: "3. Trees, Multi-way Trees, Graphs & Algorithms",
+        id: "dsa-bubble-merge-quick-sort",
+        slug: "analyze-bubble-merge-quick-sort",
+        title: "Exp 14: Implement and Analyze Bubble Sort, Merge Sort, Quick Sort",
+        categoryId: "dsa-searching-sorting-hashing",
+        categoryName: "5. Searching, Sorting & Hashing",
         difficulty: "Intermediate",
         estimatedTime: "30 mins",
         visualizerType: "bubble-sort",
         gfgSearchQuery: "Bubble sort Merge sort Quick sort comparative analysis Java",
         gfgUrl: "https://www.geeksforgeeks.org/sorting-algorithms/",
-        quickSummary: "Compare quadratic in-place sorting (Bubble Sort) with divide-and-conquer O(n log n) algorithms (Merge Sort & Quick Sort).",
+        quickSummary: "Implement three sorting algorithms with contrasting strategies and compare their time complexity behavior.",
         keyPoints: [
-          "Bubble Sort swaps adjacent inverted pairs; achieves O(n) with swapped early exit flag.",
-          "Merge Sort recursively splits into halves and merges sorted sub-arrays in guaranteed O(n log n).",
-          "Quick Sort partitions around a pivot in-place; average O(n log n)."
+          "Adjacent swaps: Bubble Sort repeatedly swaps adjacent out-of-order elements until the array is sorted.",
+          "Stable divide-and-conquer: Merge Sort recursively divides the array, sorts halves, and merges them — a stable divide-and-conquer approach.",
+          "Pivot partitioning: Quick Sort partitions around a pivot and recursively sorts each side, with performance highly dependent on pivot choice."
         ],
-        diagramTitle: "Merge Sort Divide-and-Conquer Tree",
+        diagramTitle: "Merge Sort Divide-and-Conquer Hierarchy",
         diagram: `                    [ 38, 27, 43, 3, 9, 82, 10 ]
                       ┌──────────┴──────────┐
                [ 38, 27, 43, 3 ]      [ 9, 82, 10 ]
-                 ┌─────┴─────┐          ┌─────┴─────┐
-              [38, 27]    [43, 3]     [9, 82]     [10]
-                 ▼           ▼          ▼          ▼
-              [27, 38]    [3, 43]     [9, 82]     [10]
-                 └─────┬─────┘          └─────┬─────┘
+                  ▼           ▼          ▼          ▼
                [ 3, 27, 38, 43 ]      [ 9, 10, 82 ]
                       └──────────┬──────────┘
                     [ 3, 9, 10, 27, 38, 43, 82 ] (Sorted)`,
         complexities: [
-          { operation: "Bubble Sort", best: "O(n)", avg: "O(n^2)", worst: "O(n^2)", space: "O(1)" },
-          { operation: "Merge Sort", best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)", space: "O(n)" },
-          { operation: "Quick Sort", best: "O(n log n)", avg: "O(n log n)", worst: "O(n^2) Skewed Pivot", space: "O(log n)" }
+          { operation: "Bubble/Merge/Quick", best: "O(n)/O(n log n)/O(n log n)", avg: "O(n²)/O(n log n)/O(n log n)", worst: "O(n²)/O(n log n)/O(n²)", space: "O(1)/O(n)/O(log n)" }
         ],
         codeSnippets: [
           {
             language: "java",
             label: "Java (Quick Sort)",
-            code: `public class SortingAlgorithms {
+            code: `public class QuickSortAlgorithm {
     public static void quickSort(int[] arr, int low, int high) {
         if (low < high) {
             int pi = partition(arr, low, high);
@@ -1025,33 +974,28 @@ public class DijkstraShortestPath {
         ]
       },
       {
-        id: "dsa-hashing-techniques",
-        slug: "hashing-separate-chaining-open-addressing",
-        title: "Exp 15: Hashing (Separate Chaining, Open Addressing & Dynamic Rehashing)",
-        categoryId: "dsa-trees-graphs",
-        categoryName: "3. Trees, Multi-way Trees, Graphs & Algorithms",
+        id: "dsa-hash-tables-collision",
+        slug: "hash-tables-chaining-addressing-rehashing",
+        title: "Exp 15: Implement Hash Tables Using Separate Chaining, Open Addressing, and Rehashing Technique",
+        categoryId: "dsa-searching-sorting-hashing",
+        categoryName: "5. Searching, Sorting & Hashing",
         difficulty: "Intermediate",
         estimatedTime: "30 mins",
         gfgSearchQuery: "Hashing collision resolution separate chaining linear probing quadratic rehashing Java",
         gfgUrl: "https://www.geeksforgeeks.org/hashing-data-structure/",
-        quickSummary: "Resolve hash collisions using Separate Chaining (Linked Lists) and Open Addressing (Linear/Quadratic Probing) with dynamic rehashing at load factor alpha >= 0.75.",
+        quickSummary: "Build a hash table and implement three collision-resolution strategies plus dynamic rehashing when load factor grows too high.",
         keyPoints: [
-          "Hash function maps keys to bucket indices: h(k) = k % capacity.",
-          "Separate Chaining resolves collisions by appending colliding items to bucket linked lists.",
-          "Open Addressing searches subsequent open slots: h(k, i) = (h(k) + i) % capacity (Linear) or (h(k) + i^2) % capacity (Quadratic).",
-          "Dynamic Rehashing doubles table capacity when load factor exceeds threshold."
+          "Bucket chaining: Separate chaining stores colliding entries in a linked list/bucket per hash slot.",
+          "Open probing: Open addressing probes for the next free slot (linear/quadratic/double hashing) within the same array.",
+          "Dynamic resizing: Rehashing resizes the table and reinserts all entries once the load factor exceeds a threshold, restoring near-constant-time operations."
         ],
-        diagramTitle: "Separate Chaining vs Linear Probing Hash Collisions",
+        diagramTitle: "Separate Chaining vs Open Addressing Probing",
         diagram: `  Separate Chaining:
-  Bucket [0] ──► NULL
-  Bucket [1] ──► [ Key: 15 | Next ] ──► [ Key: 29 | Next: NULL ] (Collisions chained)
-  Bucket [2] ──► [ Key: 8  | Next: NULL ]
-
-  Linear Probing (Open Addressing):
-  Index [0]  [1: Key 15]  [2: Key 29 (Probed)]  [3: Key 8]`,
+  Bucket [1] ──► [ Key: 15 | Next ] ──► [ Key: 29 | Next: NULL ]
+  Open Addressing (Linear Probing):
+  Index [0]  [1: Key 15]  [2: Key 29 (Probed)]  [3: Free]`,
         complexities: [
-          { operation: "Separate Chaining Search", best: "O(1)", avg: "O(1 + alpha)", worst: "O(n)", space: "O(n)" },
-          { operation: "Linear Probing Insert", best: "O(1)", avg: "O(1 / (1 - alpha))", worst: "O(n)", space: "O(capacity)" }
+          { operation: "Insert/Search/Delete", best: "O(1)", avg: "O(1)", worst: "O(n) (heavy collisions)", space: "O(n)" }
         ],
         codeSnippets: [
           {
@@ -1089,16 +1033,6 @@ public class HashTable<K, V> {
         HashNode<K, V> newNode = new HashNode<>(key, value);
         newNode.next = buckets[idx];
         buckets[idx] = newNode;
-    }
-
-    public V get(K key) {
-        int idx = getBucketIndex(key);
-        HashNode<K, V> head = buckets[idx];
-        while (head != null) {
-            if (head.key.equals(key)) return head.value;
-            head = head.next;
-        }
-        return null;
     }
 }`
           }

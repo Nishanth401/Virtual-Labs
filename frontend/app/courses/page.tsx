@@ -12,14 +12,15 @@ import { BookOpen, Search, FlaskConical, GraduationCap, CheckCircle2, ArrowRight
 import Link from "next/link";
 
 export default function CoursesPage() {
-  const [selectedSem, setSelectedSem] = useState<string>("all");
+  const [selectedSem, setSelectedSem] = useState<string>("1");
   const [searchQuery, setSearchQuery] = useState("");
 
   const semesters = [1, 2, 3, 4, 5, 6, 7, 8];
 
   const filteredCourses = COURSES_DATA.filter((course) => {
-    const matchesSem = selectedSem === "all" || course.sem.toString() === selectedSem;
+    const matchesSem = searchQuery.trim() !== "" || course.sem.toString() === selectedSem;
     const matchesSearch =
+      searchQuery.trim() === "" ||
       course.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       course.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
       course.desc.toLowerCase().includes(searchQuery.toLowerCase());
@@ -87,14 +88,6 @@ export default function CoursesPage() {
                   Sem {sem}
                 </Button>
               ))}
-              <Button
-                variant={selectedSem === "all" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedSem("all")}
-                className="text-xs"
-              >
-                All Semesters
-              </Button>
             </div>
           </div>
 

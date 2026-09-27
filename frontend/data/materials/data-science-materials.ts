@@ -523,5 +523,161 @@ plt.show()`
         description: "Plot grouped bar charts comparing Semester 3 vs Semester 4 pass percentages across 4 engineering departments."
       }
     ]
+  },
+  "business-analytics-manual": {
+    id: "business-analytics-manual",
+    title: "Business Analytics & Data Science Laboratory Manual",
+    subject: "Business Analytics Lab",
+    provider: "Department of Artificial Intelligence and Data Science",
+    source: "VSB Engineering College Autonomous Curriculum (R2023 / R2021)",
+    subtitle: "Complete Manual: Statistical Modeling, Hypothesis Testing (Z-Test, T-Test, ANOVA), Data Preprocessing & Predictive Forecasting",
+    category: "Academic Laboratory Manual",
+    readTime: "45 mins",
+    difficulty: "Intermediate",
+    simulatorUrl: "/labs/data-science-analytics",
+    simulatorName: "Statistical Analytics Notebook",
+    overview:
+      "This official laboratory manual for Business Analytics & Data Science covers the entire Analytics Life Cycle compliant with autonomous curriculum specifications. Students master exploratory data analytics, descriptive dispersion metrics (Variance, Skewness, Kurtosis), inferential hypothesis testing (Z-Test, Two-Sample T-Test, One-Way ANOVA), data hygiene pipelines (missing value imputation, Min-Max normalization), and predictive regression modeling for forecasting business KPIs.",
+    learningObjectives: [
+      "Understand the business analytics life cycle, problem formulation, and data acquisition protocols",
+      "Compute descriptive statistics, moments of distribution, skewness, and kurtosis to evaluate distribution shape",
+      "Formulate statistical hypothesis tests including Z-test for population proportions, Independent T-tests, and ANOVA for multi-group variance",
+      "Build automated data preprocessing pipelines handling missing values, standardizing features, and detecting outliers",
+      "Train linear and multiple regression predictive models and evaluate forecasting accuracy via RMSE and R-Squared"
+    ],
+    tags: ["Business Analytics", "Data Science", "Hypothesis Testing", "ANOVA", "Regression", "Lab Manual", "VSB Engineering College"],
+    keyConcepts: [
+      {
+        title: "1. Descriptive Dispersion & Distribution Shape",
+        description:
+          "Quantitative metrics that summarize data centrality, spread, and deviation from standard normal symmetry.",
+        points: [
+          "Variance & Standard Deviation: Measure dispersion of data points around the arithmetic mean.",
+          "Skewness: Measures asymmetry; positive skew indicates a right-tail elongation; negative skew indicates a left-tail elongation.",
+          "Kurtosis: Measures the heaviness of the tails (Leptokurtic = fat tails/high outliers, Platykurtic = light tails)."
+        ]
+      },
+      {
+        title: "2. Inferential Hypothesis Testing (Z-test, T-test, ANOVA)",
+        description:
+          "Statistical decision-making framework using sample observations to accept or reject null hypotheses (H0) at alpha = 0.05 significance.",
+        points: [
+          "Z-Test: Applied when population variance is known or sample size N >= 30.",
+          "Student's T-Test: Applied for small sample sizes (N < 30) with unknown population variance.",
+          "One-Way ANOVA: Evaluates whether mean differences among 3 or more independent groups are statistically significant by partitioning between-group vs within-group variance (F-Statistic)."
+        ]
+      },
+      {
+        title: "3. Predictive Modeling & Time Series Forecasting",
+        description:
+          "Translating historical business trends into forward-looking projections for inventory, sales, and supply chain.",
+        points: [
+          "Multiple Linear Regression: Y = beta_0 + beta_1*X_1 + ... + beta_k*X_k + epsilon.",
+          "Moving Average: Smoothing random price/demand fluctuations to identify underlying macro trends."
+        ]
+      }
+    ],
+    algorithmSteps: [
+      {
+        step: 1,
+        title: "Dataset Ingestion & Cleaning",
+        description: "Import raw structured CSV/Excel business records, verify missing values, and impute using column medians or regression estimates."
+      },
+      {
+        step: 2,
+        title: "Descriptive Exploration",
+        description: "Compute Mean, Median, Mode, Variance, Skewness, and generate correlation heatmaps to assess feature interactions."
+      },
+      {
+        step: 3,
+        title: "Hypothesis Formulation & Testing",
+        description: "State Null (H0) and Alternative (H1) hypotheses, calculate test statistics (Z, T, or F), and compare p-values against alpha = 0.05."
+      },
+      {
+        step: 4,
+        title: "Predictive Model Evaluation",
+        description: "Fit regression equations, validate residuals for normality, and compute business forecasting KPI metrics."
+      }
+    ],
+    codeSnippets: {
+      python: `# 1. Inferential Hypothesis Testing & Predictive Analytics
+import numpy as np
+import pandas as pd
+from scipy import stats
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score, mean_squared_error
+
+# Load Business Dataset
+df = pd.read_csv("store_sales_data.csv")
+
+# 1. Two-Sample Independent T-Test (Marketing Campaign A vs B)
+group_a = df[df["Campaign"] == "A"]["Revenue"]
+group_b = df[df["Campaign"] == "B"]["Revenue"]
+
+t_stat, p_val = stats.ttest_ind(group_a, group_b)
+print(f"Independent T-Test: t-statistic = {t_stat:.4f}, p-value = {p_val:.4e}")
+if p_val < 0.05:
+    print("Decision: Reject H0 — Significant difference between marketing campaigns.")
+else:
+    print("Decision: Fail to reject H0 — No significant performance difference.")
+
+# 2. One-Way ANOVA across 3 Store Formats (Urban, Suburban, Rural)
+f_val, anova_p = stats.f_oneway(
+    df[df["Store_Type"] == "Urban"]["Revenue"],
+    df[df["Store_Type"] == "Suburban"]["Revenue"],
+    df[df["Store_Type"] == "Rural"]["Revenue"]
+)
+print(f"One-Way ANOVA: F-value = {f_val:.4f}, p-value = {anova_p:.4e}")
+
+# 3. Multiple Linear Regression Forecasting
+X = df[["Ad_Spend", "Foot_Traffic", "Discount_Rate"]]
+y = df["Revenue"]
+
+reg = LinearRegression()
+reg.fit(X, y)
+predictions = reg.predict(X)
+
+print(f"R-Squared Score: {r2_score(y, predictions):.4f}")
+print(f"RMSE: {np.sqrt(mean_squared_error(y, predictions)):.2f}")`
+    },
+    complexityAnalysis: {
+      timeComplexity: "Descriptive Stats: O(N); ANOVA: O(N); OLS Linear Regression: O(N * P^2 + P^3) where P is features",
+      spaceComplexity: "O(N * P) DataFrame memory storage",
+      notes: "Feature normalization ensures that gradient descent and regression solver coefficients converge uniformly without numerical instability."
+    },
+    vivaQuestions: [
+      {
+        question: "When do we use a Z-test instead of a T-test?",
+        answer: "A Z-test is used when the population variance (sigma) is known, or when the sample size N is sufficiently large (typically N >= 30) due to the Central Limit Theorem. A T-test is used when population variance is unknown and sample size is small (N < 30).",
+        category: "Hypothesis Testing"
+      },
+      {
+        question: "What does an F-Statistic in ANOVA represent?",
+        answer: "The F-statistic is the ratio of variance between groups to the variance within groups (F = MSB / MSW). An F-value significantly greater than 1 indicates that group means differ by more than expected by random chance.",
+        category: "ANOVA"
+      },
+      {
+        question: "What is the interpretation of an R-squared value of 0.85?",
+        answer: "An R-squared of 0.85 indicates that 85% of the total variance in the dependent variable (e.g. Sales) is explained by the independent predictor variables in the regression model.",
+        category: "Regression"
+      }
+    ],
+    realWorldApplications: [
+      "A/B testing optimization for e-commerce checkout page conversion rates",
+      "Supply chain safety stock optimization based on demand distribution skewness and lead times",
+      "Customer lifetime value (CLV) regression modeling and churn risk scoring"
+    ],
+    practiceProblems: [
+      {
+        title: "Employee Absenteeism ANOVA",
+        difficulty: "Medium",
+        description: "Conduct a One-Way ANOVA test in Python to determine if there is a statistically significant difference in mean absenteeism hours across Morning, Evening, and Night shifts."
+      },
+      {
+        title: "Retail Demand Forecasting Model",
+        difficulty: "Hard",
+        description: "Develop a multiple linear regression model that predicts weekly grocery demand incorporating lag features, promotional discounts, and local temperature."
+      }
+    ]
   }
 };

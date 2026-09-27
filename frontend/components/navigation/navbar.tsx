@@ -145,13 +145,21 @@ export function Navbar() {
         {/* Top White Strip: Logo + Search & Contact */}
         <div className="w-full bg-white dark:bg-zinc-950 border-b border-slate-200 dark:border-zinc-800">
           <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
-            {/* Left: Official Virtual Lab Logo (Enlarged as requested) */}
-            <Link href="/" className="flex items-center gap-2 group select-none py-1">
+            {/* Left: Official V.S.B. Engineering College Logo & Department */}
+            <Link href="/" className="flex items-center gap-3 group select-none py-1">
               <img
-                src="/virtual-lab-logo.png"
-                alt="Virtual Lab"
+                src="/vsb-logo.png"
+                alt="VSB Engineering College"
                 className="h-12 sm:h-14 md:h-16 w-auto max-h-[64px] object-contain transition-transform duration-200 group-hover:scale-105"
               />
+              <div className="flex flex-col">
+                <span className="font-extrabold text-sm sm:text-base md:text-lg text-slate-900 dark:text-white tracking-tight leading-tight">
+                  V.S.B. ENGINEERING COLLEGE
+                </span>
+                <span className="text-[11px] sm:text-xs md:text-sm font-semibold text-[#0284c7] dark:text-[#38bdf8] tracking-tight leading-tight">
+                  Department of Artificial Intelligence and Data Science
+                </span>
+              </div>
             </Link>
 
             {/* Right: Search Bar & Contact Links */}

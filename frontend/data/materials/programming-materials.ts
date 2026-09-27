@@ -650,5 +650,171 @@ print("Parsed GPA:", parsed_record["gpa"])`
         description: "Read a paragraph of text, strip punctuation, and use a dictionary to count and print the occurrences of each word."
       }
     ]
+  },
+  "c-programming-lab-manual": {
+    id: "c-programming-lab-manual",
+    title: "Programming in C Laboratory Manual",
+    subject: "C Programming Lab",
+    provider: "Department of Artificial Intelligence and Data Science",
+    source: "VSB Engineering College Autonomous Curriculum (R2023 / R2021)",
+    subtitle: "Complete Manual: Control Flow, Arrays, Matrices, Functions, Pointers, Structures & File Streams",
+    category: "Academic Laboratory Manual",
+    readTime: "45 mins",
+    difficulty: "Beginner",
+    simulatorUrl: "/labs/c-programming",
+    simulatorName: "C Code Runner & Visualizer",
+    overview:
+      "This official laboratory manual for Programming in C provides structured, step-by-step experiments aligned with autonomous curriculum requirements. Students develop foundational procedural problem-solving skills covering branching logic, nested loops, multi-dimensional array operations, recursive algorithms, pointer memory addressing, heterogeneous structures, and disk file stream I/O.",
+    learningObjectives: [
+      "Master structured procedural logic using arithmetic operators, conditional branching, and iteration constructs",
+      "Perform multi-dimensional matrix operations including matrix multiplication, transposition, and symmetric testing",
+      "Design modular programs with user-defined functions, call-by-value vs call-by-reference, and recursion",
+      "Manage memory addressing and heap allocation using pointers and dynamic memory routines (malloc, free)",
+      "Implement persistent record management systems utilizing C structures and file streams (fopen, fread, fwrite)"
+    ],
+    tags: ["C Programming", "Pointers", "Arrays", "Structures", "File Streams", "Lab Manual", "VSB Engineering College"],
+    keyConcepts: [
+      {
+        title: "1. Control Flow & Looping Constructs",
+        description:
+          "Foundational building blocks of algorithmic computation in structured procedural languages.",
+        points: [
+          "Conditionals: if, if-else, nested if-else ladders, and jump-table switch-case statements.",
+          "Loops: Entry-controlled loops (for, while) test conditions prior to execution; Exit-controlled loop (do-while) executes at least once."
+        ]
+      },
+      {
+        title: "2. Pointers & Dynamic Memory Architecture",
+        description:
+          "Pointers hold physical memory addresses, allowing direct byte-level hardware manipulation and dynamic heap growth.",
+        points: [
+          "Address Operator (&) vs Dereference Operator (*): &x returns memory address; *ptr accesses value stored at address.",
+          "Dynamic Memory: malloc(bytes) allocates uninitialized heap memory; calloc(n, size) initializes memory to zero; free(ptr) prevents memory leaks."
+        ]
+      },
+      {
+        title: "3. Heterogeneous Structures & Disk File Streams",
+        description:
+          "Structures group diverse data types under a single entity, while file I/O enables persistent non-volatile data storage.",
+        points: [
+          "struct: Memory size equals sum of individual member sizes plus compiler alignment padding bytes.",
+          "File Modes: 'r' (read-only), 'w' (overwrite/create), 'a' (append without truncation), 'rb'/'wb' (binary streams)."
+        ]
+      }
+    ],
+    algorithmSteps: [
+      {
+        step: 1,
+        title: "Problem Decomposition",
+        description: "Analyze problem input/output constraints, identify data types, and design the step-by-step procedural algorithm."
+      },
+      {
+        step: 2,
+        title: "Variable & Pointer Initialization",
+        description: "Declare variables with explicit data types, initialize pointer references, and verify boundary limits."
+      },
+      {
+        step: 3,
+        title: "Structured Implementation",
+        description: "Write modular C functions with clear parameter contracts, validating memory allocation returns against NULL."
+      },
+      {
+        step: 4,
+        title: "Stream Cleanup & Deallocation",
+        description: "Explicitly invoke free() for allocated heap blocks and fclose() for file pointers to prevent resource leaks."
+      }
+    ],
+    codeSnippets: {
+      c: `/* 1. Student Record File Management System */
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Student {
+    int rollNo;
+    char name[50];
+    float marks;
+};
+
+void writeStudentRecords(const char *filename) {
+    FILE *fp = fopen(filename, "w");
+    if (fp == NULL) {
+        printf("Error opening file for writing!\\n");
+        return;
+    }
+
+    struct Student s1 = {101, "Aarav", 92.5};
+    struct Student s2 = {102, "Bhavna", 88.0};
+
+    fprintf(fp, "%d %s %.2f\\n", s1.rollNo, s1.name, s1.marks);
+    fprintf(fp, "%d %s %.2f\\n", s2.rollNo, s2.name, s2.marks);
+
+    fclose(fp);
+    printf("Records written successfully to %s\\n", filename);
+}
+
+void readStudentRecords(const char *filename) {
+    FILE *fp = fopen(filename, "r");
+    if (fp == NULL) {
+        printf("Error opening file for reading!\\n");
+        return;
+    }
+
+    struct Student s;
+    printf("\\n--- Student Records from Disk ---\\n");
+    printf("%-10s %-20s %-10s\\n", "Roll No", "Name", "Marks");
+    printf("----------------------------------------\\n");
+    while (fscanf(fp, "%d %s %f", &s.rollNo, s.name, &s.marks) == 3) {
+        printf("%-10d %-20s %-10.2f\\n", s.rollNo, s.name, s.marks);
+    }
+
+    fclose(fp);
+}
+
+int main() {
+    const char *dataFile = "students.txt";
+    writeStudentRecords(dataFile);
+    readStudentRecords(dataFile);
+    return 0;
+}`
+    },
+    complexityAnalysis: {
+      timeComplexity: "Matrix Multiplication: O(N * M * P); Recursive Fibonacci: O(2^N); Linear Search: O(N)",
+      spaceComplexity: "O(1) auxiliary space for pointer-based in-place algorithms; O(N) stack frames for deep recursion",
+      notes: "Compiler optimizations (-O2/-O3 in GCC) replace tail-recursive calls with iterative loops, eliminating stack overflow risk."
+    },
+    vivaQuestions: [
+      {
+        question: "What is the difference between call-by-value and call-by-reference in C?",
+        answer: "In call-by-value, a copy of the actual argument value is passed to the function parameter; changes made inside do not affect the caller. In call-by-reference (simulated via pointers), memory addresses are passed; modifying *ptr directly updates the caller's variable.",
+        category: "Functions"
+      },
+      {
+        question: "What is a dangling pointer and how do you prevent it?",
+        answer: "A dangling pointer points to a memory location that has already been deallocated using free(). It can be prevented by explicitly setting ptr = NULL immediately after free(ptr).",
+        category: "Pointers"
+      },
+      {
+        question: "What does fopen() return if a file cannot be opened?",
+        answer: "fopen() returns a NULL pointer. Code should always verify 'if (fp == NULL)' prior to reading or writing to prevent segmentation faults.",
+        category: "File I/O"
+      }
+    ],
+    realWorldApplications: [
+      "Operating system kernels (Linux, FreeBSD) written in C for direct hardware memory control",
+      "Embedded microcontrollers and firmware in automotive ABS and medical pacemakers",
+      "Database storage engine internals and file serialization drivers"
+    ],
+    practiceProblems: [
+      {
+        title: "Dynamic Matrix Multiplication with Pointers",
+        difficulty: "Medium",
+        description: "Allocate memory dynamically for two 2D matrices using pointer-to-pointer (int **), compute their matrix product, and deallocate all row pointers."
+      },
+      {
+        title: "Binary File Record Appender",
+        difficulty: "Hard",
+        description: "Create an application that appends binary struct records to disk using fwrite() and searches for a record by ID using fseek() and fread()."
+      }
+    ]
   }
 };

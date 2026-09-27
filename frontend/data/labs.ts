@@ -107,25 +107,25 @@ export const DISCIPLINES_DATA: Discipline[] = [
 
 export const LABS_DATA: Lab[] = [
   // ==========================================
-  // 1. DATA SCIENCE & ANALYTICS
+  // 1. BUSINESS ANALYTICS
   // ==========================================
   {
     id: "data-science-analytics",
     code: "AD8482",
-    name: "Data Science and Analytics Laboratory",
-    shortTitle: "DSAL",
+    name: "Business Analytics Laboratory",
+    shortTitle: "BAL",
     discipline: "Artificial Intelligence & Data Science",
     disciplineSlug: "aids",
-    shortDesc: "Master statistical hypothesis testing (Z-test, T-test, ANOVA), NumPy/Pandas pipelines, regression, logistic models, and time series forecasting.",
-    description: "The Data Science & Analytics Virtual Laboratory provides an interactive Python statistical computing suite: NumPy multi-dimensional array vectorization, Pandas DataFrame wrangling, Matplotlib visualization, descriptive variability metrics, hypothesis testing (Z-test, T-test, ANOVA), linear/logistic predictive models, and time series decomposition.",
+    shortDesc: "Master descriptive, diagnostic, predictive, and prescriptive analytics: EDA, clustering, sentiment, predictive regression, decision trees, optimization, and Tableau dashboards.",
+    description: "The Business Analytics Virtual Laboratory provides an interactive computational analytics suite: descriptive analytics, predictive regression and classification, time series forecasting, prescriptive LP optimization with PuLP, interactive Tableau dashboard design, and an end-to-end retail/fintech capstone project.",
     institute: "VSB Engineering College, Karur",
     department: "Department of Artificial Intelligence & Data Science",
     difficulty: "Intermediate",
-    experimentsCount: 11,
+    experimentsCount: 15,
     rating: 4.96,
     ratingsCount: 360,
     iconName: "BarChart3",
-    tags: ["NumPy", "Pandas", "Matplotlib", "Z-Test", "ANOVA", "Regression", "Time Series"],
+    tags: ["Descriptive Analytics", "Clustering", "Predictive Modeling", "Decision Trees", "Linear Programming", "Tableau", "Capstone"],
     bannerGradient: "from-violet-700 via-indigo-950 to-slate-950",
     videoUrl: "https://www.youtube-nocookie.com/embed/QUT1VHiLmmI",
     englishVideo: {
@@ -957,7 +957,7 @@ export const LABS_DATA: Lab[] = [
   },
 
   // ==========================================
-  // 8. C PROGRAMMING (NPTEL 8-WEEK AI&DS TRACK)
+  // 8. C PROGRAMMING
   // ==========================================
   {
     id: "c-programming",
@@ -980,10 +980,10 @@ export const LABS_DATA: Lab[] = [
     videoUrl: "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
     englishVideo: {
       url: "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0",
-      title: "NPTEL C Programming 8-Week Complete Lecture & Practical Series",
-      description: "Comprehensive 8-Week NPTEL curriculum video suite covering C compilation pipeline, operators, loops, recursion, *(a+i) pointer mechanics, dynamic memory, structures, and examination practice.",
+      title: "C Programming 8-Week Complete Lecture & Practical Series",
+      description: "Comprehensive 8-Week curriculum video suite covering C compilation pipeline, operators, loops, recursion, *(a+i) pointer mechanics, dynamic memory, structures, and examination practice.",
       duration: "8 Weekly Modules (Full Course)",
-      channel: "NPTEL / C Programming Master Academy",
+      channel: "AI&DS Foundation / C Programming Master Academy",
       timestamps: [
         { time: "Week 1", seconds: 0, title: "Week 1: Introduction, Variables, Data Types & Formatted I/O", url: "https://www.youtube.com/watch?v=KJgsSFOSQv0", embedUrl: "https://www.youtube-nocookie.com/embed/KJgsSFOSQv0", category: "Week 1: Fundamentals", description: "C program structure, GCC compilation pipeline, printf/scanf, and basic calculations." },
         { time: "Week 2", seconds: 0, title: "Week 2: Operators, Precedence & Decision Making (if-else, switch)", url: "https://www.youtube.com/watch?v=5bV_Q2u_0eA", embedUrl: "https://www.youtube-nocookie.com/embed/5bV_Q2u_0eA", category: "Week 2: Operators & Logic", description: "Operator precedence, short-circuit evaluation, largest of three, and electricity bill calculation." },
@@ -992,13 +992,13 @@ export const LABS_DATA: Lab[] = [
         { time: "Week 5", seconds: 0, title: "Week 5: Arrays, *(a+i) Pointer Arithmetic & Matrix Multiplication", url: "https://www.youtube.com/watch?v=2PgYwA_k4qY", embedUrl: "https://www.youtube-nocookie.com/embed/2PgYwA_k4qY", category: "Week 5: Arrays & Pointers", description: "Contiguous arrays, *(a+i) address dereferencing, searching, sorting, and 2D matrix multiplication." },
         { time: "Week 6", seconds: 0, title: "Week 6: Dynamic Memory Allocation (malloc/free) & Disk File I/O", url: "https://www.youtube.com/watch?v=VCIVXPoiLpU", embedUrl: "https://www.youtube-nocookie.com/embed/VCIVXPoiLpU", category: "Week 6: Memory & Files", description: "Heap allocation with malloc/calloc, memory leak prevention, fopen, fprintf, and fscanf." },
         { time: "Week 7", seconds: 0, title: "Week 7: Structures, Typedef & Singly Linked List Implementation", url: "https://www.youtube.com/watch?v=TxjIlqW1wZc", embedUrl: "https://www.youtube-nocookie.com/embed/TxjIlqW1wZc", category: "Week 7: Structs & Lists", description: "Heterogeneous struct records, structure pointers (->), and Singly Linked List node insertion/deletion." },
-        { time: "Week 8", seconds: 0, title: "Week 8: Complete Revision & NPTEL Comprehensive Examination", url: "https://www.youtube.com/watch?v=MZvdVLbT-rM", embedUrl: "https://www.youtube-nocookie.com/embed/MZvdVLbT-rM", category: "Week 8: Exam Prep", description: "7-Day practice plan, high-yield diagnostic questions, mistake analysis, and NPTEL mock exam." }
+        { time: "Week 8", seconds: 0, title: "Week 8: Complete Revision & Comprehensive Examination", url: "https://www.youtube.com/watch?v=MZvdVLbT-rM", embedUrl: "https://www.youtube-nocookie.com/embed/MZvdVLbT-rM", category: "Week 8: Exam Prep", description: "7-Day practice plan, high-yield diagnostic questions, mistake analysis, and comprehensive mock exam." }
       ]
     },
     tamilVideo: {
       url: "https://www.youtube-nocookie.com/embed/Zi_n_mE3pEM",
-      title: "NPTEL C Programming Complete Tutorial in Tamil",
-      description: "Complete C programming masterclass in Tamil aligned with NPTEL curriculum covering data types, control flow, functions, pointers, arrays, memory management, and file streams.",
+      title: "C Programming Complete Tutorial in Tamil",
+      description: "Complete C programming masterclass in Tamil aligned with autonomous curriculum covering data types, control flow, functions, pointers, arrays, memory management, and file streams.",
       duration: "7h 45m (15 Chapters)",
       channel: "Tamil C Series",
       timestamps: [
@@ -1015,16 +1015,16 @@ export const LABS_DATA: Lab[] = [
         { time: "5:24:15", seconds: 19455, title: "Week 6: Dynamic Memory Allocation (malloc, calloc, free)", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=19455s", category: "Week 6 Memory" },
         { time: "6:01:40", seconds: 21700, title: "Week 7: Structures, Unions & Array of Structs", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=21700s", category: "Week 7 Structs" },
         { time: "6:36:20", seconds: 23780, title: "Week 6: File Handling: fopen, fprintf, fscanf, fclose", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=23780s", category: "Week 6 Files" },
-        { time: "7:10:00", seconds: 25800, title: "Week 8: Comprehensive NPTEL Review & Best Practices", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=25800s", category: "Week 8 Review" }
+        { time: "7:10:00", seconds: 25800, title: "Week 8: Comprehensive Review & Best Practices", url: "https://www.youtube.com/watch?v=Zi_n_mE3pEM&t=25800s", category: "Week 8 Review" }
       ]
     },
     playlists: [
       {
-        title: "NPTEL C Programming Complete Course (English)",
+        title: "C Programming Complete Course (English)",
         url: "https://www.youtube.com/playlist?list=PLBlnK6fEyqRggZZgYpPMUxdY1CYkZtARR",
         embedUrl: "https://www.youtube-nocookie.com/embed/videoseries?list=PLBlnK6fEyqRggZZgYpPMUxdY1CYkZtARR",
         language: "English",
-        channel: "Neso Academy / NPTEL",
+        channel: "Neso Academy / Engineering Academy",
         videoCount: "8 Weekly Chapters",
         description: "Variables, operators, recursion, *(a+i) pointers, dynamic memory, structs, and file streams."
       },

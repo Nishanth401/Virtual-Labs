@@ -8,6 +8,7 @@ import {
   DSATopicOverview,
   DSATopicResources,
   DSATopicNavigation,
+  PersistentVLabToolbar,
 } from "./dsa-topic-article";
 import { MultiLangCodeViewer } from "@/components/visualizer/code/multi-lang-code-viewer";
 import { SqlCompiler } from "./sql-compiler";
@@ -122,6 +123,9 @@ export function DSARoadmap({ labId = "data-structures", sidebar }: DSARoadmapPro
           />
         </div>
       )}
+
+      {/* Persistent Bottom-Right Quick Navigation Toolbar */}
+      <PersistentVLabToolbar />
     </div>
   );
 }

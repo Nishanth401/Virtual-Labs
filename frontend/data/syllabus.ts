@@ -393,13 +393,13 @@ export const SYLLABUS_MAPPINGS_DATA: UniversitySyllabus[] = [
     ]
   },
 
-  // 8. C PROGRAMMING LABORATORY (NPTEL 8-WEEK AI&DS TRACK)
+  // 8. C PROGRAMMING LABORATORY
   {
-    university: "NPTEL SWAYAM & Anna University (Regulation 2021)",
-    courseCode: "CS3151 / NPTEL-C",
-    courseTitle: "NPTEL C Programming 8-Week AI&DS Laboratory",
+    university: "V.S.B. Engineering College (Autonomous) & Anna University (Regulation 2021/2023)",
+    courseCode: "GE3171 / CS3151",
+    courseTitle: "Programming in C Laboratory",
     semester: "Semester 1 (B.Tech AI & DS / Engineering)",
-    regulations: "NPTEL / R2021",
+    regulations: "Autonomous / R2021",
     units: [
       {
         unit: "Weeks 1–2",
@@ -421,12 +421,12 @@ export const SYLLABUS_MAPPINGS_DATA: UniversitySyllabus[] = [
       },
       {
         unit: "Weeks 6–8",
-        title: "Dynamic Memory, File Streams, Structures, Linked Lists & NPTEL Mock Exam",
+        title: "Dynamic Memory, File Streams, Structures, Linked Lists & Final Practical Evaluation",
         topics: [
           "Dynamic heap memory: malloc, calloc, realloc, free, memory leak prevention, and dangling pointers",
           "Disk file persistence: fopen, fclose, fprintf, fscanf, and student database storage",
           "Heterogeneous composite structs, structure pointers (->), Singly Linked List dynamic node manipulation",
-          "7-Day NPTEL revision plan, mistake analysis, and comprehensive NPTEL Mock Examination"
+          "7-Day revision plan, mistake analysis, and comprehensive Model Practical Examination"
         ]
       }
     ]
