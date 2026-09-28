@@ -3,6 +3,11 @@
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { StudentProfile } from "@/lib/supabase";
+import {
+  evaluateStudentProgress,
+  generateGmailReminderUrl,
+} from "@/lib/student-lab-progress";
+import { updateStudentProgressInCloud } from "@/lib/supabase-multitenant";
 import { LABS_DATA, Lab } from "@/data/labs";
 import { EXPERIMENTS_DATA, Experiment } from "@/data/experiments";
 import { CODING_PROBLEMS, CodingProblem } from "@/data/coding-sheets";
@@ -307,8 +312,8 @@ export function StudentAnalyticsModal({
   const studentName = student?.name || "Student";
   const studentInitial = (studentName.charAt(0) || "S").toUpperCase();
   const studentReg = student?.registerNumber || "N/A";
-  const studentDept = student?.department || "General Engineering";
-  const studentClass = student?.className || student?.yearSemester || student?.year || "Semester VI";
+  const evalData = student ? evaluateStudentProgress(student) : null;
+  const studentClass = evalData ? `${evalData.studentYear} (${evalData.cohort})` : (student?.className || "II AIDS");
   const studentEmail = student?.email || "student@vlab.edu";
 
   return (
@@ -378,7 +383,18 @@ export function StudentAnalyticsModal({
               </div>
             </div>
 
-            <div className="flex items-center gap-2 self-start sm:self-center">
+            <div className="flex flex-wrap items-center gap-2 self-start sm:self-center">
+              {student && (
+                <Button
+                  size="sm"
+                  onClick={() => window.open(generateGmailReminderUrl(student), "_blank")}
+                  className="h-8 text-xs font-bold gap-1.5 bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-700 hover:to-amber-700 text-white shadow-sm cursor-pointer"
+                  title="Send official Gmail lab completion reminder to this student"
+                >
+                  <Mail className="h-3.5 w-3.5" />
+                  <span>Send Gmail Reminder</span>
+                </Button>
+              )}
               <Button
                 size="sm"
                 variant="outline"
@@ -390,6 +406,63 @@ export function StudentAnalyticsModal({
               </Button>
             </div>
           </div>
+
+          {/* Active Semester Lab Status Banner */}
+          {student && (() => {
+            const evalData = evaluateStudentProgress(student);
+            return (
+              <div className="mt-4 p-3.5 rounded-xl border border-primary/20 bg-primary/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-foreground">
+                      {evalData.studentYear} ({evalData.cohort}) • Active Term: {evalData.semester}
+                    </span>
+                    <Badge variant="outline" className={`text-[10px] font-bold ${
+                      evalData.isFullyCompleted ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/30" : "bg-amber-500/10 text-amber-600 border-amber-500/30"
+                    }`}>
+                      {evalData.completedCount} of {evalData.totalRequired} Labs Completed ({evalData.percentage}%)
+                    </Badge>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-1.5 text-[11px] text-muted-foreground">
+                    <span className="font-semibold text-foreground">Pending Labs:</span>
+                    {evalData.pendingLabs.length > 0 ? (
+                      evalData.pendingLabs.map(l => (
+                        <span key={l.id} className="font-mono bg-amber-500/10 text-amber-800 dark:text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/20 text-[10px]">
+                          {l.code} {l.shortName}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="text-emerald-600 font-semibold">All mandatory semester labs completed!</span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={async () => {
+                      const targetLab = evalData.pendingLabs[0];
+                      if (targetLab) {
+                        const newExps = [...(student.completedExperiments || []), targetLab.id];
+                        await updateStudentProgressInCloud(student.registerNumber, newExps);
+                        student.completedExperiments = newExps;
+                        alert(`Updated online in Supabase: Marked ${targetLab.code} (${targetLab.shortName}) completed for ${student.name}!`);
+                      } else {
+                        await updateStudentProgressInCloud(student.registerNumber, []);
+                        student.completedExperiments = [];
+                        alert(`Reset progress online in Supabase to 0 for ${student.name}!`);
+                      }
+                      window.location.reload();
+                    }}
+                    className="h-7 text-[11px] font-semibold gap-1 bg-background hover:bg-muted"
+                  >
+                    <span>{evalData.pendingLabs.length > 0 ? `Mark Next Lab Done (${evalData.pendingLabs[0]?.code})` : "Reset Progress to 0"}</span>
+                  </Button>
+                </div>
+              </div>
+            );
+          })()}
 
           {/* Quick Metrics Strip */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-5">

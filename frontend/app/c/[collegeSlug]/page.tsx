@@ -175,7 +175,7 @@ export default function CollegePortalPage({ params }: CollegePortalPageProps) {
         ...(studentProfile || {
           uid: currentUid,
           email,
-          completedExperiments: ["bubble-sort", "stack-operations"],
+          completedExperiments: [],
           completedProblems: [],
           starredProblems: [],
           problemNotes: {},

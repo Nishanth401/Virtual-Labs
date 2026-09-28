@@ -920,31 +920,30 @@ export async function deleteCollegeAnnouncement(id: string, collegeSlug: string)
 
 // --- 6. Tenant-Scoped Student Profiles ---
 export async function getStudentsByCollege(collegeSlug: string): Promise<StudentProfile[]> {
-  const cleanSlug = collegeSlug.trim().toLowerCase();
+  const cleanSlug = (collegeSlug || "vsb").trim().toLowerCase();
   try {
-    // Attempt filtered DB query
-    let query = supabase.from("profiles").select("*");
-    
-    // If querying specific college, filter by college_slug or fallback to default vsb
-    if (cleanSlug !== "all") {
-      query = query.or(`college_slug.eq.${cleanSlug},and(college_slug.is.null,register_number.ilike.9225%)`);
-    }
+    // 1. Primary Query: Supabase profiles table
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .order("register_number", { ascending: true });
 
-    const { data, error } = await query.order("last_active", { ascending: false });
     if (!error && data && data.length > 0) {
       return data.map((d) => ({
-        uid: d.id,
+        uid: d.id || d.register_number,
         name: d.name,
         registerNumber: d.register_number,
-        email: d.email,
-        collegeSlug: d.college_slug || "vsb",
-        collegeName: d.college_name || "VSB Engineering College",
+        email: d.email || `${d.register_number}@vsb.ac.in`,
+        collegeSlug: "vsb",
+        collegeName: "VSB Engineering College",
         department: d.department || "Artificial Intelligence & Data Science",
-        yearSemester: d.year_semester || "Year III / Semester VI",
-        year: d.year || undefined,
-        className: d.class_name || undefined,
-        profileCompleted: d.profile_completed || Boolean(d.register_number && !d.register_number.startsWith("STUDENT")),
-        completedExperiments: d.completed_experiments || [],
+        yearSemester: d.year_semester || (d.class_name?.includes("IV AIDS") ? "Year IV / Semester VII" : d.class_name?.includes("III AIDS") ? "Year III / Semester V" : "Year II / Semester III"),
+        year: d.year || (d.year_semester?.includes("Year IV") ? "IV Year" : d.year_semester?.includes("Year III") ? "III Year" : "II Year"),
+        className: d.class_name || (d.year_semester?.includes("Year IV") ? "IV AIDS" : d.year_semester?.includes("Year III") ? "III AIDS" : "II AIDS"),
+        cohort: d.class_name || (d.year_semester?.includes("Year IV") ? "IV AIDS" : d.year_semester?.includes("Year III") ? "III AIDS" : "II AIDS"),
+        advisor: d.advisor || "Faculty Advisor",
+        profileCompleted: true,
+        completedExperiments: Array.isArray(d.completed_experiments) ? d.completed_experiments : [],
         completedProblems: d.completed_problems || [],
         starredProblems: d.starred_problems || [],
         problemNotes: d.problem_notes || {},
@@ -954,9 +953,47 @@ export async function getStudentsByCollege(collegeSlug: string): Promise<Student
         lastActive: d.last_active || new Date().toISOString()
       }));
     }
-  } catch {}
+  } catch (e) {
+    console.warn("Profiles query encountered error, falling back to students table:", e);
+  }
 
-  // LocalStorage scan fallback for demo / sandbox
+  // 2. Secondary Fallback: Supabase students table
+  try {
+    const { data: stData, error: stErr } = await supabase
+      .from("students")
+      .select("*")
+      .order("register_number", { ascending: true });
+
+    if (!stErr && stData && stData.length > 0) {
+      return stData.map((s) => ({
+        uid: s.register_number,
+        name: s.name,
+        registerNumber: s.register_number,
+        email: s.email || `${s.register_number}@vsb.ac.in`,
+        collegeSlug: "vsb",
+        collegeName: "VSB Engineering College",
+        department: s.department || "Artificial Intelligence & Data Science",
+        yearSemester: s.cohort === "II AIDS" ? "Year II / Semester III" : s.cohort === "III AIDS" ? "Year III / Semester V" : "Year IV / Semester VII",
+        year: s.year,
+        className: s.class_name || s.cohort,
+        cohort: s.cohort,
+        advisor: s.advisor,
+        profileCompleted: true,
+        completedExperiments: [],
+        completedProblems: [],
+        starredProblems: [],
+        problemNotes: {},
+        quizScores: {},
+        feedbacks: {},
+        createdAt: s.created_at || new Date().toISOString(),
+        lastActive: s.last_active || new Date().toISOString()
+      }));
+    }
+  } catch (e) {
+    console.warn("Students fallback table failed:", e);
+  }
+
+  // 3. LocalStorage scan fallback for demo / sandbox
   if (typeof window !== "undefined") {
     const results: StudentProfile[] = [];
     for (let i = 0; i < localStorage.length; i++) {
@@ -965,10 +1002,7 @@ export async function getStudentsByCollege(collegeSlug: string): Promise<Student
         try {
           const item = JSON.parse(localStorage.getItem(key) || "{}");
           if (item?.uid) {
-            const itemCollege = (item.collegeSlug || "vsb").toLowerCase();
-            if (cleanSlug === "all" || itemCollege === cleanSlug) {
-              results.push(item);
-            }
+            results.push(item);
           }
         } catch {}
       }
@@ -977,6 +1011,35 @@ export async function getStudentsByCollege(collegeSlug: string): Promise<Student
   }
 
   return [];
+}
+
+export async function updateStudentProgressInCloud(registerNumber: string, completedExperiments: string[]): Promise<boolean> {
+  try {
+    const { error } = await supabase
+      .from("profiles")
+      .update({
+        completed_experiments: completedExperiments,
+        last_active: new Date().toISOString()
+      })
+      .or(`id.eq.${registerNumber},register_number.eq.${registerNumber}`);
+    
+    if (typeof window !== "undefined") {
+      const localKey = `vlab_student_${registerNumber}`;
+      const local = localStorage.getItem(localKey);
+      if (local) {
+        try {
+          const parsed = JSON.parse(local);
+          parsed.completedExperiments = completedExperiments;
+          parsed.lastActive = new Date().toISOString();
+          localStorage.setItem(localKey, JSON.stringify(parsed));
+        } catch {}
+      }
+    }
+    return !error;
+  } catch (e) {
+    console.error("Cloud progress update error:", e);
+    return false;
+  }
 }
 
 // =========================================================================

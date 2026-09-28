@@ -181,7 +181,7 @@ export function StudentAuthDialog({ open, onOpenChange }: StudentAuthDialogProps
           ...(studentProfile || {
             uid: currentUid,
             email,
-            completedExperiments: ["bubble-sort", "stack-operations"],
+            completedExperiments: [],
             completedProblems: [],
             starredProblems: [],
             problemNotes: {},

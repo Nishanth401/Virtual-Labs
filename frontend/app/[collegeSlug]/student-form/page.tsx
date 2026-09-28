@@ -49,7 +49,7 @@ export default function StudentFormPage({ params }: StudentFormProps) {
       collegeSlug: college.slug,
       profileCompleted: true,
       email: `${regNo.trim().toLowerCase()}@college.edu`,
-      completedExperiments: ["bubble-sort", "stack-operations"],
+      completedExperiments: [],
       completedProblems: [],
       starredProblems: [],
       problemNotes: {},

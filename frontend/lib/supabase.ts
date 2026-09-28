@@ -133,9 +133,6 @@ export async function saveStudentProfileToDb(profile: StudentProfile): Promise<v
         name: profile.name,
         register_number: profile.registerNumber,
         email: profile.email,
-        college_slug: profile.collegeSlug || "vsb",
-        college_name: profile.collegeName || "VSB Engineering College",
-        college_code: profile.collegeCode || "9225",
         department: profile.department,
         year_semester: profile.yearSemester,
         year: profile.year,
@@ -155,6 +152,24 @@ export async function saveStudentProfileToDb(profile: StudentProfile): Promise<v
     if (typeof window !== "undefined") {
       localStorage.setItem(`vlab_student_${profile.uid}`, JSON.stringify(profile));
     }
+  }
+}
+
+export async function updateStudentCompletedExperimentsInDb(
+  registerNumberOrId: string,
+  completedExperiments: string[]
+): Promise<boolean> {
+  try {
+    const { error } = await supabase
+      .from("profiles")
+      .update({
+        completed_experiments: completedExperiments,
+        last_active: new Date().toISOString()
+      })
+      .or(`id.eq.${registerNumberOrId},register_number.eq.${registerNumberOrId}`);
+    return !error;
+  } catch {
+    return false;
   }
 }
 
@@ -185,11 +200,11 @@ export async function getStudentProfileFromDb(uid: string): Promise<StudentProfi
           email: stData.email,
           department: stData.department,
           year: stData.year,
-          year_semester: stData.cohort === "II AIDS" ? "Year II / Semester IV" : stData.cohort === "III AIDS" ? "Year III / Semester VI" : "Year IV / Semester VIII",
+          year_semester: stData.cohort === "II AIDS" ? "Year II / Semester III" : stData.cohort === "III AIDS" ? "Year III / Semester V" : "Year IV / Semester VII",
           class_name: stData.class_name,
           advisor: stData.advisor,
           profile_completed: true,
-          completed_experiments: ["bubble-sort", "stack-operations"],
+          completed_experiments: [],
           created_at: stData.created_at,
           last_active: stData.last_active
         };
@@ -206,11 +221,11 @@ export async function getStudentProfileFromDb(uid: string): Promise<StudentProfi
         collegeName: data.college_name || "VSB Engineering College",
         collegeCode: data.college_code || "9225",
         department: data.department || "Artificial Intelligence & Data Science",
-        yearSemester: data.year_semester || "Year III / Semester VI",
+        yearSemester: data.year_semester || "Year III / Semester V",
         year: data.year || undefined,
         className: data.class_name || undefined,
         profileCompleted: true,
-        completedExperiments: data.completed_experiments || ["bubble-sort", "stack-operations"],
+        completedExperiments: data.completed_experiments || [],
         completedProblems: data.completed_problems || [],
         starredProblems: data.starred_problems || [],
         problemNotes: data.problem_notes || {},

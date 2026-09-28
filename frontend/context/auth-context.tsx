@@ -10,6 +10,7 @@ import {
   deleteStudentAccountFromDb,
   verifyEmailAndRegNoUnique,
   markExperimentCompletedInDb,
+  updateStudentCompletedExperimentsInDb,
   toggleProblemCompletedInDb,
   toggleProblemStarredInDb,
   saveProblemNoteInDb
@@ -189,7 +190,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         className: resolvedCohort,
         yearSemester: `${resolvedYear} / ${resolvedSemester}`,
         profileCompleted: true,
-        completedExperiments: ["bubble-sort", "stack-operations"],
+        completedExperiments: [],
         completedProblems: [],
         starredProblems: [],
         problemNotes: {},
@@ -222,7 +223,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             collegeName: act.collegeName,
             profileCompleted: true,
             email: `${(act.regNo || "student").toLowerCase()}@college.edu`,
-            completedExperiments: ["bubble-sort", "stack-operations"],
+            completedExperiments: [],
             completedProblems: [],
             starredProblems: [],
             problemNotes: {},
@@ -470,6 +471,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         resolvedCohort = "III AIDS";
       }
 
+      const existingDb = await getStudentProfileFromDb(authenticatedStudent.registerNumber);
+      const studentCompletedExps = existingDb?.completedExperiments || [];
+
       const profileObj: StudentProfile = {
         uid: authenticatedStudent.registerNumber,
         name: authenticatedStudent.name,
@@ -486,13 +490,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         yearSemester: `${resolvedYear} / ${resolvedSemester}`,
         advisor: authenticatedStudent.advisor,
         profileCompleted: true,
-        completedExperiments: ["bubble-sort", "stack-operations"],
-        completedProblems: [],
-        starredProblems: [],
-        problemNotes: {},
-        quizScores: {},
-        feedbacks: {},
-        createdAt: new Date().toISOString(),
+        completedExperiments: studentCompletedExps,
+        completedProblems: existingDb?.completedProblems || [],
+        starredProblems: existingDb?.starredProblems || [],
+        problemNotes: existingDb?.problemNotes || {},
+        quizScores: existingDb?.quizScores || {},
+        feedbacks: existingDb?.feedbacks || {},
+        createdAt: existingDb?.createdAt || new Date().toISOString(),
         lastActive: new Date().toISOString()
       };
 
@@ -595,7 +599,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       lastActive: new Date().toISOString()
     };
     setStudentProfile(updated);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(`vlab_student_${studentProfile.uid}`, JSON.stringify(updated));
+      localStorage.setItem("vsb_student_profile_data", JSON.stringify(updated));
+    }
     await markExperimentCompletedInDb(studentProfile.uid, experimentId);
+    await updateStudentCompletedExperimentsInDb(studentProfile.registerNumber, updated.completedExperiments);
   };
 
   const saveQuizScore = async (quizId: string, score: number, total: number) => {
@@ -688,7 +697,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         ...(studentProfile || {
           uid: currentUid,
           email,
-          completedExperiments: ["bubble-sort", "stack-operations"],
+          completedExperiments: [],
           completedProblems: [],
           starredProblems: [],
           problemNotes: {},
