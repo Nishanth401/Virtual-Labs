@@ -18,6 +18,7 @@ import { useTheme } from 'next-themes'
 interface BinaryTreeDisplayProps {
   tree: BinaryTreeNode | null
   highlightedNodes: string[]
+  traversalHistory?: number[]
 }
 
 const nodeTypes = {

@@ -315,6 +315,7 @@ export function StudentAnalyticsModal({
   const evalData = student ? evaluateStudentProgress(student) : null;
   const studentClass = evalData ? `${evalData.studentYear} (${evalData.cohort})` : (student?.className || "II AIDS");
   const studentEmail = student?.email || "student@vlab.edu";
+  const studentDept = student?.department || "Artificial Intelligence & Data Science";
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

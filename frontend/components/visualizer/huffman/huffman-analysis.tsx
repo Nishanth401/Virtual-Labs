@@ -73,7 +73,7 @@ function findNode(node: HuffmanNode | null, value: string): HuffmanNode | null {
   return findNode(node.left, value) || findNode(node.right, value)
 }
 
-export function HuffmanAnalysis({ tree, codes }: { tree: HuffmanNode | null, codes: Map<string, string> }) {
+export function HuffmanAnalysis({ tree = null, codes, originalText, frequencies }: { tree?: HuffmanNode | null; codes: Map<string, string>; originalText?: string; frequencies?: Map<string, number> }) {
   const analysis = analyzeTree(tree, codes)
 
   if (!tree) {

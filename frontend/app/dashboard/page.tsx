@@ -196,14 +196,7 @@ export default function StudentDashboardPage() {
                 <LogOut className="h-3.5 w-3.5" /> Sign Out
               </Button>
 
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleDeleteAccount}
-                className="text-xs gap-1.5 text-rose-500 hover:text-rose-600 hover:bg-rose-500/10 border-rose-500/30"
-              >
-                <Trash2 className="h-3.5 w-3.5" /> Delete Account
-              </Button>
+
             </motion.div>
           </div>
 

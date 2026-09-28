@@ -731,9 +731,6 @@ V.S.B. Engineering College`;
                   <h1 className="text-xl sm:text-2xl font-black font-heading text-foreground">
                     Institutional Control Room
                   </h1>
-                  <Badge variant="outline" className="text-[10px] uppercase font-mono bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
-                    Live Cloud Sync
-                  </Badge>
                 </div>
                 <p className="text-xs text-muted-foreground">
                   Customizing and uploading laboratory manuals, verified study materials, simulators, and video tutorials for accredited colleges.

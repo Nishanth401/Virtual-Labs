@@ -95,7 +95,7 @@ function analyzeTree(tree: BinaryTreeNode | null): TreeAnalysis {
   return analysis
 }
 
-export function BinaryTreeAnalysis({ tree }: { tree: BinaryTreeNode | null }) {
+export function BinaryTreeAnalysis({ tree, traversalHistory }: { tree: BinaryTreeNode | null; traversalHistory?: number[] }) {
   const analysis = analyzeTree(tree)
 
   if (!tree) {

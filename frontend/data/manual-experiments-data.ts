@@ -10,8 +10,12 @@ export interface ManualExperimentItem {
   aim: string;
   algorithm: string[];
   codeSnippet?: string;
+  code?: string;          // alias used by lab-manual-experiments-browser
   outputSnippet?: string;
+  sampleInput?: string;   // used by lab-manual-experiments-browser
+  sampleOutput?: string;  // used by lab-manual-experiments-browser
   vivaVoce: { question: string; answer: string }[];
+  vivaQuestions?: { question: string; answer: string }[]; // alias used by lab-manual-experiments-browser
 }
 
 export const MANUAL_EXPERIMENTS_DATA: Record<string, ManualExperimentItem[]> = {

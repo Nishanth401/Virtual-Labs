@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 interface CompressionDisplayProps {
   originalText: string
   codes: Map<string, string>
+  frequencies?: Map<string, number>
 }
 
 export function CompressionDisplay({ originalText, codes }: CompressionDisplayProps) {

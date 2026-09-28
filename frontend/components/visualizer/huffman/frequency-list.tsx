@@ -4,10 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface FrequencyListProps {
   frequencies: Map<string, number>
-  totalChars: number
+  totalChars?: number
 }
 
 export function FrequencyList({ frequencies, totalChars }: FrequencyListProps) {
+  const total = totalChars ?? Array.from(frequencies.values()).reduce((a, b) => a + b, 0)
   if (frequencies.size === 0) return null
 
   // Sort frequencies by count (descending)
@@ -36,7 +37,7 @@ export function FrequencyList({ frequencies, totalChars }: FrequencyListProps) {
                 </span>
               </div>
               <span className="text-xs text-muted-foreground">
-                {((count / totalChars) * 100).toFixed(1)}%
+                {((count / total) * 100).toFixed(1)}%
               </span>
             </div>
           ))}

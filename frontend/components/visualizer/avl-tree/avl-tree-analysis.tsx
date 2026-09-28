@@ -17,6 +17,12 @@ interface TreeAnalysis {
   perfectlyBalanced: boolean
 }
 
+interface AVLTreeAnalysisProps {
+  tree: AVLTreeNode | null
+  rotationHistory?: string[]
+  traversalHistory?: number[]
+}
+
 function analyzeAVLTree(tree: AVLTreeNode | null): TreeAnalysis {
   const analysis: TreeAnalysis = {
     nodeCount: 0,
@@ -85,7 +91,7 @@ function analyzeAVLTree(tree: AVLTreeNode | null): TreeAnalysis {
   return analysis
 }
 
-export function AVLTreeAnalysis({ tree }: { tree: AVLTreeNode | null }) {
+export function AVLTreeAnalysis({ tree, rotationHistory, traversalHistory }: AVLTreeAnalysisProps) {
   const analysis = analyzeAVLTree(tree)
 
   if (!tree) {

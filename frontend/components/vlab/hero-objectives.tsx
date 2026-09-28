@@ -145,38 +145,12 @@ export function HeroObjectives() {
     <section className="relative min-h-[80vh] flex flex-col justify-between pt-28 sm:pt-36 pb-14 px-4 sm:px-6 bg-white dark:bg-zinc-950 border-b border-slate-200/80 dark:border-zinc-800 overflow-hidden">
       {/* 2-BLOCK HERO CONTAINER (Block 1: Video | Block 2: Slow-Motion Animated Text) */}
       <div className="container max-w-[1440px] mx-auto relative z-10 pt-2 sm:pt-4">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
-          
-          {/* ========================================================================= */}
-          {/* 1st BLOCK (LEFT): VSB ENGINEERING COLLEGE EMBLEM                          */}
-          {/* ========================================================================= */}
-          <div className="lg:col-span-5 w-full flex justify-center order-2 lg:order-1">
-            <div className="relative w-full max-w-sm sm:max-w-md flex flex-col justify-center items-center p-4 sm:p-6 bg-transparent">
-              <div className="relative w-48 h-48 sm:w-60 sm:h-60 flex items-center justify-center">
-                <img
-                  src="/vsb-logo.png"
-                  alt="V.S.B. Engineering College Logo"
-                  className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal select-none hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              <div className="mt-4 text-center space-y-1">
-                <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#0284c7] dark:text-[#38bdf8] block">
-                  An Autonomous Institution • Karur
-                </span>
-                <h3 className="text-sm sm:text-base font-black text-foreground">
-                  V.S.B. ENGINEERING COLLEGE
-                </h3>
-                <p className="text-xs text-muted-foreground font-semibold">
-                  Department of Artificial Intelligence and Data Science
-                </p>
-              </div>
-            </div>
-          </div>
+        <div className="grid grid-cols-1 gap-8 items-center">
 
           {/* ========================================================================= */}
-          {/* 2nd BLOCK (RIGHT): SLOW-MOTION ANIMATED VIRTUAL LAB SENTENCE              */}
+          {/* SLOW-MOTION ANIMATED VIRTUAL LAB SENTENCE                                 */}
           {/* ========================================================================= */}
-          <div className="lg:col-span-7 w-full text-left space-y-7 order-1 lg:order-2 pl-0 lg:pl-6">
+          <div className="w-full text-left space-y-7">
             {/* Slow-Motion Animated Sentence Block */}
             <AnimatePresence mode="wait">
               <motion.div
