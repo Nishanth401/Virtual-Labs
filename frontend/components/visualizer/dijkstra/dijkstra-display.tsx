@@ -22,6 +22,8 @@ interface DijkstraDisplayProps {
   path: string[]
   currentNode: string | null
   visitedNodes: Set<string>
+  startNodeId?: string | null
+  endNodeId?: string | null
 }
 
 const nodeTypes = {

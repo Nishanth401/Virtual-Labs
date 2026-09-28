@@ -241,7 +241,7 @@ export function LabManualExperimentsBrowser({
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => handleCopyCode(exp.expNo, exp.code)}
+                        onClick={() => handleCopyCode(exp.expNo, exp.code ?? exp.codeSnippet ?? "")}
                         className="h-7 text-xs rounded-none gap-1.5 border-border"
                       >
                         {isCopied ? (

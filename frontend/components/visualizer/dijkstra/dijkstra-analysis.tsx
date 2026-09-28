@@ -7,14 +7,16 @@ interface DijkstraAnalysisProps {
   graph: Graph
   distances: Map<string, number>
   path: string[]
-  visitedNodes: Set<string>
+  visitedNodes?: Set<string>
+  startNodeId?: string | null
+  endNodeId?: string | null
 }
 
 export function DijkstraAnalysis({
   graph,
   distances,
   path,
-  visitedNodes,
+  visitedNodes = new Set<string>(),
 }: DijkstraAnalysisProps) {
   const shortestDistance = path.length > 0 ? distances.get(path[path.length - 1]) : null
 

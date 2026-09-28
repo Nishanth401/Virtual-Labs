@@ -18,7 +18,7 @@ import { useEffect, useCallback, useState } from 'react'
 interface HuffmanDisplayProps {
   tree: HuffmanNode | null
   highlightedNodes: string[]
-  message: string
+  message?: string
 }
 
 const nodeTypes = {
