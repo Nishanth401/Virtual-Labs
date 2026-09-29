@@ -328,7 +328,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'dsa-complete-guide',
     subject: 'Data Structures & Algorithms',
-    title: 'Data Structures & Algorithms Complete Academic Handbook (GeeksforGeeks)',
+    title: 'Data Structures & Algorithms Complete Academic Handbook',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -336,12 +336,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/dsa-complete-guide',
     description: 'Comprehensive academic guide to linear and non-linear data structures: Arrays, Linked Lists, Stacks, Queues, Trees, and Graph traversals.',
     downloadCount: 1540,
-    tags: ['DSA', 'Arrays', 'Linked List', 'Stacks', 'Queues', 'GeeksforGeeks']
+    tags: ['DSA', 'Arrays', 'Linked List', 'Stacks', 'Queues']
   },
   {
     id: 'dsa-trees-gfg',
     subject: 'Data Structures & Algorithms',
-    title: 'Self-Balancing Trees & Graph Traversal Master Guide (GeeksforGeeks)',
+    title: 'Self-Balancing Trees & Graph Traversal Master Guide',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -349,12 +349,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/dsa-trees-gfg',
     description: 'Binary Search Trees (BST), AVL balance factor rotations, Graph BFS/DFS, and Dijkstra shortest path algorithm.',
     downloadCount: 1220,
-    tags: ['Trees', 'AVL Tree', 'Graphs', 'BFS', 'DFS', 'GeeksforGeeks']
+    tags: ['Trees', 'AVL Tree', 'Graphs', 'BFS', 'DFS']
   },
   {
     id: 'dsa-java-w3schools',
     subject: 'Data Structures & Algorithms',
-    title: 'Java Data Structures & Collections Framework Reference (W3Schools)',
+    title: 'Java Data Structures & Collections Framework Reference',
     unit: 'All',
     type: 'Lab Material',
     provider: 'W3Schools',
@@ -362,7 +362,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/dsa-java-w3schools',
     description: 'In-depth reference for Java ArrayList, LinkedList, HashMap, HashSet, Iterators, and computational complexity.',
     downloadCount: 1480,
-    tags: ['Java', 'Collections', 'ArrayList', 'HashMap', 'W3Schools']
+    tags: ['Java', 'Collections', 'ArrayList', 'HashMap']
   },
   {
     id: 'dsa-lab-manual',
@@ -384,7 +384,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'os-scheduling-gfg',
     subject: 'Operating Systems',
-    title: 'CPU Scheduling Algorithms & Gantt Chart Simulation (GeeksforGeeks)',
+    title: 'CPU Scheduling Algorithms & Gantt Chart Simulation',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -392,12 +392,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/os-scheduling-gfg',
     description: 'Preemptive vs Non-Preemptive scheduling, FCFS, Shortest Job First (SJF), Round Robin (RR), and priority scheduling.',
     downloadCount: 1380,
-    tags: ['OS', 'Scheduling', 'FCFS', 'Round Robin', 'Gantt Chart', 'GeeksforGeeks']
+    tags: ['OS', 'Scheduling', 'FCFS', 'Round Robin', 'Gantt Chart']
   },
   {
     id: 'os-deadlocks-gfg',
     subject: 'Operating Systems',
-    title: 'Process Synchronization, Semaphores & Banker\'s Algorithm (GeeksforGeeks)',
+    title: 'Process Synchronization, Semaphores & Banker\'s Algorithm',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -405,12 +405,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/os-deadlocks-gfg',
     description: 'Mutex locks, counting semaphores, Producer-Consumer problem, Dining Philosophers, and Banker\'s safety state evaluation.',
     downloadCount: 1190,
-    tags: ['OS', 'Semaphores', 'Deadlock', 'Bankers Algorithm', 'GeeksforGeeks']
+    tags: ['OS', 'Semaphores', 'Deadlock', 'Bankers Algorithm']
   },
   {
     id: 'os-linux-w3schools',
     subject: 'Operating Systems',
-    title: 'Linux Shell Scripting & POSIX System Calls Handbook (W3Schools)',
+    title: 'Linux Shell Scripting & POSIX System Calls Handbook',
     unit: 'All',
     type: 'Lab Material',
     provider: 'W3Schools',
@@ -418,7 +418,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/os-linux-w3schools',
     description: 'Comprehensive guide for POSIX shell commands, system calls (fork, exec, wait), pipe IPC, and permissions.',
     downloadCount: 1160,
-    tags: ['Linux', 'Shell', 'POSIX', 'Fork', 'W3Schools']
+    tags: ['Linux', 'Shell', 'POSIX', 'Fork']
   },
   {
     id: 'os-lab-manual',
@@ -440,7 +440,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'dbms-sql-guide',
     subject: 'Database Management Systems',
-    title: 'Relational Database Design, Complex Joins & PL/SQL Stored Procedures (GeeksforGeeks)',
+    title: 'Relational Database Design, Complex Joins & PL/SQL Stored Procedures',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -448,12 +448,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/dbms-sql-guide',
     description: 'Relational schema definitions, INNER/LEFT/RIGHT/FULL OUTER JOINs, grouping aggregations, and PL/SQL triggers.',
     downloadCount: 1650,
-    tags: ['DBMS', 'SQL', 'Joins', 'PL/SQL', 'Triggers', 'GeeksforGeeks']
+    tags: ['DBMS', 'SQL', 'Joins', 'PL/SQL', 'Triggers']
   },
   {
     id: 'dbms-normalization-gfg',
     subject: 'Database Management Systems',
-    title: 'Database Normalization & Relational Integrity Guide (GeeksforGeeks)',
+    title: 'Database Normalization & Relational Integrity Guide',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -461,12 +461,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/dbms-normalization-gfg',
     description: 'Functional dependencies, lossless join decomposition, 1NF, 2NF, 3NF, BCNF, and ACID transaction isolation levels.',
     downloadCount: 1340,
-    tags: ['DBMS', 'Normalization', '1NF', 'BCNF', 'ACID', 'GeeksforGeeks']
+    tags: ['DBMS', 'Normalization', '1NF', 'BCNF', 'ACID']
   },
   {
     id: 'dbms-w3schools-sql',
     subject: 'Database Management Systems',
-    title: 'SQL Syntax, DDL/DML Commands & Query Handbook (W3Schools)',
+    title: 'SQL Syntax, DDL/DML Commands & Query Handbook',
     unit: 'All',
     type: 'Lab Material',
     provider: 'W3Schools',
@@ -474,7 +474,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/dbms-w3schools-sql',
     description: 'Complete SQL syntax cheatsheet, table constraints, aggregation functions, views, and index creation.',
     downloadCount: 1780,
-    tags: ['SQL', 'W3Schools', 'Constraints', 'Aggregations', 'Indexes']
+    tags: ['SQL', 'Constraints', 'Aggregations', 'Indexes']
   },
   {
     id: 'dbms-lab-manual',
@@ -496,7 +496,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'ml-foundations-gfg',
     subject: 'Machine Learning',
-    title: 'Concept Learning & Candidate-Elimination Algorithm (GeeksforGeeks)',
+    title: 'Concept Learning & Candidate-Elimination Algorithm',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -504,12 +504,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/ml-foundations-gfg',
     description: 'Find-S algorithm, version spaces, specific and general boundary sets, positive and negative training instances.',
     downloadCount: 1210,
-    tags: ['Machine Learning', 'Candidate Elimination', 'Find-S', 'GeeksforGeeks']
+    tags: ['Machine Learning', 'Candidate Elimination', 'Find-S']
   },
   {
     id: 'ml-decision-trees-gfg',
     subject: 'Machine Learning',
-    title: 'Decision Tree Induction & ID3 Algorithm (GeeksforGeeks)',
+    title: 'Decision Tree Induction & ID3 Algorithm',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -517,12 +517,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/ml-decision-trees-gfg',
     description: 'Shannon Entropy, Information Gain, iterative dichotomizer 3 (ID3), recursive tree splitting, and tree pruning.',
     downloadCount: 1390,
-    tags: ['Machine Learning', 'Decision Trees', 'Entropy', 'Information Gain', 'GeeksforGeeks']
+    tags: ['Machine Learning', 'Decision Trees', 'Entropy', 'Information Gain']
   },
   {
     id: 'ml-neural-networks-gfg',
     subject: 'Machine Learning',
-    title: 'Artificial Neural Networks & Backpropagation (GeeksforGeeks)',
+    title: 'Artificial Neural Networks & Backpropagation',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -530,12 +530,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/ml-neural-networks-gfg',
     description: 'Multi-layer perceptron (MLP), forward feed, gradient descent weight updates, sigmoid activation, and backpropagation.',
     downloadCount: 1470,
-    tags: ['Neural Networks', 'Backpropagation', 'Perceptron', 'Deep Learning', 'GeeksforGeeks']
+    tags: ['Neural Networks', 'Backpropagation', 'Perceptron', 'Deep Learning']
   },
   {
     id: 'ml-w3schools',
     subject: 'Machine Learning',
-    title: 'Python Machine Learning & Scikit-Learn Guide (W3Schools)',
+    title: 'Python Machine Learning & Scikit-Learn Guide',
     unit: 'All',
     type: 'Lab Material',
     provider: 'W3Schools',
@@ -543,12 +543,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/ml-w3schools',
     description: 'Linear regression, polynomial regression, KNN classification, train-test splitting, and evaluation metrics in Python.',
     downloadCount: 1530,
-    tags: ['Machine Learning', 'Scikit-Learn', 'Regression', 'KNN', 'W3Schools']
+    tags: ['Machine Learning', 'Scikit-Learn', 'Regression', 'KNN']
   },
   {
     id: 'ai-search-gfg',
     subject: 'Artificial Intelligence',
-    title: 'Informed Search Strategies & Heuristic Evaluation (GeeksforGeeks)',
+    title: 'Informed Search Strategies & Heuristic Evaluation',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -556,12 +556,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/ai-search-gfg',
     description: 'Evaluation function f(n) = g(n) + h(n), admissible heuristics, 8-puzzle Manhattan solver, and Greedy Best-First Search.',
     downloadCount: 1140,
-    tags: ['AI', 'A* Search', 'Heuristics', '8-Puzzle', 'GeeksforGeeks']
+    tags: ['AI', 'A* Search', 'Heuristics', '8-Puzzle']
   },
   {
     id: 'ai-minimax-gfg',
     subject: 'Artificial Intelligence',
-    title: 'Adversarial Game Search & Alpha-Beta Pruning (GeeksforGeeks)',
+    title: 'Adversarial Game Search & Alpha-Beta Pruning',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -569,12 +569,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/ai-minimax-gfg',
     description: 'Minimax decision rules, zero-sum game trees, branch pruning conditions (alpha >= beta), and Tic-Tac-Toe engine.',
     downloadCount: 1090,
-    tags: ['AI', 'Minimax', 'Alpha-Beta Pruning', 'Game Theory', 'GeeksforGeeks']
+    tags: ['AI', 'Minimax', 'Alpha-Beta Pruning', 'Game Theory']
   },
   {
     id: 'ai-w3schools-python',
     subject: 'Artificial Intelligence',
-    title: 'Python for AI & Heuristic Solvers Handbook (W3Schools)',
+    title: 'Python for AI & Heuristic Solvers Handbook',
     unit: 'All',
     type: 'Lab Material',
     provider: 'W3Schools',
@@ -582,7 +582,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/ai-w3schools-python',
     description: 'Priority queues, state-space representations, heuristic cost functions, and CSP backtracking algorithms in Python.',
     downloadCount: 1280,
-    tags: ['AI', 'Python', 'Priority Queue', 'CSP', 'W3Schools']
+    tags: ['AI', 'Python', 'Priority Queue', 'CSP']
   },
   {
     id: 'dl-lab-manual',
@@ -604,7 +604,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'data-science-numpy-gfg',
     subject: 'Data Science & Analytics',
-    title: 'NumPy Vectorized Computing & Multi-Dimensional Array Processing (GeeksforGeeks)',
+    title: 'NumPy Vectorized Computing & Multi-Dimensional Array Processing',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -612,12 +612,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/data-science-numpy-gfg',
     description: 'Contiguous memory ndarray layout, vectorization vs loops, broadcasting rules, matrix math, and boolean masking.',
     downloadCount: 1410,
-    tags: ['Data Science', 'NumPy', 'Vectorization', 'Broadcasting', 'GeeksforGeeks']
+    tags: ['Data Science', 'NumPy', 'Vectorization', 'Broadcasting']
   },
   {
     id: 'data-science-pandas-gfg',
     subject: 'Data Science & Analytics',
-    title: 'Pandas DataFrames, Data Cleaning & Feature Wrangling (GeeksforGeeks)',
+    title: 'Pandas DataFrames, Data Cleaning & Feature Wrangling',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -625,12 +625,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/data-science-pandas-gfg',
     description: 'DataFrame structures, missing value imputation (fillna, dropna), group-by split-apply-combine, and pivot tables.',
     downloadCount: 1520,
-    tags: ['Data Science', 'Pandas', 'Data Cleaning', 'GroupBy', 'GeeksforGeeks']
+    tags: ['Data Science', 'Pandas', 'Data Cleaning', 'GroupBy']
   },
   {
     id: 'data-science-stats-gfg',
     subject: 'Data Science & Analytics',
-    title: 'Applied Statistical Hypothesis Testing — Z-Test, T-Test & ANOVA (GeeksforGeeks)',
+    title: 'Applied Statistical Hypothesis Testing — Z-Test, T-Test & ANOVA',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -638,12 +638,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/data-science-stats-gfg',
     description: 'Null and alternative hypotheses, p-value decision rule, two-sample Z/T-tests, F-distribution, and One-Way ANOVA.',
     downloadCount: 1290,
-    tags: ['Data Science', 'Statistics', 'Hypothesis Testing', 'Z-Test', 'T-Test', 'ANOVA', 'GeeksforGeeks']
+    tags: ['Data Science', 'Statistics', 'Hypothesis Testing', 'Z-Test', 'T-Test', 'ANOVA']
   },
   {
     id: 'data-science-w3schools',
     subject: 'Data Science & Analytics',
-    title: 'Python for Data Science & Matplotlib Visualization Handbook (W3Schools)',
+    title: 'Python for Data Science & Matplotlib Visualization Handbook',
     unit: 'All',
     type: 'Lab Material',
     provider: 'W3Schools',
@@ -651,7 +651,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/data-science-w3schools',
     description: 'Hands-on tutorial for NumPy math functions, Pandas data exploration, and publication-ready Matplotlib graphs.',
     downloadCount: 1610,
-    tags: ['Data Science', 'Matplotlib', 'Pandas', 'W3Schools']
+    tags: ['Data Science', 'Matplotlib', 'Pandas']
   },
   {
     id: 'business-analytics-manual',
@@ -673,7 +673,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'big-data-hadoop-gfg',
     subject: 'Big Data Analytics',
-    title: 'Hadoop Architecture, HDFS Distributed Storage & MapReduce Paradigm (GeeksforGeeks)',
+    title: 'Hadoop Architecture, HDFS Distributed Storage & MapReduce Paradigm',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -681,12 +681,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/big-data-hadoop-gfg',
     description: 'Characteristics of Big Data (5 V\'s), HDFS NameNode/DataNode architecture, block replication, and MapReduce WordCount.',
     downloadCount: 1120,
-    tags: ['Big Data', 'Hadoop', 'HDFS', 'MapReduce', 'GeeksforGeeks']
+    tags: ['Big Data', 'Hadoop', 'HDFS', 'MapReduce']
   },
   {
     id: 'big-data-spark-gfg',
     subject: 'Big Data Analytics',
-    title: 'Apache Spark & PySpark In-Memory Analytics & RDDs (GeeksforGeeks)',
+    title: 'Apache Spark & PySpark In-Memory Analytics & RDDs',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -694,12 +694,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/big-data-spark-gfg',
     description: 'In-memory distributed computing, RDD transformations vs actions, Spark SQL DataFrames, and lazy evaluation engine.',
     downloadCount: 1260,
-    tags: ['Big Data', 'Spark', 'PySpark', 'RDD', 'Spark SQL', 'GeeksforGeeks']
+    tags: ['Big Data', 'Spark', 'PySpark', 'RDD', 'Spark SQL']
   },
   {
     id: 'big-data-mongodb-w3schools',
     subject: 'Big Data Analytics',
-    title: 'NoSQL MongoDB Aggregation Pipeline & Document Store (W3Schools)',
+    title: 'NoSQL MongoDB Aggregation Pipeline & Document Store',
     unit: 'All',
     type: 'Lab Material',
     provider: 'W3Schools',
@@ -707,7 +707,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/big-data-mongodb-w3schools',
     description: 'JSON document model, BSON data types, CRUD queries, multi-stage aggregation pipelines ($match, $group, $sort).',
     downloadCount: 1330,
-    tags: ['MongoDB', 'NoSQL', 'Aggregation', 'JSON', 'W3Schools']
+    tags: ['MongoDB', 'NoSQL', 'Aggregation', 'JSON']
   },
   {
     id: 'bigdata-lab-manual',
@@ -729,7 +729,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'cloud-computing-gfg',
     subject: 'Cloud Service Management',
-    title: 'Cloud Computing Architectures, Service Models & Virtualization (GeeksforGeeks)',
+    title: 'Cloud Computing Architectures, Service Models & Virtualization',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -737,12 +737,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/cloud-computing-gfg',
     description: 'IaaS, PaaS, SaaS delivery models, public/private deployment models, hypervisors, and elastic cloud scalability.',
     downloadCount: 1180,
-    tags: ['Cloud', 'IaaS', 'PaaS', 'SaaS', 'Virtualization', 'GeeksforGeeks']
+    tags: ['Cloud', 'IaaS', 'PaaS', 'SaaS', 'Virtualization']
   },
   {
     id: 'cloud-docker-gfg',
     subject: 'Cloud Service Management',
-    title: 'Containerization with Docker & Container Orchestration (GeeksforGeeks)',
+    title: 'Containerization with Docker & Container Orchestration',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -750,12 +750,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/cloud-docker-gfg',
     description: 'Container virtualization vs VMs, Dockerfile syntax, layer caching, Docker Compose, and Kubernetes pod architectures.',
     downloadCount: 1420,
-    tags: ['Docker', 'DevOps', 'Containers', 'Kubernetes', 'GeeksforGeeks']
+    tags: ['Docker', 'DevOps', 'Containers', 'Kubernetes']
   },
   {
     id: 'cloud-w3schools-aws',
     subject: 'Cloud Service Management',
-    title: 'AWS Cloud Infrastructure & Serverless Microservices Guide (W3Schools)',
+    title: 'AWS Cloud Infrastructure & Serverless Microservices Guide',
     unit: 'All',
     type: 'Lab Material',
     provider: 'W3Schools',
@@ -763,7 +763,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/cloud-w3schools-aws',
     description: 'AWS EC2 compute provisioning, S3 bucket storage policies, IAM roles, and event-driven AWS Lambda microservices.',
     downloadCount: 1390,
-    tags: ['AWS', 'EC2', 'S3', 'Lambda', 'Serverless', 'W3Schools']
+    tags: ['AWS', 'EC2', 'S3', 'Lambda', 'Serverless']
   },
   {
     id: 'cloud-lab-manual',
@@ -785,7 +785,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'networks-architecture-gfg',
     subject: 'Computer Networks',
-    title: 'OSI 7-Layer & TCP/IP Protocol Stack Reference (GeeksforGeeks)',
+    title: 'OSI 7-Layer & TCP/IP Protocol Stack Reference',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -793,12 +793,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/networks-architecture-gfg',
     description: 'Encapsulation and decapsulation, headers, CRC error detection, Sliding Window flow control, and IP subnetting.',
     downloadCount: 1240,
-    tags: ['Networks', 'OSI Model', 'TCP/IP', 'CRC', 'GeeksforGeeks']
+    tags: ['Networks', 'OSI Model', 'TCP/IP', 'CRC']
   },
   {
     id: 'networks-sockets-gfg',
     subject: 'Computer Networks',
-    title: 'Network Socket Programming & Client-Server Architecture (GeeksforGeeks)',
+    title: 'Network Socket Programming & Client-Server Architecture',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -806,12 +806,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/networks-sockets-gfg',
     description: 'Berkeley sockets API, TCP 3-way handshake, reliable byte stream vs UDP datagram, and multi-client echo server in C.',
     downloadCount: 1310,
-    tags: ['Networks', 'Sockets', 'TCP', 'UDP', 'Client-Server', 'GeeksforGeeks']
+    tags: ['Networks', 'Sockets', 'TCP', 'UDP', 'Client-Server']
   },
   {
     id: 'networks-routing-gfg',
     subject: 'Computer Networks',
-    title: 'Network Routing Algorithms — Dijkstra & Distance Vector (GeeksforGeeks)',
+    title: 'Network Routing Algorithms — Dijkstra & Distance Vector',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -819,12 +819,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/networks-routing-gfg',
     description: 'Link-state shortest path routing, Bellman-Ford distance vector updates, count-to-infinity problem, and routing tables.',
     downloadCount: 1170,
-    tags: ['Networks', 'Routing', 'Dijkstra', 'Distance Vector', 'GeeksforGeeks']
+    tags: ['Networks', 'Routing', 'Dijkstra', 'Distance Vector']
   },
   {
     id: 'networks-w3schools',
     subject: 'Computer Networks',
-    title: 'Computer Networking Basics & IP Subnetting Tutorial (W3Schools)',
+    title: 'Computer Networking Basics & IP Subnetting Tutorial',
     unit: 'All',
     type: 'Lab Material',
     provider: 'W3Schools',
@@ -832,7 +832,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/networks-w3schools',
     description: 'IPv4 vs IPv6 addressing, CIDR notation, subnet masks, DNS resolution, and HTTP/HTTPS protocol mechanics.',
     downloadCount: 1450,
-    tags: ['Networks', 'Subnetting', 'IPv4', 'CIDR', 'DNS', 'W3Schools']
+    tags: ['Networks', 'Subnetting', 'IPv4', 'CIDR', 'DNS']
   },
   {
     id: 'networks-lab-manual',
@@ -854,7 +854,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'c-programming-guide',
     subject: 'C Programming',
-    title: 'C Programming Fundamentals & Structured Software Design (GeeksforGeeks)',
+    title: 'C Programming Fundamentals & Structured Software Design',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -862,12 +862,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/c-programming-guide',
     description: 'Compilation phases, data types, control flow, functions, call-by-value vs call-by-reference, and arrays.',
     downloadCount: 1680,
-    tags: ['C Programming', 'Functions', 'Compilation', 'Arrays', 'GeeksforGeeks']
+    tags: ['C Programming', 'Functions', 'Compilation', 'Arrays']
   },
   {
     id: 'c-pointers-gfg',
     subject: 'C Programming',
-    title: 'Pointers, Dynamic Memory Allocation & Structs in C (GeeksforGeeks)',
+    title: 'Pointers, Dynamic Memory Allocation & Structs in C',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -875,12 +875,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/c-pointers-gfg',
     description: 'Pointer arithmetic, dereferencing, heap memory (malloc, calloc, realloc, free), memory leaks, and linked structs.',
     downloadCount: 1590,
-    tags: ['C Programming', 'Pointers', 'Dynamic Memory', 'Malloc', 'Structs', 'GeeksforGeeks']
+    tags: ['C Programming', 'Pointers', 'Dynamic Memory', 'Malloc', 'Structs']
   },
   {
     id: 'c-programming-w3schools',
     subject: 'C Programming',
-    title: 'C Programming Syntax, Operators & File I/O Handbook (W3Schools)',
+    title: 'C Programming Syntax, Operators & File I/O Handbook',
     unit: 'All',
     type: 'Lab Material',
     provider: 'W3Schools',
@@ -888,7 +888,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/c-programming-w3schools',
     description: 'Interactive syntax reference, operators, loops, string functions, file operations (fopen, fread, fwrite), and header files.',
     downloadCount: 1820,
-    tags: ['C Programming', 'Syntax', 'File IO', 'Strings', 'W3Schools']
+    tags: ['C Programming', 'Syntax', 'File IO', 'Strings']
   },
   {
     id: 'c-programming-lab-manual',
@@ -910,7 +910,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'java-oop-gfg',
     subject: 'Java OOP',
-    title: 'Object-Oriented Programming Principles in Java (GeeksforGeeks)',
+    title: 'Object-Oriented Programming Principles in Java',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -918,12 +918,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/java-oop-gfg',
     description: 'The 4 pillars of OOP: Encapsulation, Inheritance (extends), Polymorphism (overloading/overriding), and Abstraction.',
     downloadCount: 1720,
-    tags: ['Java', 'OOP', 'Inheritance', 'Polymorphism', 'Abstraction', 'GeeksforGeeks']
+    tags: ['Java', 'OOP', 'Inheritance', 'Polymorphism', 'Abstraction']
   },
   {
     id: 'java-collections-gfg',
     subject: 'Java OOP',
-    title: 'Java Collections Framework & Generics Master Guide (GeeksforGeeks)',
+    title: 'Java Collections Framework & Generics Master Guide',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -931,12 +931,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/java-collections-gfg',
     description: 'List, Set, Map hierarchies, ArrayList vs LinkedList, HashMap hashing collisions, TreeSet Red-Black trees, and Generics.',
     downloadCount: 1490,
-    tags: ['Java', 'Collections', 'Generics', 'HashMap', 'ArrayList', 'GeeksforGeeks']
+    tags: ['Java', 'Collections', 'Generics', 'HashMap', 'ArrayList']
   },
   {
     id: 'java-oop-w3schools',
     subject: 'Java OOP',
-    title: 'Java Classes, Interfaces & Exception Handling Tutorial (W3Schools)',
+    title: 'Java Classes, Interfaces & Exception Handling Tutorial',
     unit: 'All',
     type: 'Lab Material',
     provider: 'W3Schools',
@@ -944,7 +944,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/java-oop-w3schools',
     description: 'Class syntax, constructors, access modifiers (public, private, protected), abstract classes vs interfaces, try-catch-finally.',
     downloadCount: 1640,
-    tags: ['Java', 'Classes', 'Interfaces', 'Exceptions', 'W3Schools']
+    tags: ['Java', 'Classes', 'Interfaces', 'Exceptions']
   },
   {
     id: 'oops-java-manual',
@@ -966,7 +966,7 @@ export const RESOURCES_DATA: ResourceItem[] = [
   {
     id: 'python-basics-gfg',
     subject: 'Python Programming',
-    title: 'Python Language Fundamentals & Built-in Data Structures (GeeksforGeeks)',
+    title: 'Python Language Fundamentals & Built-in Data Structures',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -974,12 +974,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/python-basics-gfg',
     description: 'Dynamic typing, mutable vs immutable types, list comprehensions, dictionary hashing, tuple unpacking, and generators.',
     downloadCount: 1850,
-    tags: ['Python', 'Basics', 'List Comprehensions', 'Dictionaries', 'GeeksforGeeks']
+    tags: ['Python', 'Basics', 'List Comprehensions', 'Dictionaries']
   },
   {
     id: 'python-oop-gfg',
     subject: 'Python Programming',
-    title: 'Python Object-Oriented Programming & Magic Dunder Methods (GeeksforGeeks)',
+    title: 'Python Object-Oriented Programming & Magic Dunder Methods',
     unit: 'All',
     type: 'Lab Material',
     provider: 'GeeksforGeeks',
@@ -987,12 +987,12 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/python-oop-gfg',
     description: 'Classes, __init__, self parameter, inheritance, Method Resolution Order (MRO), operator overloading, and decorators.',
     downloadCount: 1580,
-    tags: ['Python', 'OOP', 'Dunder Methods', 'Decorators', 'MRO', 'GeeksforGeeks']
+    tags: ['Python', 'OOP', 'Dunder Methods', 'Decorators', 'MRO']
   },
   {
     id: 'python-w3schools',
     subject: 'Python Programming',
-    title: 'Python Complete Syntax, Modules & Exception Handling Tutorial (W3Schools)',
+    title: 'Python Complete Syntax, Modules & Exception Handling Tutorial',
     unit: 'All',
     type: 'Lab Material',
     provider: 'W3Schools',
@@ -1000,6 +1000,6 @@ export const RESOURCES_DATA: ResourceItem[] = [
     fileUrl: '/resources/python-w3schools',
     description: 'Clean Python syntax cheatsheet, built-in functions, lambda expressions, module imports, and file operations.',
     downloadCount: 1910,
-    tags: ['Python', 'Syntax', 'Modules', 'Lambda', 'W3Schools']
+    tags: ['Python', 'Syntax', 'Modules', 'Lambda']
   }
 ];

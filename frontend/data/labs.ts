@@ -1153,7 +1153,7 @@ export const LABS_DATA: Lab[] = [
         description: "Language syntax, data structures, list comprehensions, and OOP in Tamil."
       }
     ],
-    semester: "Semester 1",
+    semester: "Semester 2",
     resources: [
       {
         title: "Python Core Programming, Data Types & Control Structures",
@@ -1264,7 +1264,7 @@ export const LABS_DATA: Lab[] = [
     semester: "Semester 5",
     resources: [
       {
-        title: "A* Search & Heuristic Evaluation Guide (GeeksforGeeks)",
+        title: "A* Search & Heuristic Evaluation Guide",
         source: "GeeksforGeeks",
         url: "/resources/ai-search-gfg",
         materialId: "ai-search-gfg",
@@ -1272,7 +1272,7 @@ export const LABS_DATA: Lab[] = [
         category: "Heuristic Search"
       },
       {
-        title: "Adversarial Search & Alpha-Beta Pruning (GeeksforGeeks)",
+        title: "Adversarial Search & Alpha-Beta Pruning",
         source: "GeeksforGeeks",
         url: "/resources/ai-minimax-gfg",
         materialId: "ai-minimax-gfg",
@@ -1280,7 +1280,7 @@ export const LABS_DATA: Lab[] = [
         category: "Game Theory & Search"
       },
       {
-        title: "Python for AI & Heuristic Solvers (W3Schools)",
+        title: "Python for AI & Heuristic Solvers",
         source: "W3Schools",
         url: "/resources/ai-w3schools-python",
         materialId: "ai-w3schools-python",
@@ -1371,7 +1371,7 @@ export const LABS_DATA: Lab[] = [
     semester: "Semester 5",
     resources: [
       {
-        title: "Hadoop Architecture & MapReduce Paradigm (GeeksforGeeks)",
+        title: "Hadoop Architecture & MapReduce Paradigm",
         source: "GeeksforGeeks",
         url: "/resources/big-data-hadoop-gfg",
         materialId: "big-data-hadoop-gfg",
@@ -1379,7 +1379,7 @@ export const LABS_DATA: Lab[] = [
         category: "Big Data & HDFS"
       },
       {
-        title: "Apache Spark & PySpark RDD Analytics (GeeksforGeeks)",
+        title: "Apache Spark & PySpark RDD Analytics",
         source: "GeeksforGeeks",
         url: "/resources/big-data-spark-gfg",
         materialId: "big-data-spark-gfg",
@@ -1387,7 +1387,7 @@ export const LABS_DATA: Lab[] = [
         category: "Distributed Analytics"
       },
       {
-        title: "MongoDB & NoSQL Aggregation Pipeline (W3Schools)",
+        title: "MongoDB & NoSQL Aggregation Pipeline",
         source: "W3Schools",
         url: "/resources/big-data-mongodb-w3schools",
         materialId: "big-data-mongodb-w3schools",
@@ -1479,7 +1479,7 @@ export const LABS_DATA: Lab[] = [
     semester: "Semester 5",
     resources: [
       {
-        title: "Cloud Computing & Architecture Reference (GeeksforGeeks)",
+        title: "Cloud Computing & Architecture Reference",
         source: "GeeksforGeeks",
         url: "/resources/cloud-computing-gfg",
         materialId: "cloud-computing-gfg",
@@ -1487,7 +1487,7 @@ export const LABS_DATA: Lab[] = [
         category: "Cloud Architecture"
       },
       {
-        title: "Docker Containerization & Multi-Container Guide (GeeksforGeeks)",
+        title: "Docker Containerization & Multi-Container Guide",
         source: "GeeksforGeeks",
         url: "/resources/cloud-docker-gfg",
         materialId: "cloud-docker-gfg",
@@ -1495,7 +1495,7 @@ export const LABS_DATA: Lab[] = [
         category: "DevOps & Containers"
       },
       {
-        title: "AWS Cloud Infrastructure & Serverless Microservices (W3Schools)",
+        title: "AWS Cloud Infrastructure & Serverless Microservices",
         source: "W3Schools",
         url: "/resources/cloud-w3schools-aws",
         materialId: "cloud-w3schools-aws",

@@ -2,7 +2,7 @@ export interface MaterialContent {
   id: string;
   title: string;
   subject: string;
-  provider: string; // e.g. "GeeksforGeeks Reference" | "W3Schools Reference" | "Academic Curriculum"
+  provider: string; // e.g. "Academic Reference" | "Academic Curriculum"
   source?: string;
   subtitle?: string;
   category: string;
