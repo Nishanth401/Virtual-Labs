@@ -57,8 +57,10 @@ import {
   Flame,
   ShieldCheck,
   Star,
-  MessageSquare
+  MessageSquare,
+  Image as ImageIcon,
 } from "lucide-react";
+import { OfficialScreenshotGallery } from "@/components/vlab/official-screenshot-gallery";
 
 interface LabDetailPageProps {
   params: Promise<{ labId: string }>;
@@ -69,7 +71,9 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
   const lab = LABS_DATA.find((l) => l.id === labId) || LABS_DATA[0];
   const manual = LAB_MANUALS_DATA[lab.id];
 
-  const [activeTab, setActiveTab] = useState<LabTab>("dsa-roadmap");
+  const [activeTab, setActiveTab] = useState<LabTab>(() => 
+    labId === "artificial-intelligence" ? "introduction" : "dsa-roadmap"
+  );
   const [feedbackRating, setFeedbackRating] = useState<number>(5);
   const [feedbackText, setFeedbackText] = useState<string>("");
   const [feedbackSent, setFeedbackSent] = useState<boolean>(false);
@@ -1647,6 +1651,67 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                         </Card>
                       </div>
                     </>
+                  ) : lab.id === "artificial-intelligence" ? (
+                    <Card className="border-border bg-card shadow-xs rounded-none">
+                      <CardHeader className="pb-3 border-b border-border/50">
+                        <div className="flex items-center gap-2">
+                          <Target className="h-5 w-5 text-[#0284c7] dark:text-[#38bdf8]" />
+                          <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                            {lab.name}
+                          </h2>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-6 pt-6 text-sm leading-relaxed text-foreground">
+                        <div className="space-y-3 font-sans">
+                          <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4">
+                            Objectives:
+                          </h3>
+                          <ol className="list-decimal pl-6 space-y-2.5 text-foreground text-sm font-sans">
+                            <li className="pl-1">
+                              <strong>Understand the problem formulation and basic elements of search.</strong>
+                            </li>
+                            <li className="pl-1">
+                              <strong>Learn to analyze various search techniques.</strong>
+                            </li>
+                            <li className="pl-1">
+                              <strong>Learn to build small projects using the concepts taught in the course.</strong>
+                            </li>
+                          </ol>
+                        </div>
+
+                        <div className="pt-4 border-t border-border/60 space-y-3">
+                          <h4 className="text-xs font-bold uppercase tracking-wider text-[#0284c7] font-mono">
+                            Interactive Laboratory Modules (8 Experiments)
+                          </h4>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div className="p-3.5 bg-muted/20 border border-border space-y-1">
+                              <h5 className="font-bold text-xs text-foreground">Reinforcement Learning &amp; MDPs</h5>
+                              <p className="text-xs text-muted-foreground">
+                                Formulate Markov Decision Processes, simulate dynamic programming through Policy Iteration and Value Iteration, and explore model-free Q-Learning in Gridworld.
+                              </p>
+                            </div>
+                            <div className="p-3.5 bg-muted/20 border border-border space-y-1">
+                              <h5 className="font-bold text-xs text-foreground">Uninformed &amp; Heuristic Search</h5>
+                              <p className="text-xs text-muted-foreground">
+                                Evaluate Depth First Search (DFS), Greedy Best-First Search, state space exploration, path costs, and completeness criteria.
+                              </p>
+                            </div>
+                            <div className="p-3.5 bg-muted/20 border border-border space-y-1">
+                              <h5 className="font-bold text-xs text-foreground">Adversarial Game Search</h5>
+                              <p className="text-xs text-muted-foreground">
+                                Implement Minimax game-tree search for zero-sum turn-based games, utility evaluation functions, and optimal decision making.
+                              </p>
+                            </div>
+                            <div className="p-3.5 bg-muted/20 border border-border space-y-1">
+                              <h5 className="font-bold text-xs text-foreground">Probabilistic Reasoning</h5>
+                              <p className="text-xs text-muted-foreground">
+                                Construct Directed Acyclic Graphs (DAGs) for Bayesian Networks, assign Conditional Probability Tables (CPTs), and perform exact inference.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
                   ) : (
                     <Card className="border-border bg-card shadow-xs rounded-none">
                       <CardHeader className="pb-2">
@@ -1687,21 +1752,38 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                   </CardHeader>
                   <CardContent className="space-y-6 text-sm leading-relaxed text-muted-foreground">
                     <div className="space-y-3 font-sans text-sm text-foreground">
-                      <ul className="list-disc pl-6 space-y-3">
-                        <li>
-                          <strong className="text-foreground">UG</strong>
-                          <ul className="list-disc pl-6 space-y-1 mt-1 text-muted-foreground">
-                            <li>3rd Year</li>
-                            <li>4th Year</li>
-                          </ul>
-                        </li>
-                        <li>
-                          <strong className="text-foreground">PG</strong>
-                          <ul className="list-disc pl-6 space-y-1 mt-1 text-muted-foreground">
-                            <li>Graduate Students</li>
-                          </ul>
-                        </li>
-                      </ul>
+                      {lab.id === "artificial-intelligence" ? (
+                        <ul className="list-disc pl-6 space-y-3">
+                          <li>
+                            <strong className="text-foreground">UG</strong>
+                            <ul className="list-disc pl-6 space-y-1 mt-1 text-muted-foreground">
+                              <li>2nd and 3rd year students of Computer Science and Engineering, Artificial Intelligence and Data Science, Information Technology.</li>
+                            </ul>
+                          </li>
+                          <li>
+                            <strong className="text-foreground">PG</strong>
+                            <ul className="list-disc pl-6 space-y-1 mt-1 text-muted-foreground">
+                              <li>M.Tech / M.S / Ph.D in Computer Science, Artificial Intelligence, and Data Science.</li>
+                            </ul>
+                          </li>
+                        </ul>
+                      ) : (
+                        <ul className="list-disc pl-6 space-y-3">
+                          <li>
+                            <strong className="text-foreground">UG</strong>
+                            <ul className="list-disc pl-6 space-y-1 mt-1 text-muted-foreground">
+                              <li>3rd Year</li>
+                              <li>4th Year</li>
+                            </ul>
+                          </li>
+                          <li>
+                            <strong className="text-foreground">PG</strong>
+                            <ul className="list-disc pl-6 space-y-1 mt-1 text-muted-foreground">
+                              <li>Graduate Students</li>
+                            </ul>
+                          </li>
+                        </ul>
+                      )}
                     </div>
 
                     <div className="pt-4 border-t border-border/50">
@@ -2223,32 +2305,80 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 );
               })()}
 
-              {/* TAB 6: COURSE ALIGNMENT (Screenshot 112924) */}
+              {/* TAB 6: COURSE ALIGNMENT (Screenshot 112924 & Official Portal) */}
               {activeTab === "course-alignment" && (
                 <div className="space-y-6">
-                  <Card className="border-border bg-card shadow-xs rounded-none">
-                    <CardHeader className="pb-2">
-                      <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
-                        {lab.name}
-                      </h2>
-                    </CardHeader>
-                    <CardContent className="space-y-4 text-sm leading-relaxed text-muted-foreground">
-                      <p className="text-foreground text-sm font-normal">
-                        The syllabi of this lab aligns to the following course in the AICTE / Anna University model curriculum:
-                      </p>
-                      <ol className="list-decimal pl-6 space-y-2 text-foreground font-sans text-sm">
-                        <li>
-                          <strong>{manual ? manual.courseTitle : lab.name}</strong> ({manual ? manual.courseCode : (lab.code || "PEC-CS-SXXX")}) is a mandatory laboratory practical course in {manual ? manual.department : "Artificial Intelligence and Data Science"}.
-                        </li>
-                        <li>
-                          <strong>{manual ? manual.institution : "V.S.B. Engineering College"}</strong> autonomous curriculum under {manual ? manual.regulation : "Anna University Regulation 2021/2023"}.
-                        </li>
-                        <li>
-                          <strong>Academic Session:</strong> {manual ? manual.academicYear : "Academic Practical Curriculum"} mapped with Bloom&apos;s Taxonomy levels K3, K4, and K6.
-                        </li>
-                      </ol>
-                    </CardContent>
-                  </Card>
+                  {lab.id === "artificial-intelligence" ? (
+                    <Card className="border-border bg-card shadow-xs rounded-none">
+                      <CardHeader className="pb-3 border-b border-border/50">
+                        <div className="flex items-center gap-2">
+                          <GraduationCap className="h-5 w-5 text-[#0284c7] dark:text-[#38bdf8]" />
+                          <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                            {lab.name}
+                          </h2>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-4 pt-6 text-sm leading-relaxed text-muted-foreground">
+                        <p className="text-foreground text-sm font-normal">
+                          The syllabi of this lab aligns to the following university courses (as specified on the official Virtual Labs portal):
+                        </p>
+                        <div className="space-y-3 font-sans text-sm text-foreground pt-1">
+                          <div className="p-3.5 bg-muted/20 border border-border flex items-start gap-3">
+                            <span className="flex items-center justify-center h-6 w-6 rounded-none bg-[#0284c7]/10 text-[#0284c7] font-mono text-xs font-bold shrink-0 mt-0.5">1</span>
+                            <div>
+                              <h4 className="font-bold text-foreground">Pondicherry University</h4>
+                              <p className="text-xs text-muted-foreground">Course: Artificial Intelligence (Computer Science &amp; Engineering)</p>
+                            </div>
+                          </div>
+                          <div className="p-3.5 bg-muted/20 border border-border flex items-start gap-3">
+                            <span className="flex items-center justify-center h-6 w-6 rounded-none bg-[#0284c7]/10 text-[#0284c7] font-mono text-xs font-bold shrink-0 mt-0.5">2</span>
+                            <div>
+                              <h4 className="font-bold text-foreground">Jawaharlal Nehru Technological University (JNTU)</h4>
+                              <p className="text-xs text-muted-foreground">Course: Artificial Intelligence (B.Tech CSE / IT)</p>
+                            </div>
+                          </div>
+                          <div className="p-3.5 bg-muted/20 border border-border flex items-start gap-3">
+                            <span className="flex items-center justify-center h-6 w-6 rounded-none bg-[#0284c7]/10 text-[#0284c7] font-mono text-xs font-bold shrink-0 mt-0.5">3</span>
+                            <div>
+                              <h4 className="font-bold text-foreground">Malla Reddy College of Engineering and Technology (MRCET)</h4>
+                              <p className="text-xs text-muted-foreground">Course: Artificial Intelligence Laboratory</p>
+                            </div>
+                          </div>
+                          <div className="p-3.5 bg-muted/20 border border-border flex items-start gap-3">
+                            <span className="flex items-center justify-center h-6 w-6 rounded-none bg-[#ea580c]/10 text-[#ea580c] font-mono text-xs font-bold shrink-0 mt-0.5">4</span>
+                            <div>
+                              <h4 className="font-bold text-foreground">Anna University / V.S.B. Engineering College</h4>
+                              <p className="text-xs text-muted-foreground">Course: Artificial Intelligence and Machine Learning Laboratory (B.Tech AI&amp;DS, Regulation 2021/2023)</p>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ) : (
+                    <Card className="border-border bg-card shadow-xs rounded-none">
+                      <CardHeader className="pb-2">
+                        <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                          {lab.name}
+                        </h2>
+                      </CardHeader>
+                      <CardContent className="space-y-4 text-sm leading-relaxed text-muted-foreground">
+                        <p className="text-foreground text-sm font-normal">
+                          The syllabi of this lab aligns to the following course in the AICTE / Anna University model curriculum:
+                        </p>
+                        <ol className="list-decimal pl-6 space-y-2 text-foreground font-sans text-sm">
+                          <li>
+                            <strong>{manual ? manual.courseTitle : lab.name}</strong> ({manual ? manual.courseCode : (lab.code || "PEC-CS-SXXX")}) is a mandatory laboratory practical course in {manual ? manual.department : "Artificial Intelligence and Data Science"}.
+                          </li>
+                          <li>
+                            <strong>{manual ? manual.institution : "V.S.B. Engineering College"}</strong> autonomous curriculum under {manual ? manual.regulation : "Anna University Regulation 2021/2023"}.
+                          </li>
+                          <li>
+                            <strong>Academic Session:</strong> {manual ? manual.academicYear : "Academic Practical Curriculum"} mapped with Bloom&apos;s Taxonomy levels K3, K4, and K6.
+                          </li>
+                        </ol>
+                      </CardContent>
+                    </Card>
+                  )}
 
                   <CourseAlignmentCard />
                 </div>
@@ -2564,6 +2694,13 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                       </DialogContent>
                     </Dialog>
                   </CardContent>
+                </Card>
+              )}
+
+              {/* TAB: OFFICIAL REFERENCE SCREENSHOTS (13 Artifacts from MoE IIIT Hyderabad) */}
+              {activeTab === "official-screenshots" && (
+                <Card className="border-border bg-card shadow-xs rounded-none p-4 sm:p-6">
+                  <OfficialScreenshotGallery />
                 </Card>
               )}
             </div>

@@ -16,6 +16,8 @@ import { RecursionVisualizerPanel } from "@/components/visualizer/recursion/recu
 import { LeetCodePracticeCard } from "@/components/vlab/leetcode-practice-card";
 import { SqlCompiler } from "@/components/vlab/sql-compiler";
 import { VideoTimeline, TamilVideoTimeline } from "@/components/vlab/tamil-video-timeline";
+import { PolicyIterationVisualizer } from "@/components/visualizer/ai/policy-iteration-visualizer";
+import { OfficialScreenshotGallery } from "@/components/vlab/official-screenshot-gallery";
 
 // Sub-components for 9 authentic sections
 import { LabHeaderBanner } from "@/components/vlab/lab-header-banner";
@@ -62,6 +64,7 @@ import {
   Settings2,
   Sliders,
   Star,
+  Image as ImageIcon,
 } from "lucide-react";
 
 interface PipelineInstruction {
@@ -94,6 +97,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
   const [simOutput, setSimOutput] = useState<string | null>(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
+  const [isGalleryOpen, setIsGalleryOpen] = useState<boolean>(false);
 
   // Official Instruction Studio State (Screenshot 112701)
   const [pipelineInstructions, setPipelineInstructions] = useState<PipelineInstruction[]>(DEFAULT_PIPELINE_INSTRUCTIONS);
@@ -238,6 +242,18 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
+            {(lab?.id === "artificial-intelligence" || experiment.labId === "artificial-intelligence") && (
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setIsGalleryOpen(true)}
+                className="h-8 text-xs font-bold gap-1.5 border-[#0284c7]/40 text-[#0284c7] dark:text-[#38bdf8] hover:bg-[#0284c7]/10 rounded-none cursor-pointer"
+              >
+                <ImageIcon className="h-3.5 w-3.5" />
+                <span>Official MoE Screenshots (13)</span>
+              </Button>
+            )}
             {prevExp && (
               <Button asChild variant="outline" size="sm" className="h-8 text-xs gap-1 rounded-none">
                 <Link href={`/experiments/${prevExp.slug}`}>
@@ -287,11 +303,20 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                       {experiment.sections.objective ||
                         `To analyze, visualize, and simulate the core mechanisms of ${experiment.title}, verifying step-by-step memory transitions, asymptotic time complexities, and state invariants.`}
                     </p>
-                    <ul className="list-disc pl-6 space-y-1.5 text-foreground/90 font-sans pt-1">
-                      <li>Understand operational pipeline latency, dynamic states, and memory boundaries.</li>
-                      <li>Simulate instruction flow, hazard detection, and operand bypassing mechanisms.</li>
-                      <li>Inspect asymptotic bounds across best, average, and worst-case execution paths.</li>
-                    </ul>
+                    {experiment.labId === "artificial-intelligence" ? (
+                      <ul className="list-disc pl-6 space-y-1.5 text-foreground/90 font-sans pt-1">
+                        <li>Understand the formulation of Markov Decision Processes (MDPs) with States S, Actions A, Transition Probabilities P, and Reward Functions R.</li>
+                        <li>Implement Policy Evaluation to iteratively compute state value functions V(s) under a given policy π.</li>
+                        <li>Implement Policy Improvement using the Bellman optimality operator to extract a greedy policy.</li>
+                        <li>Observe convergence to the optimal policy π* and optimal value function V* under custom discount factors and obstacles.</li>
+                      </ul>
+                    ) : (
+                      <ul className="list-disc pl-6 space-y-1.5 text-foreground/90 font-sans pt-1">
+                        <li>Understand operational pipeline latency, dynamic states, and memory boundaries.</li>
+                        <li>Simulate instruction flow, hazard detection, and operand bypassing mechanisms.</li>
+                        <li>Inspect asymptotic bounds across best, average, and worst-case execution paths.</li>
+                      </ul>
+                    )}
                   </div>
                 </div>
 
@@ -422,11 +447,68 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                     ⚠️ Critical Conditions &amp; Invariants
                   </h3>
                   <ul className="list-disc list-outside pl-5 space-y-1.5 text-foreground/90 font-sans">
-                    <li>Boundary validation on empty, single-element, and maximum buffer sizes.</li>
-                    <li>Pointer and memory integrity preservation across all transformation steps.</li>
-                    <li>Hazard mitigation ensuring deterministic state propagation without race conditions.</li>
+                    {experiment.labId === "artificial-intelligence" ? (
+                      <>
+                        <li>Convergence threshold: Policy evaluation repeats until max state difference Δ &lt; θ (typically 1e-4).</li>
+                        <li>Policy stability: Policy improvement verifies if old action equals new greedy action for every state.</li>
+                        <li>Discount factor condition: 0 ≤ γ ≤ 1 (γ &lt; 1 guarantees geometric convergence in infinite-horizon MDPs).</li>
+                      </>
+                    ) : (
+                      <>
+                        <li>Boundary validation on empty, single-element, and maximum buffer sizes.</li>
+                        <li>Pointer and memory integrity preservation across all transformation steps.</li>
+                        <li>Hazard mitigation ensuring deterministic state propagation without race conditions.</li>
+                      </>
+                    )}
                   </ul>
                 </div>
+
+                {/* Official Algorithm Pseudocode for AI Lab matching Screenshot 104435 */}
+                {experiment.labId === "artificial-intelligence" && (
+                  <div className="space-y-3 pt-3 border-t border-border/60">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4 font-heading">
+                      📜 Policy Iteration Algorithm (Sutton &amp; Barto, 2019)
+                    </h3>
+                    <div className="p-4 bg-slate-950 text-slate-100 font-mono text-xs rounded-none border border-slate-800 space-y-3 overflow-x-auto">
+                      <div className="text-emerald-400 font-bold border-b border-slate-800 pb-2">
+                        Algorithm: Policy Iteration (using iterative policy evaluation) for estimating π ≈ π*
+                      </div>
+                      <div className="space-y-1 text-slate-300 leading-relaxed">
+                        <p className="text-sky-400 font-semibold">1. Initialization:</p>
+                        <p className="pl-4">V(s) ∈ ℝ and π(s) ∈ A(s) arbitrarily for all s ∈ S; V(terminal) = 0</p>
+                        <p className="text-sky-400 font-semibold pt-1">2. Policy Evaluation:</p>
+                        <p className="pl-4">Loop:</p>
+                        <p className="pl-8">Δ ← 0</p>
+                        <p className="pl-8">Loop for each s ∈ S:</p>
+                        <p className="pl-12">v ← V(s)</p>
+                        <p className="pl-12">V(s) ← ∑_s&apos;,r p(s&apos;, r | s, π(s)) [r + γ V(s&apos;)]</p>
+                        <p className="pl-12">Δ ← max(Δ, |v - V(s)|)</p>
+                        <p className="pl-4">until Δ &lt; θ (a small positive number determining estimation accuracy)</p>
+                        <p className="text-sky-400 font-semibold pt-1">3. Policy Improvement:</p>
+                        <p className="pl-4">policy-stable ← true</p>
+                        <p className="pl-4">Loop for each s ∈ S:</p>
+                        <p className="pl-8">old-action ← π(s)</p>
+                        <p className="pl-8">π(s) ← argmax_a ∑_s&apos;,r p(s&apos;, r | s, a) [r + γ V(s&apos;)]</p>
+                        <p className="pl-8">If old-action ≠ π(s), then policy-stable ← false</p>
+                        <p className="pl-4">If policy-stable, then stop and return V ≈ V* and π ≈ π*; else go to 2</p>
+                      </div>
+                    </div>
+
+                    <div className="pt-2">
+                      <p className="text-xs text-muted-foreground mb-1.5 font-semibold">
+                        Official Textbook Formulation Reference (Screenshot 104435):
+                      </p>
+                      <div className="border border-border/80 max-w-xl bg-black/5">
+                        <img
+                          src="/artificial-intelligence-labs/Screenshot 2026-09-30 104435.png"
+                          alt="Sutton and Barto Policy Iteration Algorithm"
+                          className="w-full h-auto object-contain cursor-pointer hover:opacity-95 transition-opacity"
+                          onClick={() => setIsGalleryOpen(true)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <div className="pt-4 border-t border-border/60 flex items-center justify-between">
                   <Button variant="outline" size="sm" onClick={() => setActiveTab("aim")} className="text-xs gap-1 rounded-none">
@@ -485,47 +567,53 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 </div>
 
                 <div className="space-y-3 pl-1">
-                  <div className="p-4 rounded-none bg-card border border-border shadow-2xs space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="flex items-center justify-center h-5 w-5 rounded-none bg-[#0284c7]/10 text-[#0284c7] text-xs font-mono font-bold shrink-0">
-                        1
-                      </span>
-                      <h4 className="text-xs font-bold text-foreground uppercase tracking-wider font-mono">
-                        Step 1: Build Your Instruction Sequence / Configure Parameters
-                      </h4>
-                    </div>
-                    <p className="text-xs text-foreground/80 pl-7 leading-relaxed font-sans">
-                      Select target operations, destination registers (rd), and source registers (rs1, rs2). Add instructions to build your simulation sequence or choose preset parameters.
-                    </p>
-                  </div>
+                  {experiment.sections.procedure && experiment.sections.procedure.length > 0 ? (
+                    experiment.sections.procedure.map((step, sIdx) => (
+                      <div key={sIdx} className="p-4 rounded-none bg-card border border-border shadow-2xs space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className="flex items-center justify-center h-5 w-5 rounded-none bg-[#0284c7]/10 text-[#0284c7] text-xs font-mono font-bold shrink-0">
+                            {sIdx + 1}
+                          </span>
+                          <h4 className="text-xs font-bold text-foreground uppercase tracking-wider font-mono">
+                            Step {sIdx + 1}
+                          </h4>
+                        </div>
+                        <p className="text-xs text-foreground/80 pl-7 leading-relaxed font-sans">
+                          {step}
+                        </p>
+                      </div>
+                    ))
+                  ) : (
+                    <>
+                      <div className="p-4 rounded-none bg-card border border-border shadow-2xs space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className="flex items-center justify-center h-5 w-5 rounded-none bg-[#0284c7]/10 text-[#0284c7] text-xs font-mono font-bold shrink-0">
+                            1
+                          </span>
+                          <h4 className="text-xs font-bold text-foreground uppercase tracking-wider font-mono">
+                            Step 1: Configure Parameters
+                          </h4>
+                        </div>
+                        <p className="text-xs text-foreground/80 pl-7 leading-relaxed font-sans">
+                          Select target operations, destination parameters, and source configurations.
+                        </p>
+                      </div>
 
-                  <div className="p-4 rounded-none bg-card border border-border shadow-2xs space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="flex items-center justify-center h-5 w-5 rounded-none bg-[#0284c7]/10 text-[#0284c7] text-xs font-mono font-bold shrink-0">
-                        2
-                      </span>
-                      <h4 className="text-xs font-bold text-foreground uppercase tracking-wider font-mono">
-                        Step 2: Step Through Cycle-by-Cycle or Step-by-Step
-                      </h4>
-                    </div>
-                    <p className="text-xs text-foreground/80 pl-7 leading-relaxed font-sans">
-                      Advance simulation clock cycles using the Step button. Observe stage transitions across IF, ID, EX, MEM, and WB, inspecting data forwarding paths and hazard stalls.
-                    </p>
-                  </div>
-
-                  <div className="p-4 rounded-none bg-card border border-border shadow-2xs space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="flex items-center justify-center h-5 w-5 rounded-none bg-[#0284c7]/10 text-[#0284c7] text-xs font-mono font-bold shrink-0">
-                        3
-                      </span>
-                      <h4 className="text-xs font-bold text-foreground uppercase tracking-wider font-mono">
-                        Step 3: Analyze Pipeline / Data Structure State
-                      </h4>
-                    </div>
-                    <p className="text-xs text-foreground/80 pl-7 leading-relaxed font-sans">
-                      Verify output results, memory contents, execution throughput, and latency bounds against theoretical calculations.
-                    </p>
-                  </div>
+                      <div className="p-4 rounded-none bg-card border border-border shadow-2xs space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className="flex items-center justify-center h-5 w-5 rounded-none bg-[#0284c7]/10 text-[#0284c7] text-xs font-mono font-bold shrink-0">
+                            2
+                          </span>
+                          <h4 className="text-xs font-bold text-foreground uppercase tracking-wider font-mono">
+                            Step 2: Step Through Transitions
+                          </h4>
+                        </div>
+                        <p className="text-xs text-foreground/80 pl-7 leading-relaxed font-sans">
+                          Advance simulation steps and inspect state transitions and data flows.
+                        </p>
+                      </div>
+                    </>
+                  )}
                 </div>
 
                 {/* Sample Code Preview */}
@@ -552,7 +640,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             )}
 
             {/* ============================================================== */}
-            {/* 5. SIMULATION (Screenshot 112701)                              */}
+            {/* 5. SIMULATION (Screenshot 112701 & 104625)                     */}
             {/* ============================================================== */}
             {activeTab === "simulation" && (
               <div className="space-y-8">
@@ -560,16 +648,56 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                   {experiment.title}
                 </h2>
 
-                {/* OFFICIAL GOVERNMENT INSTRUCTION STUDIO (Screenshot 112701) */}
-                <Card className="border-border bg-card shadow-xs rounded-none">
-                  <CardHeader className="py-3 border-b border-border/60 text-center bg-muted/20">
-                    <h3 className="text-base font-bold text-foreground font-sans">
-                      Build Instruction
-                    </h3>
-                  </CardHeader>
-                  <CardContent className="p-4 sm:p-6 space-y-6">
-                    {/* Top Row: Instruction Dropdowns & Add Button */}
-                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 items-end">
+                {/* If Artificial Intelligence Lab: Render PolicyIterationVisualizer */}
+                {experiment.labId === "artificial-intelligence" ? (
+                  <div className="space-y-6">
+                    <PolicyIterationVisualizer />
+
+                    {/* Official Benchmark Simulation Reference matching Screenshot 104625 */}
+                    <Card className="border border-border rounded-none bg-muted/20">
+                      <CardHeader className="py-3 px-4 border-b border-border/50">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                            <ImageIcon className="h-4 w-4 text-[#0284c7]" />
+                            <span>Official MoE Virtual Labs Benchmark Simulation (Screenshot 104625)</span>
+                          </h4>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setIsGalleryOpen(true)}
+                            className="h-7 text-[11px] font-semibold rounded-none cursor-pointer"
+                          >
+                            View All 13 Screenshots
+                          </Button>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="p-4 space-y-2">
+                        <p className="text-xs text-muted-foreground">
+                          The interactive Gridworld simulation above implements the complete Policy Representation, Value Calculation, and Observations panel benchmarked against the official IIIT Hyderabad portal:
+                        </p>
+                        <div className="border border-border/60 overflow-hidden bg-black/5 max-w-3xl">
+                          <img
+                            src="/artificial-intelligence-labs/Screenshot 2026-09-30 104625.png"
+                            alt="Official MoE Simulation Screenshot"
+                            className="w-full h-auto object-contain cursor-pointer hover:opacity-95 transition-opacity"
+                            onClick={() => setIsGalleryOpen(true)}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                ) : (
+                  <>
+                    {/* OFFICIAL GOVERNMENT INSTRUCTION STUDIO (Screenshot 112701) */}
+                    <Card className="border-border bg-card shadow-xs rounded-none">
+                      <CardHeader className="py-3 border-b border-border/60 text-center bg-muted/20">
+                        <h3 className="text-base font-bold text-foreground font-sans">
+                          Build Instruction
+                        </h3>
+                      </CardHeader>
+                      <CardContent className="p-4 sm:p-6 space-y-6">
+                        {/* Top Row: Instruction Dropdowns & Add Button */}
+                        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 items-end">
                       <div className="space-y-1">
                         <label className="text-xs font-semibold text-foreground">Instruction</label>
                         <select
@@ -990,6 +1118,8 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                     <LeetCodePracticeCard problems={experiment.sections.leetcodeProblems} />
                   </div>
                 )}
+                  </>
+                )}
 
                 <div className="pt-4 border-t border-border/60 flex items-center justify-between">
                   <Button variant="outline" size="sm" onClick={() => setActiveTab("procedure")} className="text-xs gap-1 rounded-none">
@@ -1034,7 +1164,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             )}
 
             {/* ============================================================== */}
-            {/* 7. REFERENCES (Screenshot 112757)                              */}
+            {/* 7. REFERENCES (Screenshot 112757 & 104649)                     */}
             {/* ============================================================== */}
             {activeTab === "references" && (
               <div className="space-y-6">
@@ -1045,6 +1175,28 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                 <ExperimentReferences
                   defaultTopic={experiment.title}
                   defaultVideoUrl={experiment.sections.videoUrl}
+                  references={
+                    experiment.labId === "artificial-intelligence"
+                      ? {
+                          textBooks: [
+                            "Stuart Russell and Peter Norvig, Artificial Intelligence: A Modern Approach, 4th Edition, Pearson, 2020.",
+                            "Richard S. Sutton and Andrew G. Barto, Reinforcement Learning: An Introduction, 2nd Edition, The MIT Press, Cambridge, Massachusetts, 2018.",
+                          ],
+                          videoLectures: [
+                            {
+                              presenter: "IIIT Hyderabad / MoE Virtual Labs",
+                              title: "Policy Iteration Algorithm & Markov Decision Process in Gridworld",
+                              url: experiment.sections.videoUrl || "https://www.youtube-nocookie.com/embed/5NgNicANyqM",
+                            },
+                            {
+                              presenter: "Prof. Pieter Abbeel (UC Berkeley CS188)",
+                              title: "Markov Decision Processes, Policy Evaluation & Policy Improvement",
+                              url: "https://www.youtube.com/results?search_query=CS188+Policy+Iteration+Abbeel",
+                            },
+                          ],
+                        }
+                      : undefined
+                  }
                 />
 
                 <div className="pt-4 border-t border-border/60 flex items-center justify-between">
@@ -1067,7 +1219,13 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                   {experiment.title}
                 </h2>
 
-                <ExperimentContributors labInstitute={lab?.institute} />
+                <ExperimentContributors
+                  labInstitute={
+                    experiment.labId === "artificial-intelligence"
+                      ? "IIIT Hyderabad / Participating in Virtual Labs (MoE)"
+                      : (lab?.institute || "Virtual Labs Network")
+                  }
+                />
 
                 <div className="pt-4 border-t border-border/60 flex items-center justify-between">
                   <Button variant="outline" size="sm" onClick={() => setActiveTab("references")} className="text-xs gap-1 rounded-none">
@@ -1190,6 +1348,23 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
           </div>
         </div>
       </div>
+
+      {/* Official Reference Screenshots Dialog Modal */}
+      <Dialog open={isGalleryOpen} onOpenChange={setIsGalleryOpen}>
+        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto rounded-none p-6">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold font-heading">
+              Official Virtual Labs MoE Reference Screenshots
+            </DialogTitle>
+            <DialogDescription className="text-xs text-muted-foreground">
+              IIIT Hyderabad — Artificial Intelligence I (ai1-iiith.vlabs.ac.in)
+            </DialogDescription>
+          </DialogHeader>
+          <div className="pt-2">
+            <OfficialScreenshotGallery />
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
