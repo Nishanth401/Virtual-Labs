@@ -1,7 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { cn } from "@/lib/utils";
+import { useStudentProgress } from "@/hooks/use-student-progress";
+import { EXPERIMENTS_DATA } from "@/data/experiments";
 import {
   BookOpen,
   Target,
@@ -44,17 +46,7 @@ interface LabSidebarProps {
   className?: string;
 }
 
-// Fixed 10-Tab Structure specified in Virtual Labs Prompts:
-// 1. Introduction
-// 2. Objective
-// 3. List of Experiments (with count badge)
-// 4. Target Audience
-// 5. Course Alignment
-// 6. Video Tutorials
-// 7. Topic Roadmap (active by default)
-// 8. Self-Assessment Quiz
-// 9. Resources & Tutorials
-// 10. Feedback
+// Fixed 10-Tab Structure specified in Virtual Labs Prompts
 const DEFAULT_TABS: { id: LabTab; label: string; icon: React.ElementType }[] = [
   { id: "introduction", label: "Introduction", icon: BookOpen },
   { id: "objective", label: "Objective", icon: Target },
@@ -68,16 +60,44 @@ const DEFAULT_TABS: { id: LabTab; label: string; icon: React.ElementType }[] = [
   { id: "feedback", label: "Feedback", icon: MessageSquareHeart },
 ];
 
+// Official Tabs for Artificial Intelligence Lab (IIIT Hyderabad / MoE Virtual Labs)
+const AI_LAB_TABS: { id: LabTab; label: string; icon: React.ElementType }[] = [
+  { id: "introduction", label: "Introduction", icon: BookOpen },
+  { id: "objective", label: "Objective", icon: Target },
+  { id: "experiments", label: "List of Experiments", icon: ListTree },
+  { id: "target-audience", label: "Target Audience", icon: Users },
+  { id: "course-alignment", label: "Course Alignment", icon: GraduationCap },
+  { id: "video-tutorials", label: "Video Tutorials", icon: Video },
+  { id: "quizzes", label: "Self-Assessment Quiz", icon: FileQuestion },
+  { id: "resources", label: "Resources & Tutorials", icon: ExternalLink },
+  { id: "feedback", label: "Feedback", icon: MessageSquareHeart },
+];
+
 export function LabSidebar({
   activeTab,
   onTabChange,
   experimentsCount = 8,
   resourcesCount = 6,
-  progressPercent = 11,
+  progressPercent,
   labId,
   className,
 }: LabSidebarProps) {
-  const tabs = DEFAULT_TABS;
+  const { progress } = useStudentProgress();
+
+  // Compute real progress: completed experiments that belong to this lab
+  const computedProgress = useMemo(() => {
+    if (progressPercent !== undefined) return progressPercent;
+    if (!labId) return 0;
+    const labExperiments = EXPERIMENTS_DATA.filter((e) => e.labId === labId);
+    const total = labExperiments.length;
+    if (total === 0) return 0;
+    const done = labExperiments.filter((e) =>
+      progress.completedExperiments.includes(e.id)
+    ).length;
+    return Math.round((done / total) * 100);
+  }, [progressPercent, labId, progress.completedExperiments]);
+  const tabs = labId === "artificial-intelligence" ? AI_LAB_TABS : DEFAULT_TABS;
+  const displayPercent = computedProgress;
 
   return (
     <aside className={cn("w-full lg:w-64 shrink-0", className)}>
@@ -123,12 +143,12 @@ export function LabSidebar({
           <div className="bg-muted/30 p-2.5 rounded-none border border-border/60 space-y-1.5">
             <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground">
               <span>Progress</span>
-              <span className="font-mono text-[#0284c7] dark:text-[#38bdf8] font-bold">{progressPercent}%</span>
+              <span className="font-mono text-[#0284c7] dark:text-[#38bdf8] font-bold">{displayPercent}%</span>
             </div>
             <div className="w-full bg-muted h-1.5 rounded-full overflow-hidden">
               <div
                 className="bg-gradient-to-r from-[#0284c7] to-[#ea580c] h-full transition-all duration-300"
-                style={{ width: `${Math.min(100, Math.max(0, progressPercent))}%` }}
+                style={{ width: `${Math.min(100, Math.max(0, displayPercent))}%` }}
               />
             </div>
           </div>

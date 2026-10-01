@@ -1153,7 +1153,7 @@ export const LABS_DATA: Lab[] = [
         description: "Language syntax, data structures, list comprehensions, and OOP in Tamil."
       }
     ],
-    semester: "Semester 1",
+    semester: "Semester 2",
     resources: [
       {
         title: "Python Core Programming, Data Types & Control Structures",
@@ -1187,27 +1187,27 @@ export const LABS_DATA: Lab[] = [
   // ==========================================
   {
     id: "artificial-intelligence",
-    code: "AI3401",
-    name: "Artificial Intelligence Lab",
-    shortTitle: "AIL",
-    discipline: "Artificial Intelligence & Data Science",
-    disciplineSlug: "aids",
-    shortDesc: "Master classical heuristic search (A*, Best-First), adversarial Minimax with Alpha-Beta pruning, Constraint Satisfaction (N-Queens), and knowledge-based expert systems in Python.",
-    description: "The Artificial Intelligence Virtual Laboratory explores automated problem solving, informed search strategies (A* search with Manhattan heuristic on 8-puzzle), game tree evaluation with Minimax & Alpha-Beta pruning, Backtracking CSP solvers (N-Queens), and logical reasoning inference engines.",
-    institute: "VSB Engineering College, Karur",
-    department: "Department of Artificial Intelligence & Data Science",
+    code: "AI1-IIITH",
+    name: "Artificial Intelligence I",
+    shortTitle: "AI1",
+    discipline: "Computer Science and Engineering",
+    disciplineSlug: "cse",
+    shortDesc: "Master Policy Iteration, Value Iteration, Q-Learning, AI Depth First Search, Greedy Best First Search, Minimax Search, and Bayesian Networks in dynamic environments.",
+    description: "In Artificial Intelligence I Virtual Lab, students will gain a comprehensive understanding of foundational and advanced Artificial Intelligence concepts through hands-on experimentation and simulation. This lab emphasizes key areas such as search algorithms, probabilistic reasoning, and reinforcement learning, enabling learners to explore how AI techniques operate and interact in dynamic environments. By visualizing processes like Depth First Search, Bayesian Networks, and Q-Learning, students develop a deeper appreciation for the intricacies of AI methodologies and their practical applications. A critical lab component involves studying decision-making algorithms and probabilistic models to understand how data, learning, and logic converge in solving real-world problems. This lab provides a robust foundation in Artificial Intelligence through an interactive and structured approach, empowering students to excel in academic research in AI domains.",
+    institute: "IIIT Hyderabad / Participating in Virtual Labs (MoE)",
+    department: "Computer Science and Engineering",
     difficulty: "Advanced",
-    experimentsCount: 5,
-    rating: 4.95,
-    ratingsCount: 410,
+    experimentsCount: 8,
+    rating: 4.96,
+    ratingsCount: 425,
     iconName: "Bot",
-    tags: ["A* Search", "Minimax", "Alpha-Beta Pruning", "N-Queens", "Expert Systems"],
+    tags: ["Policy Iteration", "Value Iteration", "Q-Learning", "DFS", "Minimax", "Bayesian Networks"],
     bannerGradient: "from-purple-700 via-indigo-950 to-slate-950",
     videoUrl: "https://www.youtube-nocookie.com/embed/5NgNicANyqM",
     englishVideo: {
       url: "https://www.youtube-nocookie.com/embed/5NgNicANyqM",
-      title: "Artificial Intelligence Complete Video Suite (5 Experiments)",
-      description: "Master classical heuristic search (A*, Best-First), adversarial Minimax with Alpha-Beta pruning, Constraint Satisfaction (N-Queens), and knowledge-based expert systems.",
+      title: "Artificial Intelligence I Complete Laboratory Suite (8 Experiments)",
+      description: "Master Policy Iteration, Value Iteration, Q-Learning, Depth First Search, Greedy Best First Search, Minimax Search, and Bayesian Networks.",
       duration: "5 Experiment Tutorials (Full Course)",
       channel: "AI & Intelligent Agents Academy",
       timestamps: [
@@ -1264,7 +1264,7 @@ export const LABS_DATA: Lab[] = [
     semester: "Semester 5",
     resources: [
       {
-        title: "A* Search & Heuristic Evaluation Guide (GeeksforGeeks)",
+        title: "A* Search & Heuristic Evaluation Guide",
         source: "GeeksforGeeks",
         url: "/resources/ai-search-gfg",
         materialId: "ai-search-gfg",
@@ -1272,7 +1272,7 @@ export const LABS_DATA: Lab[] = [
         category: "Heuristic Search"
       },
       {
-        title: "Adversarial Search & Alpha-Beta Pruning (GeeksforGeeks)",
+        title: "Adversarial Search & Alpha-Beta Pruning",
         source: "GeeksforGeeks",
         url: "/resources/ai-minimax-gfg",
         materialId: "ai-minimax-gfg",
@@ -1280,7 +1280,7 @@ export const LABS_DATA: Lab[] = [
         category: "Game Theory & Search"
       },
       {
-        title: "Python for AI & Heuristic Solvers (W3Schools)",
+        title: "Python for AI & Heuristic Solvers",
         source: "W3Schools",
         url: "/resources/ai-w3schools-python",
         materialId: "ai-w3schools-python",
@@ -1371,7 +1371,7 @@ export const LABS_DATA: Lab[] = [
     semester: "Semester 5",
     resources: [
       {
-        title: "Hadoop Architecture & MapReduce Paradigm (GeeksforGeeks)",
+        title: "Hadoop Architecture & MapReduce Paradigm",
         source: "GeeksforGeeks",
         url: "/resources/big-data-hadoop-gfg",
         materialId: "big-data-hadoop-gfg",
@@ -1379,7 +1379,7 @@ export const LABS_DATA: Lab[] = [
         category: "Big Data & HDFS"
       },
       {
-        title: "Apache Spark & PySpark RDD Analytics (GeeksforGeeks)",
+        title: "Apache Spark & PySpark RDD Analytics",
         source: "GeeksforGeeks",
         url: "/resources/big-data-spark-gfg",
         materialId: "big-data-spark-gfg",
@@ -1387,7 +1387,7 @@ export const LABS_DATA: Lab[] = [
         category: "Distributed Analytics"
       },
       {
-        title: "MongoDB & NoSQL Aggregation Pipeline (W3Schools)",
+        title: "MongoDB & NoSQL Aggregation Pipeline",
         source: "W3Schools",
         url: "/resources/big-data-mongodb-w3schools",
         materialId: "big-data-mongodb-w3schools",
@@ -1479,7 +1479,7 @@ export const LABS_DATA: Lab[] = [
     semester: "Semester 5",
     resources: [
       {
-        title: "Cloud Computing & Architecture Reference (GeeksforGeeks)",
+        title: "Cloud Computing & Architecture Reference",
         source: "GeeksforGeeks",
         url: "/resources/cloud-computing-gfg",
         materialId: "cloud-computing-gfg",
@@ -1487,7 +1487,7 @@ export const LABS_DATA: Lab[] = [
         category: "Cloud Architecture"
       },
       {
-        title: "Docker Containerization & Multi-Container Guide (GeeksforGeeks)",
+        title: "Docker Containerization & Multi-Container Guide",
         source: "GeeksforGeeks",
         url: "/resources/cloud-docker-gfg",
         materialId: "cloud-docker-gfg",
@@ -1495,7 +1495,7 @@ export const LABS_DATA: Lab[] = [
         category: "DevOps & Containers"
       },
       {
-        title: "AWS Cloud Infrastructure & Serverless Microservices (W3Schools)",
+        title: "AWS Cloud Infrastructure & Serverless Microservices",
         source: "W3Schools",
         url: "/resources/cloud-w3schools-aws",
         materialId: "cloud-w3schools-aws",

@@ -33,15 +33,16 @@ import {
   CheckCircle2,
   Info,
   ShieldCheck,
-  ArrowRight
+  ArrowRight,
+  Cpu
 } from "lucide-react";
 
-type SemesterFilter = "all" | "sem5" | "sem3";
+type SemesterFilter = "all" | "sem1" | "sem2" | "sem3" | "sem4" | "sem5";
 
 export default function LabsCataloguePage() {
   const { user, studentProfile } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedSemester, setSelectedSemester] = useState<SemesterFilter>("sem5");
+  const [selectedSemester, setSelectedSemester] = useState<SemesterFilter>("all");
   const [isDisciplineBooksOpen, setIsDisciplineBooksOpen] = useState(false);
   const [isDisciplineSyllabusOpen, setIsDisciplineSyllabusOpen] = useState(false);
 
@@ -52,10 +53,14 @@ export default function LabsCataloguePage() {
       const year = studentProfile.year || "";
       const cohort = studentProfile.cohort || studentProfile.className || "";
 
-      if (cohort.includes("II") || year.includes("II") || year.includes("Second") || reg.startsWith("922525")) {
+      if (cohort.includes("I Year") || cohort.includes("1st") || year.includes("First") || reg.startsWith("922526")) {
+        setSelectedSemester("sem1");
+      } else if (cohort.includes("II") || year.includes("II") || year.includes("Second") || reg.startsWith("922525")) {
         setSelectedSemester("sem3");
       } else if (cohort.includes("III") || year.includes("III") || year.includes("Third") || reg.startsWith("922524")) {
         setSelectedSemester("sem5");
+      } else {
+        setSelectedSemester("all");
       }
     }
   }, [studentProfile]);
@@ -64,10 +69,16 @@ export default function LabsCataloguePage() {
   const filteredLabs = useMemo(() => {
     return LABS_DATA.filter((lab) => {
       // 1. Semester matching
-      if (selectedSemester === "sem5") {
-        if (lab.semester !== "Semester 5") return false;
+      if (selectedSemester === "sem1") {
+        if (lab.semester !== "Semester 1") return false;
+      } else if (selectedSemester === "sem2") {
+        if (lab.semester !== "Semester 2") return false;
       } else if (selectedSemester === "sem3") {
         if (lab.semester !== "Semester 3") return false;
+      } else if (selectedSemester === "sem4") {
+        if (lab.semester !== "Semester 4") return false;
+      } else if (selectedSemester === "sem5") {
+        if (lab.semester !== "Semester 5") return false;
       }
 
       // 2. Search matching
@@ -104,10 +115,16 @@ export default function LabsCataloguePage() {
                 <span className="text-white font-bold">Artificial Intelligence &amp; Data Science</span>
                 <span>&gt;</span>
                 <span className="text-amber-300 font-mono">
-                  {selectedSemester === "sem5"
-                    ? "III Year • Semester V Labs"
+                  {selectedSemester === "sem1"
+                    ? "I Year • Semester I Labs"
+                    : selectedSemester === "sem2"
+                    ? "I Year • Semester II Labs"
                     : selectedSemester === "sem3"
                     ? "II Year • Semester III Labs"
+                    : selectedSemester === "sem4"
+                    ? "II Year • Semester IV Labs"
+                    : selectedSemester === "sem5"
+                    ? "III Year • Semester V Labs"
                     : "All Academic Labs"}
                 </span>
               </div>
@@ -203,8 +220,9 @@ export default function LabsCataloguePage() {
                     Year-Wise Laboratory Semesters:
                   </p>
                   <p className="text-muted-foreground leading-relaxed">
-                    <span className="font-semibold text-teal-700 dark:text-teal-300">Second Year (II AIDS)</span> is mapped specifically to <span className="font-semibold text-foreground">Semester III</span>.{" "}
-                    <span className="font-semibold text-sky-700 dark:text-sky-300">Third Year (III AIDS)</span> is mapped specifically to <span className="font-semibold text-foreground">Semester V</span>.{" "}
+                    <span className="font-semibold text-orange-700 dark:text-orange-300">First Year (I AIDS)</span> labs are in <span className="font-semibold text-foreground">Semester I & II</span>.{" "}
+                    <span className="font-semibold text-teal-700 dark:text-teal-300">Second Year (II AIDS)</span> is mapped to <span className="font-semibold text-foreground">Semester III & IV</span>.{" "}
+                    <span className="font-semibold text-sky-700 dark:text-sky-300">Third Year (III AIDS)</span> is mapped to <span className="font-semibold text-foreground">Semester V</span>.{" "}
                     <span className="font-semibold text-amber-600 dark:text-amber-400">DSA Studio</span> is universal for all students.
                   </p>
                 </div>
@@ -225,10 +243,66 @@ export default function LabsCataloguePage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1 border-t border-border/60">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground mr-1">
-                  Filter by Year &amp; Semester:
+                  Filter by Semester:
                 </span>
 
-                {/* III Year (Semester V) Button */}
+                {/* Sem I Button */}
+                <button
+                  type="button"
+                  onClick={() => setSelectedSemester("sem1")}
+                  className={`px-3 py-2 text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    selectedSemester === "sem1"
+                      ? "bg-orange-500 text-white shadow-md font-bold"
+                      : "bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground border border-border"
+                  }`}
+                >
+                  <Code2 className="h-3.5 w-3.5" />
+                  <span>Sem I</span>
+                </button>
+
+                {/* Sem II Button */}
+                <button
+                  type="button"
+                  onClick={() => setSelectedSemester("sem2")}
+                  className={`px-3 py-2 text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    selectedSemester === "sem2"
+                      ? "bg-emerald-600 text-white shadow-md font-bold"
+                      : "bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground border border-border"
+                  }`}
+                >
+                  <Code2 className="h-3.5 w-3.5" />
+                  <span>Sem II</span>
+                </button>
+
+                {/* Sem III Button */}
+                <button
+                  type="button"
+                  onClick={() => setSelectedSemester("sem3")}
+                  className={`px-3 py-2 text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    selectedSemester === "sem3"
+                      ? "bg-teal-600 text-white shadow-md font-bold"
+                      : "bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground border border-border"
+                  }`}
+                >
+                  <Database className="h-3.5 w-3.5" />
+                  <span>Sem III</span>
+                </button>
+
+                {/* Sem IV Button */}
+                <button
+                  type="button"
+                  onClick={() => setSelectedSemester("sem4")}
+                  className={`px-3 py-2 text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    selectedSemester === "sem4"
+                      ? "bg-violet-600 text-white shadow-md font-bold"
+                      : "bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground border border-border"
+                  }`}
+                >
+                  <Cpu className="h-3.5 w-3.5" />
+                  <span>Sem IV</span>
+                </button>
+
+                {/* Sem V Button */}
                 <button
                   type="button"
                   onClick={() => setSelectedSemester("sem5")}
@@ -239,27 +313,7 @@ export default function LabsCataloguePage() {
                   }`}
                 >
                   <BrainCircuit className="h-3.5 w-3.5" />
-                  <span>III Year (Semester V Labs)</span>
-                  <Badge variant="secondary" className="text-[10px] ml-1 bg-white/20 text-white font-mono">
-                    3rd Year AIDS
-                  </Badge>
-                </button>
-
-                {/* II Year (Semester III) Button */}
-                <button
-                  type="button"
-                  onClick={() => setSelectedSemester("sem3")}
-                  className={`px-4 py-2 text-xs font-bold transition-all cursor-pointer flex items-center gap-2 ${
-                    selectedSemester === "sem3"
-                      ? "bg-[#0284c7] text-white shadow-md font-bold"
-                      : "bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground border border-border"
-                  }`}
-                >
-                  <Code2 className="h-3.5 w-3.5" />
-                  <span>II Year (Semester III Labs)</span>
-                  <Badge variant="secondary" className="text-[10px] ml-1 bg-white/20 text-white font-mono">
-                    2nd Year AIDS
-                  </Badge>
+                  <span>Sem V</span>
                 </button>
 
                 {/* All Labs Button */}
@@ -273,12 +327,18 @@ export default function LabsCataloguePage() {
                   }`}
                 >
                   <Layers className="h-3.5 w-3.5" />
-                  <span>All Laboratories</span>
+                  <span>All Labs</span>
                 </button>
               </div>
 
               <span className="text-xs text-muted-foreground font-mono">
-                Showing {filteredLabs.length} {selectedSemester === "sem5" ? "Semester V" : selectedSemester === "sem3" ? "Semester III" : "Catalogue"} Labs
+                Showing {filteredLabs.length}{" "}
+                {selectedSemester === "sem1" ? "Semester I"
+                  : selectedSemester === "sem2" ? "Semester II"
+                  : selectedSemester === "sem3" ? "Semester III"
+                  : selectedSemester === "sem4" ? "Semester IV"
+                  : selectedSemester === "sem5" ? "Semester V"
+                  : "Catalogue"} Labs
               </span>
             </div>
           </div>
@@ -339,10 +399,16 @@ export default function LabsCataloguePage() {
               <div className="flex items-center justify-between px-1">
                 <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-sans flex items-center gap-2">
                   <span>
-                    {selectedSemester === "sem5"
-                      ? "Third Year (Semester V) Laboratories"
+                    {selectedSemester === "sem1"
+                      ? "First Year (Semester I) Laboratories"
+                      : selectedSemester === "sem2"
+                      ? "First Year (Semester II) Laboratories"
                       : selectedSemester === "sem3"
                       ? "Second Year (Semester III) Laboratories"
+                      : selectedSemester === "sem4"
+                      ? "Second Year (Semester IV) Laboratories"
+                      : selectedSemester === "sem5"
+                      ? "Third Year (Semester V) Laboratories"
                       : "All Department Laboratories"}
                   </span>
                   <Badge variant="outline" className="text-[10px] font-mono">
@@ -394,7 +460,7 @@ export default function LabsCataloguePage() {
                 </CardHeader>
 
                 <CardContent className="p-4 space-y-3 text-xs">
-                  {/* III Year AIDS */}
+                  {/* III Year AIDS - Sem V */}
                   <div className={`p-3 rounded-none border transition-colors ${
                     selectedSemester === "sem5"
                       ? "bg-sky-50 dark:bg-sky-950/40 border-sky-500/40"
@@ -403,7 +469,7 @@ export default function LabsCataloguePage() {
                     <div className="flex items-center justify-between font-bold text-foreground mb-1">
                       <span className="text-[#0284c7] dark:text-[#38bdf8]">III Year • Semester V</span>
                       <span className="font-mono text-[10px] px-1.5 py-0.5 bg-[#0284c7]/10 text-[#0284c7] rounded">
-                        2024 - 2028 Batch
+                        2024–2028 Batch
                       </span>
                     </div>
                     <ul className="space-y-1 text-muted-foreground font-mono text-[11px] list-disc list-inside">
@@ -413,7 +479,27 @@ export default function LabsCataloguePage() {
                     </ul>
                   </div>
 
-                  {/* II Year AIDS */}
+                  {/* II Year AIDS - Sem IV */}
+                  <div className={`p-3 rounded-none border transition-colors ${
+                    selectedSemester === "sem4"
+                      ? "bg-violet-50 dark:bg-violet-950/40 border-violet-500/40"
+                      : "bg-muted/30 border-border/60"
+                  }`}>
+                    <div className="flex items-center justify-between font-bold text-foreground mb-1">
+                      <span className="text-violet-700 dark:text-violet-400">II Year • Semester IV</span>
+                      <span className="font-mono text-[10px] px-1.5 py-0.5 bg-violet-500/10 text-violet-600 rounded">
+                        2025–2029 Batch
+                      </span>
+                    </div>
+                    <ul className="space-y-1 text-muted-foreground font-mono text-[11px] list-disc list-inside">
+                      <li><strong className="text-foreground">CS3461:</strong> Operating Systems Lab</li>
+                      <li><strong className="text-foreground">AD8482:</strong> Business Analytics Lab</li>
+                      <li><strong className="text-foreground">AD8581:</strong> Computer Networks Lab</li>
+                      <li><strong className="text-foreground">AD8481:</strong> Deep Learning Lab</li>
+                    </ul>
+                  </div>
+
+                  {/* II Year AIDS - Sem III */}
                   <div className={`p-3 rounded-none border transition-colors ${
                     selectedSemester === "sem3"
                       ? "bg-teal-50 dark:bg-teal-950/40 border-teal-500/40"
@@ -422,13 +508,31 @@ export default function LabsCataloguePage() {
                     <div className="flex items-center justify-between font-bold text-foreground mb-1">
                       <span className="text-teal-700 dark:text-teal-400">II Year • Semester III</span>
                       <span className="font-mono text-[10px] px-1.5 py-0.5 bg-teal-500/10 text-teal-600 rounded">
-                        2025 - 2029 Batch
+                        2025–2029 Batch
                       </span>
                     </div>
                     <ul className="space-y-1 text-muted-foreground font-mono text-[11px] list-disc list-inside">
                       <li><strong className="text-foreground">AD8302:</strong> Object Oriented Programming (Java)</li>
                       <li><strong className="text-foreground">AD8301:</strong> Data Structures Design Lab</li>
-                      <li><strong className="text-foreground">AD8303:</strong> Database Management Systems (DBMS)</li>
+                      <li><strong className="text-foreground">AD8303:</strong> Database Management Systems</li>
+                    </ul>
+                  </div>
+
+                  {/* I Year - Sem I & II */}
+                  <div className={`p-3 rounded-none border transition-colors ${
+                    selectedSemester === "sem1" || selectedSemester === "sem2"
+                      ? "bg-orange-50 dark:bg-orange-950/40 border-orange-500/40"
+                      : "bg-muted/30 border-border/60"
+                  }`}>
+                    <div className="flex items-center justify-between font-bold text-foreground mb-1">
+                      <span className="text-orange-700 dark:text-orange-400">I Year • Semester I & II</span>
+                      <span className="font-mono text-[10px] px-1.5 py-0.5 bg-orange-500/10 text-orange-600 rounded">
+                        Foundation
+                      </span>
+                    </div>
+                    <ul className="space-y-1 text-muted-foreground font-mono text-[11px] list-disc list-inside">
+                      <li><strong className="text-foreground">GE3171:</strong> C Programming Lab (Sem I)</li>
+                      <li><strong className="text-foreground">GE3271:</strong> Python Programming Lab (Sem II)</li>
                     </ul>
                   </div>
 

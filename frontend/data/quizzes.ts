@@ -1689,6 +1689,304 @@ export const QUIZZES_DATA: Record<string, Quiz> = {
         explanation: "The 20–30 selected student champions lead peer study circles, mentor struggling peers, and host weekly concept and quiz discussions."
       }
     ]
+  },
+
+  // ========================================================
+  // 12. ARTIFICIAL INTELLIGENCE I (IIITH OFFICIAL QUIZZES)
+  // ========================================================
+  "quiz-ai-policy-iteration": {
+    id: "quiz-ai-policy-iteration",
+    experimentId: "policy-iteration",
+    title: "Policy Iteration Pretest & Evaluation",
+    description: "Official IIITH Virtual Labs assessment testing MDP foundations, policy evaluation Bellman equations, and greedy improvement steps.",
+    passingScore: 4,
+    timeLimitMinutes: 10,
+    questions: [
+      {
+        id: "ai-pi-1",
+        question: "What does MDP stand for in Artificial Intelligence & Reinforcement Learning?",
+        options: [
+          "Markov Decision Process",
+          "Machine Deterministic Process",
+          "Magnitude Difference Policy",
+          "Markov Dynamic Position"
+        ],
+        correctIndex: 0,
+        explanation: "MDP stands for Markov Decision Process. MDPs are named after the Russian mathematician Andrey Markov and formalize sequential decision making."
+      },
+      {
+        id: "ai-pi-2",
+        question: "What is the primary goal of the Policy Iteration algorithm?",
+        options: [
+          "To find the optimal policy in a Markov Decision Process",
+          "To estimate the value function for each state only",
+          "To determine the transition probabilities in a Markov Decision Process",
+          "To calculate the expected rewards in a Markov Decision Process"
+        ],
+        correctIndex: 0,
+        explanation: "The goal of policy iteration is to find the optimal policy in a Markov Decision Process, which maximizes the expected cumulative rewards."
+      },
+      {
+        id: "ai-pi-3",
+        question: "What are the two interlocking stages that comprise Policy Iteration?",
+        options: [
+          "Policy evaluation and policy improvement",
+          "State estimation and reward maximization",
+          "Action selection and state transition",
+          "Exploration and exploitation"
+        ],
+        correctIndex: 0,
+        explanation: "Policy iteration involves two main steps: policy evaluation (determining V(s) for the current policy) and policy improvement (updating π(s) greedily)."
+      },
+      {
+        id: "ai-pi-4",
+        question: "What is the specific purpose of the Policy Evaluation phase in Policy Iteration?",
+        options: [
+          "To determine the value function V(s) for a given fixed policy",
+          "To update the transition probabilities in a Markov Decision Process",
+          "To change actions without computing returns",
+          "To discard negative reward penalties"
+        ],
+        correctIndex: 0,
+        explanation: "Policy evaluation calculates the expected return V(s) starting from each state and following the fixed current policy π thereafter."
+      },
+      {
+        id: "ai-pi-5",
+        question: "What occurs during the Policy Improvement step?",
+        options: [
+          "Modifying the policy to select the action that maximizes expected value in each state",
+          "Updating the transition probabilities P(s'|s,a)",
+          "Resetting discount factor γ to zero",
+          "Halting the algorithm after a single pass"
+        ],
+        correctIndex: 0,
+        explanation: "Policy improvement updates the policy greedily with respect to current values: π'(s) = argmax_a ∑ P(s'|s,a) [R + γV(s')]."
+      }
+    ]
+  },
+
+  "quiz-ai-policy-iteration-post": {
+    id: "quiz-ai-policy-iteration-post",
+    experimentId: "policy-iteration",
+    title: "Policy Iteration Posttest (Optimality & Convergence)",
+    description: "Evaluate your comprehensive mastery of policy stability conditions, Bellman optimality, and dynamic programming guarantees.",
+    passingScore: 4,
+    timeLimitMinutes: 10,
+    questions: [
+      {
+        id: "ai-pi-post-1",
+        question: "What is the exact convergence condition for terminating Policy Iteration?",
+        options: [
+          "When the policy remains unchanged after policy improvement (policy-stable == true)",
+          "When the algorithm executes a predetermined fixed count of 100 iterations",
+          "When the agent reaches any random non-terminal cell",
+          "When the discount factor decays to zero"
+        ],
+        correctIndex: 0,
+        explanation: "The convergence condition is when the policy remains completely unchanged after policy improvement, proving that the optimal policy π* has been attained."
+      },
+      {
+        id: "ai-pi-post-2",
+        question: "How does Policy Iteration fundamentally differ from Value Iteration?",
+        options: [
+          "Policy iteration explicitly alternates policy evaluation and improvement; value iteration combines them into one Bellman optimality backup",
+          "Policy iteration is model-free while value iteration is model-based",
+          "Value iteration never guarantees convergence to optimal policies",
+          "Policy iteration only works for continuous state spaces"
+        ],
+        correctIndex: 0,
+        explanation: "Policy iteration explicitly computes full policy evaluation before updating the policy, whereas value iteration performs a single truncated backup per sweep."
+      },
+      {
+        id: "ai-pi-post-3",
+        question: "Under finite state and action spaces, what theoretical guarantee does Policy Iteration offer?",
+        options: [
+          "Guaranteed convergence to the globally optimal policy π* and optimal value function V* in a finite number of iterations",
+          "Convergence only if rewards are strictly non-negative",
+          "Convergence is not guaranteed and requires random restarts",
+          "Convergence only in deterministic 1-dimensional grids"
+        ],
+        correctIndex: 0,
+        explanation: "Because there are only a finite number of distinct deterministic policies (|A|^|S|), Policy Iteration is guaranteed to strictly improve or terminate at the optimum."
+      },
+      {
+        id: "ai-pi-post-4",
+        question: "In the Gridworld experiment, what role does the discount factor γ (e.g. γ = 0.9) serve?",
+        options: [
+          "It determines the present value of future rewards, ensuring infinite horizon sum convergence and balancing immediate vs future payoffs",
+          "It accelerates CPU rendering speed",
+          "It disables obstacle collisions",
+          "It forces actions to become purely random"
+        ],
+        correctIndex: 0,
+        explanation: "The discount factor γ (0 ≤ γ < 1) prevents infinite sums and models preference for timely rewards over distant future payoffs."
+      },
+      {
+        id: "ai-pi-post-5",
+        question: "In a 3x3 Gridworld, what does a directional arrow in a cell on the Policy Representation grid denote?",
+        options: [
+          "The currently selected action π(s) that the agent should execute when occupying that state",
+          "Wind direction blowing in the simulation",
+          "The state with the lowest probability",
+          "The direction from which the agent originally spawned"
+        ],
+        correctIndex: 0,
+        explanation: "Each arrow indicates the policy mapping π: S → A, showing the chosen action (Up, Down, Left, Right) that maximizes expected cumulative rewards."
+      }
+    ]
+  },
+
+  "quiz-ai-value-iteration": {
+    id: "quiz-ai-value-iteration",
+    experimentId: "value-iteration",
+    title: "Value Iteration Self-Assessment",
+    description: "Test your understanding of Bellman Optimality sweeps, contraction mappings, and policy extraction.",
+    passingScore: 4,
+    timeLimitMinutes: 10,
+    questions: [
+      {
+        id: "ai-vi-1",
+        question: "Which equation forms the fundamental update rule in Value Iteration?",
+        options: [
+          "V_{k+1}(s) = max_a ∑ P(s'|s,a) [R + γ V_k(s')]",
+          "V_{k+1}(s) = V_k(s) + α [R + γ V_k(s')]",
+          "Q(s,a) = R + γ max Q(s',a')",
+          "V(s) = (1 - γ) R"
+        ],
+        correctIndex: 0,
+        explanation: "Value iteration uses the Bellman Optimality equation as an iterative assignment operator."
+      },
+      {
+        id: "ai-vi-2",
+        question: "What mathematical property guarantees that Value Iteration converges to a unique optimal value function V*?",
+        options: [
+          "The Bellman optimality operator is a contraction mapping with modulus γ in the maximum norm",
+          "Central Limit Theorem",
+          "Markov inequality",
+          "Bayes theorem"
+        ],
+        correctIndex: 0,
+        explanation: "By the Banach fixed-point theorem, any contraction mapping on a complete metric space converges to a unique fixed point."
+      }
+    ]
+  },
+
+  "quiz-ai-q-learning": {
+    id: "quiz-ai-q-learning",
+    experimentId: "q-learning",
+    title: "Q-Learning Self-Assessment",
+    description: "Evaluate model-free TD learning, Q-table updates, and exploration strategies.",
+    passingScore: 4,
+    timeLimitMinutes: 10,
+    questions: [
+      {
+        id: "ai-ql-1",
+        question: "Why is Q-learning classified as an 'off-policy' reinforcement learning algorithm?",
+        options: [
+          "It updates the Q-table using the maximum estimate over next actions, independent of the action selected by the behavior policy",
+          "It operates without any policy at all",
+          "It requires offline batch data only",
+          "It ignores state transitions"
+        ],
+        correctIndex: 0,
+        explanation: "Q-learning learns Q* directly by approximating the greedy optimal action value while the agent may follow an ε-greedy behavior policy."
+      }
+    ]
+  },
+
+  "quiz-ai-dfs": {
+    id: "quiz-ai-dfs",
+    experimentId: "ai-depth-first-search",
+    title: "AI Depth First Search Assessment",
+    description: "State-space formulation, stack frontiers, and graph traversal properties.",
+    passingScore: 4,
+    timeLimitMinutes: 10,
+    questions: [
+      {
+        id: "ai-dfs-1",
+        question: "What is the space complexity of Depth First Search in a tree with branching factor b and maximum depth m?",
+        options: ["O(b · m)", "O(b^m)", "O(m!)", "O(1)"],
+        correctIndex: 0,
+        explanation: "DFS only needs to store the path from the root to the current leaf node plus unexpanded sibling nodes, requiring O(b · m) memory."
+      }
+    ]
+  },
+
+  "quiz-ai-gbfs": {
+    id: "quiz-ai-gbfs",
+    experimentId: "greedy-best-first-search",
+    title: "Greedy Best First Search Assessment",
+    description: "Heuristic evaluation functions, admissible bounds, and local minima.",
+    passingScore: 4,
+    timeLimitMinutes: 10,
+    questions: [
+      {
+        id: "ai-gbfs-1",
+        question: "Which evaluation function governs node expansion in Greedy Best First Search?",
+        options: ["f(n) = h(n)", "f(n) = g(n) + h(n)", "f(n) = g(n)", "f(n) = h(n) / g(n)"],
+        correctIndex: 0,
+        explanation: "Greedy Best First Search evaluates nodes purely on the heuristic estimate h(n) of distance to the goal."
+      }
+    ]
+  },
+
+  "quiz-ai-minimax": {
+    id: "quiz-ai-minimax",
+    experimentId: "minimax-search",
+    title: "Minimax & Alpha-Beta Pruning Assessment",
+    description: "Two-player zero-sum game trees, branch pruning conditions, and move ordering.",
+    passingScore: 4,
+    timeLimitMinutes: 10,
+    questions: [
+      {
+        id: "ai-mm-1",
+        question: "At what condition does Alpha-Beta pruning discard remaining sibling branches?",
+        options: ["When α ≥ β", "When α < β", "When α == 0", "When β == ∞"],
+        correctIndex: 0,
+        explanation: "When α ≥ β, the current branch is guaranteed to be worse than an alternative already available to one of the players, so it can be safely pruned."
+      }
+    ]
+  },
+
+  "quiz-ai-bayes-construct": {
+    id: "quiz-ai-bayes-construct",
+    experimentId: "construction-bayesian-network",
+    title: "Bayesian Network Construction Assessment",
+    description: "DAG topology, conditional independence, and CPT parameterization.",
+    passingScore: 4,
+    timeLimitMinutes: 10,
+    questions: [
+      {
+        id: "ai-bnc-1",
+        question: "How does a Bayesian Network represent the joint probability distribution of variables X_1 to X_n?",
+        options: [
+          "P(X_1, ..., X_n) = ∏_{i=1}^n P(X_i | Parents(X_i))",
+          "P(X_1, ..., X_n) = ∑_{i=1}^n P(X_i)",
+          "P(X_1, ..., X_n) = max P(X_i)",
+          "P(X_1, ..., X_n) = 1.0 / n"
+        ],
+        correctIndex: 0,
+        explanation: "By the chain rule factored across DAG parents, the full joint is compactly represented by multiplying each node's conditional probability given its parents."
+      }
+    ]
+  },
+
+  "quiz-ai-bayes-inference": {
+    id: "quiz-ai-bayes-inference",
+    experimentId: "inference-bayesian-network",
+    title: "Bayesian Network Inference Assessment",
+    description: "Exact variable elimination, factor multiplication, and posterior probabilities.",
+    passingScore: 4,
+    timeLimitMinutes: 10,
+    questions: [
+      {
+        id: "ai-bni-1",
+        question: "What is the general computational complexity of exact inference in arbitrary Bayesian Networks?",
+        options: ["NP-hard", "Logarithmic O(log N)", "Linear O(N)", "Constant O(1)"],
+        correctIndex: 0,
+        explanation: "Exact probabilistic inference in general DAGs is NP-hard (reduces from 3-SAT), though it runs efficiently in polytrees."
+      }
+    ]
   }
 };
 
