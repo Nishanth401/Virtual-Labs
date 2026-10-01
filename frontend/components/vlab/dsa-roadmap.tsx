@@ -12,6 +12,16 @@ import {
 } from "./dsa-topic-article";
 import { MultiLangCodeViewer } from "@/components/visualizer/code/multi-lang-code-viewer";
 import { SqlCompiler } from "./sql-compiler";
+import { Badge } from "@/components/ui/badge";
+import { Terminal, CheckCircle2 } from "lucide-react";
+
+export const LABS_WITH_CODE_EDITOR = new Set([
+  "c-programming",
+  "python-programming",
+  "oops-java",
+  "data-structures",
+  "dbms-lab",
+]);
 
 interface DSARoadmapProps {
   labId?: string;
@@ -88,27 +98,83 @@ export function DSARoadmap({ labId = "data-structures", sidebar }: DSARoadmapPro
         </div>
       </div>
 
-      {/* 2. CENTER SECTION: FULL-WIDTH LIVE COMPILER & CODE RUNNER STUDIO */}
+      {/* 2. CENTER SECTION: LIVE COMPILER / CODE RUNNER OR ARCHITECTURE WORKBENCH */}
       {activeTopic && (
         <div className="w-full space-y-8">
           <div className="w-full">
-            {isSqlTopic ? (
-              <SqlCompiler
-                title={`${activeTopic.title}`}
-                subtitle="Interactive Relational SQL Studio & Live Query Execution Sandbox"
-                initialSql={
-                  activeTopic.codeSnippets?.find((s) => s.language?.toLowerCase() === "sql")?.code ||
-                  activeTopic.codeSnippets?.[0]?.code ||
-                  ""
-                }
-                currentExperimentId={activeTopic.id}
-              />
+            {LABS_WITH_CODE_EDITOR.has(labId) ? (
+              isSqlTopic ? (
+                <SqlCompiler
+                  title={`${activeTopic.title}`}
+                  subtitle="Interactive Relational SQL Studio & Live Query Execution Sandbox"
+                  initialSql={
+                    activeTopic.codeSnippets?.find((s) => s.language?.toLowerCase() === "sql")?.code ||
+                    activeTopic.codeSnippets?.[0]?.code ||
+                    ""
+                  }
+                  currentExperimentId={activeTopic.id}
+                />
+              ) : (
+                <MultiLangCodeViewer
+                  title={`${activeTopic.title} - Implementation`}
+                  subtitle="Interactive Multi-Language Source Code & Live Compiler Runner"
+                  defaultLanguage={
+                    labId === "c-programming"
+                      ? "cpp"
+                      : labId === "python-programming"
+                      ? "python"
+                      : "java"
+                  }
+                  snippets={activeTopic.codeSnippets || []}
+                />
+              )
             ) : (
-              <MultiLangCodeViewer
-                title={`${activeTopic.title} - Implementation`}
-                subtitle="Interactive Multi-Language Source Code & Live Compiler Runner"
-                snippets={activeTopic.codeSnippets || []}
-              />
+              /* High-contrast Concept Architecture & Workflow Specification (NO code editor) */
+              <div className="p-5 sm:p-6 rounded-none bg-card border border-border/80 shadow-xs space-y-5">
+                <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-border/60">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Terminal className="h-4 w-4 text-[#0284c7]" />
+                      <h3 className="font-bold text-base text-foreground font-heading">
+                        {activeTopic.title} Architecture &amp; Execution Specification
+                      </h3>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Theoretical model, system architecture flow, and verification benchmarks.
+                    </p>
+                  </div>
+                  <Badge variant="outline" className="font-mono text-xs rounded-none bg-sky-500/10 text-[#0284c7] border-sky-500/30">
+                    SIMULATION &amp; CONCEPT WORKBENCH
+                  </Badge>
+                </div>
+
+                {activeTopic.diagram && (
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-muted-foreground">
+                      {activeTopic.diagramTitle || "System Architecture & Protocol Flow"}
+                    </h4>
+                    <pre className="p-4 rounded-none bg-slate-950 text-emerald-400 text-xs font-mono overflow-x-auto border border-slate-800 leading-relaxed max-h-72">
+                      <code>{activeTopic.diagram}</code>
+                    </pre>
+                  </div>
+                )}
+
+                {activeTopic.keyPoints && activeTopic.keyPoints.length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-muted-foreground">
+                      Key Engineering Concepts
+                    </h4>
+                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-foreground/90">
+                      {activeTopic.keyPoints.map((kp, kIdx) => (
+                        <li key={kIdx} className="p-2.5 rounded-none bg-muted/20 border border-border/50 flex items-start gap-2">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-[#0284c7] shrink-0 mt-0.5" />
+                          <span>{kp}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
             )}
           </div>
 

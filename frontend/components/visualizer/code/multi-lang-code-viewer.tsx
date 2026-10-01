@@ -55,6 +55,7 @@ export interface MultiLangCodeViewerProps {
   currentStepIndex?: number;
   onSendToVisualizer?: (data: any) => void;
   showCustomizer?: boolean;
+  defaultLanguage?: SupportedLang;
 }
 
 export type SupportedLang = "java" | "python" | "cpp";
@@ -267,10 +268,10 @@ const LANG_META: Record<SupportedLang, { name: string; file: string; ext: string
     iconLabel: "Python",
   },
   cpp: {
-    name: "C++",
-    file: "solution.cpp",
-    ext: "cpp",
-    iconLabel: "C++",
+    name: "C / C++",
+    file: "main.c",
+    ext: "c",
+    iconLabel: "C / C++",
   },
 };
 
@@ -687,18 +688,19 @@ export function MultiLangCodeViewer({
   badge,
   snippets,
   activeLineMap,
+  defaultLanguage,
 }: MultiLangCodeViewerProps) {
   // Normalize incoming snippets into Java, Python, C++
   const normalizedSnippets = useMemo(() => {
     const map: Record<SupportedLang, string> = {
       java: `public class Solution {\n    public static void main(String[] args) {\n        System.out.println("Executing ${title} in Java...");\n    }\n}`,
       python: `# ${title} Implementation\ndef solution():\n    print("Executing ${title} in Python...")\n\nif __name__ == "__main__":\n    solution()`,
-      cpp: `#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Executing ${title} in C++..." << endl;\n    return 0;\n}`,
+      cpp: `#include <stdio.h>\n\nint main() {\n    printf("Executing ${title} in C...\\n");\n    return 0;\n}`,
     };
 
     if (Array.isArray(snippets)) {
       snippets.forEach((s) => {
-        const langKey = s.language.toLowerCase().trim();
+        const langKey = s.language?.toLowerCase().trim() || "";
         if (langKey === "java") map.java = s.code;
         else if (langKey === "python" || langKey === "py") map.python = s.code;
         else if (langKey === "cpp" || langKey === "c++" || langKey === "c") map.cpp = s.code;
@@ -717,7 +719,23 @@ export function MultiLangCodeViewer({
     return map;
   }, [snippets, title]);
 
-  const [activeLang, setActiveLang] = useState<SupportedLang>("java");
+  const preferredLang = useMemo<SupportedLang>(() => {
+    if (defaultLanguage) return defaultLanguage;
+    if (Array.isArray(snippets)) {
+      const hasCpp = snippets.some((s) => ["c", "cpp", "c++"].includes(s.language?.toLowerCase().trim() || ""));
+      const hasPy = snippets.some((s) => ["python", "py"].includes(s.language?.toLowerCase().trim() || ""));
+      const hasJava = snippets.some((s) => s.language?.toLowerCase().trim() === "java");
+      if (hasCpp && !hasJava && !hasPy) return "cpp";
+      if (hasPy && !hasJava) return "python";
+    }
+    return "java";
+  }, [defaultLanguage, snippets]);
+
+  const [activeLang, setActiveLang] = useState<SupportedLang>(preferredLang);
+
+  useEffect(() => {
+    setActiveLang(preferredLang);
+  }, [preferredLang]);
   const [editedCodeMap, setEditedCodeMap] = useState<Record<string, string>>({});
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [showTopInput, setShowTopInput] = useState<boolean>(false);
