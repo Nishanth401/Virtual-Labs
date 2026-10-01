@@ -58,9 +58,7 @@ import {
   ShieldCheck,
   Star,
   MessageSquare,
-  Image as ImageIcon,
 } from "lucide-react";
-import { OfficialScreenshotGallery } from "@/components/vlab/official-screenshot-gallery";
 
 interface LabDetailPageProps {
   params: Promise<{ labId: string }>;
@@ -1662,19 +1660,19 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                         </div>
                       </CardHeader>
                       <CardContent className="space-y-6 pt-6 text-sm leading-relaxed text-foreground">
-                        <div className="space-y-3 font-sans">
-                          <h3 className="text-base sm:text-lg font-bold text-foreground underline decoration-[#ea580c] underline-offset-4">
-                            Objectives:
-                          </h3>
-                          <ol className="list-decimal pl-6 space-y-2.5 text-foreground text-sm font-sans">
-                            <li className="pl-1">
-                              <strong>Understand the problem formulation and basic elements of search.</strong>
+                        <div className="space-y-4 font-sans">
+                          <p className="text-foreground text-sm sm:text-base font-medium leading-relaxed">
+                            The key objectives of the Artificial Intelligence I Virtual Lab are:
+                          </p>
+                          <ol className="list-decimal pl-6 space-y-3 text-foreground text-sm font-sans">
+                            <li className="pl-1 leading-relaxed">
+                              To provide students with hands-on experience in foundational and advanced AI concepts such as search algorithms, Bayesian networks, and reinforcement learning.
                             </li>
-                            <li className="pl-1">
-                              <strong>Learn to analyze various search techniques.</strong>
+                            <li className="pl-1 leading-relaxed">
+                              To enhance comprehension of AI methodologies through interactive simulations that allow for visualization, experimentation, and exploration of various algorithms.
                             </li>
-                            <li className="pl-1">
-                              <strong>Learn to build small projects using the concepts taught in the course.</strong>
+                            <li className="pl-1 leading-relaxed">
+                              To align with AI curricula in academic institutions, supporting learning objectives and augmenting theoretical understanding with practical applications.
                             </li>
                           </ol>
                         </div>
@@ -2697,12 +2695,6 @@ export default function LabDetailPage({ params }: LabDetailPageProps) {
                 </Card>
               )}
 
-              {/* TAB: OFFICIAL REFERENCE SCREENSHOTS (13 Artifacts from MoE IIIT Hyderabad) */}
-              {activeTab === "official-screenshots" && (
-                <Card className="border-border bg-card shadow-xs rounded-none p-4 sm:p-6">
-                  <OfficialScreenshotGallery />
-                </Card>
-              )}
             </div>
           </div>
         )}

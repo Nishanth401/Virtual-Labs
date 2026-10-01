@@ -20,7 +20,7 @@ export const ADVANCED_LABS_EXPERIMENTS: Experiment[] = [
       introduction:
         "This experiment is designed to demonstrate the policy iteration algorithm applied in a Gridworld setting. It offers an interactive platform where users can observe and analyze the evolution of policies at each iteration within the Markov Decision Process (MDP). Policy Iteration is like having a map and a compass in a territory where each crossroad is a decision point that leads to different paths with varying rewards. It methodically tests and refines each route, aiming to discover the most rewarding path through the set of decisions.",
       objective:
-        "Enable users to visually track policy changes in the Gridworld at each iteration, customize MDP dynamics to understand policy adaptation under varying parameters, and clearly demonstrate the process of convergence towards the optimal policy.",
+        "• Interactive Policy Visualization: Enable users to visually track policy changes in the Gridworld at each iteration.\n• Customizable MDP Dynamics: Allow users to modify the MDP dynamics, facilitating a deeper understanding of how policy adaptation occurs under different conditions.\n• Demonstrate Convergence: Clearly illustrate the process of convergence, showing how iterative policy refinement leads to optimal decision-making in the Gridworld.\n\nThe experiment is tailored for learners interested in reinforcement learning and decision theory, providing an engaging and educational exploration of policy iteration in a controlled, yet dynamic environment.",
       videoUrl: "https://www.youtube-nocookie.com/embed/5NgNicANyqM",
       videoTitle: "Policy Iteration & Reinforcement Learning in Gridworld",
       videoChannel: "Virtual Labs AI Series",
@@ -32,23 +32,27 @@ export const ADVANCED_LABS_EXPERIMENTS: Experiment[] = [
       ],
       theory: {
         overview:
-          "Policy Iteration is a fundamental dynamic programming algorithm in reinforcement learning for computing an optimal policy in finite MDPs. It consists of two interlocking stages: (1) Policy Evaluation, where state values V(s) are iteratively updated until convergence according to the current policy π, and (2) Policy Improvement, where greedy actions are chosen to update π(s) = argmax_a ∑ P(s'|s,a) [R(s,a,s') + γV(s')]. This cycle is guaranteed to converge to the optimal policy π* in a finite number of iterations.",
+          "Policy Iteration is a fundamental algorithm in reinforcement learning, particularly suited for optimizing decision-making processes in environments modeled by Markov Decision Processes (MDPs). It's like having a map and a compass in a territory where each crossroad is a decision point that leads to different paths with varying rewards. Policy Iteration methodically tests and refines each route, aiming to discover the most rewarding path through the set of decisions.\n\nImagine playing a game where every move dictates the outcome, but the best strategies aren't clear-cut. This is where Policy Iteration comes into play. In artificial intelligence, particularly within environments that require a series of decisions leading to a goal, we seek a guide—a policy—that consistently leads to success. Policy Iteration is the rigorous, step-wise guide that leads the path to the best possible decisions in complex, uncertain environments known as Markov Decision Processes (MDPs).\n\nConsider a game of Gridworld, where an agent must navigate through a grid to reach a goal. The agent can move up, down, left, or right, and each action leads to a different cell—or state—on the grid. Some cells might offer rewards (like coins) while others might present penalties (like traps). Policy Iteration helps the agent explore different paths, learn from each move, and ultimately find the most rewarding route to the goal.",
         keyConcepts: [
           {
-            title: "Markov Decision Process (MDP)",
-            desc: "Defined by 5-tuple (S, A, P, R, γ): States (S), Actions (A), Transition Probabilities P(s'|s,a), Reward Functions R(s,a,s'), and Discount Factor (γ).",
+            title: "Markov Decision Processes (MDPs)",
+            desc: "MDPs offer a structured approach to decision-making problems where outcomes are partly random and partly under the control of a decision-maker. They are defined by: States (S): The various positions or scenarios in which the decision-maker can find themselves; Actions (A): The set of decisions or moves the decision-maker can take; Transition Probabilities (P(s'|s,a)): The likelihood of moving to a new state s' from current state s after taking action a; Reward Functions (R(s,a,s')): The immediate payoff received after moving to a new state s' due to action a; Discount Factor (γ): A metric that values immediate rewards over future ones, influencing the long-term strategy. The objective is to formulate a policy (π) that specifies the best action to take in each state to maximize the sum of rewards collected over time.",
           },
           {
-            title: "Policy Evaluation",
-            desc: "Iterative calculation of state value function: V(s) ← ∑_{s',r} p(s',r|s,π(s)) [r + γV(s')] until maximum change Δ < θ.",
+            title: "Components of Policy Iteration",
+            desc: "Policy Iteration consists of two interlocking stages: (1) Policy Evaluation: This is where we determine the expected return from each state if we follow the current policy; (2) Policy Improvement: Based on the evaluations, we then adjust the policy by changing the actions in certain states to those that promise better returns.",
           },
           {
-            title: "Policy Improvement",
-            desc: "Updating the policy greedily with respect to current values: π'(s) = argmax_a ∑_{s',r} p(s',r|s,a) [r + γV(s')].",
+            title: "Mathematical Framework & Step-by-Step Explanation",
+            desc: "1. Initialization: Assign a preliminary value function V(s) and policy π(s) for all states s in S. 2. Policy Evaluation: Initialize Δ to zero. For each state s in S: keep current value V(s); recalculate V(s) based on expected returns for all next states s': V(s) = ∑_{s'} P(s'|s, π(s)) [ R(s, π(s), s') + γV(s') ]; amend Δ to greatest change in value. Iterate until Δ < θ (convergence threshold). 3. Policy Improvement: Start with policy-stable = true. For each state s in S: opt for best action a given current valuation: π(s) = argmax_a ∑_{s'} P(s'|s, a) [ R(s, a, s') + γV(s') ]. If policy action changes, mark policy-stable = false. If no changes occur, return V and π; if changes are made, resume Policy Evaluation.",
           },
           {
             title: "Convergence and Optimality",
-            desc: "Guaranteed to find optimal policy π* and optimal value function V* after a finite number of iterations when state and action spaces are finite.",
+            desc: "Policy Iteration is guaranteed to find an optimal policy π* and value function V* after a finite number of iterations, as long as the MDP has a finite set of states and actions. The resulting policy will be the one that maximizes the expected reward from any given state.",
+          },
+          {
+            title: "Significance in Reinforcement Learning & Conclusion",
+            desc: "Policy Iteration is a critical tool in reinforcement learning for defining clear and effective strategies in environments where each action leads to a new situation. Its precision and methodical nature make it particularly powerful for tasks like navigating mazes or playing strategic games where the goal is to find the most advantageous path. Its iterative process of evaluation and improvement provides a robust framework for finding the optimal sequence of decisions that lead to the best possible outcomes.",
           },
         ],
         complexities: [
@@ -75,13 +79,13 @@ export const ADVANCED_LABS_EXPERIMENTS: Experiment[] = [
         ],
       },
       procedure: [
-        "Step 1: Modifying the Grid - Click on any cell in the grid to cycle its state (Normal Empty → Blocked Obstacle → Terminal Goal +1.000 → Terminal Trap -1.000).",
-        "Step 2: Adjusting Settings - Use the Observations control menu to configure Grid Size (3x3 or 4x4), Discount Factor (γ = 0.9), default step Reward, and simulation speed.",
-        "Step 3: Understanding the Grid - Observe the Left Grid displaying Policy Representation with directional arrows (←, →, ↑, ↓) and the Center Grid showing numerical State Values V(s).",
-        "Step 4: Iteration and Sub-Iterations - Click 'Next Value' to progress through the current iteration step-by-step. The active cell glows and the dynamic equation appears above.",
-        "Step 5: Moving to the Next Iteration - Click 'Next Iteration' to complete full evaluation and run the greedy policy improvement step.",
-        "Step 6: Learning the Policy - Watch the directional arrows update in the Left Grid towards the most rewarding terminal states while avoiding penalties.",
-        "Step 7: Reaching the Optimal Policy - When state values stabilize and no arrow changes occur, the optimal policy banner confirms convergence.",
+        "Step 1: Modifying the Grid - Double Click/Single Click on any cell in the grid to change its state. Terminal States: These are your target or end points (like a charging station). Blocked States: These are obstacles or no-go areas.",
+        "Step 2: Adjusting Settings - Use the Control Menu to change grid size and algorithm parameters. Adjust things like grid dimensions or algorithm settings to see how they affect the outcome.",
+        "Step 3: Understanding the Grid - The grid shows the State Value Function for each cell. Each cell's value represents the expected reward for moving in the directions: Left, Up, Right, Down.",
+        "Step 4: Iteration and Sub-Iterations - Click 'Next Value' to progress through the current iteration step-by-step. The Sub-Iterations count increases with each step. When a terminal state or the maximum steps per iteration are reached, the iteration count increases and the steps reset to 0.",
+        "Step 5: Moving to the Next Iteration - Click 'Next Iteration' to proceed to the next cycle of the algorithm. This allows you to see how the algorithm refines its strategy over time.",
+        "Step 6: Learning the Policy - The Arrows in the Left Grid indicate the currently learned policy. These arrows guide you towards the most rewarding actions in each state.",
+        "Step 7: Reaching the Optimal Policy - When the State Value Functions of all cells stabilize, an Optimal Policy is achieved. A message will be displayed indicating that the best strategy has been found.",
       ],
       sampleCode: {
         language: "python",

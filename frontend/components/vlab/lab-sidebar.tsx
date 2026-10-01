@@ -18,7 +18,6 @@ import {
   Users,
   Award,
   ArrowUp,
-  Image as ImageIcon,
 } from "lucide-react";
 
 export type LabTab =
@@ -35,8 +34,7 @@ export type LabTab =
   | "manual-specs"
   | "case-study"
   | "c-study-plan"
-  | "mini-projects"
-  | "official-screenshots";
+  | "mini-projects";
 
 interface LabSidebarProps {
   activeTab: LabTab;
@@ -69,7 +67,6 @@ const AI_LAB_TABS: { id: LabTab; label: string; icon: React.ElementType }[] = [
   { id: "experiments", label: "List of Experiments", icon: ListTree },
   { id: "target-audience", label: "Target Audience", icon: Users },
   { id: "course-alignment", label: "Course Alignment", icon: GraduationCap },
-  { id: "official-screenshots", label: "Official Screenshots (13)", icon: ImageIcon },
   { id: "video-tutorials", label: "Video Tutorials", icon: Video },
   { id: "quizzes", label: "Self-Assessment Quiz", icon: FileQuestion },
   { id: "resources", label: "Resources & Tutorials", icon: ExternalLink },

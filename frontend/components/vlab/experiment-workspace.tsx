@@ -17,7 +17,6 @@ import { LeetCodePracticeCard } from "@/components/vlab/leetcode-practice-card";
 import { SqlCompiler } from "@/components/vlab/sql-compiler";
 import { VideoTimeline, TamilVideoTimeline } from "@/components/vlab/tamil-video-timeline";
 import { PolicyIterationVisualizer } from "@/components/visualizer/ai/policy-iteration-visualizer";
-import { OfficialScreenshotGallery } from "@/components/vlab/official-screenshot-gallery";
 
 // Sub-components for 9 authentic sections
 import { LabHeaderBanner } from "@/components/vlab/lab-header-banner";
@@ -97,7 +96,6 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
   const [simOutput, setSimOutput] = useState<string | null>(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
-  const [isGalleryOpen, setIsGalleryOpen] = useState<boolean>(false);
 
   // Official Instruction Studio State (Screenshot 112701)
   const [pipelineInstructions, setPipelineInstructions] = useState<PipelineInstruction[]>(DEFAULT_PIPELINE_INSTRUCTIONS);
@@ -241,19 +239,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
-            {(lab?.id === "artificial-intelligence" || experiment.labId === "artificial-intelligence") && (
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => setIsGalleryOpen(true)}
-                className="h-8 text-xs font-bold gap-1.5 border-[#0284c7]/40 text-[#0284c7] dark:text-[#38bdf8] hover:bg-[#0284c7]/10 rounded-none cursor-pointer"
-              >
-                <ImageIcon className="h-3.5 w-3.5" />
-                <span>Official MoE Screenshots (13)</span>
-              </Button>
-            )}
+
             {prevExp && (
               <Button asChild variant="outline" size="sm" className="h-8 text-xs gap-1 rounded-none">
                 <Link href={`/experiments/${prevExp.slug}`}>
@@ -304,12 +290,22 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                         `To analyze, visualize, and simulate the core mechanisms of ${experiment.title}, verifying step-by-step memory transitions, asymptotic time complexities, and state invariants.`}
                     </p>
                     {experiment.labId === "artificial-intelligence" ? (
-                      <ul className="list-disc pl-6 space-y-1.5 text-foreground/90 font-sans pt-1">
-                        <li>Understand the formulation of Markov Decision Processes (MDPs) with States S, Actions A, Transition Probabilities P, and Reward Functions R.</li>
-                        <li>Implement Policy Evaluation to iteratively compute state value functions V(s) under a given policy π.</li>
-                        <li>Implement Policy Improvement using the Bellman optimality operator to extract a greedy policy.</li>
-                        <li>Observe convergence to the optimal policy π* and optimal value function V* under custom discount factors and obstacles.</li>
-                      </ul>
+                      <div className="space-y-3 pt-1">
+                        <ul className="list-disc pl-6 space-y-2 text-foreground/90 font-sans">
+                          <li>
+                            <strong>Interactive Policy Visualization:</strong> Enable users to visually track policy changes in the Gridworld at each iteration.
+                          </li>
+                          <li>
+                            <strong>Customizable MDP Dynamics:</strong> Allow users to modify the MDP dynamics, facilitating a deeper understanding of how policy adaptation occurs under different conditions.
+                          </li>
+                          <li>
+                            <strong>Demonstrate Convergence:</strong> Clearly illustrate the process of convergence, showing how iterative policy refinement leads to optimal decision-making in the Gridworld.
+                          </li>
+                        </ul>
+                        <p className="text-xs text-muted-foreground pt-1 italic font-sans">
+                          The experiment is tailored for learners interested in reinforcement learning and decision theory, providing an engaging and educational exploration of policy iteration in a controlled, yet dynamic environment.
+                        </p>
+                      </div>
                     ) : (
                       <ul className="list-disc pl-6 space-y-1.5 text-foreground/90 font-sans pt-1">
                         <li>Understand operational pipeline latency, dynamic states, and memory boundaries.</li>
@@ -494,18 +490,23 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                       </div>
                     </div>
 
-                    <div className="pt-2">
-                      <p className="text-xs text-muted-foreground mb-1.5 font-semibold">
-                        Official Textbook Formulation Reference (Screenshot 104435):
+                    {/* Code-Snippet Text Formulation Block */}
+                    <div className="p-4 bg-muted/20 border border-border space-y-2 text-xs font-sans">
+                      <h4 className="font-bold text-foreground text-xs font-mono uppercase tracking-wider text-[#0284c7]">
+                        Code-Snippet: Formal Specification
+                      </h4>
+                      <p className="text-xs text-foreground/90 font-mono bg-background p-2 border border-border/50">
+                        1. Initialization: V(s) ∈ ℝ and π(s) ∈ A(s) arbitrarily for all s ∈ S
                       </p>
-                      <div className="border border-border/80 max-w-xl bg-black/5">
-                        <img
-                          src="/artificial-intelligence-labs/Screenshot 2026-09-30 104435.png"
-                          alt="Sutton and Barto Policy Iteration Algorithm"
-                          className="w-full h-auto object-contain cursor-pointer hover:opacity-95 transition-opacity"
-                          onClick={() => setIsGalleryOpen(true)}
-                        />
-                      </div>
+                      <p className="text-xs text-foreground/90 font-mono bg-background p-2 border border-border/50">
+                        2. Policy Evaluation: Repeat until Δ &lt; θ: V(s) ← ∑ p(s&apos;,r|s,π(s)) [r + γV(s&apos;)]
+                      </p>
+                      <p className="text-xs text-foreground/90 font-mono bg-background p-2 border border-border/50">
+                        3. Policy Improvement: π(s) ← argmax_a ∑ p(s&apos;,r|s,a) [r + γV(s&apos;)]; if policy-stable stop and return V and π
+                      </p>
+                      <p className="text-[11px] text-muted-foreground italic pt-1">
+                        Policy iteration algorithm [source: Sutton &amp; Barto (publicly available), 2019]
+                      </p>
                     </div>
                   </div>
                 )}
@@ -653,35 +654,37 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                   <div className="space-y-6">
                     <PolicyIterationVisualizer />
 
-                    {/* Official Benchmark Simulation Reference matching Screenshot 104625 */}
+                    {/* Official Simulation Interface Guide in Pure Text Format */}
                     <Card className="border border-border rounded-none bg-muted/20">
-                      <CardHeader className="py-3 px-4 border-b border-border/50">
-                        <div className="flex items-center justify-between">
-                          <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                            <ImageIcon className="h-4 w-4 text-[#0284c7]" />
-                            <span>Official MoE Virtual Labs Benchmark Simulation (Screenshot 104625)</span>
-                          </h4>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setIsGalleryOpen(true)}
-                            className="h-7 text-[11px] font-semibold rounded-none cursor-pointer"
-                          >
-                            View All 13 Screenshots
-                          </Button>
-                        </div>
+                      <CardHeader className="py-2.5 px-4 bg-muted/40 border-b border-border/60">
+                        <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-foreground flex items-center gap-2">
+                          <BookOpen className="h-4 w-4 text-[#0284c7]" />
+                          <span>Policy Iteration Demo &amp; Layout Guide</span>
+                        </h4>
                       </CardHeader>
-                      <CardContent className="p-4 space-y-2">
-                        <p className="text-xs text-muted-foreground">
-                          The interactive Gridworld simulation above implements the complete Policy Representation, Value Calculation, and Observations panel benchmarked against the official IIIT Hyderabad portal:
-                        </p>
-                        <div className="border border-border/60 overflow-hidden bg-black/5 max-w-3xl">
-                          <img
-                            src="/artificial-intelligence-labs/Screenshot 2026-09-30 104625.png"
-                            alt="Official MoE Simulation Screenshot"
-                            className="w-full h-auto object-contain cursor-pointer hover:opacity-95 transition-opacity"
-                            onClick={() => setIsGalleryOpen(true)}
-                          />
+                      <CardContent className="p-4 space-y-3 text-xs leading-relaxed text-foreground/90 font-sans">
+                        <div className="p-2.5 bg-background border border-border/60 text-xs font-mono text-center">
+                          <strong>Calculation of value function of a state appears dynamically during execution</strong>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+                          <div className="p-3 bg-background border border-border space-y-1.5">
+                            <h5 className="font-bold text-xs text-[#0284c7]">Policy Representation (Left Grid)</h5>
+                            <p className="text-[11px] text-muted-foreground leading-relaxed">
+                              Displays the directional arrows indicating the current learned policy (←, ↑, →, ↓) with state values. Target Goal state is colored green (+1.000), Trap / Penalty state is red (-1.000), and Obstacles are black.
+                            </p>
+                          </div>
+                          <div className="p-3 bg-background border border-border space-y-1.5">
+                            <h5 className="font-bold text-xs text-[#0284c7]">Calculation of State Values (Center Grid)</h5>
+                            <p className="text-[11px] text-muted-foreground leading-relaxed">
+                              Displays the iterative state values V(s) calculated via Bellman expectation equation. Values update at each sub-iteration step until maximum state difference Δ drops below θ.
+                            </p>
+                          </div>
+                          <div className="p-3 bg-background border border-border space-y-1.5">
+                            <h5 className="font-bold text-xs text-[#0284c7]">Observations Panel (Right)</h5>
+                            <p className="text-[11px] text-muted-foreground leading-relaxed">
+                              Tracks Iterations count, Sub-Iterations, Discount Factor (default 0.9), Step Reward (default 0.0), Grid Size (3x3 default), and interactive execution speed slider (Min.Speed to Max.Speed).
+                            </p>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
@@ -1179,8 +1182,8 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                     experiment.labId === "artificial-intelligence"
                       ? {
                           textBooks: [
-                            "Stuart Russell and Peter Norvig, Artificial Intelligence: A Modern Approach, 4th Edition, Pearson, 2020.",
-                            "Richard S. Sutton and Andrew G. Barto, Reinforcement Learning: An Introduction, 2nd Edition, The MIT Press, Cambridge, Massachusetts, 2018.",
+                            "Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach (4th ed.). Pearson.",
+                            "Sutton, R. S., & Barto, A. G. (2018). Reinforcement Learning: An Introduction (2nd ed.). The MIT Press. Chapter 4: Dynamic Programming",
                           ],
                           videoLectures: [
                             {
@@ -1349,22 +1352,6 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
         </div>
       </div>
 
-      {/* Official Reference Screenshots Dialog Modal */}
-      <Dialog open={isGalleryOpen} onOpenChange={setIsGalleryOpen}>
-        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto rounded-none p-6">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-bold font-heading">
-              Official Virtual Labs MoE Reference Screenshots
-            </DialogTitle>
-            <DialogDescription className="text-xs text-muted-foreground">
-              IIIT Hyderabad — Artificial Intelligence I (ai1-iiith.vlabs.ac.in)
-            </DialogDescription>
-          </DialogHeader>
-          <div className="pt-2">
-            <OfficialScreenshotGallery />
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
