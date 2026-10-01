@@ -15,6 +15,7 @@ import { SortingVisualizer } from "@/components/visualizer/sorting/sorting-visua
 import { RecursionVisualizerPanel } from "@/components/visualizer/recursion/recursion-visualizer-panel";
 import { LeetCodePracticeCard } from "@/components/vlab/leetcode-practice-card";
 import { SqlCompiler } from "@/components/vlab/sql-compiler";
+import { MultiLangCodeViewer } from "@/components/visualizer/code/multi-lang-code-viewer";
 import { VideoTimeline, TamilVideoTimeline } from "@/components/vlab/tamil-video-timeline";
 import { PolicyIterationVisualizer } from "@/components/visualizer/ai/policy-iteration-visualizer";
 
@@ -64,6 +65,14 @@ import {
   Sliders,
   Star,
 } from "lucide-react";
+
+export const LABS_WITH_CODE_EDITOR = new Set([
+  "c-programming",
+  "python-programming",
+  "oops-java",
+  "data-structures",
+  "dbms-lab",
+]);
 
 interface PipelineInstruction {
   id: string;
@@ -644,9 +653,28 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             {/* ============================================================== */}
             {activeTab === "simulation" && (
               <div className="space-y-8">
-                <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
-                  {experiment.title}
-                </h2>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-border/60">
+                  <div>
+                    <h2 className="text-2xl sm:text-3xl font-normal text-[#0284c7] dark:text-[#38bdf8] font-sans">
+                      {experiment.title}
+                    </h2>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {LABS_WITH_CODE_EDITOR.has(experiment.labId)
+                        ? "Interactive Code Editor, Virtual Compiler & Execution Studio"
+                        : "Interactive Simulation Sandbox & Verification Console"}
+                    </p>
+                  </div>
+                  <Badge
+                    variant="outline"
+                    className={`font-mono text-xs rounded-none self-start sm:self-auto ${
+                      LABS_WITH_CODE_EDITOR.has(experiment.labId)
+                        ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+                        : "bg-sky-500/10 text-[#0284c7] border-sky-500/30"
+                    }`}
+                  >
+                    {LABS_WITH_CODE_EDITOR.has(experiment.labId) ? "CODE EDITOR ACTIVE" : "SIMULATION SANDBOX"}
+                  </Badge>
+                </div>
 
                 {/* If Artificial Intelligence Lab: Render PolicyIterationVisualizer */}
                 {experiment.labId === "artificial-intelligence" ? (
@@ -690,8 +718,9 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                   </div>
                 ) : (
                   <>
-                    {/* OFFICIAL GOVERNMENT INSTRUCTION STUDIO (Screenshot 112701) */}
-                    <Card className="border-border bg-card shadow-xs rounded-none">
+                    {/* OPTIONAL PIPELINE INSTRUCTION STUDIO (ONLY FOR PIPELINE SIMULATOR) */}
+                    {experiment.simulator === "pipeline" && (
+                      <Card className="border-border bg-card shadow-xs rounded-none">
                       <CardHeader className="py-3 border-b border-border/60 text-center bg-muted/20">
                         <h3 className="text-base font-bold text-foreground font-sans">
                           Build Instruction
@@ -986,42 +1015,138 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                     )}
                   </CardContent>
                 </Card>
+              )}
 
                 {/* Specific Visualizer Engine or Interactive Workbench */}
-                <div className="p-4 sm:p-6 rounded-none bg-card border border-border shadow-sm">
-                  {experiment.labId === "dbms-lab" ? (
-                    <SqlCompiler
-                      title={experiment.title}
-                      subtitle="Interactive Relational Schema & SQL Query Simulation Studio"
-                      initialSql={experiment.sections.sampleCode.code}
-                      currentExperimentId={experiment.id}
-                    />
-                  ) : experiment.simulator === "stack" ? (
-                    <StackVisualizer content={<p>Java Stack LIFO simulation sandbox.</p>} />
-                  ) : experiment.simulator === "queue" ? (
-                    <QueueVisualizer content={<p>Java Queue FIFO simulation sandbox.</p>} />
-                  ) : experiment.simulator === "linked-list" ? (
-                    <LinkedListVisualizer content={<p>Java Singly Linked List dynamic pointer visualizer.</p>} />
-                  ) : experiment.simulator === "bubble-sort" ? (
-                    <SortingVisualizer
-                      algorithm="bubble"
-                      title="Bubble Sort Simulation (Java)"
-                      description="Observe adjacent comparison passes and bubbling of maximum unsorted values."
-                    />
-                  ) : experiment.simulator === "selection-sort" ? (
-                    <SortingVisualizer
-                      algorithm="selection"
-                      title="Selection Sort Simulation (Java)"
-                      description="Observe minimum index scanning across unsorted partition and minimal memory swaps."
-                    />
-                  ) : experiment.simulator === "insertion-sort" ? (
-                    <SortingVisualizer
-                      algorithm="insertion"
-                      title="Insertion Sort Simulation (Java)"
-                      description="Observe element extraction, backward shifting, and adaptive linear performance."
-                    />
-                  ) : (
+                <div className="w-full">
+                  {LABS_WITH_CODE_EDITOR.has(experiment.labId) ? (
+                    /* ========================================================== */
+                    /* LABS WITH CODE EDITOR (C, Python, Java OOP, DSA, DBMS)      */
+                    /* ========================================================== */
                     <div className="space-y-6">
+                      {experiment.labId === "dbms-lab" ? (
+                        <SqlCompiler
+                          title={experiment.title}
+                          subtitle="Interactive Relational Schema & SQL Query Simulation Studio"
+                          initialSql={experiment.sections.sampleCode?.code || "SELECT * FROM students;"}
+                          currentExperimentId={experiment.id}
+                        />
+                      ) : experiment.labId === "c-programming" ? (
+                        <MultiLangCodeViewer
+                          title={`${experiment.title} (C Language)`}
+                          subtitle="Interactive C Virtual GCC Simulation & IDE Execution Studio"
+                          badge="GCC C11 ENGINE"
+                          defaultLanguage="cpp"
+                          snippets={[
+                            {
+                              language: "cpp",
+                              label: "main.c",
+                              code:
+                                experiment.sections.sampleCode?.code ||
+                                `// ${experiment.title}\n#include <stdio.h>\n\nint main() {\n    printf("Running ${experiment.title}\\n");\n    return 0;\n}`,
+                            },
+                          ]}
+                        />
+                      ) : experiment.labId === "python-programming" ? (
+                        <MultiLangCodeViewer
+                          title={`${experiment.title} (Python 3)`}
+                          subtitle="Interactive Python 3 Interpreter & REPL Studio"
+                          badge="CPython 3.11"
+                          defaultLanguage="python"
+                          snippets={[
+                            {
+                              language: "python",
+                              label: "solution.py",
+                              code:
+                                experiment.sections.sampleCode?.code ||
+                                `# ${experiment.title}\n\ndef main():\n    print("Running ${experiment.title}")\n\nif __name__ == "__main__":\n    main()`,
+                            },
+                          ]}
+                        />
+                      ) : experiment.labId === "oops-java" ? (
+                        <MultiLangCodeViewer
+                          title={`${experiment.title} (Java OOP)`}
+                          subtitle="Interactive Java OOP Virtual Machine & Execution Studio"
+                          badge="OpenJDK 17"
+                          defaultLanguage="java"
+                          snippets={[
+                            {
+                              language: "java",
+                              label: "Solution.java",
+                              code:
+                                experiment.sections.sampleCode?.code ||
+                                `// ${experiment.title}\npublic class Solution {\n    public static void main(String[] args) {\n        System.out.println("Running ${experiment.title}");\n    }\n}`,
+                            },
+                          ]}
+                        />
+                      ) : (
+                        /* data-structures */
+                        <div className="space-y-6">
+                          {experiment.simulator === "stack" ? (
+                            <StackVisualizer content={<p>Java Stack LIFO simulation sandbox.</p>} />
+                          ) : experiment.simulator === "queue" ? (
+                            <QueueVisualizer content={<p>Java Queue FIFO simulation sandbox.</p>} />
+                          ) : experiment.simulator === "linked-list" ? (
+                            <LinkedListVisualizer content={<p>Java Singly Linked List dynamic pointer visualizer.</p>} />
+                          ) : experiment.simulator === "bubble-sort" ? (
+                            <SortingVisualizer
+                              algorithm="bubble"
+                              title="Bubble Sort Simulation"
+                              description="Observe adjacent comparison passes and bubbling of maximum unsorted values."
+                            />
+                          ) : experiment.simulator === "selection-sort" ? (
+                            <SortingVisualizer
+                              algorithm="selection"
+                              title="Selection Sort Simulation"
+                              description="Observe minimum index scanning across unsorted partition and minimal memory swaps."
+                            />
+                          ) : experiment.simulator === "insertion-sort" ? (
+                            <SortingVisualizer
+                              algorithm="insertion"
+                              title="Insertion Sort Simulation"
+                              description="Observe element extraction, backward shifting, and adaptive linear performance."
+                            />
+                          ) : null}
+
+                          {/* Interactive Code Editor for DSA */}
+                          <div className="pt-2">
+                            <MultiLangCodeViewer
+                              title={`${experiment.title} Implementation`}
+                              subtitle="Interactive Multi-Language Source Code & Live Compiler Runner"
+                              badge="DSA IDE ENGINE"
+                              defaultLanguage={
+                                experiment.sections.sampleCode?.language === "python"
+                                  ? "python"
+                                  : experiment.sections.sampleCode?.language === "c"
+                                  ? "cpp"
+                                  : "java"
+                              }
+                              snippets={[
+                                {
+                                  language: experiment.sections.sampleCode?.language || "java",
+                                  label: `Solution.${
+                                    experiment.sections.sampleCode?.language === "python"
+                                      ? "py"
+                                      : experiment.sections.sampleCode?.language === "c"
+                                      ? "c"
+                                      : "java"
+                                  }`,
+                                  code:
+                                    experiment.sections.sampleCode?.code ||
+                                    `// ${experiment.title}\npublic class Solution {\n    public static void main(String[] args) {\n        System.out.println("${experiment.title}");\n    }\n}`,
+                                },
+                              ]}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    /* ========================================================== */
+                    /* LABS WITHOUT CODE EDITOR (Deep learning, ML, Networks, OS,  */
+                    /* Business analytics, Cloud computing, Big data analytics)   */
+                    /* ========================================================== */
+                    <div className="p-4 sm:p-6 rounded-none bg-card border border-border shadow-xs space-y-6">
                       <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-border/50">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
@@ -1080,7 +1205,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                                 Simulation Console Stream
                               </span>
                               <Badge variant="outline" className="text-[10px] font-mono border-slate-700 text-slate-300 rounded-none">
-                                {experiment.sections.sampleCode.language.toUpperCase()} ENGINE
+                                {experiment.sections.sampleCode?.language?.toUpperCase() || "SYSTEM"} SIMULATOR
                               </Badge>
                             </div>
                             <pre className="font-mono text-xs text-emerald-400 whitespace-pre-wrap leading-relaxed max-h-60 overflow-y-auto p-2 bg-black/40 rounded-none">
@@ -1089,7 +1214,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
                           </div>
 
                           <div className="pt-2 text-[10px] text-slate-500 font-mono flex items-center justify-between border-t border-slate-800/60">
-                            <span>Status: 0 Errors | Memory Verified</span>
+                            <span>Status: 0 Errors | Verification Complete</span>
                             <span>State: READY</span>
                           </div>
                         </div>

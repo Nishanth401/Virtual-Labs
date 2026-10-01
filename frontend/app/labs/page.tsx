@@ -348,52 +348,8 @@ export default function LabsCataloguePage() {
           {/* ========================================================================= */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             
-            {/* Left Column: Universal DSA Banner + Filtered Labs List (8 Cols) */}
+            {/* Left Column: Filtered Labs List (8 Cols) */}
             <div className="lg:col-span-8 space-y-4">
-              
-              {/* UNIVERSAL DSA HIGHLIGHT BANNER (FOR ALL YEARS) */}
-              <div className="p-4 sm:p-5 rounded-none bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/5 border border-amber-500/30 shadow-xs space-y-3">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-700 dark:text-amber-300 border-amber-500/40">
-                      ⚡ Universal for All Batches
-                    </Badge>
-                    <span className="text-xs font-bold text-foreground">
-                      DSA is For All Years &amp; Students
-                    </span>
-                  </div>
-                  <span className="text-[11px] text-muted-foreground font-mono">
-                    II, III &amp; IV Year AIDS
-                  </span>
-                </div>
-
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Data Structures &amp; Algorithms visual simulations and problem sheets are universal. Any student regardless of year can practice sorting, linked lists, stacks, queues, trees, graphs, and 75 curated LeetCode coding problems.
-                </p>
-
-                <div className="flex flex-wrap items-center gap-2 pt-1">
-                  <Button asChild size="sm" className="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold gap-1.5 rounded-none">
-                    <Link href="/visualizer">
-                      <Sparkles className="h-3.5 w-3.5" />
-                      <span>Open DSA Visualizer Studio</span>
-                    </Link>
-                  </Button>
-
-                  <Button asChild variant="outline" size="sm" className="text-xs font-semibold gap-1.5 border-amber-500/40 hover:bg-amber-500/10 rounded-none">
-                    <Link href="/dsa-visualization">
-                      <Code2 className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
-                      <span>75 DSA Problem Sheets</span>
-                    </Link>
-                  </Button>
-
-                  <Button asChild variant="ghost" size="sm" className="text-xs text-muted-foreground hover:text-foreground gap-1">
-                    <Link href="/labs/data-structures">
-                      <span>Data Structures Lab [AD8301]</span>
-                      <ArrowRight className="h-3 w-3" />
-                    </Link>
-                  </Button>
-                </div>
-              </div>
 
               {/* Lab List Header */}
               <div className="flex items-center justify-between px-1">

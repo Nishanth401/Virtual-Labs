@@ -15,7 +15,9 @@ import {
   FlaskConical,
   Code2,
   LayoutDashboard,
+  Terminal,
 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { MultiLangCodeViewer } from "@/components/visualizer/code/multi-lang-code-viewer";
 import { SqlCompiler } from "@/components/vlab/sql-compiler";
 import { MaterialReaderDialog } from "@/components/resources/material-reader-dialog";
@@ -357,27 +359,110 @@ export function DSATopicArticle({
         onToggleCompleted={onToggleCompleted}
       />
 
-      {/* Compiler / Live Visualizer */}
-      {topic.categoryId?.startsWith("dbms-") ||
-      topic.id?.startsWith("dbms-") ||
-      topic.codeSnippets?.some((s) => s.language?.toLowerCase() === "sql") ? (
-        <SqlCompiler
-          title={`${topic.title}`}
-          subtitle="Interactive Relational SQL Studio & Live Query Execution Sandbox"
-          initialSql={
-            topic.codeSnippets?.find((s) => s.language?.toLowerCase() === "sql")?.code ||
-            topic.codeSnippets?.[0]?.code ||
-            ""
-          }
-          currentExperimentId={topic.id}
-        />
-      ) : (
-        <MultiLangCodeViewer
-          title={`${topic.title} - Implementation`}
-          subtitle="Interactive Multi-Language Source Code & Live Compiler Runner"
-          snippets={topic.codeSnippets || []}
-        />
-      )}
+      {/* Compiler / Live Visualizer or Architecture Specification */}
+      {(() => {
+        const hasCodeEditor = !(
+          topic.categoryId?.startsWith("cn-") ||
+          topic.id?.startsWith("cn-") ||
+          topic.categoryId?.startsWith("os-") ||
+          topic.id?.startsWith("os-") ||
+          topic.categoryId?.startsWith("ml-") ||
+          topic.id?.startsWith("ml-") ||
+          topic.categoryId?.startsWith("dl-") ||
+          topic.id?.startsWith("dl-") ||
+          topic.categoryId?.startsWith("ds-") ||
+          topic.id?.startsWith("ds-") ||
+          topic.categoryId?.startsWith("ba-") ||
+          topic.id?.startsWith("ba-") ||
+          topic.categoryId?.startsWith("bd-") ||
+          topic.id?.startsWith("bd-") ||
+          topic.categoryId?.startsWith("bigdata-") ||
+          topic.id?.startsWith("bigdata-") ||
+          topic.categoryId?.startsWith("cloud-") ||
+          topic.id?.startsWith("cloud-") ||
+          topic.categoryId?.startsWith("ai-") ||
+          topic.id?.startsWith("ai-")
+        );
+
+        if (hasCodeEditor) {
+          return topic.categoryId?.startsWith("dbms-") ||
+            topic.id?.startsWith("dbms-") ||
+            topic.codeSnippets?.some((s) => s.language?.toLowerCase() === "sql") ? (
+            <SqlCompiler
+              title={`${topic.title}`}
+              subtitle="Interactive Relational SQL Studio & Live Query Execution Sandbox"
+              initialSql={
+                topic.codeSnippets?.find((s) => s.language?.toLowerCase() === "sql")?.code ||
+                topic.codeSnippets?.[0]?.code ||
+                ""
+              }
+              currentExperimentId={topic.id}
+            />
+          ) : (
+            <MultiLangCodeViewer
+              title={`${topic.title} - Implementation`}
+              subtitle="Interactive Multi-Language Source Code & Live Compiler Runner"
+              defaultLanguage={
+                topic.categoryId?.startsWith("c-") || topic.id?.startsWith("c-")
+                  ? "cpp"
+                  : topic.categoryId?.startsWith("py-") || topic.id?.startsWith("py-")
+                  ? "python"
+                  : "java"
+              }
+              snippets={topic.codeSnippets || []}
+            />
+          );
+        }
+
+        /* Non-code-editor lab: render Architecture & Concept Specification card */
+        return (
+          <div className="p-5 sm:p-6 rounded-none bg-card border border-border/80 shadow-xs space-y-5">
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-border/60">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <Terminal className="h-4 w-4 text-[#0284c7]" />
+                  <h3 className="font-bold text-base text-foreground font-heading">
+                    {topic.title} Architecture &amp; Execution Specification
+                  </h3>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Theoretical model, system architecture flow, and verification benchmarks.
+                </p>
+              </div>
+              <Badge variant="outline" className="font-mono text-xs rounded-none bg-sky-500/10 text-[#0284c7] border-sky-500/30">
+                SIMULATION &amp; CONCEPT WORKBENCH
+              </Badge>
+            </div>
+
+            {topic.diagram && (
+              <div className="space-y-2">
+                <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-muted-foreground">
+                  {topic.diagramTitle || "System Architecture & Protocol Flow"}
+                </h4>
+                <pre className="p-4 rounded-none bg-slate-950 text-emerald-400 text-xs font-mono overflow-x-auto border border-slate-800 leading-relaxed max-h-72">
+                  <code>{topic.diagram}</code>
+                </pre>
+              </div>
+            )}
+
+            {topic.keyPoints && topic.keyPoints.length > 0 && (
+              <div className="space-y-2">
+                <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-muted-foreground">
+                  Key Engineering Concepts
+                </h4>
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-foreground/90">
+                  {topic.keyPoints.map((kp, kIdx) => (
+                    <li key={kIdx} className="p-2.5 rounded-none bg-muted/20 border border-border/50 flex items-start gap-2">
+                      <CheckCircle2 className="h-3.5 w-3.5 text-[#0284c7] shrink-0 mt-0.5" />
+                      <span>{kp}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
       <DSATopicResources topic={topic} />
 
