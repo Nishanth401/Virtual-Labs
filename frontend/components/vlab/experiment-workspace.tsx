@@ -63,7 +63,6 @@ import {
   Settings2,
   Sliders,
   Star,
-  Image as ImageIcon,
 } from "lucide-react";
 
 interface PipelineInstruction {
@@ -239,7 +238,7 @@ export function ExperimentWorkspace({ experiment }: ExperimentWorkspaceProps) {
             </div>
           </div>
 
-
+          <div className="flex items-center gap-2 shrink-0">
             {prevExp && (
               <Button asChild variant="outline" size="sm" className="h-8 text-xs gap-1 rounded-none">
                 <Link href={`/experiments/${prevExp.slug}`}>
