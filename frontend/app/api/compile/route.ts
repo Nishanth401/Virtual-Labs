@@ -11,8 +11,21 @@ function escapeRegExp(string: string) {
 export async function POST(req: NextRequest) {
   const startTime = Date.now();
   try {
-    const body = await req.json();
-    const { code, language = "java", stdin = "" } = body;
+    let body: any;
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json(
+        {
+          status: "compile_error",
+          compilerError: "Invalid JSON request body payload.",
+          exitCode: 1,
+          durationMs: 0,
+        },
+        { status: 400 }
+      );
+    }
+    const { code, language = "java", stdin = "" } = body || {};
 
     if (!code || typeof code !== "string" || !code.trim()) {
       return NextResponse.json(

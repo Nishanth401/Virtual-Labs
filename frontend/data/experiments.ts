@@ -54,7 +54,7 @@ export interface ExperimentSection {
     javaCode: string;
     description: string;
   };
-  leetcodeProblems: LeetCodeProblem[];
+  leetcodeProblems?: LeetCodeProblem[];
   expectedOutput: string;
   targetAudience: {
     ug: string[];

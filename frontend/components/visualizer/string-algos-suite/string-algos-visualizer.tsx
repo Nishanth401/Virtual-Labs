@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -30,72 +30,47 @@ interface Props {
   initialModule?: StringAlgoModule;
 }
 
-export function StringAlgosVisualizer({ initialModule = "z-algorithm" }: Props) {
-  const [activeModule, setActiveModule] = useState<StringAlgoModule>(initialModule);
-
-  // 1. Z-Algorithm State
-  const [zText, setZText] = useState("aabzaabzaabc");
-  const [zPattern, setZPattern] = useState("aab");
-  const concatStr = `${zPattern}$${zText}`;
-
-  // Compute Z-Array for concatStr
-  const computeZArray = (s: string) => {
-    const n = s.length;
-    const z = new Array(n).fill(0);
-    let l = 0, r = 0;
-    for (let i = 1; i < n; i++) {
-      if (i <= r) {
-        z[i] = Math.min(r - i + 1, z[i - l]);
-      }
-      while (i + z[i] < n && s[z[i]] === s[i + z[i]]) {
-        z[i]++;
-      }
-      if (i + z[i] - 1 > r) {
-        l = i;
-        r = i + z[i] - 1;
-      }
+function computeZArray(s: string): number[] {
+  const n = s.length;
+  const z = new Array(n).fill(0);
+  let l = 0, r = 0;
+  for (let i = 1; i < n; i++) {
+    if (i <= r) {
+      z[i] = Math.min(r - i + 1, z[i - l]);
     }
-    return z;
-  };
-  const zArray = computeZArray(concatStr);
-
-  // 2. Aho-Corasick State
-  const [acText, setAcText] = useState("ushers");
-  const acKeywords = ["he", "she", "his", "hers"];
-
-  // 3. Manacher's Algorithm State
-  const [manacherInput, setManacherInput] = useState("babad");
-  const transformedManacher = `#${manacherInput.split("").join("#")}#`;
-
-  const computeManacherRadius = (t: string) => {
-    const n = t.length;
-    const p = new Array(n).fill(0);
-    let c = 0, r = 0;
-    for (let i = 0; i < n; i++) {
-      const mirror = 2 * c - i;
-      if (i < r) {
-        p[i] = Math.min(r - i, p[mirror]);
-      }
-      while (i - p[i] - 1 >= 0 && i + p[i] + 1 < n && t[i - p[i] - 1] === t[i + p[i] + 1]) {
-        p[i]++;
-      }
-      if (i + p[i] > r) {
-        c = i;
-        r = i + p[i];
-      }
+    while (i + z[i] < n && s[z[i]] === s[i + z[i]]) {
+      z[i]++;
     }
-    return p;
-  };
-  const manacherRadii = computeManacherRadius(transformedManacher);
+    if (i + z[i] - 1 > r) {
+      l = i;
+      r = i + z[i] - 1;
+    }
+  }
+  return z;
+}
 
-  // 4. Suffix Array & LCP State
-  const [saInput, setSaInput] = useState("banana");
-  const suffixes = saInput
-    .split("")
-    .map((_, i) => ({ suffix: saInput.slice(i), index: i }))
-    .sort((a, b) => a.suffix.localeCompare(b.suffix));
+function computeManacherRadius(t: string): number[] {
+  const n = t.length;
+  const p = new Array(n).fill(0);
+  let c = 0, r = 0;
+  for (let i = 0; i < n; i++) {
+    const mirror = 2 * c - i;
+    if (i < r) {
+      p[i] = Math.min(r - i, p[mirror]);
+    }
+    while (i - p[i] - 1 >= 0 && i + p[i] + 1 < n && t[i - p[i] - 1] === t[i + p[i] + 1]) {
+      p[i]++;
+    }
+    if (i + p[i] > r) {
+      c = i;
+      r = i + p[i];
+    }
+  }
+  return p;
+}
 
-  const lcpArray = [0];
+function computeLcpArray(suffixes: { suffix: string; index: number }[]): number[] {
+  const lcp = [0];
   for (let i = 1; i < suffixes.length; i++) {
     let common = 0;
     const s1 = suffixes[i - 1].suffix;
@@ -103,11 +78,40 @@ export function StringAlgosVisualizer({ initialModule = "z-algorithm" }: Props) 
     while (common < s1.length && common < s2.length && s1[common] === s2[common]) {
       common++;
     }
-    lcpArray.push(common);
+    lcp.push(common);
   }
+  return lcp;
+}
 
-  // 5. Suffix Tree State
+export function StringAlgosVisualizer({ initialModule = "z-algorithm" }: Props) {
+  const [activeModule, setActiveModule] = useState<StringAlgoModule>(initialModule);
+  const [zText, setZText] = useState("aabzaabzaabc");
+  const [zPattern, setZPattern] = useState("aab");
+  const [acText, setAcText] = useState("ushers");
+  const [manacherInput, setManacherInput] = useState("babad");
+  const [saInput, setSaInput] = useState("banana");
   const [stWord, setStWord] = useState("cacao$");
+
+  // 1. Z-Algorithm
+  const concatStr = `${zPattern}$${zText}`;
+  const zArray = useMemo(() => computeZArray(concatStr), [concatStr]);
+
+  // 2. Aho-Corasick
+  const acKeywords = ["he", "she", "his", "hers"];
+
+  // 3. Manacher's Algorithm
+  const transformedManacher = useMemo(() => `#${manacherInput.split("").join("#")}#`, [manacherInput]);
+  const manacherRadii = useMemo(() => computeManacherRadius(transformedManacher), [transformedManacher]);
+
+  // 4. Suffix Array & LCP
+  const suffixes = useMemo(() => {
+    return saInput
+      .split("")
+      .map((_, i) => ({ suffix: saInput.slice(i), index: i }))
+      .sort((a, b) => a.suffix.localeCompare(b.suffix));
+  }, [saInput]);
+
+  const lcpArray = useMemo(() => computeLcpArray(suffixes), [suffixes]);
 
   return (
     <div className="space-y-6">

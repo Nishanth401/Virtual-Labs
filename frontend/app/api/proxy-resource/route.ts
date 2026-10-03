@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const targetUrl = searchParams.get("url");
@@ -12,6 +21,9 @@ export async function GET(request: NextRequest) {
 
   try {
     const parsedUrl = new URL(targetUrl);
+    if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
+      return new NextResponse("Invalid protocol. Only http and https URLs are permitted.", { status: 400 });
+    }
 
     // Fetch target webpage with realistic headers
     const response = await fetch(targetUrl, {
@@ -27,7 +39,7 @@ export async function GET(request: NextRequest) {
 
     if (!response.ok) {
       return new NextResponse(
-        `Failed to fetch content from ${targetUrl} (Status: ${response.status})`,
+        `Failed to fetch content from ${escapeHtml(targetUrl)} (Status: ${response.status})`,
         { status: response.status }
       );
     }
@@ -103,9 +115,9 @@ export async function GET(request: NextRequest) {
         <body>
           <div class="box">
             <h2>Academic Curriculum Portal</h2>
-            <p>Official Reference: <strong>${targetUrl}</strong></p>
+            <p>Official Reference: <strong>${escapeHtml(targetUrl)}</strong></p>
             <p style="color: #94a3b8; font-size: 12px;">Browsing live portal inside Virtual Labs.</p>
-            <a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="btn">Open Official Portal in New Tab →</a>
+            <a href="${encodeURI(targetUrl)}" target="_blank" rel="noopener noreferrer" class="btn">Open Official Portal in New Tab →</a>
           </div>
         </body>
       </html>`,

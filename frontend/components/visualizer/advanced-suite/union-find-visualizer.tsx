@@ -1,11 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Play, Pause, RotateCcw, ChevronRight, ChevronLeft, Share2, Info, CheckCircle2, Workflow } from "lucide-react";
+
+function findRoot(i: number, pArr: number[]): { root: number; path: number[] } {
+  const path: number[] = [i];
+  let curr = i;
+  while (curr !== pArr[curr]) {
+    curr = pArr[curr];
+    path.push(curr);
+  }
+  return { root: curr, path };
+}
 
 export function UnionFindVisualizer() {
   const [numElements, setNumElements] = useState<number>(7);
@@ -19,17 +29,6 @@ export function UnionFindVisualizer() {
     "Initialized Disjoint Set with 7 singleton elements. Each element is its own root (Parent[i] = i)."
   ]);
   const [pathCompressionActive, setPathCompressionActive] = useState<boolean>(true);
-
-  const findRoot = (i: number, pArr = parent): { root: number; path: number[] } => {
-    const path: number[] = [i];
-    let curr = i;
-    while (curr !== pArr[curr]) {
-      curr = pArr[curr];
-      path.push(curr);
-    }
-    return { root: curr, path };
-  };
-
   const [isPlayingDemo, setIsPlayingDemo] = useState<boolean>(false);
 
   const performUnion = (u: number, v: number, pArr: number[], rArr: number[]) => {
@@ -134,7 +133,7 @@ export function UnionFindVisualizer() {
 
   const handleFind = () => {
     if (findNode < 0 || findNode >= numElements) return;
-    const res = findRoot(findNode);
+    const res = findRoot(findNode, parent);
     if (pathCompressionActive && res.path.length > 2) {
       const nextParent = [...parent];
       res.path.forEach(n => { nextParent[n] = res.root; });
@@ -158,12 +157,15 @@ export function UnionFindVisualizer() {
   };
 
   // Group into connected components
-  const components: Record<number, number[]> = {};
-  for (let i = 0; i < numElements; i++) {
-    const root = findRoot(i).root;
-    if (!components[root]) components[root] = [];
-    components[root].push(i);
-  }
+  const components = useMemo(() => {
+    const comps: Record<number, number[]> = {};
+    for (let i = 0; i < numElements; i++) {
+      const root = findRoot(i, parent).root;
+      if (!comps[root]) comps[root] = [];
+      comps[root].push(i);
+    }
+    return comps;
+  }, [numElements, parent]);
 
   const componentColors = ["#3b82f6", "#10b981", "#f59e0b", "#ec4899", "#8b5cf6", "#06b6d4", "#64748b"];
 

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, XCircle, Award, RotateCcw, HelpCircle, Check } from "lucide-react";
 
-import { useAuth } from "@/context/auth-context";
+import { useOptionalAuth } from "@/context/auth-context";
 
 interface QuizEngineProps {
   quiz: Quiz;
@@ -18,12 +18,7 @@ interface QuizEngineProps {
 
 export function QuizEngine({ quiz, onCompleted }: QuizEngineProps) {
   const { progress, saveQuiz } = useStudentProgress();
-  let auth: any = null;
-  try {
-    auth = useAuth();
-  } catch {
-    auth = null;
-  }
+  const auth = useOptionalAuth();
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
