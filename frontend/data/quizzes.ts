@@ -1991,11 +1991,176 @@ export const QUIZZES_DATA: Record<string, Quiz> = {
 };
 
 export function getQuizForExperiment(expId: string, customTitle?: string): Quiz {
+  if (!expId) expId = "";
+  // 1. Direct key match
   if (QUIZZES_DATA[expId]) return QUIZZES_DATA[expId];
   if (QUIZZES_DATA[`${expId}-quiz`]) return QUIZZES_DATA[`${expId}-quiz`];
-  
+
+  // 2. Direct experimentId or id match
+  const directMatch = Object.values(QUIZZES_DATA).find(
+    (q) => q.experimentId === expId || q.id === expId
+  );
+  if (directMatch) return directMatch;
+
+  // 3. Known ID and alias mapping
+  const aliasMap: Record<string, string> = {
+    // DSA Experiments
+    "dsa-exp-1": "singly-linked-list-quiz",
+    "quiz-dsa-1": "singly-linked-list-quiz",
+    "dsa-exp-2": "stack-quiz",
+    "quiz-dsa-2": "stack-quiz",
+    "dsa-exp-3": "queue-quiz",
+    "quiz-dsa-3": "queue-quiz",
+    "dsa-exp-4": "bubble-sort-quiz",
+    "quiz-dsa-4": "bubble-sort-quiz",
+    "dsa-exp-5": "selection-sort-quiz",
+    "quiz-dsa-5": "selection-sort-quiz",
+    "dsa-exp-6": "insertion-sort-quiz",
+    "quiz-dsa-6": "insertion-sort-quiz",
+    "dsa-exp-7": "binary-tree-traversals-quiz",
+    "quiz-dsa-7": "binary-tree-traversals-quiz",
+    "dsa-exp-8": "binary-search-quiz",
+    "quiz-dsa-8": "binary-search-quiz",
+    "dsa-exp-9": "dijkstra-quiz",
+    "quiz-dsa-9": "dijkstra-quiz",
+    "dsa-exp-10": "avl-tree-quiz",
+    "quiz-dsa-10": "avl-tree-quiz",
+    // OS Experiments
+    "os-exp-4": "cpu-scheduling-quiz",
+    "quiz-os-4": "cpu-scheduling-quiz",
+    "os-exp-5": "dining-philosophers-quiz",
+    "quiz-os-5": "dining-philosophers-quiz",
+    "os-exp-6": "bankers-deadlock-quiz",
+    "quiz-os-6": "bankers-deadlock-quiz",
+    "os-exp-7": "page-replacement-quiz",
+    "quiz-os-7": "page-replacement-quiz",
+    // DBMS Experiments
+    "dbms-exp-1": "sql-basics-quiz",
+    "quiz-dbms-1": "sql-basics-quiz",
+    "dbms-exp-2": "sql-basics-quiz",
+    "quiz-dbms-2": "sql-basics-quiz",
+    // Networks Experiments
+    "net-exp-1": "crc-quiz",
+    "quiz-net-1": "crc-quiz",
+    "networks-exp-1": "crc-quiz",
+    // Big Data & Cloud Experiments
+    "bda-exp-1": "hdfs-quiz",
+    "quiz-bda-1": "hdfs-quiz",
+    "cloud-exp-1": "aws-ec2-quiz",
+    "quiz-cloud-1": "aws-ec2-quiz",
+    // AI Experiments
+    "ai-exp-1": "a-star-quiz",
+    "quiz-ai-1": "a-star-quiz",
+    "ai-exp-2": "minimax-quiz",
+    "quiz-ai-2": "minimax-quiz",
+    "ai-exp-3": "quiz-ai-value-iteration",
+    "quiz-ai-3": "quiz-ai-value-iteration",
+    "ai-exp-4": "policy-iteration-posttest",
+    "quiz-ai-4": "policy-iteration-posttest",
+    "ai-exp-5": "quiz-ai-q-learning",
+    "quiz-ai-5": "quiz-ai-q-learning",
+    "ai-exp-6": "quiz-ai-dfs",
+    "quiz-ai-6": "quiz-ai-dfs",
+    "ai-exp-7": "quiz-ai-greedy-best-first",
+    "quiz-ai-7": "quiz-ai-greedy-best-first",
+    "ai-exp-8": "quiz-ai-bayes-construction",
+    "quiz-ai-8": "quiz-ai-bayes-construction",
+    "ai-exp-9": "quiz-ai-bayes-inference",
+    "quiz-ai-9": "quiz-ai-bayes-inference",
+    // ML & Data Science Experiments
+    "ml-exp-1": "linear-regression-quiz",
+    "quiz-ml-1": "linear-regression-quiz",
+    "ds-exp-1": "linear-regression-quiz",
+    "quiz-ds-1": "linear-regression-quiz",
+  };
+
+  const aliasKey = aliasMap[expId.toLowerCase()];
+  if (aliasKey && QUIZZES_DATA[aliasKey]) {
+    return QUIZZES_DATA[aliasKey];
+  }
+
+  // 4. Topic Keyword Matching against title or expId
+  const searchStr = `${expId} ${customTitle || ""}`.toLowerCase();
+
+  if (searchStr.includes("singly linked list") || (searchStr.includes("linked list") && !searchStr.includes("doubly"))) {
+    return QUIZZES_DATA["singly-linked-list-quiz"];
+  }
+  if (searchStr.includes("stack")) {
+    return QUIZZES_DATA["stack-quiz"];
+  }
+  if (searchStr.includes("queue")) {
+    return QUIZZES_DATA["queue-quiz"];
+  }
+  if (searchStr.includes("bubble sort")) {
+    return QUIZZES_DATA["bubble-sort-quiz"];
+  }
+  if (searchStr.includes("selection sort")) {
+    return QUIZZES_DATA["selection-sort-quiz"];
+  }
+  if (searchStr.includes("insertion sort")) {
+    return QUIZZES_DATA["insertion-sort-quiz"];
+  }
+  if (searchStr.includes("binary search tree") || searchStr.includes("binary tree") || searchStr.includes("traversal")) {
+    return QUIZZES_DATA["binary-tree-traversals-quiz"];
+  }
+  if (searchStr.includes("binary search") && !searchStr.includes("tree")) {
+    return QUIZZES_DATA["binary-search-quiz"];
+  }
+  if (searchStr.includes("dijkstra")) {
+    return QUIZZES_DATA["dijkstra-quiz"];
+  }
+  if (searchStr.includes("avl")) {
+    return QUIZZES_DATA["avl-tree-quiz"];
+  }
+  if (searchStr.includes("cpu scheduling") || (searchStr.includes("scheduling") && !searchStr.includes("disk"))) {
+    return QUIZZES_DATA["cpu-scheduling-quiz"];
+  }
+  if (searchStr.includes("philosopher") || searchStr.includes("synchronization") || searchStr.includes("semaphore")) {
+    return QUIZZES_DATA["dining-philosophers-quiz"];
+  }
+  if (searchStr.includes("banker") || searchStr.includes("deadlock")) {
+    return QUIZZES_DATA["bankers-deadlock-quiz"];
+  }
+  if (searchStr.includes("page replacement") || searchStr.includes("paging") || searchStr.includes("fifo page") || searchStr.includes("lru")) {
+    return QUIZZES_DATA["page-replacement-quiz"];
+  }
+  if (searchStr.includes("crc") || searchStr.includes("cyclic redundancy")) {
+    return QUIZZES_DATA["crc-quiz"];
+  }
+  if (searchStr.includes("hdfs") || searchStr.includes("hadoop")) {
+    return QUIZZES_DATA["hdfs-quiz"];
+  }
+  if (searchStr.includes("ec2") || searchStr.includes("aws")) {
+    return QUIZZES_DATA["aws-ec2-quiz"];
+  }
+  if (searchStr.includes("linear regression")) {
+    return QUIZZES_DATA["linear-regression-quiz"];
+  }
+  if (searchStr.includes("policy iteration")) {
+    return QUIZZES_DATA["policy-iteration-posttest"];
+  }
+  if (searchStr.includes("value iteration")) {
+    return QUIZZES_DATA["quiz-ai-value-iteration"];
+  }
+  if (searchStr.includes("q-learning")) {
+    return QUIZZES_DATA["quiz-ai-q-learning"];
+  }
+  if (searchStr.includes("a*") || searchStr.includes("a star") || searchStr.includes("a-star")) {
+    return QUIZZES_DATA["a-star-quiz"];
+  }
+  if (searchStr.includes("minimax") || searchStr.includes("alpha-beta")) {
+    return QUIZZES_DATA["minimax-quiz"];
+  }
+  if (searchStr.includes("bayes") && searchStr.includes("inference")) {
+    return QUIZZES_DATA["quiz-ai-bayes-inference"];
+  }
+  if (searchStr.includes("bayes")) {
+    return QUIZZES_DATA["quiz-ai-bayes-construction"];
+  }
+
+  // 5. Broad substring match in QUIZZES_DATA
   const found = Object.values(QUIZZES_DATA).find(
-    (q) => q.experimentId === expId || q.id === expId || expId.includes(q.experimentId) || (q.experimentId && q.experimentId.includes(expId))
+    (q) => (q.experimentId && expId.includes(q.experimentId)) || (q.experimentId && q.experimentId.includes(expId))
   );
   if (found) return found;
 

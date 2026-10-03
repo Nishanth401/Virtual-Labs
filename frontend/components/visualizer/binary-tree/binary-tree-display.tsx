@@ -121,7 +121,7 @@ export function BinaryTreeDisplay({ tree, highlightedNodes }: BinaryTreeDisplayP
     setNodes(newNodes)
     setEdges(newEdges)
     fitView()
-  }, [tree, highlightedNodes, setNodes, setEdges, fitView])
+  }, [tree, highlightedNodes, setNodes, setEdges, fitView, theme])
 
   return (
     <div className="w-full h-[600px] bg-background rounded-lg overflow-hidden">

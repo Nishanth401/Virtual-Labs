@@ -108,39 +108,41 @@ export function useLinkedList(type: ListType) {
     setIsAnimating(true)
     addOperation({ type: 'insert-front', value })
 
-    const newNode = createNode(value)
-    const nodes = new Map(list.nodes)
-    nodes.set(newNode.id, newNode)
+    try {
+      const newNode = createNode(value)
+      const nodes = new Map(list.nodes)
+      nodes.set(newNode.id, newNode)
 
-    if (!list.head) {
-      if (type === 'CSLL' || type === 'CDLL') {
-        newNode.next = newNode.id
-        if (type === 'CDLL') newNode.prev = newNode.id
-      }
-      setList({ ...list, head: newNode.id, tail: newNode.id, nodes })
-      setHighlight([newNode.id], `Created first node (${value}) as HEAD`)
-      await new Promise(r => setTimeout(r, 600))
-    } else {
-      const oldHead = nodes.get(list.head)!
-      newNode.next = list.head
-      
-      if (type === 'DLL' || type === 'CDLL') {
-        oldHead.prev = newNode.id
-      }
-      
-      if (type === 'CSLL' || type === 'CDLL') {
-        const tail = nodes.get(list.tail!)!
-        tail.next = newNode.id
-        if (type === 'CDLL') newNode.prev = list.tail
-      }
+      if (!list.head) {
+        if (type === 'CSLL' || type === 'CDLL') {
+          newNode.next = newNode.id
+          if (type === 'CDLL') newNode.prev = newNode.id
+        }
+        setList({ ...list, head: newNode.id, tail: newNode.id, nodes })
+        setHighlight([newNode.id], `Created first node (${value}) as HEAD`)
+        await new Promise(r => setTimeout(r, 600))
+      } else {
+        const oldHead = nodes.get(list.head)!
+        newNode.next = list.head
+        
+        if (type === 'DLL' || type === 'CDLL') {
+          oldHead.prev = newNode.id
+        }
+        
+        if (type === 'CSLL' || type === 'CDLL') {
+          const tail = nodes.get(list.tail!)!
+          tail.next = newNode.id
+          if (type === 'CDLL') newNode.prev = list.tail
+        }
 
-      setList({ ...list, head: newNode.id, nodes })
-      setHighlight([newNode.id, list.head], `Inserted new node (${value}) at HEAD, updated pointers`)
-      await new Promise(r => setTimeout(r, 700))
+        setList({ ...list, head: newNode.id, nodes })
+        setHighlight([newNode.id, list.head], `Inserted new node (${value}) at HEAD, updated pointers`)
+        await new Promise(r => setTimeout(r, 700))
+      }
+    } finally {
+      setHighlight([], '')
+      setIsAnimating(false)
     }
-
-    setHighlight([], '')
-    setIsAnimating(false)
   }
 
   const insertBack = async (value: number) => {
@@ -148,37 +150,39 @@ export function useLinkedList(type: ListType) {
     setIsAnimating(true)
     addOperation({ type: 'insert-back', value })
 
-    const newNode = createNode(value)
-    const nodes = new Map(list.nodes)
-    nodes.set(newNode.id, newNode)
+    try {
+      const newNode = createNode(value)
+      const nodes = new Map(list.nodes)
+      nodes.set(newNode.id, newNode)
 
-    if (!list.tail) {
-      if (type === 'CSLL' || type === 'CDLL') {
-        newNode.next = newNode.id
-        if (type === 'CDLL') newNode.prev = newNode.id
-      }
-      setList({ ...list, head: newNode.id, tail: newNode.id, nodes })
-      setHighlight([newNode.id], `Created first node (${value}) as HEAD & TAIL`)
-      await new Promise(r => setTimeout(r, 600))
-    } else {
-      const oldTail = nodes.get(list.tail)!
-      oldTail.next = newNode.id
-      
-      if (type === 'DLL' || type === 'CDLL') {
-        newNode.prev = list.tail
-      }
-      
-      if (type === 'CSLL' || type === 'CDLL') {
-        newNode.next = list.head
-      }
+      if (!list.tail) {
+        if (type === 'CSLL' || type === 'CDLL') {
+          newNode.next = newNode.id
+          if (type === 'CDLL') newNode.prev = newNode.id
+        }
+        setList({ ...list, head: newNode.id, tail: newNode.id, nodes })
+        setHighlight([newNode.id], `Created first node (${value}) as HEAD & TAIL`)
+        await new Promise(r => setTimeout(r, 600))
+      } else {
+        const oldTail = nodes.get(list.tail)!
+        oldTail.next = newNode.id
+        
+        if (type === 'DLL' || type === 'CDLL') {
+          newNode.prev = list.tail
+        }
+        
+        if (type === 'CSLL' || type === 'CDLL') {
+          newNode.next = list.head
+        }
 
-      setList({ ...list, tail: newNode.id, nodes })
-      setHighlight([list.tail, newNode.id], `Appended new node (${value}) at TAIL`)
-      await new Promise(r => setTimeout(r, 700))
+        setList({ ...list, tail: newNode.id, nodes })
+        setHighlight([list.tail, newNode.id], `Appended new node (${value}) at TAIL`)
+        await new Promise(r => setTimeout(r, 700))
+      }
+    } finally {
+      setHighlight([], '')
+      setIsAnimating(false)
     }
-
-    setHighlight([], '')
-    setIsAnimating(false)
   }
 
   const deleteFront = async () => {
@@ -186,34 +190,36 @@ export function useLinkedList(type: ListType) {
     setIsAnimating(true)
     addOperation({ type: 'delete-front' })
 
-    const nodes = new Map(list.nodes)
-    const oldHead = nodes.get(list.head)!
-    
-    setHighlight([list.head], `Removing HEAD node (${oldHead.value})...`)
-    await new Promise(r => setTimeout(r, 500))
-
-    if (list.head === list.tail) {
-      // Last node
-      setList({ ...list, head: null, tail: null, nodes: new Map() })
-    } else {
-      const newHead = oldHead.next!
-      const newHeadNode = nodes.get(newHead)!
+    try {
+      const nodes = new Map(list.nodes)
+      const oldHead = nodes.get(list.head)!
       
-      if (type === 'DLL' || type === 'CDLL') {
-        newHeadNode.prev = type === 'CDLL' ? list.tail : null
-      }
-      
-      if (type === 'CSLL' || type === 'CDLL') {
-        const tail = nodes.get(list.tail!)!
-        tail.next = newHead
-      }
+      setHighlight([list.head], `Removing HEAD node (${oldHead.value})...`)
+      await new Promise(r => setTimeout(r, 500))
 
-      nodes.delete(list.head)
-      setList({ ...list, head: newHead, nodes })
+      if (list.head === list.tail) {
+        // Last node
+        setList({ ...list, head: null, tail: null, nodes: new Map() })
+      } else {
+        const newHead = oldHead.next!
+        const newHeadNode = nodes.get(newHead)!
+        
+        if (type === 'DLL' || type === 'CDLL') {
+          newHeadNode.prev = type === 'CDLL' ? list.tail : null
+        }
+        
+        if (type === 'CSLL' || type === 'CDLL') {
+          const tail = nodes.get(list.tail!)!
+          tail.next = newHead
+        }
+
+        nodes.delete(list.head)
+        setList({ ...list, head: newHead, nodes })
+      }
+    } finally {
+      setHighlight([], '')
+      setIsAnimating(false)
     }
-
-    setHighlight([], '')
-    setIsAnimating(false)
   }
 
   const deleteBack = async () => {
@@ -221,49 +227,53 @@ export function useLinkedList(type: ListType) {
     setIsAnimating(true)
     addOperation({ type: 'delete-back' })
 
-    const nodes = new Map(list.nodes)
-    const oldTail = nodes.get(list.tail)!
-    
-    setHighlight([list.tail], `Removing TAIL node (${oldTail?.value})...`)
-    await new Promise(r => setTimeout(r, 500))
-
-    if (list.head === list.tail) {
-      // Last node
-      setList({ ...list, head: null, tail: null, nodes: new Map() })
-    } else {
-      let newTail: string | null = list.head
-      let current: string | null = list.head
+    try {
+      const nodes = new Map(list.nodes)
+      const oldTail = nodes.get(list.tail)!
       
-      while (current !== null) {
-        const currentNode = nodes.get(current)
-        if (!currentNode) break
-        if (currentNode.next === list.tail) {
-          newTail = current
-          break
-        }
-        current = currentNode.next
-      }
+      setHighlight([list.tail], `Removing TAIL node (${oldTail?.value})...`)
+      await new Promise(r => setTimeout(r, 500))
 
-      if (newTail) {
-        const newTailNode = nodes.get(newTail)
-        if (newTailNode) {
-          newTailNode.next = type === 'CSLL' || type === 'CDLL' ? list.head : null
-          
-          if (type === 'CDLL' && list.head) {
-            const headNode = nodes.get(list.head)
-            if (headNode) {
-              headNode.prev = newTail
-            }
+      if (list.head === list.tail) {
+        // Last node
+        setList({ ...list, head: null, tail: null, nodes: new Map() })
+      } else {
+        let newTail: string | null = list.head
+        let current: string | null = list.head
+        const visited = new Set<string>()
+        
+        while (current !== null && !visited.has(current)) {
+          visited.add(current)
+          const currentNode = nodes.get(current)
+          if (!currentNode) break
+          if (currentNode.next === list.tail) {
+            newTail = current
+            break
           }
+          current = currentNode.next
+        }
 
-          nodes.delete(list.tail)
-          setList({ ...list, tail: newTail, nodes })
+        if (newTail) {
+          const newTailNode = nodes.get(newTail)
+          if (newTailNode) {
+            newTailNode.next = type === 'CSLL' || type === 'CDLL' ? list.head : null
+            
+            if (type === 'CDLL' && list.head) {
+              const headNode = nodes.get(list.head)
+              if (headNode) {
+                headNode.prev = newTail
+              }
+            }
+
+            nodes.delete(list.tail)
+            setList({ ...list, tail: newTail, nodes })
+          }
         }
       }
+    } finally {
+      setHighlight([], '')
+      setIsAnimating(false)
     }
-
-    setHighlight([], '')
-    setIsAnimating(false)
   }
 
   const search = async (value: number): Promise<boolean> => {
@@ -271,40 +281,42 @@ export function useLinkedList(type: ListType) {
     setIsAnimating(true)
     addOperation({ type: 'search', value })
 
-    let curr: string | null = list.head
     let found = false
-    let step = 0
-    const visited = new Set<string>()
+    try {
+      let curr: string | null = list.head
+      let step = 0
+      const visited = new Set<string>()
 
-    while (curr) {
-      if (visited.has(curr)) break
-      visited.add(curr)
-      
-      const node = list.nodes.get(curr)
-      if (!node) break
+      while (curr) {
+        if (visited.has(curr)) break
+        visited.add(curr)
+        
+        const node = list.nodes.get(curr)
+        if (!node) break
 
-      setHighlight([curr], `Step ${step + 1}: Checking Node at address ${curr} (value = ${node.value})...`)
-      await new Promise(r => setTimeout(r, 600))
+        setHighlight([curr], `Step ${step + 1}: Checking Node at address ${curr} (value = ${node.value})...`)
+        await new Promise(r => setTimeout(r, 600))
 
-      if (Number(node.value) === value) {
-        setHighlight([curr], `Target ${value} found at index ${step}!`)
-        found = true
-        await new Promise(r => setTimeout(r, 1200))
-        break
+        if (Number(node.value) === value) {
+          setHighlight([curr], `Target ${value} found at index ${step}!`)
+          found = true
+          await new Promise(r => setTimeout(r, 1200))
+          break
+        }
+
+        if (curr === list.tail) break
+        curr = node.next
+        step++
       }
 
-      if (curr === list.tail) break
-      curr = node.next
-      step++
+      if (!found) {
+        setHighlight([], `Target ${value} was not found in the list.`)
+        await new Promise(r => setTimeout(r, 1200))
+      }
+    } finally {
+      setHighlight([], '')
+      setIsAnimating(false)
     }
-
-    if (!found) {
-      setHighlight([], `Target ${value} was not found in the list.`)
-      await new Promise(r => setTimeout(r, 1200))
-    }
-
-    setHighlight([], '')
-    setIsAnimating(false)
     return found
   }
 
@@ -313,69 +325,72 @@ export function useLinkedList(type: ListType) {
     setIsAnimating(true)
     addOperation({ type: 'reverse' })
 
-    const nodes = new Map(list.nodes)
-    let curr: string | null = list.head
-    let prev: string | null = null
-    let next: string | null = null
-    const originalTail = list.tail
-    const originalHead = list.head
+    try {
+      const nodes = new Map(list.nodes)
+      let curr: string | null = list.head
+      let prev: string | null = null
+      let next: string | null = null
+      const originalTail = list.tail
+      const originalHead = list.head
 
-    while (curr) {
-      const currentNode = nodes.get(curr)
-      if (!currentNode) break
+      while (curr) {
+        const currentNode = nodes.get(curr)
+        if (!currentNode) break
 
-      next = currentNode.next
+        next = currentNode.next
 
-      setHighlight([curr], `Reversing pointer of node ${currentNode.value}`)
-      await new Promise(r => setTimeout(r, 500))
+        setHighlight([curr], `Reversing pointer of node ${currentNode.value}`)
+        await new Promise(r => setTimeout(r, 500))
 
-      // Reverse current node's pointer
-      currentNode.next = prev
-      
-      if (type === 'DLL' || type === 'CDLL') {
-        if (prev) {
-          const prevNode = nodes.get(prev)
-          if (prevNode) {
-            prevNode.prev = curr
+        // Reverse current node's pointer
+        currentNode.next = prev
+        
+        if (type === 'DLL' || type === 'CDLL') {
+          if (prev) {
+            const prevNode = nodes.get(prev)
+            if (prevNode) {
+              prevNode.prev = curr
+            }
           }
+          currentNode.prev = next
         }
-        currentNode.prev = next
+
+        prev = curr
+        if (curr === originalTail) {
+          break
+        }
+        curr = next
       }
 
-      prev = curr
-      if (curr === originalTail) {
-        break
-      }
-      curr = next
-    }
-
-    // Update circular links if needed
-    if (type === 'CSLL' || type === 'CDLL') {
-      if (originalHead && originalTail) {
-        const newTailNode = nodes.get(originalHead)
-        if (newTailNode) {
-          newTailNode.next = originalTail
-          if (type === 'CDLL') {
-            const newHeadNode = nodes.get(originalTail)
-            if (newHeadNode) {
-              newHeadNode.prev = originalHead
+      // Update circular links if needed
+      if (type === 'CSLL' || type === 'CDLL') {
+        if (originalHead && originalTail) {
+          const newTailNode = nodes.get(originalHead)
+          if (newTailNode) {
+            newTailNode.next = originalTail
+            if (type === 'CDLL') {
+              const newHeadNode = nodes.get(originalTail)
+              if (newHeadNode) {
+                newHeadNode.prev = originalHead
+              }
             }
           }
         }
       }
+
+      setList({
+        ...list,
+        head: originalTail,
+        tail: originalHead,
+        nodes,
+      })
+
+      setHighlight([], 'List reversal complete!')
+      await new Promise(r => setTimeout(r, 800))
+    } finally {
+      setHighlight([], '')
+      setIsAnimating(false)
     }
-
-    setList({
-      ...list,
-      head: originalTail,
-      tail: originalHead,
-      nodes,
-    })
-
-    setHighlight([], 'List reversal complete!')
-    await new Promise(r => setTimeout(r, 800))
-    setHighlight([], '')
-    setIsAnimating(false)
   }
 
   return {

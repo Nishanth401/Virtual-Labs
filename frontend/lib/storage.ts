@@ -29,7 +29,7 @@ export interface StudentProgressState {
 
 const STORAGE_KEY = "vlab_student_progress_v1";
 
-const DEFAULT_STATE: StudentProgressState = {
+export const DEFAULT_STATE: StudentProgressState = {
   role: "STUDENT",
   studentName: "Student",
   studentRollNo: "STUDENT",

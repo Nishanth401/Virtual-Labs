@@ -127,7 +127,7 @@ export function PolicyIterationVisualizer() {
   };
 
   // Helper to determine next state given an action (with boundary & obstacle check)
-  const getNextState = (r: number, c: number, action: ActionDirection, currentGrid: GridCell[][]) => {
+  const getNextState = useCallback((r: number, c: number, action: ActionDirection, currentGrid: GridCell[][]) => {
     const { dr, dc } = ACTION_VECTORS[action];
     const nr = r + dr;
     const nc = c + dc;
@@ -138,11 +138,11 @@ export function PolicyIterationVisualizer() {
       return { r, c }; // hit obstacle, stays in place
     }
     return { r: nr, c: nc };
-  };
+  }, [gridSize]);
 
   // Calculate expected return for a state given an action
   // Uses standard Gridworld transition dynamics: 0.8 intended action, 0.1 drift right, 0.1 drift left
-  const getQValue = (r: number, c: number, action: ActionDirection, currentGrid: GridCell[][]) => {
+  const getQValue = useCallback((r: number, c: number, action: ActionDirection, currentGrid: GridCell[][]) => {
     const perpendiculars: Record<ActionDirection, [ActionDirection, ActionDirection]> = {
       UP: ["LEFT", "RIGHT"],
       RIGHT: ["UP", "DOWN"],
@@ -164,7 +164,7 @@ export function PolicyIterationVisualizer() {
 
     const expectedFutureVal = 0.8 * termIntendedVal + 0.1 * termPerp1Val + 0.1 * termPerp2Val;
     return reward + discountFactor * expectedFutureVal;
-  };
+  }, [getNextState, defaultReward, discountFactor]);
 
   // Single step evaluation for a cell ("Next Value")
   const stepNextValue = useCallback(() => {
@@ -209,7 +209,7 @@ export function PolicyIterationVisualizer() {
 
       return newGrid;
     });
-  }, [discountFactor, defaultReward, gridSize, isOptimal, subIterations]);
+  }, [discountFactor, defaultReward, gridSize, isOptimal, subIterations, getQValue]);
 
   // Full Policy Iteration Cycle (Evaluation to convergence + Policy Improvement)
   const stepNextIteration = useCallback(() => {
@@ -274,7 +274,7 @@ export function PolicyIterationVisualizer() {
 
       return nextGrid;
     });
-  }, [discountFactor, defaultReward, gridSize, isOptimal, iterations]);
+  }, [gridSize, isOptimal, iterations, getQValue]);
 
   // Handle cell click to cycle through cell types
   const handleCellClick = (r: number, c: number) => {

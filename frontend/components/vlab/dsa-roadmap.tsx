@@ -33,7 +33,7 @@ export function DSARoadmap({ labId = "data-structures", sidebar }: DSARoadmapPro
   const categories = labRoadmap?.categories || DSA_CATEGORIES_DATA;
 
   // Collect flat list of all topics across categories for prev/next calculations
-  const allTopics: DSATopic[] = categories.flatMap((cat) => cat.topics);
+  const allTopics: DSATopic[] = React.useMemo(() => categories.flatMap((cat) => cat.topics), [categories]);
 
   const [activeTopic, setActiveTopic] = useState<DSATopic>(allTopics[0]);
   const [completedTopicIds, setCompletedTopicIds] = useState<string[]>([]);
@@ -43,7 +43,7 @@ export function DSARoadmap({ labId = "data-structures", sidebar }: DSARoadmapPro
     if (allTopics.length > 0) {
       setActiveTopic(allTopics[0]);
     }
-  }, [labId]);
+  }, [allTopics]);
 
   const currentIndex = allTopics.findIndex((t) => t.id === activeTopic?.id);
   const prevTopic = currentIndex > 0 ? allTopics[currentIndex - 1] : null;

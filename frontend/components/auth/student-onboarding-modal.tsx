@@ -59,11 +59,9 @@ export function StudentOnboardingModal() {
     if (user && !loading) {
       if (!isProfileComplete) {
         setOpen(true);
-        if (!name) {
-          setName(user.displayName || studentProfile?.name || "");
-        }
-        if (!regNo && studentProfile?.registerNumber && !studentProfile.registerNumber.startsWith("STUDENT")) {
-          setRegNo(studentProfile.registerNumber);
+        setName((prev) => prev || user.displayName || studentProfile?.name || "");
+        if (studentProfile?.registerNumber && !studentProfile.registerNumber.startsWith("STUDENT")) {
+          setRegNo((prev) => prev || studentProfile.registerNumber);
         }
         if (studentProfile?.year) {
           setYear(studentProfile.year);

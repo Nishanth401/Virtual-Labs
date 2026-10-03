@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import {
   StudentProgressState,
+  DEFAULT_STATE,
   getStoredProgress,
   recordQuizResult,
   recordExperimentFeedback,
@@ -12,7 +13,7 @@ import {
 } from "@/lib/storage";
 
 export function useStudentProgress() {
-  const [progress, setProgress] = useState<StudentProgressState>(getStoredProgress);
+  const [progress, setProgress] = useState<StudentProgressState>(DEFAULT_STATE);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {

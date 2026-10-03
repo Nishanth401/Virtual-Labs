@@ -80,19 +80,44 @@ export function usePolynomial() {
   }
 
   const parsePolynomial = (input: string): Term[] => {
-    // Basic parsing of format like "2x^2 + 3x + 1"
     const terms: Term[] = []
-    const parts = input.split(/\s*\+\s*/)
-    
-    parts.forEach(part => {
-      const match = part.match(/^(-?\d*)?(?:x(?:\^(\d+))?)?$/)
+    if (!input || !input.trim()) return terms
+
+    const cleaned = input.trim()
+    const termMatches = cleaned.match(/[+-]?\s*[^+-]+/g)
+    if (!termMatches) return terms
+
+    termMatches.forEach(raw => {
+      const part = raw.replace(/\s+/g, '')
+      if (!part) return
+
+      const match = part.match(/^([+-]?\d*)(?:x(?:\^([+-]?\d+))?)?$/i)
       if (match) {
-        const coefficient = match[1] ? parseInt(match[1]) : (part.includes('x') ? 1 : parseInt(part))
-        const exponent = match[2] ? parseInt(match[2]) : (part.includes('x') ? 1 : 0)
-        terms.push({ coefficient, exponent })
+        const coefStr = match[1]
+        const expStr = match[2]
+
+        let coefficient = 0
+        if (part.toLowerCase().includes('x')) {
+          if (!coefStr || coefStr === '+') coefficient = 1
+          else if (coefStr === '-') coefficient = -1
+          else coefficient = parseInt(coefStr, 10)
+        } else {
+          coefficient = parseInt(coefStr, 10)
+        }
+
+        let exponent = 0
+        if (part.toLowerCase().includes('x')) {
+          exponent = expStr !== undefined ? parseInt(expStr, 10) : 1
+        } else {
+          exponent = 0
+        }
+
+        if (!isNaN(coefficient) && !isNaN(exponent)) {
+          terms.push({ coefficient, exponent })
+        }
       }
     })
-    
+
     return terms.sort((a, b) => b.exponent - a.exponent)
   }
 

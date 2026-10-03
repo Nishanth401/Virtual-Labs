@@ -18,7 +18,7 @@ import {
   CollegeVideoTutorial,
   CollegeAnnouncement
 } from "@/lib/supabase-multitenant";
-import { useAuth } from "@/context/auth-context";
+import { useOptionalAuth } from "@/context/auth-context";
 import { saveStudentProfileToDb, verifyEmailAndRegNoUnique, StudentProfile } from "@/lib/supabase";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -69,7 +69,7 @@ export default function CollegePortalPage({ params }: CollegePortalPageProps) {
     code: "0000",
     tagline: "Autonomous Institution on V-Labs Multi-Campus Cloud",
     location: "Tamil Nadu, India",
-    logo: "/icons/vsb-logo.png",
+    logo: "/vsb-logo.png",
     bannerGradient: "from-slate-900 via-zinc-900 to-rose-950",
     accentColor: "#e11d48",
     accreditation: ["Autonomous", "NBA Ready", "AICTE Approved"],
@@ -90,7 +90,7 @@ export default function CollegePortalPage({ params }: CollegePortalPageProps) {
     status: "active"
   };
 
-  const auth = useAuth();
+  const auth = useOptionalAuth();
   const { user, studentProfile, isProfileComplete, completeStudentProfile } = auth || {};
 
   // College-scoped data states

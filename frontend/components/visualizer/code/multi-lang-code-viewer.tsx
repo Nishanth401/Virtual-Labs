@@ -784,7 +784,7 @@ export function MultiLangCodeViewer({
       `[Loaded] ${LANG_META[activeLang].file} (${title})`,
       "Click 'Run Code' or press Ctrl+Enter to execute."
     ]);
-  }, [snippets, title]);
+  }, [snippets, title, activeLang]);
 
   // Current active code
   const currentCode = editedCodeMap[activeLang] !== undefined
@@ -983,7 +983,7 @@ export function MultiLangCodeViewer({
     } finally {
       setIsRunning(false);
     }
-  }, [currentCode, activeLang, customStdin, title]);
+  }, [currentCode, activeLang, customStdin]);
 
   // Add Custom Test Case
   const handleAddTestCase = () => {

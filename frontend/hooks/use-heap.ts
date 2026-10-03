@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { HeapNode, HeapType } from "@/components/visualizer/heap/types"
 
 let nodeIdCounter = 1
@@ -22,84 +22,86 @@ export function useHeap() {
 
   const [heap, setHeap] = useState<HeapNode | null>(() => arrayToTree(DEFAULT_HEAP))
 
-  const shouldSwap = (parent: number, child: number): boolean => {
-    if (heapType === 'max') {
+  const shouldSwap = (parent: number, child: number, type: HeapType): boolean => {
+    if (type === 'max') {
       return parent < child
     }
     return parent > child
   }
 
-  const heapifyUp = (array: number[], index: number) => {
+  const heapifyUp = (array: number[], index: number, type: HeapType) => {
     const parentIndex = Math.floor((index - 1) / 2)
     
-    if (parentIndex >= 0 && shouldSwap(array[parentIndex], array[index])) {
-      // Swap
+    if (parentIndex >= 0 && shouldSwap(array[parentIndex], array[index], type)) {
       [array[parentIndex], array[index]] = [array[index], array[parentIndex]]
-      heapifyUp(array, parentIndex)
+      heapifyUp(array, parentIndex, type)
     }
   }
 
-
-  const insert = (value: number) => {
-    const newArray = [...heapArray, value]
-    heapifyUp(newArray, newArray.length - 1)
-    setHeapArray(newArray)
-    setHeap(arrayToTree(newArray))
-  }
-
-  const insertMany = (values: string) => {
-    const nums = values.split(',').map(v => parseInt(v.trim())).filter(n => !isNaN(n))
-    const newArray = [...heapArray]
-    
-    nums.forEach(value => {
-      newArray.push(value)
-      heapifyUp(newArray, newArray.length - 1)
-    })
-
-    setHeapArray(newArray)
-    setHeap(arrayToTree(newArray))
-  }
-
-  const toggleHeapType = () => {
-    const newType = heapType === 'max' ? 'min' : 'max'
-    setHeapType(newType)
-    
-    // Rebuild heap with new type
-    const newArray = [...heapArray]
-    for (let i = Math.floor(newArray.length / 2); i >= 0; i--) {
-      heapifyDown(newArray, i)
-    }
-    
-    setHeapArray(newArray)
-    setHeap(arrayToTree(newArray))
-  }
-
-  const heapifyDown = (array: number[], index: number) => {
+  const heapifyDown = (array: number[], index: number, type: HeapType) => {
     const length = array.length
-    let largest = index
+    let target = index
     const left = 2 * index + 1
     const right = 2 * index + 2
 
-    if (left < length && shouldSwap(array[largest], array[left])) {
-      largest = left
+    if (left < length && shouldSwap(array[target], array[left], type)) {
+      target = left
     }
 
-    if (right < length && shouldSwap(array[largest], array[right])) {
-      largest = right
+    if (right < length && shouldSwap(array[target], array[right], type)) {
+      target = right
     }
 
-    if (largest !== index) {
-      [array[index], array[largest]] = [array[largest], array[index]]
-      heapifyDown(array, largest)
+    if (target !== index) {
+      [array[index], array[target]] = [array[target], array[index]]
+      heapifyDown(array, target, type)
     }
   }
 
-  const clear = () => {
+  const insert = useCallback((value: number) => {
+    setHeapArray(prev => {
+      const newArray = [...prev, value]
+      heapifyUp(newArray, newArray.length - 1, heapType)
+      setHeap(arrayToTree(newArray))
+      return newArray
+    })
+  }, [heapType])
+
+  const insertMany = useCallback((values: string) => {
+    const nums = values.split(',').map(v => parseInt(v.trim())).filter(n => !isNaN(n))
+    if (nums.length === 0) return
+
+    setHeapArray(prev => {
+      const newArray = [...prev]
+      nums.forEach(value => {
+        newArray.push(value)
+        heapifyUp(newArray, newArray.length - 1, heapType)
+      })
+      setHeap(arrayToTree(newArray))
+      return newArray
+    })
+  }, [heapType])
+
+  const toggleHeapType = useCallback(() => {
+    const newType: HeapType = heapType === 'max' ? 'min' : 'max'
+    setHeapType(newType)
+    
+    setHeapArray(prev => {
+      const newArray = [...prev]
+      for (let i = Math.floor(newArray.length / 2); i >= 0; i--) {
+        heapifyDown(newArray, i, newType)
+      }
+      setHeap(arrayToTree(newArray))
+      return newArray
+    })
+  }, [heapType])
+
+  const clear = useCallback(() => {
     setHeap(null)
     setHeapArray([])
     setHighlightedNodes([])
     nodeIdCounter = 0
-  }
+  }, [])
 
   return {
     heap,

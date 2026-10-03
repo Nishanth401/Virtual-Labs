@@ -27,6 +27,8 @@ export interface VideoTimelineProps {
   accentColor?: "amber" | "blue" | "emerald" | "violet";
 }
 
+const EMPTY_TIMESTAMPS: VideoTimestamp[] = [];
+
 export function VideoTimeline({
   video,
   tamilVideo,
@@ -40,7 +42,7 @@ export function VideoTimeline({
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
 
   const sourceVideo = video || tamilVideo;
-  const timestamps = sourceVideo?.timestamps || [];
+  const timestamps = sourceVideo?.timestamps ?? EMPTY_TIMESTAMPS;
 
   const isBlue = accentColor === "blue";
 

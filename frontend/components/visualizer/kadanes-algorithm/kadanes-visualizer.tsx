@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -67,7 +67,7 @@ export function KadanesVisualizer() {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [speedMs, setSpeedMs] = useState<number>(1000);
 
-  const generateSteps = (rawArrStr: string) => {
+  const generateSteps = useCallback((rawArrStr: string) => {
     let arr = rawArrStr
       .split(",")
       .map((s) => parseInt(s.trim()))
@@ -165,11 +165,11 @@ export function KadanesVisualizer() {
     setSteps(generated);
     setCurrentStepIdx(0);
     setIsPlaying(false);
-  };
+  }, []);
 
   useEffect(() => {
     generateSteps(inputArrayStr);
-  }, []);
+  }, [generateSteps, inputArrayStr]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;

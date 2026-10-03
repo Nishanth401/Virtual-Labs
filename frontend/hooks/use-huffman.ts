@@ -48,15 +48,16 @@ export function useHuffman() {
     // Create priority queue
     let priorityQueue = [...leafNodes].sort((a, b) => a.frequency - b.frequency)
     let allNodes = [...leafNodes]
+    const generatedSteps: HuffmanStep[] = []
     
     // Initial state
-    setSteps([{
+    generatedSteps.push({
       type: 'BUILD_QUEUE',
-      nodes: allNodes,
+      nodes: [...allNodes],
       priorityQueue: [...priorityQueue],
       message: 'Initial nodes with frequencies',
       highlightedNodes: allNodes.map(n => n.id)
-    }])
+    })
 
     // Build tree step by step
     while (priorityQueue.length > 1) {
@@ -64,13 +65,13 @@ export function useHuffman() {
       const right = priorityQueue.shift()!
 
       // Highlight nodes being merged
-      setSteps(prev => [...prev, {
+      generatedSteps.push({
         type: 'MERGE_NODES',
-        nodes: allNodes,
+        nodes: [...allNodes],
         priorityQueue: [...priorityQueue],
         message: `Selecting nodes with frequencies ${left.frequency} and ${right.frequency}`,
         highlightedNodes: [left.id, right.id]
-      }])
+      })
 
       const parent = createNode(
         `${left.frequency + right.frequency}`,
@@ -89,13 +90,13 @@ export function useHuffman() {
       priorityQueue.splice(i, 0, parent)
 
       // Show merged result
-      setSteps(prev => [...prev, {
+      generatedSteps.push({
         type: 'MERGE_NODES',
-        nodes: allNodes,
+        nodes: [...allNodes],
         priorityQueue: [...priorityQueue],
         message: `Created new node with frequency ${parent.frequency}`,
         highlightedNodes: [parent.id]
-      }])
+      })
     }
 
     const root = priorityQueue[0]
@@ -107,64 +108,71 @@ export function useHuffman() {
       if (!node.left && !node.right) {
         newCodes.set(node.value, code)
         node.code = code
-        setSteps(prev => [...prev, {
+        generatedSteps.push({
           type: 'ASSIGN_CODES',
-          nodes: allNodes,
+          nodes: [...allNodes],
           priorityQueue: [],
           message: `Assigning code ${code} to character '${node.value}'`,
           highlightedNodes: [node.id],
           codes: new Map(newCodes)
-        }])
+        })
       }
       if (node.left) {
-        setSteps(prev => [...prev, {
+        generatedSteps.push({
           type: 'ASSIGN_CODES',
-          nodes: allNodes,
+          nodes: [...allNodes],
           priorityQueue: [],
           message: `Going left (0) from ${node.frequency}`,
           highlightedNodes: [node.id, node.left?.id || ''],
           codes: new Map(newCodes)
-        }])
+        })
         assignCodes(node.left, code + '0')
       }
       if (node.right) {
-        setSteps(prev => [...prev, {
+        generatedSteps.push({
           type: 'ASSIGN_CODES',
-          nodes: allNodes,
+          nodes: [...allNodes],
           priorityQueue: [],
           message: `Going right (1) from ${node.frequency}`,
           highlightedNodes: [node.id, node.right?.id || ''],
           codes: new Map(newCodes)
-        }])
+        })
         assignCodes(node.right, code + '1')
       }
     }
     assignCodes(root)
 
+    setSteps(generatedSteps)
     setCodes(newCodes)
     setCurrentStep(0)
-    setHighlightedNodes(steps[0]?.highlightedNodes || [])
+    setHighlightedNodes(generatedSteps[0]?.highlightedNodes || [])
     setIsAnimating(false)
   }
 
   const nextStep = () => {
     if (currentStep < steps.length - 1) {
-      setCurrentStep(prev => prev + 1)
-      const step = steps[currentStep + 1]
-      setHighlightedNodes(step.highlightedNodes)
-      if (step.codes) {
-        setCodes(step.codes)
+      const nextIdx = currentStep + 1
+      setCurrentStep(nextIdx)
+      const step = steps[nextIdx]
+      if (step) {
+        setHighlightedNodes(step.highlightedNodes)
+        if (step.codes) {
+          setCodes(step.codes)
+        }
       }
     }
   }
 
   const previousStep = () => {
     if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1)
-      const step = steps[currentStep - 1]
-      setHighlightedNodes(step.highlightedNodes)
-      if (step.codes) {
-        setCodes(step.codes)
+      const prevIdx = currentStep - 1
+      setCurrentStep(prevIdx)
+      const step = steps[prevIdx]
+      if (step) {
+        setHighlightedNodes(step.highlightedNodes)
+        if (step.codes) {
+          setCodes(step.codes)
+        }
       }
     }
   }

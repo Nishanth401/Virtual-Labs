@@ -38,7 +38,6 @@ export function useDijkstra() {
   const [currentStep, setCurrentStep] = useState(-1)
   const [isAnimating, setIsAnimating] = useState(false)
   const [isAutoPlaying, setIsAutoPlaying] = useState(false)
-  const [autoPlayInterval, setAutoPlayInterval] = useState<NodeJS.Timeout | null>(null)
 
   const addNode = (x: number, y: number) => {
     const id = `node-${graph.nodes.length}`
@@ -297,36 +296,34 @@ export function useDijkstra() {
 
   const stopAutoPlay = () => {
     setIsAutoPlaying(false)
-    if (autoPlayInterval) {
-      clearInterval(autoPlayInterval)
-      setAutoPlayInterval(null)
-    }
   }
 
   useEffect(() => {
+    let interval: ReturnType<typeof setInterval> | null = null
     if (isAutoPlaying) {
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         setCurrentStep(prev => {
           if (prev >= steps.length - 1) {
-            stopAutoPlay()
+            setIsAutoPlaying(false)
             return prev
           }
           const nextStep = steps[prev + 1]
-          setCurrentNode(nextStep.currentNode)
-          setDistances(nextStep.distances)
-          setVisitedNodes(nextStep.visited)
-          setPath(nextStep.path)
+          if (nextStep) {
+            setCurrentNode(nextStep.currentNode)
+            setDistances(nextStep.distances)
+            setVisitedNodes(nextStep.visited)
+            setPath(nextStep.path)
+          }
           return prev + 1
         })
-      }, 1000) // Adjust speed as needed
-      setAutoPlayInterval(interval)
+      }, 1000)
     }
     return () => {
-      if (autoPlayInterval) {
-        clearInterval(autoPlayInterval)
+      if (interval) {
+        clearInterval(interval)
       }
     }
-  }, [isAutoPlaying, steps.length])
+  }, [isAutoPlaying, steps])
 
   const toggleAutoPlay = () => {
     if (isAutoPlaying) {

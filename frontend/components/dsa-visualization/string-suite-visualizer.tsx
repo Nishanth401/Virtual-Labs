@@ -1,9 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Play, Pause, RotateCcw, Search, Code2, Info, CheckCircle2, SkipForward, SkipBack } from "lucide-react";
+
+const pattern = "ABABAC";
+const lps = [0, 0, 1, 2, 3, 0];
+const kmpText = "ABABDABABACD";
 
 export function StringSuiteVisualizer({ defaultMode = "trie" }: { defaultMode?: "kmp" | "trie" } = {}) {
   const [mode, setMode] = useState<"kmp" | "trie">(defaultMode);
@@ -15,9 +19,6 @@ export function StringSuiteVisualizer({ defaultMode = "trie" }: { defaultMode?: 
   const [isPlayingTrieDemo, setIsPlayingTrieDemo] = useState<boolean>(false);
 
   // --- KMP STATE ---
-  const pattern = "ABABAC";
-  const lps = [0, 0, 1, 2, 3, 0];
-  const kmpText = "ABABDABABACD";
   const [kmpIndex, setKmpIndex] = useState<number>(0);
   const [kmpPatternIdx, setKmpPatternIdx] = useState<number>(0);
   const [isPlayingKmp, setIsPlayingKmp] = useState<boolean>(false);
@@ -47,7 +48,7 @@ export function StringSuiteVisualizer({ defaultMode = "trie" }: { defaultMode?: 
   };
 
   // KMP Step Simulation
-  const handleKmpStep = () => {
+  const handleKmpStep = useCallback(() => {
     if (kmpIndex >= kmpText.length) {
       setKmpMessage("KMP search scan completed through end of string!");
       setIsPlayingKmp(false);
@@ -76,7 +77,7 @@ export function StringSuiteVisualizer({ defaultMode = "trie" }: { defaultMode?: 
         setKmpIndex(kmpIndex + 1);
       }
     }
-  };
+  }, [kmpIndex, kmpPatternIdx]);
 
   useEffect(() => {
     if (isPlayingKmp) {
@@ -91,7 +92,7 @@ export function StringSuiteVisualizer({ defaultMode = "trie" }: { defaultMode?: 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [isPlayingKmp, kmpIndex, kmpPatternIdx]);
+  }, [isPlayingKmp, kmpIndex, handleKmpStep]);
 
   return (
     <div className="space-y-6">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -105,7 +105,7 @@ export function TwoPointersVisualizer() {
   const [speedMs, setSpeedMs] = useState<number>(1000);
 
   // Generate simulation steps based on mode and inputs
-  const generateSteps = (selectedMode: TwoPointersMode, rawArrStr: string, rawTargetStr: string) => {
+  const generateSteps = useCallback((selectedMode: TwoPointersMode, rawArrStr: string, rawTargetStr: string) => {
     let arr = rawArrStr
       .split(",")
       .map((s) => parseInt(s.trim()))
@@ -247,12 +247,12 @@ export function TwoPointersVisualizer() {
     setSteps(generated);
     setCurrentStepIdx(0);
     setIsPlaying(false);
-  };
+  }, []);
 
   // Run steps generation whenever inputs change
   useEffect(() => {
     generateSteps(mode, inputArrayStr, targetInputStr);
-  }, [mode, inputArrayStr, targetInputStr]);
+  }, [generateSteps, mode, inputArrayStr, targetInputStr]);
 
   // Handle Play/Pause Auto-Timer
   useEffect(() => {

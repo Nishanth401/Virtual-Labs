@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { HeapType } from "./types"
 import { Play } from "lucide-react"
 
@@ -27,22 +27,32 @@ export function HeapControls({
   const [value, setValue] = useState("")
   const [bulkInput, setBulkInput] = useState("")
   const [isPlayingDemo, setIsPlayingDemo] = useState(false)
+  const demoTimeoutsRef = useRef<NodeJS.Timeout[]>([])
+
+  useEffect(() => {
+    return () => {
+      demoTimeoutsRef.current.forEach(clearTimeout)
+    }
+  }, [])
 
   const handlePlayDemo = () => {
-    if (isPlayingDemo) return;
-    setIsPlayingDemo(true);
-    onClear();
+    if (isPlayingDemo) return
+    demoTimeoutsRef.current.forEach(clearTimeout)
+    demoTimeoutsRef.current = []
+    setIsPlayingDemo(true)
+    onClear()
 
-    const sample = [45, 20, 80, 15, 60, 95, 30];
+    const sample = [45, 20, 80, 15, 60, 95, 30]
     sample.forEach((num, idx) => {
-      setTimeout(() => {
-        onInsert(num);
+      const t = setTimeout(() => {
+        onInsert(num)
         if (idx === sample.length - 1) {
-          setIsPlayingDemo(false);
+          setIsPlayingDemo(false)
         }
-      }, (idx + 1) * 450);
-    });
-  };
+      }, (idx + 1) * 450)
+      demoTimeoutsRef.current.push(t)
+    })
+  }
 
   const handleInsert = () => {
     const num = Number(value)

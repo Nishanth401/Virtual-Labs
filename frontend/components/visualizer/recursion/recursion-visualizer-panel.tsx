@@ -92,7 +92,7 @@ export function RecursionVisualizerPanel({
   // Initial execution on mount
   useEffect(() => {
     runEngine();
-  }, []);
+  }, [runEngine]);
 
   const handleSelectPreset = (presetId: string) => {
     setSelectedExampleId(presetId);

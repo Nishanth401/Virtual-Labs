@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { AVLTreeNode } from "@/components/visualizer/avl-tree/types"
 
 let nodeIdCounter = 0
@@ -9,6 +9,13 @@ export function useAVLTree() {
   const [traversalHistory, setTraversalHistory] = useState<number[]>([])
   const [rotationHistory, setRotationHistory] = useState<string[]>([])
   const [isAnimating, setIsAnimating] = useState(false)
+  const animationAbortRef = useRef(false)
+
+  useEffect(() => {
+    return () => {
+      animationAbortRef.current = true
+    }
+  }, [])
 
   // Get height of a node
   const getHeight = (node: AVLTreeNode | null): number => {
@@ -123,9 +130,10 @@ export function useAVLTree() {
     visit: (node: AVLTreeNode) => void,
     order: "inorder" | "preorder" | "postorder"
   ) => {
-    if (!node) return
+    if (!node || animationAbortRef.current) return
 
     const highlight = (nodeId: string, value: number) => {
+      if (animationAbortRef.current) return
       setHighlightedNodes(prev => [...prev, nodeId])
       setTraversalHistory(prev => [...prev, value])
       
@@ -141,17 +149,23 @@ export function useAVLTree() {
         highlight(node.id, node.value)
         visit(node)
         await wait()
+        if (animationAbortRef.current) return
         if (node.left) await traverseWithAnimation(node.left, visit, order)
+        if (animationAbortRef.current) return
         if (node.right) await traverseWithAnimation(node.right, visit, order)
       } else if (order === "inorder") {
         if (node.left) await traverseWithAnimation(node.left, visit, order)
+        if (animationAbortRef.current) return
         highlight(node.id, node.value)
         visit(node)
         await wait()
+        if (animationAbortRef.current) return
         if (node.right) await traverseWithAnimation(node.right, visit, order)
       } else {
         if (node.left) await traverseWithAnimation(node.left, visit, order)
+        if (animationAbortRef.current) return
         if (node.right) await traverseWithAnimation(node.right, visit, order)
+        if (animationAbortRef.current) return
         highlight(node.id, node.value)
         visit(node)
         await wait()
@@ -163,14 +177,17 @@ export function useAVLTree() {
   }
 
   const clear = () => {
+    animationAbortRef.current = true
     setTree(null)
     setHighlightedNodes([])
     setTraversalHistory([])
     setRotationHistory([])
+    setIsAnimating(false)
   }
 
   const inorderTraversal = async () => {
     if (isAnimating) return
+    animationAbortRef.current = false
     setIsAnimating(true)
     setHighlightedNodes([])
     setTraversalHistory([])
@@ -184,6 +201,7 @@ export function useAVLTree() {
 
   const preorderTraversal = async () => {
     if (isAnimating) return
+    animationAbortRef.current = false
     setIsAnimating(true)
     setHighlightedNodes([])
     setTraversalHistory([])
@@ -197,6 +215,7 @@ export function useAVLTree() {
 
   const postorderTraversal = async () => {
     if (isAnimating) return
+    animationAbortRef.current = false
     setIsAnimating(true)
     setHighlightedNodes([])
     setTraversalHistory([])

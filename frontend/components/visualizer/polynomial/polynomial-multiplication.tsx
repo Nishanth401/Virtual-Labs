@@ -95,7 +95,7 @@ export function PolynomialMultiplication() {
   const [isAutoPlaying, setIsAutoPlaying] = useState(false)
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout
+    let timeoutId: ReturnType<typeof setTimeout> | undefined
     if (isAutoPlaying && currentStep < steps.length - 1) {
       timeoutId = setTimeout(() => {
         setCurrentStep(prev => prev + 1)
@@ -103,8 +103,10 @@ export function PolynomialMultiplication() {
     } else if (currentStep >= steps.length - 1) {
       setIsAutoPlaying(false)
     }
-    return () => clearTimeout(timeoutId)
-  }, [isAutoPlaying, currentStep, steps.length])
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId)
+    }
+  }, [isAutoPlaying, currentStep, steps.length, setCurrentStep])
 
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-[300px_1fr]">

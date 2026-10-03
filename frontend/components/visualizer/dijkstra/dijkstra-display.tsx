@@ -106,7 +106,7 @@ export function DijkstraDisplay({
 
     setNodes(flowNodes)
     setEdges(flowEdges)
-  }, [graph, distances, path, currentNode, visitedNodes, theme])
+  }, [graph, distances, path, currentNode, visitedNodes, theme, setNodes, setEdges])
 
   return (
     <div className="h-[800px] bg-background rounded-lg overflow-hidden border">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -104,7 +104,7 @@ export function SlidingWindowVisualizer() {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [speedMs, setSpeedMs] = useState<number>(1000);
 
-  const generateSteps = (selectedMode: SlidingWindowMode, rawArrStr: string, rawKStr: string) => {
+  const generateSteps = useCallback((selectedMode: SlidingWindowMode, rawArrStr: string, rawKStr: string) => {
     let arr = rawArrStr
       .split(",")
       .map((s) => parseInt(s.trim()))
@@ -175,11 +175,11 @@ export function SlidingWindowVisualizer() {
     setSteps(generated);
     setCurrentStepIdx(0);
     setIsPlaying(false);
-  };
+  }, []);
 
   useEffect(() => {
     generateSteps(mode, inputArrayStr, kInputStr);
-  }, [mode, inputArrayStr, kInputStr]);
+  }, [generateSteps, mode, inputArrayStr, kInputStr]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
